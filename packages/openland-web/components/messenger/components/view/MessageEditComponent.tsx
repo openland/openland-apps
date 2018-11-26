@@ -35,32 +35,38 @@ const TextInputWrapper = Glamorous.div({
     }
 });
 
-export interface XTextInputProps extends XRichTextInputProps {
-    valueStoreKey?: string;
-}
+export type XTextInputProps = {
+    kind: 'from_store',
+    valueStoreKey: string;
+} | {
+    kind: 'controlled'
+} & XRichTextInputProps;
 
 class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
-
     onChangeHandler = (value: string) => {
-        if (this.props.onChange) {
-            this.props.onChange(value);
+        if (this.props.kind === 'controlled') {
+            if (this.props.onChange) {
+                this.props.onChange(value);
+            }   
         }
-        if (this.props.valueStoreKey) {
+        if (this.props.kind === 'from_store') {
             this.props.store.writeValue(this.props.valueStoreKey, value);
         }
     }
 
     render() {
-        let { valueStoreKey, store, ...other } = this.props;
-        let value = this.props.value;
-        if (valueStoreKey) {
-            let existing = store.readValue(valueStoreKey);
+        let value;
+        const {kind, ...other} = this.props;
+        if (this.props.kind === 'from_store') {
+            let existing = this.props.store.readValue(this.props.valueStoreKey);
             value = '';
             if (typeof existing === 'string') {
                 value = existing;
             } else if (existing) {
                 value = existing.toString();
             }
+        } else if (this.props.kind === 'controlled') {
+            value = this.props.value;
         }
 
         return <XRichTextInput autofocus={true} onChange={this.onChangeHandler} value={value} {...other} />;
@@ -69,8 +75,8 @@ class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store
 
 class XTextInput extends React.PureComponent<XTextInputProps> {
     render() {
-        let { valueStoreKey, ...other } = this.props;
-        if (valueStoreKey) {
+        if (this.props.kind === 'from_store') {
+            const {valueStoreKey, ...other} = this.props;
             let valueStoreKeyCached = valueStoreKey;
             return (
                 <XStoreContext.Consumer>
@@ -88,8 +94,10 @@ class XTextInput extends React.PureComponent<XTextInputProps> {
                     }}
                 </XStoreContext.Consumer>
             );
+        } else if (this.props.kind === 'controlled') {
+            return (<XRichTextInput {...this.props} />);
         }
-        return (<XRichTextInput {...other} />);
+        throw Error('kind for XTextInput is not set');
     }
 }
 
@@ -113,12 +121,12 @@ const EditMessageInline = withEditMessage((props) => {
             }}
         >
             <TextInputWrapper>
-                <XTextInput valueStoreKey="fields.message" />
+                <XTextInput valueStoreKey="fields.message" kind="from_store" />
             </TextInputWrapper>
 
             <Footer separator={5}>
                 <XFormSubmit text="Save" style="primary" />
-                <XButton text="Cancel" size="r-default" onClick={() => { (props as any).onClose(); }} />
+                <XButton text="Cancel" size="default" onClick={() => { (props as any).onClose(); }} />
             </Footer>
         </XForm>
     );

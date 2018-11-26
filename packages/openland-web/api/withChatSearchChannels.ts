@@ -1,4 +1,4 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { ChatSearchChannelQuery } from 'openland-api';
+import { RoomSearchQuery } from 'openland-api';
 
-export const withChatSearchChannels = graphqlRouted(ChatSearchChannelQuery, { fetchPolicy: 'cache-and-network' });
+export const withChatSearchChannels = graphqlRouted(RoomSearchQuery, { fetchPolicy: 'cache-and-network' });

@@ -11,12 +11,11 @@ import { ZTagView } from '../../../components/ZTagView';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ZLoader } from '../../../components/ZLoader';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
-import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { ConversationView } from '../components/ConversationView';
 import { PageProps } from '../../../components/PageProps';
 import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ExplorePeopleQuery } from 'openland-api';
+import { ExplorePeopleQuery, RoomCreateMutation } from 'openland-api';
 
 interface ComposeModalState {
     message: string;
@@ -69,8 +68,9 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                             // this.props.navigation.replace('Conversation', { id: id.id });
                         } else {
                             let res = await this.props.messenger.client.client.mutate({
-                                mutation: ChatCreateGroupMutation.document,
+                                mutation: RoomCreateMutation.document,
                                 variables: {
+                                    kind: 'GROUP',
                                     message: msg,
                                     members: ids
                                 }

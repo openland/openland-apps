@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
-import { ChannelMembers_members } from 'openland-api/Types';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
@@ -31,7 +30,9 @@ import {
     ReplyMessage,
     SaveDraftMessageVariables,
     SaveDraftMessage,
-    MessageFull_mentions
+    MessageFull_mentions,
+    SharedRoomKind,
+    RoomMembers_members
 } from 'openland-api/Types';
 
 const SendMessageWrapper = Glamorous.div({
@@ -298,7 +299,7 @@ const EditView = (props: { title: string, message: string, onCancel: () => void 
 );
 
 export interface MessageComposeComponentProps {
-    conversationType?: string;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
@@ -312,11 +313,11 @@ interface MessageComposeWithDraft extends MessageComposeComponentProps {
 }
 
 interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
-    members?: ChannelMembers_members[];
+    members?: RoomMembers_members[];
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    members?: ChannelMembers_members[];
+    members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
@@ -332,7 +333,7 @@ interface MessageComposeComponentInnerState {
     dragOn: boolean;
     dragUnder: boolean;
     message: string;
-    floatingMessage?: string;
+    floatingMessage: string;
     forwardMessageReply?: string;
     forwardMessageId?: Set<string> | string;
     forwardMessageSender?: string;
@@ -444,7 +445,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (messages.length > 0) {
             this.props.replyMessage({
                 variables: {
-                    conversationId: this.props.conversationId,
+                    roomId: this.props.conversationId,
                     message: message,
                     replyMessages: messages
                 }
@@ -563,7 +564,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         this.props.messagesContext.resetAll();
         this.setState({
             message: '',
-            floatingMessage: undefined,
+            floatingMessage: '',
             forwardMessageReply: undefined,
             forwardMessageId: undefined,
             forwardMessageSender: undefined
@@ -602,7 +603,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             messagesContext.changeForwardConverstion();
             this.setState({
                 message: '',
-                floatingMessage: undefined,
+                floatingMessage: '',
                 forwardMessageReply: `Forward ${messagesContext.forwardMessagesId.size} messages`,
                 forwardMessageId: messagesContext.forwardMessagesId,
                 forwardMessageSender: 'Forward'
@@ -647,7 +648,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     forwardMessageReply: `Forward ${forwardMessagesId.size} messages`,
                     forwardMessageId: forwardMessagesId,
                     forwardMessageSender: 'Forward'
@@ -663,7 +664,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     forwardMessageReply: messageReply,
                     forwardMessageId: messageId,
                     forwardMessageSender: messageSender
@@ -672,7 +673,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     forwardMessageReply: `Reply ${replyMessagesId.size} messages`,
                     forwardMessageId: replyMessagesId,
                     forwardMessageSender: 'Reply'
@@ -687,7 +688,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
         if (draftChecker) {
 
-            let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId);
+            let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId) || '';
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 
             if (!draft && nextProps.draft) {
@@ -698,7 +699,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     beDrafted: true
                 };
             } else if (draft !== draftKey) {
@@ -849,4 +850,4 @@ export const MessageComposeComponentDraft = withGetDraftMessage(props => {
             {...props}
         />
     );
-}) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string, channelId?: string } }>;
+}) as React.ComponentType<MessageComposeComponentProps & { variables?: { roomId?: string, conversationId?: string } }>;

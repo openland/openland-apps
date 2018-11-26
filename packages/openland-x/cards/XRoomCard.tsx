@@ -9,7 +9,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { RoomSetFeatured, RoomSetHidden } from '../../openland-web/components/messenger/MessengerComponent';
-import { ChatSearchChannel_items_edges_node } from 'openland-api/Types';
+import { SharedRoomKind, Room_room, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 
 const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
@@ -60,7 +60,7 @@ const RoomMembers = Glamorous.div({
 });
 
 interface XRoomCardProps {
-    room: ChatSearchChannel_items_edges_node;
+    room: Room_room_SharedRoom;
     path?: string;
     customButton?: any;
     customMenu?: any;
@@ -77,9 +77,9 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
         isHovered: false
     };
 
-    render () {
+    render() {
         let { room, path, customButton, customMenu, extraMenu } = this.props;
-        let title = (!room.isRoot && room.organization ? (room.organization.name + ' / ') : '') + room.title;
+        let title = (room.kind !== SharedRoomKind.INTERNAL && room.organization ? (room.organization.name + ' / ') : '') + room.title;
 
         let buttonPath = '/mail/' + room.id;
 
@@ -89,11 +89,11 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
 
         let button = (typeof customButton === 'undefined') ? (
             <>
-                {room.myStatus && (
+                {room.membership && (
                     <XButton
-                        text={TextProfiles.Room.status[room.myStatus]}
+                        text={TextProfiles.Room.status[room.membership]}
                         path={buttonPath}
-                        style={room.myStatus === 'none' ? 'primary' : 'ghost'}
+                        style={['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1 ? 'primary' : 'ghost'}
                     />
                 )}
             </>
@@ -110,8 +110,8 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
                                 {extraMenu}
 
                                 <XMenuTitle>Super admin</XMenuTitle>
-                                <RoomSetFeatured conversationId={room.id} val={room.featured} />
-                                <RoomSetHidden conversationId={room.id} val={room.hidden} />
+                                {/* <RoomSetFeatured conversationId={room.id} val={room.featured} />
+                                <RoomSetHidden conversationId={room.id} val={room.hidden} /> */}
                             </div>
                         )}
                     />
@@ -144,13 +144,13 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
                 <XHorizontal separator={8} alignItems="center" flexGrow={1}>
                     <RoomAvatar
                         style="room"
-                        cloudImageUuid={room.photo || room.photos[0] || (room.organization ? room.organization.photo || undefined : undefined)}
+                        cloudImageUuid={room.photo || (room.organization ? room.organization.photo || undefined : undefined)}
                         objectName={room.title}
                         objectId={room.id}
                     />
                     <XVertical separator={0} flexGrow={1}>
                         <RoomTitle>{title}</RoomTitle>
-                        <RoomMembers>{TextProfiles.Room.membersLabel(room.membersCount)}</RoomMembers>
+                        <RoomMembers>{TextProfiles.Room.membersLabel(room.membersCount || 0)}</RoomMembers>
                     </XVertical>
                 </XHorizontal>
                 {this.state.isHovered && button}

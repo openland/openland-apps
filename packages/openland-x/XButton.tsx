@@ -688,7 +688,7 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
     }))
 ]);
 
-const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
+export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
     return (
         <StyledButton
             href={props.href}
@@ -740,11 +740,3 @@ const XButtonRaw = makeActionable(makeNavigable<XButtonProps>((props) => {
         </StyledButton>
     );
 }));
-
-const XButtonWithRole = (props: any) => (
-    <XRoleContext.Consumer>
-        {userRoles => <XButtonRaw {...props} insaneMode={userRoles && userRoles.roles.indexOf('feature-insane-buttons') > -1} />}
-    </XRoleContext.Consumer>
-);
-
-export const XButton = Glamorous(XButtonWithRole)();

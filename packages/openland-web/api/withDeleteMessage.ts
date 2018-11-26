@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ChatDeleteMessageMutation } from 'openland-api';
+import { RoomDeleteMessageMutation } from 'openland-api';
 
-export const withDeleteMessage = graphqlMutation(ChatDeleteMessageMutation, 'deleteMessage');
+export const withDeleteMessage = graphqlMutation(RoomDeleteMessageMutation, 'deleteMessage');

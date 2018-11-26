@@ -119,7 +119,7 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                                             key: i.id,
                                             flexibleId: i.flexibleId,
                                             message: i.topMessage && formatMessage(i.topMessage),
-                                            type: i.__typename,
+                                            kind: i.kind,
                                             title: i.title,
                                             photo: i.photo || i.photos[0],
                                             unread: i.unreadCount,

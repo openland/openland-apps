@@ -93,7 +93,7 @@ export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
                                 <MessengerEmptyComponent />
                             )}
                             {tab === 'conversation' && (
-                                <MessengerComponent conversationId={props.router.routeQuery.conversationId} />
+                                <MessengerComponent id={props.router.routeQuery.conversationId} />
                             )}
                             {tab === 'rooms' && (
                                 <RoomsExploreComponent />

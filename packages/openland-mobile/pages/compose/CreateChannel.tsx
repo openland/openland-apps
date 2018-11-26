@@ -4,16 +4,14 @@ import { ZForm } from '../../components/ZForm';
 import { withApp } from '../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemBase } from '../../components/ZListItemBase';
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { CreateChannelMutation } from 'openland-api';
 import { UserError } from 'openland-y-forms/errorHandling';
+import { RoomCreateMutation } from 'openland-api';
 
 interface CreateChannelComponentState {
     query: string;
@@ -44,20 +42,22 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
     render() {
         return (
             <>
-                <SHeader title="New Channel" />
+                <SHeader title="New room" />
                 <SHeaderButton title="Create" onPress={() => { this.ref.current!.submitForm(); }} />
-                <YMutation mutation={CreateChannelMutation}>
+                <YMutation mutation={RoomCreateMutation}>
                     {(create) => (<ZForm
                         ref={this.ref}
                         action={async (src) => {
                             if (!src.title) {
-                                throw new UserError('Channel name can\'t be empty');
+                                throw new UserError('Room name can\'t be empty');
                             }
                             let channel = await create({
                                 variables: {
+                                    kind: SharedRoomKind.PUBLIC,
                                     title: src.title,
                                     description: src.description,
-                                    photoRef: src.photoRef
+                                    photoRef: src.photoRef,
+                                    members: []
                                 }
                             });
                             this.props.router.pushAndReset('Conversation', { id: (channel as any).data.channel.id });

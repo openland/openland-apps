@@ -14,7 +14,7 @@ import { RoomsExploreComponent } from '../../../components/messenger/RoomsExplor
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
 import { RoomsInviteComponent } from '../../../components/messenger/RoomsInviteComponent';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
-import { RoomGroupProfile } from '../profile/RoomGroupProfileComponent';
+import { RoomProfile } from '../profile/RoomProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
@@ -98,9 +98,9 @@ export const OrganizationProfilContainer = Glamorous.div({
 
 export const RoomInviteFromLink = withChannelInviteInfo((props) => (
     props.data && props.data.invite
-        ? props.data.invite.channel.myStatus === 'member'
-            ? <XPageRedirect path={'/mail/' + props.data.invite.channel.id} />
-            : <RoomsInviteComponent inviteLink={props.router.routeQuery.uuid} room={props.data.invite.channel} invite={props.data.invite} />
+        ? props.data.invite.room.membership === 'MEMBER'
+            ? <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+            : <RoomsInviteComponent inviteLink={props.router.routeQuery.invte} room={props.data.invite.room} invite={props.data.invite} />
         : <XLoader loading={true} />
 ));
 
@@ -312,7 +312,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                                     )}
                                     {tab === 'conversation' && (
                                         <MessengerComponent
-                                            conversationId={props.router.routeQuery.conversationId}
+                                            id={props.router.routeQuery.conversationId}
                                             handlePageTitle={this.handlePageTitle}
                                         />
                                     )}
@@ -334,7 +334,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                                     )}
                                     {tab === 'chat' && (
                                         <OrganizationProfilContainer>
-                                            <RoomGroupProfile conversationId={cid} handlePageTitle={this.handlePageTitle} />
+                                            <RoomProfile conversationId={cid} handlePageTitle={this.handlePageTitle} />
                                         </OrganizationProfilContainer>
                                     )}
                                 </ConversationContainer>

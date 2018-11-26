@@ -17,3 +17,21 @@ export const MessageShort = gql`
     }
  }
 `;
+
+export const RoomMessageShort = gql`
+ fragment RoomMessageShort on RoomMessage {
+    id
+    date
+    message
+    file
+    isService
+    fileMetadata {
+        name
+        mimeType
+        isImage
+    }
+    sender {
+        ...UserTiny
+    }
+ }
+`;

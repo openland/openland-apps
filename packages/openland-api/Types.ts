@@ -429,17 +429,10 @@ export interface CreateUserProfileAndOrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ChatList
+// GraphQL query operation: Dialogs
 // ====================================================
 
-export interface ChatList_chats_conversations_AnonymousConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-}
-
-export interface ChatList_chats_conversations_AnonymousConversation_topMessage_sender {
+export interface Dialogs_dialogs_items_topMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -448,35 +441,25 @@ export interface ChatList_chats_conversations_AnonymousConversation_topMessage_s
   picture: string | null;
 }
 
-export interface ChatList_chats_conversations_AnonymousConversation_topMessage {
-  __typename: "ConversationMessage";
+export interface Dialogs_dialogs_items_topMessage {
+  __typename: "Message";
   id: string;
   date: any;
-  message: string | null;
-  file: string | null;
-  isService: boolean;
-  fileMetadata: ChatList_chats_conversations_AnonymousConversation_topMessage_fileMetadata | null;
-  sender: ChatList_chats_conversations_AnonymousConversation_topMessage_sender;
+  /**
+   * Content
+   */
+  text: string | null;
+  sender: Dialogs_dialogs_items_topMessage_sender;
 }
 
-export interface ChatList_chats_conversations_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  topMessage: ChatList_chats_conversations_AnonymousConversation_topMessage | null;
-}
-
-export interface ChatList_chats_conversations_GroupConversation_topMessage_fileMetadata {
+export interface Dialogs_dialogs_items_betaTopMessage_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
   isImage: boolean;
 }
 
-export interface ChatList_chats_conversations_GroupConversation_topMessage_sender {
+export interface Dialogs_dialogs_items_betaTopMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -485,87 +468,48 @@ export interface ChatList_chats_conversations_GroupConversation_topMessage_sende
   picture: string | null;
 }
 
-export interface ChatList_chats_conversations_GroupConversation_topMessage {
-  __typename: "ConversationMessage";
+export interface Dialogs_dialogs_items_betaTopMessage {
+  __typename: "RoomMessage";
   id: string;
   date: any;
   message: string | null;
   file: string | null;
   isService: boolean;
-  fileMetadata: ChatList_chats_conversations_GroupConversation_topMessage_fileMetadata | null;
-  sender: ChatList_chats_conversations_GroupConversation_topMessage_sender;
+  fileMetadata: Dialogs_dialogs_items_betaTopMessage_fileMetadata | null;
+  sender: Dialogs_dialogs_items_betaTopMessage_sender;
 }
 
-export interface ChatList_chats_conversations_GroupConversation {
-  __typename: "GroupConversation";
+export interface Dialogs_dialogs_items {
+  __typename: "Dialog";
   id: string;
-  flexibleId: string;
+  cid: string;
+  fid: string;
+  kind: DialogKind;
   title: string;
-  photos: string[];
+  photo: string;
   unreadCount: number;
-  photo: string | null;
-  topMessage: ChatList_chats_conversations_GroupConversation_topMessage | null;
+  topMessage: Dialogs_dialogs_items_topMessage | null;
+  betaTopMessage: Dialogs_dialogs_items_betaTopMessage | null;
 }
 
-export interface ChatList_chats_conversations_ChannelConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
+export interface Dialogs_dialogs {
+  __typename: "DialogsConnection";
+  items: Dialogs_dialogs_items[];
+  cursor: string | null;
 }
 
-export interface ChatList_chats_conversations_ChannelConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-}
-
-export interface ChatList_chats_conversations_ChannelConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  file: string | null;
-  isService: boolean;
-  fileMetadata: ChatList_chats_conversations_ChannelConversation_topMessage_fileMetadata | null;
-  sender: ChatList_chats_conversations_ChannelConversation_topMessage_sender;
-}
-
-export interface ChatList_chats_conversations_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  photo: string | null;
-  myStatus: ChannelMembershipStatus;
-  topMessage: ChatList_chats_conversations_ChannelConversation_topMessage | null;
-}
-
-export type ChatList_chats_conversations = ChatList_chats_conversations_AnonymousConversation | ChatList_chats_conversations_GroupConversation | ChatList_chats_conversations_ChannelConversation;
-
-export interface ChatList_chats {
-  __typename: "ConversationConnection";
-  conversations: ChatList_chats_conversations[];
-  next: string | null;
-}
-
-export interface ChatList_counter {
+export interface Dialogs_counter {
   __typename: "NotificationCounter";
   id: string;
   unreadCount: number;
 }
 
-export interface ChatList {
-  chats: ChatList_chats;
-  counter: ChatList_counter;
+export interface Dialogs {
+  dialogs: Dialogs_dialogs;
+  counter: Dialogs_counter;
 }
 
-export interface ChatListVariables {
+export interface DialogsVariables {
   after?: string | null;
 }
 
@@ -573,20 +517,107 @@ export interface ChatListVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatLeave
+// GraphQL query operation: Room
 // ====================================================
 
-export interface ChatLeave_alphaChatLeave {
-  __typename: "ConversationUpdateResponse";
-  curSeq: number;
+export interface Room_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface ChatLeave {
-  alphaChatLeave: ChatLeave_alphaChatLeave;
+export interface Room_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: Room_room_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface ChatLeaveVariables {
-  conversationId: string;
+export interface Room_room_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface Room_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: Room_room_PrivateRoom_user;
+  settings: Room_room_PrivateRoom_settings;
+}
+
+export interface Room_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: Room_room_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface Room_room_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: Room_room_SharedRoom_members_user;
+}
+
+export interface Room_room_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface Room_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: Room_room_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: Room_room_SharedRoom_members[];
+  settings: Room_room_SharedRoom_settings;
+}
+
+export type Room_room = Room_room_PrivateRoom | Room_room_SharedRoom;
+
+export interface Room {
+  room: Room_room | null;
+}
+
+export interface RoomVariables {
+  id: string;
 }
 
 /* tslint:disable */
@@ -597,7 +628,7 @@ export interface ChatLeaveVariables {
 // ====================================================
 
 export interface MessageSetReaction {
-  alphaChatSetReaction: string;
+  betaReactionSet: boolean;
 }
 
 export interface MessageSetReactionVariables {
@@ -613,8 +644,8 @@ export interface MessageSetReactionVariables {
 // ====================================================
 
 export interface SwitchReaction {
-  alphaChatSetReaction: string;
-  alphaChatUnsetReaction: string;
+  betaReactionSet: boolean;
+  betaReactionRemove: boolean;
 }
 
 export interface SwitchReactionVariables {
@@ -631,7 +662,7 @@ export interface SwitchReactionVariables {
 // ====================================================
 
 export interface MessageUnsetReaction {
-  alphaChatUnsetReaction: string;
+  betaReactionRemove: boolean;
 }
 
 export interface MessageUnsetReactionVariables {
@@ -691,32 +722,32 @@ export interface GlobalCounter {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ChatHistory
+// GraphQL query operation: RoomHistory
 // ====================================================
 
-export interface ChatHistory_messages_messages_serviceMetadata_InviteServiceMetadata {
+export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
 }
 
-export interface ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_user {
+export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_user {
   __typename: "User";
   id: string;
 }
 
-export interface ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_kickedBy {
+export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
 }
 
-export interface ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata {
+export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata {
   __typename: "KickServiceMetadata";
-  user: ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata_kickedBy;
+  user: RoomHistory_messages_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type ChatHistory_messages_messages_serviceMetadata = ChatHistory_messages_messages_serviceMetadata_InviteServiceMetadata | ChatHistory_messages_messages_serviceMetadata_KickServiceMetadata;
+export type RoomHistory_messages_serviceMetadata = RoomHistory_messages_serviceMetadata_InviteServiceMetadata | RoomHistory_messages_serviceMetadata_KickServiceMetadata;
 
-export interface ChatHistory_messages_messages_fileMetadata {
+export interface RoomHistory_messages_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -727,14 +758,14 @@ export interface ChatHistory_messages_messages_fileMetadata {
   size: number;
 }
 
-export interface ChatHistory_messages_messages_sender_primaryOrganization {
+export interface RoomHistory_messages_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface ChatHistory_messages_messages_sender {
+export interface RoomHistory_messages_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -745,17 +776,17 @@ export interface ChatHistory_messages_messages_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
-  primaryOrganization: ChatHistory_messages_messages_sender_primaryOrganization | null;
+  primaryOrganization: RoomHistory_messages_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_messages_reply_sender_primaryOrganization {
+export interface RoomHistory_messages_reply_sender_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface ChatHistory_messages_messages_reply_sender {
+export interface RoomHistory_messages_reply_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -766,10 +797,10 @@ export interface ChatHistory_messages_messages_reply_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
-  primaryOrganization: ChatHistory_messages_messages_reply_sender_primaryOrganization | null;
+  primaryOrganization: RoomHistory_messages_reply_sender_primaryOrganization | null;
 }
 
-export interface ChatHistory_messages_messages_reply_fileMetadata {
+export interface RoomHistory_messages_reply_fileMetadata {
   __typename: "FileMetadata";
   name: string;
   mimeType: string | null;
@@ -780,43 +811,36 @@ export interface ChatHistory_messages_messages_reply_fileMetadata {
   size: number;
 }
 
-export interface ChatHistory_messages_messages_reply {
-  __typename: "ConversationMessage";
-  sender: ChatHistory_messages_messages_reply_sender;
+export interface RoomHistory_messages_reply {
+  __typename: "RoomMessage";
+  sender: RoomHistory_messages_reply_sender;
   id: string;
   date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
-  fileMetadata: ChatHistory_messages_messages_reply_fileMetadata | null;
+  fileMetadata: RoomHistory_messages_reply_fileMetadata | null;
 }
 
-export interface ChatHistory_messages_messages_reactions_user {
+export interface RoomHistory_messages_reactions_user {
   __typename: "User";
   id: string;
   name: string;
 }
 
-export interface ChatHistory_messages_messages_reactions {
+export interface RoomHistory_messages_reactions {
   __typename: "MessageReaction";
-  user: ChatHistory_messages_messages_reactions_user;
+  user: RoomHistory_messages_reactions_user;
   reaction: string;
 }
 
-export interface ChatHistory_messages_messages_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChatHistory_messages_messages_urlAugmentation_imageInfo {
+export interface RoomHistory_messages_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
   imageHeight: number | null;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_iconRef_crop {
+export interface RoomHistory_messages_urlAugmentation_iconRef_crop {
   __typename: "ImageCrop";
   x: number;
   y: number;
@@ -824,19 +848,19 @@ export interface ChatHistory_messages_messages_urlAugmentation_iconRef_crop {
   h: number;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_iconRef {
+export interface RoomHistory_messages_urlAugmentation_iconRef {
   __typename: "ImageRef";
   uuid: string;
-  crop: ChatHistory_messages_messages_urlAugmentation_iconRef_crop | null;
+  crop: RoomHistory_messages_urlAugmentation_iconRef_crop | null;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_iconInfo {
+export interface RoomHistory_messages_urlAugmentation_iconInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
   imageHeight: number | null;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_photo_crop {
+export interface RoomHistory_messages_urlAugmentation_photo_crop {
   __typename: "ImageCrop";
   x: number;
   y: number;
@@ -844,33 +868,33 @@ export interface ChatHistory_messages_messages_urlAugmentation_photo_crop {
   h: number;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_photo {
+export interface RoomHistory_messages_urlAugmentation_photo {
   __typename: "ImageRef";
   uuid: string;
-  crop: ChatHistory_messages_messages_urlAugmentation_photo_crop | null;
+  crop: RoomHistory_messages_urlAugmentation_photo_crop | null;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_user_Organization {
+export interface RoomHistory_messages_urlAugmentation_user_Organization {
   __typename: "Organization" | "ChannelConversation";
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_user_User_primaryOrganization {
+export interface RoomHistory_messages_urlAugmentation_user_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface ChatHistory_messages_messages_urlAugmentation_user_User {
+export interface RoomHistory_messages_urlAugmentation_user_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: ChatHistory_messages_messages_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: RoomHistory_messages_urlAugmentation_user_User_primaryOrganization | null;
 }
 
-export type ChatHistory_messages_messages_urlAugmentation_user = ChatHistory_messages_messages_urlAugmentation_user_Organization | ChatHistory_messages_messages_urlAugmentation_user_User;
+export type RoomHistory_messages_urlAugmentation_user = RoomHistory_messages_urlAugmentation_user_Organization | RoomHistory_messages_urlAugmentation_user_User;
 
-export interface ChatHistory_messages_messages_urlAugmentation {
+export interface RoomHistory_messages_urlAugmentation {
   __typename: "UrlAugmentation";
   type: string | null;
   url: string;
@@ -880,589 +904,37 @@ export interface ChatHistory_messages_messages_urlAugmentation {
   description: string | null;
   hostname: string | null;
   imageURL: string | null;
-  imageInfo: ChatHistory_messages_messages_urlAugmentation_imageInfo | null;
-  iconRef: ChatHistory_messages_messages_urlAugmentation_iconRef | null;
-  iconInfo: ChatHistory_messages_messages_urlAugmentation_iconInfo | null;
-  photo: ChatHistory_messages_messages_urlAugmentation_photo | null;
-  user: ChatHistory_messages_messages_urlAugmentation_user | null;
+  imageInfo: RoomHistory_messages_urlAugmentation_imageInfo | null;
+  iconRef: RoomHistory_messages_urlAugmentation_iconRef | null;
+  iconInfo: RoomHistory_messages_urlAugmentation_iconInfo | null;
+  photo: RoomHistory_messages_urlAugmentation_photo | null;
+  user: RoomHistory_messages_urlAugmentation_user | null;
 }
 
-export interface ChatHistory_messages_messages {
-  __typename: "ConversationMessage";
+export interface RoomHistory_messages {
+  __typename: "RoomMessage";
   id: string;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
-  serviceMetadata: ChatHistory_messages_messages_serviceMetadata | null;
-  fileMetadata: ChatHistory_messages_messages_fileMetadata | null;
-  sender: ChatHistory_messages_messages_sender;
-  reply: ChatHistory_messages_messages_reply[] | null;
-  reactions: ChatHistory_messages_messages_reactions[];
-  mentions: ChatHistory_messages_messages_mentions[] | null;
-  urlAugmentation: ChatHistory_messages_messages_urlAugmentation | null;
+  serviceMetadata: RoomHistory_messages_serviceMetadata | null;
+  fileMetadata: RoomHistory_messages_fileMetadata | null;
+  sender: RoomHistory_messages_sender;
+  reply: RoomHistory_messages_reply[] | null;
+  reactions: RoomHistory_messages_reactions[];
+  urlAugmentation: RoomHistory_messages_urlAugmentation | null;
   date: any;
 }
 
-export interface ChatHistory_messages {
-  __typename: "ConversationState";
-  seq: number;
-  messages: ChatHistory_messages_messages[];
+export interface RoomHistory {
+  messages: RoomHistory_messages[];
 }
 
-export interface ChatHistory {
-  messages: ChatHistory_messages;
-}
-
-export interface ChatHistoryVariables {
-  conversationId: string;
+export interface RoomHistoryVariables {
+  roomId: string;
   before?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: ChatInfo
-// ====================================================
-
-export interface ChatInfo_chat_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatInfo_chat_AnonymousConversation {
-  __typename: "AnonymousConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatInfo_chat_AnonymousConversation_settings;
-}
-
-export interface ChatInfo_chat_SharedConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatInfo_chat_SharedConversation_organization {
-  __typename: "Organization";
-  id: string;
-}
-
-export interface ChatInfo_chat_SharedConversation {
-  __typename: "SharedConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatInfo_chat_SharedConversation_settings;
-  organization: ChatInfo_chat_SharedConversation_organization | null;
-}
-
-export interface ChatInfo_chat_PrivateConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatInfo_chat_PrivateConversation_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatInfo_chat_PrivateConversation_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatInfo_chat_PrivateConversation_user_primaryOrganization | null;
-}
-
-export interface ChatInfo_chat_PrivateConversation {
-  __typename: "PrivateConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatInfo_chat_PrivateConversation_settings;
-  blocked: boolean;
-  user: ChatInfo_chat_PrivateConversation_user;
-}
-
-export interface ChatInfo_chat_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatInfo_chat_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatInfo_chat_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatInfo_chat_GroupConversation_photoRef_crop | null;
-}
-
-export interface ChatInfo_chat_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatInfo_chat_GroupConversation_settings;
-  membersCount: number;
-  photo: string | null;
-  longDescription: string | null;
-  photoRef: ChatInfo_chat_GroupConversation_photoRef | null;
-}
-
-export interface ChatInfo_chat_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatInfo_chat_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatInfo_chat_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatInfo_chat_ChannelConversation_photoRef_crop | null;
-}
-
-export interface ChatInfo_chat_ChannelConversation_socialImageRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatInfo_chat_ChannelConversation_socialImageRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatInfo_chat_ChannelConversation_socialImageRef_crop | null;
-}
-
-export interface ChatInfo_chat_ChannelConversation_organization {
-  __typename: "Organization";
-  id: string;
-  isMine: boolean;
-  isOwner: boolean;
-  name: string;
-}
-
-export interface ChatInfo_chat_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatInfo_chat_ChannelConversation_settings;
-  myStatus: ChannelMembershipStatus;
-  photo: string | null;
-  photoRef: ChatInfo_chat_ChannelConversation_photoRef | null;
-  isRoot: boolean;
-  featured: boolean;
-  hidden: boolean;
-  description: string | null;
-  longDescription: string | null;
-  socialImageRef: ChatInfo_chat_ChannelConversation_socialImageRef | null;
-  socialImage: string | null;
-  membersCount: number;
-  memberRequestsCount: number;
-  organization: ChatInfo_chat_ChannelConversation_organization | null;
-  myRole: string | null;
-}
-
-export type ChatInfo_chat = ChatInfo_chat_AnonymousConversation | ChatInfo_chat_SharedConversation | ChatInfo_chat_PrivateConversation | ChatInfo_chat_GroupConversation | ChatInfo_chat_ChannelConversation;
-
-export interface ChatInfo {
-  chat: ChatInfo_chat;
-}
-
-export interface ChatInfoVariables {
-  conversationId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: ChatFullInfo
-// ====================================================
-
-export interface ChatFullInfo_chat_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatFullInfo_chat_AnonymousConversation {
-  __typename: "AnonymousConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatFullInfo_chat_AnonymousConversation_settings;
-}
-
-export interface ChatFullInfo_chat_PrivateConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatFullInfo_chat_PrivateConversation_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatFullInfo_chat_PrivateConversation_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatFullInfo_chat_PrivateConversation_user_primaryOrganization | null;
-}
-
-export interface ChatFullInfo_chat_PrivateConversation {
-  __typename: "PrivateConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatFullInfo_chat_PrivateConversation_settings;
-  user: ChatFullInfo_chat_PrivateConversation_user;
-}
-
-export interface ChatFullInfo_chat_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatFullInfo_chat_GroupConversation_members_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatFullInfo_chat_GroupConversation_members {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatFullInfo_chat_GroupConversation_members_primaryOrganization | null;
-}
-
-export interface ChatFullInfo_chat_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatFullInfo_chat_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatFullInfo_chat_GroupConversation_photoRef_crop | null;
-}
-
-export interface ChatFullInfo_chat_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatFullInfo_chat_GroupConversation_settings;
-  members: ChatFullInfo_chat_GroupConversation_members[];
-  photo: string | null;
-  photoRef: ChatFullInfo_chat_GroupConversation_photoRef | null;
-}
-
-export interface ChatFullInfo_chat_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatFullInfo_chat_ChannelConversation_members_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatFullInfo_chat_ChannelConversation_members {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatFullInfo_chat_ChannelConversation_members_primaryOrganization | null;
-}
-
-export interface ChatFullInfo_chat_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatFullInfo_chat_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatFullInfo_chat_ChannelConversation_photoRef_crop | null;
-}
-
-export interface ChatFullInfo_chat_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatFullInfo_chat_ChannelConversation_settings;
-  myStatus: ChannelMembershipStatus;
-  members: ChatFullInfo_chat_ChannelConversation_members[];
-  photo: string | null;
-  photoRef: ChatFullInfo_chat_ChannelConversation_photoRef | null;
-}
-
-export interface ChatFullInfo_chat_SharedConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatFullInfo_chat_SharedConversation_organizations {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatFullInfo_chat_SharedConversation {
-  __typename: "SharedConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: ChatFullInfo_chat_SharedConversation_settings;
-  organizations: ChatFullInfo_chat_SharedConversation_organizations[];
-}
-
-export type ChatFullInfo_chat = ChatFullInfo_chat_AnonymousConversation | ChatFullInfo_chat_PrivateConversation | ChatFullInfo_chat_GroupConversation | ChatFullInfo_chat_ChannelConversation | ChatFullInfo_chat_SharedConversation;
-
-export interface ChatFullInfo {
-  chat: ChatFullInfo_chat;
-}
-
-export interface ChatFullInfoVariables {
-  conversationId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GroupChatFullInfo
-// ====================================================
-
-export interface GroupChatFullInfo_chat_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface GroupChatFullInfo_chat_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: GroupChatFullInfo_chat_AnonymousConversation_settings;
-}
-
-export interface GroupChatFullInfo_chat_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface GroupChatFullInfo_chat_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface GroupChatFullInfo_chat_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: GroupChatFullInfo_chat_ChannelConversation_photoRef_crop | null;
-}
-
-export interface GroupChatFullInfo_chat_ChannelConversation_organization {
-  __typename: "Organization";
-  id: string;
-  isMine: boolean;
-  isOwner: boolean;
-  name: string;
-}
-
-export interface GroupChatFullInfo_chat_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: GroupChatFullInfo_chat_ChannelConversation_settings;
-  photo: string | null;
-  photoRef: GroupChatFullInfo_chat_ChannelConversation_photoRef | null;
-  organization: GroupChatFullInfo_chat_ChannelConversation_organization | null;
-}
-
-export interface GroupChatFullInfo_chat_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface GroupChatFullInfo_chat_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface GroupChatFullInfo_chat_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: GroupChatFullInfo_chat_GroupConversation_photoRef_crop | null;
-}
-
-export interface GroupChatFullInfo_chat_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  photos: string[];
-  unreadCount: number;
-  settings: GroupChatFullInfo_chat_GroupConversation_settings;
-  photo: string | null;
-  photoRef: GroupChatFullInfo_chat_GroupConversation_photoRef | null;
-}
-
-export type GroupChatFullInfo_chat = GroupChatFullInfo_chat_AnonymousConversation | GroupChatFullInfo_chat_ChannelConversation | GroupChatFullInfo_chat_GroupConversation;
-
-export interface GroupChatFullInfo_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface GroupChatFullInfo_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: GroupChatFullInfo_members_user_primaryOrganization | null;
-}
-
-export interface GroupChatFullInfo_members {
-  __typename: "GroupConversationMember";
-  user: GroupChatFullInfo_members_user;
-  role: string;
-}
-
-export interface GroupChatFullInfo {
-  chat: GroupChatFullInfo_chat;
-  members: GroupChatFullInfo_members[];
-}
-
-export interface GroupChatFullInfoVariables {
-  conversationId: string;
 }
 
 /* tslint:disable */
@@ -1492,17 +964,12 @@ export interface SendMessageVariables {
 // GraphQL mutation operation: ReplyMessage
 // ====================================================
 
-export interface ReplyMessage_replyMessage {
-  __typename: "ConversationEventMessage";
-  seq: number;
-}
-
 export interface ReplyMessage {
-  replyMessage: ReplyMessage_replyMessage;
+  replyMessage: boolean;
 }
 
 export interface ReplyMessageVariables {
-  conversationId: string;
+  roomId: string;
   message?: string | null;
   replyMessages?: string[] | null;
 }
@@ -1511,34 +978,16 @@ export interface ReplyMessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatRead
+// GraphQL mutation operation: RoomRead
 // ====================================================
 
-export interface ChatRead_alphaReadChat_counter {
-  __typename: "NotificationCounter";
+export interface RoomRead {
+  roomRead: boolean;
+}
+
+export interface RoomReadVariables {
   id: string;
-  unreadCount: number;
-}
-
-export interface ChatRead_alphaReadChat_conversation {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
-  id: string;
-  unreadCount: number;
-}
-
-export interface ChatRead_alphaReadChat {
-  __typename: "ChatReadResult";
-  counter: ChatRead_alphaReadChat_counter;
-  conversation: ChatRead_alphaReadChat_conversation;
-}
-
-export interface ChatRead {
-  alphaReadChat: ChatRead_alphaReadChat;
-}
-
-export interface ChatReadVariables {
-  conversationId: string;
-  messageId: string;
+  mid: string;
 }
 
 /* tslint:disable */
@@ -1566,82 +1015,45 @@ export interface ChatSearchGroupVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatCreateGroup
+// GraphQL mutation operation: RoomCreate
 // ====================================================
 
-export interface ChatCreateGroup_group {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface RoomCreate_room {
+  __typename: "SharedRoom";
   id: string;
 }
 
-export interface ChatCreateGroup {
-  group: ChatCreateGroup_group;
+export interface RoomCreate {
+  /**
+   * Room mgmt
+   */
+  room: RoomCreate_room;
 }
 
-export interface ChatCreateGroupVariables {
+export interface RoomCreateVariables {
+  kind: SharedRoomKind;
   members: string[];
   message?: string | null;
   title?: string | null;
+  description?: string | null;
   photoRef?: ImageRefInput | null;
+  organizationId?: string | null;
 }
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatCreateIntro
+// GraphQL mutation operation: RoomCreateIntro
 // ====================================================
 
-export interface ChatCreateIntro_intro_message_urlAugmentation_extra_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface RoomCreateIntro {
+  intro: boolean;
 }
 
-export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatCreateIntro_intro_message_urlAugmentation_extra_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatCreateIntro_intro_message_urlAugmentation_extra_User_primaryOrganization | null;
-}
-
-export type ChatCreateIntro_intro_message_urlAugmentation_extra = ChatCreateIntro_intro_message_urlAugmentation_extra_Organization | ChatCreateIntro_intro_message_urlAugmentation_extra_User;
-
-export interface ChatCreateIntro_intro_message_urlAugmentation {
-  __typename: "UrlAugmentation";
-  extra: ChatCreateIntro_intro_message_urlAugmentation_extra | null;
-}
-
-export interface ChatCreateIntro_intro_message {
-  __typename: "ConversationMessage";
-  urlAugmentation: ChatCreateIntro_intro_message_urlAugmentation | null;
-}
-
-export interface ChatCreateIntro_intro {
-  __typename: "ConversationEventMessage";
-  seq: number;
-  message: ChatCreateIntro_intro_message;
-}
-
-export interface ChatCreateIntro {
-  intro: ChatCreateIntro_intro;
-}
-
-export interface ChatCreateIntroVariables {
-  conversationId: string;
-  userId: string;
+export interface RoomCreateIntroVariables {
+  roomId: string;
+  uid: string;
   about?: string | null;
   file?: string | null;
 }
@@ -1650,21 +1062,16 @@ export interface ChatCreateIntroVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatEditIntro
+// GraphQL mutation operation: RoomEditIntro
 // ====================================================
 
-export interface ChatEditIntro_intro {
-  __typename: "ConversationEventMessage";
-  seq: number;
+export interface RoomEditIntro {
+  intro: boolean;
 }
 
-export interface ChatEditIntro {
-  intro: ChatEditIntro_intro;
-}
-
-export interface ChatEditIntroVariables {
+export interface RoomEditIntroVariables {
   messageId: string;
-  userId: string;
+  uid: string;
   about?: string | null;
   file?: string | null;
 }
@@ -1703,66 +1110,110 @@ export interface CancelTypingVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatAddMember
+// GraphQL mutation operation: RoomAddMember
 // ====================================================
 
-export interface ChatAddMember_alphaChatInviteToGroup_chat {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface RoomAddMember_betaRoomInvite_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
   id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface ChatAddMember_alphaChatInviteToGroup {
-  __typename: "GroupChatUpdateResponse";
-  chat: ChatAddMember_alphaChatInviteToGroup_chat;
-}
-
-export interface ChatAddMember {
-  alphaChatInviteToGroup: ChatAddMember_alphaChatInviteToGroup;
-}
-
-export interface ChatAddMemberVariables {
-  conversationId: string;
-  userId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChatAddMembers
-// ====================================================
-
-export interface ChatAddMembers_alphaChatInviteToGroup_chat {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface RoomAddMember_betaRoomInvite_PrivateRoom_user {
+  __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAddMember_betaRoomInvite_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface ChatAddMembers_alphaChatInviteToGroup {
-  __typename: "GroupChatUpdateResponse";
-  chat: ChatAddMembers_alphaChatInviteToGroup_chat;
+export interface RoomAddMember_betaRoomInvite_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
 }
 
-export interface ChatAddMembers {
-  alphaChatInviteToGroup: ChatAddMembers_alphaChatInviteToGroup;
+export interface RoomAddMember_betaRoomInvite_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomAddMember_betaRoomInvite_PrivateRoom_user;
+  settings: RoomAddMember_betaRoomInvite_PrivateRoom_settings;
 }
 
-export interface ChatAddMembersVariables {
-  conversationId: string;
-  invites: GroupConversationInvite[];
+export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: BlockUser
-// ====================================================
-
-export interface BlockUser {
-  blockUser: string;
+export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface BlockUserVariables {
+export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomAddMember_betaRoomInvite_SharedRoom_members_user;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomAddMember_betaRoomInvite_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomAddMember_betaRoomInvite_SharedRoom_members[];
+  settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
+}
+
+export type RoomAddMember_betaRoomInvite = RoomAddMember_betaRoomInvite_PrivateRoom | RoomAddMember_betaRoomInvite_SharedRoom;
+
+export interface RoomAddMember {
+  /**
+   * Members mgmt
+   */
+  betaRoomInvite: RoomAddMember_betaRoomInvite;
+}
+
+export interface RoomAddMemberVariables {
+  roomId: string;
   userId: string;
 }
 
@@ -1770,38 +1221,348 @@ export interface BlockUserVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: UnBlockUser
+// GraphQL mutation operation: RoomAddMembers
 // ====================================================
 
-export interface UnBlockUser {
-  blockUser: string;
+export interface RoomAddMembers_betaRoomInvite_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface UnBlockUserVariables {
-  userId: string;
-  conversationId?: string | null;
+export interface RoomAddMembers_betaRoomInvite_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomAddMembers_betaRoomInvite_PrivateRoom_user;
+  settings: RoomAddMembers_betaRoomInvite_PrivateRoom_settings;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomAddMembers_betaRoomInvite_SharedRoom_members_user;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomAddMembers_betaRoomInvite_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomAddMembers_betaRoomInvite_SharedRoom_members[];
+  settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
+}
+
+export type RoomAddMembers_betaRoomInvite = RoomAddMembers_betaRoomInvite_PrivateRoom | RoomAddMembers_betaRoomInvite_SharedRoom;
+
+export interface RoomAddMembers {
+  /**
+   * Members mgmt
+   */
+  betaRoomInvite: RoomAddMembers_betaRoomInvite;
+}
+
+export interface RoomAddMembersVariables {
+  roomId: string;
+  invites: RoomInviteInput[];
 }
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ChatSearchText
+// GraphQL mutation operation: RoomKick
 // ====================================================
 
-export interface ChatSearchText_items {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface RoomKick_betaRoomKick_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomKick_betaRoomKick_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomKick_betaRoomKick_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomKick_betaRoomKick_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomKick_betaRoomKick_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomKick_betaRoomKick_PrivateRoom_user;
+  settings: RoomKick_betaRoomKick_PrivateRoom_settings;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomKick_betaRoomKick_SharedRoom_members_user;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomKick_betaRoomKick_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomKick_betaRoomKick_SharedRoom_members[];
+  settings: RoomKick_betaRoomKick_SharedRoom_settings;
+}
+
+export type RoomKick_betaRoomKick = RoomKick_betaRoomKick_PrivateRoom | RoomKick_betaRoomKick_SharedRoom;
+
+export interface RoomKick {
+  betaRoomKick: RoomKick_betaRoomKick;
+}
+
+export interface RoomKickVariables {
+  roomId: string;
+  userId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomLeave
+// ====================================================
+
+export interface RoomLeave_betaRoomLeave_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomLeave_betaRoomLeave_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomLeave_betaRoomLeave_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomLeave_betaRoomLeave_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomLeave_betaRoomLeave_PrivateRoom_user;
+  settings: RoomLeave_betaRoomLeave_PrivateRoom_settings;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomLeave_betaRoomLeave_SharedRoom_members_user;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomLeave_betaRoomLeave_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomLeave_betaRoomLeave_SharedRoom_members[];
+  settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
+}
+
+export type RoomLeave_betaRoomLeave = RoomLeave_betaRoomLeave_PrivateRoom | RoomLeave_betaRoomLeave_SharedRoom;
+
+export interface RoomLeave {
+  betaRoomLeave: RoomLeave_betaRoomLeave;
+}
+
+export interface RoomLeaveVariables {
+  roomId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: RoomSearchText
+// ====================================================
+
+export interface RoomSearchText_items {
+  __typename: "Dialog";
   id: string;
   title: string;
   flexibleId: string;
-  photos: string[];
+  photo: string;
 }
 
-export interface ChatSearchText {
-  items: ChatSearchText_items[];
+export interface RoomSearchText {
+  items: RoomSearchText_items[];
 }
 
-export interface ChatSearchTextVariables {
+export interface RoomSearchTextVariables {
   query: string;
 }
 
@@ -1809,50 +1570,24 @@ export interface ChatSearchTextVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ChatSearchChannel
+// GraphQL query operation: RoomSearch
 // ====================================================
 
-export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChatSearchChannel_items_edges_node_topMessage_serviceMetadata = ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_InviteServiceMetadata | ChatSearchChannel_items_edges_node_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChatSearchChannel_items_edges_node_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_sender_primaryOrganization {
+export interface RoomSearch_items_edges_node_organization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface ChatSearchChannel_items_edges_node_topMessage_sender {
+export interface RoomSearch_items_edges_node_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomSearch_items_edges_node_members_user {
   __typename: "User";
   id: string;
   name: string;
@@ -1863,221 +1598,45 @@ export interface ChatSearchChannel_items_edges_node_topMessage_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
-  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_sender_primaryOrganization | null;
+  primaryOrganization: RoomSearch_items_edges_node_members_user_primaryOrganization | null;
 }
 
-export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
+export interface RoomSearch_items_edges_node_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomSearch_items_edges_node_members_user;
+}
+
+export interface RoomSearch_items_edges_node_settings {
+  __typename: "RoomUserNotificaionSettings";
   id: string;
-  name: string;
-  photo: string | null;
+  mute: boolean | null;
 }
 
-export interface ChatSearchChannel_items_edges_node_topMessage_reply_sender {
-  __typename: "User";
+export interface RoomSearch_items_edges_node {
+  __typename: "SharedRoom";
   id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChatSearchChannel_items_edges_node_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChatSearchChannel_items_edges_node_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChatSearchChannel_items_edges_node_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user = ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_Organization | ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user_User;
-
-export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_photo | null;
-  user: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChatSearchChannel_items_edges_node_topMessage_serviceMetadata | null;
-  fileMetadata: ChatSearchChannel_items_edges_node_topMessage_fileMetadata | null;
-  sender: ChatSearchChannel_items_edges_node_topMessage_sender;
-  reply: ChatSearchChannel_items_edges_node_topMessage_reply[] | null;
-  reactions: ChatSearchChannel_items_edges_node_topMessage_reactions[];
-  mentions: ChatSearchChannel_items_edges_node_topMessage_mentions[] | null;
-  urlAugmentation: ChatSearchChannel_items_edges_node_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChatSearchChannel_items_edges_node_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatSearchChannel_items_edges_node_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatSearchChannel_items_edges_node_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatSearchChannel_items_edges_node_photoRef_crop | null;
-}
-
-export interface ChatSearchChannel_items_edges_node_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatSearchChannel_items_edges_node {
-  __typename: "ChannelConversation";
-  id: string;
+  kind: SharedRoomKind;
   title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChatSearchChannel_items_edges_node_topMessage | null;
-  settings: ChatSearchChannel_items_edges_node_settings;
-  featured: boolean;
-  hidden: boolean;
-  photo: string | null;
-  myStatus: ChannelMembershipStatus;
-  photoRef: ChatSearchChannel_items_edges_node_photoRef | null;
-  membersCount: number;
+  photo: string;
+  socialImage: string | null;
   description: string | null;
-  organization: ChatSearchChannel_items_edges_node_organization | null;
-  isRoot: boolean;
+  organization: RoomSearch_items_edges_node_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomSearch_items_edges_node_members[];
+  settings: RoomSearch_items_edges_node_settings;
 }
 
-export interface ChatSearchChannel_items_edges {
-  __typename: "ChannelConversationConnectionEdge";
-  node: ChatSearchChannel_items_edges_node;
+export interface RoomSearch_items_edges {
+  __typename: "RoomConnectionEdge";
+  node: RoomSearch_items_edges_node;
   cursor: string;
 }
 
-export interface ChatSearchChannel_items_pageInfo {
+export interface RoomSearch_items_pageInfo {
   __typename: "PageInfo";
   hasNextPage: boolean;
   hasPreviousPage: boolean;
@@ -2087,17 +1646,17 @@ export interface ChatSearchChannel_items_pageInfo {
   openEnded: boolean;
 }
 
-export interface ChatSearchChannel_items {
-  __typename: "ChannelConversationConnection";
-  edges: ChatSearchChannel_items_edges[];
-  pageInfo: ChatSearchChannel_items_pageInfo;
+export interface RoomSearch_items {
+  __typename: "RoomConnection";
+  edges: RoomSearch_items_edges[];
+  pageInfo: RoomSearch_items_pageInfo;
 }
 
-export interface ChatSearchChannel {
-  items: ChatSearchChannel_items;
+export interface RoomSearch {
+  items: RoomSearch_items;
 }
 
-export interface ChatSearchChannelVariables {
+export interface RoomSearchVariables {
   query?: string | null;
   sort?: string | null;
   page?: number | null;
@@ -2107,1747 +1666,128 @@ export interface ChatSearchChannelVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: CreateChannel
+// GraphQL mutation operation: RoomAlterFeatured
 // ====================================================
 
-export interface CreateChannel_channel {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
   id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface CreateChannel {
-  channel: CreateChannel_channel;
+export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface CreateChannelVariables {
+export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user;
+  settings: RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_settings;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
   title: string;
-  message?: string | null;
-  description?: string | null;
-  photoRef?: ImageRefInput | null;
-  oid?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelSetFeatured
-// ====================================================
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_photo | null;
-  user: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_fileMetadata | null;
-  sender: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_sender;
-  reply: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reply[] | null;
-  reactions: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_reactions[];
-  mentions: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage | null;
-  settings: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_settings;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata = ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_Organization | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_photo | null;
-  user: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_fileMetadata | null;
-  sender: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_sender;
-  reply: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reply[] | null;
-  reactions: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_reactions[];
-  mentions: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_photoRef_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage | null;
-  settings: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_settings;
-  photo: string | null;
-  photoRef: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_photoRef | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata = ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_photo | null;
-  user: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_fileMetadata | null;
-  sender: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_sender;
-  reply: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reply[] | null;
-  reactions: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_reactions[];
-  mentions: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_photoRef_crop | null;
-}
-
-export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage | null;
-  settings: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_settings;
-  featured: boolean;
-  hidden: boolean;
-  photo: string | null;
-  myStatus: ChannelMembershipStatus;
-  photoRef: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_photoRef | null;
-}
-
-export type ChannelSetFeatured_alphaChannelSetFeatured = ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation | ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation | ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation;
-
-export interface ChannelSetFeatured {
-  alphaChannelSetFeatured: ChannelSetFeatured_alphaChannelSetFeatured;
-}
-
-export interface ChannelSetFeaturedVariables {
-  channelId: string;
-  featured: boolean;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelSetHidden
-// ====================================================
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_photo | null;
-  user: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_fileMetadata | null;
-  sender: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_sender;
-  reply: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reply[] | null;
-  reactions: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_reactions[];
-  mentions: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage | null;
-  settings: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_settings;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata = ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_Organization | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_photo | null;
-  user: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_fileMetadata | null;
-  sender: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_sender;
-  reply: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reply[] | null;
-  reactions: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_reactions[];
-  mentions: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_photoRef_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage | null;
-  settings: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_settings;
-  photo: string | null;
-  photoRef: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_photoRef | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata = ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user = ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_photo | null;
-  user: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_fileMetadata | null;
-  sender: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_sender;
-  reply: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reply[] | null;
-  reactions: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_reactions[];
-  mentions: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_photoRef_crop | null;
-}
-
-export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage | null;
-  settings: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_settings;
-  featured: boolean;
-  hidden: boolean;
-  photo: string | null;
-  myStatus: ChannelMembershipStatus;
-  photoRef: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_photoRef | null;
-}
-
-export type ChannelSetHidden_alphaChannelHideFromSearch = ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation | ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation | ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation;
-
-export interface ChannelSetHidden {
-  alphaChannelHideFromSearch: ChannelSetHidden_alphaChannelHideFromSearch;
-}
-
-export interface ChannelSetHiddenVariables {
-  channelId: string;
-  hidden: boolean;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: ChannelMembers
-// ====================================================
-
-export interface ChannelMembers_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChannelMembers_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChannelMembers_members_user_primaryOrganization | null;
-}
-
-export interface ChannelMembers_members {
-  __typename: "ChannelMember";
-  user: ChannelMembers_members_user;
-  role: string;
-  status: string;
-}
-
-export interface ChannelMembers {
-  members: ChannelMembers_members[];
-}
-
-export interface ChannelMembersVariables {
-  channelId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelInvite
-// ====================================================
-
-export interface ChannelInvite_alphaChannelInvite_chat {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
-  id: string;
-}
-
-export interface ChannelInvite_alphaChannelInvite {
-  __typename: "ConversationUpdateResponse";
-  chat: ChannelInvite_alphaChannelInvite_chat;
-}
-
-export interface ChannelInvite {
-  alphaChannelInvite: ChannelInvite_alphaChannelInvite;
-}
-
-export interface ChannelInviteVariables {
-  channelId: string;
-  userId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ConversationKick
-// ====================================================
-
-export interface ConversationKick_alphaChatKickFromGroup_chat {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
-  id: string;
-}
-
-export interface ConversationKick_alphaChatKickFromGroup {
-  __typename: "GroupChatUpdateResponse";
-  chat: ConversationKick_alphaChatKickFromGroup_chat;
-}
-
-export interface ConversationKick {
-  alphaChatKickFromGroup: ConversationKick_alphaChatKickFromGroup;
-}
-
-export interface ConversationKickVariables {
-  conversationId: string;
-  userId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ConversationSettingsUpdate
-// ====================================================
-
-export interface ConversationSettingsUpdate_alphaUpdateConversationSettings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ConversationSettingsUpdate {
-  alphaUpdateConversationSettings: ConversationSettingsUpdate_alphaUpdateConversationSettings;
-}
-
-export interface ConversationSettingsUpdateVariables {
-  settings: UpdateConversationSettingsInput;
-  conversationId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelJoin
-// ====================================================
-
-export interface ChannelJoin_join_chat {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
-  id: string;
-}
-
-export interface ChannelJoin_join {
-  __typename: "ConversationUpdateResponse";
-  chat: ChannelJoin_join_chat;
-}
-
-export interface ChannelJoin {
-  join: ChannelJoin_join;
-}
-
-export interface ChannelJoinVariables {
-  channelId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelInviteMembers
-// ====================================================
-
-export interface ChannelInviteMembers {
-  alphaChannelInviteMembers: string;
-}
-
-export interface ChannelInviteMembersVariables {
-  channelId: string;
-  inviteRequests: ChannelInviteRequest[];
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelJoinInvite
-// ====================================================
-
-export interface ChannelJoinInvite {
-  alphaChannelJoinInvite: string;
-}
-
-export interface ChannelJoinInviteVariables {
-  invite: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: ChannelRenewInviteLink
-// ====================================================
-
-export interface ChannelRenewInviteLink {
-  link: string;
-}
-
-export interface ChannelRenewInviteLinkVariables {
-  channelId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: ChannelInviteLink
-// ====================================================
-
-export interface ChannelInviteLink {
-  link: string;
-}
-
-export interface ChannelInviteLinkVariables {
-  channelId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: ChannelInviteInfo
-// ====================================================
-
-export interface ChannelInviteInfo_invite_channel_organization {
-  __typename: "Organization";
-  id: string;
-  isMine: boolean;
-  name: string;
-}
-
-export interface ChannelInviteInfo_invite_channel {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  photo: string | null;
-  photos: string[];
-  isRoot: boolean;
-  featured: boolean;
-  description: string | null;
-  myStatus: ChannelMembershipStatus;
-  membersCount: number;
+  photo: string;
   socialImage: string | null;
-  organization: ChannelInviteInfo_invite_channel_organization | null;
+  description: string | null;
+  organization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members[];
+  settings: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings;
 }
 
-export interface ChannelInviteInfo_invite_invitedByUser_primaryOrganization {
+export type RoomAlterFeatured_betaRoomAlterFeatured = RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom | RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom;
+
+export interface RoomAlterFeatured {
+  /**
+   * Admin tools
+   */
+  betaRoomAlterFeatured: RoomAlterFeatured_betaRoomAlterFeatured;
+}
+
+export interface RoomAlterFeaturedVariables {
+  roomId: string;
+  featured: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomAlterHidden
+// ====================================================
+
+export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
 }
 
-export interface ChannelInviteInfo_invite_invitedByUser {
+export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user {
   __typename: "User";
   id: string;
   name: string;
@@ -3858,35 +1798,387 @@ export interface ChannelInviteInfo_invite_invitedByUser {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
-  primaryOrganization: ChannelInviteInfo_invite_invitedByUser_primaryOrganization | null;
+  primaryOrganization: RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user_primaryOrganization | null;
 }
 
-export interface ChannelInviteInfo_invite {
-  __typename: "ChannelInvite";
-  channel: ChannelInviteInfo_invite_channel;
-  invitedByUser: ChannelInviteInfo_invite_invitedByUser;
+export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
 }
 
-export interface ChannelInviteInfo {
-  invite: ChannelInviteInfo_invite | null;
+export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user;
+  settings: RoomAlterHidden_betaRoomAlterListed_PrivateRoom_settings;
 }
 
-export interface ChannelInviteInfoVariables {
-  uuid: string;
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomAlterHidden_betaRoomAlterListed_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members[];
+  settings: RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings;
+}
+
+export type RoomAlterHidden_betaRoomAlterListed = RoomAlterHidden_betaRoomAlterListed_PrivateRoom | RoomAlterHidden_betaRoomAlterListed_SharedRoom;
+
+export interface RoomAlterHidden {
+  betaRoomAlterListed: RoomAlterHidden_betaRoomAlterListed;
+}
+
+export interface RoomAlterHiddenVariables {
+  roomId: string;
+  listed: boolean;
 }
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChannelJoinInviteLink
+// GraphQL query operation: RoomMembers
 // ====================================================
 
-export interface ChannelJoinInviteLink {
-  cannelId: string;
+export interface RoomMembers_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface ChannelJoinInviteLinkVariables {
+export interface RoomMembers_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomMembers_members_user_primaryOrganization | null;
+}
+
+export interface RoomMembers_members {
+  __typename: "RoomMember";
+  user: RoomMembers_members_user;
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+}
+
+export interface RoomMembers {
+  members: RoomMembers_members[];
+}
+
+export interface RoomMembersVariables {
+  roomId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomSettingsUpdate
+// ====================================================
+
+export interface RoomSettingsUpdate_betaRoomUpdateUserNotificationSettings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomSettingsUpdate {
+  /**
+   * User settings
+   */
+  betaRoomUpdateUserNotificationSettings: RoomSettingsUpdate_betaRoomUpdateUserNotificationSettings;
+}
+
+export interface RoomSettingsUpdateVariables {
+  settings: RoomUserNotificaionSettingsInput;
+  roomId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomJoin
+// ====================================================
+
+export interface RoomJoin_join_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoin_join_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomJoin_join_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomJoin_join_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomJoin_join_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomJoin_join_PrivateRoom_user;
+  settings: RoomJoin_join_PrivateRoom_settings;
+}
+
+export interface RoomJoin_join_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoin_join_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoin_join_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomJoin_join_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomJoin_join_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomJoin_join_SharedRoom_members_user;
+}
+
+export interface RoomJoin_join_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomJoin_join_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomJoin_join_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomJoin_join_SharedRoom_members[];
+  settings: RoomJoin_join_SharedRoom_settings;
+}
+
+export type RoomJoin_join = RoomJoin_join_PrivateRoom | RoomJoin_join_SharedRoom;
+
+export interface RoomJoin {
+  join: RoomJoin_join;
+}
+
+export interface RoomJoinVariables {
+  roomId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomSendEmailInvite
+// ====================================================
+
+export interface RoomSendEmailInvite {
+  /**
+   * Invite links
+   */
+  betaRoomInviteLinkSendEmail: string;
+}
+
+export interface RoomSendEmailInviteVariables {
+  roomId: string;
+  inviteRequests: RoomInviteEmailRequest[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomJoinInviteLink
+// ====================================================
+
+export interface RoomJoinInviteLink_join_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoinInviteLink_join_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomJoinInviteLink_join_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomJoinInviteLink_join_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomJoinInviteLink_join_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomJoinInviteLink_join_PrivateRoom_user;
+  settings: RoomJoinInviteLink_join_PrivateRoom_settings;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomJoinInviteLink_join_SharedRoom_members_user;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomJoinInviteLink_join_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomJoinInviteLink_join_SharedRoom_members[];
+  settings: RoomJoinInviteLink_join_SharedRoom_settings;
+}
+
+export type RoomJoinInviteLink_join = RoomJoinInviteLink_join_PrivateRoom | RoomJoinInviteLink_join_SharedRoom;
+
+export interface RoomJoinInviteLink {
+  join: RoomJoinInviteLink_join;
+}
+
+export interface RoomJoinInviteLinkVariables {
   invite: string;
 }
 
@@ -3894,766 +2186,251 @@ export interface ChannelJoinInviteLinkVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatUpdateGroup
+// GraphQL mutation operation: RoomRenewInviteLink
 // ====================================================
 
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+export interface RoomRenewInviteLink {
+  link: string;
 }
 
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata = ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_photo | null;
-  user: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_fileMetadata | null;
-  sender: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_sender;
-  reply: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reply[] | null;
-  reactions: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_reactions[];
-  mentions: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatUpdateGroup_event_chat_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage | null;
-  settings: ChatUpdateGroup_event_chat_AnonymousConversation_settings;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata = ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_Organization | ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_photo | null;
-  user: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChatUpdateGroup_event_chat_GroupConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChatUpdateGroup_event_chat_GroupConversation_topMessage_fileMetadata | null;
-  sender: ChatUpdateGroup_event_chat_GroupConversation_topMessage_sender;
-  reply: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reply[] | null;
-  reactions: ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactions[];
-  mentions: ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_GroupConversation_photoRef_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChatUpdateGroup_event_chat_GroupConversation_topMessage | null;
-  settings: ChatUpdateGroup_event_chat_GroupConversation_settings;
-  photo: string | null;
-  photoRef: ChatUpdateGroup_event_chat_GroupConversation_photoRef | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
-  __typename: "User";
-  id: string;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
-  __typename: "KickServiceMetadata";
-  user: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user;
-  kickedBy: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
-}
-
-export type ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata = ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sender_primaryOrganization | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_sender_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_sender_primaryOrganization | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-  imageWidth: number | null;
-  imageHeight: number | null;
-  imageFormat: string | null;
-  size: number;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply {
-  __typename: "ConversationMessage";
-  sender: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_sender;
-  id: string;
-  date: any;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  fileMetadata: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply_fileMetadata | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reactions_user {
-  __typename: "User";
-  id: string;
-  name: string;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reactions {
-  __typename: "MessageReaction";
-  user: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reactions_user;
-  reaction: string;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions {
-  __typename: "User";
-  id: string;
-  name: string;
-  isYou: boolean;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_imageInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_iconRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_iconRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_iconRef_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_iconInfo {
-  __typename: "FileMetadata";
-  imageWidth: number | null;
-  imageHeight: number | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_photo_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_photo {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User {
-  __typename: "User";
-  id: string;
-  name: string;
-  photo: string | null;
-  primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
-}
-
-export type ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user = ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_Organization | ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user_User;
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation {
-  __typename: "UrlAugmentation";
-  type: string | null;
-  url: string;
-  title: string | null;
-  date: string | null;
-  subtitle: string | null;
-  description: string | null;
-  hostname: string | null;
-  imageURL: string | null;
-  imageInfo: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_imageInfo | null;
-  iconRef: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_iconRef | null;
-  iconInfo: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_iconInfo | null;
-  photo: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_photo | null;
-  user: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_user | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage {
-  __typename: "ConversationMessage";
-  id: string;
-  message: string | null;
-  edited: boolean;
-  file: string | null;
-  repeatKey: string | null;
-  isService: boolean;
-  serviceMetadata: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_serviceMetadata | null;
-  fileMetadata: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_fileMetadata | null;
-  sender: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_sender;
-  reply: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reply[] | null;
-  reactions: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_reactions[];
-  mentions: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions[] | null;
-  urlAugmentation: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation | null;
-  date: any;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: ChatUpdateGroup_event_chat_ChannelConversation_photoRef_crop | null;
-}
-
-export interface ChatUpdateGroup_event_chat_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  flexibleId: string;
-  unreadCount: number;
-  photos: string[];
-  topMessage: ChatUpdateGroup_event_chat_ChannelConversation_topMessage | null;
-  settings: ChatUpdateGroup_event_chat_ChannelConversation_settings;
-  featured: boolean;
-  hidden: boolean;
-  photo: string | null;
-  myStatus: ChannelMembershipStatus;
-  photoRef: ChatUpdateGroup_event_chat_ChannelConversation_photoRef | null;
-}
-
-export type ChatUpdateGroup_event_chat = ChatUpdateGroup_event_chat_AnonymousConversation | ChatUpdateGroup_event_chat_GroupConversation | ChatUpdateGroup_event_chat_ChannelConversation;
-
-export interface ChatUpdateGroup_event {
-  __typename: "ConversationUpdateResponse";
-  chat: ChatUpdateGroup_event_chat;
-  curSeq: number;
-}
-
-export interface ChatUpdateGroup {
-  event: ChatUpdateGroup_event;
-}
-
-export interface ChatUpdateGroupVariables {
-  conversationId: string;
-  input: UpdateGroupInput;
+export interface RoomRenewInviteLinkVariables {
+  roomId: string;
 }
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatDeleteMessage
+// GraphQL query operation: RoomInviteLink
 // ====================================================
 
-export interface ChatDeleteMessage_event {
-  __typename: "ConversationEventDelete";
-  seq: number;
-  messageId: string;
+export interface RoomInviteLink {
+  link: string;
 }
 
-export interface ChatDeleteMessage {
-  event: ChatDeleteMessage_event;
+export interface RoomInviteLinkVariables {
+  roomId: string;
 }
 
-export interface ChatDeleteMessageVariables {
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: RoomInviteInfo
+// ====================================================
+
+export interface RoomInviteInfo_invite_room_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomInviteInfo_invite_room_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomInviteInfo_invite_room_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomInviteInfo_invite_room_members_user_primaryOrganization | null;
+}
+
+export interface RoomInviteInfo_invite_room_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomInviteInfo_invite_room_members_user;
+}
+
+export interface RoomInviteInfo_invite_room_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomInviteInfo_invite_room {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomInviteInfo_invite_room_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomInviteInfo_invite_room_members[];
+  settings: RoomInviteInfo_invite_room_settings;
+}
+
+export interface RoomInviteInfo_invite_invitedByUser_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomInviteInfo_invite_invitedByUser {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomInviteInfo_invite_invitedByUser_primaryOrganization | null;
+}
+
+export interface RoomInviteInfo_invite {
+  __typename: "RoomInvite";
+  room: RoomInviteInfo_invite_room;
+  invitedByUser: RoomInviteInfo_invite_invitedByUser;
+}
+
+export interface RoomInviteInfo {
+  invite: RoomInviteInfo_invite | null;
+}
+
+export interface RoomInviteInfoVariables {
+  invite: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomUpdate
+// ====================================================
+
+export interface RoomUpdate_betaRoomUpdate_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomUpdate_betaRoomUpdate_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomUpdate_betaRoomUpdate_PrivateRoom_user;
+  settings: RoomUpdate_betaRoomUpdate_PrivateRoom_settings;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomUpdate_betaRoomUpdate_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomUpdate_betaRoomUpdate_SharedRoom_members_user;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomUpdate_betaRoomUpdate_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomUpdate_betaRoomUpdate_SharedRoom_members[];
+  settings: RoomUpdate_betaRoomUpdate_SharedRoom_settings;
+}
+
+export type RoomUpdate_betaRoomUpdate = RoomUpdate_betaRoomUpdate_PrivateRoom | RoomUpdate_betaRoomUpdate_SharedRoom;
+
+export interface RoomUpdate {
+  betaRoomUpdate: RoomUpdate_betaRoomUpdate;
+}
+
+export interface RoomUpdateVariables {
+  roomId: string;
+  input: RoomUpdateInput;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomDeleteMessage
+// ====================================================
+
+export interface RoomDeleteMessage {
+  betaMessageDelete: boolean;
+}
+
+export interface RoomDeleteMessageVariables {
   messageId: string;
 }
 
@@ -4661,19 +2438,14 @@ export interface ChatDeleteMessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatDeleteUrlAugmentation
+// GraphQL mutation operation: RoomDeleteUrlAugmentation
 // ====================================================
 
-export interface ChatDeleteUrlAugmentation_event {
-  __typename: "ConversationEventMessage";
-  seq: number;
+export interface RoomDeleteUrlAugmentation {
+  betaMessageDeleteAugmentation: boolean;
 }
 
-export interface ChatDeleteUrlAugmentation {
-  event: ChatDeleteUrlAugmentation_event;
-}
-
-export interface ChatDeleteUrlAugmentationVariables {
+export interface RoomDeleteUrlAugmentationVariables {
   messageId: string;
 }
 
@@ -4681,43 +2453,16 @@ export interface ChatDeleteUrlAugmentationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: ChatEditMessage
+// GraphQL mutation operation: RoomEditMessage
 // ====================================================
 
-export interface ChatEditMessage_event_message {
-  __typename: "ConversationMessage";
-  id: string;
+export interface RoomEditMessage {
+  betaMessageEdit: boolean;
 }
 
-export interface ChatEditMessage_event {
-  __typename: "ConversationEventEditMessage";
-  seq: number;
-  message: ChatEditMessage_event_message;
-}
-
-export interface ChatEditMessage {
-  event: ChatEditMessage_event;
-}
-
-export interface ChatEditMessageVariables {
+export interface RoomEditMessageVariables {
   messageId: string;
   message?: string | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL mutation operation: SuperChannelAddMember
-// ====================================================
-
-export interface SuperChannelAddMember {
-  superAccountChannelMemberAdd: string;
-}
-
-export interface SuperChannelAddMemberVariables {
-  id: string;
-  userId: string;
 }
 
 /* tslint:disable */
@@ -5282,127 +3027,6 @@ export interface FeatureFlagDisable {
 export interface FeatureFlagDisableVariables {
   accountId: string;
   featureId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GroupRoomInfo
-// ====================================================
-
-export interface GroupRoomInfo_chat_AnonymousConversation {
-  __typename: "AnonymousConversation" | "SharedConversation" | "PrivateConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-}
-
-export interface GroupRoomInfo_chat_GroupConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface GroupRoomInfo_chat_GroupConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: GroupRoomInfo_chat_GroupConversation_photoRef_crop | null;
-}
-
-export interface GroupRoomInfo_chat_GroupConversation {
-  __typename: "GroupConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  membersCount: number;
-  description: string | null;
-  longDescription: string | null;
-  myRole: string | null;
-  membersOnline: number;
-  photo: string | null;
-  photoRef: GroupRoomInfo_chat_GroupConversation_photoRef | null;
-}
-
-export interface GroupRoomInfo_chat_ChannelConversation_photoRef_crop {
-  __typename: "ImageCrop";
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-}
-
-export interface GroupRoomInfo_chat_ChannelConversation_photoRef {
-  __typename: "ImageRef";
-  uuid: string;
-  crop: GroupRoomInfo_chat_ChannelConversation_photoRef_crop | null;
-}
-
-export interface GroupRoomInfo_chat_ChannelConversation {
-  __typename: "ChannelConversation";
-  id: string;
-  flexibleId: string;
-  title: string;
-  membersCount: number;
-  description: string | null;
-  longDescription: string | null;
-  myRole: string | null;
-  membersOnline: number;
-  photo: string | null;
-  photoRef: GroupRoomInfo_chat_ChannelConversation_photoRef | null;
-}
-
-export type GroupRoomInfo_chat = GroupRoomInfo_chat_AnonymousConversation | GroupRoomInfo_chat_GroupConversation | GroupRoomInfo_chat_ChannelConversation;
-
-export interface GroupRoomInfo {
-  chat: GroupRoomInfo_chat;
-}
-
-export interface GroupRoomInfoVariables {
-  conversationId: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: GroupRoomMembersInfo
-// ====================================================
-
-export interface GroupRoomMembersInfo_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface GroupRoomMembersInfo_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: GroupRoomMembersInfo_members_user_primaryOrganization | null;
-}
-
-export interface GroupRoomMembersInfo_members {
-  __typename: "ChannelMember";
-  user: GroupRoomMembersInfo_members_user;
-}
-
-export interface GroupRoomMembersInfo {
-  members: GroupRoomMembersInfo_members[];
-}
-
-export interface GroupRoomMembersInfoVariables {
-  conversationId: string;
 }
 
 /* tslint:disable */
@@ -7787,6 +5411,243 @@ export interface MessageFull {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: RoomMessageFull
+// ====================================================
+
+export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata {
+  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
+}
+
+export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomMessageFull_serviceMetadata_KickServiceMetadata {
+  __typename: "KickServiceMetadata";
+  user: RoomMessageFull_serviceMetadata_KickServiceMetadata_user;
+  kickedBy: RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy;
+}
+
+export type RoomMessageFull_serviceMetadata = RoomMessageFull_serviceMetadata_InviteServiceMetadata | RoomMessageFull_serviceMetadata_KickServiceMetadata;
+
+export interface RoomMessageFull_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
+export interface RoomMessageFull_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomMessageFull_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomMessageFull_sender_primaryOrganization | null;
+}
+
+export interface RoomMessageFull_reply_sender_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomMessageFull_reply_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomMessageFull_reply_sender_primaryOrganization | null;
+}
+
+export interface RoomMessageFull_reply_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+  size: number;
+}
+
+export interface RoomMessageFull_reply {
+  __typename: "RoomMessage";
+  sender: RoomMessageFull_reply_sender;
+  id: string;
+  date: any;
+  message: string | null;
+  edited: boolean;
+  file: string | null;
+  fileMetadata: RoomMessageFull_reply_fileMetadata | null;
+}
+
+export interface RoomMessageFull_reactions_user {
+  __typename: "User";
+  id: string;
+  name: string;
+}
+
+export interface RoomMessageFull_reactions {
+  __typename: "MessageReaction";
+  user: RoomMessageFull_reactions_user;
+  reaction: string;
+}
+
+export interface RoomMessageFull_urlAugmentation_imageInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomMessageFull_urlAugmentation_iconRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomMessageFull_urlAugmentation_iconRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomMessageFull_urlAugmentation_iconRef_crop | null;
+}
+
+export interface RoomMessageFull_urlAugmentation_iconInfo {
+  __typename: "FileMetadata";
+  imageWidth: number | null;
+  imageHeight: number | null;
+}
+
+export interface RoomMessageFull_urlAugmentation_photo_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RoomMessageFull_urlAugmentation_photo {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RoomMessageFull_urlAugmentation_photo_crop | null;
+}
+
+export interface RoomMessageFull_urlAugmentation_user_Organization {
+  __typename: "Organization" | "ChannelConversation";
+}
+
+export interface RoomMessageFull_urlAugmentation_user_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+}
+
+export interface RoomMessageFull_urlAugmentation_user_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  photo: string | null;
+  primaryOrganization: RoomMessageFull_urlAugmentation_user_User_primaryOrganization | null;
+}
+
+export type RoomMessageFull_urlAugmentation_user = RoomMessageFull_urlAugmentation_user_Organization | RoomMessageFull_urlAugmentation_user_User;
+
+export interface RoomMessageFull_urlAugmentation {
+  __typename: "UrlAugmentation";
+  type: string | null;
+  url: string;
+  title: string | null;
+  date: string | null;
+  subtitle: string | null;
+  description: string | null;
+  hostname: string | null;
+  imageURL: string | null;
+  imageInfo: RoomMessageFull_urlAugmentation_imageInfo | null;
+  iconRef: RoomMessageFull_urlAugmentation_iconRef | null;
+  iconInfo: RoomMessageFull_urlAugmentation_iconInfo | null;
+  photo: RoomMessageFull_urlAugmentation_photo | null;
+  user: RoomMessageFull_urlAugmentation_user | null;
+}
+
+export interface RoomMessageFull {
+  __typename: "RoomMessage";
+  id: string;
+  message: string | null;
+  edited: boolean;
+  file: string | null;
+  repeatKey: string | null;
+  isService: boolean;
+  serviceMetadata: RoomMessageFull_serviceMetadata | null;
+  fileMetadata: RoomMessageFull_fileMetadata | null;
+  sender: RoomMessageFull_sender;
+  reply: RoomMessageFull_reply[] | null;
+  reactions: RoomMessageFull_reactions[];
+  urlAugmentation: RoomMessageFull_urlAugmentation | null;
+  date: any;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: MessageLightShort
+// ====================================================
+
+export interface MessageLightShort_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+}
+
+export interface MessageLightShort {
+  __typename: "Message";
+  id: string;
+  date: any;
+  /**
+   * Content
+   */
+  text: string | null;
+  sender: MessageLightShort_sender;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: MessageShort
 // ====================================================
 
@@ -7815,6 +5676,40 @@ export interface MessageShort {
   isService: boolean;
   fileMetadata: MessageShort_fileMetadata | null;
   sender: MessageShort_sender;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: RoomMessageShort
+// ====================================================
+
+export interface RoomMessageShort_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  mimeType: string | null;
+  isImage: boolean;
+}
+
+export interface RoomMessageShort_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+}
+
+export interface RoomMessageShort {
+  __typename: "RoomMessage";
+  id: string;
+  date: any;
+  message: string | null;
+  file: string | null;
+  isService: boolean;
+  fileMetadata: RoomMessageShort_fileMetadata | null;
+  sender: RoomMessageShort_sender;
 }
 
 /* tslint:disable */
@@ -8066,6 +5961,105 @@ export interface OrganizationShort {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: RoomFull
+// ====================================================
+
+export interface RoomFull_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomFull_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomFull_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomFull_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomFull_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomFull_PrivateRoom_user;
+  settings: RoomFull_PrivateRoom_settings;
+}
+
+export interface RoomFull_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomFull_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomFull_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomFull_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomFull_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomFull_SharedRoom_members_user;
+}
+
+export interface RoomFull_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomFull_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomFull_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomFull_SharedRoom_members[];
+  settings: RoomFull_SharedRoom_settings;
+}
+
+export type RoomFull = RoomFull_PrivateRoom | RoomFull_SharedRoom;
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: SessionStateFull
 // ====================================================
 
@@ -8224,6 +6218,13 @@ export enum ConferencePeerConnectionState {
   WAIT_OFFER = "WAIT_OFFER",
 }
 
+export enum DialogKind {
+  GROUP = "GROUP",
+  INTERNAL = "INTERNAL",
+  PRIVATE = "PRIVATE",
+  PUBLIC = "PUBLIC",
+}
+
 export enum EmailFrequency {
   HOUR_1 = "HOUR_1",
   HOUR_24 = "HOUR_24",
@@ -8249,6 +6250,26 @@ export enum OrganizationMemberRole {
   OWNER = "OWNER",
 }
 
+export enum RoomMemberRole {
+  ADMIN = "ADMIN",
+  MEMBER = "MEMBER",
+  OWNER = "OWNER",
+}
+
+export enum SharedRoomKind {
+  GROUP = "GROUP",
+  INTERNAL = "INTERNAL",
+  PUBLIC = "PUBLIC",
+}
+
+export enum SharedRoomMembershipStatus {
+  KICKED = "KICKED",
+  LEFT = "LEFT",
+  MEMBER = "MEMBER",
+  NONE = "NONE",
+  REQUESTED = "REQUESTED",
+}
+
 export enum SuperAccountState {
   ACTIVATED = "ACTIVATED",
   PENDING = "PENDING",
@@ -8259,13 +6280,6 @@ export enum SuperAdminRole {
   EDITOR = "EDITOR",
   SOFTWARE_DEVELOPER = "SOFTWARE_DEVELOPER",
   SUPER_ADMIN = "SUPER_ADMIN",
-}
-
-export interface ChannelInviteRequest {
-  email: string;
-  emailText?: string | null;
-  firstName?: string | null;
-  lastName?: string | null;
 }
 
 export interface ContactPersonInput {
@@ -8302,11 +6316,6 @@ export interface CreateProfileInput {
   linkedin?: string | null;
   twitter?: string | null;
   primaryOrganization?: string | null;
-}
-
-export interface GroupConversationInvite {
-  userId: string;
-  role: string;
 }
 
 export interface ImageCropInput {
@@ -8348,17 +6357,27 @@ export interface RangeInput {
   to?: number | null;
 }
 
-export interface UpdateConversationSettingsInput {
-  mobileNotifications?: NotificationMessages | null;
-  mute?: boolean | null;
+export interface RoomInviteEmailRequest {
+  email: string;
+  emailText?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 }
 
-export interface UpdateGroupInput {
+export interface RoomInviteInput {
+  userId: string;
+  role: RoomMemberRole;
+}
+
+export interface RoomUpdateInput {
   title?: string | null;
   photoRef?: ImageRefInput | null;
   description?: string | null;
-  longDescription?: string | null;
   socialImageRef?: ImageRefInput | null;
+}
+
+export interface RoomUserNotificaionSettingsInput {
+  mute?: boolean | null;
 }
 
 export interface UpdateOrganizationProfileInput {

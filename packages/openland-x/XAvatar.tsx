@@ -10,6 +10,7 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { UserQuery } from 'openland-api';
+import { link } from 'fs';
 
 export type XAvatarSize = 'm-small' | 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;
@@ -326,17 +327,19 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
     let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
 
     let initials = props.objectName && extractPlaceholder(props.objectName);
+
+    let imageLink = props.cloudImageUuid && !props.cloudImageUuid.startsWith('ph://') ? props.cloudImageUuid : undefined;
     return (
         <AvatarWrapper {...avatarWrapperProps}>
             {props.src && (
                 <StyledAvatarSrc {...avatarProps} />
             )}
-            {(props.photoRef || props.cloudImageUuid) && (
+            {(props.photoRef || imageLink) && (
                 <StyledAvatar {...avatarProps}>
-                    <XPImage source={props.cloudImageUuid ? props.cloudImageUuid : props.photoRef!!} width={imageWidth} height={imageHeight} />
+                    <XPImage source={imageLink ? imageLink : props.photoRef!!} width={imageWidth} height={imageHeight} />
                 </StyledAvatar>
             )}
-            {!props.src && !(props.photoRef || props.cloudImageUuid) && (
+            {!props.src && !(props.photoRef || imageLink) && (
                 <StyledPlaceholder {...avatarProps} >
                     {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
                     {!(props.style === undefined || props.style === 'person') && (

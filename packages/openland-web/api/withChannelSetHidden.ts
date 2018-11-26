@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ChannelSetHiddenMutation, ChatInfoQuery } from 'openland-api';
+import { RoomAlterHiddenMutation } from 'openland-api';
 
-export const withChannelSetHidden = graphqlMutation(ChannelSetHiddenMutation, 'setHidden');
+export const withChannelSetHidden = graphqlMutation(RoomAlterHiddenMutation, 'setHidden');

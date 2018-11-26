@@ -245,7 +245,7 @@ const MentionEntry = (props: any) => {
 const { MentionSuggestions } = mentionPlugin;
 export interface XRichTextInputProps extends XFlexStyles {
     onChange?: (value: string) => void;
-    value?: string;
+    value: string;
     onSubmit?: () => void;
     placeholder?: string;
     autofocus?: boolean;
@@ -254,8 +254,8 @@ export interface XRichTextInputProps extends XFlexStyles {
 
 type XRichTextInputState = { 
     editorState: EditorState, 
-    beChanged: boolean, 
-    suggestions: Array<MentionT> 
+    suggestions: Array<MentionT>,
+    plainText: string
 };
 
 /// End Mentions
@@ -266,8 +266,8 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         
         this.state = {
             suggestions: this.props.mentionsData || [],
-            beChanged: false,
-            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
+            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value))),
+            plainText: props.value
         };
     }
 
@@ -279,25 +279,36 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
 
     onSearchChange = ({ value }: any) => {
         const mentionsData = this.props.mentionsData || [];
-        this.setState({
-            suggestions: defaultSuggestionsFilter(value, mentionsData)
+        window.requestAnimationFrame(() => {
+            this.setState({
+                suggestions: defaultSuggestionsFilter(value, mentionsData)
+            });
         });
     }
 
     focus = () => {
-        if (this.editorRef.current) {
-            this.editorRef.current.focus();
-        }
+        window.requestAnimationFrame(() => {
+            this.setState({
+                editorState: EditorState.moveFocusToEnd(this.state.editorState)
+            });
+            if (this.editorRef.current) {
+                this.editorRef.current.focus();
+            }
+        });
     }
 
     reset = () => {
-        this.setState((src) => ({
-            editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range')
-        }));
+        window.requestAnimationFrame(() => {
+            this.setState((src) => ({
+                editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range')
+            }));
+        });
     }
 
     resetAndFocus = () => {
-        this.setState((src) => ({ editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range') }), () => { this.focus(); });
+        window.requestAnimationFrame(() => {
+            this.setState((src) => ({ editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range') }), () => { this.focus(); });
+        });
     }
 
     onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
@@ -311,24 +322,28 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     onChange = (editorState: EditorState) => {
+        const plainText =  editorState.getCurrentContent().getPlainText();
         this.setState(
             { 
                 editorState,
-                beChanged: true
+                plainText
             }, 
             () => {
                 if (this.props.onChange) {
-                    this.props.onChange(editorState.getCurrentContent().getPlainText());
+                    this.props.onChange(plainText);
                 }
             }
          );
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value && !this.state.beChanged) {
-            const state = EditorState.createWithContent(ContentState.createFromText(nextProps.value || ''));
+        const nextValue = nextProps.value;
+        if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
             this.setState({
-                editorState: EditorState.moveFocusToEnd(state)
+                editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(
+                    ContentState.createFromText(nextValue)
+                )),
+                plainText: nextValue
             });
         }
     }

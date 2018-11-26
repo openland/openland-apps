@@ -141,6 +141,7 @@ class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: 
     render() {
         let hasImage = this.props.file && this.props.file.uuid && this.props.file.isImage || false;
         let isFreeCrop = this.props.file && this.props.file.crop && this.props.file.crop.height !== this.props.file.crop.width;
+        console.warn(hasImage);
         return (
             <DropAreaWrapper
                 hasImage={hasImage}

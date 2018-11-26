@@ -18,7 +18,7 @@ import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigM
 import { Clipboard, Alert, AlertIOS, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
-import { MessageSetReactionMutation, MessageUnsetReactionMutation, ChatEditMessageMutation, ChatDeleteMessageMutation } from 'openland-api';
+import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 
 interface ASAvatarProps {
@@ -30,7 +30,7 @@ interface ASAvatarProps {
 
 export class ASAvatar extends React.PureComponent<ASAvatarProps> {
     render() {
-        if (this.props.src) {
+        if (this.props.src && !this.props.src.startsWith('ph://')) {
             let url = this.props.src;
             url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
             return (
@@ -127,7 +127,7 @@ class ASCounter extends React.PureComponent<{ value: number | string, muted?: bo
     }
 }
 
-export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceItem, onPress: (id: string) => void }> {
+export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string) => void }> {
 
     handlePress = () => {
         this.props.onPress(this.props.item.key);
@@ -135,20 +135,22 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
 
     render() {
         let item = this.props.item;
-        let showSenderName = !!(item.message && ((item.isOut || item.type !== 'PrivateConversation')) && item.sender);
-        let isUser = item.type === 'PrivateConversation';
+        let showSenderName = !!(item.message && ((item.isOut || item.kind !== 'PRIVATE')) && item.sender);
+        let isUser = item.kind === 'PRIVATE';
+        let height = this.props.compact ? 48 : 80;
+        let avatarSize = this.props.compact ? 30 : 60;
         return (
-            <ASFlex height={80} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress}>
-                <ASFlex width={80} height={80} alignItems="center" justifyContent="center">
+            <ASFlex height={height} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress} alignItems={this.props.compact ? 'center' : undefined}>
+                <ASFlex marginLeft={this.props.compact ? 12 : undefined} width={height} height={height} alignItems="center" justifyContent="center">
                     {!isUser && <ASAvatar
                         src={item.photo}
-                        size={60}
+                        size={avatarSize}
                         placeholderKey={item.key}
                         placeholderTitle={item.title}
                     />}
                     {isUser && <UserAvatar
                         src={item.photo}
-                        size={60}
+                        size={avatarSize}
                         placeholderKey={item.flexibleId}
                         placeholderTitle={item.title}
                         online={item.online}
@@ -159,7 +161,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                         <ASText fontSize={15} height={22} fontWeight={'600'} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                         {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
                     </ASFlex>
-                    <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
+                    {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{item.sender}</ASText>)}
                             <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
@@ -172,10 +174,10 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                                 <ASCounter value={item.unread} />
                             </ASFlex>
                         )}
-                    </ASFlex>
+                    </ASFlex>}
                 </ASFlex>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={80} backgroundColor={XPStyles.colors.selectedListItem} />
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={this.props.compact ? 62 : 80} backgroundColor={XPStyles.colors.selectedListItem} />
                 </ASFlex>
             </ASFlex>
         );
@@ -267,7 +269,7 @@ export class MobileMessenger {
                         async (text) => {
                             startLoader();
                             try {
-                                await this.engine.client.client.mutate({ mutation: ChatEditMessageMutation.document, variables: { messageId: message.id, message: text } });
+                                await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
                             } catch (e) {
                                 Alert.alert(e.message);
                             }
@@ -289,7 +291,7 @@ export class MobileMessenger {
                             text: 'Delete', style: 'destructive', onPress: async () => {
                                 startLoader();
                                 try {
-                                    await this.engine.client.client.mutate({ mutation: ChatDeleteMessageMutation.document, variables: { messageId: message.id } });
+                                    await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
                                 } catch (e) {
                                     Alert.alert(e.message);
                                 }

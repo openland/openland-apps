@@ -48,7 +48,7 @@ const Rooms = withChatSearchChannels((props) => {
                             key={c.node.id}
                             room={room}
                             path={'/directory/p/' + room.id}
-                            iMember={room.myStatus === 'member'}
+                            iMember={room.membership === 'MEMBER'}
                         />
                     );
                 })}

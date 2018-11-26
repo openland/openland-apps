@@ -87,7 +87,7 @@ const SearchPeopleModule = withExplorePeople(props => {
             <XSelect
                 creatable={true}
                 multi={false}
-                field="input.userId"
+                field="input.uid"
                 options={[]}
                 render={
                     <XSelectCustomUsersRender
@@ -103,11 +103,11 @@ const SearchPeopleModule = withExplorePeople(props => {
         );
     }
     return (
-        <XFormField field="input.userId">
+        <XFormField field="input.uid">
             <XSelect
                 creatable={true}
                 multi={false}
-                field="input.userId"
+                field="input.uid"
                 options={props.data.items.edges.map(i => (
                     {
                         label: i.node.name,
@@ -415,7 +415,7 @@ const MutationProvider = withIntro((props) => (
                 await props.editIntro({
                     variables: {
                         messageId: (props as any).messageId,
-                        userId: input.userId[0],
+                        uid: input.uid[0],
                         about: input.about,
                         file: input.file
                     }
@@ -423,8 +423,8 @@ const MutationProvider = withIntro((props) => (
             } else {
                 await props.createIntro({
                     variables: {
-                        conversationId: (props as any).conversationId,
-                        userId: input.userId[0],
+                        roomId: (props as any).conversationId,
+                        uid: input.uid[0],
                         about: input.about,
                         file: input.file
                     }
@@ -434,7 +434,7 @@ const MutationProvider = withIntro((props) => (
         }}
         defaultData={{
             input: {
-                userId: props.user ? [props.user.id] : undefined,
+                uid: props.user ? [props.user.id] : undefined,
                 about: props.about,
                 file: (props.file && props.file.uuid)
             }

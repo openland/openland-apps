@@ -35,7 +35,7 @@ const placeholderSizeInterpolator = createInterpolator(
 export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
     render() {
         let onlineSize = this.props.size / 4;
-        if (this.props.src) {
+        if (this.props.src && !this.props.src.startsWith('ph://')) {
             return (
                 <View>
                     <AndroidAliaser
