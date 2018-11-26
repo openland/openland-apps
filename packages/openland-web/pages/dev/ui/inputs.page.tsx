@@ -168,7 +168,7 @@ export default withApp('UI Framework - Inputs', 'viewer', (props) => {
                     </XHorizontal>
                     <XTitle>Rich Text Input</XTitle>
                     <XVertical>
-                        <XRichTextInput placeholder={'Try type something...'} />
+                        <XRichTextInput placeholder={'Try type something...'} value={''} />
                     </XVertical>
                 </XVertical>
             </XContent>
