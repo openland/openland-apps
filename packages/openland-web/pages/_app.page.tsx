@@ -66,17 +66,17 @@ export default withData(class MyApp extends App<{ apollo: OpenApolloClient, stor
         const { Component, pageProps } = this.props;
         return (
             <Container>
-                <RootErrorBoundary>
-                    <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
-                        <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
-                            <YApolloProvider client={this.props.apollo}>
+                <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
+                    <XRouterProvider routes={Routes} hostName={this.props.host} protocol={this.props.protocol}>
+                        <YApolloProvider client={this.props.apollo}>
+                            <RootErrorBoundary>
                                 <AppContainer>
                                     <Component {...pageProps} />
                                 </AppContainer>
-                            </YApolloProvider>
-                        </XRouterProvider>
-                    </XStorageProvider>
-                </RootErrorBoundary>
+                            </RootErrorBoundary>
+                        </YApolloProvider>
+                    </XRouterProvider>
+                </XStorageProvider>
             </Container>
         );
     }
