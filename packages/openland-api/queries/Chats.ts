@@ -208,6 +208,7 @@ export const RoomSearchTextQuery = gql`
             title
             flexibleId: fid
             photo
+            kind
         }
     }
 `;

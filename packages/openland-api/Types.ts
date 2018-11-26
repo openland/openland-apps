@@ -1556,6 +1556,7 @@ export interface RoomSearchText_items {
   title: string;
   flexibleId: string;
   photo: string;
+  kind: DialogKind;
 }
 
 export interface RoomSearchText {
