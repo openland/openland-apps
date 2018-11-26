@@ -109,7 +109,7 @@ const OwnerLink = withChannelnviteLink((props) => {
             router={props.router}
         />
     );
-}) as React.ComponentType<{ innerRef: any, variables: { channelId: string } }>;
+}) as React.ComponentType<{ innerRef: any, variables: { roomId: string } }>;
 
 interface Invite {
     email?: string;
@@ -248,9 +248,9 @@ const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
 
 const RenewInviteLinkButton = withChannelnviteLink((props) => (
     <XMutation mutation={props.renew}><RenewButton text="Renew link" style="link" /></XMutation>
-)) as React.ComponentType<{ variables: { channelId: string }, refetchVars: { channelId: string } }>;
+)) as React.ComponentType<{ variables: { roomId: string }, refetchVars: { roomId: string } }>;
 
-class InviteMembersModalRaw extends React.Component<{ channelTitle: string, channelId: string, sendInviteMutation: any, target: any, orgId: string }, InvitesMoadalRawState> {
+class InviteMembersModalRaw extends React.Component<{ channelTitle: string, roomId: string, sendInviteMutation: any, target: any, orgId: string }, InvitesMoadalRawState> {
     linkComponent?: any;
 
     constructor(props: any) {
@@ -315,7 +315,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                 </XHorizontal>
                 {this.state.showLink && (
                     <XHorizontal alignItems="center">
-                        <RenewInviteLinkButton variables={{ channelId: this.props.channelId }} refetchVars={{ channelId: this.props.channelId }} />
+                        <RenewInviteLinkButton variables={{ roomId: this.props.roomId }} refetchVars={{ roomId: this.props.roomId }} />
                         <XFormSubmit
                             succesText="Copied!"
                             key="link"
@@ -351,7 +351,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                         await this.props.sendInviteMutation({
                             variables: {
                                 inviteRequests: invites,
-                                channelId: this.props.channelId,
+                                roomId: this.props.roomId,
                             }
                         });
                     } else {
@@ -418,7 +418,7 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
                     {this.state.showLink && (
                         <OwnerLink
                             innerRef={this.handleLinkComponentRef}
-                            variables={{ channelId: this.props.channelId }}
+                            variables={{ roomId: this.props.roomId }}
                         />
                     )}
                 </XVertical>
@@ -428,5 +428,5 @@ class InviteMembersModalRaw extends React.Component<{ channelTitle: string, chan
 }
 
 export const InviteMembersModal = withChanneSendlnviteLink((props) => (
-    <InviteMembersModalRaw channelTitle={(props as any).channelTitle} channelId={(props as any).channelId} sendInviteMutation={props.send} target={(props as any).target} orgId={(props as any).orgId}/>
-)) as React.ComponentType<{ channelTitle: string, channelId: string, target: any, orgId: string }>;
+    <InviteMembersModalRaw channelTitle={(props as any).channelTitle} roomId={(props as any).roomId} sendInviteMutation={props.send} target={(props as any).target} orgId={(props as any).orgId}/>
+)) as React.ComponentType<{ channelTitle: string, roomId: string, target: any, orgId: string }>;

@@ -732,7 +732,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                             <InviteMembersModal
                                 orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                                 channelTitle={title}
-                                channelId={props.data.room!.id}
+                                roomId={props.data.room!.id}
                                 target={(
                                     <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
                                 )}

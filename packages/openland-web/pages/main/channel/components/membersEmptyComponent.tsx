@@ -84,7 +84,7 @@ export const EmptyComponent = (props: { text: string, aloneMember: boolean, smal
             <InviteMembersModal
                 orgId={props.orgId}
                 channelTitle={props.channelTitle}
-                channelId={props.chatId}
+                roomId={props.chatId}
                 target={
                     <XButton style="primary" text="Send invitations" />
                 }
