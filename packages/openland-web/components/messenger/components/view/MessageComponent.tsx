@@ -254,7 +254,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         }
                     />
                 </XVertical>
-            ) : (isServerMessage(message) && this.props.conversationType === 'ChannelConversation') ? (
+            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
                 <XWithRole role="super-admin">
                     <XVertical className="menu">
                         <XOverflow

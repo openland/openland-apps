@@ -48,7 +48,7 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
                             props.item.kind === 'PRIVATE' ? 'user' : undefined
                 )}
                 objectName={props.item.title}
-                objectId={props.item.fid}
+                objectId={props.item.flexibleId}
                 online={props.item.online}
                 cloudImageUuid={props.item.photo}
             />

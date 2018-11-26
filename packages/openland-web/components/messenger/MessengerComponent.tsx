@@ -35,7 +35,6 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
-import { ConferenceComponent } from '../conference/ConferenceComponent';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { withRoomAddMembers } from '../../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
@@ -840,11 +839,6 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                     />
                 )}
 
-                {(sharedRoom && sharedRoom.kind === 'GROUP' && tab === 'call') && (
-                    <XWithRole role="feature-non-production">
-                        <ConferenceComponent conversationId={props.data.room!.id} />
-                    </XWithRole>
-                )}
             </XHorizontal>
             {sharedRoom && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} photo={sharedRoom.photo} socialImage={sharedRoom.socialImage} roomId={sharedRoom.id} />}
 

@@ -30,7 +30,7 @@ class RootComponent extends React.Component<XWithRouter> {
                 <Sidebar active="rooms" />
                 <Container>
                     {tab === 'rooms' && <RoomsExploreComponent />}
-                    {tab === 'invite' && <MessengerComponent conversationId={router.routeQuery.conversationId} />}
+                    {tab === 'invite' && <MessengerComponent id={router.routeQuery.conversationId} />}
                     {tab === 'profile' && <RoomProfile conversationId={router.routeQuery.conversationId} />}
                 </Container>
             </RootWrapper>

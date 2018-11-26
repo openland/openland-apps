@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withGroupRoom, withGroupRoomMembers } from '../../../api/withGroupRoom';
 import { withAlterChat } from '../../../api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -26,7 +25,6 @@ import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     AddMemberForm,
     RoomEditComponent,
-    GroupEditComponent
 } from '../../../components/messenger/MessengerComponent';
 import {
     HeaderAvatar,
