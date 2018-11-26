@@ -332,7 +332,7 @@ interface MessageComposeComponentInnerState {
     dragOn: boolean;
     dragUnder: boolean;
     message: string;
-    floatingMessage?: string;
+    floatingMessage: string;
     forwardMessageReply?: string;
     forwardMessageId?: Set<string> | string;
     forwardMessageSender?: string;
@@ -563,7 +563,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         this.props.messagesContext.resetAll();
         this.setState({
             message: '',
-            floatingMessage: undefined,
+            floatingMessage: '',
             forwardMessageReply: undefined,
             forwardMessageId: undefined,
             forwardMessageSender: undefined
@@ -602,7 +602,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             messagesContext.changeForwardConverstion();
             this.setState({
                 message: '',
-                floatingMessage: undefined,
+                floatingMessage: '',
                 forwardMessageReply: `Forward ${messagesContext.forwardMessagesId.size} messages`,
                 forwardMessageId: messagesContext.forwardMessagesId,
                 forwardMessageSender: 'Forward'
@@ -647,7 +647,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     forwardMessageReply: `Forward ${forwardMessagesId.size} messages`,
                     forwardMessageId: forwardMessagesId,
                     forwardMessageSender: 'Forward'
@@ -663,7 +663,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     forwardMessageReply: messageReply,
                     forwardMessageId: messageId,
                     forwardMessageSender: messageSender
@@ -672,7 +672,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     forwardMessageReply: `Reply ${replyMessagesId.size} messages`,
                     forwardMessageId: replyMessagesId,
                     forwardMessageSender: 'Reply'
@@ -698,7 +698,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 newState = {
                     ...newState,
                     message: '',
-                    floatingMessage: undefined,
+                    floatingMessage: '',
                     beDrafted: true
                 };
             } else if (draft !== draftKey) {

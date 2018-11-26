@@ -245,7 +245,7 @@ const MentionEntry = (props: any) => {
 const { MentionSuggestions } = mentionPlugin;
 export interface XRichTextInputProps extends XFlexStyles {
     onChange?: (value: string) => void;
-    value?: string;
+    value: string;
     onSubmit?: () => void;
     placeholder?: string;
     autofocus?: boolean;
@@ -254,7 +254,8 @@ export interface XRichTextInputProps extends XFlexStyles {
 
 type XRichTextInputState = { 
     editorState: EditorState, 
-    suggestions: Array<MentionT> 
+    suggestions: Array<MentionT>,
+    plainText: string
 };
 
 /// End Mentions
@@ -265,7 +266,8 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         
         this.state = {
             suggestions: this.props.mentionsData || [],
-            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value || '')))
+            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value))),
+            plainText: props.value
         };
     }
 
@@ -320,31 +322,29 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     onChange = (editorState: EditorState) => {
+        const plainText =  editorState.getCurrentContent().getPlainText();
         this.setState(
             { 
                 editorState,
+                plainText
             }, 
             () => {
                 if (this.props.onChange) {
-                    this.props.onChange(editorState.getCurrentContent().getPlainText());
+                    this.props.onChange(plainText);
                 }
             }
          );
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
-        if (this.props.value !== nextProps.value) {
-            if (
-                this.state.editorState.getCurrentContent().getPlainText() !==
-                nextProps.value
-            ) {
-                const state = EditorState.createWithContent(
-                    ContentState.createFromText(nextProps.value || '')
-                );
-                this.setState({
-                    editorState: EditorState.moveFocusToEnd(state)
-                });
-            }
+        const nextValue = nextProps.value;
+        if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
+            this.setState({
+                editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(
+                    ContentState.createFromText(nextValue)
+                )),
+                plainText: nextValue
+            });
         }
     }
 
