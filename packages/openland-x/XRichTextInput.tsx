@@ -208,9 +208,9 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
 
 const mentionPlugin = createMentionPlugin({
     mentionPrefix: '@',
+    entityMutability: 'IMMUTABLE',
     positionSuggestions,
     mentionComponent: (props: any) => {
-        console.log(props);
         return (
             <MentionComponentInner
                 isYou={props.mention.isYou}
