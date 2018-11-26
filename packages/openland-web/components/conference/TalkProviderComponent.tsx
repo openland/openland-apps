@@ -8,6 +8,7 @@ export const TalkContext = React.createContext<{
     peerId?: string,
     state?: 'connecting' | 'online',
     muted?: boolean,
+    streams?: { [key: string]: MediaStream }
     toggleMute: () => void,
     joinCall: (cid: string) => Promise<void>,
     leaveCall: () => void
@@ -21,7 +22,8 @@ export class TalkProviderComponent extends React.Component<TalkProviderComponent
     cid?: string,
     convId?: string,
     peerId?: string,
-    muted: boolean
+    muted: boolean,
+    streams?: { [key: string]: MediaStream }
 }> {
 
     private session?: TalkSession;
@@ -41,6 +43,12 @@ export class TalkProviderComponent extends React.Component<TalkProviderComponent
 
     private handleStateChange = (peerId: string, convId: string) => {
         this.setState({ peerId, convId });
+    }
+
+    private handleStreamsUpdated = (peerId: string, streams: { [key: string]: MediaStream }) => {
+        if (this.state.peerId === peerId) {
+            this.setState({ streams });
+        }
     }
 
     leaveCall = () => {
@@ -68,7 +76,12 @@ export class TalkProviderComponent extends React.Component<TalkProviderComponent
                 }}
             >
                 {this.state.cid && this.state.peerId && this.state.convId && (
-                    <TalkMediaComponent id={this.state.cid} peerId={this.state.peerId} muted={this.state.muted} />
+                    <TalkMediaComponent
+                        id={this.state.cid}
+                        peerId={this.state.peerId}
+                        muted={this.state.muted}
+                        onStreamsUpdated={this.handleStreamsUpdated}
+                    />
                 )}
                 {this.props.children}
             </TalkContext.Provider>

@@ -8,6 +8,7 @@ export interface TalkMediaComponentProps {
     id: string;
     peerId: string;
     muted: boolean;
+    onStreamsUpdated: (peerId: string, streams: { [key: string]: MediaStream }) => void;
 }
 
 export interface TalkMediaComponentState {
@@ -16,14 +17,29 @@ export interface TalkMediaComponentState {
 
 export class TalkMediaComponent extends React.Component<TalkMediaComponentProps, TalkMediaComponentState> {
     private _mounted = true;
+    private streams: { [key: string]: MediaStream } = {};
 
     constructor(props: TalkMediaComponentProps) {
         super(props);
         this.state = {};
     }
 
+    onStreamCreated = (peerId: string, stream: MediaStream) => {
+        this.streams = { ...this.streams };
+        this.streams[peerId] = stream;
+
+        this.props.onStreamsUpdated(this.props.peerId, this.streams);
+    }
+
+    onStreamClosed = (peerId: string) => {
+        this.streams = { ...this.streams };
+        delete this.streams[peerId];
+
+        this.props.onStreamsUpdated(this.props.peerId, this.streams);
+    }
+
     componentDidMount() {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
             setTimeout(
                 () => {
                     if (this._mounted) {
@@ -92,6 +108,8 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
                                             stream={this.state.mediaStream!}
                                             ownPeerId={this.props.peerId}
                                             connection={v.connection!}
+                                            onStreamCreated={this.onStreamCreated}
+                                            onStreamClosed={this.onStreamClosed}
                                         />
                                     ))}
                                 </>
