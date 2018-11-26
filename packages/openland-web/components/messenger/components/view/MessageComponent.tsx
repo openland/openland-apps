@@ -213,6 +213,10 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             return;
         }
 
+        if (window.getSelection().toString()) {
+            return;
+        }
+
         let { forwardMessagesId } = messagesContext;
         let selectedMessageId = forwardMessagesId;
 
