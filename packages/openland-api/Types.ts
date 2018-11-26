@@ -972,6 +972,7 @@ export interface ReplyMessageVariables {
   roomId: string;
   message?: string | null;
   replyMessages?: string[] | null;
+  mentions?: string[] | null;
 }
 
 /* tslint:disable */
