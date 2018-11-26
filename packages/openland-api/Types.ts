@@ -812,6 +812,27 @@ export interface RoomHistory_messages_reactions {
   reaction: string;
 }
 
+export interface RoomHistory_messages_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomHistory_messages_mentions {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomHistory_messages_mentions_primaryOrganization | null;
+}
+
 export interface RoomHistory_messages_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -902,6 +923,7 @@ export interface RoomHistory_messages {
   sender: RoomHistory_messages_sender;
   reply: RoomHistory_messages_reply[] | null;
   reactions: RoomHistory_messages_reactions[];
+  mentions: RoomHistory_messages_mentions[] | null;
   urlAugmentation: RoomHistory_messages_urlAugmentation | null;
   date: any;
 }
@@ -4509,11 +4531,25 @@ export interface ConversationShort_AnonymousConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -4738,11 +4774,25 @@ export interface ConversationShort_GroupConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -4983,11 +5033,25 @@ export interface ConversationShort_ChannelConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -5240,11 +5304,25 @@ export interface MessageFull_reactions {
   reaction: string;
 }
 
+export interface MessageFull_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface MessageFull_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: MessageFull_mentions_primaryOrganization | null;
 }
 
 export interface MessageFull_urlAugmentation_imageInfo {
@@ -5458,6 +5536,27 @@ export interface RoomMessageFull_reactions {
   reaction: string;
 }
 
+export interface RoomMessageFull_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomMessageFull_mentions {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomMessageFull_mentions_primaryOrganization | null;
+}
+
 export interface RoomMessageFull_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -5548,6 +5647,7 @@ export interface RoomMessageFull {
   sender: RoomMessageFull_sender;
   reply: RoomMessageFull_reply[] | null;
   reactions: RoomMessageFull_reactions[];
+  mentions: RoomMessageFull_mentions[] | null;
   urlAugmentation: RoomMessageFull_urlAugmentation | null;
   date: any;
 }

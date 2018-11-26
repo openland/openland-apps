@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
+import { MessageFull_mentions } from 'openland-api/Types';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
@@ -10,6 +11,7 @@ import createMentionPlugin, {
     MentionT,
     defaultSuggestionsFilter
 } from 'draft-js-mention-plugin';
+import { UserPopper, UserAvatar } from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 
 const EmojiWrapper = Glamorous.div({
@@ -160,9 +162,16 @@ const positionSuggestions = ({ state, props }: any) => {
     };
 };
 
-export const MentionComponentInner = Glamorous.span(
+type MentionComponentInnerTextProps = { 
+    isYou: boolean, 
+    className?: string, 
+    user?: MessageFull_mentions,
+    hasPopper?: boolean
+};
+
+const MentionComponentInnerText = Glamorous.span(
     {},
-    ({ isYou }: { isYou: boolean }) => {
+    ({ isYou }: MentionComponentInnerTextProps) => {
         if (isYou) {
             return {
                 backgroundColor: '#fff6e5',
@@ -175,6 +184,27 @@ export const MentionComponentInner = Glamorous.span(
         };
     }
 );
+
+export class MentionComponentInner extends React.Component<MentionComponentInnerTextProps> {
+    render() {
+        const props = this.props;
+        if (props.hasPopper && props.user) {
+            return (
+                <UserPopper
+                    user={props.user}
+                    isMe={props.isYou}
+                    startSelected={false}
+                >
+                    <MentionComponentInnerText {...props}/>
+                </UserPopper>
+            );
+        } else {
+            return (
+                <MentionComponentInnerText {...props}/>
+            );
+        }
+    }
+}
 
 const mentionPlugin = createMentionPlugin({
     mentionPrefix: '@',
