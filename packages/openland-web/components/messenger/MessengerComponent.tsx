@@ -349,14 +349,15 @@ export const RoomEditComponent = withAlterChat((props) => {
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
+                console.warn(newPhoto, newSocialImage);
                 props.alter({
                     variables: {
                         roomId: (props as any).roomId,
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto.uuid !== editPhotoRef ? { photoRef: sanitizeIamgeRef(newPhoto) } : {},
-                            ...newSocialImage.uuid !== editSocialImageRef ? { socialImageRef: sanitizeIamgeRef(newSocialImage) } : {},
+                            ...newPhoto && newPhoto.uuid !== editPhotoRef ? { photoRef: sanitizeIamgeRef(newPhoto) } : {},
+                            ...newSocialImage && newSocialImage.uuid !== editSocialImageRef ? { socialImageRef: sanitizeIamgeRef(newSocialImage) } : {},
                         }
                     }
                 });
