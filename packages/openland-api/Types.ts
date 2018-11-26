@@ -361,24 +361,6 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   photo: string | null;
 }
 
-export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels_organization | null;
-}
-
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user {
   __typename: "User";
   id: string;
@@ -398,10 +380,6 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels[];
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_organization {
@@ -3106,24 +3084,6 @@ export interface Organization_organization_members_user_primaryOrganization {
   photo: string | null;
 }
 
-export interface Organization_organization_members_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface Organization_organization_members_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: Organization_organization_members_user_channels_organization | null;
-}
-
 export interface Organization_organization_members_user {
   __typename: "User";
   id: string;
@@ -3143,10 +3103,6 @@ export interface Organization_organization_members_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: Organization_organization_members_user_channels[];
 }
 
 export interface Organization_organization_members {
@@ -3160,24 +3116,6 @@ export interface Organization_organization_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
-}
-
-export interface Organization_organization_requests_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface Organization_organization_requests_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: Organization_organization_requests_user_channels_organization | null;
 }
 
 export interface Organization_organization_requests_user {
@@ -3199,10 +3137,6 @@ export interface Organization_organization_requests_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: Organization_organization_requests_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: Organization_organization_requests_user_channels[];
 }
 
 export interface Organization_organization_requests {
@@ -5727,24 +5661,6 @@ export interface OrganizationFull_members_user_primaryOrganization {
   photo: string | null;
 }
 
-export interface OrganizationFull_members_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface OrganizationFull_members_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: OrganizationFull_members_user_channels_organization | null;
-}
-
 export interface OrganizationFull_members_user {
   __typename: "User";
   id: string;
@@ -5764,10 +5680,6 @@ export interface OrganizationFull_members_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: OrganizationFull_members_user_channels[];
 }
 
 export interface OrganizationFull_members {
@@ -5781,24 +5693,6 @@ export interface OrganizationFull_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
-}
-
-export interface OrganizationFull_requests_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface OrganizationFull_requests_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: OrganizationFull_requests_user_channels_organization | null;
 }
 
 export interface OrganizationFull_requests_user {
@@ -5820,10 +5714,6 @@ export interface OrganizationFull_requests_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: OrganizationFull_requests_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: OrganizationFull_requests_user_channels[];
 }
 
 export interface OrganizationFull_requests {
@@ -6110,24 +6000,6 @@ export interface UserFull_primaryOrganization {
   photo: string | null;
 }
 
-export interface UserFull_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface UserFull_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: UserFull_channels_organization | null;
-}
-
 export interface UserFull {
   __typename: "User";
   id: string;
@@ -6147,10 +6019,6 @@ export interface UserFull {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: UserFull_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: UserFull_channels[];
 }
 
 /* tslint:disable */
