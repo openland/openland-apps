@@ -366,7 +366,7 @@ export const RoomEditComponent = withAlterChat((props) => {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
                     photoRef: { uuid: (props as any).photo },
-                    socialImageRef:  (props as any).socialImage ? { uuid: (props as any).socialImage } : undefined,
+                    socialImageRef: (props as any).socialImage ? { uuid: (props as any).socialImage } : undefined,
                 }
             }}
         >
@@ -723,6 +723,11 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                             </RoomTab>
                         </RoomTabs>
                         <XHorizontal alignSelf="center" alignItems="center" separator={6}>
+                            <XWithRole role="feature-non-production">
+                                <TalkContext.Consumer>
+                                    {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
+                                </TalkContext.Consumer>
+                            </XWithRole>
                             <InviteMembersModal
                                 orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                                 channelTitle={title}
@@ -752,14 +757,16 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                 )}
 
                 {sharedRoom && sharedRoom.kind === 'GROUP' && (
-                    <XHorizontal separator={14}>
+                    <XHorizontal separator={14} alignItems="center">
                         <RoomTabs>
                             <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
                             <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
-                            <XWithRole role="feature-non-production">
-                                <RoomTab query={{ field: 'tab', value: 'call' }}>Call</RoomTab>
-                            </XWithRole>
                         </RoomTabs>
+                        <XWithRole role="feature-non-production">
+                            <TalkContext.Consumer>
+                                {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
+                            </TalkContext.Consumer>
+                        </XWithRole>
                     </XHorizontal>
                 )}
 
