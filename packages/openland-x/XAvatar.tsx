@@ -10,7 +10,6 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { UserQuery } from 'openland-api';
-import { link } from 'fs';
 
 export type XAvatarSize = 'm-small' | 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;

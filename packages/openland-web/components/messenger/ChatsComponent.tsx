@@ -22,7 +22,15 @@ import { MessagesStateContext, MessagesStateContextProps } from './components/Me
 
 let SelectContext = React.createContext({ select: -1 });
 
-class ConversationComponent extends React.PureComponent<{ conversation: DialogDataSourceItem, selectedItem: boolean, allowSelection: boolean, onSelect: () => void }> {
+interface ConversationComponentProps {
+    conversation: DialogDataSourceItem;
+    selectedItem: boolean;
+    allowSelection: boolean;
+    onSelect: () => void;
+    compact?: boolean;
+}
+
+class ConversationComponent extends React.PureComponent<ConversationComponentProps> {
     refComponent: any;
 
     componentWillUnmount() {
@@ -62,7 +70,7 @@ class ConversationComponent extends React.PureComponent<{ conversation: DialogDa
 
     render() {
         return (
-            <DialogView item={this.props.conversation} />
+            <DialogView item={this.props.conversation} compact={this.props.compact} handleRef={this.handleRef} />
         );
     }
 }
@@ -110,24 +118,23 @@ const SearchChats = withChatSearchText(withUserInfo((props) => {
                         {items.map((i, j) => (
                             <SelectContext.Consumer>
                                 {select => {
-                                    console.warn('context changed');
-                                    return <ConversationComponent
-                                        key={i.id}
-                                        onSelect={(props as any).onSelect}
-                                        conversation={{
-                                            sender: i.topMessage ? (props.user && (i.topMessage.sender.id === props.user.id) ? 'You' : i.topMessage.sender.name) : undefined,
-                                            key: i.id,
-                                            flexibleId: i.flexibleId,
-                                            message: i.topMessage && formatMessage(i.topMessage),
-                                            kind: i.kind,
-                                            title: i.title,
-                                            photo: i.photo || i.photos[0],
-                                            unread: i.unreadCount,
-                                            fileMeta: i.topMessage && i.topMessage.fileMetadata
-                                        }}
-                                        selectedItem={select.select === j}
-                                        allowSelection={(props as any).allowSelection}
-                                    />;
+                                    return (
+                                        <ConversationComponent
+                                            key={i.id}
+                                            onSelect={(props as any).onSelect}
+                                            conversation={{
+                                                key: i.id,
+                                                flexibleId: i.flexibleId,
+                                                kind: i.kind,
+                                                title: i.title,
+                                                photo: i.photo || i.photos[0],
+                                                unread: 0,
+                                            }}
+                                            selectedItem={select.select === j}
+                                            allowSelection={(props as any).allowSelection}
+                                            compact={true}
+                                        />
+                                    );
                                 }}
                             </SelectContext.Consumer>
 

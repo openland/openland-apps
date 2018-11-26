@@ -21,12 +21,20 @@ let documentIcon = css`
     margin-bottom: 0;
 `;
 
-export const DialogView = (props: { item: DialogDataSourceItem }) => {
-    let conv = props.item;
+interface DialogViewProps {
+    item: DialogDataSourceItem;
+    handleRef?: any;
+    compact?: boolean;
+}
+
+const DialogViewInner = (props: DialogViewProps) => {
+    let dialog = props.item;
     let isPrivate = props.item.kind === 'PRIVATE';
+
     return (
         <XLink2
-            path={'/mail/' + props.item.key}
+            ref={props.handleRef}
+            path={'/mail/' + dialog.key}
             height={72}
             flexDirection="row"
             paddingLeft={16}
@@ -39,18 +47,18 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
             selectedHoverBackgroundColor="#4596e1"
         >
             <XAvatar
-                style={(props.item.kind === 'INTERNAL'
+                style={(dialog.kind === 'INTERNAL'
                     ? 'organization'
-                    : props.item.kind === 'GROUP'
+                    : dialog.kind === 'GROUP'
                         ? 'group'
-                        : props.item.kind === 'PUBLIC'
+                        : dialog.kind === 'PUBLIC'
                             ? 'room' :
-                            props.item.kind === 'PRIVATE' ? 'user' : undefined
+                            dialog.kind === 'PRIVATE' ? 'user' : undefined
                 )}
-                objectName={props.item.title}
-                objectId={props.item.flexibleId}
-                online={props.item.online}
-                cloudImageUuid={props.item.photo}
+                objectName={dialog.title}
+                objectId={dialog.flexibleId}
+                online={dialog.online}
+                cloudImageUuid={dialog.photo}
             />
             <XView
                 flexDirection="column"
@@ -80,9 +88,9 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {props.item.title}
+                        {dialog.title}
                     </XView>
-                    {props.item.date && (
+                    {dialog.date && (
                         <XView
                             height={18}
                             color="rgba(0, 0, 0, 0.3)"
@@ -93,7 +101,7 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
                             lineHeight="18px"
                             whiteSpace="nowrap"
                         >
-                            <XDate value={props.item.date.toString()} format="datetime_short" />
+                            <XDate value={dialog.date.toString()} format="datetime_short" />
                         </XView>
                     )}
                 </XView>
@@ -116,28 +124,113 @@ export const DialogView = (props: { item: DialogDataSourceItem }) => {
                         lineHeight="17px"
                         overflow="hidden"
                     >
-                        {conv.typing || (
+                        {dialog.typing || (
                             <>
-                                {!!(conv.message) && !conv.fileMeta && (
-                                    <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} {conv.message}</span>
+                                {!!(dialog.message) && !dialog.fileMeta && (
+                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} {dialog.message}</span>
                                 )}
-                                {!conv.message && !conv.fileMeta && (
-                                    <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <ForwardIcon className={iconClass + ' ' + documentIcon} />Forward</span>
+                                {!dialog.message && !dialog.fileMeta && (
+                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <ForwardIcon className={iconClass + ' ' + documentIcon} />Forward</span>
                                 )}
-                                {conv.fileMeta && conv.fileMeta.isImage && (
-                                    <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <PhotoIcon className={iconClass} />Image</span>
+                                {dialog.fileMeta && dialog.fileMeta.isImage && (
+                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <PhotoIcon className={iconClass} />Image</span>
                                 )}
-                                {conv.fileMeta && !conv.fileMeta.isImage && (
-                                    <span>{conv.isOut ? 'You:' : (isPrivate ? null : conv.sender + ':')} <FileIcon className={iconClass + ' ' + documentIcon} />Document</span>
+                                {dialog.fileMeta && !dialog.fileMeta.isImage && (
+                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <FileIcon className={iconClass + ' ' + documentIcon} />Document</span>
                                 )}
                             </>
                         )}
                     </XView>
-                    {conv.unread > 0 && (
-                        <XView paddingLeft={12} alignSelf="center"><XCounter big={true} count={conv.unread} /></XView>
+                    {dialog.unread > 0 && (
+                        <XView paddingLeft={12} alignSelf="center"><XCounter big={true} count={dialog.unread} /></XView>
                     )}
                 </XView>
             </XView>
         </XLink2>
     );
+};
+
+const DialogViewCompactInner = (props: DialogViewProps) => {
+    let dialog = props.item;
+
+    return (
+        <XLink2
+            ref={props.handleRef}
+            path={'/mail/' + dialog.key}
+            height={50}
+            flexDirection="row"
+            paddingLeft={16}
+            minWidth={0}
+            alignItems="center"
+            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+            selectedBackgroundColor="#4596e1"
+            selectedHoverBackgroundColor="#4596e1"
+        >
+            <XAvatar
+                style={(dialog.kind === 'INTERNAL'
+                    ? 'organization'
+                    : dialog.kind === 'GROUP'
+                        ? 'group'
+                        : dialog.kind === 'PUBLIC'
+                            ? 'room' :
+                            dialog.kind === 'PRIVATE' ? 'user' : undefined
+                )}
+                objectName={dialog.title}
+                objectId={dialog.flexibleId}
+                online={dialog.online}
+                cloudImageUuid={dialog.photo}
+                size="m-small"
+            />
+            <XView
+                flexDirection="column"
+                flexGrow={1}
+                flexShrink={1}
+                paddingLeft={12}
+                paddingRight={16}
+                minWidth={0}
+            >
+                <XView
+                    flexDirection="row"
+                    flexGrow={1}
+                    flexShrink={0}
+                    minWidth={0}
+                    marginBottom={3}
+                >
+                    <XView
+                        flexGrow={1}
+                        flexShrink={1}
+                        minWidth={0}
+                        fontSize={14}
+                        fontWeight="600"
+                        lineHeight="18px"
+                        color="#000"
+                        selectedColor="#fff"
+                        overflow="hidden"
+                        whiteSpace="nowrap"
+                        textOverflow="ellipsis"
+                    >
+                        {dialog.title}
+                    </XView>
+                    {dialog.date && (
+                        <XView
+                            height={18}
+                            color="rgba(0, 0, 0, 0.3)"
+                            selectedColor="rgba(255, 255, 255, 0.8)"
+                            marginLeft={5}
+                            fontSize={12}
+                            fontWeight="600"
+                            lineHeight="18px"
+                            whiteSpace="nowrap"
+                        >
+                            <XDate value={dialog.date.toString()} format="datetime_short" />
+                        </XView>
+                    )}
+                </XView>
+            </XView>
+        </XLink2>
+    );
+};
+
+export const DialogView = (props: DialogViewProps) => {
+    return props.compact ? <DialogViewCompactInner {...props} /> : <DialogViewInner {...props} />;
 };

@@ -84,6 +84,7 @@ export interface XViewProps {
     target?: string;
     href?: any;
     children?: any;
+    ref?: any;
 }
 
 const styles = new Map<string, string>();
@@ -550,13 +551,13 @@ const XViewContainer = (props: XViewProps) => {
     let className = css.join(' ');
     if (props.as === 'a') {
         return (
-            <a className={className} onClick={props.onClick} target={props.target} href={props.href}>
+            <a className={className} onClick={props.onClick} target={props.target} href={props.href} ref={props.ref}>
                 {props.children}
             </a>
         );
     } else {
         return (
-            <div className={className} onClick={props.onClick}>
+            <div className={className} onClick={props.onClick} ref={props.ref}>
                 {props.children}
             </div>
         );
