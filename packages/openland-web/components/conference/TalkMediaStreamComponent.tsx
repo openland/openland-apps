@@ -11,6 +11,8 @@ export interface TalkMediaStreamComponentProps {
     peerId: string;
     stream: MediaStream;
     connection: Conference_conference_peers_connection;
+    onStreamCreated: (peerId: string, stream: MediaStream) => void;
+    onStreamClosed: (peerId: string) => void;
 }
 
 export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamComponentProps> {
@@ -57,12 +59,16 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
             });
         };
         (this.peerConnection as any).ontrack = (ev: any) => {
+            if (!this.started) {
+                return;
+            }
             let audio = new Audio();
             audio.autoplay = true;
             audio.setAttribute('playsinline', 'true');
             audio.controls = false;
             audio.srcObject = ev.streams[0];
             this.container.current!.appendChild(audio);
+            this.props.onStreamCreated(this.props.peerId, ev.streams[0]);
         };
         for (let t of this.props.stream.getTracks()) {
             (this.peerConnection as any).addTrack(t, this.props.stream);
@@ -76,6 +82,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
     componentWillUnmount() {
         this.started = false;
         this.peerConnection.close();
+        this.props.onStreamClosed(this.props.peerId);
         console.log('Connection removed: ' + this.props.id);
     }
 

@@ -1,6 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
-import { SettingsQuery, ChatInfoQuery } from 'openland-api';
-import { Settings as SettingsQueryType } from 'openland-api/Types';
+import { SettingsQuery, RoomQuery } from 'openland-api';
+import { Settings as SettingsQueryType, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
@@ -22,19 +22,21 @@ export class NotificationsEngine {
             query: SettingsQuery.document
         })!!.settings;
 
-        let info = (await this.engine.client.query(ChatInfoQuery, { conversationId: cid })).data.chat;
+        let room = (await this.engine.client.query(RoomQuery, { id: cid })).data.room!;
+        let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
+        let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
 
         if (settings.desktopNotifications === 'NONE') {
             return;
         } else if (settings.desktopNotifications === 'DIRECT') {
-            if (info.__typename !== 'PrivateConversation') {
+            if (privateRoom) {
                 return;
             }
         }
 
-        if (!info.settings.mute) {
+        if (!(sharedRoom || privateRoom)!.settings.mute) {
             AppNotifications.playIncomingSound();
-            let conversationId = info.flexibleId;
+            let conversationId = privateRoom ? privateRoom.user.id : sharedRoom!.id;
             if (msg.message) {
                 AppNotifications.displayNotification({
                     title: 'New Message',

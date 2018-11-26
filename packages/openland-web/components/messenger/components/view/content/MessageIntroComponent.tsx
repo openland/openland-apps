@@ -15,6 +15,7 @@ import { withSetReaction, withChangeReaction } from '../../../../../api/withSetR
 import IntroIcon from '../../icons/ic-tag-intro.svg';
 import PassedIcon from '../../icons/ic-passed.svg';
 import { makeNavigable } from 'openland-x/Navigable';
+import { SharedRoomKind } from 'openland-api/Types';
 
 const SetAccesReactionButton = withSetReaction(withRouter((props) => (
     <XMutation mutation={props.setReaction} onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}>
@@ -198,7 +199,7 @@ interface MessageIntroComponentProps {
     messageId: string;
     meId: string;
     senderId: string;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | 'PRIVATE';
 }
 
 const Counter = Glamorous.div<{ alignSelf?: string, accepted: boolean }>(props => ({
@@ -243,7 +244,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
         }
 
         if (senderId === meId) {
-            if (conversationType === 'PrivateConversation') {
+            if (conversationType === null) {
                 if (reactionsLength > 0) {
                     if (reactions[0].reaction === 'pass') {
                         return null;
@@ -258,7 +259,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                 } else {
                     return null;
                 }
-            } else if (conversationType !== 'PrivateConversation') {
+            } else if (conversationType !== null) {
                 if (reactionsLength > 0 && acceptLength > 0) {
                     return (
                         <Counter alignSelf="flex-end" accepted={true}>
@@ -280,7 +281,7 @@ export class MessageIntroComponent extends React.Component<MessageIntroComponent
                             <PassedIcon />
                             <span>You passed</span>
                         </Counter>
-                        {(reactionsLength > 0 && conversationType !== 'PrivateConversation' && acceptLength > 0) && (
+                        {(reactionsLength > 0 && conversationType !== null && acceptLength > 0) && (
                             <Counter accepted={true}>
                                 <CheckIconSmall />
                                 <span>{acceptLength} accepted</span>

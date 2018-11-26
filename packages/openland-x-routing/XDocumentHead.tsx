@@ -69,8 +69,8 @@ const OrgSmartHead = withOrganization(withRouter((props) => {
 }));
 
 const RoomInviteSmartHead = withChannelInviteInfo(withRouter((props) => {
-    if (props.data.invite && props.data.invite.channel) {
-        let room = props.data.invite.channel;
+    if (props.data.invite && props.data.invite.room) {
+        let room = props.data.invite.room;
         let computedOG: OpenGraphObject = {
             title: room.title + ' — Private Community at Openland',
             description: room.description || 'Openland is a professional messaging service built for productivity and speed. It’s time to move away from endless meetings, disorganized email threads, disconnected team chats, and work invasion in your personal social media. With Openland you can manage all your professional communications in one messaging inbox.',
@@ -107,7 +107,7 @@ export const XDocumentHead = withRouter<{ title?: string | string[], titleWithou
                 <title key="page_title">{title}</title>
                 <meta key="og_title" property="og:title" content={props.titleSocial ? props.titleSocial : title} />
                 <meta key="og_url" property="og:url" content={props.router.href} />
-                <meta key="og_description" property="og:description" content="All-in-one solution for land acquisition" />
+                <meta key="og_description" property="og:description" content="An instant messaging service for market research, deal sourcing, and transaction management in real estate." />
                 <meta key="og_img" property="og:image" content={img} />
             </Head>
         );

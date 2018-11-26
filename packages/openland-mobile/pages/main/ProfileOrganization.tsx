@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { OrganizationQuery, ProfileUpdateMutation, ProfileQuery, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, ConversationSettingsUpdateMutation } from 'openland-api';
+import { OrganizationQuery, ProfileUpdateMutation, AccountSettingsQuery, OrganizationRemoveMemberMutation, OrganizationChangeMemberRoleMutation, RoomQuery, RoomSettingsUpdateMutation } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -14,7 +14,6 @@ import { getMessenger } from '../../utils/messenger';
 import { Alert, View, Text, Image, TouchableHighlight } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { ChatInfoQuery } from 'openland-api';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
 import { XPStyles } from 'openland-xp/XPStyles';
@@ -48,14 +47,14 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 <ZListItemGroup header={null}>
 
                                                     {this.props.router.params.conversationId &&
-                                                        <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.router.params.conversationId }} {...{ leftIcon: true }}>
+                                                        <YQuery query={RoomQuery} variables={{ id: this.props.router.params.conversationId }} {...{ leftIcon: true }}>
                                                             {conv => conv.data ? (
-                                                                <YMutation mutation={ConversationSettingsUpdateMutation}>
+                                                                <YMutation mutation={RoomSettingsUpdateMutation}>
                                                                     {(update) => {
                                                                         let toggle = async () => {
                                                                             startLoader();
                                                                             try {
-                                                                                await update({ variables: { conversationId: conv.data!.chat.id, settings: { mute: !conv.data!.chat.settings.mute } } });
+                                                                                await update({ variables: { roomId: conv.data!.room!.id, settings: { mute: !conv.data!.room!.settings.mute } } });
                                                                             } catch (e) {
                                                                                 Alert.alert(e.message);
                                                                             }
@@ -65,7 +64,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                             <ZListItem
                                                                                 leftIcon={require('assets/ic-cell-notif-ios.png')}
                                                                                 text="Notifications"
-                                                                                toggle={!conv.data!.chat.settings.mute}
+                                                                                toggle={!conv.data!.room!.settings.mute}
                                                                                 onToggle={toggle}
                                                                                 onPress={toggle}
                                                                             />
@@ -101,7 +100,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 {resp.data.organization.twitter && <ZListItem title="twitter" text={resp.data.organization.twitter} />}
                                             </ZListItemGroup>
 
-                                            <ZListItemGroup header="Public channels" divider={false} actionRight={resp.data.organization.channels.length > 3 ? { title: 'Show all', onPress: () => this.props.router.push('OrgChannels', { organizationId: resp.data.organization.id, title: resp.data.organization.name + ' channels' }) } : undefined}>
+                                            <ZListItemGroup header="Public rooms" divider={false} actionRight={resp.data.organization.channels.length > 3 ? { title: 'Show all', onPress: () => this.props.router.push('OrgChannels', { organizationId: resp.data.organization.id, title: resp.data.organization.name + ' channels' }) } : undefined}>
                                                 {resp.data.organization.channels.filter((c, i) => i <= 2).map((v) => (
                                                     <ArrowWrapper>
                                                         <ChannelViewAsync

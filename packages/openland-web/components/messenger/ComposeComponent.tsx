@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../../routes';
-import { ChatCreateGroupMutation } from 'openland-api/ChatCreateGroupMutation';
 import { MessageComposeComponent } from './components/view/MessageComposeComponent';
 import { ConversationContainer } from './components/view/ConversationContainer';
 import { MessagesContainer } from './components/view/MessagesContainer';
@@ -21,6 +20,7 @@ import { TextCompose } from 'openland-text/TextCompose';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { withExplorePeople } from '../../api/withExplorePeople';
 import { MessageFull_mentions } from 'openland-api/Types';
+import { RoomCreateMutation } from 'openland-api';
 
 const Root = Glamorous(XVertical)({
     display: 'flex',
@@ -291,13 +291,15 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
                 let res = await this.props.messenger.client.client.mutate({
-                    mutation: ChatCreateGroupMutation.document,
+                    mutation: RoomCreateMutation.document,
                     variables: {
+                        kind: 'GROUP',
                         message: msg,
+                        title: this.state.values.map((v) => v.label).join(', '),
                         members: this.state.values.map((v) => v.value)
                     }
                 });
-                Router.replaceRoute('/mail/' + (res.data as any).group.id);
+                Router.replaceRoute('/mail/' + (res.data as any).room.id);
             }
         }
     }

@@ -1,4 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ChatLeaveMutation } from 'openland-api';
+import { RoomLeaveMutation } from 'openland-api';
 
-export const withChatLeave = graphqlMutation(ChatLeaveMutation, 'leaveFromChat');
+export const withChatLeave = graphqlMutation(RoomLeaveMutation, 'leaveFromChat');

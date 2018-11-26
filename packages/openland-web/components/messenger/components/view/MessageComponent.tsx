@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { MessageFull, UserShort } from 'openland-api/Types';
+import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
@@ -136,7 +136,7 @@ interface MessageComponentProps {
     conversation: ConversationEngine;
     out: boolean;
     me?: UserShort | null;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId: string;
 }
 
@@ -213,6 +213,10 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             return;
         }
 
+        if (window.getSelection().toString()) {
+            return;
+        }
+
         let { forwardMessagesId } = messagesContext;
         let selectedMessageId = forwardMessagesId;
 
@@ -254,7 +258,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         }
                     />
                 </XVertical>
-            ) : (isServerMessage(message) && this.props.conversationType === 'ChannelConversation') ? (
+            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
                 <XWithRole role="super-admin">
                     <XVertical className="menu">
                         <XOverflow
@@ -287,6 +291,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
     render() {
         const { message } = this.props;
+
         let content: any[] = [];
         let date: any = null;
         let edited = isServerMessage(this.props.message) && this.props.message.edited;
@@ -412,6 +417,38 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             content.push(<MessageTextComponent message={''} mentions={null} key={'text'} isService={false} isEdited={edited} />);
         }
 
+        // menu
+        let menu = isServerMessage(message) && this.props.out ?
+            (
+                <XVertical className="menu">
+                    <XOverflow
+                        show={this.state.isMenuOpen}
+                        flat={true}
+                        placement="bottom-end"
+                        onClickTarget={this.switchMenu}
+                        content={
+                            <>
+                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
+                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
+                            </>
+                        }
+                    />
+                </XVertical>
+            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
+                <XWithRole role="super-admin">
+                    <XVertical className="menu">
+                        <XOverflow
+                            flat={true}
+                            placement="bottom-end"
+                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
+                        />
+                    </XVertical>
+                </XWithRole>
+            ) : null;
+        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
+            menu = null;
+        }
+
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
@@ -457,14 +494,14 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 isEditView={this.state.isEditView}
             >
                 <XHorizontal alignSelf="stretch">
-                    {this.props.sender && (this.props.conversationType !== 'PrivateConversation') && (
+                    {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
                         <UserPopper
                             user={this.props.sender}
                             isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
                             startSelected={hideMenu}
                         />
                     )}
-                    {this.props.sender && (this.props.conversationType === 'PrivateConversation') && (
+                    {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
                         <UserAvatar user={this.props.sender} startSelected={hideMenu} />
                     )}
                     <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>

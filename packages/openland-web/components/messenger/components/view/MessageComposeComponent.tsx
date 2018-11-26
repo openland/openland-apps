@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
-import { ChannelMembers_members } from 'openland-api/Types';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
@@ -31,7 +30,9 @@ import {
     ReplyMessage,
     SaveDraftMessageVariables,
     SaveDraftMessage,
-    MessageFull_mentions
+    MessageFull_mentions,
+    SharedRoomKind,
+    RoomMembers_members
 } from 'openland-api/Types';
 
 const SendMessageWrapper = Glamorous.div({
@@ -298,7 +299,7 @@ const EditView = (props: { title: string, message: string, onCancel: () => void 
 );
 
 export interface MessageComposeComponentProps {
-    conversationType?: string;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
@@ -312,11 +313,11 @@ interface MessageComposeWithDraft extends MessageComposeComponentProps {
 }
 
 interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
-    members?: ChannelMembers_members[];
+    members?: RoomMembers_members[];
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    members?: ChannelMembers_members[];
+    members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
@@ -444,7 +445,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (messages.length > 0) {
             this.props.replyMessage({
                 variables: {
-                    conversationId: this.props.conversationId,
+                    roomId: this.props.conversationId,
                     message: message,
                     replyMessages: messages
                 }
@@ -849,4 +850,4 @@ export const MessageComposeComponentDraft = withGetDraftMessage(props => {
             {...props}
         />
     );
-}) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string, channelId?: string } }>;
+}) as React.ComponentType<MessageComposeComponentProps & { variables?: { roomId?: string, conversationId?: string } }>;

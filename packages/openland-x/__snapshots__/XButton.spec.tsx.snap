@@ -137,7 +137,7 @@ exports[`XButton should render correctly 1`] = `
 }
 
 <a
-  className="css-0 css-nil"
+  className="css-0"
 >
   <div
     className="css-4 button-content"

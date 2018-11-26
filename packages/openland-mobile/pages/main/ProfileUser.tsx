@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { UserQuery, OnlineQuery, ConversationSettingsUpdateMutation } from 'openland-api';
+import { UserQuery, OnlineQuery, RoomSettingsUpdateMutation } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -63,12 +63,12 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                     {!!resp.data.user.primaryOrganization && <ZListItem leftAvatar={{ photo: resp.data.user.primaryOrganization.photo, key: resp.data.user.primaryOrganization.id, title: resp.data.user.primaryOrganization.name }} multiline={true} text={resp.data.user.primaryOrganization.name} title="organization" path="ProfileOrganization" pathParams={{ id: resp.data.user.primaryOrganization.id }} />}
                                     {!!resp.data.user.location && <ZListItem title="location" text={resp.data.user.location} />}
                                     <View style={{ marginTop: 20 }} {...{ divider: true }} />
-                                    <YMutation mutation={ConversationSettingsUpdateMutation} {...{ leftIcon: true }}>
+                                    <YMutation mutation={RoomSettingsUpdateMutation} {...{ leftIcon: true }}>
                                         {(update) => {
                                             let toggle = async () => {
                                                 startLoader();
                                                 try {
-                                                    await update({ variables: { conversationId: resp.data.conversation.id, settings: { mute: !resp.data.conversation.settings.mute } } });
+                                                    await update({ variables: { roomId: resp.data.conversation.id, settings: { mute: !resp.data.conversation.settings.mute } } });
                                                 } catch (e) {
                                                     Alert.alert(e.message);
                                                 }

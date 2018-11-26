@@ -23,6 +23,21 @@ const TalkBar = glamorous(XHorizontal)({
     flexShrink: 0
 });
 
+class TalkVideo extends React.Component<{ src: MediaStream }> {
+    ref = React.createRef<HTMLVideoElement>();
+    componentDidMount() {
+        let video = this.ref.current!;
+        video.muted = true;
+        video.autoplay = true;
+        video.setAttribute('playsinline', 'true');
+        video.controls = false;
+        video.srcObject = this.props.src;
+    }
+    render() {
+        return <video ref={this.ref} width={28} height={28} />;
+    }
+}
+
 export const TalkBarComponent = (props: { conversationId: string }) => {
     return (
         <Container>
@@ -37,19 +52,25 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                             <TalkWatchComponent apollo={apollo!} id={data.data!.conference.id} />
                         </>);
                     }
-
                     return (
                         <>
                             <TalkContext.Consumer>{ctx => (
                                 <TalkBar alignItems="center" justifyContent="center">
                                     {data.data!.conference.peers.map((v) => (
-                                        <XAvatar
-                                            size="m-small"
-                                            style="user"
-                                            objectId={v.user.id}
-                                            online={false}
-                                            cloudImageUuid={v.user.photo || undefined}
-                                        />
+                                        <>
+                                            {ctx.streams && ctx.streams[v.id] && (
+                                                <TalkVideo src={ctx.streams[v.id]} />
+                                            )}
+                                            {!(ctx.streams && ctx.streams[v.id]) && (
+                                                <XAvatar
+                                                    size="m-small"
+                                                    style="user"
+                                                    objectId={v.user.id}
+                                                    online={false}
+                                                    cloudImageUuid={v.user.photo || undefined}
+                                                />
+                                            )}
+                                        </>
                                     ))}
                                     {ctx.cid === props.conversationId && (
                                         <>

@@ -13,21 +13,22 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
 import { withUserInfo } from '../../UserInfo';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
-import { withChatLeave } from '../../../api/withChatLeave';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import {
     MessageFull_mentions
 } from 'openland-api/Types';
+import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
+import { withChatLeave } from '../../../api/withChatLeave';
 
 interface MessagesComponentProps {
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
-    conversationType?: string;
+    conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
 }
 
@@ -79,7 +80,7 @@ export const LeaveChatComponent = withChatLeave((props) => {
             targetQuery="leaveFromChat"
             submitBtnText="Leave"
             defaultAction={(data) => {
-                props.leaveFromChat({ variables: { conversationId: id } });
+                props.leaveFromChat({ variables: { roomId: id } });
             }}
             submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
@@ -232,8 +233,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
+                            roomId: this.props.conversationId,
                             conversationId: this.props.conversationId,
-                            channelId: this.props.conversationId,
                         }}
                     />
                 )}
@@ -258,7 +259,7 @@ const Placeholder = withChatHistory(() => {
 
 interface MessengerRootComponentProps {
     conversationId: string;
-    conversationType?: string;
+    conversationType: SharedRoomKind | 'PRIVATE';
 }
 
 const MessagesWithUser = withUserInfo((props) => (
@@ -269,12 +270,12 @@ const MessagesWithUser = withUserInfo((props) => (
         messenger={props.messenger}
         conversationType={props.conversationType}
     />
-)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType?: string }>;
+)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType: SharedRoomKind | 'PRIVATE' }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all
     if (!canUseDOM) {
-        return <Placeholder variables={{ conversationId: props.conversationId }} />;
+        return <Placeholder variables={{ roomId: props.conversationId }} />;
     }
     return (
         <MessengerContext.Consumer>

@@ -1,5 +1,4 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ChatInfoQuery } from 'openland-api';
-import { ChannelJoinInviteLinkMutation } from 'openland-api';
+import { RoomJoinInviteLinkMutation } from 'openland-api';
 
-export const withChannelJoinInviteLink = graphqlMutation(ChannelJoinInviteLinkMutation, 'join', { refetchQueries: [ChatInfoQuery] });
+export const withChannelJoinInviteLink = graphqlMutation(RoomJoinInviteLinkMutation, 'join');

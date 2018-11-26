@@ -1,23 +1,26 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { SRouter } from 'react-native-s/SRouter';
-import { ChatInfo_chat } from 'openland-api/Types';
+import { RoomQuery } from 'openland-api';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 
-export let resolveConversationProfilePath = (chat: ChatInfo_chat) => {
+export let resolveConversationProfilePath = (room: Room_room) => {
     let path: string | undefined = undefined;
     let pathArgs: any = {};
-    if (chat.__typename === 'PrivateConversation') {
+    let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
+    let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
+
+    if (privateRoom) {
         path = 'ProfileUser';
-        pathArgs = { id: chat.flexibleId };
-    } else if (chat.__typename === 'SharedConversation') {
+        pathArgs = { id: privateRoom.user.id };
+    } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
         path = 'ProfileOrganization';
-        pathArgs = { id: chat.flexibleId, conversationId: chat.id };
-    } else if (chat.__typename === 'GroupConversation' || chat.__typename === 'ChannelConversation') {
+        pathArgs = { id: sharedRoom.organization!.id, conversationId: room.id };
+    } else if (sharedRoom && (sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
         path = 'ProfileGroup';
-        pathArgs = { id: chat.id };
+        pathArgs = { id: room.id };
     }
 
     return { path, pathArgs };
@@ -27,7 +30,7 @@ export class ChatHeaderAvatar extends React.PureComponent<{ conversationId: stri
 
     render() {
         return (
-            <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
+            <YQuery query={RoomQuery} variables={{ id: this.props.conversationId }}>
                 {res => {
                     if (res.loading) {
                         return null;
@@ -36,21 +39,20 @@ export class ChatHeaderAvatar extends React.PureComponent<{ conversationId: stri
                         return null;
                     }
 
-                    // if (isAndroid) {
-                    //     return null;
-                    // }
+                    let path = resolveConversationProfilePath(res.data!!.room!);
 
-                    let path = resolveConversationProfilePath(res.data!!.chat);
+                    let sharedRoom = res.data!!.room!.__typename === 'SharedRoom' ? res.data!!.room! as Room_room_SharedRoom : null;
+                    let privateRoom = res.data!!.room!.__typename === 'PrivateRoom' ? res.data!!.room! as Room_room_PrivateRoom : null;
 
                     return (
                         <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!!, path.pathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 10, marginLeft: Platform.OS === 'ios' ? 10 : 0 }}>
                             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                                 <XPAvatar
-                                    src={(res.data!!.chat as any).photo || (res.data!!.chat.photos.length > 0 ? res.data!!.chat.photos[0] : undefined)}
+                                    src={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
                                     size={Platform.OS === 'android' ? 40 : 36}
-                                    placeholderKey={res.data!!.chat.flexibleId}
-                                    placeholderTitle={res.data!!.chat.title}
-                                    userId={res.data!!.chat.__typename === 'PrivateConversation' ? res.data.chat.flexibleId : undefined}
+                                    placeholderKey={privateRoom ? privateRoom.user.id : sharedRoom!.id}
+                                    placeholderTitle={privateRoom ? privateRoom.user.name : sharedRoom!.title}
+                                    userId={privateRoom ? privateRoom.user.id : undefined}
                                 />
                             </View>
                         </TouchableOpacity>

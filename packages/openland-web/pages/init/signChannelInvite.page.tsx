@@ -45,8 +45,8 @@ const InviteInfo = withChannelInviteInfo((props) => {
         <>
             <XDocumentHead
                 title={InitTexts.join.pageTitle}
-                titleSocial={(props.data.invite && props.data.invite.channel) && props.data.invite.channel.description || InitTexts.socialPageTitle}
-                imgUrl={(props.data.invite && props.data.invite.channel) ? props.data.invite.channel.socialImage : undefined}
+                titleSocial={(props.data.invite && props.data.invite.room) && props.data.invite.room.description || InitTexts.socialPageTitle}
+                imgUrl={(props.data.invite && props.data.invite.room) ? props.data.invite.room.photo : undefined}
             />
             {(props as any).instantRedirect && <XPageRedirect path={(props as any).instantRedirect} />}
             {!(props as any).instantRedirect &&
@@ -59,7 +59,7 @@ const InviteInfo = withChannelInviteInfo((props) => {
                             {props.data.invite && (
                                 <RoomsInviteComponent
                                     noLogin={true}
-                                    room={props.data.invite.channel}
+                                    room={props.data.invite.room}
                                     invite={props.data.invite}
                                     signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
                                 />
@@ -77,18 +77,18 @@ const InviteInfo = withChannelInviteInfo((props) => {
                 </XTrack>}
         </>
     );
-}) as React.ComponentType<{ variables: { uuid: string }, redirect: string, instantRedirect?: string }>;
+}) as React.ComponentType<{ variables: { invite: string }, redirect: string, instantRedirect?: string }>;
 
 export default withAppBase('Join Room', withUserInfo((props) => {
-    let uuid = props.router.routeQuery.uuid;
+    let invite = props.router.routeQuery.invite;
 
-    Cookie.set('x-openland-invite', uuid, { path: '/' });
+    Cookie.set('x-openland-invite', invite, { path: '/' });
 
     return (
         <>
             <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event="Invite">
-                <InviteInfo variables={{ uuid: uuid }} redirect={'/acceptChannelInvite/' + uuid} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + uuid : undefined} />
+                <InviteInfo variables={{ invite: invite }} redirect={'/acceptChannelInvite/' + invite} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + invite : undefined} />
             </XTrack>
         </>
     );

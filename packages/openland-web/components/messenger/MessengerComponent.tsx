@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { withChat } from '../../api/withChat';
+import { withRoom } from '../../api/withRoom';
 import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
@@ -11,12 +11,11 @@ import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withBlockUser } from '../../api/withBlockUser';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
-import { ChannelMembersComponent } from '../../pages/main/channel/components/membersComponent';
+import { RoomMembersComponent } from '../../pages/main/channel/components/membersComponent';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
@@ -31,12 +30,15 @@ import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { withChannelSetHidden } from '../../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
 import { UserSelect } from '../../api/UserSelect';
-import { withSuperAddToChannel } from '../../api/withSuperAddToChannel';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
+import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { withRoomAddMembers } from '../../api/withRoomAddMembers';
+import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
 import { XDate } from 'openland-x/XDate';
@@ -218,10 +220,6 @@ class BlockSwitcherComponent extends React.Component<{ unblock: any, block: any,
     }
 }
 
-const BlockButton = withBlockUser((props) => (
-    <BlockSwitcherComponent block={props.block} unblock={props.unblock} blocked={(props as any).blocked} userId={(props as any).userId} refetchVars={(props as any).refetchVars} />
-)) as React.ComponentType<{ blocked: boolean, userId: string, refetchVars: { conversationId: string } }>;
-
 class SwitchComponent extends React.Component<{ mutation: any, conversationId: string, val: boolean, fieldName: string, refetchVars: { conversationId: string } }, { val: boolean }> {
     constructor(props: any) {
         super(props);
@@ -263,20 +261,19 @@ export const RoomSetHidden = withChannelSetHidden((props) => (
     <SwitchComponent mutation={props.setHidden} val={(props as any).val} fieldName={'hidden'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
 )) as React.ComponentType<{ val: boolean, conversationId: string }>;
 
-class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mobileNotifications: string, mute: boolean }, conversationId: string }, { settings: { mobileNotifications: string, mute: boolean } }> {
+class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mute: boolean }, roomId: string }, { settings: { mute: boolean } }> {
     constructor(props: any) {
         super(props);
         this.state = { settings: props.settings };
     }
 
-    apply = (mobile: string, mute: boolean) => {
+    apply = (mute: boolean) => {
         this.props.mutation({
             variables: {
                 settings: {
-                    mobileNotifications: mobile,
                     mute: mute
                 },
-                conversationId: this.props.conversationId,
+                roomId: this.props.roomId,
             }
         });
     }
@@ -284,22 +281,7 @@ class NotificationSettingsComponent extends React.Component<{ mutation: any, set
     render() {
         return (
             <XVertical separator={0}>
-                <XMenuItemWrapper key="mobile">
-                    <XVertical>
-                        <XCheckbox
-                            label="Mobile"
-                            switcher={true}
-                            value={this.state.settings.mobileNotifications}
-                            trueValue="ALL"
-                            onChange={(checked) => {
-                                this.apply(checked.checked ? 'ALL' : 'NONE', this.state.settings.mute);
-                                this.setState({
-                                    settings: { ... this.state.settings, mobileNotifications: checked.checked ? 'ALL' : 'NONE' }
-                                });
-                            }}
-                        />
-                    </XVertical>
-                </XMenuItemWrapper>
+
                 <XMenuItemWrapper key="mute">
                     <XVertical>
                         <XCheckbox
@@ -308,7 +290,7 @@ class NotificationSettingsComponent extends React.Component<{ mutation: any, set
                             value={this.state.settings.mute ? 'true' : 'false'}
                             trueValue="true"
                             onChange={(checked) => {
-                                this.apply(this.state.settings.mobileNotifications, checked.checked);
+                                this.apply(checked.checked);
                                 this.setState({
                                     settings: { ... this.state.settings, mute: !this.state.settings.mute }
                                 });
@@ -322,8 +304,8 @@ class NotificationSettingsComponent extends React.Component<{ mutation: any, set
 }
 
 const NotificationSettings = withConversationSettingsUpdate((props) => (
-    <NotificationSettingsComponent mutation={props.update} settings={(props as any).settings} conversationId={(props as any).conversationId} />
-)) as React.ComponentType<{ settings: { mobileNotifications: string, mute: boolean }, conversationId: string }>;
+    <NotificationSettingsComponent mutation={props.update} settings={(props as any).settings} roomId={(props as any).roomId} />
+)) as React.ComponentType<{ settings: { mute: boolean | null }, roomId: string }>;
 
 const RoomTabs = Glamorous.div({
     display: 'flex',
@@ -354,9 +336,8 @@ const RoomTab = Glamorous(XLink)({
 export const RoomEditComponent = withAlterChat((props) => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
-    let editPhotoRef = (props as any).photoRef;
-    let editSocialImageRef = (props as any).socialImageRef;
-    let editLongDescription = (props as any).longDescription;
+    let editPhotoRef = (props as any).photo;
+    let editSocialImageRef = (props as any).socialImage;
     return (
         <XModalForm
             scrollableContent={true}
@@ -368,16 +349,15 @@ export const RoomEditComponent = withAlterChat((props) => {
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
-                let newLongDescription = data.input.longDescription;
-
+                console.warn(newPhoto, newSocialImage);
                 props.alter({
                     variables: {
+                        roomId: (props as any).roomId,
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
+                            ...newPhoto && newPhoto.uuid !== editPhotoRef ? { photoRef: sanitizeIamgeRef(newPhoto) } : {},
+                            ...newSocialImage && newSocialImage.uuid !== editSocialImageRef ? { socialImageRef: sanitizeIamgeRef(newSocialImage) } : {},
                         }
                     }
                 });
@@ -386,9 +366,8 @@ export const RoomEditComponent = withAlterChat((props) => {
                 input: {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
-                    longDescription: (props as any).longDescription || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef),
-                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
+                    photoRef: { uuid: (props as any).photo },
+                    socialImageRef: (props as any).socialImage ? { uuid: (props as any).socialImage } : undefined,
                 }
             }}
         >
@@ -407,76 +386,24 @@ export const RoomEditComponent = withAlterChat((props) => {
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ title: string, photoRef: any, description: string | null, longDescription: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ title: string, photo: string, socialImage: string | null, description: string | null, roomId: string }>;
 
-export const GroupEditComponent = withAlterChat((props) => {
-    let editTitle = (props as any).title;
-    let editPhotoRef = (props as any).photoRef;
-    let editDescription = (props as any).description;
-    let editLongDescription = (props as any).longDescription;
-    return (
-        <XModalForm
-            targetQuery="editChat"
-            title="Group settings"
-            useTopCloser={true}
-            defaultAction={(data) => {
-                let newTitle = data.input.title;
-                let newDescription = data.input.description;
-                let newPhoto = data.input.photoRef;
-                let newLongDescription = data.input.longDescription;
-
-                props.alter({
-                    variables: {
-                        input: {
-                            ...newTitle !== editTitle ? { title: newTitle } : {},
-                            ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                            ...newLongDescription !== editLongDescription ? { longDescription: newLongDescription } : {},
-                        }
-                    }
-                });
-            }}
-            defaultData={{
-                input: {
-                    title: (props as any).title || '',
-                    description: (props as any).description || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef),
-                    longDescription: (props as any).longDescription || '',
-                }
-            }}
-        >
-            <XVertical separator={12}>
-                <XHorizontal separator={12}>
-                    <XAvatarUpload size="default" field="input.photoRef" placeholder={{ add: 'Add photo', change: 'Change Photo' }} />
-                    <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
-                        <XInput field="input.title" flexGrow={1} title="Group name" size="large" />
-                        <XWithRole role="feature-chat-embedded-attach">
-                            <XInput field="input.longDescription" flexGrow={1} title="Attach link" size="large" />
-                        </XWithRole>
-                    </XVertical>
-                </XHorizontal>
-                <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
-            </XVertical>
-        </XModalForm>
-    );
-}) as React.ComponentType<{ title: string, description: string | null, longDescription?: string, photoRef: any, refetchVars: { conversationId: string } }>;
-
-export const AddMemberForm = withSuperAddToChannel((props) => {
+export const AddMemberForm = withRoomAddMembers((props) => {
     return (
         <XModalFormOld
             title="Add member to room"
-            submitMutation={props.add}
+            submitMutation={props.addMember}
             mutationDirect={true}
             actionName="Add"
             targetQuery="addMember"
-            defaultValues={{ id: (props as any).channelId }}
+            defaultValues={{ roomId: (props as any).roomId }}
         >
             <XFormField title="User">
                 <XForm.Select field="userId" component={UserSelect} />
             </XFormField>
         </XModalFormOld>
     );
-}) as React.ComponentType<{ refetchVars: { conversationId: string }, channelId: string }>;
+}) as React.ComponentType<{ roomId: string }>;
 
 const InviteButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -594,7 +521,7 @@ class MessengerWrapper extends React.Component<MessengerWrapperProps> {
     }
 }
 
-let HeaderLeftContent = (props: { chatType?: string; ownerRole?: boolean; path?: string; children?: any }) => {
+let HeaderLeftContent = (props: { chatType?: string; path?: string; children?: any }) => {
     if (props.chatType === 'ChannelConversation') {
         return (
             <NavChatLeftContentStyled
@@ -686,7 +613,7 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
     }
 };
 
-let MessengerComponentLoader = withChat(withQueryLoader((props) => {
+let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
     let tab: 'chat' | 'members' | 'call' = 'chat';
     if (props.router.query.tab === 'members') {
         tab = 'members';
@@ -695,80 +622,87 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
         tab = 'call';
     }
 
-    if (props.data.chat.__typename === 'ChannelConversation' && props.data.chat.myStatus !== 'member') {
-        return <RoomsInviteComponent room={props.data.chat} />;
+    let sharedRoom: Room_room_SharedRoom | null = props.data.room!.__typename === 'SharedRoom' ? props.data.room as any : null;
+    let privateRoom: Room_room_PrivateRoom | null = props.data.room!.__typename === 'PrivateRoom' ? props.data.room as any : null;
+
+    if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
+        if (sharedRoom.kind === 'PUBLIC') {
+            return <RoomsInviteComponent room={sharedRoom} />;
+        } else {
+            return <XPageRedirect path="/mail" />;
+        }
     }
-    let title = props.data.chat.title;
+    let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
     let titlePath: string | undefined = undefined;
 
     let subtitle = '';
+
     let subtitlePath: string | undefined = undefined;
     let uId: string | null = null;
-    if (props.data.chat.__typename === 'SharedConversation') {
+    if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
         subtitle = 'Organization';
-    } else if (props.data.chat.__typename === 'GroupConversation') {
+    } else if (sharedRoom && sharedRoom.kind === 'GROUP') {
         subtitle = 'Group';
-    } else if (props.data.chat.__typename === 'ChannelConversation') {
+    } else if (sharedRoom && sharedRoom.kind === 'PUBLIC') {
         subtitle = 'Room';
-    } else if (props.data.chat.__typename === 'PrivateConversation') {
-        uId = props.data.chat.user.id;
-
-        if (props.data.chat.user.primaryOrganization) {
-            subtitle = props.data.chat.user.primaryOrganization.name;
-            titlePath = '/mail/u/' + props.data.chat.user.id;
-            subtitlePath = '/mail/o/' + props.data.chat.user.primaryOrganization.id;
+    } else if (privateRoom) {
+        uId = privateRoom && privateRoom.user.id;
+        let user = privateRoom.user;
+        if (user.primaryOrganization) {
+            subtitle = user.primaryOrganization.name;
+            titlePath = '/mail/u/' + user.id;
+            subtitlePath = '/mail/o/' + user.primaryOrganization.id;
         }
     }
 
-    let chatType = props.data.chat.__typename;
-    let userName = (props.data.chat.__typename === 'PrivateConversation') ? props.data.chat.user.name : undefined;
+    let chatType = props.data.room!.__typename;
 
-    let ownerRole = false;
-    if (props.data.chat.__typename === 'ChannelConversation') {
-        ownerRole = props.data.chat.myRole === 'creator' || props.data.chat.myRole === 'admin' || props.data.chat.myRole === 'owner';
-    }
-
-    let headerPath = props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : undefined;
-
-    if (chatType === 'ChannelConversation' || chatType === 'GroupConversation') {
-        headerPath = '/mail/p/' + props.data.chat.id;
+    let headerPath: string | undefined;
+    if (privateRoom) {
+        headerPath = '/mail/u/' + privateRoom.user.id;
+    } else if (sharedRoom) {
+        if (sharedRoom.kind === 'INTERNAL') {
+            headerPath = '/mail/o/' + sharedRoom.organization!.id;
+        } else if (sharedRoom.kind === 'PUBLIC' || sharedRoom.kind === 'GROUP') {
+            headerPath = '/mail/p/' + sharedRoom.id;
+        }
     }
 
     const headerRender = () => (
         <ChatHeaderContent justifyContent="space-between">
-            <HeaderLeftContent chatType={chatType} ownerRole={ownerRole} path={headerPath}>
+            <HeaderLeftContent chatType={chatType} path={headerPath}>
                 <XHorizontal alignItems="center" separator={8} maxWidth="100%" width="100%" flexBasis={0} flexGrow={1}>
                     <XAvatar
-                        path={props.data.chat.__typename === 'SharedConversation' && props.data.chat.organization ? '/mail/o/' + props.data.chat.organization.id : (props.data.chat.__typename === 'PrivateConversation' ? titlePath : undefined)}
+                        path={headerPath}
                         size="small"
-                        style={(props.data.chat.__typename === 'SharedConversation'
+                        style={(sharedRoom && sharedRoom.kind === 'INTERNAL'
                             ? 'organization'
-                            : props.data.chat.__typename === 'GroupConversation'
+                            : sharedRoom && sharedRoom.kind === 'GROUP'
                                 ? 'group'
-                                : props.data.chat.__typename === 'ChannelConversation'
+                                : sharedRoom && sharedRoom.kind === 'PUBLIC'
                                     ? 'room'
-                                    : props.data.chat.__typename === 'PrivateConversation'
+                                    : privateRoom
                                         ? 'user'
                                         : 'colorus'
                         )}
-                        cloudImageUuid={props.data.chat.photos.length > 0 ? props.data.chat.photos[0] : (props.data.chat as any).photo}
+                        cloudImageUuid={sharedRoom && sharedRoom.photo || privateRoom && privateRoom.user.photo || undefined}
                         objectName={title}
-                        objectId={props.data.chat.flexibleId}
+                        objectId={sharedRoom ? (sharedRoom.organization ? sharedRoom.organization.id : sharedRoom.id) : privateRoom ? privateRoom.user.id : undefined}
                     />
                     <XVertical separator="none" maxWidth="calc(100% - 48px)">
                         <TitleWrapper separator={3}>
                             <Title path={titlePath}>
                                 {title}
                             </Title>
-                            {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                            {privateRoom && (
                                 <SubTitle path={subtitlePath} inTop={true}>{subtitle}</SubTitle>
                             )}
                         </TitleWrapper>
                         <SubtitleWrapper>
-                            {(props.data.chat.__typename !== 'PrivateConversation') && (
+                            {!privateRoom && (
                                 <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
                             )}
-                            {(uId && props.data.chat.__typename === 'PrivateConversation') && (
+                            {uId && (
                                 <LastSeen variables={{ userId: uId }} />
                             )}
                         </SubtitleWrapper>
@@ -776,15 +710,15 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                 </XHorizontal>
             </HeaderLeftContent>
             <XHorizontal alignItems="center" separator={5}>
-                {props.data.chat.__typename === 'ChannelConversation' && (
+                {sharedRoom && sharedRoom.kind === 'PUBLIC' && (
                     <XHorizontal separator={14}>
                         <RoomTabs>
                             <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
                             <RoomTab query={{ field: 'tab', value: 'members' }}>
                                 <XHorizontal separator={4} alignItems="center">
                                     <span>Members</span>
-                                    {props.data.chat.organization && props.data.chat.organization.isOwner && props.data.chat.memberRequestsCount > 0 && (
-                                        <XCounter big={true} count={props.data.chat.memberRequestsCount} />
+                                    {sharedRoom && (sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER') && sharedRoom.members.filter(m => m.membership === 'REQUESTED').length > 0 && (
+                                        <XCounter big={true} count={sharedRoom.members.filter(m => m.membership === 'REQUESTED').length} />
                                     )}
                                 </XHorizontal>
                             </RoomTab>
@@ -792,25 +726,25 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         <XHorizontal alignSelf="center" alignItems="center" separator={6}>
                             <XWithRole role="feature-non-production">
                                 <TalkContext.Consumer>
-                                    {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                                    {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
                                 </TalkContext.Consumer>
                             </XWithRole>
                             <InviteMembersModal
-                                orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
+                                orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                                 channelTitle={title}
-                                channelId={props.data.chat.id}
+                                roomId={props.data.room!.id}
                                 target={(
                                     <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
                                 )}
                             />
-                            {props.data.chat.description && (
+                            {sharedRoom.description && (
                                 <XPopper
                                     showOnHover={true}
                                     placement="bottom-end"
                                     content={(
                                         <AboutWrapper separator={2} maxWidth={510}>
                                             <AboutTitle>About room</AboutTitle>
-                                            <AboutText>{props.data.chat.description}</AboutText>
+                                            <AboutText>{sharedRoom.description}</AboutText>
                                         </AboutWrapper>
                                     )}
                                 >
@@ -823,7 +757,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     </XHorizontal>
                 )}
 
-                {props.data.chat.__typename === 'GroupConversation' && (
+                {sharedRoom && sharedRoom.kind === 'GROUP' && (
                     <XHorizontal separator={14} alignItems="center">
                         <RoomTabs>
                             <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
@@ -831,7 +765,7 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                         </RoomTabs>
                         <XWithRole role="feature-non-production">
                             <TalkContext.Consumer>
-                                {ctx => ctx.cid !== props.data.chat.id && (<XButton text="Call" onClick={() => ctx.joinCall(props.data.chat.id)} />)}
+                                {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
                             </TalkContext.Consumer>
                         </XWithRole>
                     </XHorizontal>
@@ -844,38 +778,31 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
                     content={(
                         <div style={{ width: 160 }}>
                             <XMenuTitle>Notifications</XMenuTitle>
-                            <NotificationSettings settings={props.data.chat.settings} conversationId={props.data.chat.id} />
-
-                            {props.data.chat.__typename === 'PrivateConversation' && (
-                                <BlockButton
-                                    blocked={(props.data.chat as any).blocked}
-                                    userId={(props.data.chat as any).user.id}
-                                    refetchVars={{ conversationId: props.data.chat.id }}
-                                />
-                            )}
+                            <NotificationSettings settings={(sharedRoom || privateRoom)!.settings} roomId={props.data.room!.id} />
                         </div>
                     )}
                 />
-                {props.data.chat.__typename !== 'PrivateConversation' && (
+                {sharedRoom && (
                     <XOverflow
                         flat={true}
                         placement="bottom-end"
                         content={(
                             <div style={{ width: 160 }}>
-                                {props.data.chat.__typename === 'ChannelConversation' && (
+                                {sharedRoom.kind === 'PUBLIC' && (
                                     <>
                                         <XMenuTitle>Super admin</XMenuTitle>
-                                        <RoomSetFeatured conversationId={props.data.chat.id} val={props.data.chat.featured} />
-                                        <RoomSetHidden conversationId={props.data.chat.id} val={props.data.chat.hidden} />
+                                        {/* TODO recover admin features: */}
+                                        {/* <RoomSetFeatured conversationId={props.data.room!.id} val={props.data.room!.featured} />
+                                                <RoomSetHidden conversationId={props.data.room!.id} val={props.data.room!.hidden} /> */}
                                         <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
                                         <XMenuTitle>Common</XMenuTitle>
                                         <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                     </>
                                 )}
-                                {props.data.chat.__typename === 'GroupConversation' && (
+                                {sharedRoom.kind === 'GROUP' && (
                                     <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
                                 )}
-                                <XMenuItem query={{ field: 'leaveFromChat', value: props.data.chat.id }} style="danger">Leave chat</XMenuItem>
+                                <XMenuItem query={{ field: 'leaveFromChat', value: props.data.room!.id }} style="danger">Leave chat</XMenuItem>
                             </div>
                         )}
                     />
@@ -887,67 +814,49 @@ let MessengerComponentLoader = withChat(withQueryLoader((props) => {
     let messagesState = ((props as any).state as MessagesStateContextProps);
     let selectedHeader = messagesState.useForwardHeader;
     let placeholder = messagesState.useForwardPlaceholder;
-
     return (
-        <MessengerWrapper chatTitle={title} chatType={chatType} userName={userName} handlePageTitle={(props as any).handlePageTitle}>
+        <MessengerWrapper chatTitle={title} chatType={chatType} userName={privateRoom ? privateRoom.user.name : undefined} handlePageTitle={(props as any).handlePageTitle}>
             {placeholder && <FrowardPlaceholder state={messagesState} />}
             <ChatHeaderWrapper>
                 {selectedHeader ? (
                     <ForwardHeader state={(props as any).state} />
                 ) : headerRender()}
             </ChatHeaderWrapper>
-            <TalkBarComponent conversationId={props.data.chat!.id} />
+            <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
             <XHorizontal
                 justifyContent="center"
                 width="100%"
                 height="calc(100% - 56px)"
                 separator={0}
             >
-                <XWithRole role="feature-chat-embedded-attach">
-                    {(props.data.chat as any).longDescription && (props.data.chat as any).longDescription.startsWith('http') && (
-                        <iframe allow="microphone; camera" style={{ flexBasis: '150%' }} src={(props.data.chat as any).longDescription} />
-                    )}
-                </XWithRole>
                 {tab === 'chat' && (
                     <MessengerRootComponent
-                        conversationId={props.data.chat.id}
-                        conversationType={props.data.chat.__typename}
+                        conversationId={props.data.room!.id}
+                        conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
                     />
                 )}
-                {(props.data.chat.__typename === 'ChannelConversation' && tab === 'members') && (
-                    <ChannelMembersComponent
+                {(sharedRoom && tab === 'members') && (
+                    <RoomMembersComponent
+                        roomId={sharedRoom.id}
+                        members={sharedRoom.members}
                         channelTitle={title}
-                        key={props.data.chat.id + '_members'}
-                        variables={{ channelId: props.data.chat.id }}
-                        description={props.data.chat.description}
-                        longDescription={props.data.chat.longDescription}
-                        orgId={props.data.chat.organization ? props.data.chat.organization.id : ''}
-                        emptyText="To grow the community, invite people to this room"
+                        key={props.data.room!.id + '_members'}
+                        description={sharedRoom.description}
+                        orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                         removeFrom="room"
                     />
                 )}
-                {(props.data.chat.__typename === 'GroupConversation' && tab === 'members') && (
-                    <ChannelMembersComponent
-                        channelTitle={title}
-                        key={props.data.chat.id + '_members'}
-                        variables={{ channelId: props.data.chat.id }}
-                        description={undefined}
-                        longDescription={undefined}
-                        orgId={''}
-                        removeFrom="group"
-                    />
-                )}
-            </XHorizontal>
-            <GroupEditComponent title={props.data.chat.title} description={(props.data.chat as any).description || null} longDescription={(props.data.chat as any).longDescription} photoRef={(props.data.chat as any).photoRef} refetchVars={{ conversationId: props.data.chat.id }} />
-            {props.data.chat.__typename === 'ChannelConversation' && <RoomEditComponent title={props.data.chat.title} description={props.data.chat.description} longDescription={props.data.chat.longDescription} socialImageRef={props.data.chat.socialImageRef} photoRef={props.data.chat.photoRef} refetchVars={{ conversationId: props.data.chat.id }} />}
 
-            <AddMemberForm channelId={props.data.chat.id} refetchVars={{ conversationId: props.data.chat.id }} />
+            </XHorizontal>
+            {sharedRoom && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} photo={sharedRoom.photo} socialImage={sharedRoom.socialImage} roomId={sharedRoom.id} />}
+
+            <AddMemberForm roomId={props.data.room!.id} />
         </MessengerWrapper>
     );
-})) as React.ComponentType<{ variables: { conversationId: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
+})) as React.ComponentType<{ variables: { id: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
 
 interface MessengerComponentProps {
-    conversationId: string;
+    id: string;
     handlePageTitle?: any;
 }
 
@@ -955,7 +864,7 @@ export const MessengerComponent = (props: MessengerComponentProps) => (
     <MessagesStateContext.Consumer>
         {(state: MessagesStateContextProps) => (
             <MessengerComponentLoader
-                variables={{ conversationId: props.conversationId }}
+                variables={{ id: props.id }}
                 handlePageTitle={props.handlePageTitle}
                 state={state}
             />

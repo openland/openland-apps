@@ -8,9 +8,8 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XPopper } from 'openland-x/XPopper';
 import { XLink } from 'openland-x/XLink';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
-import { ChannelMembers, UserShort } from 'openland-api/Types';
+import { UserShort, RoomMembers, SharedRoomMembershipStatus, RoomFull_SharedRoom_members, Room_room_SharedRoom_members } from 'openland-api/Types';
 import { XLoader } from 'openland-x/XLoader';
-import { withChannelInvite } from '../../../../api/withChannelInvite';
 import { XMutation } from 'openland-x/XMutation';
 import { withConversationKick } from '../../../../api/withConversationKick';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -20,6 +19,7 @@ import CloseIcon from './icons/ic-close-1.svg';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XText } from 'openland-x/XText';
+import { withRoomAddMembers } from '../../../../api/withRoomAddMembers';
 
 const MembersWrapper = Glamorous(XScrollView2)({
     height: '100%',
@@ -72,20 +72,20 @@ class DeclineButton extends React.Component<{ isHoveredWrapper?: boolean, userId
     }
 }
 
-const Accept = withChannelInvite((props) => {
+const Accept = withRoomAddMembers((props) => {
     return (
-        <XMutation mutation={props.invite}>
+        <XMutation mutation={props.addMember}>
             <XButton
                 style={((props as any).isHovered) ? 'primary' : 'default'}
                 text="Accept"
             />
         </XMutation>
     );
-}) as React.ComponentType<{ variables: { channelId: string, userId: string }, refetchVars: { channelId: string, conversationId: string }, isHovered: boolean }>;
+}) as React.ComponentType<{ variables: { roomId: string, userId: string }, isHovered: boolean }>;
 
 interface MemberItemProps {
-    item: { status: 'invited' | 'member' | 'requested' | 'none' } & UserShort;
-    channelId: string;
+    item: { status: SharedRoomMembershipStatus} & UserShort;
+    roomId: string;
     removeFrom: string;
 }
 
@@ -113,12 +113,11 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
             >
                 <XUserCard
                     user={user}
-                    customButton={(user.status === 'requested') ? (
+                    customButton={(user.status === 'REQUESTED') ? (
                         <>
                             <Accept
-                                variables={{ userId: user.id, channelId: this.props.channelId }}
+                                variables={{ userId: user.id, roomId: this.props.roomId }}
                                 isHovered={this.state.isHoveredDecline ? false : this.state.isHovered}
-                                refetchVars={{ channelId: this.props.channelId, conversationId: this.props.channelId }}
                             />
                             <div
                                 onMouseEnter={() => this.setState({ isHoveredDecline: true })}
@@ -131,7 +130,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
                             </div>
                         </>
                     ) : undefined}
-                    customMenu={(user.status === 'member') ? (
+                    customMenu={(user.status === 'MEMBER') ? (
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
@@ -165,7 +164,7 @@ export const RemoveMemberModal = withConversationKick((props) => {
                 await props.kick({
                     variables: {
                         userId: member.user.id,
-                        conversationId: (props as any).channelId
+                        roomId: (props as any).roomId
                     }
                 });
             }}
@@ -173,12 +172,12 @@ export const RemoveMemberModal = withConversationKick((props) => {
             <XText>Are you sure you want to remove {member.user.firstName}? They will no longer be able to participate in the discussion.</XText>
         </XModalForm>
     );
-}) as React.ComponentType<{ members: any[], refetchVars: { channelId: string }, channelId: string, roomTitle: string }>;
+}) as React.ComponentType<{ members: any[], roomId: string, roomTitle: string }>;
 
 interface ChannelMembersComponentInnerProps {
-    data: ChannelMembers;
+    members: Room_room_SharedRoom_members[];
     channelTitle: string;
-    channelId: string;
+    roomId: string;
     description?: string | null;
     longDescription?: string | null;
     orgId: string;
@@ -186,14 +185,11 @@ interface ChannelMembersComponentInnerProps {
     removeFrom: string;
 }
 
-class ChannelMembersComponentInner extends React.Component<ChannelMembersComponentInnerProps> {
+export class RoomMembersComponent extends React.Component<ChannelMembersComponentInnerProps> {
     render() {
-        if (!this.props.data || !this.props.data.members) {
-            return <XLoader loading={true} />;
-        }
-
-        let requests = this.props.data.members.filter(m => m.status === 'requested');
-        let members = this.props.data.members.filter(m => m.status === 'member');
+        
+        let requests = this.props.members.filter(m => m.membership === 'REQUESTED');
+        let members = this.props.members.filter(m => m.membership === 'MEMBER');
 
         return (
             <MembersWrapper>
@@ -209,8 +205,8 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         {requests.map(m => (
                             <MemberItem
                                 key={m.user.id}
-                                item={{ status: m.status as any, ...m.user }}
-                                channelId={this.props.channelId}
+                                item={{ status: m.membership as any, ...m.user }}
+                                roomId={this.props.roomId}
                                 removeFrom={this.props.removeFrom}
                             />
                         ))}
@@ -221,8 +217,8 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                     {(members.length > 1) && members.map(m => (
                         <MemberItem
                             key={m.user.id}
-                            item={{ status: m.status as any, ...m.user }}
-                            channelId={this.props.channelId}
+                            item={{ status: m.membership as any, ...m.user }}
+                            roomId={this.props.roomId}
                             removeFrom={this.props.removeFrom}
                         />
                     ))}
@@ -233,27 +229,12 @@ class ChannelMembersComponentInner extends React.Component<ChannelMembersCompone
                         aloneMember={(members.length + requests.length) === 1}
                         smaller={members.length >= 2}
                         channelTitle={(this.props as any).channelTitle}
-                        chatId={this.props.channelId}
+                        chatId={this.props.roomId}
                         text={this.props.emptyText}
                     />
                 )}
-                <RemoveMemberModal members={this.props.data.members} refetchVars={{ channelId: this.props.channelId }} channelId={this.props.channelId} roomTitle={this.props.channelTitle} />
+                <RemoveMemberModal members={this.props.members} roomId={this.props.roomId} roomTitle={this.props.channelTitle} />
             </MembersWrapper >
         );
     }
 }
-
-export const ChannelMembersComponent = withChannelMembers((props) => {
-    return (
-        <ChannelMembersComponentInner
-            data={props.data}
-            channelTitle={(props as any).channelTitle}
-            channelId={(props.variables as any).channelId}
-            description={(props as any).description}
-            longDescription={(props as any).longDescription}
-            orgId={(props as any).orgId}
-            emptyText={(props as any).emptyText}
-            removeFrom={(props as any).removeFrom}
-        />
-    );
-}) as React.ComponentType<{ removeFrom: string, emptyText?: string, channelTitle: string, variables: { channelId: string }, description?: string | null, longDescription?: string | null, orgId: string }>;

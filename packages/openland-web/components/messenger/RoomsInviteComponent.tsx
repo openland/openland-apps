@@ -14,6 +14,7 @@ import { withChannelJoinInviteLink } from '../../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { TextRoom } from 'openland-text/TextRoom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { Room_room_SharedRoom } from 'openland-api/Types';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -216,14 +217,11 @@ const JoinButton = withChannelJoin((props) => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                await props.join({ variables: { channelId: (props as any).channelId } });
-                if ((props as any).isMine) {
-                    await delayForewer();
-                }
+                await props.join({ variables: { roomId: (props as any).channelId } });
             }}
         />
     );
-}) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string, isMine: boolean }>;
+}) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string }>;
 
 const JoinLinkButton = withChannelJoinInviteLink((props) => {
     return (
@@ -244,19 +242,7 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
 interface RoomsInviteComponentProps {
     inviteLink?: string;
     signup?: string;
-    room: {
-        myStatus: string,
-        id: string,
-        description?: string | null,
-        isRoot: boolean,
-        title: string,
-        membersCount: number,
-        photo?: string | null,
-        organization?: {
-            name: string,
-            isMine: boolean
-        } | null
-    };
+    room: Partial<Room_room_SharedRoom>;
     invite?: {
         invitedByUser?: {
             id: string,
@@ -270,7 +256,6 @@ interface RoomsInviteComponentProps {
 export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
     render() {
         let room = this.props.room;
-        let joinText = room.myStatus === 'none' ? (room.organization && room.organization.isMine ? 'Join room' : 'Request invite') : room.myStatus === 'invited' ? 'Accept invite' : '???';
         return (
             <Root>
                 <MainContent>
@@ -306,19 +291,19 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                 </RoomTitle>
                                 <RoomCounter>
                                     <ProfileIcon />
-                                    <span>{room.membersCount} {room.membersCount > 1 ? 'members' : 'member'}</span>
+                                    <span>{room.membersCount} {room.membersCount && room.membersCount > 1 ? 'members' : 'member'}</span>
                                 </RoomCounter>
                             </div>
                         </InfoCardHeader>
-                        <InfoCardBody>    
+                        <InfoCardBody>
                             {room.description || TextRoom.descriptionPlaceholder}
                         </InfoCardBody>
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((room.myStatus === 'none' && !this.props.inviteLink) || room.myStatus === 'invited') && <JoinButton channelId={room.id} isMine={!!(room.organization && room.organization.isMine)} refetchVars={{ conversationId: room.id }} text={joinText} />}
-                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id }} text="Accept invite" />}
-                            {room.myStatus === 'requested' && (
+                            {((room.membership === 'NONE' && !this.props.inviteLink)) && <JoinButton channelId={room.id!} refetchVars={{ conversationId: room.id! }} text="Request Invite" />}
+                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id! }} text="Accept invite" />}
+                            {room.membership === 'REQUESTED' && (
                                 <XButton
                                     style="ghost"
                                     size="large"
@@ -327,7 +312,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                     flexShrink={0}
                                 />
                             )}
-                            {room.myStatus === 'member' && (
+                            {room.membership === 'MEMBER' && (
                                 <XButton
                                     style="primary"
                                     size="large"

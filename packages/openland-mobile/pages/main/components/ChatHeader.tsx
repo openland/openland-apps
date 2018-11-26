@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { View, Text, TouchableHighlight, StyleSheet, TextStyle } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { ChatInfoQuery } from 'openland-api/ChatInfoQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { OnlineQuery } from 'openland-api';
+import { OnlineQuery, RoomQuery } from 'openland-api';
 import * as humanize from 'humanize';
 import { formatDate } from '../../../utils/formatDate';
+import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -65,32 +65,36 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
     render() {
         return (
-            <YQuery query={ChatInfoQuery} variables={{ conversationId: this.props.conversationId }}>
+            <YQuery query={RoomQuery} variables={{ id: this.props.conversationId }}>
                 {res => {
                     if (res.loading) {
                         return null;
                     }
 
-                    const chat = res.data!!.chat;
+                    const chat = res.data!!.room;
 
                     let accent = false;
 
-                    let title = res.data!!.chat.title;
+                    let sharedRoom = res.data!.room!.__typename === 'SharedRoom' ? res.data!.room as Room_room_SharedRoom : null;
+                    let privateRoom = res.data!.room!.__typename === 'PrivateRoom' ? res.data!.room as Room_room_PrivateRoom : null;
+                    let room = (sharedRoom || privateRoom)!;
+
+                    let title = sharedRoom ? sharedRoom.title : privateRoom!.user.name;
                     let subtitle = '';
-                    if (chat.__typename === 'PrivateConversation') {
-                        if (chat.user.primaryOrganization) {
-                            subtitle = chat.user.primaryOrganization.name;
+                    if (privateRoom) {
+                        if (privateRoom.user.primaryOrganization) {
+                            subtitle = privateRoom.user.primaryOrganization.name;
                         } else {
                             subtitle = 'Person';
                         }
-                    } else if (chat.__typename === 'SharedConversation') {
+                    } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
                         subtitle = 'Organization';
-                    } else if (chat.__typename === 'GroupConversation' || chat.__typename === 'ChannelConversation') {
-                        subtitle = chat.membersCount + ' members';
+                    } else if (sharedRoom && (sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
+                        subtitle = sharedRoom.membersCount === 1 ? ' member' : ' members';
                     }
 
                     let typingString = this.state.typing;
-                    if (typingString && chat.__typename === 'PrivateConversation') {
+                    if (typingString && privateRoom) {
                         typingString = 'typing...';
                     }
                     subtitle = (typingString) || subtitle;
@@ -102,7 +106,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                     return (
                         <View flexDirection="column" alignItems={isAndroid ? 'flex-start' : 'center'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
                             <Text style={isAndroid ? styles.androidTitle : styles.iosTitle} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            <YQuery query={OnlineQuery} variables={{ userId: chat.flexibleId }}>
+                            {privateRoom && <YQuery query={OnlineQuery} variables={{ userId: privateRoom.user.id }}>
                                 {online => {
                                     let sub = subtitle;
                                     if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
@@ -120,7 +124,10 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                                         <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{sub}</Text>
                                     );
                                 }}
-                            </YQuery>
+                            </YQuery>}
+                            {sharedRoom && (
+                                <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{subtitle}</Text>
+                            )}
                         </View>
                     );
                 }}
