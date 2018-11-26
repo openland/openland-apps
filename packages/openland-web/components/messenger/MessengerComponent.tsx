@@ -625,7 +625,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
     let sharedRoom: Room_room_SharedRoom | null = props.data.room!.__typename === 'SharedRoom' ? props.data.room as any : null;
     let privateRoom: Room_room_PrivateRoom | null = props.data.room!.__typename === 'PrivateRoom' ? props.data.room as any : null;
 
-    if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
+    if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
         if (sharedRoom.kind === 'PUBLIC') {
             return <RoomsInviteComponent room={sharedRoom} />;
         } else {
