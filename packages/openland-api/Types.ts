@@ -803,11 +803,25 @@ export interface ChatHistory_messages_messages_reactions {
   reaction: string;
 }
 
+export interface ChatHistory_messages_messages_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChatHistory_messages_messages_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChatHistory_messages_messages_mentions_primaryOrganization | null;
 }
 
 export interface ChatHistory_messages_messages_urlAugmentation_imageInfo {
@@ -1921,11 +1935,25 @@ export interface ChatSearchChannel_items_edges_node_topMessage_reactions {
   reaction: string;
 }
 
+export interface ChatSearchChannel_items_edges_node_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChatSearchChannel_items_edges_node_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChatSearchChannel_items_edges_node_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChatSearchChannel_items_edges_node_topMessage_urlAugmentation_imageInfo {
@@ -2243,11 +2271,25 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversatio
   reaction: string;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -2472,11 +2514,25 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_to
   reaction: string;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -2717,11 +2773,25 @@ export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_
   reaction: string;
 }
 
+export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChannelSetFeatured_alphaChannelSetFeatured_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -2983,11 +3053,25 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversati
   reaction: string;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -3212,11 +3296,25 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_t
   reaction: string;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -3457,11 +3555,25 @@ export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation
   reaction: string;
 }
 
+export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChannelSetHidden_alphaChannelHideFromSearch_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -4006,11 +4118,25 @@ export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_rea
   reaction: string;
 }
 
+export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChatUpdateGroup_event_chat_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -4235,11 +4361,25 @@ export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_reactio
   reaction: string;
 }
 
+export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChatUpdateGroup_event_chat_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChatUpdateGroup_event_chat_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -4480,11 +4620,25 @@ export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_react
   reaction: string;
 }
 
+export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ChatUpdateGroup_event_chat_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ChatUpdateGroup_event_chat_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -6950,11 +7104,25 @@ export interface ConversationShort_AnonymousConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -7179,11 +7347,25 @@ export interface ConversationShort_GroupConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -7424,11 +7606,25 @@ export interface ConversationShort_ChannelConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -7681,11 +7877,25 @@ export interface MessageFull_reactions {
   reaction: string;
 }
 
+export interface MessageFull_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface MessageFull_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: MessageFull_mentions_primaryOrganization | null;
 }
 
 export interface MessageFull_urlAugmentation_imageInfo {

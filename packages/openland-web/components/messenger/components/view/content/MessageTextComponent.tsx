@@ -119,20 +119,23 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             splittedArray.push(text.split(getMentionString(name)));
         });
 
-        const checkIsYou = (name: string) => {
-            const myMention = mentions.find((mention) => removeEmojiFromText(mention.name) === name);
-            return myMention ? myMention.isYou : false; 
+        const getMentionByName = (name: string) => {
+            const mention = mentions.find((item: any) => removeEmojiFromText(item.name) === name);
+            if (!mention) {
+                throw Error('no mention was found');
+            }
+            return mention;
         };
 
         return (
             <>
                 {splittedTextArray.map((textItem: any, key: any) => {
-                    const isYou = checkIsYou(mentionMatchesArray[key]);
+                    const mention = mentionMatchesArray[key] ? getMentionByName(mentionMatchesArray[key]) : null;
                     return (<span key={key}>
                         {textItem}
-                        <MentionComponentInner isYou={isYou}>
+                        {mention && <MentionComponentInner isYou={mention.isYou} user={mention} hasPopper>
                             {mentionMatchesArray[key]}
-                        </MentionComponentInner>
+                        </MentionComponentInner>}
                     </span>);
                 })}
             </>

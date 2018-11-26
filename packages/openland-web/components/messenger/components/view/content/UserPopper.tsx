@@ -124,8 +124,8 @@ export class UserAvatar extends React.PureComponent<{ user: MessageFull_sender, 
     }
 }
 
-export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, startSelected: boolean }) => {
-    let { user, isMe } = props;
+export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, startSelected: boolean, children?: any}) => {
+    let { user, isMe, children } = props;
     let usrPath: string | undefined = undefined;
     if (!props.startSelected) {
         usrPath = '/mail/u/' + user.id;
@@ -159,7 +159,7 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, sta
             placement="bottom-start"
             marginLeft={-2}
         >
-            <UserAvatar user={user} startSelected={props.startSelected} />
+            {children ? children : <UserAvatar user={user} startSelected={props.startSelected} />}
         </XPopper>
     );
 };
