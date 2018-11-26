@@ -233,8 +233,8 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
                         variables={{
+                            roomId: this.props.conversationId,
                             conversationId: this.props.conversationId,
-                            channelId: this.props.conversationId,
                         }}
                     />
                 )}

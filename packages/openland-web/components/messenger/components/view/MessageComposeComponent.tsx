@@ -850,4 +850,4 @@ export const MessageComposeComponentDraft = withGetDraftMessage(props => {
             {...props}
         />
     );
-}) as React.ComponentType<MessageComposeComponentProps & { variables?: { conversationId?: string, channelId?: string } }>;
+}) as React.ComponentType<MessageComposeComponentProps & { variables?: { roomId?: string, conversationId?: string } }>;
