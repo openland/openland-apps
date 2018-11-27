@@ -361,24 +361,6 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   photo: string | null;
 }
 
-export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels_organization | null;
-}
-
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user {
   __typename: "User";
   id: string;
@@ -398,10 +380,6 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_channels[];
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_organization {
@@ -834,6 +812,27 @@ export interface RoomHistory_messages_reactions {
   reaction: string;
 }
 
+export interface RoomHistory_messages_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomHistory_messages_mentions {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomHistory_messages_mentions_primaryOrganization | null;
+}
+
 export interface RoomHistory_messages_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -924,6 +923,7 @@ export interface RoomHistory_messages {
   sender: RoomHistory_messages_sender;
   reply: RoomHistory_messages_reply[] | null;
   reactions: RoomHistory_messages_reactions[];
+  mentions: RoomHistory_messages_mentions[] | null;
   urlAugmentation: RoomHistory_messages_urlAugmentation | null;
   date: any;
 }
@@ -978,6 +978,7 @@ export interface ReplyMessageVariables {
   roomId: string;
   message?: string | null;
   replyMessages?: string[] | null;
+  mentions?: string[] | null;
 }
 
 /* tslint:disable */
@@ -1562,6 +1563,7 @@ export interface RoomSearchText_items {
   title: string;
   flexibleId: string;
   photo: string;
+  kind: DialogKind;
 }
 
 export interface RoomSearchText {
@@ -3111,24 +3113,6 @@ export interface Organization_organization_members_user_primaryOrganization {
   photo: string | null;
 }
 
-export interface Organization_organization_members_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface Organization_organization_members_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: Organization_organization_members_user_channels_organization | null;
-}
-
 export interface Organization_organization_members_user {
   __typename: "User";
   id: string;
@@ -3148,10 +3132,6 @@ export interface Organization_organization_members_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: Organization_organization_members_user_channels[];
 }
 
 export interface Organization_organization_members {
@@ -3165,24 +3145,6 @@ export interface Organization_organization_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
-}
-
-export interface Organization_organization_requests_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface Organization_organization_requests_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: Organization_organization_requests_user_channels_organization | null;
 }
 
 export interface Organization_organization_requests_user {
@@ -3204,10 +3166,6 @@ export interface Organization_organization_requests_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: Organization_organization_requests_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: Organization_organization_requests_user_channels[];
 }
 
 export interface Organization_organization_requests {
@@ -4580,11 +4538,25 @@ export interface ConversationShort_AnonymousConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
@@ -4809,11 +4781,25 @@ export interface ConversationShort_GroupConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
@@ -5054,11 +5040,25 @@ export interface ConversationShort_ChannelConversation_topMessage_reactions {
   reaction: string;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
@@ -5311,11 +5311,25 @@ export interface MessageFull_reactions {
   reaction: string;
 }
 
+export interface MessageFull_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface MessageFull_mentions {
   __typename: "User";
   id: string;
   name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
   isYou: boolean;
+  primaryOrganization: MessageFull_mentions_primaryOrganization | null;
 }
 
 export interface MessageFull_urlAugmentation_imageInfo {
@@ -5529,6 +5543,27 @@ export interface RoomMessageFull_reactions {
   reaction: string;
 }
 
+export interface RoomMessageFull_mentions_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomMessageFull_mentions {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  email: string | null;
+  photo: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomMessageFull_mentions_primaryOrganization | null;
+}
+
 export interface RoomMessageFull_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -5619,6 +5654,7 @@ export interface RoomMessageFull {
   sender: RoomMessageFull_sender;
   reply: RoomMessageFull_reply[] | null;
   reactions: RoomMessageFull_reactions[];
+  mentions: RoomMessageFull_mentions[] | null;
   urlAugmentation: RoomMessageFull_urlAugmentation | null;
   date: any;
 }
@@ -5732,24 +5768,6 @@ export interface OrganizationFull_members_user_primaryOrganization {
   photo: string | null;
 }
 
-export interface OrganizationFull_members_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface OrganizationFull_members_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: OrganizationFull_members_user_channels_organization | null;
-}
-
 export interface OrganizationFull_members_user {
   __typename: "User";
   id: string;
@@ -5769,10 +5787,6 @@ export interface OrganizationFull_members_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: OrganizationFull_members_user_channels[];
 }
 
 export interface OrganizationFull_members {
@@ -5786,24 +5800,6 @@ export interface OrganizationFull_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
-}
-
-export interface OrganizationFull_requests_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface OrganizationFull_requests_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: OrganizationFull_requests_user_channels_organization | null;
 }
 
 export interface OrganizationFull_requests_user {
@@ -5825,10 +5821,6 @@ export interface OrganizationFull_requests_user {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: OrganizationFull_requests_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: OrganizationFull_requests_user_channels[];
 }
 
 export interface OrganizationFull_requests {
@@ -6115,24 +6107,6 @@ export interface UserFull_primaryOrganization {
   photo: string | null;
 }
 
-export interface UserFull_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-}
-
-export interface UserFull_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: UserFull_channels_organization | null;
-}
-
 export interface UserFull {
   __typename: "User";
   id: string;
@@ -6152,10 +6126,6 @@ export interface UserFull {
   linkedin: string | null;
   twitter: string | null;
   primaryOrganization: UserFull_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: UserFull_channels[];
 }
 
 /* tslint:disable */

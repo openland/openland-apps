@@ -89,7 +89,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 
     render() {
         const { text, mentions } = this.props;
-   
+
         let splittedTextArray: any = [text];
         let mentionMatchesMap: any = {};
         mentions.forEach(({ name }: any) => {
@@ -119,20 +119,23 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             splittedArray.push(text.split(getMentionString(name)));
         });
 
-        const checkIsYou = (name: string) => {
-            const myMention = mentions.find((mention) => removeEmojiFromText(mention.name) === name);
-            return myMention ? myMention.isYou : false; 
+        const getMentionByName = (name: string) => {
+            const mention = mentions.find((item: any) => removeEmojiFromText(item.name) === name);
+            if (!mention) {
+                throw Error('no mention was found');
+            }
+            return mention;
         };
 
         return (
             <>
                 {splittedTextArray.map((textItem: any, key: any) => {
-                    const isYou = checkIsYou(mentionMatchesArray[key]);
+                    const mention = mentionMatchesArray[key] ? getMentionByName(mentionMatchesArray[key]) : null;
                     return (<span key={key}>
                         {textItem}
-                        <MentionComponentInner isYou={isYou}>
+                        {mention && <MentionComponentInner isYou={mention.isYou} user={mention} hasPopper>
                             {mentionMatchesArray[key]}
-                        </MentionComponentInner>
+                        </MentionComponentInner>}
                     </span>);
                 })}
             </>
@@ -149,9 +152,22 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
 
     constructor(props: MessageTextComponentProps) {
         super(props);
+
         this.preprocessed = preprocessText(props.message);
 
-        let messageText = this.props.message;
+        this.checkTextSticker(props);
+    }
+
+    componentWillUpdate(nextProps: MessageTextComponentProps) {
+        this.preprocessed = preprocessText(nextProps.message);
+
+        if (nextProps.message !== this.props.message) {
+            this.checkTextSticker(nextProps);
+        }
+    }
+
+    checkTextSticker = (p: MessageTextComponentProps) => {
+        let messageText = p.message;
 
         let isShortnameSmile = false;
         let isUnicodeSmile = false;
@@ -188,11 +204,8 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             this.textSticker = this.big;
         }
     }
-    componentWillUpdate(nextProps: MessageTextComponentProps) {
-        this.preprocessed = preprocessText(nextProps.message);
-    }
 
-    render() {
+    render () {
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -217,6 +230,8 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                 return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
             } else {
                 let text = v.text!!;
+
+                console.log(this.props);
 
                 if (this.props.mentions && this.props.mentions.length !== 0) {
                     return <MessageWithMentionsTextComponent key={'text-' + i} text={text} mentions={this.props.mentions} />;

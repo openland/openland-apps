@@ -349,14 +349,15 @@ export const RoomEditComponent = withAlterChat((props) => {
                 let newDescription = data.input.description;
                 let newPhoto = data.input.photoRef;
                 let newSocialImage = data.input.socialImageRef;
+                console.warn(newPhoto, newSocialImage);
                 props.alter({
                     variables: {
                         roomId: (props as any).roomId,
                         input: {
                             ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto.uuid !== editPhotoRef ? { photoRef: sanitizeIamgeRef(newPhoto) } : {},
-                            ...newSocialImage.uuid !== editSocialImageRef ? { socialImageRef: sanitizeIamgeRef(newSocialImage) } : {},
+                            ...newPhoto && newPhoto.uuid !== editPhotoRef ? { photoRef: sanitizeIamgeRef(newPhoto) } : {},
+                            ...newSocialImage && newSocialImage.uuid !== editSocialImageRef ? { socialImageRef: sanitizeIamgeRef(newSocialImage) } : {},
                         }
                     }
                 });
@@ -366,7 +367,7 @@ export const RoomEditComponent = withAlterChat((props) => {
                     title: (props as any).title || '',
                     description: (props as any).description || '',
                     photoRef: { uuid: (props as any).photo },
-                    socialImageRef:  (props as any).socialImage ? { uuid: (props as any).socialImage } : undefined,
+                    socialImageRef: (props as any).socialImage ? { uuid: (props as any).socialImage } : undefined,
                 }
             }}
         >
@@ -624,7 +625,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
     let sharedRoom: Room_room_SharedRoom | null = props.data.room!.__typename === 'SharedRoom' ? props.data.room as any : null;
     let privateRoom: Room_room_PrivateRoom | null = props.data.room!.__typename === 'PrivateRoom' ? props.data.room as any : null;
 
-    if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
+    if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
         if (sharedRoom.kind === 'PUBLIC') {
             return <RoomsInviteComponent room={sharedRoom} />;
         } else {
@@ -723,10 +724,15 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                             </RoomTab>
                         </RoomTabs>
                         <XHorizontal alignSelf="center" alignItems="center" separator={6}>
+                            <XWithRole role="feature-non-production">
+                                <TalkContext.Consumer>
+                                    {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
+                                </TalkContext.Consumer>
+                            </XWithRole>
                             <InviteMembersModal
                                 orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                                 channelTitle={title}
-                                channelId={props.data.room!.id}
+                                roomId={props.data.room!.id}
                                 target={(
                                     <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
                                 )}
@@ -752,14 +758,16 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                 )}
 
                 {sharedRoom && sharedRoom.kind === 'GROUP' && (
-                    <XHorizontal separator={14}>
+                    <XHorizontal separator={14} alignItems="center">
                         <RoomTabs>
                             <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
                             <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
-                            <XWithRole role="feature-non-production">
-                                <RoomTab query={{ field: 'tab', value: 'call' }}>Call</RoomTab>
-                            </XWithRole>
                         </RoomTabs>
+                        <XWithRole role="feature-non-production">
+                            <TalkContext.Consumer>
+                                {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
+                            </TalkContext.Consumer>
+                        </XWithRole>
                     </XHorizontal>
                 )}
 

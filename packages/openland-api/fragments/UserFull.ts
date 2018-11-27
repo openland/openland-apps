@@ -21,17 +21,6 @@ export const UserFull = gql`
         primaryOrganization {
             ...OrganizationShort
         }
-        channels: channelsJoined {
-            id
-            title
-            hidden
-            photos
-            photo
-            membersCount
-            organization{
-                ...OrganizationShort
-            }
-        }
     }
     ${OrganizationShort}
 `;

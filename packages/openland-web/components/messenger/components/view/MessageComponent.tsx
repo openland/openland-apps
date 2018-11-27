@@ -213,6 +213,10 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             return;
         }
 
+        if (window.getSelection().toString()) {
+            return;
+        }
+
         let { forwardMessagesId } = messagesContext;
         let selectedMessageId = forwardMessagesId;
 
@@ -287,6 +291,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
     render() {
         const { message } = this.props;
+
         let content: any[] = [];
         let date: any = null;
         let edited = isServerMessage(this.props.message) && this.props.message.edited;

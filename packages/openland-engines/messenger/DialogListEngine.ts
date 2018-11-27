@@ -61,7 +61,7 @@ export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => ({
     messageId: c.topMessage ? c.topMessage.id : undefined,
     date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
     fileMeta: c.betaTopMessage ? c.betaTopMessage.fileMetadata || undefined : undefined,
-    online: false,
+    online: undefined,
 });
 
 export const extractDialogFRomRoom = (c: RoomFull, uid: string) => ({

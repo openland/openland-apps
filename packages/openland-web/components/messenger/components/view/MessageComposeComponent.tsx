@@ -443,10 +443,12 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             messages = [...forwardMessageId];
         }
         if (messages.length > 0) {
+            let mentions = this.getMentions(message);
             this.props.replyMessage({
                 variables: {
                     roomId: this.props.conversationId,
                     message: message,
+                    mentions: mentions ? mentions.map(({id}) => id) : null,
                     replyMessages: messages
                 }
             });

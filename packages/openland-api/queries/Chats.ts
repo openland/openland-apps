@@ -108,8 +108,8 @@ export const SendMessageMutation = gql`
 `;
 
 export const ReplyMessageMutation = gql`
-    mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!]) {
-        replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages)
+    mutation ReplyMessage($roomId: ID!, $message: String, $replyMessages: [ID!], $mentions: [ID!]) {
+        replyMessage: betaMessageSend(room: $roomId, message: $message, replyMessages: $replyMessages, mentions: $mentions)
     }
 `;
 
@@ -211,6 +211,7 @@ export const RoomSearchTextQuery = gql`
             title
             flexibleId: fid
             photo
+            kind
         }
     }
 `;
