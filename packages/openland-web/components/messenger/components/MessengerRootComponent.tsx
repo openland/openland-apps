@@ -24,6 +24,7 @@ import {
 import { withChatLeave } from '../../../api/withChatLeave';
 
 interface MessagesComponentProps {
+    organizationId: string | null;
     conversationId: string;
     loading: boolean;
     messenger: MessengerEngine;
@@ -239,6 +240,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         variables={{
                             roomId: this.props.conversationId,
                             conversationId: this.props.conversationId,
+                            organizationId: this.props.organizationId,
                         }}
                     />
                 )}
@@ -262,6 +264,7 @@ const Placeholder = withChatHistory(() => {
 });
 
 interface MessengerRootComponentProps {
+    organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
 }

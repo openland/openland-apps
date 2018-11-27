@@ -745,6 +745,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                 separator={0}
             >
                 <MessengerRootComponent
+                    organizationId={sharedRoom && sharedRoom.organization ? sharedRoom.organization.id: null}
                     conversationId={props.data.room!.id}
                     conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
                 />
