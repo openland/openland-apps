@@ -3,5 +3,6 @@ export const AppStyles = {
     primaryColorLight: '#BDBDE4',
     separatorColor: '#eaeaea',
     backyardColor: '#f3f3f3',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    dangerColor: '#d75454',
 };

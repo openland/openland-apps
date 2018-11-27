@@ -8,5 +8,6 @@ export interface SRouter {
     push: (route: string, params?: any) => void;
     pushAndRemove: (route: string, params?: any) => void;
     pushAndReset: (route: string, params?: any) => void;
-    back: () => void;
+    pushAndResetRoot: (route: string, params?: any) => void;
+    back: (steps?: number) => void;
 }

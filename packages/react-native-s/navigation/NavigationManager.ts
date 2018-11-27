@@ -4,6 +4,7 @@ import { NavigationPage } from './NavigationPage';
 import { SRoutes } from '../SRoutes';
 import { PresentationManager } from './PresentationManager';
 import { randomKey } from '../utils/randomKey';
+import { Alert } from 'react-native';
 
 export interface NavigationManagerListener {
     onPushed(page: NavigationPage, state: NavigationState): void;
@@ -46,6 +47,23 @@ export class NavigationManager {
         }
         let record = new NavigationPage(this, this.state.history.length, route, params, this.state.history[this.state.history.length - 2].key);
         let nhistory = new NavigationState([this.state.history[0], record]); // keep to avoid insonsistency if we will change routes in watchers
+        this.state = nhistory;
+        for (let w of this.watchers) {
+            w.onPushed(record, nhistory);
+        }
+    }
+
+    pushAndResetRoot = (route: string, params?: any) => {
+        if (this.customHandler) {
+            if (this.customHandler(route, params)) {
+                return;
+            }
+        }
+        if (this.locksCount > 0) {
+            return;
+        }
+        let record = new NavigationPage(this, 0, route, params, undefined);
+        let nhistory = new NavigationState([record]); // keep to avoid insonsistency if we will change routes in watchers
         this.state = nhistory;
         for (let w of this.watchers) {
             w.onPushed(record, nhistory);

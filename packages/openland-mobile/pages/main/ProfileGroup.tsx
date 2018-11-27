@@ -20,7 +20,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { XPStyles } from 'openland-xp/XPStyles';
-import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation } from 'openland-api';
+import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -219,6 +219,34 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             </YMutation>
                                         ))}
                                     </SDeferred>
+
+                                    <YMutation mutation={RoomLeaveMutation}>
+                                        {leave => <ZListItem
+                                            text="Leave"
+                                            appearance="danger"
+                                            onPress={() => {
+                                                Alert.alert(`Are you sure you want to leave ${sharedRoom!.title}?`, undefined, [{
+                                                    onPress: async () => {
+                                                        startLoader();
+                                                        try {
+                                                            await leave({ variables: { roomId: this.props.router.params.id } });
+
+                                                            this.props.router.pushAndResetRoot('Home');
+                                                        } catch (e) {
+                                                            Alert.alert(e.message);
+                                                        }
+                                                        stopLoader();
+                                                    },
+                                                    text: 'Leave',
+                                                    style: 'destructive'
+                                                },
+                                                {
+                                                    text: 'Cancel',
+                                                    style: 'cancel'
+                                                }]);
+                                            }}
+                                        />}
+                                    </YMutation>
 
                                 </ZListItemGroup>
                             </SScrollView>

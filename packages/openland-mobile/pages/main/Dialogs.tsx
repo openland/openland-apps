@@ -92,7 +92,8 @@ class DialogsComponent extends React.Component<PageProps> {
             <>
                 <SHeader title="Messages" />
                 <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeInitial')} />
-                <SSearchControler searchRender={(props) => (<DialogsSearch query={props.query} />)}>
+                {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
+                <SSearchControler key={this.props.router.key + new Date().getTime()} searchRender={(props) => (<DialogsSearch query={props.query} />)}>
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent dialogs={engine.dialogs} />)}
                     </MobileMessengerContext.Consumer>

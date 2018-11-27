@@ -26,7 +26,7 @@ export interface ZListItemProps {
     pathRemove?: boolean;
     onPress?: () => void;
     onLongPress?: () => void;
-    appearance?: 'default' | 'action';
+    appearance?: 'default' | 'action' | 'danger';
     multiline?: boolean;
     navigationIcon?: boolean;
     linkify?: boolean;
@@ -72,10 +72,10 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} pathParams={this.props.pathParams} pathRemove={this.props.pathRemove} height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : 44)} navigationIcon={this.props.navigationIcon}>
                 <View paddingLeft={15} paddingRight={15} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
-                    <View flexDirection="row" alignItems="center">
+                    <View flexDirection="row" alignItems="center" justifyContent="center">
                         {this.props.leftIcon && <Image source={this.props.leftIcon} style={{ marginRight: 15, alignSelf: 'center' }} />}
                         {this.props.leftAvatar && <View paddingRight={15}><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
-                        <ZText linkify={this.props.linkify === true} style={{ fontSize: 15, fontWeight: '500', color: this.props.appearance === 'action' ? AppStyles.primaryColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0, alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start' }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
+                        <ZText linkify={this.props.linkify === true} style={{ fontSize: 15, fontWeight: '500', color: this.props.appearance === 'action' ? AppStyles.primaryColor : this.props.appearance === 'danger' ? AppStyles.dangerColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0, alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start' }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
                         {this.props.description && (
                             <ZText linkify={this.props.linkify === true} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
                         )}

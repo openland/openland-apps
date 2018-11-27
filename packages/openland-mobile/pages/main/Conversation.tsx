@@ -123,7 +123,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                             let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
                                             let privateRoom = resp.data.room!.__typename === 'PrivateRoom' ? resp.data.room! as Room_room_PrivateRoom : null;
 
-                                            if (sharedRoom && sharedRoom.membership !== 'MEMBER') {
+                                            if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind !== 'INTERNAL') {
                                                 if (sharedRoom.kind === 'PUBLIC') {
                                                     return (
                                                         <>
@@ -187,7 +187,6 @@ class ConversationComponent extends React.Component<PageProps> {
                                                         </>
                                                     );
                                                 } else {
-                                                    this.props.router.back();
                                                     return null;
                                                 }
 
