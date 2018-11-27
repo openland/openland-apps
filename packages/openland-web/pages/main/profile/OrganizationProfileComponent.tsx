@@ -691,7 +691,7 @@ class OrganizationProfileInner extends React.Component<OrganizationProfileInnerP
 
     render() {
         let organization = this.props.organizationQuery.organization;
-
+        
         return (
             <OrganizationInfoWrapper innerRef={this.handleRef}>
                 <BackButton />
@@ -719,10 +719,12 @@ const OrganizationProvider = withOrganization(withRouter((props) => (
         : <XLoader loading={true} />
 ))) as React.ComponentType<{ variables: { organizationId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
 
-export const OrganizationProfile = (props: { organizationId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
-    <OrganizationProvider
-        variables={{ organizationId: props.organizationId }}
-        handlePageTitle={props.handlePageTitle}
-        onDirectory={props.onDirectory}
-    />
-);
+export const OrganizationProfile = (props: { organizationId: string, onDirectory?: boolean; handlePageTitle?: any }) => {
+    return (
+        <OrganizationProvider
+            variables={{ organizationId: props.organizationId }}
+            handlePageTitle={props.handlePageTitle}
+            onDirectory={props.onDirectory}
+        />
+    );
+};

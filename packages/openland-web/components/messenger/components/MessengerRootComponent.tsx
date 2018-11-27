@@ -214,6 +214,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
+
         return (
             <ConversationContainer>
                 <ConversationMessagesComponent
@@ -273,11 +274,12 @@ const MessagesWithUser = withUserInfo((props) => (
     <MessagesComponent
         me={props.user}
         loading={false}
+        organizationId={props.organizationId}
         conversationId={props.conversationId}
         messenger={props.messenger}
         conversationType={props.conversationType}
     />
-)) as React.ComponentType<{ conversationId: string, messenger: any, conversationType: SharedRoomKind | 'PRIVATE' }>;
+)) as React.ComponentType<{ conversationId: string, organizationId: string|null,  messenger: any, conversationType: SharedRoomKind | 'PRIVATE' }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     // We are not allowing messenger to be rendered on server side: just preload history and that's all
@@ -288,6 +290,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
         <MessengerContext.Consumer>
             {messenger => (
                 <MessagesWithUser
+                    organizationId={props.organizationId}
                     conversationId={props.conversationId}
                     messenger={messenger}
                     conversationType={props.conversationType}

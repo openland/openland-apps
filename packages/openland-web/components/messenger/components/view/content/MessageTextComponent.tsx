@@ -231,8 +231,6 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             } else {
                 let text = v.text!!;
 
-                console.log(this.props);
-
                 if (this.props.mentions && this.props.mentions.length !== 0) {
                     return <MessageWithMentionsTextComponent key={'text-' + i} text={text} mentions={this.props.mentions} />;
                 }

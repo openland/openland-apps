@@ -25,6 +25,7 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
+import { withOrganization } from '../../../../api/withOrganizationSimple';
 import { MessageFull } from 'openland-api/Types';
 import {
     ReplyMessageVariables,
@@ -872,14 +873,32 @@ const MessageComposeComponentChannelMembers = withChannelMembers(props => {
     );
 }) as React.ComponentType<MessageComposeComponentProps & { draft: string | null }>;
 
-export const MessageComposeComponentDraft = withGetDraftMessage(props => {
+const MessageComposeComponentOrganizationMembers = withOrganization(props => {
     return (
-        <MessageComposeComponentChannelMembers
-            draft={props.data.message}
+        <MessageComposeComponent
+            members={props.data.organization ? props.data.organization.members as any : []}
             {...props}
         />
     );
+}) as any;
+
+export const MessageComposeComponentDraft = withGetDraftMessage((props: any) => {
+    if (props.conversationType === 'INTERNAL') {
+        return (
+            <MessageComposeComponentOrganizationMembers
+                {...props}          
+                draft={props.data.message}
+            />
+        );
+    }
+    
+    return (
+        <MessageComposeComponentChannelMembers
+            {...props}          
+            draft={props.data.message}
+        />
+    );
 }) as React.ComponentType<MessageComposeComponentProps & { 
-    variables?: { roomId?: string, conversationId?: string }, 
+    variables?: { roomId?: string, conversationId?: string, organizationId: string | null }, 
     getMessages?: Function 
 }>;
