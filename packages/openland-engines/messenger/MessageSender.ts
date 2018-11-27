@@ -176,7 +176,7 @@ export class MessageSender {
     }) {
         const messageBody = {
             room: conversationId,
-            message: message && mentions ? message + ' ' + mentions.map(({ id }: any) => id).join(',') : message,
+            message,
             file,
             conversationId,
             replyMessages,
