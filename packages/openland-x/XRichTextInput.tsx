@@ -7,12 +7,13 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from './icons/ic-emoji.svg';
-import createMentionPlugin, {
-    MentionT,
-    defaultSuggestionsFilter
-} from 'draft-js-mention-plugin';
-import { UserPopper, UserAvatar } from 'openland-web/components/messenger/components/view/content/UserPopper';
+import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import {
+    UserPopper,
+    UserAvatar,
+} from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XView } from 'openland-x/XView';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
@@ -37,16 +38,16 @@ const EmojiWrapper = Glamorous.div({
             },
         },
         '&:hover svg *': {
-            fill: '#1790ff'
+            fill: '#1790ff',
         },
         '&.draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu svg *': {
-            fill: '#1790ff'
-        }
+            fill: '#1790ff',
+        },
     },
     '& > div > div': {
         bottom: 50,
-        right: 0
-    }
+        right: 0,
+    },
 });
 
 const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element: HTMLElement) => {
@@ -74,11 +75,16 @@ const emojiPlugin = createEmojiPlugin({
 
             const relativeParentRect = relativeParent.getBoundingClientRect();
             relativeRect.left = decoratorRect.left - relativeParentRect.left;
-            relativeRect.top = decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
+            relativeRect.top =
+                decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
             console.warn(relativeParentRect);
         } else {
-            relativeRect.scrollTop = window.pageYOffset || (document.documentElement ? document.documentElement.scrollTop : undefined);
-            relativeRect.scrollLeft = window.pageXOffset || (document.documentElement ? document.documentElement.scrollLeft : undefined);
+            relativeRect.scrollTop =
+                window.pageYOffset ||
+                (document.documentElement ? document.documentElement.scrollTop : undefined);
+            relativeRect.scrollLeft =
+                window.pageXOffset ||
+                (document.documentElement ? document.documentElement.scrollLeft : undefined);
 
             relativeRect.top = decoratorRect.top;
             relativeRect.left = decoratorRect.left;
@@ -106,17 +112,20 @@ const emojiPlugin = createEmojiPlugin({
             transformOrigin: '1em 0%',
             transition,
         };
-    }
+    },
 });
 const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
-const Container = Glamorous.div<XFlexStyles>([{
-    position: 'relative',
+const Container = Glamorous.div<XFlexStyles>([
+    {
+        position: 'relative',
 
-    '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
-        color: 'rgba(0, 0, 0, 0.5)'
-    }
-}, applyFlex]);
+        '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
+            color: 'rgba(0, 0, 0, 0.5)',
+        },
+    },
+    applyFlex,
+]);
 
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
@@ -126,9 +135,9 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
 }
 
 export type MentionDataT = {
-    name: string,
-    title: string,
-    avatar: string,
+    name: string;
+    title: string;
+    avatar: string;
     isYou?: boolean;
     online?: boolean;
 };
@@ -158,15 +167,15 @@ const positionSuggestions = ({ state, props }: any) => {
 
     return {
         transform,
-        transition
+        transition,
     };
 };
 
-type MentionComponentInnerTextProps = { 
-    isYou: boolean, 
-    className?: string, 
-    user?: MessageFull_mentions,
-    hasPopper?: boolean
+type MentionComponentInnerTextProps = {
+    isYou: boolean;
+    className?: string;
+    user?: MessageFull_mentions;
+    hasPopper?: boolean;
 };
 
 const MentionComponentInnerText = Glamorous.span(
@@ -175,14 +184,14 @@ const MentionComponentInnerText = Glamorous.span(
         if (isYou) {
             return {
                 backgroundColor: '#fff6e5',
-                color: '#1790ff'
+                color: '#1790ff',
             };
         }
         return {
             backgroundColor: '#e6f3ff',
-            color: '#1790ff'
+            color: '#1790ff',
         };
-    }
+    },
 );
 
 export class MentionComponentInner extends React.Component<MentionComponentInnerTextProps> {
@@ -190,18 +199,12 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
         const props = this.props;
         if (props.hasPopper && props.user) {
             return (
-                <UserPopper
-                    user={props.user}
-                    isMe={props.isYou}
-                    startSelected={false}
-                >
-                    <MentionComponentInnerText {...props}/>
+                <UserPopper user={props.user} isMe={props.isYou} startSelected={false}>
+                    <MentionComponentInnerText {...props} />
                 </UserPopper>
             );
         } else {
-            return (
-                <MentionComponentInnerText {...props}/>
-            );
+            return <MentionComponentInnerText {...props} />;
         }
     }
 }
@@ -212,10 +215,7 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponentInner
-                isYou={props.mention.isYou}
-                className={props.className}
-            >
+            <MentionComponentInner isYou={props.mention.isYou} className={props.className}>
                 {props.children}
             </MentionComponentInner>
         );
@@ -233,11 +233,11 @@ const MentionSuggestionsWrapper = Glamorous.div({
             left: 16,
             borderRadius: '2px',
             cursor: 'pointer',
-        }
-    }
+        },
+    },
 });
 
-const MentionEntry = (props: any) => {
+export const MentionEntry = (props: any) => {
     const {
         mention,
         theme,
@@ -247,26 +247,61 @@ const MentionEntry = (props: any) => {
     } = props;
 
     return (
-        <div {...parentProps}>
-            <div className={theme.mentionSuggestionsEntryContainer}>
-                <div className={theme.mentionSuggestionsEntryContainerLeft}>
-                    <XAvatar
-                        src={mention.avatar}
-                        online={mention.online}
-                    />
-                </div>
+        <XView
+            {...parentProps}
+            position="relative"
+            width="100%"
+            flexDirection="row"
+            flexGrow={1}
+            flexShrink={1}
+            paddingTop={6}
+            paddingBottom={6}
+            paddingRight={15}
+            paddingLeft={15}
+            minWidth={0}
+            hoverBackgroundColor={'#f9f9f9'}
+        >
+            <XAvatar src={mention.avatar} online={mention.online} />
 
-                <div className={theme.mentionSuggestionsEntryContainerRight}>
-                    <div className={theme.mentionSuggestionsEntryText}>
-                        {mention.name}
-                    </div>
+            <XView
+                flexDirection="column"
+                alignSelf={'center'}
+                marginLeft={12}
+                fontSize={13}
+                fontWeight={'600'}
+                lineHeight={1.54}
+                color={'#000000'}
+            >
+                {mention.name}
+            </XView>
 
-                    <div className={theme.mentionSuggestionsEntryTitle}>
-                        {mention.title}
-                    </div>
-                </div>
-            </div>
-        </div>
+            <XView
+                flexDirection="column"
+                alignSelf={'center'}
+                marginLeft={7}
+                opacity={0.4}
+                fontSize={12}
+                fontWeight={'600'}
+                lineHeight={1.5}
+                color={'#000000'}
+            >
+                {mention.title}
+            </XView>
+
+            <XView
+                marginLeft="auto"
+                flexDirection="column"
+                alignSelf={'center'}
+                opacity={0.4}
+                fontSize={12}
+                fontWeight={'normal'}
+                lineHeight={1.5}
+                color={'#000000'}
+            >
+                ↵ to select
+            </XView>
+            
+        </XView>
     );
 };
 
@@ -280,10 +315,10 @@ export interface XRichTextInputProps extends XFlexStyles {
     mentionsData?: MentionDataT[];
 }
 
-type XRichTextInputState = { 
-    editorState: EditorState, 
-    suggestions: Array<MentionT>,
-    plainText: string
+type XRichTextInputState = {
+    editorState: EditorState;
+    suggestions: Array<MentionT>;
+    plainText: string;
 };
 
 /// End Mentions
@@ -291,11 +326,13 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     private editorRef = React.createRef<Editor>();
     constructor(props: XRichTextInputProps) {
         super(props);
-        
+
         this.state = {
             suggestions: this.props.mentionsData || [],
-            editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(ContentState.createFromText(props.value))),
-            plainText: props.value
+            editorState: EditorState.moveFocusToEnd(
+                EditorState.createWithContent(ContentState.createFromText(props.value)),
+            ),
+            plainText: props.value,
         };
     }
 
@@ -309,7 +346,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         const mentionsData = this.props.mentionsData || [];
         window.requestAnimationFrame(() => {
             this.setState({
-                suggestions: defaultSuggestionsFilter(value, mentionsData)
+                suggestions: defaultSuggestionsFilter(value, mentionsData),
             });
         });
     }
@@ -317,7 +354,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     focus = () => {
         window.requestAnimationFrame(() => {
             this.setState({
-                editorState: EditorState.moveFocusToEnd(this.state.editorState)
+                editorState: EditorState.moveFocusToEnd(this.state.editorState),
             });
             if (this.editorRef.current) {
                 this.editorRef.current.focus();
@@ -327,15 +364,30 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
 
     reset = () => {
         window.requestAnimationFrame(() => {
-            this.setState((src) => ({
-                editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range')
+            this.setState(src => ({
+                editorState: EditorState.push(
+                    src.editorState,
+                    ContentState.createFromText(''),
+                    'remove-range',
+                ),
             }));
         });
     }
 
     resetAndFocus = () => {
         window.requestAnimationFrame(() => {
-            this.setState((src) => ({ editorState: EditorState.push(src.editorState, ContentState.createFromText(''), 'remove-range') }), () => { this.focus(); });
+            this.setState(
+                src => ({
+                    editorState: EditorState.push(
+                        src.editorState,
+                        ContentState.createFromText(''),
+                        'remove-range',
+                    ),
+                }),
+                () => {
+                    this.focus();
+                },
+            );
         });
     }
 
@@ -350,28 +402,28 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     onChange = (editorState: EditorState) => {
-        const plainText =  editorState.getCurrentContent().getPlainText();
+        const plainText = editorState.getCurrentContent().getPlainText();
         this.setState(
-            { 
+            {
                 editorState,
-                plainText
-            }, 
+                plainText,
+            },
             () => {
                 if (this.props.onChange) {
                     this.props.onChange(plainText);
                 }
-            }
-         );
+            },
+        );
     }
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
         if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
             this.setState({
-                editorState: EditorState.moveFocusToEnd(EditorState.createWithContent(
-                    ContentState.createFromText(nextValue)
-                )),
-                plainText: nextValue
+                editorState: EditorState.moveFocusToEnd(
+                    EditorState.createWithContent(ContentState.createFromText(nextValue)),
+                ),
+                plainText: nextValue,
             });
         }
     }

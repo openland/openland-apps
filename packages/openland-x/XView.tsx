@@ -27,11 +27,11 @@ export interface XViewProps {
     // Sizing
     //
 
-    margin?: number | null;
-    marginTop?: number | null;
-    marginBottom?: number | null;
-    marginLeft?: number | null;
-    marginRight?: number | null;
+    margin?: number | 'auto' | null;
+    marginTop?: number | 'auto' | null;
+    marginBottom?: number | 'auto' | null;
+    marginLeft?: number | 'auto' | null;
+    marginRight?: number | 'auto' | null;
     padding?: number | null;
     paddingTop?: number | null;
     paddingBottom?: number | null;
@@ -52,6 +52,7 @@ export interface XViewProps {
     level?: '1' | null;
     color?: string | null;
     cursor?: 'pointer';
+    opacity?: number;
 
     backgroundColor?: string | null;
     hoverBackgroundColor?: string | null;
@@ -68,7 +69,7 @@ export interface XViewProps {
     //
 
     fontSize?: number | null;
-    fontWeight?: '400' | '600';
+    fontWeight?: '400' | '600' | 'normal';
     lineHeight?: number | string | null;
     overflow?: 'hidden' | null;
     textOverflow?: 'ellipsis' | null;
@@ -105,10 +106,10 @@ const XViewContainer = (props: XViewProps) => {
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;
 
-    let marginTop: number | undefined;
-    let marginBottom: number | undefined;
-    let marginRight: number | undefined;
-    let marginLeft: number | undefined;
+    let marginTop: number | 'auto' | undefined;
+    let marginBottom: number | 'auto' | undefined;
+    let marginRight: number | 'auto' | undefined;
+    let marginLeft: number | 'auto' | undefined;
 
     let paddingTop: number | undefined;
     let paddingBottom: number | undefined;
@@ -122,6 +123,7 @@ const XViewContainer = (props: XViewProps) => {
     let maxWidth: number | string | undefined;
     let maxHeight: number | string | undefined;
 
+    let opacity: number | undefined;
     let borderRadius: number | string | undefined;
     let level: '1' | undefined;
     let backgroundColor: string | undefined;
@@ -129,7 +131,7 @@ const XViewContainer = (props: XViewProps) => {
     let color: string | undefined;
 
     let fontSize: number | undefined;
-    let fontWeight: '400' | '600' | undefined;
+    let fontWeight: '400' | '600' | 'normal' | undefined;
     let lineHeight: number | string | undefined;
     let overflow: 'hidden' | undefined;
     let textOverflow: 'ellipsis' | undefined;
@@ -138,6 +140,9 @@ const XViewContainer = (props: XViewProps) => {
     //
     // Resolve visual styles
     //
+    if (props.opacity !== undefined && props.opacity !== null) {
+        opacity = props.opacity;
+    }
     if (props.level !== undefined && props.level !== null) {
         level = props.level;
     }
@@ -446,6 +451,13 @@ const XViewContainer = (props: XViewProps) => {
         css.push(styles.get(key)!);
     }
 
+    if (opacity !== undefined) {
+        let key = 'opacity: ' + opacity;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ opacity: opacity }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
     if (borderRadius !== undefined) {
         let key = 'border-radius: ' + borderRadius;
         if (!styles.has(key)) {
