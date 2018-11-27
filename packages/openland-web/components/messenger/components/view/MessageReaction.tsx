@@ -6,7 +6,8 @@ import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import ReactionIcon from '../icons/ic-emoji2.svg';
+// import ReactionIcon from '../icons/ic-emoji2.svg';
+import ReactionIcon from '../icons/ic-reactions.svg';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '1px 6px',
@@ -315,7 +316,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                     <ReactionsInner>
                         {this.reactionsRender()}
                     </ReactionsInner>
-                    <ReactionComponent messageId={this.props.messageId} marginTop={6} marginLeft={10} />
+                    <ReactionComponent messageId={this.props.messageId} marginTop={8} marginLeft={10} />
                 </ReactionsWrapper>
             ) : null
         );

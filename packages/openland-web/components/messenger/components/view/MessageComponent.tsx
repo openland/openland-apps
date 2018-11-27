@@ -55,27 +55,23 @@ const DateComponent = Glamorous.div<{ small?: boolean }>((props) => ({
     color: 'rgba(0, 0, 0, 0.4)',
 }));
 
-const Check = Glamorous.div({
+const Check = Glamorous.div<{ select: boolean }>(props => ({
+    flexShrink: 0,
     width: 18,
     height: 18,
     borderRadius: 9,
-    backgroundColor: '#1790ff',
-    backgroundImage: 'url(\'/static/img/icons/check-form.svg\')',
+    backgroundColor: props.select ? '#1790ff' : '#fff',
+    backgroundImage: props.select ? 'url(\'/static/img/icons/check-form.svg\')' : undefined,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center'
-});
+    backgroundPosition: 'center',
+    border: props.select ? undefined : '1px solid #D9D9D9'
+}));
 
-const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, isEditView: boolean }>((props) => ({
-    display: 'flex',
-    flexDirection: props.compact ? 'row' : 'column',
-    paddingLeft: props.compact ? 7 : 10,
-    paddingRight: 10,
-    paddingTop: props.compact ? 3 : 7,
-    paddingBottom: 3,
-    width: '100%',
-    marginTop: props.compact ? undefined : 12,
-    borderRadius: 6,
+const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: boolean, startSelected: boolean }>(props => ({
     cursor: 'pointer',
+    '& .message-container': {
+        backgroundColor: '#fff'
+    },
     '& .time': {
         opacity: props.compact ? 0 : 1
     },
@@ -85,16 +81,46 @@ const MessageContainer = Glamorous.div<{ compact: boolean, isHovered?: boolean, 
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
         opacity: 0,
-        display: props.isEditView ? 'none' : undefined
+        pointerEvents: 'none',
+    },
+    '& .check-icon': {
+        opacity: props.startSelected ? 1 : 0,
     },
     '&:hover': {
-        backgroundColor: '#F9F9F9',
-        '& .menu-wrapper, & .time, & .reactions-wrapper .reaction-button': {
+        '& .message-container': {
+            backgroundColor: props.isEditView ? '#fff' : '#F9F9F9',
+        },
+        '& .check-icon': {
             opacity: props.isEditView ? 0 : 1
+        },
+        '& .time': {
+            opacity: props.isEditView ? 0 : 1
+        },
+        '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
+            opacity: props.startSelected ? 0 : props.isEditView ? 0 : 1,
+            pointerEvents: props.startSelected ? 'none' : props.isEditView ? 'none' : 'auto',
         }
-    },
-    '&': (props.isHovered) ? { backgroundColor: '#F9F9F9' } : {}
+    }
 }));
+
+const MessageCompactContainer = Glamorous(XHorizontal)({
+    paddingLeft: 7,
+    paddingTop: 3,
+    paddingRight: 10,
+    paddingBottom: 3,
+    borderRadius: 6,
+    width: '100%'
+});
+
+const MessageContainer = Glamorous(XVertical)({
+    marginTop: 12,
+    paddingLeft: 10,
+    paddingTop: 7,
+    paddingRight: 10,
+    paddingBottom: 3,
+    borderRadius: 6,
+    width: '100%'
+});
 
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
     paddingRight: (props.isIntro === true) ? 0 : 20,
@@ -239,7 +265,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         this.props.messagesContext.resetAll();
     }
 
-    private menuRender = (isCompact: boolean) => {
+    private menuRender = () => {
         const { message } = this.props;
 
         let menu = isServerMessage(message) && this.props.out ?
@@ -275,7 +301,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <XHorizontal alignItems="center" separator={0} alignSelf={isCompact ? 'flex-start' : undefined} className="menu-wrapper">
+            <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
                 <XHorizontal alignItems="center" separator={6}>
                     <ReplyButton onClick={this.setReplyMessages}>
                         <ReplyIcon />
@@ -289,8 +315,24 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         );
     }
 
+    private reactionsRender = () => {
+        const { message } = this.props;
+
+        if (!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) {
+            return (
+                <Reactions
+                    messageId={(message as MessageFull).id}
+                    reactions={(message as MessageFull).reactions}
+                    meId={(this.props.me as UserShort).id}
+                />
+            );
+        }
+        return null;
+    }
+
     render() {
         const { message } = this.props;
+        const { compact } = this.props;
 
         let content: any[] = [];
         let date: any = null;
@@ -417,38 +459,6 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             content.push(<MessageTextComponent message={''} mentions={null} key={'text'} isService={false} isEdited={edited} />);
         }
 
-        // menu
-        let menu = isServerMessage(message) && this.props.out ?
-            (
-                <XVertical className="menu">
-                    <XOverflow
-                        show={this.state.isMenuOpen}
-                        flat={true}
-                        placement="bottom-end"
-                        onClickTarget={this.switchMenu}
-                        content={
-                            <>
-                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
-                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
-                            </>
-                        }
-                    />
-                </XVertical>
-            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
-                <XWithRole role="super-admin">
-                    <XVertical className="menu">
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
-                        />
-                    </XVertical>
-                </XWithRole>
-            ) : null;
-        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
-            menu = null;
-        }
-
         let isIntro = false;
         if ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type === 'intro') {
             isIntro = true;
@@ -458,74 +468,76 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             orgPath = '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
         }
 
-        if (this.props.compact) {
+        if (compact) {
             return (
-                <MessageContainer
+                <MessageWrapper
                     onClick={this.selectMessage}
-                    className="compact-message"
                     compact={true}
-                    isHovered={this.state.isEditView || this.state.isMenuOpen || isSelect}
                     isEditView={this.state.isEditView}
+                    separator={6}
+                    alignItems="center"
+                    startSelected={hideMenu}
                 >
-                    <DateComponent small={true} className="time">{date}</DateComponent>
-                    <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
-                        <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
-                            {content}
-                            {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                                <Reactions
-                                    messageId={(message as MessageFull).id}
-                                    reactions={(message as MessageFull).reactions}
-                                    meId={(this.props.me as UserShort).id}
-                                />
-                            )}
-                        </MessageCompactContent>
-                        {hideMenu ? (isSelect ? (<Check />) : null) : this.menuRender(true)}
-                    </XHorizontal>
-                </MessageContainer>
+                    <Check select={isSelect} className="check-icon" />
+                    <MessageCompactContainer
+                        separator={0}
+                        className="message-container"
+                    >
+                        <DateComponent small={true} className="time">{date}</DateComponent>
+                        <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
+                            <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
+                                {content}
+                                {this.reactionsRender()}
+                            </MessageCompactContent>
+                        </XHorizontal>
+                    </MessageCompactContainer>
+                    {this.menuRender()}
+                </MessageWrapper>
             );
         }
 
         return (
-            <MessageContainer
+            <MessageWrapper
                 onClick={this.selectMessage}
-                className="full-message"
                 compact={false}
-                isHovered={this.state.isEditView || this.state.isMenuOpen || isSelect}
                 isEditView={this.state.isEditView}
+                separator={6}
+                alignItems="center"
+                startSelected={hideMenu}
             >
-                <XHorizontal alignSelf="stretch">
-                    {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
-                        <UserPopper
-                            user={this.props.sender}
-                            isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
-                            startSelected={hideMenu}
-                        />
-                    )}
-                    {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
-                        <UserAvatar user={this.props.sender} startSelected={hideMenu} />
-                    )}
-                    <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>
-                        <XHorizontal justifyContent="space-between">
-                            <XHorizontal separator={4}>
-                                <XHorizontal separator={4} alignItems="center">
-                                    <Name>{this.props.sender!!.name}</Name>
-                                    {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
-                                </XHorizontal>
-                                <DateComponent className="time">{date}</DateComponent>
-                            </XHorizontal>
-                            {hideMenu ? (isSelect ? (<Check />) : null) : this.menuRender(true)}
-                        </XHorizontal>
-                        {content}
-                        {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
-                            <Reactions
-                                messageId={(message as MessageFull).id}
-                                reactions={(message as MessageFull).reactions}
-                                meId={(this.props.me as UserShort).id}
+                <Check select={isSelect} className="check-icon" />
+                <MessageContainer
+                    separator={0}
+                    className="message-container"
+                >
+                    <XHorizontal alignSelf="stretch">
+                        {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
+                            <UserPopper
+                                user={this.props.sender}
+                                isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                                startSelected={hideMenu}
                             />
                         )}
-                    </XVertical>
-                </XHorizontal>
-            </MessageContainer>
+                        {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
+                            <UserAvatar user={this.props.sender} startSelected={hideMenu} />
+                        )}
+                        <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>
+                            <XHorizontal justifyContent="space-between">
+                                <XHorizontal separator={4}>
+                                    <XHorizontal separator={4} alignItems="center">
+                                        <Name>{this.props.sender!!.name}</Name>
+                                        {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
+                                    </XHorizontal>
+                                    <DateComponent className="time">{date}</DateComponent>
+                                </XHorizontal>
+                            </XHorizontal>
+                            {content}
+                            {this.reactionsRender()}
+                        </XVertical>
+                    </XHorizontal>
+                </MessageContainer>
+                {this.menuRender()}
+            </MessageWrapper>
         );
     }
 }

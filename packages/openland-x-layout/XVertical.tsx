@@ -24,7 +24,7 @@ let VerticalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal' |
     applyFlex
 ]);
 
-export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none' | number, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center', className?: string } & XFlexStyles> {
+export class XVertical extends React.Component<{ separator?: 'large' | 'normal' | 'none' | number, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center', onClick?: () => void, className?: string } & XFlexStyles> {
     render() {
         return (
             <VerticalDiv {...this.props}>

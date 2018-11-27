@@ -24,7 +24,7 @@ let XHorizontalDiv = Glamorous.div<XFlexStyles & { separator?: 'large' | 'normal
     applyFlex
 ]);
 
-export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none' | number, className?: string, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center' } & XFlexStyles> {
+export class XHorizontal extends React.Component<{ separator?: 'large' | 'normal' | 'none' | number, className?: string, alignItems?: 'stretch' | 'flex-start' | 'flex-end' | 'center', onClick?: () => void } & XFlexStyles> {
     render() {
         return (
             <XHorizontalDiv {...this.props}>

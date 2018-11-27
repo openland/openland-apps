@@ -23,8 +23,8 @@ const TypingWrapper = Glamorous.div({
 const TypingContent = Glamorous(XHorizontal)({
     backgroundColor: '#fff',
     maxHeight: 33,
-    maxWidth: 800,
-    paddingLeft: 62,
+    maxWidth: 930,
+    paddingLeft: 92,
     paddingRight: 40,
     margin: 'auto',
 });
@@ -38,30 +38,6 @@ const TypingString = Glamorous.div({
     marginTop: 8,
     marginBottom: 8
 });
-
-// const TypingAvatarWrapper = Glamorous.div({
-//     display: 'flex',
-//     alignItems: 'center',
-//     marginTop: 8,
-//     marginBottom: 9,
-//     '& > div': {
-//         marginLeft: '-8px !important',
-//     },
-//     '& > div:first-child': {
-//         marginLeft: '0 !important'
-//     }
-// });
-
-// const TypingAvatar = Glamorous(XAvatar)({
-//     width: 16,
-//     height: 16,
-//     flexShrink: 0,
-//     '& img': {
-//         width: '16px !important',
-//         height: '16px !important',
-//         objectFit: 'contain'
-//     }
-// });
 
 const TypingComponent = (props: { chatId: string }) => (
     <TypingWrapper>

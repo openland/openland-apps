@@ -109,10 +109,10 @@ const DropAreaSubtitle = Glamorous.div({
 
 const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
-    maxWidth: 800,
+    maxWidth: 930,
     flexBasis: '100%',
-    paddingLeft: 45,
-    paddingRight: 45
+    paddingLeft: 77,
+    paddingRight: 78
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
