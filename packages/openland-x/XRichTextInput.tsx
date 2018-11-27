@@ -215,8 +215,6 @@ const mentionPlugin = createMentionPlugin({
             <MentionComponentInner
                 isYou={props.mention.isYou}
                 className={props.className}
-                // eslint-disable-next-line no-alert
-                // onClick={() => console.log('Clicked on the Mention!')}
             >
                 {props.children}
             </MentionComponentInner>

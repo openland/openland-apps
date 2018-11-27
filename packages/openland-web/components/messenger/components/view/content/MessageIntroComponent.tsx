@@ -14,7 +14,6 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
 import IntroIcon from '../../icons/ic-tag-intro.svg';
 import PassedIcon from '../../icons/ic-passed.svg';
-import { makeNavigable } from 'openland-x/Navigable';
 import { SharedRoomKind } from 'openland-api/Types';
 
 const SetAccesReactionButton = withSetReaction(withRouter((props) => (
