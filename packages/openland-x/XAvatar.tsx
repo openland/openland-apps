@@ -268,7 +268,8 @@ const DotSize = {
     'default': 11,
     'small': 10,
     'l-small': 8,
-    'x-small': 8
+    'x-small': 8,
+    'm-small': 8
 };
 
 const DotPosition = {
@@ -282,7 +283,8 @@ const DotPosition = {
     'default': 0,
     'small': 0,
     'l-small': 0,
-    'x-small': -1
+    'x-small': -1,
+    'm-small': -1
 };
 
 const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
