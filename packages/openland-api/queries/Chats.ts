@@ -93,6 +93,9 @@ export const RoomHistoryQuery = gql`
         messages: roomMessages(roomId: $roomId, first: 30, before: $before) {
             ...RoomMessageFull
         }
+        state: conversationState(id: $roomId) {
+            state
+        }
     }
     ${RoomMessageFull}
     ${UserShort}

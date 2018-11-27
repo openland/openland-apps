@@ -928,8 +928,14 @@ export interface RoomHistory_messages {
   date: any;
 }
 
+export interface RoomHistory_state {
+  __typename: "ConversationUpdateState";
+  state: string | null;
+}
+
 export interface RoomHistory {
   messages: RoomHistory_messages[];
+  state: RoomHistory_state;
 }
 
 export interface RoomHistoryVariables {

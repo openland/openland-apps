@@ -164,12 +164,7 @@ export class ConversationEngine implements MessageSendHandler {
         console.info('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                return await this.engine.client.client.query({
-                    query: RoomHistoryQuery.document,
-                    variables: {
-                        roomId: this.conversationId
-                    }
-                });
+                return await this.engine.client.query(RoomHistoryQuery, { roomId: this.conversationId });
             } catch (e) {
                 console.warn(e);
                 throw e;
@@ -184,7 +179,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId });
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.data.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source
@@ -307,10 +302,10 @@ export class ConversationEngine implements MessageSendHandler {
             let message = text.trim();
             let date = (new Date().getTime()).toString();
             let key = this.engine.sender.sendMessage({
-                 conversationId: this.conversationId,
-                 message, 
-                 mentions,
-                 callback: this
+                conversationId: this.conversationId,
+                message,
+                mentions,
+                callback: this
             });
             let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, mentions } as PendingMessage;
             this.messages = [...this.messages, msgs];

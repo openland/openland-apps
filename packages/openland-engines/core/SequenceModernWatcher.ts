@@ -12,7 +12,7 @@ export class SequenceModernWatcher {
     private currentState: string | null;
     private observable: ZenObservable.Subscription | null = null;
 
-    constructor(name: string, query: any, client: OpenApolloClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: any) {
+    constructor(name: string, query: any, client: OpenApolloClient, handler: (src: any) => void | Promise<void>, seqHandler?: (seq: number) => void, variables?: any, state?: string | null) {
         this.name = name;
         this.query = query;
         this.handler = handler;
@@ -22,6 +22,9 @@ export class SequenceModernWatcher {
         this.variables = variables;
         this.sequenceHandler = new SequenceHandler(this.handleInternal);
         this.client.status.subscribe(this.handleConnectionChanged);
+        if (state) {
+            this.currentState = state;
+        }
         this.startSubsctiption();
     }
 
