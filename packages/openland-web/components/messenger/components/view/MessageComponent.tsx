@@ -122,6 +122,10 @@ const MessageContainer = Glamorous(XVertical)({
     width: '100%'
 });
 
+const MenuWrapper = Glamorous(XHorizontal)<{compact: boolean}>(props => ({
+    marginTop: props.compact ? 4 : 16
+}));
+
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
     paddingRight: (props.isIntro === true) ? 0 : 20,
     '& .url-augmentation': (props.isIntro === true) ? {} : {
@@ -265,7 +269,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         this.props.messagesContext.resetAll();
     }
 
-    private menuRender = () => {
+    private menuRender = (compact: boolean) => {
         const { message } = this.props;
 
         let menu = isServerMessage(message) && this.props.out ?
@@ -301,7 +305,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <XHorizontal alignItems="center" separator={0} className="menu-wrapper">
+            <MenuWrapper alignItems="center" alignSelf="flex-start" separator={0} className="menu-wrapper" compact={compact}>
                 <XHorizontal alignItems="center" separator={6}>
                     <ReplyButton onClick={this.setReplyMessages}>
                         <ReplyIcon />
@@ -311,7 +315,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     )}
                 </XHorizontal>
                 {menu}
-            </XHorizontal>
+            </MenuWrapper>
         );
     }
 
@@ -491,7 +495,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             </MessageCompactContent>
                         </XHorizontal>
                     </MessageCompactContainer>
-                    {this.menuRender()}
+                    {this.menuRender(compact)}
                 </MessageWrapper>
             );
         }
@@ -536,7 +540,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         </XVertical>
                     </XHorizontal>
                 </MessageContainer>
-                {this.menuRender()}
+                {this.menuRender(compact)}
             </MessageWrapper>
         );
     }
