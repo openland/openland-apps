@@ -68,6 +68,7 @@ const Check = Glamorous.div<{ select: boolean }>(props => ({
 }));
 
 const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: boolean, startSelected: boolean }>(props => ({
+    marginTop: props.compact ? 0 : 12,
     cursor: 'pointer',
     '& .message-container': {
         backgroundColor: '#fff'
@@ -78,6 +79,9 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     '& .menu > div': {
         height: 20,
         marginRight: -14
+    },
+    '& .menu-wrapper': {
+        marginTop: props.compact ? 6 : 12
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
         opacity: 0,
@@ -113,7 +117,6 @@ const MessageCompactContainer = Glamorous(XHorizontal)({
 });
 
 const MessageContainer = Glamorous(XVertical)({
-    marginTop: 12,
     paddingLeft: 10,
     paddingTop: 7,
     paddingRight: 10,
@@ -121,10 +124,6 @@ const MessageContainer = Glamorous(XVertical)({
     borderRadius: 6,
     width: '100%'
 });
-
-const MenuWrapper = Glamorous(XHorizontal)<{compact: boolean}>(props => ({
-    marginTop: props.compact ? 4 : 16
-}));
 
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
     paddingRight: (props.isIntro === true) ? 0 : 20,
@@ -269,7 +268,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         this.props.messagesContext.resetAll();
     }
 
-    private menuRender = (compact: boolean) => {
+    private menuRender = () => {
         const { message } = this.props;
 
         let menu = isServerMessage(message) && this.props.out ?
@@ -305,17 +304,17 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <MenuWrapper alignItems="center" alignSelf="flex-start" separator={0} className="menu-wrapper" compact={compact}>
-                <XHorizontal alignItems="center" separator={6}>
-                    <ReplyButton onClick={this.setReplyMessages}>
-                        <ReplyIcon />
-                    </ReplyButton>
+            <XHorizontal alignItems="center" alignSelf="flex-start" separator={0} className="menu-wrapper">
+                <XHorizontal alignItems="center" separator={8}>
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
                     )}
+                    <ReplyButton onClick={this.setReplyMessages}>
+                        <ReplyIcon />
+                    </ReplyButton>
                 </XHorizontal>
                 {menu}
-            </MenuWrapper>
+            </XHorizontal>
         );
     }
 
@@ -495,7 +494,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             </MessageCompactContent>
                         </XHorizontal>
                     </MessageCompactContainer>
-                    {this.menuRender(compact)}
+                    {this.menuRender()}
                 </MessageWrapper>
             );
         }
@@ -540,7 +539,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         </XVertical>
                     </XHorizontal>
                 </MessageContainer>
-                {this.menuRender(compact)}
+                {this.menuRender()}
             </MessageWrapper>
         );
     }

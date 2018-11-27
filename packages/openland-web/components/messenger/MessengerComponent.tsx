@@ -660,7 +660,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                     </XVertical>
                 </XHorizontal>
             </HeaderLeftContent>
-            <XHorizontal alignItems="center" separator={5}>
+            <XHorizontal alignItems="center" separator={8}>
                 {sharedRoom && sharedRoom.kind === 'PUBLIC' && (
                     <XHorizontal separator={14}>
                         <XHorizontal alignSelf="center" alignItems="center" separator={6}>
