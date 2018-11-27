@@ -319,7 +319,7 @@ interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
-    getMessages: () => ModelMessage[];
+    getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
@@ -448,7 +448,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
         if (messages.length > 0) {
             let mentions = this.getMentions(message);
-            const currentMessages = this.props.getMessages();
+            const currentMessages = this.props.getMessages ? this.props.getMessages() : [];
 
             const replyMessages = currentMessages.filter((item: MessageFull) => {
                 return messages.indexOf(item.id) !== -1;
@@ -881,5 +881,5 @@ export const MessageComposeComponentDraft = withGetDraftMessage(props => {
     );
 }) as React.ComponentType<MessageComposeComponentProps & { 
     variables?: { roomId?: string, conversationId?: string }, 
-    getMessages: Function 
+    getMessages?: Function 
 }>;
