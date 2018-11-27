@@ -90,7 +90,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                     } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
                         subtitle = 'Organization';
                     } else if (sharedRoom && (sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
-                        subtitle = sharedRoom.membersCount === 1 ? ' member' : ' members';
+                        subtitle = sharedRoom.membersCount + (sharedRoom.membersCount === 1 ? ' member' : ' members');
                     }
 
                     let typingString = this.state.typing;

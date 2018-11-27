@@ -47,7 +47,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                 <ZQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
                     {(resp) => {
                         let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
-                        if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC') ) {
+                        if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
                             throw Error('');
                         }
                         let setOrChange = sharedRoom.photo ? 'Change' : 'Set';
@@ -55,7 +55,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                             <SScrollView>
                                 <ZListItemHeader
                                     title={sharedRoom.title}
-                                    subtitle={sharedRoom.members.length + ' members'}
+                                    subtitle={sharedRoom.members.length + (sharedRoom.members.length === 1 ? ' member' : ' members')}
                                     photo={sharedRoom.photo}
                                     id={sharedRoom.id}
                                 />
