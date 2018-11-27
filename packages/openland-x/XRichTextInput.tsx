@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
@@ -222,20 +223,23 @@ const mentionPlugin = createMentionPlugin({
     },
 });
 
-const MentionSuggestionsWrapper = Glamorous.div({
+const MentionSuggestionsWrapper = Glamorous.div(({ width }: any) => ({
     '& ': {
         '&.draftJsMentionPlugin__mentionSuggestions__2DWjA': {
             position: 'absolute',
             borderTop: '1px solid #eee',
             background: '#fff',
+            boxShadow: 'none',
+            width,
+            maxWidth: width,
             zIndex: 100,
             bottom: 50,
-            left: 16,
-            borderRadius: '2px',
+            left: 0,
+            borderRadius: '10px',
             cursor: 'pointer',
         },
     },
-});
+}));
 
 export const MentionEntry = (props: any) => {
     const {
@@ -259,13 +263,14 @@ export const MentionEntry = (props: any) => {
             paddingRight={15}
             paddingLeft={15}
             minWidth={0}
+            backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
             hoverBackgroundColor={'#f9f9f9'}
         >
-            <XAvatar src={mention.avatar} online={mention.online} />
+            <XAvatar size={'m-small'} src={mention.avatar} online={mention.online} />
 
             <XView
                 flexDirection="column"
-                alignSelf={'center'}
+                alignSelf="center"
                 marginLeft={12}
                 fontSize={13}
                 fontWeight={'600'}
@@ -300,7 +305,6 @@ export const MentionEntry = (props: any) => {
             >
                 ↵ to select
             </XView>
-            
         </XView>
     );
 };
@@ -324,6 +328,8 @@ type XRichTextInputState = {
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRichTextInputState> {
     private editorRef = React.createRef<Editor>();
+    private containerRef = React.createRef<Container>();
+
     constructor(props: XRichTextInputProps) {
         super(props);
 
@@ -429,26 +435,37 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     render() {
+        const containerEl =
+            this.containerRef &&
+            this.containerRef.current &&
+            ReactDOM.findDOMNode(this.containerRef.current);
+
+        const widthOfContainer =
+            containerEl && containerEl.getBoundingClientRect
+                ? containerEl.getBoundingClientRect().width
+                : 0;
+
+        console.log(widthOfContainer);
         if (canUseDOM) {
             return (
-                <Container {...extractFlexProps(this.props)}>
-                    <MentionSuggestionsWrapper>
+                <Container {...extractFlexProps(this.props)} ref={this.containerRef}>
+                    <MentionSuggestionsWrapper width={widthOfContainer}>
                         <MentionSuggestions
                             onSearchChange={this.onSearchChange}
                             suggestions={this.state.suggestions}
                             entryComponent={MentionEntry}
                         />
-
-                        <Editor
-                            editorState={this.state.editorState}
-                            onChange={this.onChange}
-                            placeholder={this.props.placeholder}
-                            keyBindingFn={keyBinding}
-                            handleKeyCommand={this.onHandleKey}
-                            ref={this.editorRef}
-                            plugins={[emojiPlugin, mentionPlugin]}
-                        />
                     </MentionSuggestionsWrapper>
+                    <Editor
+                        editorState={this.state.editorState}
+                        onChange={this.onChange}
+                        placeholder={this.props.placeholder}
+                        keyBindingFn={keyBinding}
+                        handleKeyCommand={this.onHandleKey}
+                        ref={this.editorRef}
+                        plugins={[emojiPlugin, mentionPlugin]}
+                    />
+
                     <EmojiSuggestions />
                     <EmojiWrapper className="emoji-button">
                         <EmojiSelect />
