@@ -25,6 +25,7 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
+import { MessageFull } from 'openland-api/Types';
 import {
     ReplyMessageVariables,
     ReplyMessage,
@@ -34,6 +35,7 @@ import {
     SharedRoomKind,
     RoomMembers_members
 } from 'openland-api/Types';
+import { ModelMessage } from 'openland-engines/messenger/types';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -317,6 +319,7 @@ interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
 }
 
 interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
+    getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
@@ -442,13 +445,37 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         } else if (typeof (forwardMessageId) === 'object') {
             messages = [...forwardMessageId];
         }
+
         if (messages.length > 0) {
             let mentions = this.getMentions(message);
+            const currentMessages = this.props.getMessages ? this.props.getMessages() : [];
+
+            const replyMessages = currentMessages.filter((item: MessageFull) => {
+                return messages.indexOf(item.id) !== -1;
+            });
+
+            const replyMentions = replyMessages.reduce(
+                (accumulator: string[], currentValue: ModelMessage) => {
+                    if (!currentValue.mentions) {
+                        return accumulator;
+                    }
+
+                    currentValue.mentions.forEach((mention) => {
+                        if (accumulator.indexOf(mention.id) === -1) {
+                            accumulator.push(mention.id);
+                        }
+                    });
+
+                    return accumulator;
+                }, 
+                mentions ? mentions.map(({id}) => id) : []
+            );
+
             this.props.replyMessage({
                 variables: {
                     roomId: this.props.conversationId,
                     message: message,
-                    mentions: mentions ? mentions.map(({id}) => id) : null,
+                    mentions: replyMentions,
                     replyMessages: messages
                 }
             });
@@ -852,4 +879,7 @@ export const MessageComposeComponentDraft = withGetDraftMessage(props => {
             {...props}
         />
     );
-}) as React.ComponentType<MessageComposeComponentProps & { variables?: { roomId?: string, conversationId?: string } }>;
+}) as React.ComponentType<MessageComposeComponentProps & { 
+    variables?: { roomId?: string, conversationId?: string }, 
+    getMessages?: Function 
+}>;

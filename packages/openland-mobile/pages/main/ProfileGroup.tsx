@@ -20,7 +20,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { XPStyles } from 'openland-xp/XPStyles';
-import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation } from 'openland-api';
+import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -47,7 +47,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                 <ZQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
                     {(resp) => {
                         let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
-                        if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC') ) {
+                        if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
                             throw Error('');
                         }
                         let setOrChange = sharedRoom.photo ? 'Change' : 'Set';
@@ -55,7 +55,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                             <SScrollView>
                                 <ZListItemHeader
                                     title={sharedRoom.title}
-                                    subtitle={sharedRoom.members.length + ' members'}
+                                    subtitle={sharedRoom.members.length + (sharedRoom.members.length === 1 ? ' member' : ' members')}
                                     photo={sharedRoom.photo}
                                     id={sharedRoom.id}
                                 />
@@ -219,6 +219,34 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             </YMutation>
                                         ))}
                                     </SDeferred>
+
+                                    <YMutation mutation={RoomLeaveMutation}>
+                                        {leave => <ZListItem
+                                            text="Leave"
+                                            appearance="danger"
+                                            onPress={() => {
+                                                Alert.alert(`Are you sure you want to leave ${sharedRoom!.title}?`, undefined, [{
+                                                    onPress: async () => {
+                                                        startLoader();
+                                                        try {
+                                                            await leave({ variables: { roomId: this.props.router.params.id } });
+
+                                                            this.props.router.pushAndResetRoot('Home');
+                                                        } catch (e) {
+                                                            Alert.alert(e.message);
+                                                        }
+                                                        stopLoader();
+                                                    },
+                                                    text: 'Leave',
+                                                    style: 'destructive'
+                                                },
+                                                {
+                                                    text: 'Cancel',
+                                                    style: 'cancel'
+                                                }]);
+                                            }}
+                                        />}
+                                    </YMutation>
 
                                 </ZListItemGroup>
                             </SScrollView>

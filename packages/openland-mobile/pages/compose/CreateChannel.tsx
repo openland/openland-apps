@@ -60,7 +60,7 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
                                     members: []
                                 }
                             });
-                            this.props.router.pushAndReset('Conversation', { id: (channel as any).data.channel.id });
+                            this.props.router.pushAndReset('Conversation', { id: (channel as any).data.room.id });
                         }}
                     >
                         <View >

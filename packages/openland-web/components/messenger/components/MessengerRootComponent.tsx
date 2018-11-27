@@ -21,7 +21,6 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import {
     MessageFull_mentions
 } from 'openland-api/Types';
-import { MessagesStateContext, MessagesStateContextProps } from './MessagesStateContext';
 import { withChatLeave } from '../../../api/withChatLeave';
 
 interface MessagesComponentProps {
@@ -202,6 +201,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         });
     }
 
+    getMessages = () => {
+        return this.state.messages;
+    }
+
     // 
     // Rendering
     //
@@ -225,6 +228,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 />
                 {this.state.hideInput === false && (
                     <MessageComposeComponentDraft
+                        getMessages={this.getMessages}
                         conversation={this.conversation}
                         onChange={this.handleChange}
                         onSend={this.handleSend}

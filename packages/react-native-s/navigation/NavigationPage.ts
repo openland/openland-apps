@@ -47,6 +47,9 @@ export class NavigationPage {
             pushAndReset: (destRoute: string, destParams?: any) => {
                 manager.pushAndReset(destRoute, destParams);
             },
+            pushAndResetRoot: (destRoute: string, destParams?: any) => {
+                manager.pushAndResetRoot(destRoute, destParams);
+            },
             back: () => {
                 return manager.pop();
             },
