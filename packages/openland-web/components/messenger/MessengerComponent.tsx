@@ -7,7 +7,6 @@ import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XPopper } from 'openland-x/XPopper';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
@@ -15,11 +14,9 @@ import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { XLink } from 'openland-x/XLink';
-import { RoomMembersComponent } from '../../pages/main/channel/components/membersComponent';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
-import { XCounter } from 'openland-x/XCounter';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -32,13 +29,11 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { UserSelect } from '../../api/UserSelect';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import IconInfo from './components/icons/ic-info.svg';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { withRoomAddMembers } from '../../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-
 import { TalkBarComponent } from '../conference/TalkBarComponent';
 import { TalkContext } from '../conference/TalkProviderComponent';
 import { XDate } from 'openland-x/XDate';
@@ -419,42 +414,6 @@ const InviteButton = Glamorous(XButton)({
     }
 });
 
-const InfoButton = Glamorous.div({
-    width: 32,
-    height: 32,
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    '& svg > *': {
-        fill: 'rgba(0, 0, 0, 0.2)'
-    },
-    '&:hover svg > *': {
-        fill: '#1790ff'
-    }
-});
-
-const AboutWrapper = Glamorous(XVertical)({
-    padding: 6
-});
-
-const AboutTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.43,
-    letterSpacing: -0.2,
-    color: '#99A2B0'
-});
-
-const AboutText = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.57,
-    letterSpacing: -0.2,
-    color: '#334562'
-});
-
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
     fontSize: 13,
     fontWeight: 400,
@@ -614,14 +573,6 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
 };
 
 let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
-    let tab: 'chat' | 'members' | 'call' = 'chat';
-    if (props.router.query.tab === 'members') {
-        tab = 'members';
-    }
-    if (props.router.query.tab === 'call') {
-        tab = 'call';
-    }
-
     let sharedRoom: Room_room_SharedRoom | null = props.data.room!.__typename === 'SharedRoom' ? props.data.room as any : null;
     let privateRoom: Room_room_PrivateRoom | null = props.data.room!.__typename === 'PrivateRoom' ? props.data.room as any : null;
 
@@ -712,17 +663,6 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
             <XHorizontal alignItems="center" separator={5}>
                 {sharedRoom && sharedRoom.kind === 'PUBLIC' && (
                     <XHorizontal separator={14}>
-                        <RoomTabs>
-                            <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
-                            <RoomTab query={{ field: 'tab', value: 'members' }}>
-                                <XHorizontal separator={4} alignItems="center">
-                                    <span>Members</span>
-                                    {sharedRoom && (sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER') && sharedRoom.members.filter(m => m.membership === 'REQUESTED').length > 0 && (
-                                        <XCounter big={true} count={sharedRoom.members.filter(m => m.membership === 'REQUESTED').length} />
-                                    )}
-                                </XHorizontal>
-                            </RoomTab>
-                        </RoomTabs>
                         <XHorizontal alignSelf="center" alignItems="center" separator={6}>
                             <XWithRole role="feature-non-production">
                                 <TalkContext.Consumer>
@@ -737,38 +677,16 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                                     <InviteButton text="Invite" size="small" icon={<PlusIcon />} />
                                 )}
                             />
-                            {sharedRoom.description && (
-                                <XPopper
-                                    showOnHover={true}
-                                    placement="bottom-end"
-                                    content={(
-                                        <AboutWrapper separator={2} maxWidth={510}>
-                                            <AboutTitle>About room</AboutTitle>
-                                            <AboutText>{sharedRoom.description}</AboutText>
-                                        </AboutWrapper>
-                                    )}
-                                >
-                                    <InfoButton>
-                                        <IconInfo />
-                                    </InfoButton>
-                                </XPopper>
-                            )}
                         </XHorizontal>
                     </XHorizontal>
                 )}
 
                 {sharedRoom && sharedRoom.kind === 'GROUP' && (
-                    <XHorizontal separator={14} alignItems="center">
-                        <RoomTabs>
-                            <RoomTab query={{ field: 'tab' }} >Discussion</RoomTab>
-                            <RoomTab query={{ field: 'tab', value: 'members' }}>Members</RoomTab>
-                        </RoomTabs>
-                        <XWithRole role="feature-non-production">
-                            <TalkContext.Consumer>
-                                {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
-                            </TalkContext.Consumer>
-                        </XWithRole>
-                    </XHorizontal>
+                    <XWithRole role="feature-non-production">
+                        <TalkContext.Consumer>
+                            {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
+                        </TalkContext.Consumer>
+                    </XWithRole>
                 )}
 
                 <XOverflow
@@ -791,9 +709,6 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                                 {sharedRoom.kind === 'PUBLIC' && (
                                     <>
                                         <XMenuTitle>Super admin</XMenuTitle>
-                                        {/* TODO recover admin features: */}
-                                        {/* <RoomSetFeatured conversationId={props.data.room!.id} val={props.data.room!.featured} />
-                                                <RoomSetHidden conversationId={props.data.room!.id} val={props.data.room!.hidden} /> */}
                                         <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
                                         <XMenuTitle>Common</XMenuTitle>
                                         <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
@@ -829,24 +744,10 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                 height="calc(100% - 56px)"
                 separator={0}
             >
-                {tab === 'chat' && (
-                    <MessengerRootComponent
-                        conversationId={props.data.room!.id}
-                        conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
-                    />
-                )}
-                {(sharedRoom && tab === 'members') && (
-                    <RoomMembersComponent
-                        roomId={sharedRoom.id}
-                        members={sharedRoom.members}
-                        channelTitle={title}
-                        key={props.data.room!.id + '_members'}
-                        description={sharedRoom.description}
-                        orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
-                        removeFrom="room"
-                    />
-                )}
-
+                <MessengerRootComponent
+                    conversationId={props.data.room!.id}
+                    conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
+                />
             </XHorizontal>
             {sharedRoom && <RoomEditComponent title={sharedRoom.title} description={sharedRoom.description} photo={sharedRoom.photo} socialImage={sharedRoom.socialImage} roomId={sharedRoom.id} />}
 
