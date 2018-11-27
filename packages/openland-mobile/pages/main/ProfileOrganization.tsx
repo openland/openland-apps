@@ -100,15 +100,14 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 {resp.data.organization.twitter && <ZListItem title="twitter" text={resp.data.organization.twitter} />}
                                             </ZListItemGroup>
 
-                                            <ZListItemGroup header="Public rooms" divider={false} actionRight={resp.data.organization.channels.length > 3 ? { title: 'Show all', onPress: () => this.props.router.push('OrgChannels', { organizationId: resp.data.organization.id, title: resp.data.organization.name + ' channels' }) } : undefined}>
-                                                {resp.data.organization.channels.filter((c, i) => i <= 2).map((v) => (
+                                            <ZListItemGroup header="Public rooms" divider={false} actionRight={resp.data.organization.rooms.length > 3 ? { title: 'Show all', onPress: () => this.props.router.push('OrgChannels', { organizationId: resp.data.organization.id, title: resp.data.organization.name + ' channels' }) } : undefined}>
+                                                {resp.data.organization.rooms.filter((c, i) => i <= 2).map((v) => (
                                                     <ArrowWrapper>
                                                         <ChannelViewAsync
                                                             key={v!!.id}
                                                             item={v!}
                                                             onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
                                                         />
-
                                                     </ArrowWrapper>
                                                 ))}
                                             </ZListItemGroup>

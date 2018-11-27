@@ -588,12 +588,12 @@ const Members = (props: MembersProps) => {
 const Rooms = (props: { organization: Organization_organization }) => {
     let { organization } = props;
 
-    let publicRooms = organization.channels.filter(c => c && !c.hidden);
-    let privateRooms = organization.channels.filter(c => c && c.hidden);
+    // let publicRooms = rooms.filter(c => c && !c.hidden);
+    let privateRooms = organization.rooms;
 
     return (
         <>
-            {publicRooms && (publicRooms.length > 0) && (
+            {/* publicRooms && (publicRooms.length > 0) && (
                 <Section separator={0}>
                     <XSubHeader
                         title={TextProfiles.Organization.publicRooms}
@@ -616,8 +616,8 @@ const Rooms = (props: { organization: Organization_organization }) => {
                         </XMoreCards>
                     </SectionContent>
                 </Section>
-            )}
-            {/* organization.isMine && privateRooms && (privateRooms.length > 0) && (
+            ) */}
+            {privateRooms && (privateRooms.length > 0) && (
                 <Section separator={0}>
                     <XSubHeader
                         title={TextProfiles.Organization.privateRooms}
@@ -625,6 +625,11 @@ const Rooms = (props: { organization: Organization_organization }) => {
                         paddingBottom={0}
                     />
                     <SectionContent>
+                        {organization.isMine && (
+                            <XWithRole role="admin" orgPermission={organization.id}>
+                                <XCreateCard query={{ field: 'createRoom', value: 'true' }} text={TextProfiles.Organization.createPrivateRoom} />
+                            </XWithRole>
+                        )}
                         <XMoreCards>
                             {privateRooms.map((c: any, i: any) => (
                                 <XRoomCard
@@ -635,7 +640,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
                         </XMoreCards>
                     </SectionContent>
                 </Section>
-            ) */}
+            )}
         </>
     );
 };

@@ -3174,17 +3174,14 @@ export interface Organization_organization_requests {
   user: Organization_organization_requests_user;
 }
 
-export interface Organization_organization_channels {
-  __typename: "ChannelConversation";
+export interface Organization_organization_rooms {
+  __typename: "SharedRoom";
   id: string;
-  isRoot: boolean;
+  kind: SharedRoomKind;
   title: string;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  memberRequestsCount: number;
-  hidden: boolean;
-  featured: boolean;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
 }
 
 export interface Organization_organization {
@@ -3207,7 +3204,7 @@ export interface Organization_organization {
   linkedin: string | null;
   members: Organization_organization_members[];
   requests: Organization_organization_requests[];
-  channels: (Organization_organization_channels | null)[];
+  rooms: Organization_organization_rooms[];
 }
 
 export interface Organization {
@@ -5829,17 +5826,14 @@ export interface OrganizationFull_requests {
   user: OrganizationFull_requests_user;
 }
 
-export interface OrganizationFull_channels {
-  __typename: "ChannelConversation";
+export interface OrganizationFull_rooms {
+  __typename: "SharedRoom";
   id: string;
-  isRoot: boolean;
+  kind: SharedRoomKind;
   title: string;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  memberRequestsCount: number;
-  hidden: boolean;
-  featured: boolean;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
 }
 
 export interface OrganizationFull {
@@ -5862,7 +5856,7 @@ export interface OrganizationFull {
   linkedin: string | null;
   members: OrganizationFull_members[];
   requests: OrganizationFull_requests[];
-  channels: (OrganizationFull_channels | null)[];
+  rooms: OrganizationFull_rooms[];
 }
 
 /* tslint:disable */
@@ -6053,6 +6047,52 @@ export interface RoomFull_SharedRoom {
 }
 
 export type RoomFull = RoomFull_PrivateRoom | RoomFull_SharedRoom;
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: RoomShort
+// ====================================================
+
+export interface RoomShort_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomShort_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomShort_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomShort_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomShort_PrivateRoom_user;
+}
+
+export interface RoomShort_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+}
+
+export type RoomShort = RoomShort_PrivateRoom | RoomShort_SharedRoom;
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.

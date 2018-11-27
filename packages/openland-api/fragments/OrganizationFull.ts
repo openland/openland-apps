@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import { UserShort } from './UserShort';
 import { UserFull } from './UserFull';
+import { RoomShort } from './RoomShort';
 
 export const OrganizationFull = gql`
     fragment OrganizationFull on Organization {
@@ -33,17 +33,10 @@ export const OrganizationFull = gql`
             }
         }
 
-        channels: alphaCreatedChannels{
-            id
-            isRoot
-            title
-            photos
-            photo
-            membersCount
-            memberRequestsCount
-            hidden
-            featured
+        rooms: betaPublicRooms{
+            ...RoomShort
         }
     }
     ${UserFull}
+    ${RoomShort}
 `;
