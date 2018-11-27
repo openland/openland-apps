@@ -116,7 +116,7 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
                                 <SScrollView keyboardDismissMode="on-drag">
                                     <ZListItemGroup>
                                         <ZListItem leftIcon={require('assets/ic-cell-group-ios.png')} text="Create group" path="CreateGroupAttrs" pathRemove={true} />
-                                        <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Create channel" path="CreateChannel" pathRemove={true} />
+                                        <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Create room" path="CreateChannel" pathRemove={true} />
                                     </ZListItemGroup>
                                     <ZListItemGroup divider={false} header="People">
                                         {resp.data.items.edges.map((item) => (

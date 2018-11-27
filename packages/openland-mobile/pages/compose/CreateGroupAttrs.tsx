@@ -48,21 +48,15 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                                     {
                                         title: 'Create',
                                         action: async (users: UserShort[]) => {
-                                            startLoader();
-                                            try {
-                                                let res = await create({
-                                                    variables: {
-                                                        kind: SharedRoomKind.GROUP,
-                                                        title: src.title,
-                                                        photoRef: src.photoRef,
-                                                        members: users.map(u => u.id)
-                                                    }
-                                                });
-                                                this.props.router.pushAndReset('Conversation', { id: (res as any).data.group.id });
-                                            } finally {
-                                                stopLoader();
-                                            }
-
+                                            let res = await create({
+                                                variables: {
+                                                    kind: SharedRoomKind.GROUP,
+                                                    title: src.title,
+                                                    photoRef: src.photoRef,
+                                                    members: users.map(u => u.id)
+                                                }
+                                            });
+                                            this.props.router.pushAndReset('Conversation', { id: (res as any).data.room.id });
                                         }
                                     },
                                     src.title);

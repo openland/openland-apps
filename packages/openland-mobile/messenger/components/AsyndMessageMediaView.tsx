@@ -8,8 +8,8 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { layoutMedia } from 'openland-web/components/messenger/components/view/content/utils/MediaLayout';
-import { DownloadState } from 'openland-mobile/utils/DownloadManagerInterface';
+import { layoutMedia } from '../../../openland-web/components/messenger/components/view/content/utils/MediaLayout';
+import { DownloadState } from '../../utils/DownloadManagerInterface';
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
