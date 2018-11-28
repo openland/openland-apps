@@ -574,14 +574,24 @@ const ForwardHeader = (props: { state: MessagesStateContextProps, me: UserShort,
                     </XHorizontal>
                 </ClearButton>
                 <XHorizontal alignItems="center" separator={5}>
-                    {!Array.from(props.state.selectedMessages).find(msg => msg.sender.id !== props.me.id) &&
+                    <XWithRole role="super-admin">
                         <DeletMessagesButton roomId={props.roomId} messagesIds={Array.from(props.state.selectedMessages).map(m => m.id)} onSuccess={props.state.resetAll}>
                             <XButton
                                 text="Delete"
                                 style="default"
                             />
                         </DeletMessagesButton>
-                    }
+                    </XWithRole>
+                    <XWithRole role="super-admin" negate={true}>
+                        {!Array.from(props.state.selectedMessages).find(msg => msg.sender.id !== props.me.id) &&
+                            <DeletMessagesButton roomId={props.roomId} messagesIds={Array.from(props.state.selectedMessages).map(m => m.id)} onSuccess={props.state.resetAll}>
+                                <XButton
+                                    text="Delete"
+                                    style="default"
+                                />
+                            </DeletMessagesButton>
+                        }
+                    </XWithRole>
                     <XButton
                         text="Reply"
                         style="primary"

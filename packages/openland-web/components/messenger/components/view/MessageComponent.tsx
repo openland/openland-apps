@@ -487,21 +487,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal separator={4} alignItems="center">
-                                        {(sender && (this.props.conversationType !== 'PRIVATE')) ? (
-                                            <UserPopper
-                                                user={sender}
-                                                isMe={this.props.me ? (sender.id === this.props.me.id) : false}
-                                                startSelected={hideMenu}
-                                            >
-                                                <Name>
-                                                    {sender.name}
+                                        {
+                                            this.props.sender && this.props.conversationType !== 'PRIVATE' ? (
+                                                <UserPopper
+                                                    user={this.props.sender}
+                                                    isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                                                    startSelected={hideMenu}
+                                                >
+                                                    <Name>
+                                                        {this.props.sender!!.name}
+                                                    </Name>
+                                                </UserPopper>
+                                            ) : <Name>
+                                                    {this.props.sender!!.name}
                                                 </Name>
-                                            </UserPopper>
-                                        ) : (
-                                                <Name>
-                                                    {sender ? sender.name : 'user'}
-                                                </Name>
-                                            )}
+                                        }
                                         {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                     </XHorizontal>
                                     <DateComponent className="time">{date}</DateComponent>

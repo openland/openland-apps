@@ -48,6 +48,16 @@ export const RoomQuery = gql`
     ${OrganizationShort}
 `;
 
+export const RoomSuperQuery = gql`
+    query RoomSuper($id: ID!) {
+        roomSuper(id: $id){
+            id
+            featured
+            listed
+        }
+    }
+`;
+
 export const MessageSetReactionMutation = gql`
     mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
         betaReactionSet(mid: $messageId, reaction: $reaction)
