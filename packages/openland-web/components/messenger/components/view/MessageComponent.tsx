@@ -460,6 +460,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             );
         }
 
+        let { sender } = this.props;
+
         return (
             <MessageWrapper
                 compact={false}
@@ -471,35 +473,35 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 <Check onClick={this.selectMessage} select={isSelect} className="check-icon" />
                 <XVertical separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                     <XHorizontal alignSelf="stretch">
-                        {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
+                        {sender && (this.props.conversationType !== 'PRIVATE') && (
                             <UserPopper
-                                user={this.props.sender}
-                                isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                                user={sender}
+                                isMe={this.props.me ? (sender.id === this.props.me.id) : false}
                                 startSelected={hideMenu}
                             />
                         )}
-                        {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
-                            <UserAvatar user={this.props.sender} startSelected={hideMenu} />
+                        {sender && (this.props.conversationType === 'PRIVATE') && (
+                            <UserAvatar user={sender} startSelected={hideMenu} />
                         )}
                         <XVertical separator={2} flexGrow={1} maxWidth="calc(100% - 52px)">
                             <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal separator={4} alignItems="center">
-                                        {
-                                            this.props.sender ? (
-                                                <UserPopper
-                                                    user={this.props.sender}
-                                                    isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
-                                                    startSelected={hideMenu}
-                                                >
-                                                    <Name>
-                                                        {this.props.sender!!.name}
-                                                    </Name>
-                                                </UserPopper>
-                                            ) :  <Name>
-                                                    {this.props.sender!!.name}
+                                        {(sender && (this.props.conversationType !== 'PRIVATE')) ? (
+                                            <UserPopper
+                                                user={sender}
+                                                isMe={this.props.me ? (sender.id === this.props.me.id) : false}
+                                                startSelected={hideMenu}
+                                            >
+                                                <Name>
+                                                    {sender.name}
                                                 </Name>
-                                        }
+                                            </UserPopper>
+                                        ) : (
+                                                <Name>
+                                                    {sender ? sender.name : 'user'}
+                                                </Name>
+                                            )}
                                         {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                     </XHorizontal>
                                     <DateComponent className="time">{date}</DateComponent>
