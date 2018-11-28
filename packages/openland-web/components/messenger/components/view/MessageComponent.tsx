@@ -155,13 +155,12 @@ interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
-class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
-    static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean, isMenuOpen: boolean }) => {
+class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean }> {
+    static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean }) => {
         if (isServerMessage(props.message)) {
             if (props.messagesContext.editMessageId === props.message.id) {
                 return {
-                    isEditView: true,
-                    isMenuOpen: false
+                    isEditView: true
                 };
             } else {
                 return {
@@ -177,15 +176,8 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         super(props);
 
         this.state = {
-            isEditView: false,
-            isMenuOpen: false
+            isEditView: false
         };
-    }
-
-    private switchMenu = () => {
-        this.setState({
-            isMenuOpen: !this.state.isMenuOpen
-        });
     }
 
     private setEditMessage = (e: any) => {
@@ -439,14 +431,13 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (compact) {
             return (
                 <MessageWrapper
-                    onClick={this.selectMessage}
                     compact={true}
                     isEditView={this.state.isEditView}
                     separator={6}
                     alignItems="center"
                     startSelected={hideMenu}
                 >
-                    <Check select={isSelect} className="check-icon" />
+                    <Check select={isSelect} className="check-icon" onClick={this.selectMessage} />
                     <XHorizontal separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                         <DateComponent small={true} className="time">{date}</DateComponent>
                         <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth="calc(100% - 55px)">

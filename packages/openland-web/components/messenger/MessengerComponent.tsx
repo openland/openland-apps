@@ -60,8 +60,8 @@ const ForwardRoot = Glamorous.div({
         position: 'absolute',
         right: 20,
         top: 20,
-        width: 20,
-        height: 20,
+        width: 14,
+        height: 14,
         cursor: 'pointer'
     }
 });
@@ -99,7 +99,11 @@ const InfoText = Glamorous.div({
     fontWeight: 400,
     lineHeight: '24px',
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.4)'
+    color: 'rgba(0, 0, 0, 0.4)',
+    '& span': {
+        fontWeight: 600,
+        color: '#4C4C4C'
+    }
 });
 
 const FrowardPlaceholder = (props: { state: MessagesStateContextProps }) => {
@@ -120,7 +124,7 @@ const FrowardPlaceholder = (props: { state: MessagesStateContextProps }) => {
                 <Image />
                 <XVertical separator={6} alignItems="center">
                     <InfoTextBold>Forwarding messages</InfoTextBold>
-                    <InfoText>Select a chat in the left column to forward {msgLength} messages</InfoText>
+                    <InfoText>Select a chat in the left column to forward <span>{msgLength} messages</span></InfoText>
                 </XVertical>
             </ImageWrapper>
         </ForwardRoot>
