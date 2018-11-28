@@ -35,7 +35,16 @@ interface XSocialButtonProps {
 }
 
 export const XSocialButton = (props: XSocialButtonProps) => {
-    let href = (props.style === 'phone') ? 'tel:' + props.value : props.value;
+    let href = props.value;
+
+    if (props.style === 'phone' && !href.startsWith('tel:')) {
+        href = 'tel:' + props.value;
+    }
+
+    if (props.style === 'website' && !href.startsWith('http://') && !href.startsWith('https://')) {
+        href = 'http://' + props.value;
+    }
+
     let icon = Icons[props.style];
     let title = props.placeholder || TextGlobal.socials[props.style];
 
