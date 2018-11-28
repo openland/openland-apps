@@ -482,7 +482,21 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal separator={4} alignItems="center">
-                                        <Name>{this.props.sender!!.name}</Name>
+                                        {
+                                            this.props.sender ? (
+                                                <UserPopper
+                                                    user={this.props.sender}
+                                                    isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                                                    startSelected={hideMenu}
+                                                >
+                                                    <Name>
+                                                        {this.props.sender!!.name}
+                                                    </Name>
+                                                </UserPopper>
+                                            ) :  <Name>
+                                                    {this.props.sender!!.name}
+                                                </Name>
+                                        }
                                         {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                     </XHorizontal>
                                     <DateComponent className="time">{date}</DateComponent>
