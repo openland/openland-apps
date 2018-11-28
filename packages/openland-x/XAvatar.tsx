@@ -85,7 +85,7 @@ let sizeStyles = styleResolver({
     'm-small': {
         height: 28,
         width: 28,
-        fontSize: 10
+        fontSize: 13
     }
 });
 
