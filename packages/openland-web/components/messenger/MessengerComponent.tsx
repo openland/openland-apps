@@ -544,7 +544,7 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
         return (
             <ChatHeaderContent justifyContent="space-between" alignItems="center">
                 <ClearButton>
-                    <XHorizontal separator={2} alignItems="center">
+                    <XHorizontal separator={4} alignItems="center">
                         <span>{size} {size === 1 ? 'message selected' : 'messages selected'}</span>
                         <CloseIcon
                             onClick={() => {
