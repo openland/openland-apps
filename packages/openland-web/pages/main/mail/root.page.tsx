@@ -166,6 +166,12 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         };
     }
 
+    componentWillReceiveProps(nextProps: { router: XRouter }) {
+        if (this.props.router.routeQuery.conversationId !== nextProps.router.routeQuery.conversationId && !this.state.useForwardMessages) {
+            this.state.resetAll();
+        }
+    }
+
     private switchMessageSelect = (message: MessageFull) => {
         let res = new Set(this.state.selectedMessages);
         if (res.has(message)) {
