@@ -874,25 +874,7 @@ const MessageComposeComponentChannelMembers = withChannelMembers(props => {
     );
 }) as React.ComponentType<MessageComposeComponentProps & { draft: string | null }>;
 
-const MessageComposeComponentOrganizationMembers = withOrganization(props => {
-    return (
-        <MessageComposeComponent
-            members={props.data.organization ? props.data.organization.members as any : []}
-            {...props}
-        />
-    );
-}) as any;
-
 export const MessageComposeComponentDraft = withGetDraftMessage((props: any) => {
-    if (props.conversationType === 'INTERNAL') {
-        return (
-            <MessageComposeComponentOrganizationMembers
-                {...props}          
-                draft={props.data.message}
-            />
-        );
-    }
-    
     return (
         <MessageComposeComponentChannelMembers
             {...props}          
