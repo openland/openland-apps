@@ -723,6 +723,14 @@ let MessengerComponentLoader = withRoom(withQueryLoader(withUserInfo((props) => 
                     </XWithRole>
                 )}
 
+                  {privateRoom && (
+                    <XWithRole role="feature-non-production">
+                        <TalkContext.Consumer>
+                            {ctx => ctx.cid !== privateRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
+                        </TalkContext.Consumer>
+                    </XWithRole>
+                )}
+
                 <XOverflow
                     flat={true}
                     placement="bottom-end"
