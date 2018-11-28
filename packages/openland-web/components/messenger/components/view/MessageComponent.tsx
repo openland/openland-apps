@@ -15,17 +15,15 @@ import { isServerMessage, PendingMessage } from 'openland-engines/messenger/type
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { XOverflow } from '../../../Incubator/XOverflow';
-import { XMenuItem } from 'openland-x/XMenuItem';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import ReplyIcon from '../icons/ic-reply1.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
+import ReplyIcon from '../icons/ic-reply1.svg';
+import EditIcon from '../icons/ic-edit.svg';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -81,10 +79,6 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     '& .time': {
         opacity: props.compact ? 0 : 1
     },
-    '& .menu > div': {
-        width: 18,
-        height: 18
-    },
     '& .menu-wrapper': {
         marginTop: props.compact ? 6 : 12
     },
@@ -133,7 +127,7 @@ const ReplyMessageWrapper = Glamorous.div({
     }
 });
 
-const ReplyButton = Glamorous.div({
+const IconButton = Glamorous.div({
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -255,46 +249,14 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     }
 
     private menuRender = () => {
-        const { message } = this.props;
-
-        let menu = isServerMessage(message) && this.props.out ?
-            (
-                <XVertical className="menu">
-                    <XOverflow
-                        show={this.state.isMenuOpen}
-                        flat={true}
-                        placement="bottom-end"
-                        onClickTarget={this.switchMenu}
-                        content={
-                            <>
-                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
-                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
-                            </>
-                        }
-                    />
-                </XVertical>
-            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
-                <XWithRole role="super-admin">
-                    <XVertical className="menu">
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
-                        />
-                    </XVertical>
-                </XWithRole>
-            ) : null;
-
-        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
-            menu = null;
-        }
+        const { message, out } = this.props;
 
         return (
             <XHorizontal
                 alignItems="center"
                 alignSelf="flex-start"
                 justifyContent="flex-start"
-                width={80}
+                width={83}
                 flexShrink={0}
                 separator={5}
                 className="menu-wrapper"
@@ -303,11 +265,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
                     )}
-                    <ReplyButton onClick={this.setReplyMessages}>
+                    <IconButton onClick={this.setReplyMessages}>
                         <ReplyIcon />
-                    </ReplyButton>
+                    </IconButton>
+                    {out && message.message && (
+                        <IconButton onClick={this.setEditMessage}>
+                            <EditIcon />
+                        </IconButton>
+                    )}
                 </XHorizontal>
-                {menu}
             </XHorizontal>
         );
     }

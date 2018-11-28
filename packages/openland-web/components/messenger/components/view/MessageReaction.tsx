@@ -22,7 +22,7 @@ const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
     '&:hover svg > path': {
-        fill: '#1790ff',
+        fill: '#d75454',
         opacity: 1
     }
 }));
