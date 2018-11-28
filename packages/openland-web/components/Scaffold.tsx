@@ -212,6 +212,7 @@ interface UserPopperProps {
         id: string;
         name: string;
         photo: string | null;
+        isCommunity: boolean;
     }[];
 }
 
@@ -306,7 +307,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                             content={(
                                                 <OutherOrgWrapepr separator="none" ref={this.onInner} maxHeight="90vh">
                                                     {organizations.sort((a, b) => a.name.localeCompare(b.name)).map((org, index) => (index >= 0) ? (
-                                                        <XMenuItem path={'/directory/o/' + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
+                                                        <XMenuItem path={(org.isCommunity ? '/directory/c/' : '/directory/o/') + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
                                                     ) : null)}
                                                 </OutherOrgWrapepr>
                                             )}

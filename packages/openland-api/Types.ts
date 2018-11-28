@@ -84,6 +84,7 @@ export interface AccountSettings_organizations {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface AccountSettings {
@@ -359,6 +360,7 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user {
@@ -536,6 +538,7 @@ export interface Room_room_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Room_room_SharedRoom_members_user_primaryOrganization {
@@ -1158,6 +1161,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
@@ -1269,6 +1273,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization {
@@ -1380,6 +1385,7 @@ export interface RoomKick_betaRoomKick_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization {
@@ -1488,6 +1494,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization {
@@ -1586,6 +1593,7 @@ export interface RoomSearch_items_edges_node_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomSearch_items_edges_node_members_user_primaryOrganization {
@@ -1715,6 +1723,7 @@ export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_organization
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization {
@@ -1826,6 +1835,7 @@ export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user_primaryOrganization {
@@ -2002,6 +2012,7 @@ export interface RoomJoin_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoin_join_SharedRoom_members_user_primaryOrganization {
@@ -2128,6 +2139,7 @@ export interface RoomJoinInviteLink_join_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization {
@@ -2232,6 +2244,7 @@ export interface RoomInviteInfo_invite_room_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomInviteInfo_invite_room_members_user_primaryOrganization {
@@ -2364,6 +2377,7 @@ export interface RoomUpdate_betaRoomUpdate_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomUpdate_betaRoomUpdate_SharedRoom_members_user_primaryOrganization {
@@ -3049,6 +3063,7 @@ export interface MyOrganizations_myOrganizations {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface MyOrganizations {
@@ -3111,6 +3126,7 @@ export interface Organization_organization_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_members_user {
@@ -3145,6 +3161,7 @@ export interface Organization_organization_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface Organization_organization_requests_user {
@@ -4221,6 +4238,7 @@ export interface User_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface User_user_channels_organization {
@@ -4228,6 +4246,7 @@ export interface User_user_channels_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface User_user_channels {
@@ -5763,6 +5782,7 @@ export interface OrganizationFull_members_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_members_user {
@@ -5797,6 +5817,7 @@ export interface OrganizationFull_requests_user_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface OrganizationFull_requests_user {
@@ -5947,6 +5968,7 @@ export interface OrganizationShort {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 /* tslint:disable */
@@ -5994,6 +6016,7 @@ export interface RoomFull_SharedRoom_organization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface RoomFull_SharedRoom_members_user_primaryOrganization {
@@ -6145,6 +6168,7 @@ export interface UserFull_primaryOrganization {
   id: string;
   name: string;
   photo: string | null;
+  isCommunity: boolean;
 }
 
 export interface UserFull {
