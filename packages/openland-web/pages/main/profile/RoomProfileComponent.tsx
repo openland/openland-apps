@@ -240,15 +240,19 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
         let tab: 'requests' | 'members' = props.router.query.requests === '1' && (props.requests || []).length > 0 ? 'requests' : 'members';
         return (
             <Section separator={0}>
-                {(props.requests || []).length > 0 && <XSwitcher style="button">
-                    <XSwitcher.Item query={{ field: 'requests' }} counter={props.members.length}>Members</XSwitcher.Item>
-                    <XSwitcher.Item query={{ field: 'requests', value: '1' }} counter={props.requests!.length}>Requests</XSwitcher.Item>
-                </XSwitcher>}
-                {(props.requests || []).length === 0 && <XSubHeader
-                    title={'Members'}
-                    counter={members.length}
-                    paddingBottom={0}
-                />}
+                {props.meOwner && (props.requests || []).length > 0 && (
+                    <XSwitcher style="button">
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={props.members.length}>Members</XSwitcher.Item>
+                        <XSwitcher.Item query={{ field: 'requests', value: '1' }} counter={props.requests!.length}>Requests</XSwitcher.Item>
+                    </XSwitcher>
+                )}
+                {((props.requests || []).length === 0 || !props.meOwner) && (
+                    <XSubHeader
+                        title={'Members'}
+                        counter={members.length}
+                        paddingBottom={0}
+                    />
+                )}
 
                 <SectionContent>
                     {tab === 'members' &&
