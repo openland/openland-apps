@@ -31,6 +31,11 @@ export const RoomFull = gql`
                     ...UserShort
                 }
             }
+            requests {
+                user {
+                    ...UserShort
+                }
+            }
             settings {
                 id
                 mute

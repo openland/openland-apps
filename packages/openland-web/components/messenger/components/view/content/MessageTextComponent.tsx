@@ -196,7 +196,7 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
         if (isAsciiSmile || isShortnameSmile || isUnicodeSmile) {
             this.big = true;
         } else {
-            this.big = messageText.length <= 32 && messageText.startsWith(':') && messageText.endsWith(':');
+            this.big = messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':');
             this.insane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
             this.mouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
 

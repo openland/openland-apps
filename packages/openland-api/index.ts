@@ -44,6 +44,7 @@ export const RoomEditIntroMutation = typedMutation<Types.RoomEditIntro, Types.Ro
 export const SetTypingMutation = typedMutation<Types.SetTyping, Types.SetTypingVariables>(Chats.SetTypingMutation);
 export const CancelTypingMutation = typedMutation<Types.CancelTyping, Types.CancelTypingVariables>(Chats.CancelTypingMutation);
 export const RoomAddMemberMutation = typedMutation<Types.RoomAddMember, Types.RoomAddMemberVariables>(Chats.RoomAddMemberMutation);
+export const RoomDeclineJoinReuestMutation = typedMutation<Types.RoomDeclineJoinReuest, Types.RoomDeclineJoinReuestVariables>(Chats.RoomDeclineJoinReuestMutation);
 export const RoomAddMembersMutation = typedMutation<Types.RoomAddMembers, Types.RoomAddMembersVariables>(Chats.RoomAddMembersMutation);
 export const RoomKickMutation = typedMutation<Types.RoomKick, Types.RoomKickVariables>(Chats.RoomKickMutation);
 export const RoomLeaveMutation = typedMutation<Types.RoomLeave, Types.RoomLeaveVariables>(Chats.RoomLeaveMutation);

@@ -301,7 +301,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                     </InfoCardWrapper>
                     {!this.props.signup &&
                         <>
-                            {((room.membership === 'NONE' && !this.props.inviteLink)) && <JoinButton channelId={room.id!} refetchVars={{ conversationId: room.id! }} text="Request Invite" />}
+                            {((room.membership === 'NONE' || room.membership === 'KICKED' || room.membership === 'LEFT' && !this.props.inviteLink)) && <JoinButton channelId={room.id!} refetchVars={{ conversationId: room.id! }} text="Request Invite" />}
                             {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id! }} text="Accept invite" />}
                             {room.membership === 'REQUESTED' && (
                                 <XButton
