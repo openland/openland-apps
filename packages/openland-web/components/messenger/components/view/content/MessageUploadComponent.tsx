@@ -8,7 +8,7 @@ const UploadWrapper = Glamorous.div({
     width: '100%',
     height: 24,
     borderRadius: 4,
-    backgroundColor: 'rgba(101, 75, 250, 0.5)',
+    backgroundColor: 'rgba(23, 144, 255, 0.2)',
     position: 'relative',
     overflow: 'hidden'
 });
@@ -20,7 +20,7 @@ const UploadProgress = Glamorous.div<{ progress: number }>((props) => ({
     left: 0,
     top: 0,
     transition: 'all .2s',
-    backgroundColor: '#654bfa'
+    backgroundColor: '#1790ff'
 }));
 
 const UploadTitle = Glamorous.div({
