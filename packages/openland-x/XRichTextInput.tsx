@@ -179,17 +179,18 @@ type MentionComponentInnerTextProps = {
     className?: string;
     user?: MessageFull_mentions;
     hasPopper?: boolean;
+    inCompose?: boolean;
 };
 
 const MentionComponentInnerText = Glamorous.span(
     {},
-    ({ isYou }: MentionComponentInnerTextProps) => {
-        const paddings = {
+    ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
+        const paddings = inCompose ? {
             paddingTop: 1,
             paddingBottom: 1,
             paddingLeft: 3,
             paddingRight: 3,
-        };
+        } : {};
 
         if (isYou) {
             return {
@@ -211,7 +212,7 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
         if (props.hasPopper && props.user) {
             return (
                 <UserPopper user={props.user} isMe={props.isYou} noCardOnMe startSelected={false}>
-                    <MentionComponentInnerText {...props} />
+                    <MentionComponentInnerText {...props}  />
                 </UserPopper>
             );
         } else {
@@ -226,7 +227,7 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponentInner isYou={props.mention.isYou} className={props.className}>
+            <MentionComponentInner isYou={props.mention.isYou} className={props.className} inCompose>
                 {props.children}
             </MentionComponentInner>
         );
