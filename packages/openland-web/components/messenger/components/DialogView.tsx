@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { emojify } from 'react-emojione';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x/XDate';
@@ -144,7 +145,7 @@ const DialogViewInner = (props: DialogViewProps) => {
                                     {dialog.typing || (
                                         <>
                                             {!!(dialog.message) && !dialog.fileMeta && (
-                                                <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} {dialog.message}</span>
+                                                <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} {emojify(dialog.message, { style: { height: 13, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}</span>
                                             )}
                                             {!dialog.message && !dialog.fileMeta && (
                                                 <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <ForwardIcon className={(active ? iconActiveClass : iconClass) + ' ' + documentIcon} />Forward</span>
