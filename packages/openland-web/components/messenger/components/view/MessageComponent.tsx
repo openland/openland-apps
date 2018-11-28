@@ -91,7 +91,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     },
     '&:hover': {
         '& .message-container': {
-            backgroundColor: props.isEditView ? '#fff' : '#F9F9F9',
+            backgroundColor: '#fff',
         },
         '& .check-icon': {
             opacity: props.isEditView ? 0 : 1
