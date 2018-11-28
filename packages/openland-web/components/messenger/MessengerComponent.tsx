@@ -51,6 +51,7 @@ const ForwardRoot = Glamorous.div({
     minWidth: '100%',
     height: '100%',
     padding: 28,
+    paddingTop: 0,
     flexShrink: 0,
     left: 0,
     top: 0,
