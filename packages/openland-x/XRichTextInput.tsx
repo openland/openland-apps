@@ -276,7 +276,7 @@ export const MentionEntry = (props: any) => {
             backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
             hoverBackgroundColor={'#f9f9f9'}
         >
-            <XAvatar size={'m-small'} src={mention.avatar} online={mention.online} />
+            <XAvatar size={'m-small'} style={'user'} src={mention.avatar} objectName={mention.name} objectId={mention.id} online={mention.online} />
 
             <XView
                 flexDirection="column"
