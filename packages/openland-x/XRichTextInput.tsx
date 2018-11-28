@@ -187,8 +187,8 @@ const MentionComponentInnerText = Glamorous.span(
         const paddings = {
             paddingTop: 1,
             paddingBottom: 1,
-            paddingLeft: 2,
-            paddingRight: 2,
+            paddingLeft: 3,
+            paddingRight: 3,
         };
 
         if (isYou) {
