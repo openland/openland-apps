@@ -38,11 +38,12 @@ import {
     OrganizationInfoWrapper,
     EditButton
 } from './OrganizationProfileComponent';
-import { Room_room_SharedRoom, RoomFull_SharedRoom_members, RoomFull_SharedRoom_requests } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomFull_SharedRoom_members, RoomFull_SharedRoom_requests, SharedRoomKind } from 'openland-api/Types';
 import { withRoom } from '../../../api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
+import { InviteMembersModal } from '../channel/components/inviteMembersModal';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
@@ -232,6 +233,7 @@ interface MembersProviderProps {
     chatId: string;
     meOwner: boolean;
     chatTitle: string;
+    kind: SharedRoomKind;
 }
 
 const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
@@ -257,7 +259,8 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                 <SectionContent>
                     {tab === 'members' &&
                         <>
-                            {props.meOwner && <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />}
+                            {props.kind === 'PUBLIC' && <InviteMembersModal channelTitle={props.chatTitle} roomId={props.chatId} target={<XCreateCard text="Invite people" />} />}
+
                             {members.map((member, i) => (
                                 <MemberCard key={i} member={member} meOwner={props.meOwner} />
                             ))}
@@ -333,6 +336,7 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                 <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
                     <MembersProvider
+                        kind={chat.kind}
                         router={this.props.router}
                         members={chat.members}
                         requests={chat.requests}

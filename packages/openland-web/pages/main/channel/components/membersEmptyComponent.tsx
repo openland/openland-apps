@@ -82,7 +82,6 @@ export const EmptyComponent = (props: { text: string, aloneMember: boolean, smal
             {props.aloneMember && <Text>Grow this room</Text>}
             <InfoText>{props.text}</InfoText>
             <InviteMembersModal
-                orgId={props.orgId}
                 channelTitle={props.channelTitle}
                 roomId={props.chatId}
                 target={

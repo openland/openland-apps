@@ -592,10 +592,8 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
     let uId: string | null = null;
     if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
         subtitle = 'Organization';
-    } else if (sharedRoom && sharedRoom.kind === 'GROUP') {
-        subtitle = 'Group';
-    } else if (sharedRoom && sharedRoom.kind === 'PUBLIC') {
-        subtitle = 'Room';
+    } else if (sharedRoom && (sharedRoom.kind === 'PUBLIC' || sharedRoom.kind === 'GROUP')) {
+        subtitle = sharedRoom.membersCount + (sharedRoom.membersCount === 1 ? ' member' : ' members');
     } else if (privateRoom) {
         uId = privateRoom && privateRoom.user.id;
         let user = privateRoom.user;
@@ -670,7 +668,6 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                                 </TalkContext.Consumer>
                             </XWithRole>
                             <InviteMembersModal
-                                orgId={sharedRoom.organization ? sharedRoom.organization.id : ''}
                                 channelTitle={title}
                                 roomId={props.data.room!.id}
                                 target={(
