@@ -38,8 +38,13 @@ import {
     OrganizationInfoWrapper,
     EditButton
 } from './OrganizationProfileComponent';
-import { Room_room_SharedRoom, RoomFull_SharedRoom_members } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomFull_SharedRoom_members, RoomFull_SharedRoom_requests } from 'openland-api/Types';
 import { withRoom } from '../../../api/withRoom';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { XSwitcher } from 'openland-x/XSwitcher';
+import { withRoomMembers } from 'openland-web/api/withRoomMembers';
+import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
+import { XMutation } from 'openland-x/XMutation';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
@@ -200,29 +205,73 @@ const MemberCard = (props: { member: RoomFull_SharedRoom_members, meOwner: boole
     );
 };
 
+const RequestCard = withRoomMembersMgmt((props: { member: RoomFull_SharedRoom_requests, meOwner: boolean, roomId: string }) => {
+
+    return (
+        <XUserCard
+            user={props.member.user}
+            customButton={
+                <>
+                    <XMutation mutation={(props as any).accept} variables={{ roomId: props.roomId, userId: props.member.user.id }}>
+                        <XButton style="primary" text="Accept" />
+                    </XMutation >
+                    <XMutation mutation={(props as any).decline} variables={{ roomId: props.roomId, userId: props.member.user.id }}>
+                        <XButton text="Decline" />
+                    </XMutation >
+                </>
+            }
+        />
+    );
+});
+
 interface MembersProviderProps {
     members: RoomFull_SharedRoom_members[];
+    requests?: RoomFull_SharedRoom_requests[] | null;
     chatId: string;
     meOwner: boolean;
     chatTitle: string;
 }
 
-const MembersProvider = (props: MembersProviderProps) => {
+const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
     let members = props.members;
     if (members && members.length > 0) {
+        let tab: 'requests' | 'members' = props.router.query.requests === '1' && (props.requests || []).length > 0 ? 'requests' : 'members';
         return (
             <Section separator={0}>
-                <XSubHeader
+                {(props.requests || []).length > 0 && <XSwitcher style="button">
+                    <XSwitcher.Item query={{ field: 'requests' }} counter={props.members.length}>Members</XSwitcher.Item>
+                    <XSwitcher.Item query={{ field: 'requests', value: '1' }} counter={props.requests!.length}>Requests</XSwitcher.Item>
+                </XSwitcher>}
+                {(props.requests || []).length === 0 && <XSubHeader
                     title={'Members'}
                     counter={members.length}
                     paddingBottom={0}
-                />
-                <SectionContent>
-                    <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />
+                />}
 
-                    {members.map((member, i) => (
-                        <MemberCard key={i} member={member} meOwner={props.meOwner} />
-                    ))}
+                <SectionContent>
+                    {tab === 'members' &&
+                        <>
+                            <XWithRole role="super-admin">
+                                <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />
+                            </XWithRole>
+
+                            {members.map((member, i) => (
+                                <MemberCard key={i} member={member} meOwner={props.meOwner} />
+                            ))}
+                        </>
+                    }
+
+                    {tab === 'requests' && props.requests &&
+                        <>
+                            <XWithRole role="super-admin">
+                                <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />
+                            </XWithRole>
+
+                            {props.requests.map((req, i) => (
+                                <RequestCard key={i} member={req} meOwner={props.meOwner} roomId={props.chatId} />
+                            ))}
+                        </>
+                    }
                 </SectionContent>
                 <AddMemberForm roomId={props.chatId} />
                 <RemoveMemberModal
@@ -285,7 +334,9 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                 <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
                     <MembersProvider
+                        router={this.props.router}
                         members={chat.members}
+                        requests={chat.requests}
                         chatId={this.props.conversationId}
                         meOwner={chat.role === 'ADMIN' || chat.role === 'OWNER'}
                         chatTitle={chat.title}

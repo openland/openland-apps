@@ -171,6 +171,17 @@ export const RoomAddMemberMutation = gql`
     ${RoomFull}
 `;
 
+export const RoomDeclineJoinReuestMutation = gql`
+    mutation RoomDeclineJoinReuest($roomId: ID!, $userId: ID!) {
+        betaRoomDeclineJoinRequest(roomId: $roomId, userId: $userId){
+           ...RoomFull
+        }
+    }
+    ${UserShort}
+    ${OrganizationShort}
+    ${RoomFull}
+`;
+
 export const RoomAddMembersMutation = gql`
     mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
         betaRoomInvite(roomId: $roomId, invites: $invites){

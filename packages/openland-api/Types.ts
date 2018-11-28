@@ -576,6 +576,32 @@ export interface Room_room_SharedRoom_members {
   user: Room_room_SharedRoom_members_user;
 }
 
+export interface Room_room_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface Room_room_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: Room_room_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface Room_room_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: Room_room_SharedRoom_requests_user;
+}
+
 export interface Room_room_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -595,6 +621,7 @@ export interface Room_room_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: Room_room_SharedRoom_members[];
+  requests: Room_room_SharedRoom_requests[] | null;
   settings: Room_room_SharedRoom_settings;
 }
 
@@ -1204,6 +1231,32 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_members {
   user: RoomAddMember_betaRoomInvite_SharedRoom_members_user;
 }
 
+export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomAddMember_betaRoomInvite_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomAddMember_betaRoomInvite_SharedRoom_requests_user;
+}
+
 export interface RoomAddMember_betaRoomInvite_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1223,6 +1276,7 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomAddMember_betaRoomInvite_SharedRoom_members[];
+  requests: RoomAddMember_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMember_betaRoomInvite_SharedRoom_settings;
 }
 
@@ -1236,6 +1290,141 @@ export interface RoomAddMember {
 }
 
 export interface RoomAddMemberVariables {
+  roomId: string;
+  userId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomDeclineJoinReuest
+// ====================================================
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  mute: boolean | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_user;
+  settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_settings;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user_primaryOrganization | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members {
+  __typename: "RoomMember";
+  role: RoomMemberRole;
+  membership: SharedRoomMembershipStatus;
+  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
+  id: string;
+  mute: boolean | null;
+}
+
+export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  socialImage: string | null;
+  description: string | null;
+  organization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_organization | null;
+  membership: SharedRoomMembershipStatus;
+  role: RoomMemberRole;
+  membersCount: number | null;
+  members: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members[];
+  requests: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests[] | null;
+  settings: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_settings;
+}
+
+export type RoomDeclineJoinReuest_betaRoomDeclineJoinRequest = RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom | RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom;
+
+export interface RoomDeclineJoinReuest {
+  betaRoomDeclineJoinRequest: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest;
+}
+
+export interface RoomDeclineJoinReuestVariables {
   roomId: string;
   userId: string;
 }
@@ -1318,6 +1507,32 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_members {
   user: RoomAddMembers_betaRoomInvite_SharedRoom_members_user;
 }
 
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomAddMembers_betaRoomInvite_SharedRoom_requests_user;
+}
+
 export interface RoomAddMembers_betaRoomInvite_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1337,6 +1552,7 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomAddMembers_betaRoomInvite_SharedRoom_members[];
+  requests: RoomAddMembers_betaRoomInvite_SharedRoom_requests[] | null;
   settings: RoomAddMembers_betaRoomInvite_SharedRoom_settings;
 }
 
@@ -1432,6 +1648,32 @@ export interface RoomKick_betaRoomKick_SharedRoom_members {
   user: RoomKick_betaRoomKick_SharedRoom_members_user;
 }
 
+export interface RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomKick_betaRoomKick_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomKick_betaRoomKick_SharedRoom_requests_user;
+}
+
 export interface RoomKick_betaRoomKick_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1451,6 +1693,7 @@ export interface RoomKick_betaRoomKick_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomKick_betaRoomKick_SharedRoom_members[];
+  requests: RoomKick_betaRoomKick_SharedRoom_requests[] | null;
   settings: RoomKick_betaRoomKick_SharedRoom_settings;
 }
 
@@ -1543,6 +1786,32 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_members {
   user: RoomLeave_betaRoomLeave_SharedRoom_members_user;
 }
 
+export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomLeave_betaRoomLeave_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomLeave_betaRoomLeave_SharedRoom_requests_user;
+}
+
 export interface RoomLeave_betaRoomLeave_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1562,6 +1831,7 @@ export interface RoomLeave_betaRoomLeave_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomLeave_betaRoomLeave_SharedRoom_members[];
+  requests: RoomLeave_betaRoomLeave_SharedRoom_requests[] | null;
   settings: RoomLeave_betaRoomLeave_SharedRoom_settings;
 }
 
@@ -1643,6 +1913,32 @@ export interface RoomSearch_items_edges_node_members {
   user: RoomSearch_items_edges_node_members_user;
 }
 
+export interface RoomSearch_items_edges_node_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomSearch_items_edges_node_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomSearch_items_edges_node_requests_user_primaryOrganization | null;
+}
+
+export interface RoomSearch_items_edges_node_requests {
+  __typename: "RoomMember";
+  user: RoomSearch_items_edges_node_requests_user;
+}
+
 export interface RoomSearch_items_edges_node_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1662,6 +1958,7 @@ export interface RoomSearch_items_edges_node {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomSearch_items_edges_node_members[];
+  requests: RoomSearch_items_edges_node_requests[] | null;
   settings: RoomSearch_items_edges_node_settings;
 }
 
@@ -1775,6 +2072,32 @@ export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members {
   user: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user;
 }
 
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user;
+}
+
 export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1794,6 +2117,7 @@ export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members[];
+  requests: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests[] | null;
   settings: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings;
 }
 
@@ -1889,6 +2213,32 @@ export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members {
   user: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user;
 }
 
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user;
+}
+
 export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -1908,6 +2258,7 @@ export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members[];
+  requests: RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests[] | null;
   settings: RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings;
 }
 
@@ -2069,6 +2420,32 @@ export interface RoomJoin_join_SharedRoom_members {
   user: RoomJoin_join_SharedRoom_members_user;
 }
 
+export interface RoomJoin_join_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoin_join_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomJoin_join_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomJoin_join_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomJoin_join_SharedRoom_requests_user;
+}
+
 export interface RoomJoin_join_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -2088,6 +2465,7 @@ export interface RoomJoin_join_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomJoin_join_SharedRoom_members[];
+  requests: RoomJoin_join_SharedRoom_requests[] | null;
   settings: RoomJoin_join_SharedRoom_settings;
 }
 
@@ -2198,6 +2576,32 @@ export interface RoomJoinInviteLink_join_SharedRoom_members {
   user: RoomJoinInviteLink_join_SharedRoom_members_user;
 }
 
+export interface RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomJoinInviteLink_join_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomJoinInviteLink_join_SharedRoom_requests_user;
+}
+
 export interface RoomJoinInviteLink_join_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -2217,6 +2621,7 @@ export interface RoomJoinInviteLink_join_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomJoinInviteLink_join_SharedRoom_members[];
+  requests: RoomJoinInviteLink_join_SharedRoom_requests[] | null;
   settings: RoomJoinInviteLink_join_SharedRoom_settings;
 }
 
@@ -2304,6 +2709,32 @@ export interface RoomInviteInfo_invite_room_members {
   user: RoomInviteInfo_invite_room_members_user;
 }
 
+export interface RoomInviteInfo_invite_room_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomInviteInfo_invite_room_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomInviteInfo_invite_room_requests_user_primaryOrganization | null;
+}
+
+export interface RoomInviteInfo_invite_room_requests {
+  __typename: "RoomMember";
+  user: RoomInviteInfo_invite_room_requests_user;
+}
+
 export interface RoomInviteInfo_invite_room_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -2323,6 +2754,7 @@ export interface RoomInviteInfo_invite_room {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomInviteInfo_invite_room_members[];
+  requests: RoomInviteInfo_invite_room_requests[] | null;
   settings: RoomInviteInfo_invite_room_settings;
 }
 
@@ -2440,6 +2872,32 @@ export interface RoomUpdate_betaRoomUpdate_SharedRoom_members {
   user: RoomUpdate_betaRoomUpdate_SharedRoom_members_user;
 }
 
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomUpdate_betaRoomUpdate_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomUpdate_betaRoomUpdate_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomUpdate_betaRoomUpdate_SharedRoom_requests_user;
+}
+
 export interface RoomUpdate_betaRoomUpdate_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -2459,6 +2917,7 @@ export interface RoomUpdate_betaRoomUpdate_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomUpdate_betaRoomUpdate_SharedRoom_members[];
+  requests: RoomUpdate_betaRoomUpdate_SharedRoom_requests[] | null;
   settings: RoomUpdate_betaRoomUpdate_SharedRoom_settings;
 }
 
@@ -6110,6 +6569,32 @@ export interface RoomFull_SharedRoom_members {
   user: RoomFull_SharedRoom_members_user;
 }
 
+export interface RoomFull_SharedRoom_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface RoomFull_SharedRoom_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomFull_SharedRoom_requests_user_primaryOrganization | null;
+}
+
+export interface RoomFull_SharedRoom_requests {
+  __typename: "RoomMember";
+  user: RoomFull_SharedRoom_requests_user;
+}
+
 export interface RoomFull_SharedRoom_settings {
   __typename: "RoomUserNotificaionSettings";
   id: string;
@@ -6129,6 +6614,7 @@ export interface RoomFull_SharedRoom {
   role: RoomMemberRole;
   membersCount: number | null;
   members: RoomFull_SharedRoom_members[];
+  requests: RoomFull_SharedRoom_requests[] | null;
   settings: RoomFull_SharedRoom_settings;
 }
 
