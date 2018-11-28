@@ -38,7 +38,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XView } from 'openland-x/XView';
-import { SharedRoomKind } from 'openland-api/Types';
+import { SharedRoomKind, MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 
 const NavigationContainer = Glamorous.div({
     minHeight: '100%',
@@ -203,17 +203,8 @@ interface UserPopperProps {
     id?: string;
     name?: string;
     picture: string | null;
-    primaryOrganization?: {
-        id: string;
-        name: string;
-        photo: string | null;
-    };
-    organizations?: {
-        id: string;
-        name: string;
-        photo: string | null;
-        isCommunity: boolean;
-    }[];
+    primaryOrganization?: UserShort_primaryOrganization;
+    organizations?: MyOrganizations_myOrganizations[];
 }
 
 const OutherOrgWrapepr = Glamorous(XVertical)({
