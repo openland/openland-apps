@@ -534,6 +534,11 @@ declare module 'draft-js-mention-plugin/lib/Mention' {
     export default ReturnType;
 }
 
+declare module 'draft-convert' {
+    export function convertToHTML(a: any): any;
+    export function convertFromHTML(a: any): any;
+}
+
 declare module "react-emojione" {
     export function emojify(src: string, opts?: any): any
 }

@@ -132,7 +132,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
                     const mention = mentionMatchesArray[key] ? getMentionByName(mentionMatchesArray[key]) : null;
                     return (<span key={key}>
                         {textItem}
-                        {mention && <MentionComponentInner isYou={mention.isYou} user={mention} hasPopper>
+                        {mention && <MentionComponentInner mention={mention} hasPopper>
                             {mentionMatchesArray[key]}
                         </MentionComponentInner>}
                     </span>);

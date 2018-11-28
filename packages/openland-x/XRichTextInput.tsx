@@ -175,47 +175,52 @@ const positionSuggestions = ({ state, props }: any) => {
 };
 
 type MentionComponentInnerTextProps = {
-    isYou: boolean;
     className?: string;
-    user?: MessageFull_mentions;
+    mention: MessageFull_mentions;
     hasPopper?: boolean;
+    children?: any;
 };
 
-const MentionComponentInnerText = Glamorous.span(
-    {},
-    ({ isYou }: MentionComponentInnerTextProps) => {
+class MentionComponentInnerText extends React.PureComponent<MentionComponentInnerTextProps> {
+    render() {
+        const  { mention, children } = this.props;
         const paddings = {
             paddingTop: 1,
             paddingBottom: 1,
             paddingLeft: 3,
             paddingRight: 3,
         };
-
-        if (isYou) {
-            return {
+    
+        let style;
+    
+        if (mention.isYou) {
+            style = {
                 ...paddings,
                 backgroundColor: '#fff6e5',
                 color: '#1790ff',
             };
+        } else {
+            style = {
+                ...paddings,
+                color: '#1790ff',
+            };
         }
-        return {
-            ...paddings,
-            color: '#1790ff',
-        };
-    },
-);
+    
+        return <span style={style}>{children}</span>;
+    }
+}
 
 export class MentionComponentInner extends React.Component<MentionComponentInnerTextProps> {
     render() {
-        const props = this.props;
-        if (props.hasPopper && props.user) {
+        const { mention, hasPopper } = this.props;
+        if (hasPopper) {    
             return (
-                <UserPopper user={props.user} isMe={props.isYou} noCardOnMe startSelected={false}>
-                    <MentionComponentInnerText {...props} />
+                <UserPopper user={mention} isMe={mention.isYou} noCardOnMe startSelected={false}>
+                    <MentionComponentInnerText {...this.props} />
                 </UserPopper>
             );
         } else {
-            return <MentionComponentInnerText {...props} />;
+            return <MentionComponentInnerText {...this.props} />;
         }
     }
 }
@@ -226,7 +231,7 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponentInner isYou={props.mention.isYou} className={props.className}>
+            <MentionComponentInner mention={props.mention} className={props.className}>
                 {props.children}
             </MentionComponentInner>
         );
@@ -335,10 +340,9 @@ export interface XRichTextInputProps extends XFlexStyles {
 type XRichTextInputState = {
     editorState: EditorState;
     suggestions: Array<MentionT>;
-    plainText: string;
+    html: string;
     widthOfContainer: number;
 };
-
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRichTextInputState> {
     private editorRef = React.createRef<Editor>();
@@ -347,13 +351,13 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     constructor(props: XRichTextInputProps) {
         super(props);
 
+        const editorState = myConvertFromHtml(props.value);
+
         this.state = {
             widthOfContainer: 200,
             suggestions: this.props.mentionsData || [],
-            editorState: EditorState.moveFocusToEnd(
-                EditorState.createWithContent(ContentState.createFromText(props.value)),
-            ),
-            plainText: props.value,
+            editorState,
+            html: props.value,
         };
     }
 
@@ -424,15 +428,16 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     }
 
     onChange = (editorState: EditorState) => {
-        const plainText = editorState.getCurrentContent().getPlainText();
+        const html = myConvertToHtml(editorState.getCurrentContent());
+
         this.setState(
             {
                 editorState,
-                plainText,
+                html,
             },
             () => {
                 if (this.props.onChange) {
-                    this.props.onChange(plainText);
+                    this.props.onChange(html);
                 }
             },
         );
@@ -440,12 +445,12 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
-        if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
+        if (this.props.value !== nextValue && this.state.html !== nextValue) {
+            const editorState = myConvertFromHtml(nextValue);
+
             this.setState({
-                editorState: EditorState.moveFocusToEnd(
-                    EditorState.createWithContent(ContentState.createFromText(nextValue)),
-                ),
-                plainText: nextValue,
+                editorState: editorState,
+                html: nextValue,
             });
         }
     }
