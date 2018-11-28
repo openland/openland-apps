@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -170,6 +171,13 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return null;
+    }
+
+    componentDidUpdate() {
+        if (this.state.isEditView) {
+            let el = ReactDOM.findDOMNode(this);
+            (el as Element).scrollIntoView();
+        }
     }
 
     constructor(props: MessageComponentInnerProps) {
