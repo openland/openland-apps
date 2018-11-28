@@ -290,7 +290,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <XHorizontal alignItems="center" alignSelf="flex-start" justifyContent="flex-start" width={80} separator={5} className="menu-wrapper">
+            <XHorizontal
+                alignItems="center"
+                alignSelf="flex-start"
+                justifyContent="flex-start"
+                width={80}
+                flexShrink={0}
+                separator={5}
+                className="menu-wrapper"
+            >
                 <XHorizontal alignItems="center" separator={8}>
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
