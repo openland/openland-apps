@@ -8,6 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { withOnline } from '../../../../../api/withOnline';
 import { XDate } from 'openland-x/XDate';
+import { XView } from 'openland-x/XView';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -124,39 +125,57 @@ export class UserAvatar extends React.PureComponent<{ user: MessageFull_sender, 
     }
 }
 
-export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, startSelected: boolean, children?: any}) => {
-    let { user, isMe, children } = props;
+export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, startSelected: boolean, noCardOnMe?: boolean,  children?: any}) => {
+    let { user, isMe, noCardOnMe, children } = props;
     let usrPath: string | undefined = undefined;
     if (!props.startSelected) {
         usrPath = '/mail/u/' + user.id;
     }
-    let content = (
-        <Wrapper>
-            <XHorizontal>
-                <XAvatar
-                    size="l-medium"
-                    style="user"
-                    objectName={user.name}
-                    objectId={user.id}
-                    cloudImageUuid={user.photo || undefined}
-                    path={usrPath}
-                />
-                <Status variables={{ userId: user.id }} />
-            </XHorizontal>
-            <Name>{user.name}</Name>
-            <Buttons separator={6}>
-                {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" size="small" />}
-                <XButton path={'/mail/u/' + user.id} style="electric" text={isMe ? 'My profile' : 'View profile'} size="small" />
-            </Buttons>
-        </Wrapper>
-    );
+    let content;
+    if (noCardOnMe && isMe) {
+        content = (
+            <XView 
+                width={78} 
+                justifyContent="center"
+                alignItems="center"
+                height={30} 
+                color={'white'} 
+                borderRadius={15} 
+                backgroundColor={'#6e7588'}
+            >
+                It&apos;s you
+            </XView>
+        );
+       
+    } else {
+        content = (
+            <Wrapper>
+                <XHorizontal>
+                    <XAvatar
+                        size="l-medium"
+                        style="user"
+                        objectName={user.name}
+                        objectId={user.id}
+                        cloudImageUuid={user.photo || undefined}
+                        path={usrPath}
+                    />
+                    <Status variables={{ userId: user.id }} />
+                </XHorizontal>
+                <Name>{user.name}</Name>
+                <Buttons separator={6}>
+                    {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" size="small" />}
+                    <XButton path={'/mail/u/' + user.id} style="electric" text={isMe ? 'My profile' : 'View profile'} size="small" />
+                </Buttons>
+            </Wrapper>);
+    }
 
     return (
         <XPopper
+            style={noCardOnMe && isMe ? 'dark' : 'default'}
             showOnHover={true}
             content={content}
             contentContainer={<Container />}
-            placement="bottom-start"
+            placement="top-start"
             marginLeft={-2}
         >
             {children ? children : <UserAvatar user={user} startSelected={props.startSelected} />}

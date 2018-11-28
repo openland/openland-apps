@@ -211,7 +211,7 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
         const props = this.props;
         if (props.hasPopper && props.user) {
             return (
-                <UserPopper user={props.user} isMe={props.isYou} startSelected={false}>
+                <UserPopper user={props.user} isMe={props.isYou} noCardOnMe startSelected={false}>
                     <MentionComponentInnerText {...props} />
                 </UserPopper>
             );
