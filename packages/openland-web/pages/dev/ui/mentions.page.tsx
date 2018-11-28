@@ -125,6 +125,7 @@ export default withApp('UI Framework - Mentions', 'viewer', props => {
                     <XHorizontal>
                         <MentionEntry
                             mention={{ ...mentionsData[0], online: true }}
+                            isFocused
                             theme={theme}
                         />
                     </XHorizontal>

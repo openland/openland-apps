@@ -314,7 +314,10 @@ export const MentionEntry = (props: any) => {
                 lineHeight={1.5}
                 color={isFocused ? '#000000' : 'transparent'}
             >
-                ↵ to select
+                <div style={{ position: 'relative' }}>
+                    <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
+                    <span>to select</span>
+                </div>
             </XView>
         </XView>
     );
