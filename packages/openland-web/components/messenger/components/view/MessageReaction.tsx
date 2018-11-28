@@ -316,7 +316,6 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                     <ReactionsInner>
                         {this.reactionsRender()}
                     </ReactionsInner>
-                    <ReactionComponent messageId={this.props.messageId} marginTop={8} marginLeft={10} />
                 </ReactionsWrapper>
             ) : null
         );

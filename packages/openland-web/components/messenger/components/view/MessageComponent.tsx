@@ -6,7 +6,6 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
 import { XButton } from 'openland-x/XButton';
-import { XLink } from 'openland-x/XLink';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
@@ -23,7 +22,7 @@ import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import ReplyIcon from '../icons/ic-reply.svg';
+import ReplyIcon from '../icons/ic-reply1.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
@@ -71,14 +70,20 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     marginTop: props.compact ? 0 : 12,
     cursor: 'pointer',
     '& .message-container': {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        flexGrow: 1,
+        borderRadius: 6,
+        paddingRight: 10,
+        paddingBottom: 3,
+        paddingLeft: props.compact ? 7 : 10,
+        paddingTop: props.compact ? 3 : 7,
     },
     '& .time': {
         opacity: props.compact ? 0 : 1
     },
     '& .menu > div': {
-        height: 20,
-        marginRight: -14
+        width: 18,
+        height: 18
     },
     '& .menu-wrapper': {
         marginTop: props.compact ? 6 : 12
@@ -107,26 +112,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     }
 }));
 
-const MessageCompactContainer = Glamorous(XHorizontal)({
-    paddingLeft: 7,
-    paddingTop: 3,
-    paddingRight: 10,
-    paddingBottom: 3,
-    borderRadius: 6,
-    width: '100%'
-});
-
-const MessageContainer = Glamorous(XVertical)({
-    paddingLeft: 10,
-    paddingTop: 7,
-    paddingRight: 10,
-    paddingBottom: 3,
-    borderRadius: 6,
-    width: '100%'
-});
-
 const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
-    paddingRight: (props.isIntro === true) ? 0 : 20,
     '& .url-augmentation': (props.isIntro === true) ? {} : {
         width: 'calc(100% + 20px)'
     }
@@ -147,8 +133,8 @@ const ReplyMessageWrapper = Glamorous.div({
     }
 });
 
-const ReplyButton = Glamorous(XLink)({
-    // opacity: 0,
+const ReplyButton = Glamorous.div({
+    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -304,7 +290,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         }
 
         return (
-            <XHorizontal alignItems="center" alignSelf="flex-start" separator={0} className="menu-wrapper">
+            <XHorizontal alignItems="center" alignSelf="flex-start" justifyContent="flex-start" width={80} separator={5} className="menu-wrapper">
                 <XHorizontal alignItems="center" separator={8}>
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
@@ -482,18 +468,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     startSelected={hideMenu}
                 >
                     <Check select={isSelect} className="check-icon" />
-                    <MessageCompactContainer
-                        separator={0}
-                        className="message-container"
-                    >
+                    <XHorizontal separator={0} className="message-container" flexGrow={1}>
                         <DateComponent small={true} className="time">{date}</DateComponent>
-                        <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth={'calc(100% - 60px)'}>
-                            <MessageCompactContent separator={0} flexGrow={1} maxWidth={'calc(100% - 85px)'} isIntro={isIntro}>
+                        <XHorizontal justifyContent="space-between" flexGrow={1}>
+                            <MessageCompactContent separator={0} flexGrow={1} isIntro={isIntro}>
                                 {content}
                                 {this.reactionsRender()}
                             </MessageCompactContent>
                         </XHorizontal>
-                    </MessageCompactContainer>
+                    </XHorizontal>
                     {this.menuRender()}
                 </MessageWrapper>
             );
@@ -509,10 +492,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 startSelected={hideMenu}
             >
                 <Check select={isSelect} className="check-icon" />
-                <MessageContainer
-                    separator={0}
-                    className="message-container"
-                >
+                <XVertical separator={0} className="message-container" flexGrow={1}>
                     <XHorizontal alignSelf="stretch">
                         {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
                             <UserPopper
@@ -524,7 +504,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
                             <UserAvatar user={this.props.sender} startSelected={hideMenu} />
                         )}
-                        <XVertical separator={2} flexGrow={1} maxWidth={'calc(100% - 57px)'}>
+                        <XVertical separator={2} flexGrow={1}>
                             <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal separator={4} alignItems="center">
@@ -538,7 +518,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                             {this.reactionsRender()}
                         </XVertical>
                     </XHorizontal>
-                </MessageContainer>
+                </XVertical>
                 {this.menuRender()}
             </MessageWrapper>
         );
