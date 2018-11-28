@@ -117,13 +117,18 @@ const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 const Container = Glamorous.div<XFlexStyles>([
     {
         position: 'relative',
-
         '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
             color: 'rgba(0, 0, 0, 0.5)',
         },
     },
     applyFlex,
 ]);
+
+class ContainerWrapper extends React.PureComponent {
+    render() {
+        return <Container {...this.props} />;
+    }
+}
 
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
@@ -329,17 +334,19 @@ type XRichTextInputState = {
     editorState: EditorState;
     suggestions: Array<MentionT>;
     plainText: string;
+    widthOfContainer: number;
 };
 
 /// End Mentions
 export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRichTextInputState> {
     private editorRef = React.createRef<Editor>();
-    private containerRef = React.createRef<Container>();
+    private containerRef = React.createRef<ContainerWrapper>();
 
     constructor(props: XRichTextInputProps) {
         super(props);
 
         this.state = {
+            widthOfContainer: 200,
             suggestions: this.props.mentionsData || [],
             editorState: EditorState.moveFocusToEnd(
                 EditorState.createWithContent(ContentState.createFromText(props.value)),
@@ -365,9 +372,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
 
     focus = () => {
         window.requestAnimationFrame(() => {
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(this.state.editorState),
-            });
             if (this.editorRef.current) {
                 this.editorRef.current.focus();
             }
@@ -440,22 +444,22 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         }
     }
 
-    render() {
+    componentDidUpdate() {
         const containerEl =
             this.containerRef &&
             this.containerRef.current &&
-            ReactDOM.findDOMNode(this.containerRef.current);
+            (ReactDOM.findDOMNode(this.containerRef.current) as Element);
+        const widthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
+        this.setState({
+            widthOfContainer,
+        });
+    }
 
-        const widthOfContainer =
-            containerEl && containerEl.getBoundingClientRect
-                ? containerEl.getBoundingClientRect().width
-                : 0;
-
-        console.log(widthOfContainer);
+    render() {
         if (canUseDOM) {
             return (
-                <Container {...extractFlexProps(this.props)} ref={this.containerRef}>
-                    <MentionSuggestionsWrapper width={widthOfContainer}>
+                <ContainerWrapper {...extractFlexProps(this.props)} ref={this.containerRef}>
+                    <MentionSuggestionsWrapper width={this.state.widthOfContainer}>
                         <MentionSuggestions
                             onSearchChange={this.onSearchChange}
                             suggestions={this.state.suggestions}
@@ -476,10 +480,10 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                     <EmojiWrapper className="emoji-button">
                         <EmojiSelect />
                     </EmojiWrapper>
-                </Container>
+                </ContainerWrapper>
             );
         } else {
-            return <Container {...extractFlexProps(this.props)} />;
+            return <ContainerWrapper {...extractFlexProps(this.props)} />;
         }
     }
 }
