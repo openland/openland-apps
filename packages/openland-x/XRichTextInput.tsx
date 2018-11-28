@@ -312,7 +312,7 @@ export const MentionEntry = (props: any) => {
                 fontSize={12}
                 fontWeight={'normal'}
                 lineHeight={1.5}
-                color={'#000000'}
+                color={isFocused ? '#000000' : 'transparent'}
             >
                 ↵ to select
             </XView>

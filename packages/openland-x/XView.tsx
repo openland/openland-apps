@@ -82,6 +82,9 @@ export interface XViewProps {
     selected?: boolean;
     as?: 'div' | 'a';
     onClick?: React.MouseEventHandler<any>;
+    onMouseDown?: React.MouseEventHandler<any>;
+    onMouseEnter?: React.MouseEventHandler<any>;
+    onMouseUp?: React.MouseEventHandler<any>;
     target?: string;
     href?: any;
     children?: any;
@@ -563,13 +566,13 @@ const XViewContainer = (props: XViewProps) => {
     let className = css.join(' ');
     if (props.as === 'a') {
         return (
-            <a className={className} onClick={props.onClick} target={props.target} href={props.href} ref={props.ref}>
+            <a className={className} onClick={props.onClick} onMouseDown={props.onMouseDown} onMouseEnter={props.onMouseEnter} onMouseUp={props.onMouseUp} target={props.target} href={props.href} ref={props.ref}>
                 {props.children}
             </a>
         );
     } else {
         return (
-            <div className={className} onClick={props.onClick} ref={props.ref}>
+            <div className={className} onClick={props.onClick} onMouseDown={props.onMouseDown} onMouseEnter={props.onMouseEnter} onMouseUp={props.onMouseUp}  ref={props.ref}>
                 {props.children}
             </div>
         );
