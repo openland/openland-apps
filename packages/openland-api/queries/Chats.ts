@@ -264,23 +264,21 @@ export const RoomSearchQuery = gql`
 export const RoomAlterFeaturedMutation = gql`
     mutation RoomAlterFeatured($roomId: ID!, $featured: Boolean!) {
         betaRoomAlterFeatured(roomId: $roomId, featured: $featured){
-            ... RoomFull
+            id
+            listed
+            featured
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomAlterHiddenMutation = gql`
      mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
         betaRoomAlterListed(roomId: $roomId, listed: $listed){
-            ... RoomFull
+            id
+            listed
+            featured
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomMembersQuery = gql`

@@ -16,7 +16,7 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
@@ -25,6 +25,8 @@ import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     AddMemberForm,
     RoomEditComponent,
+    RoomSetFeatured,
+    RoomSetHidden,
 } from '../../../components/messenger/MessengerComponent';
 import {
     HeaderAvatar,
@@ -44,6 +46,9 @@ import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
 import { InviteMembersModal } from '../channel/components/inviteMembersModal';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
@@ -51,9 +56,16 @@ const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     color: props.online ? '#1790ff' : '#7F7F7F'
 }));
 
+export const AdminTools = withRoomAdminTools(withQueryLoader((props) => (
+    <>
+        {props.data && props.data.roomSuper && <RoomSetFeatured val={props.data.roomSuper!.featured} roomId={props.data.roomSuper.id} />}
+        {props.data && props.data.roomSuper && <RoomSetHidden val={props.data.roomSuper!.listed} roomId={props.data.roomSuper.id} />}
+    </>
+))) as React.ComponentType<{ id: string, variables: { id: string } }>;
+
 const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meOwner = (chat.membership === 'MEMBER');
+    let meMember = (chat.membership === 'MEMBER');
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -75,19 +87,23 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                 </HeaderInfo>
                 <HeaderTools separator={8}>
                     <XButton
-                        text={meOwner ? 'View' : 'Request invite'}
+                        text={meMember ? 'View' : 'Request invite'}
                         style="primary"
-                        path={meOwner ? '/mail/' + chat.id : '/directory/r/' + chat.id}
+                        path={meMember ? '/mail/' + chat.id : '/directory/r/' + chat.id}
                     />
-                    {meOwner && (
+                    {meMember && (
                         <>
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                        <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
+                                        {(chat.role === 'OWNER' || chat.role === 'ADMIN') && <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>}
+                                        <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave room</XMenuItem>
+                                        <XWithRole role="super-admin">
+                                            <XMenuItemSeparator />
+                                            <AdminTools id={chat.id} variables={{ id: chat.id }} />
+                                        </XWithRole>
                                     </>
                                 )}
                             />
@@ -146,7 +162,8 @@ const AboutPlaceholder = withAlterChat((props) => {
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meOwner = chat.membership === 'MEMBER';
+    let meMember = chat.membership === 'MEMBER';
+    let meAdmin = chat.role === 'ADMIN' ||  chat.role === 'OWNER';
     return (
         <>
             {chat.description && (
@@ -160,7 +177,7 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     </SectionContent>
                 </Section>
             )}
-            {!chat.description && meOwner && (
+            {!chat.description && meAdmin && (
                 <Section separator={0}>
                     <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>

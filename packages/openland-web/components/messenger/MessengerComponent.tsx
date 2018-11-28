@@ -8,7 +8,7 @@ import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { XAvatar } from 'openland-x/XAvatar';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { XMenuTitle, XMenuItemWrapper, XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuTitle, XMenuItemWrapper, XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -42,6 +42,7 @@ import CloseIcon from './components/icons/ic-close.svg';
 import { withUserInfo } from '../UserInfo';
 import { withDeleteMessages } from '../../api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
+import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -223,7 +224,7 @@ class BlockSwitcherComponent extends React.Component<{ unblock: any, block: any,
     }
 }
 
-class SwitchComponent extends React.Component<{ mutation: any, conversationId: string, val: boolean, fieldName: string, refetchVars: { conversationId: string } }, { val: boolean }> {
+class SwitchComponent extends React.Component<{ mutation: any, roomId: string, val: boolean, fieldName: string }, { val: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = { val: props.val };
@@ -240,7 +241,7 @@ class SwitchComponent extends React.Component<{ mutation: any, conversationId: s
                         onChange={() => {
                             this.props.mutation({
                                 variables: {
-                                    channelId: this.props.conversationId,
+                                    roomId: this.props.roomId,
                                     [this.props.fieldName]: !this.props.val
                                 }
                             });
@@ -257,12 +258,12 @@ class SwitchComponent extends React.Component<{ mutation: any, conversationId: s
 }
 
 export const RoomSetFeatured = withChannelSetFeatured((props) => (
-    <SwitchComponent mutation={props.setFeatured} val={(props as any).val} fieldName={'featured'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
-)) as React.ComponentType<{ val: boolean, conversationId: string }>;
+    <SwitchComponent mutation={props.setFeatured} val={(props as any).val} fieldName={'featured'} roomId={(props as any).roomId} />
+)) as React.ComponentType<{ val: boolean, roomId: string }>;
 
 export const RoomSetHidden = withChannelSetHidden((props) => (
-    <SwitchComponent mutation={props.setHidden} val={(props as any).val} fieldName={'hidden'} conversationId={(props as any).conversationId} refetchVars={(props as any).refetchVars} />
-)) as React.ComponentType<{ val: boolean, conversationId: string }>;
+    <SwitchComponent mutation={props.setHidden} val={(props as any).val} fieldName={'listed'} roomId={(props as any).roomId} />
+)) as React.ComponentType<{ val: boolean, roomId: string }>;
 
 class NotificationSettingsComponent extends React.Component<{ mutation: any, settings: { mute: boolean }, roomId: string }, { settings: { mute: boolean } }> {
     constructor(props: any) {
@@ -696,8 +697,8 @@ let MessengerComponentLoader = withRoom(withQueryLoader(withUserInfo((props) => 
             </HeaderLeftContent>
             <XHorizontal alignItems="center" separator={8}>
                 {sharedRoom && sharedRoom.kind === 'PUBLIC' && (
-                    <XHorizontal separator={14}>
-                        <XHorizontal alignSelf="center" alignItems="center" separator={6}>
+                    <XHorizontal separator={8}>
+                        <XHorizontal alignSelf="center" alignItems="center" separator={12}>
                             <XWithRole role="feature-non-production">
                                 <TalkContext.Consumer>
                                     {ctx => ctx.cid !== sharedRoom!.id && (<XButton text="Call" onClick={() => ctx.joinCall(sharedRoom!.id)} />)}
@@ -738,20 +739,14 @@ let MessengerComponentLoader = withRoom(withQueryLoader(withUserInfo((props) => 
                         flat={true}
                         placement="bottom-end"
                         content={(
-                            <div style={{ width: 160 }}>
-                                {sharedRoom.kind === 'PUBLIC' && (
-                                    <>
-                                        <XMenuTitle>Super admin</XMenuTitle>
-                                        <XMenuItem query={{ field: 'addMember', value: 'true' }}>Add Member</XMenuItem>
-                                        <XMenuTitle>Common</XMenuTitle>
-                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                    </>
-                                )}
-                                {sharedRoom.kind === 'GROUP' && (
-                                    <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                )}
-                                <XMenuItem query={{ field: 'leaveFromChat', value: props.data.room!.id }} style="danger">Leave chat</XMenuItem>
-                            </div>
+                            <>
+                                {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER') && <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>}
+                                <XMenuItem query={{ field: 'leaveFromChat', value: props.data.room!.id }} style="danger">Leave room</XMenuItem>
+                                <XWithRole role="super-admin">
+                                    <XMenuItemSeparator />
+                                    <AdminTools id={sharedRoom.id} variables={{ id: sharedRoom.id }} />
+                                </XWithRole>
+                            </>
                         )}
                     />
                 )}
