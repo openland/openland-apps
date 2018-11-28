@@ -9,10 +9,7 @@ import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from './icons/ic-emoji.svg';
 import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import {
-    UserPopper,
-    UserAvatar,
-} from 'openland-web/components/messenger/components/view/content/UserPopper';
+import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'openland-x/XView';
 
@@ -182,13 +179,22 @@ type MentionComponentInnerTextProps = {
 const MentionComponentInnerText = Glamorous.span(
     {},
     ({ isYou }: MentionComponentInnerTextProps) => {
+        const paddings = {
+            paddingTop: 1,
+            paddingBottom: 1,
+            paddingLeft: 2,
+            paddingRight: 2,
+        };
+
         if (isYou) {
             return {
+                ...paddings,
                 backgroundColor: '#fff6e5',
                 color: '#1790ff',
             };
         }
         return {
+            ...paddings,
             backgroundColor: '#e6f3ff',
             color: '#1790ff',
         };
