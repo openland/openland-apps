@@ -200,7 +200,6 @@ const MentionComponentInnerText = Glamorous.span(
         }
         return {
             ...paddings,
-            backgroundColor: '#e6f3ff',
             color: '#1790ff',
         };
     },
