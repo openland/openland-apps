@@ -68,7 +68,6 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     marginTop: props.compact ? 0 : 12,
     paddingLeft: 20,
     paddingRight: 20,
-    cursor: 'pointer',
     '& .message-container': {
         backgroundColor: '#fff',
         flexGrow: 1,
@@ -90,6 +89,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     },
     '& .check-icon': {
         opacity: props.startSelected ? 1 : 0,
+        cursor: 'pointer',
     },
     '&:hover': {
         '& .message-container': {
