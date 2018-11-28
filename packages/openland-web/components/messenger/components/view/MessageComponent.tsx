@@ -66,6 +66,8 @@ const Check = Glamorous.div<{ select: boolean }>(props => ({
 
 const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: boolean, startSelected: boolean }>(props => ({
     marginTop: props.compact ? 0 : 12,
+    paddingLeft: 20,
+    paddingRight: 20,
     cursor: 'pointer',
     '& .message-container': {
         backgroundColor: '#fff',
@@ -442,10 +444,10 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     startSelected={hideMenu}
                 >
                     <Check select={isSelect} className="check-icon" />
-                    <XHorizontal separator={0} className="message-container" flexGrow={1}>
+                    <XHorizontal separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                         <DateComponent small={true} className="time">{date}</DateComponent>
-                        <XHorizontal justifyContent="space-between" flexGrow={1}>
-                            <MessageCompactContent separator={0} flexGrow={1} isIntro={isIntro}>
+                        <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth="calc(100% - 55px)">
+                            <MessageCompactContent separator={0} flexGrow={1} isIntro={isIntro} maxWidth="100%">
                                 {content}
                                 {this.reactionsRender()}
                             </MessageCompactContent>
@@ -466,7 +468,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                 startSelected={hideMenu}
             >
                 <Check select={isSelect} className="check-icon" />
-                <XVertical separator={0} className="message-container" flexGrow={1}>
+                <XVertical separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                     <XHorizontal alignSelf="stretch">
                         {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
                             <UserPopper
@@ -478,7 +480,7 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                         {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
                             <UserAvatar user={this.props.sender} startSelected={hideMenu} />
                         )}
-                        <XVertical separator={2} flexGrow={1}>
+                        <XVertical separator={2} flexGrow={1} maxWidth="calc(100% - 52px)">
                             <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal separator={4} alignItems="center">

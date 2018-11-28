@@ -114,8 +114,8 @@ const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
     maxWidth: 930,
     flexBasis: '100%',
-    paddingLeft: 77,
-    paddingRight: 92
+    paddingLeft: 97,
+    paddingRight: 112
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
@@ -137,7 +137,7 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
     '&:first-child': {
         marginLeft: 6,
     },
-    '@media (max-width: 800px)': {
+    '@media (max-width: 1150px)': {
         fontSize: 0,
         '& > svg': {
             marginRight: '0!important'
