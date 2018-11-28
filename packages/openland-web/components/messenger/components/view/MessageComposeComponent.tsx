@@ -358,6 +358,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
     listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
+        
         let message = window.localStorage.getItem('conversation_draft_' + props.conversationId) || '';
         let draftKey = 'conversation_draft_' + this.props.conversationId;
 
@@ -494,6 +495,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             this.setState({
                 beDrafted: true
             });
+            
             this.localDraftSaver(src);
         }
 
@@ -717,7 +719,6 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         let draftChecker = !(replyMessages && replyMessagesId && replyMessagesSender);
 
         if (draftChecker) {
-
             let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId) || '';
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 
@@ -746,7 +747,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
         if (focusChecker) {
             if (this.input.current) {
-                this.input.current!!.resetAndFocus();
+                this.input.current!!.focus();
             }
         }
 
