@@ -108,54 +108,41 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
 };
 
 const AboutPlaceholder = withAlterChat((props) => {
-    let editTitle = (props as any).title;
     let editDescription = (props as any).description;
-    let editPhotoRef = (props as any).photoRef;
-    let editSocialImageRef = (props as any).socialImageRef;
     return (
         <XModalForm
             scrollableContent={true}
             target={(props as any).target}
             useTopCloser={true}
-            title="Room settings"
+            title="Add short description"
             defaultAction={(data) => {
-                let newTitle = data.input.title;
                 let newDescription = data.input.description;
-                let newPhoto = data.input.photoRef;
-                let newSocialImage = data.input.socialImageRef;
-                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
+                        roomId: (props as any).roomId,
                         input: {
-                            ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
                     }
                 });
             }}
             defaultData={{
                 input: {
-                    title: (props as any).title || '',
                     description: (props as any).description || '',
-                    longDescription: (props as any).longDescription || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef),
-                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
                 }
             }}
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField field="fields.input.description">
+                    <XFormField field="input.description">
                         <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ target: any, title: string, photoRef: any, description: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ target: any, description: string | null, roomId: string }>;
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
@@ -178,11 +165,8 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
                         <AboutPlaceholder
-                            title={chat.title}
+                            roomId={chat.id}
                             description={chat.description}
-                            socialImageRef={(chat as any).socialImageRef || null}
-                            photoRef={chat.photo}
-                            refetchVars={{ conversationId: chat.id }}
                             target={<EditButton text="Add a short description" />}
                         />
                     </SectionContent>
