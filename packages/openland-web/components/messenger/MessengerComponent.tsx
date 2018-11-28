@@ -574,6 +574,14 @@ const ForwardHeader = (props: { state: MessagesStateContextProps, me: UserShort,
                     </XHorizontal>
                 </ClearButton>
                 <XHorizontal alignItems="center" separator={5}>
+                    {!Array.from(props.state.selectedMessages).find(msg => msg.sender.id !== props.me.id) &&
+                        <DeletMessagesButton roomId={props.roomId} messagesIds={Array.from(props.state.selectedMessages).map(m => m.id)} onSuccess={props.state.resetAll}>
+                            <XButton
+                                text="Delete"
+                                style="default"
+                            />
+                        </DeletMessagesButton>
+                    }
                     <XButton
                         text="Reply"
                         style="primary"
@@ -584,15 +592,6 @@ const ForwardHeader = (props: { state: MessagesStateContextProps, me: UserShort,
                         style="primary"
                         onClick={() => props.state.forwardMessages()}
                     />
-                    {!Array.from(props.state.selectedMessages).find(msg => msg.sender.id !== props.me.id) &&
-                        <DeletMessagesButton roomId={props.roomId} messagesIds={Array.from(props.state.selectedMessages).map(m => m.id)} onSuccess={props.state.resetAll}>
-                            <XButton
-                                text="Delete"
-                                style="default"
-                            />
-                        </DeletMessagesButton>
-                    }
-
                 </XHorizontal>
             </ChatHeaderContent>
         );
