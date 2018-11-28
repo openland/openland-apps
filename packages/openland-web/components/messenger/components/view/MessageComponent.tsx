@@ -244,6 +244,9 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             selectedMessageId.add(message.id);
             messagesContext.setForwardMessages(selectedMessageId);
         }
+        if (isServerMessage(this.props.message)) {
+            messagesContext.switchMessageSelect(this.props.message);
+        }
     }
 
     private hideEditView = () => {
@@ -460,14 +463,13 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
 
         return (
             <MessageWrapper
-                onClick={this.selectMessage}
                 compact={false}
                 isEditView={this.state.isEditView}
                 separator={6}
                 alignItems="center"
                 startSelected={hideMenu}
             >
-                <Check select={isSelect} className="check-icon" />
+                <Check onClick={this.selectMessage} select={isSelect} className="check-icon" />
                 <XVertical separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                     <XHorizontal alignSelf="stretch">
                         {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (

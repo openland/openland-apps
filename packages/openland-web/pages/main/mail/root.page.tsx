@@ -26,6 +26,7 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessagesStateContext, MessagesStateContextProps } from '../../../components/messenger/components/MessagesStateContext';
+import { MessageFull } from 'openland-api/Types';
 
 export const ChatContainer = Glamorous.div({
     display: 'flex',
@@ -148,6 +149,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
+            selectedMessages: new Set(),
             replyMessagesId: null,
             replyMessages: null,
             replyMessagesSender: null,
@@ -159,8 +161,21 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             forwardMessages: this.forwardMessages,
             setReplyMessages: this.setReplyMessages,
             changeForwardConverstion: this.changeForwardConverstion,
-            resetAll: this.resetAll
+            resetAll: this.resetAll,
+            switchMessageSelect: this.switchMessageSelect,
         };
+    }
+
+    private switchMessageSelect = (message: MessageFull) => {
+        let res = new Set(this.state.selectedMessages);
+        if (res.has(message)) {
+            res.delete(message);
+        } else {
+            res.add(message);
+        }
+        this.setState({
+            selectedMessages: res
+        });
     }
 
     private setEditMessage = (id: string | null, message: string | null) => {
@@ -210,6 +225,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
+            selectedMessages: new Set(),
             replyMessagesId: null,
             replyMessages: null,
             replyMessagesSender: null,

@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { MessageFull } from 'openland-api/Types';
 
 export interface MessagesStateContextProps {
     editMessageId: string | null;
     editMessage: string | null;
     setEditMessage: (id: string | null, message: string | null) => void;
     forwardMessagesId: Set<string> | null;
+    selectedMessages: Set<MessageFull>;
+    switchMessageSelect: (message: MessageFull) => void;
     setForwardMessages: (id: Set<string> | null) => void;
     forwardMessages: () => void;
     useForwardMessages: boolean;
@@ -25,6 +28,7 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     replyMessagesSender: null,
     replyMessages: null,
     forwardMessagesId: null,
+    selectedMessages: new Set(),
     useForwardMessages: false,
     useForwardPlaceholder: false,
     useForwardHeader: false,
@@ -33,5 +37,6 @@ export const MessagesStateContext = React.createContext<MessagesStateContextProp
     forwardMessages: () => null,
     changeForwardConverstion: () => null,
     setReplyMessages: () => null,
-    resetAll: () => null
+    resetAll: () => null,
+    switchMessageSelect: () => null,
 });

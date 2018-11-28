@@ -31,7 +31,7 @@ import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XButton } from 'openland-x/XButton';
 import PlusIcon from '../icons/ic-add-medium-2.svg';
-import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { withRoomAddMembers } from '../../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { TalkBarComponent } from '../conference/TalkBarComponent';
@@ -39,6 +39,9 @@ import { TalkContext } from '../conference/TalkProviderComponent';
 import { XDate } from 'openland-x/XDate';
 import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
 import CloseIcon from './components/icons/ic-close.svg';
+import { withUserInfo } from '../UserInfo';
+import { withDeleteMessages } from '../../api/withDeleteMessage';
+import { XMutation } from 'openland-x/XMutation';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -537,7 +540,19 @@ const ClearButton = Glamorous.div({
     }
 });
 
-const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
+const DeletMessagesButton = withDeleteMessages(p => {
+    return (
+        <XMutation
+            mutation={p.deleteMessages}
+            onSuccess={(p as any).onSuccess}
+            variables={{ roomId: (p as any).roomId, mids: (p as any).messagesIds }}
+        >
+            {p.children}
+        </XMutation>
+    );
+}) as React.ComponentType<{ roomId: string, messagesIds: string[], onSuccess: () => void }>;
+
+const ForwardHeader = (props: { state: MessagesStateContextProps, me: UserShort, roomId: string }) => {
     const { forwardMessagesId } = props.state;
     if (forwardMessagesId && forwardMessagesId.size) {
         let size = forwardMessagesId.size;
@@ -564,6 +579,15 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
                         style="primary"
                         onClick={() => props.state.forwardMessages()}
                     />
+                    {!Array.from(props.state.selectedMessages).find(msg => msg.sender.id !== props.me.id) &&
+                        <DeletMessagesButton roomId={props.roomId} messagesIds={Array.from(props.state.selectedMessages).map(m => m.id)} onSuccess={props.state.resetAll}>
+                            <XButton
+                                text="Delete"
+                                style="default"
+                            />
+                        </DeletMessagesButton>
+                    }
+
                 </XHorizontal>
             </ChatHeaderContent>
         );
@@ -572,7 +596,7 @@ const ForwardHeader = (props: { state: MessagesStateContextProps }) => {
     }
 };
 
-let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
+let MessengerComponentLoader = withRoom(withQueryLoader(withUserInfo((props) => {
     let sharedRoom: Room_room_SharedRoom | null = props.data.room!.__typename === 'SharedRoom' ? props.data.room as any : null;
     let privateRoom: Room_room_PrivateRoom | null = props.data.room!.__typename === 'PrivateRoom' ? props.data.room as any : null;
 
@@ -729,7 +753,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
             {placeholder && <FrowardPlaceholder state={messagesState} />}
             <ChatHeaderWrapper>
                 {selectedHeader ? (
-                    <ForwardHeader state={(props as any).state} />
+                    <ForwardHeader state={(props as any).state} roomId={(sharedRoom || privateRoom)!.id} me={props.user!} />
                 ) : headerRender()}
             </ChatHeaderWrapper>
             <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
@@ -750,7 +774,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
             <AddMemberForm roomId={props.data.room!.id} />
         </MessengerWrapper>
     );
-})) as React.ComponentType<{ variables: { id: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
+}))) as React.ComponentType<{ variables: { id: string }, handlePageTitle?: any, state: MessagesStateContextProps }>;
 
 interface MessengerComponentProps {
     id: string;

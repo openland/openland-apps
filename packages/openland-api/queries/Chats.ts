@@ -368,6 +368,12 @@ export const RoomDeleteMessageMutation = gql`
     }
 `;
 
+export const RoomDeleteMessagesMutation = gql`
+    mutation RoomDeleteMessages($mids: [ID!]!) {
+        betaMessageDelete(mids: $mids)
+    }
+`;
+
 export const RoomDeleteUrlAugmentationMutation = gql`
     mutation RoomDeleteUrlAugmentation($messageId: ID!) {
         betaMessageDeleteAugmentation(mid: $messageId)
