@@ -630,9 +630,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props) => {
                                 ? 'group'
                                 : sharedRoom && sharedRoom.kind === 'PUBLIC'
                                     ? 'room'
-                                    : privateRoom
-                                        ? 'user'
-                                        : 'colorus'
+                                    : 'colorus'
                         )}
                         cloudImageUuid={sharedRoom && sharedRoom.photo || privateRoom && privateRoom.user.photo || undefined}
                         objectName={title}
