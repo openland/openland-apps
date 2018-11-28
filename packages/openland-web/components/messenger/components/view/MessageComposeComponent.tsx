@@ -349,8 +349,8 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
         return [];
     }
     return data.map(({ user }: any) => {
-        const { id, name, photo, online, isYou } = user;
-        return { id, name: removeEmojiFromText(name), avatar: photo, online, isYou };
+        const { id, name, photo, online, isYou, primaryOrganization } = user;
+        return { id, name: removeEmojiFromText(name), avatar: photo, title: primaryOrganization ? primaryOrganization.name : '', online, isYou };
     });
 };
 
