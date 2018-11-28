@@ -75,6 +75,13 @@ const Name = Glamorous.div({
     lineHeight: '19px'
 });
 
+const OrgTitle = Glamorous.div({
+    marginTop: 6,
+    fontSize: 14,
+    opacity: 0.5,
+    color: '#000000'
+});
+
 const Role = Glamorous.div({
     marginTop: 6,
     fontSize: 14,
@@ -148,6 +155,8 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, sta
         );
        
     } else {
+
+        const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
         content = (
             <Wrapper>
                 <XHorizontal>
@@ -162,6 +171,7 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, sta
                     <Status variables={{ userId: user.id }} />
                 </XHorizontal>
                 <Name>{user.name}</Name>
+                <OrgTitle>{organizationName}</OrgTitle>
                 <Buttons separator={6}>
                     {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" size="small" />}
                     <XButton path={'/mail/u/' + user.id} style="electric" text={isMe ? 'My profile' : 'View profile'} size="small" />
