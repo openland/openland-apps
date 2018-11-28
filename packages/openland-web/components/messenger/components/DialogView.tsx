@@ -40,6 +40,7 @@ interface DialogViewProps {
     item: DialogDataSourceItem;
     handleRef?: any;
     compact?: boolean;
+    onSelect?: () => void;
 }
 
 const DialogViewInner = (props: DialogViewProps) => {
@@ -186,6 +187,7 @@ const DialogViewCompactInner = (props: DialogViewProps) => {
             hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
             selectedBackgroundColor="#4596e1"
             selectedHoverBackgroundColor="#4596e1"
+            onClick={props.onSelect}
         >
             <XAvatar
                 style={(dialog.kind === 'INTERNAL'
