@@ -5,15 +5,29 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
-import ForwardIcon from './icons/ic-reply.svg';
+import ForwardIcon from './icons/ic-reply-2.svg';
 import { XCounter } from 'openland-x/XCounter';
-import { XView } from 'openland-x/XView';
+import { XView, XViewSelectedContext } from 'openland-x/XView';
 import { XLink2 } from 'openland-x/XLink2';
 
 let iconClass = css`
     display: inline-block;
     vertical-align: top;
     margin: 1px 5px -1px 1px;
+
+    path {
+        fill: rgba(0, 0, 0, 0.3);
+    }
+`;
+
+let iconActiveClass = css`
+    display: inline-block;
+    vertical-align: top;
+    margin: 1px 5px -1px 1px;
+
+    path {
+        fill: rgba(255, 255, 255, 0.9);
+    }
 `;
 
 let documentIcon = css`
@@ -124,22 +138,28 @@ const DialogViewInner = (props: DialogViewProps) => {
                         lineHeight="17px"
                         overflow="hidden"
                     >
-                        {dialog.typing || (
-                            <>
-                                {!!(dialog.message) && !dialog.fileMeta && (
-                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} {dialog.message}</span>
-                                )}
-                                {!dialog.message && !dialog.fileMeta && (
-                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <ForwardIcon className={iconClass + ' ' + documentIcon} />Forward</span>
-                                )}
-                                {dialog.fileMeta && dialog.fileMeta.isImage && (
-                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <PhotoIcon className={iconClass} />Image</span>
-                                )}
-                                {dialog.fileMeta && !dialog.fileMeta.isImage && (
-                                    <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <FileIcon className={iconClass + ' ' + documentIcon} />Document</span>
-                                )}
-                            </>
-                        )}
+                        <XViewSelectedContext.Consumer>
+                            {(active) => (
+                                <>
+                                    {dialog.typing || (
+                                        <>
+                                            {!!(dialog.message) && !dialog.fileMeta && (
+                                                <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} {dialog.message}</span>
+                                            )}
+                                            {!dialog.message && !dialog.fileMeta && (
+                                                <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <ForwardIcon className={(active ? iconActiveClass : iconClass) + ' ' + documentIcon} />Forward</span>
+                                            )}
+                                            {dialog.fileMeta && dialog.fileMeta.isImage && (
+                                                <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <PhotoIcon className={(active ? iconActiveClass : iconClass)} />Image</span>
+                                            )}
+                                            {dialog.fileMeta && !dialog.fileMeta.isImage && (
+                                                <span>{dialog.isOut ? 'You:' : (isPrivate ? null : dialog.sender + ':')} <FileIcon className={(active ? iconActiveClass : iconClass) + ' ' + documentIcon} />Document</span>
+                                            )}
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </XViewSelectedContext.Consumer>
                     </XView>
                     {dialog.unread > 0 && (
                         <XView paddingLeft={12} alignSelf="center"><XCounter big={true} count={dialog.unread} /></XView>
