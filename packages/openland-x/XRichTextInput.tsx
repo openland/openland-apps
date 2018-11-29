@@ -20,7 +20,7 @@ import createMentionPlugin, {
 import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'openland-x/XView';
-import { myConvertToHtml, myConvertFromHtml } from './draftConversion';
+import { toContentState, toHTML } from './XRichTextInput.spec';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
@@ -417,7 +417,7 @@ export class XRichTextInput extends React.PureComponent<
     constructor(props: XRichTextInputProps) {
         super(props);
 
-        const editorState = myConvertFromHtml(props.value);
+        const editorState = toHTML(props.value);
 
         this.state = {
             widthOfContainer: 200,
@@ -494,7 +494,7 @@ export class XRichTextInput extends React.PureComponent<
     };
 
     onChange = (editorState: EditorState) => {
-        const html = myConvertToHtml(editorState.getCurrentContent());
+        const html = toHTML(editorState.getCurrentContent());
 
         this.setState(
             {
@@ -512,7 +512,7 @@ export class XRichTextInput extends React.PureComponent<
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
         if (this.props.value !== nextValue && this.state.html !== nextValue) {
-            const editorState = myConvertFromHtml(nextValue);
+            const editorState = toContentState(nextValue);
 
             this.setState({
                 editorState: editorState,
