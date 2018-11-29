@@ -130,7 +130,7 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                                     <XAvatar
                                         objectId={e.value}
                                         objectName={e.label}
-                                        style={e.type ? (e.type === 'Organization' ? 'organization' : 'colorus') : 'colorus'}
+                                        style={e.type ? (e.type === 'Organization' ? 'organization' : 'user') : 'user'}
                                         src={e.photo || ''}
                                         size="small"
                                     />

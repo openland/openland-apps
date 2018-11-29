@@ -19,6 +19,7 @@ const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props)
     display: 'inline',
     whiteSpace: 'pre-wrap',
     wordWrap: 'break-word',
+    maxWidth: '100%',
     fontSize: props.big ? 36 : 14,
     minHeight: props.big ? 44 : undefined,
     lineHeight: props.big ? '40px' : '22px',

@@ -640,6 +640,28 @@ export interface RoomVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: RoomSuper
+// ====================================================
+
+export interface RoomSuper_roomSuper {
+  __typename: "RoomSuper";
+  id: string;
+  featured: boolean;
+  listed: boolean;
+}
+
+export interface RoomSuper {
+  roomSuper: RoomSuper_roomSuper | null;
+}
+
+export interface RoomSuperVariables {
+  id: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: MessageSetReaction
 // ====================================================
 
@@ -2011,128 +2033,12 @@ export interface RoomSearchVariables {
 // GraphQL mutation operation: RoomAlterFeatured
 // ====================================================
 
-export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
+export interface RoomAlterFeatured_betaRoomAlterFeatured {
+  __typename: "RoomSuper";
   id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
+  listed: boolean;
+  featured: boolean;
 }
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  mute: boolean | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_user;
-  settings: RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom_settings;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user_primaryOrganization | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-  user: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members_user;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user_primaryOrganization | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests {
-  __typename: "RoomMember";
-  user: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests_user;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
-}
-
-export interface RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  socialImage: string | null;
-  description: string | null;
-  organization: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_organization | null;
-  membership: SharedRoomMembershipStatus;
-  role: RoomMemberRole;
-  membersCount: number | null;
-  members: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_members[];
-  requests: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_requests[] | null;
-  settings: RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom_settings;
-}
-
-export type RoomAlterFeatured_betaRoomAlterFeatured = RoomAlterFeatured_betaRoomAlterFeatured_PrivateRoom | RoomAlterFeatured_betaRoomAlterFeatured_SharedRoom;
 
 export interface RoomAlterFeatured {
   /**
@@ -2153,128 +2059,12 @@ export interface RoomAlterFeaturedVariables {
 // GraphQL mutation operation: RoomAlterHidden
 // ====================================================
 
-export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
+export interface RoomAlterHidden_betaRoomAlterListed {
+  __typename: "RoomSuper";
   id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
+  listed: boolean;
+  featured: boolean;
 }
-
-export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  mute: boolean | null;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_PrivateRoom {
-  __typename: "PrivateRoom";
-  id: string;
-  user: RoomAlterHidden_betaRoomAlterListed_PrivateRoom_user;
-  settings: RoomAlterHidden_betaRoomAlterListed_PrivateRoom_settings;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user_primaryOrganization | null;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-  user: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members_user;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user_primaryOrganization | null;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests {
-  __typename: "RoomMember";
-  user: RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests_user;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
-}
-
-export interface RoomAlterHidden_betaRoomAlterListed_SharedRoom {
-  __typename: "SharedRoom";
-  id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  socialImage: string | null;
-  description: string | null;
-  organization: RoomAlterHidden_betaRoomAlterListed_SharedRoom_organization | null;
-  membership: SharedRoomMembershipStatus;
-  role: RoomMemberRole;
-  membersCount: number | null;
-  members: RoomAlterHidden_betaRoomAlterListed_SharedRoom_members[];
-  requests: RoomAlterHidden_betaRoomAlterListed_SharedRoom_requests[] | null;
-  settings: RoomAlterHidden_betaRoomAlterListed_SharedRoom_settings;
-}
-
-export type RoomAlterHidden_betaRoomAlterListed = RoomAlterHidden_betaRoomAlterListed_PrivateRoom | RoomAlterHidden_betaRoomAlterListed_SharedRoom;
 
 export interface RoomAlterHidden {
   betaRoomAlterListed: RoomAlterHidden_betaRoomAlterListed;
@@ -2961,6 +2751,21 @@ export interface RoomDeleteMessage {
 
 export interface RoomDeleteMessageVariables {
   messageId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RoomDeleteMessages
+// ====================================================
+
+export interface RoomDeleteMessages {
+  betaMessageDelete: boolean;
+}
+
+export interface RoomDeleteMessagesVariables {
+  mids: string[];
 }
 
 /* tslint:disable */

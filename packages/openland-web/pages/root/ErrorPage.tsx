@@ -111,7 +111,14 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                                     Return home or contact our team at <a href="mailto:hello@openland.com">hello@openland.com</a>
                                 </Description>
                                 <ButtonsWrapper separator={12}>
-                                    <Button style="primary" path="/" text="Return home" size="large" />
+                                    <Button
+                                        style="primary"
+                                        onClick={() => {
+                                            document.location!.replace('/');
+                                        }}
+                                        text="Return home"
+                                        size="large"
+                                    />
                                 </ButtonsWrapper>
                             </Inner>
                         </Box>

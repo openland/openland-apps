@@ -16,7 +16,7 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
@@ -25,6 +25,8 @@ import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     AddMemberForm,
     RoomEditComponent,
+    RoomSetFeatured,
+    RoomSetHidden,
 } from '../../../components/messenger/MessengerComponent';
 import {
     HeaderAvatar,
@@ -38,11 +40,15 @@ import {
     OrganizationInfoWrapper,
     EditButton
 } from './OrganizationProfileComponent';
-import { Room_room_SharedRoom, RoomFull_SharedRoom_members, RoomFull_SharedRoom_requests } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomFull_SharedRoom_members, RoomFull_SharedRoom_requests, SharedRoomKind } from 'openland-api/Types';
 import { withRoom } from '../../../api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
+import { InviteMembersModal } from '../channel/components/inviteMembersModal';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
@@ -50,9 +56,16 @@ const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     color: props.online ? '#1790ff' : '#7F7F7F'
 }));
 
+export const AdminTools = withRoomAdminTools(withQueryLoader((props) => (
+    <>
+        {props.data && props.data.roomSuper && <RoomSetFeatured val={props.data.roomSuper!.featured} roomId={props.data.roomSuper.id} />}
+        {props.data && props.data.roomSuper && <RoomSetHidden val={props.data.roomSuper!.listed} roomId={props.data.roomSuper.id} />}
+    </>
+))) as React.ComponentType<{ id: string, variables: { id: string } }>;
+
 const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meOwner = (chat.membership === 'MEMBER');
+    let meMember = (chat.membership === 'MEMBER');
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -74,19 +87,23 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                 </HeaderInfo>
                 <HeaderTools separator={8}>
                     <XButton
-                        text={meOwner ? 'View' : 'Request invite'}
+                        text={meMember ? 'View' : 'Request invite'}
                         style="primary"
-                        path={meOwner ? '/mail/' + chat.id : '/directory/r/' + chat.id}
+                        path={meMember ? '/mail/' + chat.id : '/directory/r/' + chat.id}
                     />
-                    {meOwner && (
+                    {meMember && (
                         <>
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
                                 content={(
                                     <>
-                                        <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>
-                                        <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave chat</XMenuItem>
+                                        {(chat.role === 'OWNER' || chat.role === 'ADMIN') && <XMenuItem query={{ field: 'editChat', value: 'true' }}>Settings</XMenuItem>}
+                                        <XMenuItem query={{ field: 'leaveFromChat', value: chat.id }} style="danger">Leave room</XMenuItem>
+                                        <XWithRole role="super-admin">
+                                            <XMenuItemSeparator />
+                                            <AdminTools id={chat.id} variables={{ id: chat.id }} />
+                                        </XWithRole>
                                     </>
                                 )}
                             />
@@ -107,58 +124,46 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
 };
 
 const AboutPlaceholder = withAlterChat((props) => {
-    let editTitle = (props as any).title;
     let editDescription = (props as any).description;
-    let editPhotoRef = (props as any).photoRef;
-    let editSocialImageRef = (props as any).socialImageRef;
     return (
         <XModalForm
             scrollableContent={true}
             target={(props as any).target}
             useTopCloser={true}
-            title="Room settings"
+            title="Add short description"
             defaultAction={(data) => {
-                let newTitle = data.input.title;
                 let newDescription = data.input.description;
-                let newPhoto = data.input.photoRef;
-                let newSocialImage = data.input.socialImageRef;
-                let newLongDescription = data.input.longDescription;
 
                 props.alter({
                     variables: {
+                        roomId: (props as any).roomId,
                         input: {
-                            ...newTitle !== editTitle ? { title: newTitle } : {},
                             ...newDescription !== editDescription ? { description: newDescription } : {},
-                            ...newPhoto !== editPhotoRef ? { photoRef: newPhoto } : {},
-                            ...newSocialImage !== editSocialImageRef ? { socialImageRef: newSocialImage } : {}
                         }
                     }
                 });
             }}
             defaultData={{
                 input: {
-                    title: (props as any).title || '',
                     description: (props as any).description || '',
-                    longDescription: (props as any).longDescription || '',
-                    photoRef: sanitizeIamgeRef((props as any).photoRef),
-                    socialImageRef: sanitizeIamgeRef((props as any).socialImageRef)
                 }
             }}
         >
             <XVertical>
                 <XFormLoadingContent>
-                    <XFormField field="fields.input.description">
+                    <XFormField field="input.description">
                         <XTextArea valueStoreKey="fields.input.description" placeholder="Description" resize={false} />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
         </XModalForm>
     );
-}) as React.ComponentType<{ target: any, title: string, photoRef: any, description: string | null, socialImageRef: any, refetchVars: { conversationId: string } }>;
+}) as React.ComponentType<{ target: any, description: string | null, roomId: string }>;
 
 const About = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
-    let meOwner = chat.membership === 'MEMBER';
+    let meMember = chat.membership === 'MEMBER';
+    let meAdmin = chat.role === 'ADMIN' ||  chat.role === 'OWNER';
     return (
         <>
             {chat.description && (
@@ -172,16 +177,13 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     </SectionContent>
                 </Section>
             )}
-            {!chat.description && meOwner && (
+            {!chat.description && meAdmin && (
                 <Section separator={0}>
                     <XSubHeader title="About" paddingBottom={0} />
                     <SectionContent>
                         <AboutPlaceholder
-                            title={chat.title}
+                            roomId={chat.id}
                             description={chat.description}
-                            socialImageRef={(chat as any).socialImageRef || null}
-                            photoRef={chat.photo}
-                            refetchVars={{ conversationId: chat.id }}
                             target={<EditButton text="Add a short description" />}
                         />
                     </SectionContent>
@@ -232,6 +234,7 @@ interface MembersProviderProps {
     chatId: string;
     meOwner: boolean;
     chatTitle: string;
+    kind: SharedRoomKind;
 }
 
 const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
@@ -257,7 +260,8 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                 <SectionContent>
                     {tab === 'members' &&
                         <>
-                            {props.meOwner && <XCreateCard query={{ field: 'addMember', value: 'true', replace: true }} text="Invite people" />}
+                            {props.kind === 'PUBLIC' && <InviteMembersModal channelTitle={props.chatTitle} roomId={props.chatId} target={<XCreateCard text="Invite people" />} />}
+
                             {members.map((member, i) => (
                                 <MemberCard key={i} member={member} meOwner={props.meOwner} />
                             ))}
@@ -333,6 +337,7 @@ class RoomGroupProfileInner extends React.Component<RoomGroupProfileInnerProps> 
                 <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
                     <MembersProvider
+                        kind={chat.kind}
                         router={this.props.router}
                         members={chat.members}
                         requests={chat.requests}

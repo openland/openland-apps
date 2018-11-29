@@ -55,7 +55,7 @@ let sizeStyles = styleResolver({
     'l-medium': {
         height: 57,
         width: 57,
-        fontSize: 16
+        fontSize: 23
     },
     'medium': {
         height: 46,
@@ -85,7 +85,7 @@ let sizeStyles = styleResolver({
     'm-small': {
         height: 28,
         width: 28,
-        fontSize: 10
+        fontSize: 13
     }
 });
 
@@ -265,7 +265,7 @@ const DotSize = {
     's-medium': 13,
     'l-medium': 12,
     'medium': 11,
-    'default': 11,
+    'default': 8,
     'small': 10,
     'l-small': 8,
     'x-small': 8,
@@ -280,7 +280,7 @@ const DotPosition = {
     's-medium': 3,
     'l-medium': 2,
     'medium': 1,
-    'default': 0,
+    'default': 2,
     'small': 0,
     'l-small': 0,
     'x-small': -1,
@@ -292,7 +292,7 @@ const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     width: DotSize[props.format || 'default'],
     height: DotSize[props.format || 'default'],
     backgroundColor: '#5eb2ff',
-    border: 'solid 1.5px #ffffff',
+    border: 'solid 1px #ffffff',
     borderRadius: '50%',
     right: DotPosition[props.format || 'default'],
     bottom: DotPosition[props.format || 'default'],

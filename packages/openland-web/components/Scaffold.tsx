@@ -687,24 +687,6 @@ export class Scaffold extends React.Component<{}> {
 
                         <NavigationDivider top={0} bottom={16} />
 
-                        <XWithRole role="feature-non-production">
-                            <XPopper
-                                placement="right"
-                                showOnHoverContent={false}
-                                showOnHover={true}
-                                style="dark"
-                                padding={-2}
-                                groupId="scaffold_tooltip"
-                                content={(
-                                    <strong>{TextAppBar.items.feed}</strong>
-                                )}
-                            >
-                                <NavigatorItem path="/feed" activateForSubpaths={true}>
-                                    <DirecoryIcon />
-                                </NavigatorItem>
-                            </XPopper>
-                        </XWithRole>
-
                         <MessengerButton />
 
                         <XPopper
@@ -722,6 +704,24 @@ export class Scaffold extends React.Component<{}> {
                                 <DirecoryIcon />
                             </NavigatorItem>
                         </XPopper>
+
+                        <XWithRole role="feature-non-production">
+                            <XPopper
+                                placement="right"
+                                showOnHoverContent={false}
+                                showOnHover={true}
+                                style="dark"
+                                padding={-2}
+                                groupId="scaffold_tooltip"
+                                content={(
+                                    <strong>{TextAppBar.items.feed}</strong>
+                                )}
+                            >
+                                <NavigatorItem path="/feed" activateForSubpaths={true}>
+                                    <RoomIcon />
+                                </NavigatorItem>
+                            </XPopper>
+                        </XWithRole>
 
                         <BottomNavigation>
                             <AddMenu />

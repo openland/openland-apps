@@ -59,7 +59,7 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation((props) => {
     let id = props.router.query.deleteUrlAugmentation;
     return (
         <XModalForm
-            title="Delete url augmentation"
+            title="Delete link preview"
             targetQuery="deleteUrlAugmentation"
             submitBtnText="Delete"
             defaultAction={(data) => {

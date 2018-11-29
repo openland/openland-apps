@@ -70,7 +70,7 @@ class ConversationComponent extends React.PureComponent<ConversationComponentPro
 
     render() {
         return (
-            <DialogView item={this.props.conversation} compact={this.props.compact} handleRef={this.handleRef} />
+            <DialogView item={this.props.conversation} compact={this.props.compact} handleRef={this.handleRef} onSelect={this.props.onSelect} />
         );
     }
 }

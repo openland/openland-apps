@@ -179,36 +179,38 @@ type MentionComponentInnerTextProps = {
     mention: MessageFull_mentions;
     hasPopper?: boolean;
     children?: any;
+    inCompose?: boolean;
 };
 
-class MentionComponentInnerText extends React.PureComponent<MentionComponentInnerTextProps> {
-    render() {
-        const  { mention, children } = this.props;
-        const paddings = {
-            paddingTop: 1,
-            paddingBottom: 1,
-            paddingLeft: 3,
-            paddingRight: 3,
-        };
-    
-        let style;
-    
-        if (mention.isYou) {
-            style = {
-                ...paddings,
-                backgroundColor: '#fff6e5',
-                color: '#1790ff',
-            };
-        } else {
-            style = {
-                ...paddings,
-                color: '#1790ff',
-            };
-        }
-    
-        return <span style={style}>{children}</span>;
+const MentionComponentInnerText = ({ mention, inCompose, children }: MentionComponentInnerTextProps) => {
+    const paddings = inCompose ? {
+        paddingTop: 1,
+        paddingBottom: 1,
+        paddingLeft: 3,
+        paddingRight: 3,
+    } : {};
+
+    let style;
+
+    if (mention.isYou) {
+        style = {};
     }
-}
+
+    if (mention.isYou) {
+        return {
+            ...paddings,
+            backgroundColor: '#fff6e5',
+            color: '#1790ff',
+        };
+    } else {
+        style = {
+            ...paddings,
+            color: '#1790ff',
+        };
+    }
+
+    return <span style={style}>{children}</span>;
+};
 
 export class MentionComponentInner extends React.Component<MentionComponentInnerTextProps> {
     render() {
@@ -231,7 +233,7 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponentInner mention={props.mention} className={props.className}>
+            <MentionComponentInner isYou={props.mention.isYou} className={props.className} inCompose>
                 {props.children}
             </MentionComponentInner>
         );

@@ -48,6 +48,16 @@ export const RoomQuery = gql`
     ${OrganizationShort}
 `;
 
+export const RoomSuperQuery = gql`
+    query RoomSuper($id: ID!) {
+        roomSuper(id: $id){
+            id
+            featured
+            listed
+        }
+    }
+`;
+
 export const MessageSetReactionMutation = gql`
     mutation MessageSetReaction($messageId: ID!, $reaction: String!) {
         betaReactionSet(mid: $messageId, reaction: $reaction)
@@ -254,23 +264,21 @@ export const RoomSearchQuery = gql`
 export const RoomAlterFeaturedMutation = gql`
     mutation RoomAlterFeatured($roomId: ID!, $featured: Boolean!) {
         betaRoomAlterFeatured(roomId: $roomId, featured: $featured){
-            ... RoomFull
+            id
+            listed
+            featured
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomAlterHiddenMutation = gql`
      mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
         betaRoomAlterListed(roomId: $roomId, listed: $listed){
-            ... RoomFull
+            id
+            listed
+            featured
         }
     }
-    ${RoomFull}
-    ${OrganizationShort}
-    ${UserShort}
 `;
 
 export const RoomMembersQuery = gql`
@@ -365,6 +373,12 @@ export const RoomUpdateMutation = gql`
 export const RoomDeleteMessageMutation = gql`
     mutation RoomDeleteMessage($messageId: ID!) {
         betaMessageDelete(mid: $messageId)
+    }
+`;
+
+export const RoomDeleteMessagesMutation = gql`
+    mutation RoomDeleteMessages($mids: [ID!]!) {
+        betaMessageDelete(mids: $mids)
     }
 `;
 

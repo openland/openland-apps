@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -15,17 +16,15 @@ import { isServerMessage, PendingMessage } from 'openland-engines/messenger/type
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { XOverflow } from '../../../Incubator/XOverflow';
-import { XMenuItem } from 'openland-x/XMenuItem';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import ReplyIcon from '../icons/ic-reply1.svg';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
+import ReplyIcon from '../icons/ic-reply1.svg';
+import EditIcon from '../icons/ic-edit.svg';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -68,7 +67,8 @@ const Check = Glamorous.div<{ select: boolean }>(props => ({
 
 const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: boolean, startSelected: boolean }>(props => ({
     marginTop: props.compact ? 0 : 12,
-    cursor: 'pointer',
+    paddingLeft: 20,
+    paddingRight: 20,
     '& .message-container': {
         backgroundColor: '#fff',
         flexGrow: 1,
@@ -81,10 +81,6 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     '& .time': {
         opacity: props.compact ? 0 : 1
     },
-    '& .menu > div': {
-        width: 18,
-        height: 18
-    },
     '& .menu-wrapper': {
         marginTop: props.compact ? 6 : 12
     },
@@ -94,10 +90,11 @@ const MessageWrapper = Glamorous(XHorizontal)<{ compact: boolean, isEditView: bo
     },
     '& .check-icon': {
         opacity: props.startSelected ? 1 : 0,
+        cursor: 'pointer',
     },
     '&:hover': {
         '& .message-container': {
-            backgroundColor: props.isEditView ? '#fff' : '#F9F9F9',
+            backgroundColor: '#fff',
         },
         '& .check-icon': {
             opacity: props.isEditView ? 0 : 1
@@ -133,7 +130,7 @@ const ReplyMessageWrapper = Glamorous.div({
     }
 });
 
-const ReplyButton = Glamorous.div({
+const IconButton = Glamorous.div({
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -159,13 +156,12 @@ interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
-class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean, isMenuOpen: boolean }> {
-    static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean, isMenuOpen: boolean }) => {
+class MessageComponentInner extends React.PureComponent<MessageComponentInnerProps, { isEditView: boolean }> {
+    static getDerivedStateFromProps = (props: MessageComponentInnerProps, state: { isEditView: boolean }) => {
         if (isServerMessage(props.message)) {
             if (props.messagesContext.editMessageId === props.message.id) {
                 return {
-                    isEditView: true,
-                    isMenuOpen: false
+                    isEditView: true
                 };
             } else {
                 return {
@@ -177,19 +173,19 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         return null;
     }
 
+    componentDidUpdate() {
+        if (this.state.isEditView) {
+            let el = ReactDOM.findDOMNode(this);
+            (el as Element).scrollIntoView();
+        }
+    }
+
     constructor(props: MessageComponentInnerProps) {
         super(props);
 
         this.state = {
-            isEditView: false,
-            isMenuOpen: false
+            isEditView: false
         };
-    }
-
-    private switchMenu = () => {
-        this.setState({
-            isMenuOpen: !this.state.isMenuOpen
-        });
     }
 
     private setEditMessage = (e: any) => {
@@ -248,6 +244,9 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             selectedMessageId.add(message.id);
             messagesContext.setForwardMessages(selectedMessageId);
         }
+        if (isServerMessage(this.props.message)) {
+            messagesContext.switchMessageSelect(this.props.message);
+        }
     }
 
     private hideEditView = () => {
@@ -255,46 +254,14 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
     }
 
     private menuRender = () => {
-        const { message } = this.props;
-
-        let menu = isServerMessage(message) && this.props.out ?
-            (
-                <XVertical className="menu">
-                    <XOverflow
-                        show={this.state.isMenuOpen}
-                        flat={true}
-                        placement="bottom-end"
-                        onClickTarget={this.switchMenu}
-                        content={
-                            <>
-                                {message.message && <XMenuItem onClick={this.setEditMessage}>Edit</XMenuItem>}
-                                <XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>
-                            </>
-                        }
-                    />
-                </XVertical>
-            ) : (isServerMessage(message) && this.props.conversationType === 'PUBLIC') ? (
-                <XWithRole role="super-admin">
-                    <XVertical className="menu">
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            content={<XMenuItem style="danger" query={{ field: 'deleteMessage', value: message.id }}>Delete</XMenuItem>}
-                        />
-                    </XVertical>
-                </XWithRole>
-            ) : null;
-
-        if (isServerMessage(message) && message.urlAugmentation && message.urlAugmentation.type === 'intro') {
-            menu = null;
-        }
+        const { message, out } = this.props;
 
         return (
             <XHorizontal
                 alignItems="center"
                 alignSelf="flex-start"
                 justifyContent="flex-start"
-                width={80}
+                width={83}
                 flexShrink={0}
                 separator={5}
                 className="menu-wrapper"
@@ -303,11 +270,15 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
                     {(!(message as MessageFull).urlAugmentation || ((message as MessageFull).urlAugmentation && (message as MessageFull).urlAugmentation!.type !== 'intro')) && (
                         <ReactionComponent messageId={(message as MessageFull).id} />
                     )}
-                    <ReplyButton onClick={this.setReplyMessages}>
+                    <IconButton onClick={this.setReplyMessages}>
                         <ReplyIcon />
-                    </ReplyButton>
+                    </IconButton>
+                    {out && message.message && (
+                        <IconButton onClick={this.setEditMessage}>
+                            <EditIcon />
+                        </IconButton>
+                    )}
                 </XHorizontal>
-                {menu}
             </XHorizontal>
         );
     }
@@ -468,18 +439,17 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
         if (compact) {
             return (
                 <MessageWrapper
-                    onClick={this.selectMessage}
                     compact={true}
                     isEditView={this.state.isEditView}
                     separator={6}
                     alignItems="center"
                     startSelected={hideMenu}
                 >
-                    <Check select={isSelect} className="check-icon" />
-                    <XHorizontal separator={0} className="message-container" flexGrow={1}>
+                    <Check select={isSelect} className="check-icon" onClick={this.selectMessage} />
+                    <XHorizontal separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                         <DateComponent small={true} className="time">{date}</DateComponent>
-                        <XHorizontal justifyContent="space-between" flexGrow={1}>
-                            <MessageCompactContent separator={0} flexGrow={1} isIntro={isIntro}>
+                        <XHorizontal justifyContent="space-between" flexGrow={1} maxWidth="calc(100% - 55px)">
+                            <MessageCompactContent separator={0} flexGrow={1} isIntro={isIntro} maxWidth="100%">
                                 {content}
                                 {this.reactionsRender()}
                             </MessageCompactContent>
@@ -490,33 +460,48 @@ class MessageComponentInner extends React.PureComponent<MessageComponentInnerPro
             );
         }
 
+        let { sender } = this.props;
+
         return (
             <MessageWrapper
-                onClick={this.selectMessage}
                 compact={false}
                 isEditView={this.state.isEditView}
                 separator={6}
                 alignItems="center"
                 startSelected={hideMenu}
             >
-                <Check select={isSelect} className="check-icon" />
-                <XVertical separator={0} className="message-container" flexGrow={1}>
+                <Check onClick={this.selectMessage} select={isSelect} className="check-icon" />
+                <XVertical separator={0} className="message-container" flexGrow={1} maxWidth="calc(100% - 125px)">
                     <XHorizontal alignSelf="stretch">
-                        {this.props.sender && (this.props.conversationType !== 'PRIVATE') && (
+                        {sender && (this.props.conversationType !== 'PRIVATE') && (
                             <UserPopper
-                                user={this.props.sender}
-                                isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                                user={sender}
+                                isMe={this.props.me ? (sender.id === this.props.me.id) : false}
                                 startSelected={hideMenu}
                             />
                         )}
-                        {this.props.sender && (this.props.conversationType === 'PRIVATE') && (
-                            <UserAvatar user={this.props.sender} startSelected={hideMenu} />
+                        {sender && (this.props.conversationType === 'PRIVATE') && (
+                            <UserAvatar user={sender} startSelected={hideMenu} />
                         )}
-                        <XVertical separator={2} flexGrow={1}>
+                        <XVertical separator={2} flexGrow={1} maxWidth="calc(100% - 52px)">
                             <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal separator={4} alignItems="center">
-                                        <Name>{this.props.sender!!.name}</Name>
+                                        {
+                                            this.props.sender && this.props.conversationType !== 'PRIVATE' ? (
+                                                <UserPopper
+                                                    user={this.props.sender}
+                                                    isMe={this.props.me ? (this.props.sender.id === this.props.me.id) : false}
+                                                    startSelected={hideMenu}
+                                                >
+                                                    <Name>
+                                                        {this.props.sender!!.name}
+                                                    </Name>
+                                                </UserPopper>
+                                            ) : <Name>
+                                                    {this.props.sender!!.name}
+                                                </Name>
+                                        }
                                         {this.props.sender!!.primaryOrganization && <Organization path={orgPath}>{this.props.sender!!.primaryOrganization!!.name}</Organization>}
                                     </XHorizontal>
                                     <DateComponent className="time">{date}</DateComponent>
