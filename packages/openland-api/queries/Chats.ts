@@ -347,7 +347,22 @@ export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
         invite: betaRoomInviteInfo(invite: $invite){
             room{
-                ...RoomFull
+                ... on SharedRoom {
+                    id
+                    kind
+                    title
+                    photo
+                    socialImage
+                    description
+                    organization {
+                        ...OrganizationShort
+                    }
+                    membersCount
+                    members {
+                        role
+                        membership
+                    }
+        }
             }
             invitedByUser{
                 ...UserShort

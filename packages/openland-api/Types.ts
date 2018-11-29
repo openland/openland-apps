@@ -2484,66 +2484,10 @@ export interface RoomInviteInfo_invite_room_organization {
   isCommunity: boolean;
 }
 
-export interface RoomInviteInfo_invite_room_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomInviteInfo_invite_room_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomInviteInfo_invite_room_members_user_primaryOrganization | null;
-}
-
 export interface RoomInviteInfo_invite_room_members {
   __typename: "RoomMember";
   role: RoomMemberRole;
   membership: SharedRoomMembershipStatus;
-  user: RoomInviteInfo_invite_room_members_user;
-}
-
-export interface RoomInviteInfo_invite_room_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomInviteInfo_invite_room_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomInviteInfo_invite_room_requests_user_primaryOrganization | null;
-}
-
-export interface RoomInviteInfo_invite_room_requests {
-  __typename: "RoomMember";
-  user: RoomInviteInfo_invite_room_requests_user;
-}
-
-export interface RoomInviteInfo_invite_room_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
 }
 
 export interface RoomInviteInfo_invite_room {
@@ -2555,12 +2499,8 @@ export interface RoomInviteInfo_invite_room {
   socialImage: string | null;
   description: string | null;
   organization: RoomInviteInfo_invite_room_organization | null;
-  membership: SharedRoomMembershipStatus;
-  role: RoomMemberRole;
   membersCount: number | null;
   members: RoomInviteInfo_invite_room_members[];
-  requests: RoomInviteInfo_invite_room_requests[] | null;
-  settings: RoomInviteInfo_invite_room_settings;
 }
 
 export interface RoomInviteInfo_invite_invitedByUser_primaryOrganization {
