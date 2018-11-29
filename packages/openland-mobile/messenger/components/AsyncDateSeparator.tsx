@@ -13,7 +13,7 @@ let months = [
     'August',
     'September',
     'October',
-    'Novemver',
+    'November',
     'December'
 ];
 
