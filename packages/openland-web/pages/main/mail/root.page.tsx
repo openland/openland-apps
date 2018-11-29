@@ -108,7 +108,7 @@ export const RoomInviteFromLink = withChannelInviteInfo(
             ) : (
                 <RoomsInviteComponent
                     inviteLink={props.router.routeQuery.invte}
-                    room={props.data.invite.room}
+                    room={props.data.invite.room as any}
                     invite={props.data.invite}
                 />
             )

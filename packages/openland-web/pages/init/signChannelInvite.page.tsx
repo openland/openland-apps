@@ -70,7 +70,7 @@ const InviteInfo = withChannelInviteInfo(props => {
                             {props.data.invite && (
                                 <RoomsInviteComponent
                                     noLogin={true}
-                                    room={props.data.invite.room}
+                                    room={props.data.invite.room as any}
                                     invite={props.data.invite}
                                     signup={
                                         '/signup?redirect=' +

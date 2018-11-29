@@ -2499,6 +2499,7 @@ export interface RoomInviteInfo_invite_room {
   socialImage: string | null;
   description: string | null;
   organization: RoomInviteInfo_invite_room_organization | null;
+  membership: SharedRoomMembershipStatus;
   membersCount: number | null;
   members: RoomInviteInfo_invite_room_members[];
 }

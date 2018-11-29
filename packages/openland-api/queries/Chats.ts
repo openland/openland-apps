@@ -357,6 +357,7 @@ export const RoomInviteInfoQuery = gql`
                     organization {
                         ...OrganizationShort
                     }
+                    membership
                     membersCount
                     members {
                         role
