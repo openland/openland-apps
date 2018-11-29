@@ -13,11 +13,18 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import { makeNavigable } from 'openland-x/Navigable';
-import { XMenuItem, XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
+import {
+    XMenuItem,
+    XMenuVertical,
+    XMenuItemSeparator,
+} from 'openland-x/XMenuItem';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
-import { InvitesToOrganizationModal, InvitesGlobalModal } from '../pages/main/settings/invites';
+import {
+    InvitesToOrganizationModal,
+    InvitesGlobalModal,
+} from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
@@ -38,7 +45,11 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XView } from 'openland-x/XView';
-import { SharedRoomKind, MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
+import {
+    SharedRoomKind,
+    MyOrganizations_myOrganizations,
+    UserShort_primaryOrganization,
+} from 'openland-api/Types';
 
 const NavigationContainer = Glamorous.div({
     minHeight: '100%',
@@ -68,20 +79,22 @@ const Logo = Glamorous.div({
     marginBottom: 11,
     alignSelf: 'center',
     flexShrink: 0,
-    backgroundImage: 'url(\'/static/X/logo-4.png\')',
+    backgroundImage: "url('/static/X/logo-4.png')",
     backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain'
+    backgroundSize: 'contain',
 });
 
-const NavigationDivider = Glamorous.div<{ top?: number, bottom?: number }>((props) => ({
-    width: 38,
-    height: 1,
-    marginTop: (typeof props.top !== undefined) ? props.top : 3,
-    marginBottom: (typeof props.bottom !== undefined) ? props.bottom : 3,
-    alignSelf: 'center',
-    backgroundColor: 'rgba(220, 222, 228, 0.6)',
-    flexShrink: 0,
-}));
+const NavigationDivider = Glamorous.div<{ top?: number; bottom?: number }>(
+    props => ({
+        width: 38,
+        height: 1,
+        marginTop: typeof props.top !== undefined ? props.top : 3,
+        marginBottom: typeof props.bottom !== undefined ? props.bottom : 3,
+        alignSelf: 'center',
+        backgroundColor: 'rgba(220, 222, 228, 0.6)',
+        flexShrink: 0,
+    }),
+);
 
 const NavigatorItem = Glamorous(XLink)({
     position: 'relative',
@@ -103,20 +116,20 @@ const NavigatorItem = Glamorous(XLink)({
         color: '#b4b8bd',
         backgroundColor: 'rgba(0, 0, 0, 0.04)!important',
         '& > .reports .hover': {
-            display: 'block'
+            display: 'block',
         },
         '& > .reports .no-hover': {
-            display: 'none'
+            display: 'none',
         },
     },
     '&:hover': {
         color: '#b4b8bd',
         backgroundColor: 'rgba(0, 0, 0, 0.04)',
         '& > .reports .hover': {
-            display: 'block'
+            display: 'block',
         },
         '& > .reports .no-hover': {
-            display: 'none'
+            display: 'none',
         },
     },
     '& > .reports': {
@@ -125,23 +138,23 @@ const NavigatorItem = Glamorous(XLink)({
         display: 'flex',
         justifyContent: 'center',
         '& .hover': {
-            display: 'none'
+            display: 'none',
         },
         '& .no-hover': {
-            display: 'block'
-        }
+            display: 'block',
+        },
     },
     '& > .counter': {
         position: 'absolute',
         right: 14,
-        top: 12
+        top: 12,
     },
     '&:not(.is-active) > .counter': {
-        borderColor: '#f6f6f6'
+        borderColor: '#f6f6f6',
     },
     '&:hover > .counter': {
-        borderColor: '#ececec'
-    }
+        borderColor: '#ececec',
+    },
 });
 
 const BottomNavigation = Glamorous.div({
@@ -150,7 +163,7 @@ const BottomNavigation = Glamorous.div({
     justifyContent: 'flex-end',
     alignSelf: 'stretch',
     flexGrow: 1,
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 const ProfileTitleContainer = Glamorous(XHorizontal)({
@@ -161,9 +174,9 @@ const ProfileTitleContainer = Glamorous(XHorizontal)({
             '& > a': {
                 color: '#1790ff',
                 opacity: 1,
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 const ProfileTitle = Glamorous.div({
@@ -176,7 +189,7 @@ const ProfileTitle = Glamorous.div({
     maxWidth: 164,
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 const ProfileSubTitle = Glamorous(XLink)({
@@ -189,9 +202,13 @@ const ProfileSubTitle = Glamorous(XLink)({
     marginTop: 1,
 });
 
-const TitleContainer = makeNavigable((props) => {
+const TitleContainer = makeNavigable(props => {
     return (
-        <a href={props.href} onClick={props.onClick} style={{ marginBottom: 4 }}>
+        <a
+            href={props.href}
+            onClick={props.onClick}
+            style={{ marginBottom: 4 }}
+        >
             <ProfileTitleContainer separator="none">
                 {props.children}
             </ProfileTitleContainer>
@@ -208,7 +225,7 @@ interface UserPopperProps {
 }
 
 const OutherOrgWrapepr = Glamorous(XVertical)({
-    overflow: 'scroll'
+    overflow: 'scroll',
 });
 
 class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
@@ -225,7 +242,10 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
             let host = window.location.hostname.split('.').reverse();
             Cookie.defaults.domain = (host[1] ? host[1] + '.' : '') + host[0];
             Cookie.defaults.path = '/';
-            Cookie.set('x-openland-user-photo', this.props.picture || '', { path: '/', expires: 3 });
+            Cookie.set('x-openland-user-photo', this.props.picture || '', {
+                path: '/',
+                expires: 3,
+            });
             Cookie.defaults.domain = keepDomain;
             Cookie.defaults.path = keepPath;
         }
@@ -233,21 +253,21 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
 
     switch = () => {
         this.setState({
-            show: !this.state.show
+            show: !this.state.show,
         });
-    }
+    };
 
     closer = () => {
         if (!this.inner) {
             this.setState({
-                show: false
+                show: false,
             });
         }
-    }
+    };
 
     onInner = (ref: any) => {
         this.inner += ref ? 1 : -1;
-    }
+    };
 
     render() {
         let { primaryOrganization, organizations } = this.props;
@@ -261,75 +281,167 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                 padding={25}
                 marginLeft={23}
                 marginBottom={5}
-                content={(
+                content={
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
-                            <TitleContainer path="/settings/profile" autoClose={true}>
-                                <XAvatar cloudImageUuid={this.props.picture || undefined} style="colorus" objectName={this.props.name} objectId={this.props.id} />
+                            <TitleContainer
+                                path="/settings/profile"
+                                autoClose={true}
+                            >
+                                <XAvatar
+                                    cloudImageUuid={
+                                        this.props.picture || undefined
+                                    }
+                                    style="colorus"
+                                    objectName={this.props.name}
+                                    objectId={this.props.id}
+                                />
                                 <XVertical separator="none">
-                                    <ProfileTitle>{this.props.name}</ProfileTitle>
-                                    <ProfileSubTitle>{TextGlobal.editProfile}</ProfileSubTitle>
+                                    <ProfileTitle>
+                                        {this.props.name}
+                                    </ProfileTitle>
+                                    <ProfileSubTitle>
+                                        {TextGlobal.editProfile}
+                                    </ProfileSubTitle>
                                 </XVertical>
                             </TitleContainer>
-                            <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
-                            <XMenuItem query={{ field: 'invite_global', value: 'true' }}>{TextGlobal.joinOpenland}</XMenuItem>
-                            <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
+                            <XMenuItem path="/settings/profile">
+                                {TextGlobal.settings}
+                            </XMenuItem>
+                            <XMenuItem
+                                query={{
+                                    field: 'invite_global',
+                                    value: 'true',
+                                }}
+                            >
+                                {TextGlobal.joinOpenland}
+                            </XMenuItem>
+                            <XMenuItem path="/auth/logout">
+                                {TextGlobal.signOut}
+                            </XMenuItem>
 
                             {primaryOrganization && (
                                 <>
-                                    <XMenuItemSeparator marginTop={12} marginBottom={8} />
-                                    <TitleContainer path={'/directory/o/' + primaryOrganization.id} autoClose={true}>
-                                        <XAvatar cloudImageUuid={primaryOrganization.photo || undefined} style="organization" objectName={primaryOrganization.name} objectId={primaryOrganization.id} />
+                                    <XMenuItemSeparator
+                                        marginTop={12}
+                                        marginBottom={8}
+                                    />
+                                    <TitleContainer
+                                        path={
+                                            '/directory/o/' +
+                                            primaryOrganization.id
+                                        }
+                                        autoClose={true}
+                                    >
+                                        <XAvatar
+                                            cloudImageUuid={
+                                                primaryOrganization.photo ||
+                                                undefined
+                                            }
+                                            style="organization"
+                                            objectName={
+                                                primaryOrganization.name
+                                            }
+                                            objectId={primaryOrganization.id}
+                                        />
                                         <XVertical separator="none">
-                                            <ProfileTitle>{primaryOrganization.name}</ProfileTitle>
-                                            <ProfileSubTitle>Primary organization</ProfileSubTitle>
+                                            <ProfileTitle>
+                                                {primaryOrganization.name}
+                                            </ProfileTitle>
+                                            <ProfileSubTitle>
+                                                Primary organization
+                                            </ProfileSubTitle>
                                         </XVertical>
                                     </TitleContainer>
 
-                                    {organizations && (organizations.length > 1) && (
-                                        <XPopper
-                                            placement="right"
-                                            contentContainer={<XMenuVertical />}
-                                            showOnHover={true}
-                                            padding={25}
-                                            marginLeft={8}
-                                            marginBottom={5}
-                                            arrow={null}
-                                            content={(
-                                                <OutherOrgWrapepr separator="none" ref={this.onInner} maxHeight="90vh">
-                                                    {organizations.sort((a, b) => a.name.localeCompare(b.name)).map((org, index) => (index >= 0) ? (
-                                                        <XMenuItem path={(org.isCommunity ? '/directory/c/' : '/directory/o/') + org.id} key={'other-' + org.id}>{org.name}</XMenuItem>
-                                                    ) : null)}
-                                                </OutherOrgWrapepr>
-                                            )}
-                                        >
-                                            <XMenuItem iconRight="x-right">Other organizations</XMenuItem>
-                                        </XPopper>
-                                    )}
+                                    {organizations &&
+                                        organizations.length > 1 && (
+                                            <XPopper
+                                                placement="right"
+                                                contentContainer={
+                                                    <XMenuVertical />
+                                                }
+                                                showOnHover={true}
+                                                padding={25}
+                                                marginLeft={8}
+                                                marginBottom={5}
+                                                arrow={null}
+                                                content={
+                                                    <OutherOrgWrapepr
+                                                        separator="none"
+                                                        ref={this.onInner}
+                                                        maxHeight="90vh"
+                                                    >
+                                                        {organizations
+                                                            .sort((a, b) =>
+                                                                a.name.localeCompare(
+                                                                    b.name,
+                                                                ),
+                                                            )
+                                                            .map(
+                                                                (org, index) =>
+                                                                    index >=
+                                                                    0 ? (
+                                                                        <XMenuItem
+                                                                            path={
+                                                                                (org.isCommunity
+                                                                                    ? '/directory/c/'
+                                                                                    : '/directory/o/') +
+                                                                                org.id
+                                                                            }
+                                                                            key={
+                                                                                'other-' +
+                                                                                org.id
+                                                                            }
+                                                                        >
+                                                                            {
+                                                                                org.name
+                                                                            }
+                                                                        </XMenuItem>
+                                                                    ) : null,
+                                                            )}
+                                                    </OutherOrgWrapepr>
+                                                }
+                                            >
+                                                <XMenuItem iconRight="x-right">
+                                                    Other organizations
+                                                </XMenuItem>
+                                            </XPopper>
+                                        )}
                                 </>
                             )}
                         </XVertical>
                     </XModalContext.Provider>
-                )}
+                }
             >
-                <XAvatar cloudImageUuid={this.props.picture || undefined} onClick={this.switch} style="colorus" objectName={this.props.name} objectId={this.props.id} />
+                <XAvatar
+                    cloudImageUuid={this.props.picture || undefined}
+                    onClick={this.switch}
+                    style="colorus"
+                    objectName={this.props.name}
+                    objectId={this.props.id}
+                />
             </XPopper>
         );
     }
 }
 
-let UserProfile = withUserInfo<{ onClick?: any }>((props) => (
+let UserProfile = withUserInfo<{ onClick?: any }>(props => (
     <XVertical>
         <Query query={MyOrganizationsQuery.document}>
-            {(data) =>
+            {data => (
                 <UserPopper
                     picture={props.user!!.photo}
                     name={props.user!!.name}
                     id={props.user!!.id}
                     primaryOrganization={props.organization || undefined}
-                    organizations={(data.data && data.data.myOrganizations) ? data.data.myOrganizations : undefined}
+                    organizations={
+                        data.data && data.data.myOrganizations
+                            ? data.data.myOrganizations
+                            : undefined
+                    }
                 />
-            }
+            )}
         </Query>
         <InvitesToOrganizationModal targetQuery="invite" target={null} />
         <InvitesGlobalModal targetQuery="invite_global" target={null} />
@@ -348,10 +460,10 @@ const MenuView = Glamorous(XScrollView)({
 
     '& > .simplebar-scroll-content': {
         '& > .simplebar-content': {
-            overflowX: 'hidden'
-        }
+            overflowX: 'hidden',
+        },
     },
-    borderRight: '1px solid rgba(216, 218, 229, 0.7)'
+    borderRight: '1px solid rgba(216, 218, 229, 0.7)',
 });
 
 //
@@ -360,17 +472,13 @@ const MenuView = Glamorous(XScrollView)({
 
 class ScaffoldMenu extends React.Component {
     static defaultProps = {
-        _isSidebarMenu: true
+        _isSidebarMenu: true,
     };
     render() {
         if (React.Children.count(this.props.children) === 0) {
             return null;
         }
-        return (
-            <MenuView>
-                {this.props.children}
-            </MenuView>
-        );
+        return <MenuView>{this.props.children}</MenuView>;
     }
 }
 
@@ -379,12 +487,15 @@ const PageDiv = Glamorous.div({
     flexShrink: 0,
     flexGrow: 0,
     width: '64px',
-    height: '64px'
+    height: '64px',
 });
 
-class ScaffoldContent extends React.Component<{ padding?: boolean, bottomOffset?: boolean }> {
+class ScaffoldContent extends React.Component<{
+    padding?: boolean;
+    bottomOffset?: boolean;
+}> {
     static defaultProps = {
-        _isSidebarContent: true
+        _isSidebarContent: true,
     };
     render() {
         if (React.Children.count(this.props.children) === 0) {
@@ -415,29 +526,42 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
     }
     switch = () => {
         this.setState({
-            show: !this.state.show
+            show: !this.state.show,
         });
-    }
+    };
 
     closer = () => {
         if (!this.inner) {
             this.setState({
-                show: false
+                show: false,
             });
         }
-    }
+    };
 
     onInner = (ref: any) => {
         this.inner += ref ? 1 : -1;
-    }
+    };
 
     render() {
-        let AddListingContent = withUserInfo((props) => {
+        let AddListingContent = withUserInfo(props => {
             return (
                 <>
-                    <XMenuItem query={{ field: 'createOrganization', value: 'true' }}>{TextGlobal.addOrganization}</XMenuItem>
-                    <XMenuItem query={{ field: 'createOrganization', value: 'community' }}>{TextGlobal.addCommunity}</XMenuItem>
-                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>{TextGlobal.addRoom}</XMenuItem>
+                    <XMenuItem
+                        query={{ field: 'createOrganization', value: 'true' }}
+                    >
+                        {TextGlobal.addOrganization}
+                    </XMenuItem>
+                    <XMenuItem
+                        query={{
+                            field: 'createOrganization',
+                            value: 'community',
+                        }}
+                    >
+                        {TextGlobal.addCommunity}
+                    </XMenuItem>
+                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>
+                        {TextGlobal.addRoom}
+                    </XMenuItem>
                 </>
             );
         });
@@ -467,23 +591,29 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
     switch = () => {
         this.setState({
-            show: !this.state.show
+            show: !this.state.show,
         });
-    }
+    };
 
     closer = () => {
         this.setState({
-            show: false
+            show: false,
         });
-    }
+    };
 
     render() {
-        let AddListingContent = withUserInfo((props) => {
+        let AddListingContent = withUserInfo(props => {
             return (
                 <>
-                    <XMenuItem path="/super/stats">{TextAppBar.items.stats}</XMenuItem>
-                    <XMenuItem path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
-                    <XMenuItem path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
+                    <XMenuItem path="/super/stats">
+                        {TextAppBar.items.stats}
+                    </XMenuItem>
+                    <XMenuItem path="/super">
+                        {TextAppBar.items.adminMenu}
+                    </XMenuItem>
+                    <XMenuItem path="/ui">
+                        {TextAppBar.items.xFramework}
+                    </XMenuItem>
                 </>
             );
         });
@@ -507,7 +637,7 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
-export const RoomButton = withNotificationCounter((props) => {
+export const RoomButton = withNotificationCounter(props => {
     return (
         <XPopper
             placement="right"
@@ -516,19 +646,23 @@ export const RoomButton = withNotificationCounter((props) => {
             groupId="scaffold_tooltip"
             style="dark"
             padding={-2}
-            content={(
-                <strong>{TextAppBar.items.room}</strong>
-            )}
+            content={<strong>{TextAppBar.items.room}</strong>}
         >
             <NavigatorItem path="/channel" activateForSubpaths={true}>
                 <RoomIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#f5f7f9" count={props.data.counter.unreadCount} />}
+                {props.data.counter &&
+                    props.data.counter.unreadCount > 0 && (
+                        <XCounter
+                            borderColor="#f5f7f9"
+                            count={props.data.counter.unreadCount}
+                        />
+                    )}
             </NavigatorItem>
         </XPopper>
     );
 });
 
-export const MessengerButton = withNotificationCounter((props) => {
+export const MessengerButton = withNotificationCounter(props => {
     return (
         <XPopper
             placement="right"
@@ -537,41 +671,48 @@ export const MessengerButton = withNotificationCounter((props) => {
             style="dark"
             padding={-2}
             groupId="scaffold_tooltip"
-            content={(
-                <strong>{TextAppBar.items.mail}</strong>
-            )}
+            content={<strong>{TextAppBar.items.mail}</strong>}
         >
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <MessagesIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && <XCounter borderColor="#ececec" count={props.data.counter.unreadCount} />}
+                {props.data.counter &&
+                    props.data.counter.unreadCount > 0 && (
+                        <XCounter
+                            borderColor="#ececec"
+                            count={props.data.counter.unreadCount}
+                        />
+                    )}
             </NavigatorItem>
         </XPopper>
     );
 });
 
-export const CreateOrganization = withCreateOrganization((props) => {
+export const CreateOrganization = withCreateOrganization(props => {
     let community = props.router.query.createOrganization === 'community';
-    let texts = community ? InitTexts.create_community_popper : InitTexts.create_organization_popper;
+    let texts = community
+        ? InitTexts.create_community_popper
+        : InitTexts.create_organization_popper;
     return (
         <XModalForm
             targetQuery="createOrganization"
             useTopCloser={true}
             title={texts.title}
             submitBtnText={texts.submit}
-            defaultAction={async (data) => {
+            defaultAction={async data => {
                 let res = await props.createOrganization({
-                    variables:
-                    {
+                    variables: {
                         input: {
                             personal: false,
                             name: data.input.name,
                             about: data.input.about,
                             isCommunity: community,
-                            photoRef: data.input.photoRef
-                        }
-                    }
+                            photoRef: data.input.photoRef,
+                        },
+                    },
                 });
-                let redirect = (community ? '/directory/c/' : '/directory/o/') + res.data.createOrganization.id;
+                let redirect =
+                    (community ? '/directory/c/' : '/directory/o/') +
+                    res.data.createOrganization.id;
                 switchOrganization(res.data.createOrganization.id, redirect);
                 await delayForewer();
             }}
@@ -579,17 +720,14 @@ export const CreateOrganization = withCreateOrganization((props) => {
                 input: {
                     name: '',
                     website: '',
-                    photoRef: null
-                }
+                    photoRef: null,
+                },
             }}
         >
             <XVertical separator="large">
                 <XFormLoadingContent>
                     <XHorizontal>
-                        <XVertical
-                            separator={8}
-                            flexGrow={1}
-                        >
+                        <XVertical separator={8} flexGrow={1}>
                             <XInput
                                 flexGrow={1}
                                 field="input.name"
@@ -603,7 +741,13 @@ export const CreateOrganization = withCreateOrganization((props) => {
                                 valueStoreKey="fields.input.about"
                             />
                         </XVertical>
-                        <XAvatarUpload field="input.photoRef" placeholder={{ add: texts.addPhoto, change: texts.changePhoto }} />
+                        <XAvatarUpload
+                            field="input.photoRef"
+                            placeholder={{
+                                add: texts.addPhoto,
+                                change: texts.changePhoto,
+                            }}
+                        />
                     </XHorizontal>
                 </XFormLoadingContent>
             </XVertical>
@@ -611,25 +755,32 @@ export const CreateOrganization = withCreateOrganization((props) => {
     );
 });
 
-export const CreateRoom = withCreateChannel((props) => {
+export const CreateRoom = withCreateChannel(props => {
     return (
         <XModalForm
             {...props}
             useTopCloser={true}
             title="Create room"
             targetQuery="createRoom"
-            defaultAction={async (data) => {
+            defaultAction={async data => {
                 let oid = props.router.query.createRoom;
-                let room = await props.createChannel({ variables: { title: data.input.name, description: data.input.description, organizationId: oid !== 'true' ? oid : undefined, members: [], kind: SharedRoomKind.PUBLIC } });
+                let room = await props.createChannel({
+                    variables: {
+                        title: data.input.name,
+                        description: data.input.description,
+                        organizationId: oid !== 'true' ? oid : undefined,
+                        members: [],
+                        kind: SharedRoomKind.PUBLIC,
+                    },
+                });
                 delay(0).then(() => {
                     props.router.push('/mail/' + room.data.room.id);
                 });
-
             }}
             defaultData={{
                 input: {
-                    name: ''
-                }
+                    name: '',
+                },
             }}
             submitBtnText="Create room"
         >
@@ -648,7 +799,6 @@ export const CreateRoom = withCreateChannel((props) => {
                 />
             </XVertical>
         </XModalForm>
-
     );
 });
 
@@ -674,11 +824,7 @@ export class Scaffold extends React.Component<{}> {
             </XView>
         );
         let menuView = (
-            <XView
-                flexDirection="row"
-                height="100%"
-                position="fixed"
-            >
+            <XView flexDirection="row" height="100%" position="fixed">
                 <NavigationScroller>
                     <NavigationContainer>
                         <XLink path="/">
@@ -696,11 +842,14 @@ export class Scaffold extends React.Component<{}> {
                             style="dark"
                             padding={-2}
                             groupId="scaffold_tooltip"
-                            content={(
+                            content={
                                 <strong>{TextAppBar.items.directory}</strong>
-                            )}
+                            }
                         >
-                            <NavigatorItem path="/directory" activateForSubpaths={true}>
+                            <NavigatorItem
+                                path="/directory"
+                                activateForSubpaths={true}
+                            >
                                 <DirecoryIcon />
                             </NavigatorItem>
                         </XPopper>
@@ -713,11 +862,14 @@ export class Scaffold extends React.Component<{}> {
                                 style="dark"
                                 padding={-2}
                                 groupId="scaffold_tooltip"
-                                content={(
+                                content={
                                     <strong>{TextAppBar.items.feed}</strong>
-                                )}
+                                }
                             >
-                                <NavigatorItem path="/feed" activateForSubpaths={true}>
+                                <NavigatorItem
+                                    path="/feed"
+                                    activateForSubpaths={true}
+                                >
                                     <RoomIcon />
                                 </NavigatorItem>
                             </XPopper>
@@ -725,7 +877,9 @@ export class Scaffold extends React.Component<{}> {
 
                         <BottomNavigation>
                             <AddMenu />
-                            <XWithRole role={['super-admin', 'software-developer']}>
+                            <XWithRole
+                                role={['super-admin', 'software-developer']}
+                            >
                                 <AdminMenu />
                             </XWithRole>
                             <NavigationDivider top={10} bottom={10} />
@@ -751,7 +905,6 @@ export class Scaffold extends React.Component<{}> {
 
                 <CreateOrganization />
                 <CreateRoom />
-
             </XView>
         );
     }

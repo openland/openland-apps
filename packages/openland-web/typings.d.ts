@@ -31,7 +31,7 @@ declare module 'react-map-gl' {
         dragPan?: boolean;
         dragRotate?: boolean;
         touchRotate?: boolean;
-        onViewportChange?: (viewport: ViewPortChanged) => void
+        onViewportChange?: (viewport: ViewPortChanged) => void;
     }
 
     interface ViewPortChanged {
@@ -42,9 +42,11 @@ declare module 'react-map-gl' {
         bearing: number;
     }
 
-    export let NavigationControl: React.ComponentClass<{ onViewportChange?: (viewport: ViewPortChanged) => void }>;
+    export let NavigationControl: React.ComponentClass<{
+        onViewportChange?: (viewport: ViewPortChanged) => void;
+    }>;
 
-    export class FlyToInterpolator { }
+    export class FlyToInterpolator {}
     export let StaticMap: React.ComponentClass<StaticMapProps>;
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
 }
@@ -55,11 +57,14 @@ declare module 'mixpanel-browser' {
     export function identify(id: string): void;
     export let people: {
         set(keys: { [key: string]: any }): void;
-    }
+    };
 }
 
 declare module 'isomorphic-unfetch' {
-    export default function (input: RequestInfo, init?: RequestInit): Promise<Response>
+    export default function(
+        input: RequestInfo,
+        init?: RequestInit,
+    ): Promise<Response>;
 }
 
 declare module 'deck.gl' {
@@ -72,7 +77,7 @@ declare module 'deck.gl' {
         width: number;
         height: number;
         layers: Layer<LayerProps>[];
-        useDevicePixels?: boolean
+        useDevicePixels?: boolean;
     }
 
     interface LayerProps {
@@ -89,7 +94,7 @@ declare module 'deck.gl' {
     }
 
     interface Layer<T extends LayerProps> {
-        new(props: T): Layer<T>;
+        new (props: T): Layer<T>;
         context: any;
         state: any;
         props: T;
@@ -121,13 +126,19 @@ declare module 'next-routes' {
         // tslint:disable-next-line:unified-signatures
         add(pattern: string, page?: string): Routes;
         // tslint:disable-next-line:unified-signatures
-        add(obj: { name?: string, page?: string, pattern?: string }): Routes;
+        add(obj: { name?: string; page?: string; pattern?: string }): Routes;
 
-        findAndGetUrls(nameOrUrl?: string, params?: any): { route: any, urls: { as: string, href: string } };
+        findAndGetUrls(
+            nameOrUrl?: string,
+            params?: any,
+        ): { route: any; urls: { as: string; href: string } };
 
         getRequestHandler(app: any): any;
 
-        Link: React.ComponentClass<{ route: string, onClick?: React.MouseEventHandler<HTMLAnchorElement> }>;
+        Link: React.ComponentClass<{
+            route: string;
+            onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+        }>;
         Router: {
             pushRoute(route: string): Promise<any>;
             replaceRoute(route: string): Promise<any>;
@@ -135,7 +146,7 @@ declare module 'next-routes' {
     }
 
     const builder: () => Routes;
-    export = builder
+    export = builder;
 }
 
 declare module 'glamor/server' {
@@ -151,7 +162,9 @@ declare module 'glamor/server' {
     }
 
     export function renderStatic(fn: () => string): ServerResult;
-    export function renderStaticOptimized(fn: () => string | undefined): ServerResult;
+    export function renderStaticOptimized(
+        fn: () => string | undefined,
+    ): ServerResult;
 }
 
 declare module 'emotion-server' {
@@ -163,7 +176,7 @@ declare namespace Humanize {
 }
 
 declare module 'humanize' {
-    export = Humanize
+    export = Humanize;
 }
 
 declare module 'markdown' {
@@ -178,16 +191,16 @@ declare module 'lodash.flowright' {
 
 declare namespace UploadCare {
     interface Dialog {
-        done: (callback: (result: File) => void) => Dialog
-        fail: (callback: (result: File | null) => void) => Dialog
-        always: (callback: (result: File | null) => void) => Dialog
+        done: (callback: (result: File) => void) => Dialog;
+        fail: (callback: (result: File | null) => void) => Dialog;
+        always: (callback: (result: File | null) => void) => Dialog;
     }
 
     interface File {
-        state: (callback: (result: FileInfo) => void) => File
-        done: (callback: (result: FileInfo) => void) => File
-        fail: (callback: (result: any) => void) => File
-        progress: (callback: (progress: UploadInfo) => void) => File
+        state: (callback: (result: FileInfo) => void) => File;
+        done: (callback: (result: FileInfo) => void) => File;
+        fail: (callback: (result: any) => void) => File;
+        progress: (callback: (progress: UploadInfo) => void) => File;
     }
 
     interface FileInfo {
@@ -203,29 +216,29 @@ declare namespace UploadCare {
             top: number;
             width: number;
             height: number;
-        }
+        };
         originalImageInfo?: {
             width: number;
             height: number;
-        }
+        };
     }
 
     interface UploadInfo {
-        state: 'uploading' | 'uploaded' | 'ready'
+        state: 'uploading' | 'uploaded' | 'ready';
         uploadProgress: number;
         progress: number;
-        incompleteFileInfo: Partial<FileInfo>
+        incompleteFileInfo: Partial<FileInfo>;
     }
 
     interface Settings {
         publicKey: string;
         imagesOnly?: boolean;
-        crop?: any
+        crop?: any;
         imageShrink?: any;
     }
 
-    export function openDialog(file: any | null, settings: Settings): Dialog
-    export function fileFrom(type: any, data: any): File
+    export function openDialog(file: any | null, settings: Settings): Dialog;
+    export function fileFrom(type: any, data: any): File;
 }
 
 declare module 'uploadcare-widget' {
@@ -236,7 +249,7 @@ declare module '@typeform/embed' {
     function makeWidget(element: any, url: string, options: any): void;
 }
 
-declare module "*.json" {
+declare module '*.json' {
     const value: any;
     export default value;
 }
@@ -249,18 +262,18 @@ declare module 'react-lottie' {
      * @param rendererSettings
      */
     interface LottieBodymovinOptionProps {
-        loop?: boolean,
-        autoplay?: boolean,
-        animationData: any,
+        loop?: boolean;
+        autoplay?: boolean;
+        animationData: any;
         rendererSettings?: {
-            preserveAspectRatio?: any
-            context?: any, // the canvas context
-            scaleMode?: 'noScale' | any,
-            clearCanvas?: boolean,
-            progressiveLoad?: boolean, // Boolean, only svg renderer, loads dom elements when needed. Might speed up initialization for large number of elements.
-            hideOnTransparent?: boolean, //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
-            className?: string,
-        }
+            preserveAspectRatio?: any;
+            context?: any; // the canvas context
+            scaleMode?: 'noScale' | any;
+            clearCanvas?: boolean;
+            progressiveLoad?: boolean; // Boolean, only svg renderer, loads dom elements when needed. Might speed up initialization for large number of elements.
+            hideOnTransparent?: boolean; //Boolean, only svg renderer, hides elements when opacity reaches 0 (defaults to true)
+            className?: string;
+        };
     }
 
     /**
@@ -268,9 +281,17 @@ declare module 'react-lottie' {
      * @param callback a callback execute when this eventName is received.
      */
     interface BodymovinEvent {
-        eventName: 'complete' | 'loopComplete' | 'enterFrame' | 'segmentStart' | 'config_ready' | 'data_ready' | 'loaded_images' |
-        'DOMLoaded' | 'destroy',
-        callback: () => void,
+        eventName:
+            | 'complete'
+            | 'loopComplete'
+            | 'enterFrame'
+            | 'segmentStart'
+            | 'config_ready'
+            | 'data_ready'
+            | 'loaded_images'
+            | 'DOMLoaded'
+            | 'destroy';
+        callback: () => void;
     }
 
     /**
@@ -283,43 +304,43 @@ declare module 'react-lottie' {
      * @param eventListeners optional [default: []], This is an array of objects containing a eventName and callback function that will be registered as eventlisteners on the animation object. refer to bodymovin#events where the mention using addEventListener, for a list of available custom events.
      */
     interface LottiePropsType {
-        options: LottieBodymovinOptionProps,
-        height?: number | string,
-        width?: number | string,
-        isStopped: boolean,
-        isPaused: boolean,
-        eventListeners?: Array<BodymovinEvent>
-        segments?: Array<number>
-        speed?: number | 1,
-        direction?: number,
-        ariaRole?: string | 'button',
-        ariaLabel?: string | 'animation',
-        isClickToPauseDisabled?: boolean,
-        title?: string,
+        options: LottieBodymovinOptionProps;
+        height?: number | string;
+        width?: number | string;
+        isStopped: boolean;
+        isPaused: boolean;
+        eventListeners?: Array<BodymovinEvent>;
+        segments?: Array<number>;
+        speed?: number | 1;
+        direction?: number;
+        ariaRole?: string | 'button';
+        ariaLabel?: string | 'animation';
+        isClickToPauseDisabled?: boolean;
+        title?: string;
     }
     /**
      * @component Lottie is a component that allow you to use animation from JSON file that created by
      * Bodymovin on Adobe After Effect
      */
-    class Lottie extends React.Component<LottiePropsType, any> { }
+    class Lottie extends React.Component<LottiePropsType, any> {}
     export default Lottie;
 }
 
 declare module 'react-lorem-component' {
-    class Lorem extends React.Component<{ count: number }, any> { }
-    export default Lorem
+    class Lorem extends React.Component<{ count: number }, any> {}
+    export default Lorem;
 }
 
 declare module '@mapbox/mapbox-gl-geocoder' {
     class Geocoder {
         constructor(args: {
-            accessToken: string
-            country?: string,
-            zoom?: number,
+            accessToken: string;
+            country?: string;
+            zoom?: number;
             filter?: (item: any) => boolean;
             bbox?: number[];
             types?: string;
-        })
+        });
 
         on(type: string, listener: Function): this;
 
@@ -336,157 +357,159 @@ declare module '@mapbox/mapbox-gl-geocoder' {
         listens(type: string): boolean;
 
         onAdd(map: any): any;
-        setProximity(location: { latitude: number, longitude: number } | null): void;
+        setProximity(
+            location: { latitude: number; longitude: number } | null,
+        ): void;
     }
     export = Geocoder;
 }
 
 interface onEveryReturn {
     /**
-        * Callback function you passed to onEvery
-        */
+     * Callback function you passed to onEvery
+     */
     callback: () => void;
     /**
-        * Timer Id of setInterval
-        */
+     * Timer Id of setInterval
+     */
     code: number;
 
     /**
-        * Stop the interval, you cannot resume
-        */
+     * Stop the interval, you cannot resume
+     */
     stop(): boolean;
 
     /**
-        * Pauses the interval, it's resumable
-        */
+     * Pauses the interval, it's resumable
+     */
     pause(): boolean;
 
     /**
-        * Resumes paused interval
-        */
+     * Resumes paused interval
+     */
     resume(): boolean;
 }
 
 interface IdleInfo {
     /**
-        * if page idle now?
-        */
-    isIdle: boolean,
+     * if page idle now?
+     */
+    isIdle: boolean;
 
     /**
-        * How long was the page idle in milliseconds
-        */
-    idleFor: number,
+     * How long was the page idle in milliseconds
+     */
+    idleFor: number;
 
     /**
-        * How much time left to become idle in milliseconds
-        */
-    timeLeft: number,
+     * How much time left to become idle in milliseconds
+     */
+    timeLeft: number;
 
     /**
-        * How much time left to become idle represented as percentage
-        */
-    timeLeftPer: string
+     * How much time left to become idle represented as percentage
+     */
+    timeLeftPer: string;
 }
 
 interface IfVisible {
     /**
-        * Registers a callback function to blur event
-        * @param callback function to run when event fires
-        */
+     * Registers a callback function to blur event
+     * @param callback function to run when event fires
+     */
     blur(callback: () => void): IfVisible;
 
     /**
-        * Triggers the blur event
-        */
+     * Triggers the blur event
+     */
     blur(): IfVisible;
 
     /**
-        * Registers a callback function to focus event
-        * @param callback function to run when event fires
-        */
+     * Registers a callback function to focus event
+     * @param callback function to run when event fires
+     */
     focus(callback: () => void): IfVisible;
 
     /**
-        * Triggers the focus event
-        */
+     * Triggers the focus event
+     */
     focus(): IfVisible;
 
     /**
-        * Registers a callback function to idle event
-        * @param callback function to run when event fires
-        */
+     * Registers a callback function to idle event
+     * @param callback function to run when event fires
+     */
     idle(callback: () => void): IfVisible;
 
     /**
-        * Triggers the idle event
-        */
+     * Triggers the idle event
+     */
     idle(): IfVisible;
 
     /**
-        * Registers a callback function to wakeup event
-        * @param callback function to run when event fires
-        */
+     * Registers a callback function to wakeup event
+     * @param callback function to run when event fires
+     */
     wakeup(callback: () => void): IfVisible;
 
     /**
-        * Triggers the wakeup event
-        */
+     * Triggers the wakeup event
+     */
     wakeup(): IfVisible;
 
     /**
-        * Register any event
-        * @param name Name of the event
-        * @param callback Function to run when event fires
-        */
+     * Register any event
+     * @param name Name of the event
+     * @param callback Function to run when event fires
+     */
     on(name: string, callback: (status?: string) => void): number;
 
     /**
-        * Unregister given event of name
-        * @param name name of the event
-        * @param handler function to remove from registered events
-        */
+     * Unregister given event of name
+     * @param name name of the event
+     * @param handler function to remove from registered events
+     */
     off(name: string, handler: Function): void;
 
     /**
-        * Unregister all event of given name
-        * @param name Name to unregister all events of
-        */
+     * Unregister all event of given name
+     * @param name Name to unregister all events of
+     */
     off(name: string): void;
 
     /**
-        * Returns the current duration time in milliseconds
-        */
+     * Returns the current duration time in milliseconds
+     */
     getIdleDuration(): number;
 
     /**
-        * Returns detailed information about current idle status
-        */
+     * Returns detailed information about current idle status
+     */
     getIdleInfo(): IdleInfo;
 
     /**
-        * Given the event, it check if page is in that state for example
-        * ifvisible.now('idle') return boolean to state if you are idle or not
-        */
+     * Given the event, it check if page is in that state for example
+     * ifvisible.now('idle') return boolean to state if you are idle or not
+     */
     now(check: string): boolean;
 
     /**
-        * Tells if page is visible or not at the moment
-        */
+     * Tells if page is visible or not at the moment
+     */
     now(): boolean;
 
     /**
-        * Utility to run a given function at every given seconds intervals.
-        * This method is smart and it will stop executing when the page is not active
-        * @param seconds duration to wait between each interval in seconds
-        * @param callback callback function run on every iteration
-        */
+     * Utility to run a given function at every given seconds intervals.
+     * This method is smart and it will stop executing when the page is not active
+     * @param seconds duration to wait between each interval in seconds
+     * @param callback callback function run on every iteration
+     */
     onEvery(seconds: number, callback: () => void): onEveryReturn;
 
     /**
-        * Let's you change duration that page becomes idle dynamically
-        * @param seconds new duration in seconds
-        */
+     * Let's you change duration that page becomes idle dynamically
+     * @param seconds new duration in seconds
+     */
     setIdleDuration(seconds: number): number;
 }
 
@@ -500,13 +523,17 @@ declare module 'favico.js' {
 
 }
 
-declare module "draft-js-plugins-editor" {
-    export type PluginsEditorProps = Draft.EditorProps | {
-        plugins: any,
-    }
+declare module 'draft-js-plugins-editor' {
+    export type PluginsEditorProps =
+        | Draft.EditorProps
+        | {
+              plugins: any;
+          };
 
-    export default class PluginsEditor
-        extends React.Component<PluginsEditorProps, Draft.EditorState> {
+    export default class PluginsEditor extends React.Component<
+        PluginsEditorProps,
+        Draft.EditorState
+    > {
         // Force focus back onto the editor node.
         focus(): void;
         // Remove focus from the editor node.
@@ -516,16 +543,24 @@ declare module "draft-js-plugins-editor" {
     export function composeDecorators(...func: any[]): (...args: any[]) => any;
 }
 
-declare module "draft-js-emoji-plugin" {
+declare module 'draft-js-emoji-plugin' {
     function createEmojiPlugin(config?: object): any;
     export type EmojiSuggestions = any;
     export default createEmojiPlugin;
 }
 
 declare module 'draft-js-mention-plugin' {
-    export type MentionT = { avatar: string; name: string; title: string, online?: boolean };
+    export type MentionT = {
+        avatar: string;
+        name: string;
+        title: string;
+        online?: boolean;
+    };
     function createMentionPlugin(config?: object): any;
-    export function defaultSuggestionsFilter(src: string, arr: object[]): Array<MentionT>;
+    export function defaultSuggestionsFilter(
+        src: string,
+        arr: object[],
+    ): Array<MentionT>;
     export default createMentionPlugin;
 }
 
@@ -534,26 +569,29 @@ declare module 'draft-js-mention-plugin/lib/Mention' {
     export default ReturnType;
 }
 
-declare module "react-emojione" {
-    export function emojify(src: string, opts?: any): any
+declare module 'react-emojione' {
+    export function emojify(src: string, opts?: any): any;
 }
 
 declare type Dimensions =
-    | "REAL_WINDOW_HEIGHT"
-    | "REAL_WINDOW_WIDTH"
-    | "STATUS_BAR_HEIGHT"
-    | "SOFT_MENU_BAR_HEIGHT"
-    | "SMART_BAR_HEIGHT";
+    | 'REAL_WINDOW_HEIGHT'
+    | 'REAL_WINDOW_WIDTH'
+    | 'STATUS_BAR_HEIGHT'
+    | 'SOFT_MENU_BAR_HEIGHT'
+    | 'SMART_BAR_HEIGHT';
 
 declare interface ExtraDimensions {
     get: (dim: Dimensions) => number;
 }
 
-declare module "react-native-extra-dimensions-android" {
+declare module 'react-native-extra-dimensions-android' {
     const instance: ExtraDimensions;
     export = instance;
 }
 
 declare module 'react-navigation-material-bottom-tabs' {
-    export function createMaterialBottomTabNavigator(arg1: any, arg2?: any): any;
+    export function createMaterialBottomTabNavigator(
+        arg1: any,
+        arg2?: any,
+    ): any;
 }

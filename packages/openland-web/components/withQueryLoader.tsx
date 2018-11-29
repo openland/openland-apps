@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { XLoader } from 'openland-x/XLoader';
 
-export function withQueryLoader<P>(WrappedComponent: React.ComponentType<P>): React.ComponentType<P> {
+export function withQueryLoader<P>(
+    WrappedComponent: React.ComponentType<P>,
+): React.ComponentType<P> {
     return (props: P) => {
         if ((props as any).data as any) {
             if ((props as any).loading) {

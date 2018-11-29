@@ -14,18 +14,18 @@ const ErrorDiv = Glamorous.div({
     width: '100vw',
     minHeight: '100vh',
     paddingTop: 30,
-    paddingBottom: 30
+    paddingBottom: 30,
 });
 
-const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
+const Logo = Glamorous.div<{ width?: number; height?: number }>(props => ({
     width: props.width ? props.width : 45,
     height: props.height ? props.height : 45,
-    backgroundImage: 'url(\'/static/logo-purple.svg\')',
+    backgroundImage: "url('/static/logo-purple.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     position: 'absolute',
     top: 15,
-    left: 23
+    left: 23,
 }));
 
 const Container = Glamorous.div({
@@ -33,7 +33,7 @@ const Container = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
     // width: 400
 });
 
@@ -43,7 +43,7 @@ const Footer = Glamorous.div({
     // right: 0,
     // bottom: 16,
     // margin: 'auto',
-    marginTop: 30
+    marginTop: 30,
 });
 
 const FooterText = Glamorous.div({
@@ -55,8 +55,8 @@ const FooterText = Glamorous.div({
     color: '#334562',
     opacity: 0.4,
     '&:first-child': {
-        marginBottom: 6
-    }
+        marginBottom: 6,
+    },
 });
 
 const FooterLink = Glamorous(XLink)({
@@ -67,21 +67,34 @@ const FooterLink = Glamorous(XLink)({
     letterSpacing: -0.4,
     fontWeight: 500,
     textAlign: 'center',
-    color: '#334562'
+    color: '#334562',
 });
 
-export function MessagePage(props: { children?: any, hideLegalText?: boolean }) {
+export function MessagePage(props: {
+    children?: any;
+    hideLegalText?: boolean;
+}) {
     return (
         <ErrorDiv>
             <Logo />
-            <Container>
-                {props.children}
-            </Container>
+            <Container>{props.children}</Container>
             <Footer>
                 {props.hideLegalText === true ? null : (
-                    <FooterText>By creating an account you are accepting our <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink> and <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.</FooterText>
+                    <FooterText>
+                        By creating an account you are accepting our{' '}
+                        <FooterLink href="https://openland.com/terms">
+                            Terms of Service
+                        </FooterLink>{' '}
+                        and{' '}
+                        <FooterLink href="https://openland.com/privacy">
+                            Privacy Policy
+                        </FooterLink>
+                        .
+                    </FooterText>
                 )}
-                <FooterText>© {new Date().getFullYear()} Data Makes Perfect Inc.</FooterText>
+                <FooterText>
+                    © {new Date().getFullYear()} Data Makes Perfect Inc.
+                </FooterText>
             </Footer>
         </ErrorDiv>
     );

@@ -13,7 +13,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
 
-const AddSuperAdminForm = withSuperAdminAdd((props) => {
+const AddSuperAdminForm = withSuperAdminAdd(props => {
     return (
         <XModalForm
             title="Add Super Admin"
@@ -31,7 +31,10 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
                     options={[
                         { title: 'Editor', value: 'EDITOR' },
                         { title: 'Super Admin', value: 'SUPER_ADMIN' },
-                        { title: 'Software Developer', value: 'SOFTWARE_DEVELOPER' }
+                        {
+                            title: 'Software Developer',
+                            value: 'SOFTWARE_DEVELOPER',
+                        },
                     ]}
                 />
             </XFormField>
@@ -39,11 +42,11 @@ const AddSuperAdminForm = withSuperAdminAdd((props) => {
     );
 });
 
-const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
+const RemoveSuperAdminForm = withSuperAdminRemove(props => {
     return (
         <XModalForm
             title="Remove Super Admin"
-            submitMutation={props.remove} 
+            submitMutation={props.remove}
             mutationDirect={true}
             actionName="Remove"
             actionStyle="danger"
@@ -56,39 +59,44 @@ const RemoveSuperAdminForm = withSuperAdminRemove((props) => {
     );
 });
 
-export default withApp('Super Admins', 'super-admin', withSuperAdmins(withQueryLoader((props) => {
-    return (
-        <DevToolsScaffold title="Super Admins">
-            <XHeader text="Super Admins" description={props.data.superAdmins.length + ' total'}>
-                <AddSuperAdminForm />
-                <RemoveSuperAdminForm />
-            </XHeader>
-            <XTable>
-                <XTable.Header>
-                    <XTable.Cell width={100}>
-                        First Name
-                        </XTable.Cell>
-                    <XTable.Cell width={100}>
-                        Last Name
-                        </XTable.Cell>
-                    <XTable.Cell>
-                        Email
-                        </XTable.Cell>
-                    <XTable.Cell>
-                        Role
-                        </XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
-                    {props.data.superAdmins.map((v) => (
-                        <XTable.Row key={v.user.id}>
-                            <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
-                            <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
-                            <XTable.Cell>{v.email}</XTable.Cell>
-                            <XTable.Cell>{v.role}</XTable.Cell>
-                        </XTable.Row>
-                    ))}
-                </XTable.Body>
-            </XTable>
-        </DevToolsScaffold>
-    );
-})));
+export default withApp(
+    'Super Admins',
+    'super-admin',
+    withSuperAdmins(
+        withQueryLoader(props => {
+            return (
+                <DevToolsScaffold title="Super Admins">
+                    <XHeader
+                        text="Super Admins"
+                        description={props.data.superAdmins.length + ' total'}
+                    >
+                        <AddSuperAdminForm />
+                        <RemoveSuperAdminForm />
+                    </XHeader>
+                    <XTable>
+                        <XTable.Header>
+                            <XTable.Cell width={100}>First Name</XTable.Cell>
+                            <XTable.Cell width={100}>Last Name</XTable.Cell>
+                            <XTable.Cell>Email</XTable.Cell>
+                            <XTable.Cell>Role</XTable.Cell>
+                        </XTable.Header>
+                        <XTable.Body>
+                            {props.data.superAdmins.map(v => (
+                                <XTable.Row key={v.user.id}>
+                                    <XTable.Cell width={100}>
+                                        {v.user.firstName}
+                                    </XTable.Cell>
+                                    <XTable.Cell width={100}>
+                                        {v.user.lastName}
+                                    </XTable.Cell>
+                                    <XTable.Cell>{v.email}</XTable.Cell>
+                                    <XTable.Cell>{v.role}</XTable.Cell>
+                                </XTable.Row>
+                            ))}
+                        </XTable.Body>
+                    </XTable>
+                </DevToolsScaffold>
+            );
+        }),
+    ),
+);

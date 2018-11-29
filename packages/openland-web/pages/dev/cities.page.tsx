@@ -55,31 +55,24 @@ import { withQueryLoader } from '../../components/withQueryLoader';
 //     );
 // })));
 
-export default withApp('Super Organizations', 'super-admin', withQueryLoader((props) => {
-    console.warn(props);
-    return (
-        <DevToolsScaffold title="Accounts">
-            <XHeader text="Super Cities">{}</XHeader>
-            <XTable>
-                <XTable.Header>
-                    <XTable.Cell width={100}>
-                        Enabled
-                    </XTable.Cell>
-                    <XTable.Cell width={100}>
-                        Key
-                    </XTable.Cell>
-                    <XTable.Cell>
-                        Name
-                    </XTable.Cell>
-                    <XTable.Cell>
-                        Map Blocks
-                    </XTable.Cell>
-                    <XTable.Cell>
-                        Map Parcels
-                    </XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
-                    {/* {props.data.superCities.map((v) => (
+export default withApp(
+    'Super Organizations',
+    'super-admin',
+    withQueryLoader(props => {
+        console.warn(props);
+        return (
+            <DevToolsScaffold title="Accounts">
+                <XHeader text="Super Cities">{}</XHeader>
+                <XTable>
+                    <XTable.Header>
+                        <XTable.Cell width={100}>Enabled</XTable.Cell>
+                        <XTable.Cell width={100}>Key</XTable.Cell>
+                        <XTable.Cell>Name</XTable.Cell>
+                        <XTable.Cell>Map Blocks</XTable.Cell>
+                        <XTable.Cell>Map Parcels</XTable.Cell>
+                    </XTable.Header>
+                    <XTable.Body>
+                        {/* {props.data.superCities.map((v) => (
                         <XTable.Row key={v.key}>
                             <XTable.Cell>
                                 {v.enabled.toString()}
@@ -98,8 +91,9 @@ export default withApp('Super Organizations', 'super-admin', withQueryLoader((pr
                             </XTable.Cell>
                         </XTable.Row>
                     ))} */}
-                </XTable.Body>
-            </XTable>
-        </DevToolsScaffold>
-    );
-}));
+                    </XTable.Body>
+                </XTable>
+            </DevToolsScaffold>
+        );
+    }),
+);

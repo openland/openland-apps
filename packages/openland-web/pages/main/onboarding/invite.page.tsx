@@ -15,7 +15,7 @@ const Container = Glamorous.div({
     position: 'relative',
     display: 'flex',
     width: 600,
-    height: 300
+    height: 300,
 });
 
 const Page = Glamorous(XSAnimatedView)({
@@ -26,7 +26,7 @@ const Page = Glamorous(XSAnimatedView)({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
 });
 
 const Separator = Glamorous.div({
@@ -34,11 +34,13 @@ const Separator = Glamorous.div({
     width: '100%',
     backgroundColor: '#eee',
     marginTop: 8,
-    marginBottom: 8
+    marginBottom: 8,
 });
 
-class InviteComponent extends React.PureComponent<{}, { activePage: number, visible1: boolean, visible2: boolean }> {
-
+class InviteComponent extends React.PureComponent<
+    {},
+    { activePage: number; visible1: boolean; visible2: boolean }
+> {
     private initialPage = new XSAnimatedShadowView({ opacity: 1 });
     private secondPage = new XSAnimatedShadowView({ opacity: 0 });
 
@@ -47,7 +49,7 @@ class InviteComponent extends React.PureComponent<{}, { activePage: number, visi
         this.state = {
             activePage: 0,
             visible1: true,
-            visible2: false
+            visible2: false,
         };
     }
 
@@ -59,10 +61,10 @@ class InviteComponent extends React.PureComponent<{}, { activePage: number, visi
             },
             () => {
                 this.setState({ visible1: false, visible2: true });
-            }
+            },
         );
         this.setState({ activePage: 1, visible1: true, visible2: true });
-    }
+    };
 
     private handleInviteOrganization = () => {
         XSAnimated.animate(
@@ -72,9 +74,10 @@ class InviteComponent extends React.PureComponent<{}, { activePage: number, visi
             },
             () => {
                 this.setState({ visible1: false, visible2: true });
-            });
+            },
+        );
         this.setState({ activePage: 1, visible1: true, visible2: true });
-    }
+    };
 
     private handleBack = () => {
         XSAnimated.animate(
@@ -84,24 +87,45 @@ class InviteComponent extends React.PureComponent<{}, { activePage: number, visi
             },
             () => {
                 this.setState({ visible1: true, visible2: false });
-            });
+            },
+        );
         this.setState({ activePage: 0, visible1: true, visible2: true });
-    }
+    };
 
     render() {
         return (
             <XSDialog>
                 <XSDialogTitle>Invite people</XSDialogTitle>
                 <Container>
-                    <Page shadow={this.initialPage} css={{ visibility: this.state.visible1 ? 'visible' : 'hidden' }}>
+                    <Page
+                        shadow={this.initialPage}
+                        css={{
+                            visibility: this.state.visible1
+                                ? 'visible'
+                                : 'hidden',
+                        }}
+                    >
                         <XSGroup>
-                            <XButton text="Invite to my organization" onClick={this.handleInviteMyOrganization} />
+                            <XButton
+                                text="Invite to my organization"
+                                onClick={this.handleInviteMyOrganization}
+                            />
                             <Separator />
-                            <XButton text="Invite other organization" onClick={this.handleInviteOrganization} />
+                            <XButton
+                                text="Invite other organization"
+                                onClick={this.handleInviteOrganization}
+                            />
                             <Separator />
                         </XSGroup>
                     </Page>
-                    <Page shadow={this.secondPage} css={{ visibility: this.state.visible2 ? 'visible' : 'hidden' }}>
+                    <Page
+                        shadow={this.secondPage}
+                        css={{
+                            visibility: this.state.visible2
+                                ? 'visible'
+                                : 'hidden',
+                        }}
+                    >
                         <XButton text="back" onClick={this.handleBack} />
                     </Page>
                 </Container>

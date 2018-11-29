@@ -6,13 +6,11 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 
-export default withApp('UI Framework - Sliders', 'viewer', (props) => {
+export default withApp('UI Framework - Sliders', 'viewer', props => {
     return (
         <DevDocsScaffold title="Sliders">
             <XContent>
-                <XVertical>
-                    {}
-                </XVertical>
+                <XVertical>{}</XVertical>
             </XContent>
         </DevDocsScaffold>
     );

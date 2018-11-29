@@ -6,7 +6,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 
-export default withApp('UI Framework - Animations', 'viewer', (props) => {
+export default withApp('UI Framework - Animations', 'viewer', props => {
     return (
         <DevDocsScaffold title="Animations">
             <XContent>

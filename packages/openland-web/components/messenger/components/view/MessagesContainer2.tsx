@@ -8,7 +8,7 @@ const ChatContainer = Glamorous.div({
     width: '100%',
     paddingLeft: 16,
     paddingRight: 16,
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 const MessagesContainerInner = Glamorous.div({
@@ -21,16 +21,14 @@ const MessagesContainerInner = Glamorous.div({
     maxWidth: 800,
     margin: 'auto',
     '& .ReactVirtualized__Grid.ReactVirtualized__List': {
-        paddingBottom: 40
-    }
+        paddingBottom: 40,
+    },
 });
 
 export const MessagesContainer = (props: { children?: any }) => {
     return (
         <ChatContainer>
-            <MessagesContainerInner>
-                {props.children}
-            </MessagesContainerInner>
+            <MessagesContainerInner>{props.children}</MessagesContainerInner>
         </ChatContainer>
     );
 };

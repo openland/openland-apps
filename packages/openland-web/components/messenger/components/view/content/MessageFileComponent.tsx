@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import IcClose from '../../icons/ic-close.svg';
 
-const FileButton = Glamorous(XLink)((props) => ({
+const FileButton = Glamorous(XLink)(props => ({
     display: 'flex',
     alignSelf: 'flex-start',
     marginTop: 8,
@@ -21,11 +21,11 @@ const FileButton = Glamorous(XLink)((props) => ({
     position: 'relative',
     '&:hover': {
         '& .title': {
-            color: props.enabled === false ? '#334562' : undefined
+            color: props.enabled === false ? '#334562' : undefined,
         },
         '& .size': {
-            color: '#334562'
-        }
+            color: '#334562',
+        },
     },
 }));
 
@@ -35,17 +35,17 @@ const FileImage = Glamorous.div({
     flexShrink: 0,
     backgroundColor: '#f3f3f5',
     borderRadius: 50,
-    backgroundImage: 'url(\'/static/X/file.svg\')',
+    backgroundImage: "url('/static/X/file.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    marginRight: 12
+    marginRight: 12,
 });
 
 const FileText = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
-    width: 'calc(100% - 52px)'
+    width: 'calc(100% - 52px)',
 });
 
 const Title = Glamorous.div({
@@ -55,19 +55,18 @@ const Title = Glamorous.div({
     textOverflow: 'ellipsis',
     fontSize: 14,
     fontWeight: 500,
-    letterSpacing: -0.1
+    letterSpacing: -0.1,
 });
 
 const Size = Glamorous.div({
     fontSize: 14,
     opacity: 0.5,
-    letterSpacing: -0.1
+    letterSpacing: -0.1,
 });
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
 export function niceBytes(x: number | undefined) {
-
     if (x === undefined) {
         return;
     }
@@ -78,7 +77,7 @@ export function niceBytes(x: number | undefined) {
         x = x / 1024;
     }
 
-    return (x.toFixed(x >= 10 || l < 1 ? 0 : 1) + ' ' + units[l]);
+    return x.toFixed(x >= 10 || l < 1 ? 0 : 1) + ' ' + units[l];
 }
 
 interface MessageFileComponentProps {
@@ -93,29 +92,40 @@ export const MessageFileComponent = (props: MessageFileComponentProps) => (
     <>
         {props.file && (
             <FileButton
-                href={'https://ucarecdn.com/' + props.file + '/' + (props.fileName ? props.fileName!! : '')}
+                href={
+                    'https://ucarecdn.com/' +
+                    props.file +
+                    '/' +
+                    (props.fileName ? props.fileName!! : '')
+                }
             >
                 <FileImage />
                 <FileText>
-                    <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
+                    <Title className="title">
+                        {props.fileName ? props.fileName!! : 'file'}
+                    </Title>
                     <Size className="size">{niceBytes(props.fileSize)}</Size>
                 </FileText>
                 {props.clearButton && (
-                    <XLink onClick={props.onClearClick}><IcClose/></XLink>
+                    <XLink onClick={props.onClearClick}>
+                        <IcClose />
+                    </XLink>
                 )}
             </FileButton>
         )}
         {!props.file && (
-            <FileButton
-                enabled={false}
-            >
+            <FileButton enabled={false}>
                 <FileImage />
                 <FileText>
-                    <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
+                    <Title className="title">
+                        {props.fileName ? props.fileName!! : 'file'}
+                    </Title>
                     <Size className="size">{niceBytes(props.fileSize)}</Size>
                 </FileText>
                 {props.clearButton && (
-                    <XLink onClick={props.onClearClick}><IcClose/></XLink>
+                    <XLink onClick={props.onClearClick}>
+                        <IcClose />
+                    </XLink>
                 )}
             </FileButton>
         )}

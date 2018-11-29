@@ -2,23 +2,29 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShort } from 'openland-api/Types';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
-import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import {
+    MessengerEngine,
+    MessengerContext,
+} from 'openland-engines/MessengerEngine';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import gql from '../../../../node_modules/graphql-tag';
 import { Observable } from '../../../../node_modules/subscriptions-transport-ws';
 
 let cachedMessenger: MessengerEngine | null = null;
 
-const Messenger = (props: { currentUser: UserShort, children?: any }) => {
+const Messenger = (props: { currentUser: UserShort; children?: any }) => {
     if (canUseDOM) {
         return (
             <YApolloContext.Consumer>
-                {(apollo) => {
+                {apollo => {
                     if (!apollo) {
                         throw Error('Unable to get apollo');
                     }
                     if (!cachedMessenger) {
-                        cachedMessenger = new MessengerEngine(apollo, props.currentUser);
+                        cachedMessenger = new MessengerEngine(
+                            apollo,
+                            props.currentUser,
+                        );
                     }
                     return (
                         <MessengerContext.Provider value={cachedMessenger}>
@@ -29,24 +35,22 @@ const Messenger = (props: { currentUser: UserShort, children?: any }) => {
             </YApolloContext.Consumer>
         );
     } else {
-        return (
-            <>
-                {props.children}
-            </>
-        );
+        return <>{props.children}</>;
     }
 };
 
-export class MessengerProvider extends React.PureComponent<{ user?: UserShort }> {
+export class MessengerProvider extends React.PureComponent<{
+    user?: UserShort;
+}> {
     render() {
         if (this.props.user) {
-            return <Messenger currentUser={this.props.user}>{this.props.children}</Messenger>;
-        } else {
             return (
-                <>
+                <Messenger currentUser={this.props.user}>
                     {this.props.children}
-                </>
+                </Messenger>
             );
+        } else {
+            return <>{this.props.children}</>;
         }
     }
 }

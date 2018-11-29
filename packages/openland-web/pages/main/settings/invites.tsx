@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withOrganizationInviteMembers } from '../../../api/withOrganizationInviteMember';
@@ -35,12 +34,12 @@ const AddButtonStyled = Glamorous(XLink)({
     alignItems: 'center',
     alignSelf: 'flex-start',
     '&:hover': {
-        color: '#99a2b0'
+        color: '#99a2b0',
     },
     '& > svg': {
         marginRight: 10,
-        marginLeft: 4
-    }
+        marginLeft: 4,
+    },
 });
 
 interface InviteButtonStylesProps {
@@ -62,8 +61,8 @@ const InviteButtonStyles = Glamorous(XLink)<InviteButtonStylesProps>(props => ({
     },
     '& > svg': {
         marginRight: props.marginRight,
-        marginLeft: props.marginLeft
-    }
+        marginLeft: props.marginLeft,
+    },
 }));
 
 const AddButton = (props: XLinkProps & { title: string }) => (
@@ -91,12 +90,14 @@ export const FooterWrap = Glamorous.div({
     backgroundColor: '#fafbfc',
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
-    borderTop: '1px solid rgba(220, 222, 228, 0.6)'
+    borderTop: '1px solid rgba(220, 222, 228, 0.6)',
 });
 
-const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>((props) => ({
-    paddingBottom: props.bottomOfset ? 60 : undefined
-}));
+const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>(
+    props => ({
+        paddingBottom: props.bottomOfset ? 60 : undefined,
+    }),
+);
 
 interface Invite {
     email?: string;
@@ -118,7 +119,7 @@ const InviteText = Glamorous.div({
     fontSize: 12,
     fontWeight: 500,
     letterSpacing: -0.2,
-    color: '#99a2b0'
+    color: '#99a2b0',
 });
 
 const RemoverInputGroup = Glamorous.div({
@@ -141,32 +142,54 @@ const RemoverInputGroup = Glamorous.div({
         background: '#fdf6f6',
 
         '& svg *': {
-            fill: 'rgba(215, 84, 85, 0.5)'
-        }
-    }
+            fill: 'rgba(215, 84, 85, 0.5)',
+        },
+    },
 });
 
 const InviteComponent = (props: InviteComponentProps) => (
     <XHorizontal separator={6} alignItems="center" flexGrow={1}>
         <XInputGroup flexGrow={1}>
-            <XInput size="large" autofocus={props.first} required={true} placeholder={TextInvites.emailInputPlaceholder} field={'inviteRequests.' + props.index + '.email'} flexGrow={1} />
-            <XInput size="large" placeholder={TextInvites.firstNamePlaceholder} field={'inviteRequests.' + props.index + '.firstName'} flexGrow={1} />
-            <XInput size="large" placeholder={TextInvites.lastNamePlaceholder} field={'inviteRequests.' + props.index + '.lastName'} flexGrow={1} />
+            <XInput
+                size="large"
+                autofocus={props.first}
+                required={true}
+                placeholder={TextInvites.emailInputPlaceholder}
+                field={'inviteRequests.' + props.index + '.email'}
+                flexGrow={1}
+            />
+            <XInput
+                size="large"
+                placeholder={TextInvites.firstNamePlaceholder}
+                field={'inviteRequests.' + props.index + '.firstName'}
+                flexGrow={1}
+            />
+            <XInput
+                size="large"
+                placeholder={TextInvites.lastNamePlaceholder}
+                field={'inviteRequests.' + props.index + '.lastName'}
+                flexGrow={1}
+            />
 
-            {props.useRoles !== false &&
+            {props.useRoles !== false && (
                 <XWithRole role="super-admin">
                     <XSelect
                         attach="both"
                         field={'inviteRequests.' + props.index + '.role'}
                         searchable={false}
                         clearable={false}
-                        options={[{ label: 'Owner', value: 'OWNER' }, { label: 'Member', value: 'MEMBER' }]}
+                        options={[
+                            { label: 'Owner', value: 'OWNER' },
+                            { label: 'Member', value: 'MEMBER' },
+                        ]}
                     />
                 </XWithRole>
-            }
+            )}
 
             {!props.single && (
-                <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
+                <RemoverInputGroup
+                    onClick={() => props.handleRemove(props.index)}
+                >
                     <CloseIcon />
                 </RemoverInputGroup>
             )}
@@ -178,21 +201,23 @@ const LinkHolder = Glamorous(XVertical)({
     '& > div:first-child': {
         backgroundColor: '#f5f7f9',
         borderColor: 'transparent',
-        color: '#5c6a81'
-    }
+        color: '#5c6a81',
+    },
 });
 
 interface OwnerLinkComponentProps {
     invite?: {
-        id: string,
-        key: string,
-        ttl: string | null
+        id: string;
+        key: string;
+        ttl: string | null;
     } | null;
     appInvite?: string | null;
     organization: boolean;
 }
 
-class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWithRouter> {
+class OwnerLinkComponent extends React.Component<
+    OwnerLinkComponentProps & XWithRouter
+> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -203,14 +228,14 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
             return;
         }
         this.input = e;
-    }
+    };
 
     copy = (e: any) => {
         if (this.input && this.input.inputRef && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
         }
         document.execCommand('copy');
-    }
+    };
 
     render() {
         return (
@@ -221,9 +246,19 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                             size="large"
                             flexGrow={1}
                             ref={this.handleRef}
-                            value={this.props.router.protocol + '://' + this.props.router.hostName + (this.props.organization ? '/invite/' : '/join/') + (this.props.appInvite || this.props.invite!.key)}
+                            value={
+                                this.props.router.protocol +
+                                '://' +
+                                this.props.router.hostName +
+                                (this.props.organization
+                                    ? '/invite/'
+                                    : '/join/') +
+                                (this.props.appInvite || this.props.invite!.key)
+                            }
                         />
-                        <InviteText>Anyone with the link will be able to join</InviteText>
+                        <InviteText>
+                            Anyone with the link will be able to join
+                        </InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -232,20 +267,36 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
 }
 
 const RenewButton = Glamorous(XButton)({
-    color: 'rgba(51,69,98, 0.45)'
+    color: 'rgba(51,69,98, 0.45)',
 });
 
-const RenewInviteLinkButton = withPublicInvite((props) => (
-    <XMutation mutation={props.createPublicInvite}><RenewButton text="Renew link" style="link" /></XMutation>
+const RenewInviteLinkButton = withPublicInvite(props => (
+    <XMutation mutation={props.createPublicInvite}>
+        <RenewButton text="Renew link" style="link" />
+    </XMutation>
 ));
 
-const OwnerLink = withPublicInvite(withRouter((props) => (
-    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} invite={props.data ? props.data.publicInvite : null} organization={false} />
-))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
+const OwnerLink = withPublicInvite(
+    withRouter(props => (
+        <OwnerLinkComponent
+            ref={(props as any).innerRef}
+            router={props.router}
+            invite={props.data ? props.data.publicInvite : null}
+            organization={false}
+        />
+    )),
+) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
-const OwnerLinkOrganization = withAppInvite(withRouter((props) => (
-    <OwnerLinkComponent ref={(props as any).innerRef} router={props.router} appInvite={props.data ? props.data.invite : null} organization={true}  />
-))) as React.ComponentType<{ onBack: () => void, innerRef: any }>;
+const OwnerLinkOrganization = withAppInvite(
+    withRouter(props => (
+        <OwnerLinkComponent
+            ref={(props as any).innerRef}
+            router={props.router}
+            appInvite={props.data ? props.data.invite : null}
+            organization={true}
+        />
+    )),
+) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
 interface InvitesModalRawProps {
     mutation?: any;
@@ -258,7 +309,10 @@ interface InvitesModalRawState {
     showLink?: boolean;
 }
 
-class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XModalFormProps>, InvitesModalRawState> {
+class InvitesModalRaw extends React.Component<
+    InvitesModalRawProps & Partial<XModalFormProps>,
+    InvitesModalRawState
+> {
     linkComponent?: any;
     constructor(props: any) {
         super(props);
@@ -269,29 +323,33 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
         if (!store) {
             return;
         }
-        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
+        let invites = store
+            ? store.readValue('fields.inviteRequests') || []
+            : [];
         invites.splice(index, 1);
         store.writeValue('fields.inviteRequests', invites);
-    }
+    };
 
     handleAdd = (store?: XStoreState) => {
         if (!store) {
             return;
         }
-        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
+        let invites = store
+            ? store.readValue('fields.inviteRequests') || []
+            : [];
         invites.push({ role: 'MEMBER' });
         store.writeValue('fields.inviteRequests', invites);
-    }
+    };
 
     handleLinkComponentRef = (ref: any) => {
         this.linkComponent = ref;
-    }
+    };
 
     copyLink = () => {
         if (this.linkComponent) {
             this.linkComponent.copy();
         }
-    }
+    };
 
     render() {
         let { mutation, submitProps, ...modalFormProps } = this.props;
@@ -301,7 +359,9 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                     {!this.state.showLink && (
                         <XWithRole role="admin" orgPermission={'primary'}>
                             <InviteButton
-                                onClick={() => this.setState({ showLink: true })}
+                                onClick={() =>
+                                    this.setState({ showLink: true })
+                                }
                                 icon={<LinkIcon />}
                                 title={TextInvites.getLinkButtonLinkExists}
                                 marginLeft={4}
@@ -309,20 +369,22 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                             />
                         </XWithRole>
                     )}
-                    {this.state.showLink && !this.props.global && (
-                        <InviteButton
-                            onClick={() => this.setState({ showLink: false })}
-                            icon={<EmailIcon />}
-                            marginLeft={4}
-                            marginRight={10}
-                            title={TextInvites.backToEmailInvites}
-                        />
-                    )}
+                    {this.state.showLink &&
+                        !this.props.global && (
+                            <InviteButton
+                                onClick={() =>
+                                    this.setState({ showLink: false })
+                                }
+                                icon={<EmailIcon />}
+                                marginLeft={4}
+                                marginRight={10}
+                                title={TextInvites.backToEmailInvites}
+                            />
+                        )}
                 </XHorizontal>
 
-                {this.state.showLink && !this.props.global && (
-                    <RenewInviteLinkButton />
-                )}
+                {this.state.showLink &&
+                    !this.props.global && <RenewInviteLinkButton />}
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
@@ -348,20 +410,29 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                 autoClose={1500}
                 useTopCloser={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
-                defaultAction={async (data) => {
+                defaultAction={async data => {
                     if (!this.state.showLink) {
-                        let invites = data.inviteRequests.filter((invite: any) => (
-                            (invite.email || invite.firstName || invite.lastName))).map((invite: any) => (
-                                {
-                                    ...invite,
-                                    role: this.props.useRoles !== false ? invite.role : undefined,
-                                    emailText: this.state.customTextAreaOpen ? data.customText : null
-                                }
-                            ));
+                        let invites = data.inviteRequests
+                            .filter(
+                                (invite: any) =>
+                                    invite.email ||
+                                    invite.firstName ||
+                                    invite.lastName,
+                            )
+                            .map((invite: any) => ({
+                                ...invite,
+                                role:
+                                    this.props.useRoles !== false
+                                        ? invite.role
+                                        : undefined,
+                                emailText: this.state.customTextAreaOpen
+                                    ? data.customText
+                                    : null,
+                            }));
                         await this.props.mutation({
                             variables: {
-                                inviteRequests: invites
-                            }
+                                inviteRequests: invites,
+                            },
                         });
                     } else {
                         this.copyLink();
@@ -369,7 +440,10 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                 }}
                 scrollableContent={true}
                 defaultData={{
-                    inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }]
+                    inviteRequests: [
+                        { email: '', role: 'MEMBER' },
+                        { email: '', role: 'MEMBER' },
+                    ],
                 }}
                 submitProps={submitProps}
                 customFooter={footer}
@@ -379,25 +453,47 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                     {!this.state.showLink && (
                         <XVertical flexGrow={1} width={'100%'}>
                             <XStoreContext.Consumer>
-                                {(store) => {
-                                    let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
+                                {store => {
+                                    let invites = store
+                                        ? store.readValue(
+                                              'fields.inviteRequests',
+                                          ) || []
+                                        : [];
                                     return (
                                         <XVertical separator={8}>
                                             <XVertical separator={8}>
-                                                {invites.map((invite: Invite, i: number) => (
-                                                    <InviteComponent
-                                                        first={i === 0}
-                                                        key={i}
-                                                        index={i}
-                                                        invite={invite}
-                                                        single={invites.length === 1}
-                                                        handleRemove={(index) => this.handleRemove(index, store)}
-                                                        useRoles={this.props.useRoles}
-                                                    />
-                                                ))}
+                                                {invites.map(
+                                                    (
+                                                        invite: Invite,
+                                                        i: number,
+                                                    ) => (
+                                                        <InviteComponent
+                                                            first={i === 0}
+                                                            key={i}
+                                                            index={i}
+                                                            invite={invite}
+                                                            single={
+                                                                invites.length ===
+                                                                1
+                                                            }
+                                                            handleRemove={index =>
+                                                                this.handleRemove(
+                                                                    index,
+                                                                    store,
+                                                                )
+                                                            }
+                                                            useRoles={
+                                                                this.props
+                                                                    .useRoles
+                                                            }
+                                                        />
+                                                    ),
+                                                )}
                                             </XVertical>
                                             <AddButton
-                                                onClick={() => this.handleAdd(store)}
+                                                onClick={() =>
+                                                    this.handleAdd(store)
+                                                }
                                                 title={TextInvites.addEmail}
                                             />
                                         </XVertical>
@@ -406,50 +502,88 @@ class InvitesModalRaw extends React.Component<InvitesModalRawProps & Partial<XMo
                             </XStoreContext.Consumer>
                             {!this.state.customTextAreaOpen && (
                                 <AddButton
-                                    onClick={() => this.setState({ customTextAreaOpen: true })}
+                                    onClick={() =>
+                                        this.setState({
+                                            customTextAreaOpen: true,
+                                        })
+                                    }
                                     title={TextInvites.customMessageButton}
                                 />
                             )}
                             {this.state.customTextAreaOpen && (
-                                <XHorizontal flexGrow={1} width="100%" separator={6}>
-                                    <XFormField field="customText" title={TextInvites.customMessageTitle} flexGrow={1}>
-                                        <XTextArea flexGrow={1} valueStoreKey="fields.customText" resize={false} />
+                                <XHorizontal
+                                    flexGrow={1}
+                                    width="100%"
+                                    separator={6}
+                                >
+                                    <XFormField
+                                        field="customText"
+                                        title={TextInvites.customMessageTitle}
+                                        flexGrow={1}
+                                    >
+                                        <XTextArea
+                                            flexGrow={1}
+                                            valueStoreKey="fields.customText"
+                                            resize={false}
+                                        />
                                     </XFormField>
-                                    <XModalCloser onClick={() => this.setState({ customTextAreaOpen: false })} />
+                                    <XModalCloser
+                                        onClick={() =>
+                                            this.setState({
+                                                customTextAreaOpen: false,
+                                            })
+                                        }
+                                    />
                                 </XHorizontal>
                             )}
                         </XVertical>
                     )}
-                    {this.state.showLink && !this.props.global && (
-                        <OwnerLink
-                            innerRef={this.handleLinkComponentRef}
-                            onBack={() => this.setState({ showLink: false })}
-                        />
-                    )}
-                    {this.state.showLink && this.props.global && (
-                        <OwnerLinkOrganization
-                            innerRef={this.handleLinkComponentRef}
-                            onBack={() => this.setState({ showLink: false })}
-                        />
-                    )}
+                    {this.state.showLink &&
+                        !this.props.global && (
+                            <OwnerLink
+                                innerRef={this.handleLinkComponentRef}
+                                onBack={() =>
+                                    this.setState({ showLink: false })
+                                }
+                            />
+                        )}
+                    {this.state.showLink &&
+                        this.props.global && (
+                            <OwnerLinkOrganization
+                                innerRef={this.handleLinkComponentRef}
+                                onBack={() =>
+                                    this.setState({ showLink: false })
+                                }
+                            />
+                        )}
                 </ModalContentWrapper>
             </XModalForm>
         );
     }
 }
 
-export const InvitesToOrganizationModal = withOrganizationInviteMembers((props) => (
-    <InvitesModalRaw
-        mutation={props.sendInvite}
-        targetQuery={(props as any).targetQuery}
-        target={(props as any).target}
-        title={TextInvites.modalTitle}
-        submitProps={{ text: TextInvites.modalAction }}
-        global={false}
-    />
-)) as React.ComponentType<{ targetQuery?: string, target?: any, refetchVars?: { orgId: string } }>;
+export const InvitesToOrganizationModal = withOrganizationInviteMembers(
+    props => (
+        <InvitesModalRaw
+            mutation={props.sendInvite}
+            targetQuery={(props as any).targetQuery}
+            target={(props as any).target}
+            title={TextInvites.modalTitle}
+            submitProps={{ text: TextInvites.modalAction }}
+            global={false}
+        />
+    ),
+) as React.ComponentType<{
+    targetQuery?: string;
+    target?: any;
+    refetchVars?: { orgId: string };
+}>;
 
-export const InvitesGlobalModal = (props: { targetQuery?: string, target?: any, refetchVars?: { orgId: string } }) => (
+export const InvitesGlobalModal = (props: {
+    targetQuery?: string;
+    target?: any;
+    refetchVars?: { orgId: string };
+}) => (
     <InvitesModalRaw
         targetQuery={(props as any).targetQuery}
         target={(props as any).target}

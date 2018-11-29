@@ -7,13 +7,19 @@ import { InitTexts } from './_text';
 import { withUserInfo } from '../../components/UserInfo';
 import { withAppBase } from '../../components/withAppBase';
 
-export default withAppBase('Root', withUserInfo((props) => {
-    return (
-        <AuthRouter>
-            <XDocumentHead title={InitTexts.rootPageTitle} titleSocial={InitTexts.socialPageTitle} />
-            <XTrack event="View Root">
-                <XPageRedirect path={'/mail'} />
-            </XTrack>
-        </AuthRouter>
-    );
-}));
+export default withAppBase(
+    'Root',
+    withUserInfo(props => {
+        return (
+            <AuthRouter>
+                <XDocumentHead
+                    title={InitTexts.rootPageTitle}
+                    titleSocial={InitTexts.socialPageTitle}
+                />
+                <XTrack event="View Root">
+                    <XPageRedirect path={'/mail'} />
+                </XTrack>
+            </AuthRouter>
+        );
+    }),
+);

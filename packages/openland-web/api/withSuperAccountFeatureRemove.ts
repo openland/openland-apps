@@ -4,5 +4,8 @@ import { withFeatureFlags } from './withFeatureFlags';
 import { FeatureFlagDisableMutation } from 'openland-api/FeatureFlagDisableMutation';
 
 export const withSuperAccountFeatureRemove = graphqlCompose2(
-    graphqlMutation(FeatureFlagDisableMutation, 'remove', { params: ['accountId'] }),
-    withFeatureFlags);
+    graphqlMutation(FeatureFlagDisableMutation, 'remove', {
+        params: ['accountId'],
+    }),
+    withFeatureFlags,
+);

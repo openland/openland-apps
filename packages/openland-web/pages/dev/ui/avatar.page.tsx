@@ -10,7 +10,7 @@ import { XTitle } from 'openland-x/XTitle';
 
 const EXAMPLE = 'https://theblueraft.files.wordpress.com/2010/08/aang.jpg';
 
-export default withApp('UI Framework - Avatar', 'viewer', (props) => {
+export default withApp('UI Framework - Avatar', 'viewer', props => {
     return (
         <DevDocsScaffold title="Avatar">
             <XContent>
@@ -18,16 +18,44 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                     <XVertical>
                         <XTitle>Online dot</XTitle>
                         <XHorizontal>
-                            <XAvatar size="x-large" online={true} src={EXAMPLE} />
+                            <XAvatar
+                                size="x-large"
+                                online={true}
+                                src={EXAMPLE}
+                            />
                             <XAvatar size="large" online={true} src={EXAMPLE} />
-                            <XAvatar size="s-large" online={true} src={EXAMPLE} />
-                            <XAvatar size="x-medium" online={true} src={EXAMPLE} />
-                            <XAvatar size="s-medium" online={true} src={EXAMPLE} />
-                            <XAvatar size="l-medium" online={true} src={EXAMPLE} />
-                            <XAvatar size="medium" online={true} src={EXAMPLE} />
+                            <XAvatar
+                                size="s-large"
+                                online={true}
+                                src={EXAMPLE}
+                            />
+                            <XAvatar
+                                size="x-medium"
+                                online={true}
+                                src={EXAMPLE}
+                            />
+                            <XAvatar
+                                size="s-medium"
+                                online={true}
+                                src={EXAMPLE}
+                            />
+                            <XAvatar
+                                size="l-medium"
+                                online={true}
+                                src={EXAMPLE}
+                            />
+                            <XAvatar
+                                size="medium"
+                                online={true}
+                                src={EXAMPLE}
+                            />
                             <XAvatar online={true} src={EXAMPLE} />
                             <XAvatar size="small" online={true} src={EXAMPLE} />
-                            <XAvatar size="x-small" online={true} src={EXAMPLE} />
+                            <XAvatar
+                                size="x-small"
+                                online={true}
+                                src={EXAMPLE}
+                            />
                         </XHorizontal>
 
                         <XTitle>default</XTitle>
@@ -49,11 +77,23 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar src={EXAMPLE} size="x-large" />
 
                             <XAvatar style="organization" size="x-large" />
-                            <XAvatar style="organization" src={EXAMPLE} size="x-large" />
+                            <XAvatar
+                                style="organization"
+                                src={EXAMPLE}
+                                size="x-large"
+                            />
 
-                            <XAvatar style="organization" size="x-large" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="x-large"
+                                src={EXAMPLE}
+                            />
                             <XAvatar style="organization" size="x-large" />
-                            <XAvatar style="organization" size="x-large" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="x-large"
+                                src={EXAMPLE}
+                            />
                         </XHorizontal>
 
                         <XTitle>large</XTitle>
@@ -62,11 +102,23 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar src={EXAMPLE} size="large" />
 
                             <XAvatar style="organization" size="large" />
-                            <XAvatar style="organization" src={EXAMPLE} size="large" />
+                            <XAvatar
+                                style="organization"
+                                src={EXAMPLE}
+                                size="large"
+                            />
 
-                            <XAvatar style="organization" size="large" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="large"
+                                src={EXAMPLE}
+                            />
                             <XAvatar style="organization" size="large" />
-                            <XAvatar style="organization" size="large" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="large"
+                                src={EXAMPLE}
+                            />
                         </XHorizontal>
 
                         <XTitle>medium</XTitle>
@@ -75,11 +127,23 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar src={EXAMPLE} size="medium" />
 
                             <XAvatar style="organization" size="medium" />
-                            <XAvatar style="organization" src={EXAMPLE} size="medium" />
+                            <XAvatar
+                                style="organization"
+                                src={EXAMPLE}
+                                size="medium"
+                            />
 
-                            <XAvatar style="organization" size="medium" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="medium"
+                                src={EXAMPLE}
+                            />
                             <XAvatar style="organization" size="medium" />
-                            <XAvatar style="organization" size="medium" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="medium"
+                                src={EXAMPLE}
+                            />
                         </XHorizontal>
 
                         <XTitle>small</XTitle>
@@ -88,17 +152,27 @@ export default withApp('UI Framework - Avatar', 'viewer', (props) => {
                             <XAvatar src={EXAMPLE} size="small" />
 
                             <XAvatar style="organization" size="small" />
-                            <XAvatar style="organization" src={EXAMPLE} size="small" />
+                            <XAvatar
+                                style="organization"
+                                src={EXAMPLE}
+                                size="small"
+                            />
 
-                            <XAvatar style="organization" size="small" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="small"
+                                src={EXAMPLE}
+                            />
                             <XAvatar style="organization" size="small" />
-                            <XAvatar style="organization" size="small" src={EXAMPLE} />
+                            <XAvatar
+                                style="organization"
+                                size="small"
+                                src={EXAMPLE}
+                            />
                         </XHorizontal>
-
                     </XVertical>
-
                 </XVertical>
             </XContent>
-        </DevDocsScaffold >
+        </DevDocsScaffold>
     );
 });

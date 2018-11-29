@@ -27,8 +27,14 @@ routes.add('/createProfile', '/init/createProfile');
 routes.add('/createProfile/', '/init/createProfile');
 routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
-routes.add('/createProfileAndOrganization', '/init/createProfileAndOrganization');
-routes.add('/createProfileAndOrganization/', '/init/createProfileAndOrganization');
+routes.add(
+    '/createProfileAndOrganization',
+    '/init/createProfileAndOrganization',
+);
+routes.add(
+    '/createProfileAndOrganization/',
+    '/init/createProfileAndOrganization',
+);
 routes.add('/join/:inviteKey', '/init/join');
 routes.add('/join/:inviteKey/', '/init/join');
 routes.add('/invite/:inviteKey', '/init/invite');
@@ -56,8 +62,14 @@ routes.add('/settings/invites', '/main/settings/globalInvites');
 routes.add('/settings/invites/', '/main/settings/globalInvites/');
 routes.add('/settings/dev', '/main/settings/developer');
 routes.add('/settings/dev/', '/main/settings/developer');
-routes.add('/settings/organization/:organizationId', '/main/settings/organization');
-routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
+routes.add(
+    '/settings/organization/:organizationId',
+    '/main/settings/organization',
+);
+routes.add(
+    '/settings/organization/:organizationId/',
+    '/main/settings/organization',
+);
 
 //
 // Home
@@ -118,8 +130,14 @@ routes.add('/o/:organizationId/listings/all/', '/main/profile/organization');
 
 routes.add('/marketplace', '/main/marketplace/main');
 routes.add('/marketplace/', '/main/marketplace/main');
-routes.add('/marketplace/organization/:organizationId', '/main/marketplace/organization');
-routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/organization');
+routes.add(
+    '/marketplace/organization/:organizationId',
+    '/main/marketplace/organization',
+);
+routes.add(
+    '/marketplace/organization/:organizationId/',
+    '/main/marketplace/organization',
+);
 
 //
 // Mail

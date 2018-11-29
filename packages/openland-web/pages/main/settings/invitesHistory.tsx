@@ -6,10 +6,13 @@ import { XTable } from 'openland-x/XTable';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 
-const TableTag = Glamorous.div<{ green?: boolean }>((props) => ({
+const TableTag = Glamorous.div<{ green?: boolean }>(props => ({
     height: 32,
     borderRadius: 4,
-    backgroundColor: props.green === true ? 'rgba(192, 235, 196, 0.45)' : 'rgba(232, 233, 236, 0.45)',
+    backgroundColor:
+        props.green === true
+            ? 'rgba(192, 235, 196, 0.45)'
+            : 'rgba(232, 233, 236, 0.45)',
     color: props.green === true ? '#4e8653' : 'rgba(51, 69, 98, 0.51)',
     fontSize: 15,
     fontWeight: 500,
@@ -18,7 +21,7 @@ const TableTag = Glamorous.div<{ green?: boolean }>((props) => ({
     display: 'flex',
     alignItems: 'center',
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
 }));
 
 const Table = Glamorous(XTable)({
@@ -38,22 +41,22 @@ const Table = Glamorous(XTable)({
             paddingBottom: 18,
 
             '& > div': {
-                padding: 0
+                padding: 0,
             },
             '&:first-child': {
                 maxWidth: 130,
                 '& > div': {
-                    paddingLeft: 18
-                }
+                    paddingLeft: 18,
+                },
             },
             '&:nth-child(2)': {
                 maxWidth: 130,
                 '& > div': {
                     paddingLeft: 20,
-                    paddingRight: 20
-                }
-            }
-        }
+                    paddingRight: 20,
+                },
+            },
+        },
     },
     '& tr:first-child td:first-child': {
         borderTopLeftRadius: 5,
@@ -68,13 +71,13 @@ const Table = Glamorous(XTable)({
         borderBottomLeftRadius: 5,
     },
     '& tr:last-child td:last-child': {
-        borderBottomRightRadius: 10
+        borderBottomRightRadius: 10,
     },
     '& tr td:last-child': {
         borderRight: 'solid 1px #eff0f3',
         paddingRight: 20,
-        paddingLeft: 20
-    }
+        paddingLeft: 20,
+    },
 });
 
 const Title = Glamorous.div({
@@ -82,7 +85,7 @@ const Title = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.33,
     letterSpacing: -0.4,
-    color: '#334562'
+    color: '#334562',
 });
 
 const Text = Glamorous.div({
@@ -90,33 +93,58 @@ const Text = Glamorous.div({
     fontSize: 15,
     lineHeight: 1.33,
     letterSpacing: -0.2,
-    color: '#334562'
+    color: '#334562',
 });
 
-export const InvitesHistory = withInvitesHistory((props) => {
+export const InvitesHistory = withInvitesHistory(props => {
     return (
         <Table className={(props as any).className}>
-            {((props.data && props.data.invites) || []).filter(invite => invite.isGlobal).map((invite) => (
-                <XTable.Row>
-                    <XTable.Cell>
+            {((props.data && props.data.invites) || [])
+                .filter(invite => invite.isGlobal)
+                .map(invite => (
+                    <XTable.Row>
+                        <XTable.Cell>
+                            <XHorizontal>
+                                {invite.acceptedBy && (
+                                    <XAvatar
+                                        size="medium"
+                                        cloudImageUuid={
+                                            invite.acceptedBy.picture ||
+                                            undefined
+                                        }
+                                        style="colorus"
+                                        objectName={invite.acceptedBy.name}
+                                        objectId={invite.acceptedBy.id}
+                                    />
+                                )}
+                                {!invite.acceptedBy && (
+                                    <XAvatar
+                                        size="medium"
+                                        cloudImageUuid={undefined}
+                                    />
+                                )}
+                                <XVertical
+                                    separator={1}
+                                    justifyContent="center"
+                                >
+                                    <Title>
+                                        {invite.acceptedBy !== null &&
+                                            invite.acceptedBy.name}
+                                    </Title>
+                                    {invite.forEmail && (
+                                        <Text>{invite.forEmail}</Text>
+                                    )}
+                                </XVertical>
+                            </XHorizontal>
+                        </XTable.Cell>
 
-                        <XHorizontal>
-                            {invite.acceptedBy && <XAvatar size="medium" cloudImageUuid={invite.acceptedBy.picture || undefined} style="colorus" objectName={invite.acceptedBy.name} objectId={invite.acceptedBy.id} />}
-                            {!invite.acceptedBy && <XAvatar size="medium" cloudImageUuid={undefined} />}
-                            <XVertical separator={1} justifyContent="center">
-                                <Title>{invite.acceptedBy !== null && invite.acceptedBy.name}</Title>
-                                {invite.forEmail && <Text>{invite.forEmail}</Text>}
-                            </XVertical>
-                        </XHorizontal>
-                    </XTable.Cell>
-
-                    <XTable.Cell >
-                        <TableTag green={invite.acceptedBy ? true : false}>
-                            {invite.acceptedBy ? 'Accepted' : 'Pending'}
-                        </TableTag>
-                    </XTable.Cell>
-                </XTable.Row>
-            ))}
+                        <XTable.Cell>
+                            <TableTag green={invite.acceptedBy ? true : false}>
+                                {invite.acceptedBy ? 'Accepted' : 'Pending'}
+                            </TableTag>
+                        </XTable.Cell>
+                    </XTable.Row>
+                ))}
         </Table>
     );
 });

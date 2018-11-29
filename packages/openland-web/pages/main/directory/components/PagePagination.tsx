@@ -6,10 +6,13 @@ import { XIcon } from 'openland-x/XIcon';
 
 const PaginationWrapper = Glamorous(XHorizontal)({
     paddingTop: 16,
-    paddingBottom: 16
+    paddingBottom: 16,
 });
 
-const PaginationButton = Glamorous(XLink)<{ current?: boolean, disable?: boolean, }>(props => ({
+const PaginationButton = Glamorous(XLink)<{
+    current?: boolean;
+    disable?: boolean;
+}>(props => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -26,20 +29,20 @@ const PaginationButton = Glamorous(XLink)<{ current?: boolean, disable?: boolean
     textAlign: 'center',
     color: props.current ? '#fff' : '#5c6a81',
     backgroundColor: props.current ? '#1790ff' : '#f3f3f5',
-    cursor: (props.disable || props.current) ? 'default' : undefined,
-    pointerEvents: (props.disable || props.current) ? 'none' : undefined,
+    cursor: props.disable || props.current ? 'default' : undefined,
+    pointerEvents: props.disable || props.current ? 'none' : undefined,
     '&:hover': {
         backgroundColor: 'rgba(23, 144, 255, 0.08)',
-        color: '#1790ff'
+        color: '#1790ff',
     },
     '& > i': {
         fontSize: 20,
-        color: props.disable ? '#c1c7cf' : undefined
+        color: props.disable ? '#c1c7cf' : undefined,
     },
     '&.arrow': {
         width: 24,
-        maxWidth: 24
-    }
+        maxWidth: 24,
+    },
 }));
 
 const PaginationDotted = Glamorous.div({
@@ -50,7 +53,7 @@ const PaginationDotted = Glamorous.div({
     lineHeight: '25px',
     fontSize: 25,
     fontWeight: 500,
-    letterSpacing: -0.1
+    letterSpacing: -0.1,
 });
 
 interface PagePaginationProps {
@@ -78,7 +81,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
         let l;
 
         for (let i = 1; i <= pagesCount; i++) {
-            if (i === 1 || i === pagesCount || i >= left && i < right) {
+            if (i === 1 || i === pagesCount || (i >= left && i < right)) {
                 range.push(i);
             }
         }
@@ -87,41 +90,63 @@ export class PagePagination extends React.Component<PagePaginationProps> {
             if (l) {
                 if (i - l === 2) {
                     rangeWithDots.push(
-                        <PaginationButton onClick={this.props.onPageChange} key={'pag1_' + l + left} current={(l + 1) === currentPage} path={'/directory?page=' + (l + 1).toString() + '#'}>
+                        <PaginationButton
+                            onClick={this.props.onPageChange}
+                            key={'pag1_' + l + left}
+                            current={l + 1 === currentPage}
+                            path={'/directory?page=' + (l + 1).toString() + '#'}
+                        >
                             {l + 1}
-                        </PaginationButton>
+                        </PaginationButton>,
                     );
                 } else if (i - l !== 1) {
-                    rangeWithDots.push(<PaginationDotted key={'_dotted_' + i / 0.33}>...</PaginationDotted>);
+                    rangeWithDots.push(
+                        <PaginationDotted key={'_dotted_' + i / 0.33}>
+                            ...
+                        </PaginationDotted>,
+                    );
                 }
             }
             rangeWithDots.push(
-                <PaginationButton onClick={this.props.onPageChange} key={'pag2_' + i + right} current={i === currentPage} path={(this.props.currentRoute ? this.props.currentRoute : '/directory') + '?page=' + i.toString() + '#'}>
+                <PaginationButton
+                    onClick={this.props.onPageChange}
+                    key={'pag2_' + i + right}
+                    current={i === currentPage}
+                    path={
+                        (this.props.currentRoute
+                            ? this.props.currentRoute
+                            : '/directory') +
+                        '?page=' +
+                        i.toString() +
+                        '#'
+                    }
+                >
                     {i}
-                </PaginationButton>
+                </PaginationButton>,
             );
             l = i;
         }
 
         return rangeWithDots;
-    }
+    };
 
     render() {
-
-        const {
-            hasNextPage,
-            pagesCount,
-            currentPage,
-        } = this.props.pageInfo;
+        const { hasNextPage, pagesCount, currentPage } = this.props.pageInfo;
         if (pagesCount < 2) {
             return null;
         }
         return (
-            <PaginationWrapper justifyContent="flex-end" alignSelf="center" separator={4}>
+            <PaginationWrapper
+                justifyContent="flex-end"
+                alignSelf="center"
+                separator={4}
+            >
                 <PaginationButton
                     onClick={this.props.onPageChange}
                     className="arrow left"
-                    path={'/directory?page=' + (currentPage - 1).toString() + '#'}
+                    path={
+                        '/directory?page=' + (currentPage - 1).toString() + '#'
+                    }
                     disable={currentPage === 1}
                 >
                     <XIcon icon="keyboard_arrow_left" />
@@ -130,7 +155,9 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                 <PaginationButton
                     onClick={this.props.onPageChange}
                     className="arrow right"
-                    path={'/directory?page=' + (currentPage + 1).toString() + '#'}
+                    path={
+                        '/directory?page=' + (currentPage + 1).toString() + '#'
+                    }
                     disable={hasNextPage === false}
                 >
                     <XIcon icon="keyboard_arrow_right" />

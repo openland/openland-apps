@@ -4,5 +4,8 @@ import { withFeatureFlags } from './withFeatureFlags';
 import { FeatureFlagEnableMutation } from 'openland-api/FeatureFlagEnableMutation';
 
 export const withSuperAccountFeatureAdd = graphqlCompose2(
-    graphqlMutation(FeatureFlagEnableMutation, 'add', { params: ['accountId'] }),
-    withFeatureFlags);
+    graphqlMutation(FeatureFlagEnableMutation, 'add', {
+        params: ['accountId'],
+    }),
+    withFeatureFlags,
+);

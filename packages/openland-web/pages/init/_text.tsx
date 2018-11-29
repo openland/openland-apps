@@ -15,7 +15,7 @@ export const InitTexts = {
         signinEmail: 'Sign in with Email',
 
         signupPageTitle: 'Sign up',
-        signupHint: 'Don\'t have an Openland account?',
+        signupHint: "Don't have an Openland account?",
         signup: 'Sign up',
         signupTitle: 'Sign up for Openland',
         signupSubtitle: 'Get a free account and start exploring',
@@ -29,7 +29,7 @@ export const InitTexts = {
 
         reset: 'Reset',
         next: 'Next',
-        complete: 'Continue'
+        complete: 'Continue',
     },
 
     join: {
@@ -57,8 +57,9 @@ export const InitTexts = {
         phone: 'Phone',
         photo: 'Photo',
         organizationName: 'Organization Name',
-        organizationPopup: 'Enter your full name if you are registering as a private individual',
-        continue: 'Continue'
+        organizationPopup:
+            'Enter your full name if you are registering as a private individual',
+        continue: 'Continue',
     },
 
     create_organization: {
@@ -71,7 +72,7 @@ export const InitTexts = {
         photo: 'Logo',
         cancel: 'Cancel',
         skip: 'Skip for now',
-        continue: 'Continue'
+        continue: 'Continue',
     },
 
     create_organization_popper: {
@@ -79,7 +80,11 @@ export const InitTexts = {
         namePlaceholder: 'Organization name',
         descriptionPlaceholder: 'Short description (optional)',
         submit: 'Create',
-        addPhoto: <><p>Add photo</p> <p>(optional)</p></>,
+        addPhoto: (
+            <>
+                <p>Add photo</p> <p>(optional)</p>
+            </>
+        ),
         changePhoto: 'Change photo',
     },
 
@@ -88,19 +93,29 @@ export const InitTexts = {
         namePlaceholder: 'Community name',
         descriptionPlaceholder: 'Short description (optional)',
         submit: 'Create',
-        addPhoto: <><p>Add photo</p> <p>(optional)</p></>,
+        addPhoto: (
+            <>
+                <p>Add photo</p> <p>(optional)</p>
+            </>
+        ),
         changePhoto: 'Change photo',
     },
 
     pick_organization: {
         pageTitle: 'Select your organization',
-        title: 'Please, select your organization'
+        title: 'Please, select your organization',
     },
 
     need_info: {
         pageTitle: 'Activation needed',
         title: 'Activation needed',
-        content: <>We onboard new members in small groups. Contact <XLink href="mailto:support@openland.com">support</XLink> to request an account activation.</>
+        content: (
+            <>
+                We onboard new members in small groups. Contact{' '}
+                <XLink href="mailto:support@openland.com">support</XLink> to
+                request an account activation.
+            </>
+        ),
     },
 
     waitlist: {
@@ -109,13 +124,23 @@ export const InitTexts = {
         content: (
             <>
                 <p>Openland is currently in closed beta.</p>
-                <p>We onboard new users in small groups and will let you know when the system is ready for you.</p>
-            </>)
+                <p>
+                    We onboard new users in small groups and will let you know
+                    when the system is ready for you.
+                </p>
+            </>
+        ),
     },
 
     suspended: {
         pageTitle: 'Account suspended',
         title: 'Account suspended',
-        content: <>This account has been suspended. Please, contact <XLink href="mailto:support@openland.com">support</XLink> to restore access to your account.</>
-    }
+        content: (
+            <>
+                This account has been suspended. Please, contact{' '}
+                <XLink href="mailto:support@openland.com">support</XLink> to
+                restore access to your account.
+            </>
+        ),
+    },
 };

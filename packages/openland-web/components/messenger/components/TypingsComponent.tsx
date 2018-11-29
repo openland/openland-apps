@@ -20,7 +20,10 @@ interface TypingsWrapperProps {
     engine: TypingEngine;
 }
 
-class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?: string, users?: TypingsUser[] }> {
+class TypingsWrapper extends React.PureComponent<
+    TypingsWrapperProps,
+    { typing?: string; users?: TypingsUser[] }
+> {
     private destructor?: () => void;
     constructor(props: TypingsWrapperProps) {
         super(props);
@@ -30,9 +33,9 @@ class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?:
     onTyping = (typing?: string, users?: TypingsUser[]) => {
         this.setState({
             typing: typing,
-            users: users
+            users: users,
         });
-    }
+    };
 
     componentDidMount() {
         this.destructor = this.props.engine.subcribe(this.onTyping);
@@ -49,7 +52,7 @@ class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?:
             <TypingContext.Provider
                 value={{
                     typing: this.state.typing,
-                    users: this.state.users
+                    users: this.state.users,
                 }}
             >
                 {this.props.children}
@@ -58,21 +61,25 @@ class TypingsWrapper extends React.PureComponent<TypingsWrapperProps, { typing?:
     }
 }
 
-export class TypignsComponent extends React.PureComponent<{ conversatonId: string }> {
+export class TypignsComponent extends React.PureComponent<{
+    conversatonId: string;
+}> {
     render() {
         return (
             <>
                 {canUseDOM && (
                     <MessengerContext.Consumer>
-                        {
-                            messenger => {
-                                return (
-                                    <TypingsWrapper engine={messenger.getTypings(this.props.conversatonId)}>
-                                        {this.props.children}
-                                    </TypingsWrapper>
-                                );
-                            }
-                        }
+                        {messenger => {
+                            return (
+                                <TypingsWrapper
+                                    engine={messenger.getTypings(
+                                        this.props.conversatonId,
+                                    )}
+                                >
+                                    {this.props.children}
+                                </TypingsWrapper>
+                            );
+                        }}
                     </MessengerContext.Consumer>
                 )}
                 {!canUseDOM && this.props.children}

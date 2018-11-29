@@ -14,7 +14,11 @@ export class TalkSession {
     private callback: (peerId: string, convId: string) => void;
     private destroyed = false;
 
-    constructor(cid: string, client: OpenApolloClient, callback: (peerId: string, convId: string) => void) {
+    constructor(
+        cid: string,
+        client: OpenApolloClient,
+        callback: (peerId: string, convId: string) => void,
+    ) {
         this.cid = cid;
         this.client = client;
         this.state = 'connecting';
@@ -25,10 +29,15 @@ export class TalkSession {
                 return;
             }
             if (!this.convId) {
-                this.convId = (await this.client.query(ConferenceQuery, { id: cid })).data.conference.id;
+                this.convId = (await this.client.query(ConferenceQuery, {
+                    id: cid,
+                })).data.conference.id;
             }
             if (this.state === 'connecting') {
-                this.peerId = (await this.client.mutate(ConferenceJoinMutation, { id: this.convId })).data!.conferenceJoin.peerId as string;
+                this.peerId = (await this.client.mutate(
+                    ConferenceJoinMutation,
+                    { id: this.convId },
+                )).data!.conferenceJoin.peerId as string;
                 if (!this.destroyed) {
                     this.state = 'online';
                     this.callback(this.peerId!, this.convId!);
@@ -42,10 +51,16 @@ export class TalkSession {
     private startKeepAlive() {
         backoff(async () => {
             while (this.state !== 'completed') {
-                await this.client.mutate(ConferenceKeepAliveMutation, { id: this.convId, peerId: this.peerId });
+                await this.client.mutate(ConferenceKeepAliveMutation, {
+                    id: this.convId,
+                    peerId: this.peerId,
+                });
                 await delay(2000);
             }
-            await this.client.mutate(ConferenceLeaveMutation, { id: this.convId, peerId: this.peerId });
+            await this.client.mutate(ConferenceLeaveMutation, {
+                id: this.convId,
+                peerId: this.peerId,
+            });
         });
     }
 
@@ -54,7 +69,10 @@ export class TalkSession {
         this.state = 'completed';
         backoff(async () => {
             if (this.convId && this.peerId) {
-                await this.client.mutate(ConferenceLeaveMutation, { id: this.convId, peerId: this.peerId });
+                await this.client.mutate(ConferenceLeaveMutation, {
+                    id: this.convId,
+                    peerId: this.peerId,
+                });
             }
         });
     }

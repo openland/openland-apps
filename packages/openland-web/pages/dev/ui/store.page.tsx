@@ -10,12 +10,15 @@ import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XButton } from 'openland-x/XButton';
-export default withApp('UI Framework - Store', 'viewer', (props) => {
+export default withApp('UI Framework - Store', 'viewer', props => {
     return (
         <DevDocsScaffold title="Store">
             <XContent>
                 <XVertical>
-                    <XStore onChanged={(data) => console.warn(data)} defaultData={{ stage: 'Hello!' }}>
+                    <XStore
+                        onChanged={data => console.warn(data)}
+                        defaultData={{ stage: 'Hello!' }}
+                    >
                         <XVertical>
                             <XTitle>Simple</XTitle>
                             <XInput valueStoreKey="stage" />
@@ -25,8 +28,14 @@ export default withApp('UI Framework - Store', 'viewer', (props) => {
                             <XInput invalidStoreKey="stage" />
                             <XTitle>Reset</XTitle>
                             <XStoreContext.Consumer>
-                                {(store) => {
-                                    return <XButton onClick={store!!.reset} text="Reset to defaults" alignSelf="flex-start" />;
+                                {store => {
+                                    return (
+                                        <XButton
+                                            onClick={store!!.reset}
+                                            text="Reset to defaults"
+                                            alignSelf="flex-start"
+                                        />
+                                    );
                                 }}
                             </XStoreContext.Consumer>
                         </XVertical>

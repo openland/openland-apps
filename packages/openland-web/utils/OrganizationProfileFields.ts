@@ -15,10 +15,7 @@ export const DevelopmentModelsMap = [
     { value: 'option_to_buy', label: 'option to buy' },
 ];
 
-export type Availability =
-    |'immediate'
-    | 'long_term'
-    | 'near_future';
+export type Availability = 'immediate' | 'long_term' | 'near_future';
 
 export const AvailabilityMap = [
     { value: 'immediate', label: 'immediate' },
@@ -99,7 +96,7 @@ export interface ContactPerson {
 }
 export interface FeaturedOpportunity {
     title: string;
-    location: { lon: number, lat: number, ref?: string, count?: number };
+    location: { lon: number; lat: number; ref?: string; count?: number };
     locationTitle: string;
     tags?: string[] | null;
 }

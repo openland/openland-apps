@@ -11,11 +11,10 @@ import { withInviteActivation } from '../../api/withInviteActivation';
 import { XLoader } from 'openland-x/XLoader';
 
 const InfoText = Glamorous.div({
-    marginBottom: 15
+    marginBottom: 15,
 });
 
 class AcceptInviteComponent extends React.Component<{ mutation: any }> {
-
     componentDidMount() {
         this.accept();
     }
@@ -23,28 +22,39 @@ class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     accept = async () => {
         await this.props.mutation({});
         window.location.href = '/';
-    }
+    };
     render() {
-        return (<XLoader loading={true} />);
+        return <XLoader loading={true} />;
     }
 }
 
-export default withAppBase('Invite', withInviteActivation((props) => {
-    return (
-        <AuthRouter>
-            <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
-            <XTrack event="Invite">
-                <MessagePage>
-                    {props.data.invite || props.data.appInvite && (
-                        <AcceptInviteComponent mutation={props.activate} />
-                    )}
-                    {!(props.data.invite || props.data.appInvite) && (
-                        <MessagePageContent title="Invite">
-                            <InfoText>{InitTexts.invite.unableToFindInvite}</InfoText>
-                        </MessagePageContent>
-                    )}
-                </MessagePage>
-            </XTrack>
-        </AuthRouter>
-    );
-}));
+export default withAppBase(
+    'Invite',
+    withInviteActivation(props => {
+        return (
+            <AuthRouter>
+                <XDocumentHead
+                    title={InitTexts.invite.pageTitle}
+                    titleSocial={InitTexts.socialPageTitle}
+                />
+                <XTrack event="Invite">
+                    <MessagePage>
+                        {props.data.invite ||
+                            (props.data.appInvite && (
+                                <AcceptInviteComponent
+                                    mutation={props.activate}
+                                />
+                            ))}
+                        {!(props.data.invite || props.data.appInvite) && (
+                            <MessagePageContent title="Invite">
+                                <InfoText>
+                                    {InitTexts.invite.unableToFindInvite}
+                                </InfoText>
+                            </MessagePageContent>
+                        )}
+                    </MessagePage>
+                </XTrack>
+            </AuthRouter>
+        );
+    }),
+);

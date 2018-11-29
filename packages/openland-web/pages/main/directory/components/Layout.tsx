@@ -17,7 +17,7 @@ import { TextDirectory } from 'openland-text/TextDirectory';
 export const RootWrapper = Glamorous.div({
     height: '100vh',
     width: '100%',
-    display: 'flex'
+    display: 'flex',
 });
 
 export const Container = Glamorous.div({
@@ -25,15 +25,15 @@ export const Container = Glamorous.div({
     height: '100%',
     position: 'relative',
     '@media (max-width: 1100px)': {
-        width: 'calc(100% - 300px)'
+        width: 'calc(100% - 300px)',
     },
     '@media (max-width: 950px)': {
-        width: 'calc(100% - 230px)'
-    }
+        width: 'calc(100% - 230px)',
+    },
 });
 
 export const Results = Glamorous(XScrollView2)({
-    height: 'calc(100vh - 61px)'
+    height: 'calc(100vh - 61px)',
 });
 
 const SidebarWrapper = Glamorous.div({
@@ -42,11 +42,11 @@ const SidebarWrapper = Glamorous.div({
     borderRight: '1px solid #ececec',
     backgroundColor: '#ffffff',
     '@media (max-width: 1100px)': {
-        width: 300
+        width: 300,
     },
     '@media (max-width: 950px)': {
-        width: 230
-    }
+        width: 230,
+    },
 });
 
 const SidebarHeader = Glamorous.div({
@@ -60,8 +60,8 @@ const SidebarHeader = Glamorous.div({
         letterSpacing: 0,
         fontWeight: 400,
         color: '#000000',
-        opacity: 0.9
-    }
+        opacity: 0.9,
+    },
 });
 
 const SidebarItemWrapper = Glamorous(XLink)({
@@ -84,7 +84,7 @@ const SidebarItemWrapper = Glamorous(XLink)({
 
         '& svg *': {
             opacity: 0.25,
-            fill: '#000000'
+            fill: '#000000',
         },
     },
 
@@ -100,7 +100,7 @@ const SidebarItemWrapper = Glamorous(XLink)({
 
     '& .right-icon path:last-child': {
         opacity: 0.2,
-        fill: '#000000'
+        fill: '#000000',
     },
 
     '&:hover': {
@@ -110,7 +110,7 @@ const SidebarItemWrapper = Glamorous(XLink)({
 
     '&.is-active': {
         background: '#f9f9f9',
-        cursor: 'default !important'
+        cursor: 'default !important',
     },
 });
 
@@ -121,7 +121,10 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = (props: SidebarItemProps) => (
-    <SidebarItemWrapper path={props.path} className={props.active ? 'is-active' : ''}>
+    <SidebarItemWrapper
+        path={props.path}
+        className={props.active ? 'is-active' : ''}
+    >
         <div className="icon-wrapper">
             {props.icon === 'rooms' && <RoomIcon />}
             {props.icon === 'people' && <PeopleIcon />}
@@ -135,33 +138,33 @@ const SidebarItem = (props: SidebarItemProps) => (
 
 const NewButtonWrapper = Glamorous(XButton)({
     '& svg > g > path': {
-        transition: 'all .2s'
+        transition: 'all .2s',
     },
     '& svg > g > path:last-child': {
         fill: '#1790ff',
-        opacity: 0.5
-    }
+        opacity: 0.5,
+    },
 });
 
 class NewButton extends React.Component<{}, { show?: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = {
-            show: false
+            show: false,
         };
     }
 
     switch = () => {
         this.setState({
-            show: !this.state.show
+            show: !this.state.show,
         });
-    }
+    };
 
     closer = () => {
         this.setState({
-            show: false
+            show: false,
         });
-    }
+    };
 
     render() {
         return (
@@ -171,13 +174,34 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
                 show={this.state.show}
                 marginTop={10}
                 marginRight={-5}
-                content={(
+                content={
                     <>
-                        <XMenuItem query={{ field: 'createOrganization', value: 'true' }} icon="x-dropdown-organization">{TextDirectory.create.organization}</XMenuItem>
-                        <XMenuItem query={{ field: 'createRoom', value: 'true' }} icon="x-dropdown-room">{TextDirectory.create.room}</XMenuItem>
-                        <XMenuItem query={{ field: 'createOrganization', value: 'community' }} icon="x-dropdown-community">{TextDirectory.create.community}</XMenuItem>
+                        <XMenuItem
+                            query={{
+                                field: 'createOrganization',
+                                value: 'true',
+                            }}
+                            icon="x-dropdown-organization"
+                        >
+                            {TextDirectory.create.organization}
+                        </XMenuItem>
+                        <XMenuItem
+                            query={{ field: 'createRoom', value: 'true' }}
+                            icon="x-dropdown-room"
+                        >
+                            {TextDirectory.create.room}
+                        </XMenuItem>
+                        <XMenuItem
+                            query={{
+                                field: 'createOrganization',
+                                value: 'community',
+                            }}
+                            icon="x-dropdown-community"
+                        >
+                            {TextDirectory.create.community}
+                        </XMenuItem>
                     </>
-                )}
+                }
                 arrow={null}
                 onClickOutside={this.closer}
             >
@@ -200,10 +224,26 @@ export const Sidebar = (props: { active?: string }) => (
             <NewButton />
         </SidebarHeader>
         <XVertical separator={0}>
-            <SidebarItem path="/directory" icon="rooms" active={props.active === 'rooms'} />
-            <SidebarItem path="/directory/people" icon="people" active={props.active === 'people'} />
-            <SidebarItem path="/directory/organizations" icon="organizations" active={props.active === 'organizations'} />
-            <SidebarItem path="/directory/communities" icon="communities" active={props.active === 'communities'} />
+            <SidebarItem
+                path="/directory"
+                icon="rooms"
+                active={props.active === 'rooms'}
+            />
+            <SidebarItem
+                path="/directory/people"
+                icon="people"
+                active={props.active === 'people'}
+            />
+            <SidebarItem
+                path="/directory/organizations"
+                icon="organizations"
+                active={props.active === 'organizations'}
+            />
+            <SidebarItem
+                path="/directory/communities"
+                icon="communities"
+                active={props.active === 'communities'}
+            />
         </XVertical>
     </SidebarWrapper>
 );

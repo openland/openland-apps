@@ -1,58 +1,56 @@
 // const webpack = require('webpack');
 const path = require('path');
 const withTypescript = require('@zeit/next-typescript');
-const withBundleAnalyzer = require("@zeit/next-bundle-analyzer");
+const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 const withCSS = require('@zeit/next-css');
 
 const config = {
     pageExtensions: ['page.ts', 'page.tsx'],
     webpack(config, options) {
-
         const cacheDir = path.resolve(__dirname + '/../../node_modules/.cache');
 
         // wat?
-        config.resolve.extensions.push('.ts', '.tsx', '.js', '.jsx')
+        config.resolve.extensions.push('.ts', '.tsx', '.js', '.jsx');
 
         // Merge paths from typescript config
-        const tsConfig = require("../../tsconfig.json");
+        const tsConfig = require('../../tsconfig.json');
         const alias = {};
         for (let key of Object.keys(tsConfig.compilerOptions.paths)) {
-            alias[key.replace(/\/\*$/, "")] = path.resolve(__dirname + '../../', tsConfig.compilerOptions.paths[key][0].replace(/[\/]\*$/, ""));
+            alias[key.replace(/\/\*$/, '')] = path.resolve(
+                __dirname + '../../',
+                tsConfig.compilerOptions.paths[key][0].replace(/[\/]\*$/, ''),
+            );
         }
         // Hack runtime
         alias['openland-y-runtime'] = alias['openland-y-runtime-web'];
         config.resolve.alias = Object.assign({}, config.resolve.alias, alias);
 
         // Ignore large library from parsing and solve some babel issues
-        config.module.noParse = [/(mapbox-gl)\.js$/, /(jquery)\.js$/]
+        config.module.noParse = [/(mapbox-gl)\.js$/, /(jquery)\.js$/];
 
         // Typescript
-        const {
-            dir,
-            defaultLoaders,
-            dev,
-            isServer
-        } = options
+        const { dir, defaultLoaders, dev, isServer } = options;
 
         // Ask babel to handle typescript files
         // Modules are not loading by default since root folder is out of scope
         // let tsLoader = defaultLoaders.babel;
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
-            include: [
-                path.resolve(dir + '/../')
-            ],
+            include: [path.resolve(dir + '/../')],
             exclude: /node_modules/,
-            use: [defaultLoaders.babel, {
-                loader: 'linaria/loader',
-                options: {
-                    sourceMap: process.env.NODE_ENV !== 'production',
+            use: [
+                defaultLoaders.babel,
+                {
+                    loader: 'linaria/loader',
+                    options: {
+                        sourceMap: process.env.NODE_ENV !== 'production',
+                    },
                 },
-            }],
+            ],
         });
 
         // HACK: Quick fix to resolve the custom babel config in root
-        config.module.rules.forEach((rule) => {
+        config.module.rules.forEach(rule => {
             if (rule.use.loader === 'next-babel-loader') {
                 rule.use.options.cwd = undefined;
             }
@@ -198,9 +196,9 @@ const config = {
         return config;
     },
     useFileSystemPublicRoutes: false,
-    analyzeServer: ["server", "both"].includes(process.env.BUNDLE_ANALYZE),
-    analyzeBrowser: ["browser", "both"].includes(process.env.BUNDLE_ANALYZE),
-    assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined
+    analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
+    analyzeBrowser: ['browser', 'both'].includes(process.env.BUNDLE_ANALYZE),
+    assetPrefix: process.env.CDN_PREFIX ? process.env.CDN_PREFIX : undefined,
 };
 
 module.exports = withCSS(withBundleAnalyzer(config));

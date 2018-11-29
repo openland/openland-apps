@@ -13,65 +13,78 @@ import { getConfig } from '../../config';
 
 class ErrorButton extends React.Component<{}, { error: boolean }> {
     state = {
-        error: false
+        error: false,
     };
     render() {
         if (this.state.error) {
             throw new Error('Test Crash!');
         }
-        return <XButton text="Crash!11" onClick={() => this.setState({ error: true })} />;
+        return (
+            <XButton
+                text="Crash!11"
+                onClick={() => this.setState({ error: true })}
+            />
+        );
     }
 }
 
-export default withApp('Super Debug', ['super-admin', 'software-developer'], withMyOrganizations(withQueryLoader(withUserInfo((props) => {
-    return (
-        <DevToolsScaffold title="Debugging">
-            <XHeader text="Your roles" />
-            <XTable>
-                <XTable.Header>
-                    <XTable.Cell>Permission Name</XTable.Cell>
-                    <XTable.Cell>Description</XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
-                    <XRoleContext.Consumer>
-                        {roles => roles!!.roles.map((v) => (
-                            <XTable.Row>
-                                <XTable.Cell>{v}</XTable.Cell>
-                                <XTable.Cell>{}</XTable.Cell>
-                            </XTable.Row>
-                        ))}
-                    </XRoleContext.Consumer>
-                </XTable.Body>
-            </XTable>
-            <XHeader text="Current Organization" />
-            <XContent>
-                {props.organization && (
-                    <>
-                        <div>{props.organization.name}</div>
-                    </>
-                )}
-            </XContent>
-            <XHeader text="All Organizations" />
-            <XTable>
-                <XTable.Header>
-                    <XTable.Cell>Organization Name</XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
-                    {props.data.myOrganizations.map((v) => (
-                        <XTable.Row>
-                            <XTable.Cell>{v.name}</XTable.Cell>
-                        </XTable.Row>
-                    ))}
-                </XTable.Body>
-            </XTable>
-            <XHeader text="Release" />
-            <XContent>
-                {getConfig().release}
-            </XContent>
-            <XHeader text="Test Crash" />
-            <XContent>
-                <ErrorButton />
-            </XContent>
-        </DevToolsScaffold>
-    );
-}))));
+export default withApp(
+    'Super Debug',
+    ['super-admin', 'software-developer'],
+    withMyOrganizations(
+        withQueryLoader(
+            withUserInfo(props => {
+                return (
+                    <DevToolsScaffold title="Debugging">
+                        <XHeader text="Your roles" />
+                        <XTable>
+                            <XTable.Header>
+                                <XTable.Cell>Permission Name</XTable.Cell>
+                                <XTable.Cell>Description</XTable.Cell>
+                            </XTable.Header>
+                            <XTable.Body>
+                                <XRoleContext.Consumer>
+                                    {roles =>
+                                        roles!!.roles.map(v => (
+                                            <XTable.Row>
+                                                <XTable.Cell>{v}</XTable.Cell>
+                                                <XTable.Cell>{}</XTable.Cell>
+                                            </XTable.Row>
+                                        ))
+                                    }
+                                </XRoleContext.Consumer>
+                            </XTable.Body>
+                        </XTable>
+                        <XHeader text="Current Organization" />
+                        <XContent>
+                            {props.organization && (
+                                <>
+                                    <div>{props.organization.name}</div>
+                                </>
+                            )}
+                        </XContent>
+                        <XHeader text="All Organizations" />
+                        <XTable>
+                            <XTable.Header>
+                                <XTable.Cell>Organization Name</XTable.Cell>
+                            </XTable.Header>
+                            <XTable.Body>
+                                {props.data.myOrganizations.map(v => (
+                                    <XTable.Row>
+                                        <XTable.Cell>{v.name}</XTable.Cell>
+                                    </XTable.Row>
+                                ))}
+                            </XTable.Body>
+                        </XTable>
+                        <XHeader text="Release" />
+                        <XContent>{getConfig().release}</XContent>
+                        <XHeader text="Test Crash" />
+                        <XContent>
+                            <ErrorButton />
+                        </XContent>
+                    </DevToolsScaffold>
+                );
+            }),
+        ),
+    ),
+);

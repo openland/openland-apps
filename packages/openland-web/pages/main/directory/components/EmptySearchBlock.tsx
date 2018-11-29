@@ -31,8 +31,13 @@ export class EmptySearchBlock extends React.Component<{ text: string }> {
         return (
             <EmptySearchWrapper>
                 <EmptySearchBox>
-                    <img src="" srcSet="/static/X/directory/empty-state.png, /static/X/directory/empty-state@2x.png 2x, /static/X/directory/empty-state@3x.png 3x" />
-                    <EmptySearchBlockTitle>{this.props.text}</EmptySearchBlockTitle>
+                    <img
+                        src=""
+                        srcSet="/static/X/directory/empty-state.png, /static/X/directory/empty-state@2x.png 2x, /static/X/directory/empty-state@3x.png 3x"
+                    />
+                    <EmptySearchBlockTitle>
+                        {this.props.text}
+                    </EmptySearchBlockTitle>
                 </EmptySearchBox>
             </EmptySearchWrapper>
         );

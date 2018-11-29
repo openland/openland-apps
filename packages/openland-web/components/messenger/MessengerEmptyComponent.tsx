@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
@@ -11,7 +10,7 @@ const Root = Glamorous.div({
     minWidth: '100%',
     height: '100%',
     padding: 28,
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 const ImageWrapper = Glamorous.div({
@@ -20,17 +19,17 @@ const ImageWrapper = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    zIndex: 1
+    zIndex: 1,
 });
 
 const Image = Glamorous.div({
     width: 358,
     height: 311,
-    backgroundImage: 'url(\'/static/X/messenger/messenger-empty.svg\')',
+    backgroundImage: "url('/static/X/messenger/messenger-empty.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
-    marginBottom: 50
+    marginBottom: 50,
 });
 
 const InfoText = Glamorous.div({
@@ -39,7 +38,7 @@ const InfoText = Glamorous.div({
     lineHeight: '24px',
     letterSpacing: 0,
     color: 'rgba(0, 0, 0, 0.4)',
-    marginBottom: 32
+    marginBottom: 32,
 });
 
 export class MessengerEmptyComponent extends React.Component {
@@ -49,11 +48,7 @@ export class MessengerEmptyComponent extends React.Component {
                 <ImageWrapper>
                     <Image />
                     <InfoText>Select a chat or start a new one</InfoText>
-                    <XButton
-                        style="primary"
-                        text="New chat"
-                        path="/mail/new"
-                    />
+                    <XButton style="primary" text="New chat" path="/mail/new" />
                 </ImageWrapper>
             </Root>
         );

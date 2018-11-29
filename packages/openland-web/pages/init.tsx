@@ -8,17 +8,18 @@ if (typeof window !== 'undefined') {
     }
 }
 
-let fontFamily = '"-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"';
+let fontFamily =
+    '"-apple-system",BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"';
 
 // Normalize
 
 css.global('html, body', {
-    height: '100%'
+    height: '100%',
 });
 
 css.global('#__next', {
     display: 'flex',
-    minHeight: '100%'
+    minHeight: '100%',
 });
 
 css.global('html', {
@@ -35,7 +36,7 @@ css.global('html', {
     MsFontSmoothing: 'antialiased',
     OFontSmoothing: 'antialiased',
     WebkitBoxSizing: 'border-box',
-    MozBoxSizing: 'border-box'
+    MozBoxSizing: 'border-box',
 });
 css.global('body, body *', {
     margin: 0,
@@ -46,53 +47,53 @@ css.global('body, body *', {
     verticalAlign: 'baseline',
     background: 'transparent',
     textDecoration: 'none',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
 });
 css.global('body', {
-    backgroundColor: XThemeDefault.backyardColor
+    backgroundColor: XThemeDefault.backyardColor,
 });
 css.global('input, textarea, button', {
     fontFamily,
 });
 css.global('input, select', {
-    verticalAlign: 'middle'
+    verticalAlign: 'middle',
 });
 css.global('input::-ms-clear', {
-    display: 'none'
+    display: 'none',
 });
 css.global('a', {
     color: 'inherit',
     textDecoration: 'none',
 });
 css.global('a:hover', {
-    color: '#1790ff'
+    color: '#1790ff',
 });
 css.global('sub, sup', {
     fontSize: '75%',
     lineHeight: 0,
-    position: 'relative'
+    position: 'relative',
 });
 css.global('sup', {
-    top: '-0.5em'
+    top: '-0.5em',
 });
 css.global('sub', {
-    bottom: '-0.25em'
+    bottom: '-0.25em',
 });
 
 // Modals
 
 css.global('.ReactModal__Body--open', {
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 css.global('.ReactModal__Overlay', {
     opacity: 0,
-    overflowY: 'auto'
+    overflowY: 'auto',
 });
 
 css.global('.ReactModal__Overlay--after-open', {
     opacity: 1,
-    transition: 'opacity 300ms'
+    transition: 'opacity 300ms',
 });
 
 css.global('.ReactModal__Overlay--before-close', {
@@ -102,7 +103,7 @@ css.global('.ReactModal__Overlay--before-close', {
 // Global Loader
 
 css.global('#nprogress', {
-    pointerEvents: 'none'
+    pointerEvents: 'none',
 });
 
 css.global('#nprogress .bar', {
@@ -112,7 +113,7 @@ css.global('#nprogress .bar', {
     top: 0,
     left: 0,
     width: '100%',
-    height: '4px'
+    height: '4px',
 });
 
 css.global('#nprogress .peg', {
@@ -123,7 +124,7 @@ css.global('#nprogress .peg', {
     height: '100%',
     boxShadow: '0 0 10px #29d, 0 0 5px #29d',
     opacity: 1.0,
-    transform: 'rotate(3deg) translate(0px, -4px)'
+    transform: 'rotate(3deg) translate(0px, -4px)',
 });
 
 /* Remove these to get rid of the spinner */
@@ -132,16 +133,16 @@ css.global('#nprogress .spinner', {
     position: 'fixed',
     zIndex: 1031,
     top: '15px',
-    right: '15px'
+    right: '15px',
 });
 
 const progressAnimation = keyframes({
     '0%': {
-        transform: 'rotate(0deg)'
+        transform: 'rotate(0deg)',
     },
     '100%': {
-        transform: 'rotate(360deg)'
-    }
+        transform: 'rotate(360deg)',
+    },
 });
 
 css.global('#nprogress .spinner-icon', {
@@ -152,5 +153,5 @@ css.global('#nprogress .spinner-icon', {
     borderTopColor: '#29d',
     borderLeftCOlor: '#29d',
     borderRadius: '50%',
-    animation: `${progressAnimation} 400ms linear infinite`
+    animation: `${progressAnimation} 400ms linear infinite`,
 });

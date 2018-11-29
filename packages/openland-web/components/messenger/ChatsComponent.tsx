@@ -2,8 +2,15 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
-import { DialogListEngine, DialogDataSourceItem, formatMessage } from 'openland-engines/messenger/DialogListEngine';
-import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import {
+    DialogListEngine,
+    DialogDataSourceItem,
+    formatMessage,
+} from 'openland-engines/messenger/DialogListEngine';
+import {
+    MessengerEngine,
+    MessengerContext,
+} from 'openland-engines/MessengerEngine';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
@@ -18,7 +25,10 @@ import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
 import { DialogView } from './components/DialogView';
-import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from './components/MessagesStateContext';
 
 let SelectContext = React.createContext({ select: -1 });
 
@@ -30,7 +40,9 @@ interface ConversationComponentProps {
     compact?: boolean;
 }
 
-class ConversationComponent extends React.PureComponent<ConversationComponentProps> {
+class ConversationComponent extends React.PureComponent<
+    ConversationComponentProps
+> {
     refComponent: any;
 
     componentWillUnmount() {
@@ -49,107 +61,121 @@ class ConversationComponent extends React.PureComponent<ConversationComponentPro
         if (this.props.selectedItem === true && this.props.allowSelection) {
             this.reactDom(this.refComponent);
         }
-    }
+    };
 
     handleRef = (e: any) => {
         if (e === null) {
             return;
         }
         this.refComponent = e;
-    }
+    };
 
     reactDom = (el: any) => {
         if (ReactDOM.findDOMNode(el) !== null) {
             this.setFocus(ReactDOM.findDOMNode(el));
         }
-    }
+    };
 
     setFocus = (el: any) => {
         el.focus();
-    }
+    };
 
     render() {
         return (
-            <DialogView item={this.props.conversation} compact={this.props.compact} handleRef={this.handleRef} onSelect={this.props.onSelect} />
+            <DialogView
+                item={this.props.conversation}
+                compact={this.props.compact}
+                handleRef={this.handleRef}
+                onSelect={this.props.onSelect}
+            />
         );
     }
 }
 
 const PlaceholderEmpty = Glamorous(XText)({
-    opacity: 0.5
+    opacity: 0.5,
 });
 
 const PlaceholderLoader = Glamorous(XLoadingCircular)({
-    alignSelf: 'center'
+    alignSelf: 'center',
 });
 
 const NoResultWrapper = Glamorous(XVertical)({
-    marginTop: 34
+    marginTop: 34,
 });
 
 const Image = Glamorous.div({
     width: 178,
     height: 155,
-    backgroundImage: 'url(\'/static/X/messenger/channels-search-empty.svg\')',
+    backgroundImage: "url('/static/X/messenger/channels-search-empty.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
 });
 
-const SearchChats = withChatSearchText(withUserInfo((props) => {
-    let items = (props.data && props.data.items ? props.data.items : []).reduce(
-        (p, x) => {
-            if (!p.find(c => c.id === x.id)) {
-                p.push(x);
-            }
-            return p;
-        },
-        [] as any[]
-    );
+const SearchChats = withChatSearchText(
+    withUserInfo(props => {
+        let items = (props.data && props.data.items
+            ? props.data.items
+            : []
+        ).reduce(
+            (p, x) => {
+                if (!p.find(c => c.id === x.id)) {
+                    p.push(x);
+                }
+                return p;
+            },
+            [] as any[],
+        );
 
-    if (props.data && props.data.items && items) {
-        (props as any).itemsCount(items.length);
-    }
-    return (
-        props.data && props.data.items
-            ? items.length
-                ? (
-                    <>
-                        {items.map((i, j) => (
-                            <SelectContext.Consumer>
-                                {select => {
-                                    return (
-                                        <ConversationComponent
-                                            key={i.id}
-                                            onSelect={(props as any).onSelect}
-                                            conversation={{
-                                                key: i.id,
-                                                flexibleId: i.flexibleId,
-                                                kind: i.kind,
-                                                title: i.title,
-                                                photo: i.photo || i.photos[0],
-                                                unread: 0,
-                                            }}
-                                            selectedItem={select.select === j}
-                                            allowSelection={(props as any).allowSelection}
-                                            compact={true}
-                                        />
-                                    );
-                                }}
-                            </SelectContext.Consumer>
-
-                        ))}
-                    </>
-                )
-                : (
-                    <NoResultWrapper separator={10} alignItems="center">
-                        <Image />
-                        <PlaceholderEmpty>No results</PlaceholderEmpty>
-                    </NoResultWrapper>
-                )
-            : <PlaceholderLoader color="#334562" />
-    );
-})) as React.ComponentType<{ variables: { query: string }, onSelect: () => void, itemsCount: (el: number) => void, allowSelection: boolean }>;
+        if (props.data && props.data.items && items) {
+            (props as any).itemsCount(items.length);
+        }
+        return props.data && props.data.items ? (
+            items.length ? (
+                <>
+                    {items.map((i, j) => (
+                        <SelectContext.Consumer>
+                            {select => {
+                                return (
+                                    <ConversationComponent
+                                        key={i.id}
+                                        onSelect={(props as any).onSelect}
+                                        conversation={{
+                                            key: i.id,
+                                            flexibleId: i.flexibleId,
+                                            kind: i.kind,
+                                            title: i.title,
+                                            photo: i.photo || i.photos[0],
+                                            unread: 0,
+                                        }}
+                                        selectedItem={select.select === j}
+                                        allowSelection={
+                                            (props as any).allowSelection
+                                        }
+                                        compact={true}
+                                    />
+                                );
+                            }}
+                        </SelectContext.Consumer>
+                    ))}
+                </>
+            ) : (
+                <NoResultWrapper separator={10} alignItems="center">
+                    <Image />
+                    <PlaceholderEmpty>No results</PlaceholderEmpty>
+                </NoResultWrapper>
+            )
+        ) : (
+            <PlaceholderLoader color="#334562" />
+        );
+    }),
+) as React.ComponentType<{
+    variables: { query: string };
+    onSelect: () => void;
+    itemsCount: (el: number) => void;
+    allowSelection: boolean;
+}>;
 
 const Search = Glamorous(XInput)({
     marginLeft: 16,
@@ -158,21 +184,21 @@ const Search = Glamorous(XInput)({
     marginBottom: 12,
     height: 36,
     '& svg > g > path:last-child': {
-        fill: '#c8c8c8'
+        fill: '#c8c8c8',
     },
     '&:focus-within svg > g > path:last-child': {
-        fill: 'rgba(23, 144, 255, 0.5)'
+        fill: 'rgba(23, 144, 255, 0.5)',
     },
     '& .input-placeholder, & input': {
         paddingLeft: 33,
     },
     '> .icon': {
-        left: 12
+        left: 12,
     },
 });
 
 const LoadingWrapper = Glamorous.div({
-    height: 60
+    height: 60,
 });
 
 interface ChatsComponentInnerProps extends XWithRouter {
@@ -207,15 +233,18 @@ const InviteWrapper = Glamorous(XLink)({
         opacity: 0.6,
         marginRight: 6,
         '& *': {
-            fill: '#2196f3'
-        }
+            fill: '#2196f3',
+        },
     },
-    'span': {
+    span: {
         display: 'block',
-    }
+    },
 });
 
-class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, ChatsComponentInnerState> {
+class ChatsComponentInner extends React.PureComponent<
+    ChatsComponentInnerProps,
+    ChatsComponentInnerState
+> {
     readonly dialogListEngine: DialogListEngine;
     items: DialogDataSourceItem[] = [];
     searchCount = 0;
@@ -235,13 +264,13 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
     onInput = (q: string) => {
         this.setState({ query: q });
-    }
+    };
 
     onSelect = () => {
         this.setState({
             query: '',
         });
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);
@@ -256,7 +285,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     componentWillReceiveProps(nextProps: ChatsComponentInnerProps) {
         if (nextProps.emptyState) {
             this.setState({
-                allowShortKeys: true
+                allowShortKeys: true,
             });
         }
     }
@@ -265,25 +294,28 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
         if (top > 0.9) {
             this.dialogListEngine.loadNext();
         }
-    }
+    };
 
     mouseHandler = (e: any) => {
         if (!this.props.emptyState) {
             this.setState({
-                allowShortKeys: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target)
+                allowShortKeys: ReactDOM.findDOMNode(this.inputRef)!.contains(
+                    e.target,
+                ),
             });
         }
-    }
+    };
 
     keydownHandler = (e: any) => {
-
         if (!canUseDOM) {
             return;
         }
 
         let { allowShortKeys } = this.state;
 
-        let stayChecker = document.body.classList[0] === 'ReactModal__Body--open' || document.body.classList[0] === 'uploadcare--page';
+        let stayChecker =
+            document.body.classList[0] === 'ReactModal__Body--open' ||
+            document.body.classList[0] === 'uploadcare--page';
 
         if (!e.altKey && e.ctrlKey) {
             if (stayChecker) {
@@ -305,7 +337,9 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                 return;
             }
 
-            let index = this.items.findIndex(d => d.key === this.props.router.routeQuery.conversationId);
+            let index = this.items.findIndex(
+                d => d.key === this.props.router.routeQuery.conversationId,
+            );
             switch (e.code) {
                 case 'ArrowUp':
                     index--;
@@ -347,8 +381,10 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             return;
         }
 
-        if (allowShortKeys && (e.code === 'ArrowUp' || e.code === 'ArrowDown')) {
-
+        if (
+            allowShortKeys &&
+            (e.code === 'ArrowUp' || e.code === 'ArrowDown')
+        ) {
             let dy = 0;
 
             if (e.code === 'ArrowUp') {
@@ -362,7 +398,12 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
 
             let y = this.state.select + dy;
 
-            y = Math.min(((this.state.query && this.state.query.length > 0) ? this.searchCount : this.items.length) - 1, Math.max(-1, y));
+            y = Math.min(
+                (this.state.query && this.state.query.length > 0
+                    ? this.searchCount
+                    : this.items.length) - 1,
+                Math.max(-1, y),
+            );
 
             if (y === -1) {
                 this.inputFocusHandler();
@@ -370,29 +411,29 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
             }
 
             this.setState({
-                select: y
+                select: y,
             });
         }
-    }
+    };
 
     itemsCount = (items: number) => {
         this.searchCount = items;
-    }
+    };
 
     handleRef = (e: any) => {
         if (e === null) {
             return;
         }
         this.inputRef = e;
-    }
+    };
 
     inputFocusHandler = () => {
         this.inputRef.focus();
         this.setState({
             select: -1,
-            allowShortKeys: true
+            allowShortKeys: true,
         });
-    }
+    };
 
     renderConversationComponent = (props: any) => (
         <>
@@ -411,7 +452,6 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                             );
                         }}
                     </SelectContext.Consumer>
-
                 );
             })}
             {!props.completed && (
@@ -420,7 +460,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                 </LoadingWrapper>
             )}
         </>
-    )
+    );
 
     render() {
         let search = this.state.query && this.state.query.length > 0;
@@ -437,7 +477,11 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                     onFocus={this.inputFocusHandler}
                 />
                 <SelectContext.Provider value={{ select: this.state.select }}>
-                    <XScrollView2 flexGrow={1} flexBasis={0} onScroll={this.handleScroll}>
+                    <XScrollView2
+                        flexGrow={1}
+                        flexBasis={0}
+                        onScroll={this.handleScroll}
+                    >
                         {search && (
                             <SearchChats
                                 variables={{ query: this.state.query!! }}
@@ -448,17 +492,21 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
                         )}
                         {!search && (
                             <DataSourceRender
-                                onChange={(items) => {
+                                onChange={items => {
                                     this.items = items;
                                 }}
-                                dataSource={this.props.messenger.dialogList.dataSource}
+                                dataSource={
+                                    this.props.messenger.dialogList.dataSource
+                                }
                                 render={this.renderConversationComponent}
                             />
                         )}
                     </XScrollView2>
                 </SelectContext.Provider>
 
-                <InviteWrapper query={{ field: 'invite_global', value: 'true' }}>
+                <InviteWrapper
+                    query={{ field: 'invite_global', value: 'true' }}
+                >
                     <InviteIcon />
                     <span>Invite people</span>
                 </InviteWrapper>
@@ -467,7 +515,7 @@ class ChatsComponentInner extends React.PureComponent<ChatsComponentInnerProps, 
     }
 }
 
-const ChatsComponentWrapper = withRouter((props) => {
+const ChatsComponentWrapper = withRouter(props => {
     return (
         <MessagesStateContext.Consumer>
             {(state: MessagesStateContextProps) => (
@@ -480,7 +528,7 @@ const ChatsComponentWrapper = withRouter((props) => {
             )}
         </MessagesStateContext.Consumer>
     );
-}) as React.ComponentType<{ emptyState: boolean, messenger: MessengerEngine }>;
+}) as React.ComponentType<{ emptyState: boolean; messenger: MessengerEngine }>;
 
 export const ChatsComponent = (props: { emptyState: boolean }) => {
     if (!canUseDOM) {

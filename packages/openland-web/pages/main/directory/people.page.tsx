@@ -9,28 +9,28 @@ import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import {
-    RootWrapper,
-    Sidebar,
-    Container,
-    Results
-} from './components/Layout';
+import { RootWrapper, Sidebar, Container, Results } from './components/Layout';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 
 interface CommunitiesCardsProps {
-    variables: { query?: string, sort?: string };
+    variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-const CommunitiesCards = withExplorePeople((props) => {
+const CommunitiesCards = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
 
-    let noData = props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0;
+    let noData =
+        props.error ||
+        props.data === undefined ||
+        props.data.items === undefined ||
+        props.data.items === null ||
+        props.data.items.edges.length === 0;
 
     (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
 
@@ -39,9 +39,15 @@ const CommunitiesCards = withExplorePeople((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <XUserCard key={'_org_card_' + i.node.id} user={i.node} />))
-                    }
-                    <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/people" />
+                        <XUserCard
+                            key={'_org_card_' + i.node.id}
+                            user={i.node}
+                        />
+                    ))}
+                    <PagePagination
+                        pageInfo={props.data.items.pageInfo}
+                        currentRoute="/directory/people"
+                    />
                 </XContentWrapper>
             )}
             {noData && (
@@ -61,7 +67,7 @@ interface CommunitiesProps {
 class Communities extends React.PureComponent<CommunitiesProps> {
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
-    }
+    };
 
     render() {
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
@@ -70,7 +76,7 @@ class Communities extends React.PureComponent<CommunitiesProps> {
             <CommunitiesCards
                 tagsCount={this.tagsCount}
                 variables={{
-                    query: this.props.searchText
+                    query: this.props.searchText,
                 }}
             />
         );
@@ -80,8 +86,8 @@ class Communities extends React.PureComponent<CommunitiesProps> {
 interface RootComponentState {
     query: string;
     sort: {
-        orderBy: string,
-        featured: boolean
+        orderBy: string;
+        featured: boolean;
     };
     orgCount: number;
     pageTitle: string;
@@ -97,45 +103,45 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             query: '',
             sort: {
                 orderBy: 'createdAt',
-                featured: true
+                featured: true,
             },
             orgCount: 0,
-            pageTitle: 'People Directory'
+            pageTitle: 'People Directory',
         };
     }
 
     handlePageTitle = (title?: string) => {
         this.setState({
-            pageTitle: title || 'People Directory'
+            pageTitle: title || 'People Directory',
         });
-    }
+    };
 
     onQueryChange = (q: string) => {
         this.resetPage();
         this.setState({
-            query: q
+            query: q,
         });
-    }
+    };
 
-    changeSort = (sort: { orderBy: string, featured: boolean }) => {
+    changeSort = (sort: { orderBy: string; featured: boolean }) => {
         this.setState({
-            sort: sort
+            sort: sort,
         });
-    }
+    };
 
     resetPage = () => {
         this.props.router.replaceQueryParams({ page: undefined });
-    }
+    };
 
     tagsCount = (n: number) => {
         this.setState({ orgCount: n });
-    }
+    };
 
     routerParser = () => {
         this.setState({
-            query: ''
+            query: '',
         });
-    }
+    };
 
     render() {
         const { orgCount } = this.state;
@@ -157,29 +163,66 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             placeholder="Search people"
                                         />
                                         <Results>
-                                            {(this.state.query.length <= 0) && (
+                                            {this.state.query.length <= 0 && (
                                                 <XSubHeader
                                                     title="All people"
-                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
+                                                    right={
+                                                        <SortPicker
+                                                            sort={
+                                                                this.state.sort
+                                                            }
+                                                            onPick={
+                                                                this.changeSort
+                                                            }
+                                                            withoutFeatured={
+                                                                true
+                                                            }
+                                                        />
+                                                    }
                                                 />
                                             )}
-                                            {(this.state.query.length > 0) && (orgCount > 0) && (
-                                                <XSubHeader
-                                                    title="People"
-                                                    counter={orgCount}
-                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} withoutFeatured={true} />}
-                                                />
-                                            )}
+                                            {this.state.query.length > 0 &&
+                                                orgCount > 0 && (
+                                                    <XSubHeader
+                                                        title="People"
+                                                        counter={orgCount}
+                                                        right={
+                                                            <SortPicker
+                                                                sort={
+                                                                    this.state
+                                                                        .sort
+                                                                }
+                                                                onPick={
+                                                                    this
+                                                                        .changeSort
+                                                                }
+                                                                withoutFeatured={
+                                                                    true
+                                                                }
+                                                            />
+                                                        }
+                                                    />
+                                                )}
                                             <Communities
-                                                featuredFirst={this.state.sort.featured}
+                                                featuredFirst={
+                                                    this.state.sort.featured
+                                                }
                                                 searchText={this.state.query}
-                                                orderBy={this.state.sort.orderBy}
+                                                orderBy={
+                                                    this.state.sort.orderBy
+                                                }
                                                 tagsCount={this.tagsCount}
                                             />
                                         </Results>
                                     </XVertical>
                                 )}
-                                {uid && <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
+                                {uid && (
+                                    <UserProfile
+                                        userId={uid}
+                                        handlePageTitle={this.handlePageTitle}
+                                        onDirectory={true}
+                                    />
+                                )}
                             </Container>
                         </RootWrapper>
                     </Scaffold.Content>
@@ -189,6 +232,10 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     }
 }
 
-export default withApp('Directory', 'viewer', withRouter((props) => {
-    return <RootComponent router={props.router} />;
-}));
+export default withApp(
+    'Directory',
+    'viewer',
+    withRouter(props => {
+        return <RootComponent router={props.router} />;
+    }),
+);

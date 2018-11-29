@@ -28,18 +28,18 @@ const Footer = Glamorous.div({
     textAlign: 'center',
     color: '#1f3449',
     opacity: 0.4,
-    marginTop: 'auto'
+    marginTop: 'auto',
 });
 
 const LogoWrapper = Glamorous.div({
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
-const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
+const Logo = Glamorous.div<{ width?: number; height?: number }>(props => ({
     width: props.width ? props.width : 45,
     height: props.height ? props.height : 45,
-    backgroundImage: 'url(\'/static/logo-purple.svg\')',
+    backgroundImage: "url('/static/logo-purple.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
 }));
@@ -49,7 +49,7 @@ const LogoTitle = Glamorous.div({
     fontWeight: 600,
     letterSpacing: 0.7,
     color: '#1f3449',
-    marginLeft: 8
+    marginLeft: 8,
 });
 
 const HeaderStyled = Glamorous.div({
@@ -59,8 +59,8 @@ const HeaderStyled = Glamorous.div({
     '@media(max-width: 600px)': {
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
 });
 
 const SignupStyled = Glamorous.span({
@@ -68,7 +68,7 @@ const SignupStyled = Glamorous.span({
     fontSize: 16,
     lineHeight: 1.5,
     letterSpacing: 0.5,
-    color: '#1f3449'
+    color: '#1f3449',
 });
 
 const SignupButton = Glamorous(XLink)({
@@ -78,13 +78,13 @@ const SignupButton = Glamorous(XLink)({
     color: '#5640d6',
     marginLeft: 5,
     '&:hover': {
-        color: '#1f3449'
-    }
+        color: '#1f3449',
+    },
 });
 
 const SignupContainer = Glamorous.div({
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const Header = () => (
@@ -105,52 +105,54 @@ const MainContent = Glamorous.div({
     margin: 'auto',
     '@media(max-width: 530px)': {
         width: 'auto',
-        maxWidth: 390
-    }
+        maxWidth: 390,
+    },
 });
 
 const Container = (props: { children?: any }) => {
     return (
         <RootContainer>
             <Header />
-            <MainContent>
-                {props.children}
-            </MainContent>
-            <Footer>© {new Date().getFullYear()} Data Makes Perfect Inc.</Footer>
+            <MainContent>{props.children}</MainContent>
+            <Footer>
+                © {new Date().getFullYear()} Data Makes Perfect Inc.
+            </Footer>
         </RootContainer>
     );
 };
 
-const Title = Glamorous.div<{ marginBottom?: number }>((props) => ({
+const Title = Glamorous.div<{ marginBottom?: number }>(props => ({
     fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: 0.6,
     textAlign: 'center',
     color: '#1f3449',
-    marginBottom: props.marginBottom ? props.marginBottom : 11
+    marginBottom: props.marginBottom ? props.marginBottom : 11,
 }));
 
-const Description = Glamorous.div<{ marginBottom?: number }>((props) => ({
+const Description = Glamorous.div<{ marginBottom?: number }>(props => ({
     opacity: 0.7,
     fontSize: 16,
     lineHeight: 1.5,
     letterSpacing: 0.5,
     textAlign: 'center',
     color: '#1f3449',
-    marginBottom: props.marginBottom
+    marginBottom: props.marginBottom,
 }));
 
-export default withAppBase('Activation Needed', (props) => {
+export default withAppBase('Activation Needed', props => {
     return (
         <AuthRouter>
-            <XDocumentHead title="Activation needed" titleSocial="Openland - land acquisition platfom" />
+            <XDocumentHead
+                title="Activation needed"
+                titleSocial="Openland - land acquisition platfom"
+            />
             <XTrack event="View Activation">
                 <Container>
-                    <Title>
-                        Activation needed
-                    </Title>
+                    <Title>Activation needed</Title>
                     <Description>
-                        We are working on your account and will notify when it will became active.
+                        We are working on your account and will notify when it
+                        will became active.
                     </Description>
                 </Container>
             </XTrack>

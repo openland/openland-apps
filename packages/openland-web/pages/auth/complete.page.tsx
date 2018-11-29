@@ -15,21 +15,22 @@ interface AuthResult {
 }
 
 class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
-
     constructor(props: {}) {
         super(props);
         this.state = { error: false };
     }
 
     componentDidMount() {
-        this.completeAuth().then((v) => {
-            console.warn('complete:v');
-            // Do nothing
-        }).catch((e) => {
-            console.warn(e);
-            trackError(e);
-            this.setState({ error: true });
-        });
+        this.completeAuth()
+            .then(v => {
+                console.warn('complete:v');
+                // Do nothing
+            })
+            .catch(e => {
+                console.warn(e);
+                trackError(e);
+                this.setState({ error: true });
+            });
     }
 
     async completeAuth() {
@@ -37,23 +38,33 @@ class AuthenticationHandler extends React.Component<{}, { error: boolean }> {
         var uploaded = await fetch(API_AUTH_ENDPOINT, {
             method: 'POST',
             headers: {
-                'authorization': 'Bearer ' + auth.idToken,
-                'x-openland-access-token': auth.accessToken
-            }
+                authorization: 'Bearer ' + auth.idToken,
+                'x-openland-access-token': auth.accessToken,
+            },
         });
         if (uploaded.ok) {
-            let body = (await uploaded.json()) as { ok: boolean, token: string };
+            let body = (await uploaded.json()) as {
+                ok: boolean;
+                token: string;
+            };
             Cookie.remove('statecraft-key');
             Cookie.remove('x-openland-org', { path: '/' });
-            Cookie.set('x-openland-token', body.token, { path: '/', expires: 180 });
+            Cookie.set('x-openland-token', body.token, {
+                path: '/',
+                expires: 180,
+            });
             let path = auth.state !== 'none' ? auth.state : '/';
-            if (auth.idTokenPayload && auth.idTokenPayload.sub && auth.idTokenPayload.sub.startsWith('email|')) {
+            if (
+                auth.idTokenPayload &&
+                auth.idTokenPayload.sub &&
+                auth.idTokenPayload.sub.startsWith('email|')
+            ) {
                 path = '/';
             }
             path = Cookie.get('sign-redirect') || path;
             Cookie.remove('sign-redirect', { path: '/' });
             createHistory({
-                forceRefresh: true
+                forceRefresh: true,
             }).replace(path);
         } else {
             trackError(JSON.stringify(uploaded));

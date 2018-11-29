@@ -17,11 +17,17 @@ export interface MessagesStateContextProps {
     replyMessagesId: Set<string> | null;
     replyMessages: Set<string> | null;
     replyMessagesSender: Set<string> | null;
-    setReplyMessages: (id: Set<string> | null, messages: Set<string> | null, sender: Set<string> | null) => void;
+    setReplyMessages: (
+        id: Set<string> | null,
+        messages: Set<string> | null,
+        sender: Set<string> | null,
+    ) => void;
     resetAll: () => void;
 }
 
-export const MessagesStateContext = React.createContext<MessagesStateContextProps>({
+export const MessagesStateContext = React.createContext<
+    MessagesStateContextProps
+>({
     editMessageId: null,
     editMessage: null,
     replyMessagesId: null,

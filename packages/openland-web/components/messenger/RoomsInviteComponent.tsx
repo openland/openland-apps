@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -23,7 +22,7 @@ const Root = Glamorous(XScrollView)({
     minWidth: '100%',
     height: '100%',
     flexShrink: 0,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
 });
 
 const MainContent = Glamorous.div({
@@ -34,8 +33,8 @@ const MainContent = Glamorous.div({
     padding: 28,
 
     '& > *': {
-        zIndex: 2
-    }
+        zIndex: 2,
+    },
 });
 
 const Close = Glamorous(XLink)({
@@ -47,8 +46,8 @@ const Close = Glamorous(XLink)({
     borderRadius: 50,
     backgroundColor: 'rgba(188, 195, 204, 0.14)',
     '&:hover': {
-        backgroundColor: '#ecedf0'
-    }
+        backgroundColor: '#ecedf0',
+    },
 });
 
 const UserInfoWrapper = Glamorous(XHorizontal)({
@@ -57,8 +56,8 @@ const UserInfoWrapper = Glamorous(XHorizontal)({
     marginBottom: 24,
     flexShrink: 0,
     '@media (max-height: 800px)': {
-        marginTop: 15
-    }
+        marginTop: 15,
+    },
 });
 
 const InfoCardWrapper = Glamorous.div({
@@ -94,7 +93,7 @@ const InfoCardWrapper = Glamorous.div({
         left: 0,
         bottom: 0,
         backgroundColor: '#f9a540',
-    }
+    },
 });
 
 const InfoCardHeader = Glamorous(XHorizontal)({
@@ -107,17 +106,17 @@ const InfoCardBody = Glamorous.div({
     fontSize: 16,
     lineHeight: '24px',
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.8)'
+    color: 'rgba(0, 0, 0, 0.8)',
 });
 
-const Text = Glamorous.div<{ width?: number, autoMargin?: boolean }>(props => ({
+const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
     fontSize: 14,
     lineHeight: 1.43,
     letterSpacing: 0,
     color: 'rgba(0, 0, 0, 0.8)',
     textAlign: 'center',
     width: props.width,
-    margin: props.autoMargin ? 'auto' : undefined
+    margin: props.autoMargin ? 'auto' : undefined,
 }));
 
 const RoomTitle = Glamorous.div({
@@ -126,7 +125,7 @@ const RoomTitle = Glamorous.div({
     lineHeight: '24px',
     letterSpacing: 0,
     color: 'rgba(0, 0, 0, 0.9)',
-    margin: '2px 0 8px'
+    margin: '2px 0 8px',
 });
 
 const UserAvatar = Glamorous(XAvatar)({
@@ -134,8 +133,8 @@ const UserAvatar = Glamorous(XAvatar)({
     height: 20,
     '& img': {
         width: '20px !important',
-        height: '20px !important'
-    }
+        height: '20px !important',
+    },
 });
 
 const RoomAvatar = Glamorous(XAvatar)({
@@ -143,11 +142,11 @@ const RoomAvatar = Glamorous(XAvatar)({
     height: 60,
     '& img': {
         width: '60px !important',
-        height: '60px !important'
+        height: '60px !important',
     },
     '& > div': {
-        borderRadius: 30
-    }
+        borderRadius: 30,
+    },
 });
 
 const RoomCounter = Glamorous.div({
@@ -168,7 +167,7 @@ const RoomCounter = Glamorous.div({
         fontWeight: 400,
         lineHeight: '16px',
         letterSpacing: 0,
-        color: 'rgba(0, 0, 0, 0.5)'
+        color: 'rgba(0, 0, 0, 0.5)',
     },
     '& > svg': {
         display: 'inline-block',
@@ -178,37 +177,42 @@ const RoomCounter = Glamorous.div({
         marginRight: 5,
 
         '& path:last-child': {
-            fill: 'rgba(0, 0, 0, 0.25)'
-        }
-    }
+            fill: 'rgba(0, 0, 0, 0.25)',
+        },
+    },
 });
 
 const ImageWrapper = Glamorous.div({
     height: 367,
     position: 'absolute',
-    right: 0, bottom: 18, left: 0,
+    right: 0,
+    bottom: 18,
+    left: 0,
     overflow: 'hidden',
     'z-index': '1!important',
     '@media (max-height: 800px)': {
-        height: 250
-    }
+        height: 250,
+    },
 });
 
 const Image = Glamorous.div({
     position: 'absolute',
-    top: 0, bottom: 0, left: '50%',
+    top: 0,
+    bottom: 0,
+    left: '50%',
     width: 1242,
     marginLeft: -688,
     background: 'url(/static/X/signup/invite-illustration.png) no-repeat',
-    backgroundImage: '-webkit-image-set(url(/static/X/signup/invite-illustration.png) 1x, url(/static/X/signup/invite-illustration@2x.png) 2x)',
+    backgroundImage:
+        '-webkit-image-set(url(/static/X/signup/invite-illustration.png) 1x, url(/static/X/signup/invite-illustration@2x.png) 2x)',
     backgroundSize: 'auto 100%',
     '@media (max-height: 800px)': {
         width: 846,
         marginLeft: -500,
-    }
+    },
 });
 
-const JoinButton = withChannelJoin((props) => {
+const JoinButton = withChannelJoin(props => {
     return (
         <XButton
             style="primary"
@@ -217,13 +221,19 @@ const JoinButton = withChannelJoin((props) => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                await props.join({ variables: { roomId: (props as any).channelId } });
+                await props.join({
+                    variables: { roomId: (props as any).channelId },
+                });
             }}
         />
     );
-}) as React.ComponentType<{ channelId: string, refetchVars: { conversationId: string }, text: string }>;
+}) as React.ComponentType<{
+    channelId: string;
+    refetchVars: { conversationId: string };
+    text: string;
+}>;
 
-const JoinLinkButton = withChannelJoinInviteLink((props) => {
+const JoinLinkButton = withChannelJoinInviteLink(props => {
     return (
         <XButton
             style="primary"
@@ -237,7 +247,11 @@ const JoinLinkButton = withChannelJoinInviteLink((props) => {
             }}
         />
     );
-}) as React.ComponentType<{ invite: string, refetchVars: { conversationId: string }, text: string }>;
+}) as React.ComponentType<{
+    invite: string;
+    refetchVars: { conversationId: string };
+    text: string;
+}>;
 
 interface RoomsInviteComponentProps {
     inviteLink?: string;
@@ -245,15 +259,17 @@ interface RoomsInviteComponentProps {
     room: Partial<Room_room_SharedRoom>;
     invite?: {
         invitedByUser?: {
-            id: string,
-            name: string,
-            photo?: string | null
-        }
+            id: string;
+            name: string;
+            photo?: string | null;
+        };
     };
     noLogin?: boolean;
 }
 
-export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
+export class RoomsInviteComponent extends React.Component<
+    RoomsInviteComponentProps
+> {
     render() {
         let room = this.props.room;
         return (
@@ -261,22 +277,36 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                 <MainContent>
                     {!this.props.noLogin && (
                         <XHorizontal justifyContent="flex-end">
-                            <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
+                            <Close
+                                onClick={() =>
+                                    canUseDOM ? window.history.back() : null
+                                }
+                            >
                                 <CloseIcon />
                             </Close>
                         </XHorizontal>
                     )}
-                    {this.props.invite && this.props.invite.invitedByUser ?
+                    {this.props.invite && this.props.invite.invitedByUser ? (
                         <UserInfoWrapper separator={6} justifyContent="center">
                             <UserAvatar
-                                cloudImageUuid={this.props.invite.invitedByUser.photo || undefined}
+                                cloudImageUuid={
+                                    this.props.invite.invitedByUser.photo ||
+                                    undefined
+                                }
                                 style="colorus"
-                                objectName={this.props.invite.invitedByUser.name}
+                                objectName={
+                                    this.props.invite.invitedByUser.name
+                                }
                                 objectId={this.props.invite.invitedByUser.id}
                             />
-                            <Text>{this.props.invite.invitedByUser.name} has invited you</Text>
-                        </UserInfoWrapper> : <div style={{ height: 50 }} />
-                    }
+                            <Text>
+                                {this.props.invite.invitedByUser.name} has
+                                invited you
+                            </Text>
+                        </UserInfoWrapper>
+                    ) : (
+                        <div style={{ height: 50 }} />
+                    )}
                     <InfoCardWrapper>
                         <InfoCardHeader separator={8}>
                             <RoomAvatar
@@ -286,23 +316,43 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                 objectId={room.id}
                             />
                             <div>
-                                <RoomTitle>
-                                    {room.title}
-                                </RoomTitle>
+                                <RoomTitle>{room.title}</RoomTitle>
                                 <RoomCounter>
                                     <ProfileIcon />
-                                    <span>{room.membersCount} {room.membersCount && room.membersCount > 1 ? 'members' : 'member'}</span>
+                                    <span>
+                                        {room.membersCount}{' '}
+                                        {room.membersCount &&
+                                        room.membersCount > 1
+                                            ? 'members'
+                                            : 'member'}
+                                    </span>
                                 </RoomCounter>
                             </div>
                         </InfoCardHeader>
                         <InfoCardBody>
-                            {room.description || TextRoom.descriptionPlaceholder}
+                            {room.description ||
+                                TextRoom.descriptionPlaceholder}
                         </InfoCardBody>
                     </InfoCardWrapper>
-                    {!this.props.signup &&
+                    {!this.props.signup && (
                         <>
-                            {((room.membership === 'NONE' || room.membership === 'KICKED' || room.membership === 'LEFT' && !this.props.inviteLink)) && <JoinButton channelId={room.id!} refetchVars={{ conversationId: room.id! }} text="Request Invite" />}
-                            {this.props.inviteLink && <JoinLinkButton invite={this.props.inviteLink} refetchVars={{ conversationId: room.id! }} text="Accept invite" />}
+                            {(room.membership === 'NONE' ||
+                                room.membership === 'KICKED' ||
+                                (room.membership === 'LEFT' &&
+                                    !this.props.inviteLink)) && (
+                                <JoinButton
+                                    channelId={room.id!}
+                                    refetchVars={{ conversationId: room.id! }}
+                                    text="Request Invite"
+                                />
+                            )}
+                            {this.props.inviteLink && (
+                                <JoinLinkButton
+                                    invite={this.props.inviteLink}
+                                    refetchVars={{ conversationId: room.id! }}
+                                    text="Accept invite"
+                                />
+                            )}
                             {room.membership === 'REQUESTED' && (
                                 <XButton
                                     style="ghost"
@@ -323,7 +373,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                 />
                             )}
                         </>
-                    }
+                    )}
                     {this.props.signup && (
                         <XButton
                             style="primary"

@@ -10,14 +10,14 @@ import { XLink } from 'openland-x/XLink';
 const HeaderImage = Glamorous.div({
     backgroundColor: '#5938e8',
     height: '164px',
-    marginBottom: '-64px'
+    marginBottom: '-64px',
 });
 
 const Container = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'stretch',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const ContainerInner = Glamorous.div({
@@ -32,7 +32,7 @@ const ContainerTitle = Glamorous.div({
     opacity: 0.9,
     lineHeight: '64px',
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
 });
 
 const HyperButton = Glamorous(XLink)({
@@ -48,26 +48,40 @@ const HyperButton = Glamorous(XLink)({
     opacity: 0.7,
 });
 
-export default withApp('Home', 'viewer', withUserInfo((props) => {
-    return (
-        <>
-            <XDocumentHead title={props.organization!!.name} />
-            <Scaffold>
-                <Scaffold.Content padding={false}>
-                    <HeaderImage />
-                    <Container>
-                        <ContainerInner>
-                            <XVertical>
-                                <ContainerTitle>Welcome to  Openland!</ContainerTitle>
-                                <HyperButton path="/settings/profile">Complete Your Profile</HyperButton>
-                                <HyperButton path="/settings/invites">Invite partners</HyperButton>
-                                <HyperButton>Publish Opportunity</HyperButton>
-                                <HyperButton>Find Opportunities</HyperButton>
-                            </XVertical>
-                        </ContainerInner>
-                    </Container>
-                </Scaffold.Content>
-            </Scaffold>
-        </>
-    );
-}));
+export default withApp(
+    'Home',
+    'viewer',
+    withUserInfo(props => {
+        return (
+            <>
+                <XDocumentHead title={props.organization!!.name} />
+                <Scaffold>
+                    <Scaffold.Content padding={false}>
+                        <HeaderImage />
+                        <Container>
+                            <ContainerInner>
+                                <XVertical>
+                                    <ContainerTitle>
+                                        Welcome to Openland!
+                                    </ContainerTitle>
+                                    <HyperButton path="/settings/profile">
+                                        Complete Your Profile
+                                    </HyperButton>
+                                    <HyperButton path="/settings/invites">
+                                        Invite partners
+                                    </HyperButton>
+                                    <HyperButton>
+                                        Publish Opportunity
+                                    </HyperButton>
+                                    <HyperButton>
+                                        Find Opportunities
+                                    </HyperButton>
+                                </XVertical>
+                            </ContainerInner>
+                        </Container>
+                    </Scaffold.Content>
+                </Scaffold>
+            </>
+        );
+    }),
+);

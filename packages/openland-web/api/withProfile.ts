@@ -7,5 +7,7 @@ import { AccountQuery } from 'openland-api/AccountQuery';
 
 export const withProfile = graphqlCompose2(
     graphqlRouted(ProfileQuery),
-    graphqlMutation(ProfileUpdateMutation, 'updateProfile', { refetchQueries: [AccountQuery] })
+    graphqlMutation(ProfileUpdateMutation, 'updateProfile', {
+        refetchQueries: [AccountQuery],
+    }),
 );

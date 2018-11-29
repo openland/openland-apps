@@ -9,7 +9,10 @@ import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import {
+    MessengerEngine,
+    MessengerContext,
+} from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import RoomIcon from './components/icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
@@ -27,7 +30,7 @@ const Root = Glamorous(XVertical)({
     flexDirection: 'column',
     maxHeight: '100%',
     width: '100%',
-    maxWidth: '100%'
+    maxWidth: '100%',
 });
 
 const HeaderWrapper = Glamorous.div({
@@ -41,23 +44,23 @@ const HeaderWrapper = Glamorous.div({
     paddingLeft: 77,
     paddingRight: 77,
     width: '100%',
-    alignSelf: 'center'
+    alignSelf: 'center',
 });
 
 const HeaderButton = Glamorous(XButton)({
     '& svg': {
-        marginLeft: -4
+        marginLeft: -4,
     },
     '& svg *': {
         transition: 'all .15s ease',
-        fill: 'rgba(0, 0, 0, 0.2)'
+        fill: 'rgba(0, 0, 0, 0.2)',
     },
     '&:hover svg *': {
-        fill: 'rgba(0, 0, 0, 0.5)'
+        fill: 'rgba(0, 0, 0, 0.5)',
     },
     '&:active svg *': {
-        fill: '#ffffff'
-    }
+        fill: '#ffffff',
+    },
 });
 
 const Title = Glamorous.div({
@@ -69,7 +72,7 @@ const Title = Glamorous.div({
     lineHeight: '20px',
     fontWeight: 600,
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.9)'
+    color: 'rgba(0, 0, 0, 0.9)',
 });
 
 const ComposeSelectWrapper = Glamorous.div({
@@ -80,7 +83,7 @@ const ComposeSelectWrapper = Glamorous.div({
     width: '100%',
     alignSelf: 'center',
     zIndex: 2,
-    position: 'relative'
+    position: 'relative',
 });
 
 const EmptyWrapper = Glamorous(XVertical)({
@@ -89,17 +92,18 @@ const EmptyWrapper = Glamorous(XVertical)({
     paddingTop: 30,
     paddingBottom: 30,
     marginLeft: -16,
-    marginRight: -16
+    marginRight: -16,
 });
 
 const EmptyImage = Glamorous.div({
     width: 358,
     height: 311,
     background: 'url(/static/X/messenger/compose-empty.png) no-repeat',
-    backgroundImage: '-webkit-image-set(url(/static/X/messenger/compose-empty.png) 1x, url(/static/X/messenger/compose-empty@2x.png) 2x)',
+    backgroundImage:
+        '-webkit-image-set(url(/static/X/messenger/compose-empty.png) 1x, url(/static/X/messenger/compose-empty@2x.png) 2x)',
     backgroundSize: '100% auto',
     backgroundPosition: 'center bottom',
-    marginBottom: 50
+    marginBottom: 50,
 });
 
 const SearchPeopleModule = withExplorePeople(props => {
@@ -116,7 +120,9 @@ const SearchPeopleModule = withExplorePeople(props => {
                         popper={true}
                         placeholder={TextCompose.searchPlaceholder}
                         rounded={true}
-                        onInputChange={(data) => (props as any).onChangeInput(data)}
+                        onInputChange={data =>
+                            (props as any).onChangeInput(data)
+                        }
                         helpText={TextCompose.searchLoading}
                         inCompose={true}
                     />
@@ -129,40 +135,56 @@ const SearchPeopleModule = withExplorePeople(props => {
             value={(props as any).value}
             creatable={true}
             multi={true}
-            options={props.data.items.edges.map(i => {
-                let u = i.node;
-                return { label: u.name, value: u.id, photo: u.photo, org: u.primaryOrganization ? u.primaryOrganization.name : '' };
-
-            }) || []}
-            onChange={(data) => (props as any).onChange(data)}
+            options={
+                props.data.items.edges.map(i => {
+                    let u = i.node;
+                    return {
+                        label: u.name,
+                        value: u.id,
+                        photo: u.photo,
+                        org: u.primaryOrganization
+                            ? u.primaryOrganization.name
+                            : '',
+                    };
+                }) || []
+            }
+            onChange={data => (props as any).onChange(data)}
             render={
                 <XSelectCustomUsersRender
                     multi={true}
                     placeholder={TextCompose.searchPlaceholder}
                     rounded={true}
-                    onInputChange={(data) => (props as any).onChangeInput(data)}
+                    onInputChange={data => (props as any).onChangeInput(data)}
                     inCompose={true}
                 />
             }
         />
     );
-}) as React.ComponentType<{ value?: any, variables: { query?: string, organizations?: boolean }, onChange: (data: Option<OptionValues>[]) => void, onChangeInput: (data: string) => void }>;
+}) as React.ComponentType<{
+    value?: any;
+    variables: { query?: string; organizations?: boolean };
+    onChange: (data: Option<OptionValues>[]) => void;
+    onChangeInput: (data: string) => void;
+}>;
 
 type ComposeComponentRenderProps = {
-    messenger: MessengerEngine,
-    me?: UserShort
+    messenger: MessengerEngine;
+    me?: UserShort;
 };
 
 type ComposeComponentRenderState = {
-    values: Option<OptionValues>[],
-    resolving: boolean,
-    conversationId: string | null,
-    query: string
+    values: Option<OptionValues>[];
+    resolving: boolean;
+    conversationId: string | null;
+    query: string;
     loading: boolean;
     messages: ModelMessage[];
 };
 
-class ComposeComponentRender extends React.Component<ComposeComponentRenderProps, ComposeComponentRenderState> {
+class ComposeComponentRender extends React.Component<
+    ComposeComponentRenderProps,
+    ComposeComponentRenderState
+> {
     conversationMessages = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
     unmounter: (() => void) | null = null;
@@ -178,7 +200,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             conversationId: null,
             query: '',
             messages: [],
-            loading: true
+            loading: true,
         };
     }
 
@@ -186,18 +208,18 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
         if (this.conversationMessages.current) {
             this.conversationMessages.current.scrollToBottom();
         }
-    }
+    };
 
     onConversationUpdated = (state: ConversationState) => {
         this.setState({ loading: state.loading, messages: state.messages });
-    }
+    };
 
     updateConversation = ({
         conversationId,
         messenger,
     }: {
-        conversationId: string,
-        messenger: any,
+        conversationId: string;
+        messenger: any;
     }) => {
         if (this.unmounter) {
             this.unmounter();
@@ -211,16 +233,18 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             throw Error('conversation should be defined here');
         }
 
-        this.unmounter = this.conversation.engine.mountConversation(conversationId);
+        this.unmounter = this.conversation.engine.mountConversation(
+            conversationId,
+        );
         this.unmounter2 = this.conversation.subscribe(this);
 
         let convState = this.conversation.getState();
 
         this.setState({
             messages: convState.messages,
-            loading: convState.loading
+            loading: convState.loading,
         });
-    }
+    };
 
     componentWillUnmount() {
         if (this.unmounter) {
@@ -230,8 +254,8 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
             this.unmounter2();
         }
     }
-    
-    handleChange: OnChangeHandler = (vals) => {
+
+    handleChange: OnChangeHandler = vals => {
         let nvals: Option<OptionValues>[] = [];
         if (vals === null) {
             nvals = [];
@@ -245,21 +269,36 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                 Router.replaceRoute('/mail/' + (nvals[0] as any).value);
                 return;
             }
-            this.setState({ values: nvals, resolving: true, conversationId: null });
+            this.setState({
+                values: nvals,
+                resolving: true,
+                conversationId: null,
+            });
             (async () => {
-                let id = await this.props.messenger.global.resolvePrivateConversation(nvals[0].value!! as string);
+                let id = await this.props.messenger.global.resolvePrivateConversation(
+                    nvals[0].value!! as string,
+                );
 
-                this.setState({ conversationId: id.id, resolving: false }, () => {
-                    this.updateConversation({
-                        conversationId: id.id,
-                        messenger: this.props.messenger,
-                    });
-                });
+                this.setState(
+                    { conversationId: id.id, resolving: false },
+                    () => {
+                        this.updateConversation({
+                            conversationId: id.id,
+                            messenger: this.props.messenger,
+                        });
+                    },
+                );
             })();
         } else if (nvals.length > 1) {
-            this.setState({ values: nvals, resolving: true, conversationId: null });
+            this.setState({
+                values: nvals,
+                resolving: true,
+                conversationId: null,
+            });
             (async () => {
-                let id = await this.props.messenger.global.resolveGroup(nvals.map((v) => v.value!! as string));
+                let id = await this.props.messenger.global.resolveGroup(
+                    nvals.map(v => v.value!! as string),
+                );
                 if (id) {
                     this.setState({ conversationId: id.id, resolving: false });
                 } else {
@@ -267,26 +306,37 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                 }
             })();
         } else {
-            this.setState({ values: nvals, resolving: false, conversationId: null });
+            this.setState({
+                values: nvals,
+                resolving: false,
+                conversationId: null,
+            });
         }
-    }
+    };
 
-    handleSend = async (msg: string, mentions: MessageFull_mentions[] | null) => {
+    handleSend = async (
+        msg: string,
+        mentions: MessageFull_mentions[] | null,
+    ) => {
         if (this.state.values.length === 1) {
-            let id = await this.props.messenger.global.resolvePrivateConversation(this.state.values[0].value!! as string);
+            let id = await this.props.messenger.global.resolvePrivateConversation(
+                this.state.values[0].value!! as string,
+            );
             await this.props.messenger.sender.sendMessageAsync({
                 conversationId: id.id,
                 message: msg,
-                mentions
+                mentions,
             });
             Router.replaceRoute('/mail/' + id.flexibleId);
         } else if (this.state.values.length > 1) {
-            let id = await this.props.messenger.global.resolveGroup(this.state.values.map((v) => v.value!! as string));
+            let id = await this.props.messenger.global.resolveGroup(
+                this.state.values.map(v => v.value!! as string),
+            );
             if (id) {
                 await this.props.messenger.sender.sendMessageAsync({
                     conversationId: id.id,
                     message: msg,
-                    mentions
+                    mentions,
                 });
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
@@ -295,20 +345,20 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                     variables: {
                         kind: 'GROUP',
                         message: msg,
-                        title: this.state.values.map((v) => v.label).join(', '),
-                        members: this.state.values.map((v) => v.value)
-                    }
+                        title: this.state.values.map(v => v.label).join(', '),
+                        members: this.state.values.map(v => v.value),
+                    },
                 });
                 Router.replaceRoute('/mail/' + (res.data as any).room.id);
             }
         }
-    }
+    };
 
     handleSearchText = (query: string) => {
         this.setState({
-            query: query
+            query: query,
         });
-    }
+    };
 
     render() {
         return (
@@ -329,13 +379,18 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                             value={this.state.values}
                             variables={{
                                 query: this.state.query,
-                                organizations: this.state.values.length === 0
+                                organizations: this.state.values.length === 0,
                             }}
                         />
                     </ComposeSelectWrapper>
                     <MessagesContainer>
                         {!this.state.conversationId && (
-                            <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
+                            <EmptyWrapper
+                                separator={10}
+                                alignItems="center"
+                                justifyContent="center"
+                                flexGrow={1}
+                            >
                                 <EmptyImage />
                             </EmptyWrapper>
                         )}
@@ -344,12 +399,17 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
                                 messages={this.state.messages}
                                 loading={this.state.loading}
                                 me={this.props.me}
-                                conversation={this.props.messenger.getConversation(this.state.conversationId!!)}
+                                conversation={this.props.messenger.getConversation(
+                                    this.state.conversationId!!,
+                                )}
                                 conversationId={this.state.conversationId}
                             />
                         )}
                     </MessagesContainer>
-                    <MessageComposeComponent onSend={this.handleSend} enabled={this.state.values.length > 0} />
+                    <MessageComposeComponent
+                        onSend={this.handleSend}
+                        enabled={this.state.values.length > 0}
+                    />
                 </ConversationContainer>
             </Root>
         );
@@ -359,7 +419,12 @@ class ComposeComponentRender extends React.Component<ComposeComponentRenderProps
 export const ComposeComponent = withUserInfo((props: any) => {
     return (
         <MessengerContext.Consumer>
-            {messenger => <ComposeComponentRender messenger={messenger!!} me={(props as any).user} />}
+            {messenger => (
+                <ComposeComponentRender
+                    messenger={messenger!!}
+                    me={(props as any).user}
+                />
+            )}
         </MessengerContext.Consumer>
     );
 });

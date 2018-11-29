@@ -18,18 +18,26 @@ class Toggler extends React.Component<{}, { visible: boolean }> {
         console.warn(this.state.visible);
         return (
             <XVertical>
-                <XButton text="Toggle" onClick={() => this.setState({ visible: !this.state.visible })} />
+                <XButton
+                    text="Toggle"
+                    onClick={() =>
+                        this.setState({ visible: !this.state.visible })
+                    }
+                />
             </XVertical>
         );
     }
 }
 
-export default withApp('UI Framework - Loaders', 'viewer', (props) => {
+export default withApp('UI Framework - Loaders', 'viewer', props => {
     return (
         <DevDocsScaffold title="Loaders">
             <XContent>
                 <XVertical>
-                    <XStore onChanged={(data) => console.warn(data)} defaultData={{ stage: 'Hello!' }}>
+                    <XStore
+                        onChanged={data => console.warn(data)}
+                        defaultData={{ stage: 'Hello!' }}
+                    >
                         <XVertical>
                             <XTitle>Loading Bar</XTitle>
                             <Toggler />

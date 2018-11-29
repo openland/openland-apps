@@ -13,9 +13,19 @@ import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { makeNavigable } from 'openland-x/Navigable';
 import { XModal } from 'openland-x-modal/XModal';
-import { ModalBody, ModalCloser, ModalPic } from '../../../components/messenger/components/view/content/MessageImageComponent';
+import {
+    ModalBody,
+    ModalCloser,
+    ModalPic,
+} from '../../../components/messenger/components/view/content/MessageImageComponent';
 import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
-import { BackButton, Section, SectionContent, HeaderWrapper, extractHostname } from './OrganizationProfileComponent';
+import {
+    BackButton,
+    Section,
+    SectionContent,
+    HeaderWrapper,
+    extractHostname,
+} from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { withOnline } from '../../../api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
@@ -25,12 +35,12 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 import { XDate } from 'openland-x/XDate';
 
 const HeaderAvatar = Glamorous.div({
-    paddingRight: 18
+    paddingRight: 18,
 });
 
 const HeaderInfo = Glamorous(XVertical)({
     paddingTop: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
 });
 
 const HeaderTitle = Glamorous.div({
@@ -38,11 +48,11 @@ const HeaderTitle = Glamorous.div({
     fontWeight: 600,
     letterSpacing: 0,
     lineHeight: '20px',
-    color: '#000000'
+    color: '#000000',
 });
 
 const HeaderTools = Glamorous(XHorizontal)({
-    paddingTop: 13
+    paddingTop: 13,
 });
 
 const HeaderOrg = makeNavigable(Glamorous.div({
@@ -53,22 +63,35 @@ const HeaderOrg = makeNavigable(Glamorous.div({
     letterSpacing: 0,
     lineHeight: '20px',
     color: 'rgba(0, 0, 0, 0.4)',
-    cursor: 'pointer'
+    cursor: 'pointer',
 }) as any) as any;
 
-const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
+const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.5)',
     fontSize: 13,
     fontWeight: 400,
     lineHeight: '18px',
-    marginTop: '7px!important'
+    marginTop: '7px!important',
 }));
 
 const UserStatus = withOnline(props => {
-    if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
+    if (
+        props.data.user &&
+        (props.data.user.lastSeen &&
+            props.data.user.lastSeen !== 'online' &&
+            !props.data.user.online)
+    ) {
         return (
             <StatusWrapper online={false}>
-                {TextProfiles.User.status.lastSeen} {props.data.user.lastSeen === 'never_online' ? TextProfiles.User.status.momentsAgo : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
+                {TextProfiles.User.status.lastSeen}{' '}
+                {props.data.user.lastSeen === 'never_online' ? (
+                    TextProfiles.User.status.momentsAgo
+                ) : (
+                    <XDate
+                        value={props.data.user.lastSeen}
+                        format="humanize_cute"
+                    />
+                )}
             </StatusWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -82,14 +105,18 @@ const UserStatus = withOnline(props => {
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
-const AvatarModal = (props: { photo?: string, userName?: string, userId?: string }) => {
+const AvatarModal = (props: {
+    photo?: string;
+    userName?: string;
+    userId?: string;
+}) => {
     return (
         <XModal
             useTopCloser={true}
             width={512}
             heading={null}
             transparent={true}
-            body={(
+            body={
                 <ModalBody>
                     <ModalCloser autoClose={true} className="closer">
                         <ModalCloseIcon />
@@ -101,8 +128,8 @@ const AvatarModal = (props: { photo?: string, userName?: string, userId?: string
                         height={512}
                     />
                 </ModalBody>
-            )}
-            target={(
+            }
+            target={
                 <XAvatar
                     cloudImageUuid={props.photo || undefined}
                     size="l-medium"
@@ -110,7 +137,7 @@ const AvatarModal = (props: { photo?: string, userName?: string, userId?: string
                     objectName={props.userName}
                     objectId={props.userId}
                 />
-            )}
+            }
         />
     );
 };
@@ -122,7 +149,13 @@ const Header = (props: { user: User_user }) => {
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <HeaderAvatar>
-                    {user.photo && <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />}
+                    {user.photo && (
+                        <AvatarModal
+                            photo={user.photo}
+                            userName={user.name}
+                            userId={user.id}
+                        />
+                    )}
                     {!user.photo && (
                         <XAvatar
                             cloudImageUuid={undefined}
@@ -137,7 +170,12 @@ const Header = (props: { user: User_user }) => {
                     <XHorizontal separator={4}>
                         <HeaderTitle>{user.name}</HeaderTitle>
                         {user.primaryOrganization && (
-                            <HeaderOrg path={'/directory/o/' + user.primaryOrganization.id}>
+                            <HeaderOrg
+                                path={
+                                    '/directory/o/' +
+                                    user.primaryOrganization.id
+                                }
+                            >
                                 {user.primaryOrganization.name}
                             </HeaderOrg>
                         )}
@@ -145,18 +183,30 @@ const Header = (props: { user: User_user }) => {
                     <UserStatus variables={{ userId: user.id }} />
                 </HeaderInfo>
                 <HeaderTools separator={8}>
-                    {user.website && <XSocialButton value={user.website} style="website" placeholder={extractHostname(user.website)} />}
-                    {user.linkedin && <XSocialButton value={user.linkedin} style="linkedin" />}
-                    {user.phone && <XSocialButton value={user.phone} style="phone" />}
+                    {user.website && (
+                        <XSocialButton
+                            value={user.website}
+                            style="website"
+                            placeholder={extractHostname(user.website)}
+                        />
+                    )}
+                    {user.linkedin && (
+                        <XSocialButton value={user.linkedin} style="linkedin" />
+                    )}
+                    {user.phone && (
+                        <XSocialButton value={user.phone} style="phone" />
+                    )}
                     {user.isYou && (
                         <XOverflow
                             placement="bottom-end"
                             flat={true}
-                            content={(
+                            content={
                                 <>
-                                    <XMenuItem href="/settings/profile/">{TextProfiles.User.edit}</XMenuItem>
+                                    <XMenuItem href="/settings/profile/">
+                                        {TextProfiles.User.edit}
+                                    </XMenuItem>
                                 </>
-                            )}
+                            }
                         />
                     )}
                     {!user.isYou && (
@@ -179,10 +229,11 @@ const About = (props: { user: User_user }) => {
         <>
             {user.about && (
                 <Section separator={0}>
-                    <XSubHeader title={TextProfiles.User.aboutTitle} paddingBottom={0} />
-                    <SectionContent>
-                        {user.about}
-                    </SectionContent>
+                    <XSubHeader
+                        title={TextProfiles.User.aboutTitle}
+                        paddingBottom={0}
+                    />
+                    <SectionContent>{user.about}</SectionContent>
                 </Section>
             )}
         </>
@@ -198,7 +249,7 @@ interface UserProfileInnerProps extends XWithRouter {
 class UserProfileInner extends React.Component<UserProfileInnerProps> {
     pageTitle: string | undefined = undefined;
 
-    constructor (props: UserProfileInnerProps) {
+    constructor(props: UserProfileInnerProps) {
         super(props);
 
         if (this.props.handlePageTitle) {
@@ -207,7 +258,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
         }
     }
 
-    componentWillReceiveProps (newProps: UserProfileInnerProps) {
+    componentWillReceiveProps(newProps: UserProfileInnerProps) {
         if (newProps.handlePageTitle) {
             let title = newProps.userQuery.user.name;
 
@@ -226,7 +277,7 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
                 this.props.handlePageTitle(undefined);
             }
         }
-    }
+    };
 
     render() {
         let { user } = this.props.userQuery;
@@ -243,20 +294,31 @@ class UserProfileInner extends React.Component<UserProfileInnerProps> {
     }
 }
 
-const UserProvider = withUser(withRouter((props) => (
-    props.data.user
-        ? (
-            <UserProfileInner
-                userQuery={props.data}
-                router={props.router}
-                handlePageTitle={(props as any).handlePageTitle}
-                onDirectory={(props as any).onDirectory}
-            />
-        )
-        : <XLoader loading={true} />
-))) as React.ComponentType<{ variables: { userId: string }, onDirectory?: boolean; handlePageTitle?: any }>;
+const UserProvider = withUser(
+    withRouter(
+        props =>
+            props.data.user ? (
+                <UserProfileInner
+                    userQuery={props.data}
+                    router={props.router}
+                    handlePageTitle={(props as any).handlePageTitle}
+                    onDirectory={(props as any).onDirectory}
+                />
+            ) : (
+                <XLoader loading={true} />
+            ),
+    ),
+) as React.ComponentType<{
+    variables: { userId: string };
+    onDirectory?: boolean;
+    handlePageTitle?: any;
+}>;
 
-export const UserProfile = (props: { userId: string, onDirectory?: boolean; handlePageTitle?: any }) => (
+export const UserProfile = (props: {
+    userId: string;
+    onDirectory?: boolean;
+    handlePageTitle?: any;
+}) => (
     <UserProvider
         variables={{ userId: props.userId }}
         handlePageTitle={props.handlePageTitle}

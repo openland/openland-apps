@@ -26,9 +26,20 @@ class ZoneMetricValue {
         if (typeof this.value === 'number') {
             let units: any = this.meta.units;
             if (units === 'sq ft') {
-                units = <span>ft < sup > 2</sup ></span>;
+                units = (
+                    <span>
+                        ft <sup> 2</sup>
+                    </span>
+                );
             }
-            return <span>{Math.round(this.value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} {units}</span>;
+            return (
+                <span>
+                    {Math.round(this.value)
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}{' '}
+                    {units}
+                </span>
+            );
         } else {
             return this.value;
         }
@@ -49,33 +60,48 @@ export class ZoneData {
             for (let metricName of Object.keys(zone)) {
                 let metric = metrics.metrics[metricName];
                 if (metric) {
-                    this.addValue(new ZoneMetricValue(zone[metricName], metric));
+                    this.addValue(
+                        new ZoneMetricValue(zone[metricName], metric),
+                    );
                 }
             }
         }
-
     }
 
     addValue(value: ZoneMetricValue) {
         this.data.push(value);
 
-        if (value.meta.name === 'Maximum FAR' && value.meta.subtype === 'Narrow Street' && typeof value.value === 'number') {
+        if (
+            value.meta.name === 'Maximum FAR' &&
+            value.meta.subtype === 'Narrow Street' &&
+            typeof value.value === 'number'
+        ) {
             this.maximumFARNarrow = value.value;
         }
 
-        if (value.meta.name === 'Density Factor' && typeof value.value === 'number') {
+        if (
+            value.meta.name === 'Density Factor' &&
+            typeof value.value === 'number'
+        ) {
             this.densityFactor = value.value;
         }
     }
 
-    pick(metricsToPick: ZoneMetricValueGroup[], showEmpty?: boolean): ZoneMetricValueGroup[] {
+    pick(
+        metricsToPick: ZoneMetricValueGroup[],
+        showEmpty?: boolean,
+    ): ZoneMetricValueGroup[] {
         let res: ZoneMetricValueGroup[] = [];
         for (let group of metricsToPick) {
             let addGroup = false;
             for (let nameToPick of group.names!!) {
                 for (let metric of this.data) {
-
-                    if (metric.meta.name === nameToPick && (showEmpty === undefined || showEmpty || (metric.value != null && metric.value !== '-'))) {
+                    if (
+                        metric.meta.name === nameToPick &&
+                        (showEmpty === undefined ||
+                            showEmpty ||
+                            (metric.value != null && metric.value !== '-'))
+                    ) {
                         if (addGroup === false) {
                             addGroup = true;
                             group.metrics = [];
@@ -92,35 +118,69 @@ export class ZoneData {
         return res;
     }
 
-    unitCapacity(parcelArea: number): { unitCapacity: number, parcelArea: number , maximumFARNarrow: number, densityFactor: number} | undefined {
-
-        if (this.maximumFARNarrow === undefined || this.densityFactor === undefined) {
+    unitCapacity(
+        parcelArea: number,
+    ):
+        | {
+              unitCapacity: number;
+              parcelArea: number;
+              maximumFARNarrow: number;
+              densityFactor: number;
+          }
+        | undefined {
+        if (
+            this.maximumFARNarrow === undefined ||
+            this.densityFactor === undefined
+        ) {
             return undefined;
         }
 
         parcelArea = parcelArea * 10.7639;
 
-        let res = parcelArea * this.maximumFARNarrow / this.densityFactor;
+        let res = (parcelArea * this.maximumFARNarrow) / this.densityFactor;
 
         // Round down for .74
         // Round up for .75+
         res = res % 1 >= 0.75 ? Math.ceil(res) : Math.floor(res);
 
-        // Additional rule: If area < 1700 sf > max units <= 2    
+        // Additional rule: If area < 1700 sf > max units <= 2
         res = parcelArea < 1700 ? Math.min(2, res) : res;
 
-        return { unitCapacity: res, maximumFARNarrow: this.maximumFARNarrow, densityFactor: this.densityFactor, parcelArea: parcelArea };
+        return {
+            unitCapacity: res,
+            maximumFARNarrow: this.maximumFARNarrow,
+            densityFactor: this.densityFactor,
+            parcelArea: parcelArea,
+        };
     }
-
 }
 
-export function unitCapacity(zones: string[], parcelArea: number): { unitCapacity: number, parcelArea: number, maximumFARNarrow: number, densityFactor: number } | undefined {
-    let res: { unitCapacity: number, parcelArea: number, maximumFARNarrow: number, densityFactor: number } | undefined = undefined;
+export function unitCapacity(
+    zones: string[],
+    parcelArea: number,
+):
+    | {
+          unitCapacity: number;
+          parcelArea: number;
+          maximumFARNarrow: number;
+          densityFactor: number;
+      }
+    | undefined {
+    let res:
+        | {
+              unitCapacity: number;
+              parcelArea: number;
+              maximumFARNarrow: number;
+              densityFactor: number;
+          }
+        | undefined = undefined;
     for (let z of exectZoneData(zones)) {
-
         let uc = z.unitCapacity(parcelArea);
 
-        if (res === undefined || (uc !== undefined && uc.unitCapacity > res.unitCapacity)) {
+        if (
+            res === undefined ||
+            (uc !== undefined && uc.unitCapacity > res.unitCapacity)
+        ) {
             res = uc;
         }
     }

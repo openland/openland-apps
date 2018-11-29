@@ -8,7 +8,7 @@ const EmptyRoot = Glamorous.div({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -100
+    marginTop: -100,
 });
 
 const EmptyContent = Glamorous.div({
@@ -17,15 +17,15 @@ const EmptyContent = Glamorous.div({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 const Image = Glamorous.div<{ isRoom: boolean }>(props => ({
     width: props.isRoom ? 434 : 391,
-    height: props.isRoom ? 352 :  380,
+    height: props.isRoom ? 352 : 380,
     backgroundImage: props.isRoom
-        ? 'url(\'/static/X/messenger/chat-channel-empty.svg\')'
-        : 'url(\'/static/X/messenger/chat-empty.svg\')',
+        ? "url('/static/X/messenger/chat-channel-empty.svg')"
+        : "url('/static/X/messenger/chat-empty.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
@@ -35,7 +35,7 @@ const ImageWrapper = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     marginTop: 64,
-    alignSelf: 'center'
+    alignSelf: 'center',
 });
 
 const Text = Glamorous.div({
@@ -49,14 +49,21 @@ const Text = Glamorous.div({
     marginTop: 8,
 });
 
-export const EmptyBlock = (props: { conversationType?: SharedRoomKind | 'PRIVATE', onClick?: (show: boolean) => void }) => (
+export const EmptyBlock = (props: {
+    conversationType?: SharedRoomKind | 'PRIVATE';
+    onClick?: (show: boolean) => void;
+}) => (
     <EmptyRoot>
         <EmptyContent>
             <ImageWrapper>
                 <Image isRoom={props.conversationType === 'PUBLIC'} />
             </ImageWrapper>
-            {props.conversationType === 'PUBLIC' && <Text>The discussion hasn’t started yet</Text>}
-            {props.conversationType !== 'PUBLIC' && <Text>No messages yet</Text>}
+            {props.conversationType === 'PUBLIC' && (
+                <Text>The discussion hasn’t started yet</Text>
+            )}
+            {props.conversationType !== 'PUBLIC' && (
+                <Text>No messages yet</Text>
+            )}
         </EmptyContent>
     </EmptyRoot>
 );

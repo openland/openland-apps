@@ -29,8 +29,14 @@ function dataReturner() {
 
     for (let i = 0; i < 30; i++) {
         dataArr.push({
-            id: Math.random().toString(35).substring(2),
-            name: 'Channel ' + Math.random().toString(35).substring(2),
+            id: Math.random()
+                .toString(35)
+                .substring(2),
+            name:
+                'Channel ' +
+                Math.random()
+                    .toString(35)
+                    .substring(2),
             members: Math.floor(Math.random() * 100),
             listings: Math.floor(Math.random() * 100),
             invited: i % 4 === 0 ? true : false,
@@ -59,14 +65,14 @@ const ChannelRow = Glamorous(XHorizontal)({
             color: 'rgb(255, 255, 255)',
             '&:hover': {
                 backgroundColor: 'rgb(69, 166, 255)',
-                color: 'rgb(255, 255, 255)'
-            }
-        }
+                color: 'rgb(255, 255, 255)',
+            },
+        },
     },
     '& > a.invite': {
         backgroundColor: 'rgba(238, 240, 242, 0.5)',
-        color: '#334562'
-    }
+        color: '#334562',
+    },
 });
 
 const ChannelName = Glamorous.div({
@@ -74,14 +80,14 @@ const ChannelName = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.25,
     letterSpacing: -0.2,
-    color: '#1790ff'
+    color: '#1790ff',
 });
 
 const ChannelText = Glamorous.div({
     fontSize: 14,
     lineHeight: 1.29,
     letterSpacing: -0.3,
-    color: '#99a2b0'
+    color: '#99a2b0',
 });
 
 const ChannelsList = (props: ChannelsProps) => (
@@ -95,14 +101,12 @@ const ChannelsList = (props: ChannelsProps) => (
             >
                 <XVertical separator={1}>
                     <ChannelName>{i.name}</ChannelName>
-                    <ChannelText>{i.members} members • {i.listings} listings</ChannelText>
+                    <ChannelText>
+                        {i.members} members • {i.listings} listings
+                    </ChannelText>
                 </XVertical>
                 {i.member === true && (
-                    <XButton
-                        text="member"
-                        style="ghost"
-                        className="member"
-                    />
+                    <XButton text="member" style="ghost" className="member" />
                 )}
                 {!i.member && (
                     <XButton
@@ -118,14 +122,17 @@ const ChannelsList = (props: ChannelsProps) => (
 
 const InputWrapper = Glamorous.div({
     paddingLeft: 24,
-    paddingRight: 24
+    paddingRight: 24,
 });
 
 interface BrowseChannelsModalState extends ChannelsProps {
     searchText: string;
 }
 
-class BrowseChannelsModalRaw extends React.Component<ChannelsProps & Partial<XModalProps>, BrowseChannelsModalState> {
+class BrowseChannelsModalRaw extends React.Component<
+    ChannelsProps & Partial<XModalProps>,
+    BrowseChannelsModalState
+> {
     constructor(props: ChannelsProps & Partial<XModalProps>) {
         super(props);
 
@@ -140,25 +147,26 @@ class BrowseChannelsModalRaw extends React.Component<ChannelsProps & Partial<XMo
 
         let val = (e.target as any).value as string;
 
-        channels = channels.filter(channel => (
-            channel.name.toLowerCase().indexOf(val.toLocaleLowerCase()) !== -1
-        ));
+        channels = channels.filter(
+            channel =>
+                channel.name.toLowerCase().indexOf(val.toLocaleLowerCase()) !==
+                -1,
+        );
 
         this.setState({
             searchText: val,
-            channels: channels
+            channels: channels,
         });
-    }
+    };
 
     render() {
-
         return (
             <XModal
                 title={this.props.title}
                 target={this.props.target}
                 useTopCloser={true}
                 // customContent={true}
-                body={(
+                body={
                     <XVertical separator={3}>
                         <InputWrapper>
                             <XInput
@@ -174,12 +182,16 @@ class BrowseChannelsModalRaw extends React.Component<ChannelsProps & Partial<XMo
                             <ChannelsList channels={this.state.channels} />
                         </XVertical>
                     </XVertical>
-                )}
+                }
             />
         );
     }
 }
 
 export const BrowseChannelsModal = (props: XModalProps) => (
-    <BrowseChannelsModalRaw {...props} channels={dataReturner()} scrollableContent={true} />
+    <BrowseChannelsModalRaw
+        {...props}
+        channels={dataReturner()}
+        scrollableContent={true}
+    />
 );

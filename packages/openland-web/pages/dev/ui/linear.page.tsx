@@ -11,10 +11,10 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 const Box = Glamorous.div({
     width: '100px',
     height: '100px',
-    backgroundColor: '#ff0000'
+    backgroundColor: '#ff0000',
 });
 
-export default withApp('UI Framework - Linear', 'viewer', (props) => {
+export default withApp('UI Framework - Linear', 'viewer', props => {
     return (
         <DevDocsScaffold title="Tables">
             <XContent>

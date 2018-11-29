@@ -30,33 +30,37 @@ const TextInputWrapper = Glamorous.div({
             paddingRight: 40,
         },
         '& .draftJsEmojiPlugin__emojiSelectPopover__1J1s0': {
-            bottom: 'auto'
-        }
-    }
+            bottom: 'auto',
+        },
+    },
 });
 
-export type XTextInputProps = {
-    kind: 'from_store',
-    valueStoreKey: string;
-} | {
-    kind: 'controlled'
-} & XRichTextInputProps;
+export type XTextInputProps =
+    | {
+          kind: 'from_store';
+          valueStoreKey: string;
+      }
+    | {
+          kind: 'controlled';
+      } & XRichTextInputProps;
 
-class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
+class XRichTextInputStored extends React.PureComponent<
+    XTextInputProps & { store: XStoreState }
+> {
     onChangeHandler = (value: string) => {
         if (this.props.kind === 'controlled') {
             if (this.props.onChange) {
                 this.props.onChange(value);
-            }   
+            }
         }
         if (this.props.kind === 'from_store') {
             this.props.store.writeValue(this.props.valueStoreKey, value);
         }
-    }
+    };
 
     render() {
         let value;
-        const {kind, ...other} = this.props;
+        const { kind, ...other } = this.props;
         if (this.props.kind === 'from_store') {
             let existing = this.props.store.readValue(this.props.valueStoreKey);
             value = '';
@@ -69,14 +73,21 @@ class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store
             value = this.props.value;
         }
 
-        return <XRichTextInput autofocus={true} onChange={this.onChangeHandler} value={value} {...other} />;
+        return (
+            <XRichTextInput
+                autofocus={true}
+                onChange={this.onChangeHandler}
+                value={value}
+                {...other}
+            />
+        );
     }
 }
 
 class XTextInput extends React.PureComponent<XTextInputProps> {
     render() {
         if (this.props.kind === 'from_store') {
-            const {valueStoreKey, ...other} = this.props;
+            const { valueStoreKey, ...other } = this.props;
             let valueStoreKeyCached = valueStoreKey;
             return (
                 <XStoreContext.Consumer>
@@ -95,7 +106,7 @@ class XTextInput extends React.PureComponent<XTextInputProps> {
                 </XStoreContext.Consumer>
             );
         } else if (this.props.kind === 'controlled') {
-            return (<XRichTextInput {...this.props} />);
+            return <XRichTextInput {...this.props} />;
         }
         throw Error('kind for XTextInput is not set');
     }
@@ -107,17 +118,19 @@ const Footer = Glamorous(XHorizontal)({
     paddingBottom: 5,
 });
 
-const EditMessageInline = withEditMessage((props) => {
+const EditMessageInline = withEditMessage(props => {
     let id = (props as any).id;
     let text = (props as any).text;
     return (
         <XForm
-            defaultAction={async (data) => {
-                await props.editMessage({ variables: { messageId: id, message: data.message } });
+            defaultAction={async data => {
+                await props.editMessage({
+                    variables: { messageId: id, message: data.message },
+                });
                 (props as any).onClose();
             }}
             defaultData={{
-                message: text
+                message: text,
             }}
         >
             <TextInputWrapper>
@@ -126,22 +139,31 @@ const EditMessageInline = withEditMessage((props) => {
 
             <Footer separator={5}>
                 <XFormSubmit text="Save" style="primary" />
-                <XButton text="Cancel" size="default" onClick={() => { (props as any).onClose(); }} />
+                <XButton
+                    text="Cancel"
+                    size="default"
+                    onClick={() => {
+                        (props as any).onClose();
+                    }}
+                />
             </Footer>
         </XForm>
     );
-}) as React.ComponentType<{ id: string, text: string | null, onClose: any }>;
+}) as React.ComponentType<{ id: string; text: string | null; onClose: any }>;
 
-export class EditMessageInlineWrapper extends React.Component<{ message: MessageFull, onClose: any }> {
+export class EditMessageInlineWrapper extends React.Component<{
+    message: MessageFull;
+    onClose: any;
+}> {
     onCloseHandler = () => {
         this.props.onClose();
-    }
+    };
 
     keydownHandler = (e: any) => {
         if (e.code === 'Escape') {
             this.onCloseHandler();
         }
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.keydownHandler);

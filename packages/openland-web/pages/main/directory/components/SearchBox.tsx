@@ -15,16 +15,16 @@ const SearchInner = Glamorous(XHorizontal)({
 
     '& > div:focus-within': {
         '& .search-icon > g > path:last-child': {
-            fill: 'rgba(23, 144, 255, 0.5)'
-        }
+            fill: 'rgba(23, 144, 255, 0.5)',
+        },
     },
     '& .search-icon': {
         marginLeft: '2px!important',
 
         '& > g > path:last-child': {
-            fill: 'rgba(0, 0, 0, 0.25)'
+            fill: 'rgba(0, 0, 0, 0.25)',
         },
-    }
+    },
 });
 
 const SearchInput = Glamorous(XInput)({
@@ -35,12 +35,12 @@ const SearchInput = Glamorous(XInput)({
     fontWeight: 500,
     '&:focus-within': {
         boxShadow: 'none',
-        border: 'none'
+        border: 'none',
     },
 
     '& > input, & > .input-placeholder': {
-        paddingLeft: 14
-    }
+        paddingLeft: 14,
+    },
 });
 
 interface SearchBoxProps {
@@ -50,21 +50,28 @@ interface SearchBoxProps {
 }
 
 export class SearchBox extends React.Component<SearchBoxProps> {
-
     onChange = (value: string) => {
         this.props.onChange(value);
-    }
+    };
 
     onClear = () => {
         this.props.onChange('');
-    }
+    };
 
-    render () {
+    render() {
         return (
             <SearchWrapper>
                 <XContentWrapper>
-                    <SearchInner justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <XHorizontal separator={0} alignItems="center" flexGrow={1}>
+                    <SearchInner
+                        justifyContent="space-between"
+                        alignItems="center"
+                        flexShrink={0}
+                    >
+                        <XHorizontal
+                            separator={0}
+                            alignItems="center"
+                            flexGrow={1}
+                        >
                             <SearchIcon className="search-icon" />
                             <SearchInput
                                 value={this.props.value}
@@ -75,10 +82,7 @@ export class SearchBox extends React.Component<SearchBoxProps> {
                             />
                         </XHorizontal>
                         {this.props.value.length > 0 && (
-                            <XButton
-                                text="Clear"
-                                onClick={this.onClear}
-                            />
+                            <XButton text="Clear" onClick={this.onClear} />
                         )}
                         <XButton
                             text="Search"

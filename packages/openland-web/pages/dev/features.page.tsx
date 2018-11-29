@@ -11,7 +11,7 @@ import { XButton } from 'openland-x/XButton';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
 
-const AddFeatureForm = withFeatureFlagAdd((props) => {
+const AddFeatureForm = withFeatureFlagAdd(props => {
     return (
         <XModalForm
             title="Adding Feature"
@@ -30,26 +30,32 @@ const AddFeatureForm = withFeatureFlagAdd((props) => {
     );
 });
 
-export default withApp('Super Features', ['super-admin', 'software-developer'], withFeatureFlags(withQueryLoader((props) => {
-    return (
-        <DevToolsScaffold title="Feature flags">
-            <XHeader text="Feature flags">
-                <AddFeatureForm />
-            </XHeader>
-            <XTable>
-                <XTable.Header>
-                    <XTable.Cell>Key</XTable.Cell>
-                    <XTable.Cell>Title</XTable.Cell>
-                </XTable.Header>
-                <XTable.Body>
-                    {props.data.featureFlags.map((v) => (
-                        <XTable.Row>
-                            <XTable.Cell>{v.key}</XTable.Cell>
-                            <XTable.Cell>{v.title}</XTable.Cell>
-                        </XTable.Row>
-                    ))}
-                </XTable.Body>
-            </XTable>
-        </DevToolsScaffold>
-    );
-})));
+export default withApp(
+    'Super Features',
+    ['super-admin', 'software-developer'],
+    withFeatureFlags(
+        withQueryLoader(props => {
+            return (
+                <DevToolsScaffold title="Feature flags">
+                    <XHeader text="Feature flags">
+                        <AddFeatureForm />
+                    </XHeader>
+                    <XTable>
+                        <XTable.Header>
+                            <XTable.Cell>Key</XTable.Cell>
+                            <XTable.Cell>Title</XTable.Cell>
+                        </XTable.Header>
+                        <XTable.Body>
+                            {props.data.featureFlags.map(v => (
+                                <XTable.Row>
+                                    <XTable.Cell>{v.key}</XTable.Cell>
+                                    <XTable.Cell>{v.title}</XTable.Cell>
+                                </XTable.Row>
+                            ))}
+                        </XTable.Body>
+                    </XTable>
+                </DevToolsScaffold>
+            );
+        }),
+    ),
+);

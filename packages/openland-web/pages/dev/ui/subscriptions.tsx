@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 
-export default withApp('UI Framework - Subscriptions', 'viewer', (props) => {
+export default withApp('UI Framework - Subscriptions', 'viewer', props => {
     return (
         <DevDocsScaffold title="Subscriptions">
             <XContent>

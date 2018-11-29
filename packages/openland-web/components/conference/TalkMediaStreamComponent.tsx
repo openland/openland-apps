@@ -2,7 +2,11 @@ import * as React from 'react';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { Conference_conference_peers_connection } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { ConferenceCandidateMutation, ConferenceOfferMutation, ConferenceAnswerMutation } from 'openland-api';
+import {
+    ConferenceCandidateMutation,
+    ConferenceOfferMutation,
+    ConferenceAnswerMutation,
+} from 'openland-api';
 
 export interface TalkMediaStreamComponentProps {
     apollo: OpenApolloClient;
@@ -15,7 +19,9 @@ export interface TalkMediaStreamComponentProps {
     onStreamClosed: (peerId: string) => void;
 }
 
-export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamComponentProps> {
+export class TalkMediaStreamComponent extends React.Component<
+    TalkMediaStreamComponentProps
+> {
     container = React.createRef<HTMLDivElement>();
     started = false;
     answerHandled = false;
@@ -28,20 +34,28 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
     audio: HTMLAudioElement[] = [];
 
     componentDidMount() {
-        console.log('Connection mounted: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log(
+            'Connection mounted: ' +
+                this.props.id +
+                ': ' +
+                this.props.connection.state,
+        );
         this.started = true;
         this.peerConnection = new RTCPeerConnection({
-            iceServers: [{
-                urls: ['turn:35.185.221.195:3478?transport=udp'],
-                username: 'somecalluser',
-                credential: 'samplepassword'
-            }, {
-                urls: ['stun:35.185.221.195:3478?transport=udp'],
-                username: 'somecalluser',
-                credential: 'samplepassword'
-            }]
+            iceServers: [
+                {
+                    urls: ['turn:35.185.221.195:3478?transport=udp'],
+                    username: 'somecalluser',
+                    credential: 'samplepassword',
+                },
+                {
+                    urls: ['stun:35.185.221.195:3478?transport=udp'],
+                    username: 'somecalluser',
+                    credential: 'samplepassword',
+                },
+            ],
         });
-        this.peerConnection.onicecandidate = (ev) => {
+        this.peerConnection.onicecandidate = ev => {
             backoff(async () => {
                 if (!this.started) {
                     return;
@@ -49,12 +63,15 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
 
                 if (ev.candidate) {
                     console.log('ICE:' + JSON.stringify(ev.candidate));
-                    await this.props.apollo.mutate(ConferenceCandidateMutation, {
-                        id: this.props.id,
-                        peerId: this.props.peerId,
-                        ownPeerId: this.props.ownPeerId,
-                        candidate: JSON.stringify(ev.candidate)
-                    });
+                    await this.props.apollo.mutate(
+                        ConferenceCandidateMutation,
+                        {
+                            id: this.props.id,
+                            peerId: this.props.peerId,
+                            ownPeerId: this.props.ownPeerId,
+                            candidate: JSON.stringify(ev.candidate),
+                        },
+                    );
                 }
             });
         };
@@ -76,7 +93,12 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
         this.handleState();
     }
     componentDidUpdate() {
-        console.log('Connection updated: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log(
+            'Connection updated: ' +
+                this.props.id +
+                ': ' +
+                this.props.connection.state,
+        );
         this.handleState();
     }
     componentWillUnmount() {
@@ -107,7 +129,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                     id: this.props.id,
                     peerId: this.props.peerId,
                     ownPeerId: this.props.ownPeerId,
-                    offer: JSON.stringify(this.localDescription)
+                    offer: JSON.stringify(this.localDescription),
                 });
             });
         } else if (this.props.connection.state === 'NEED_ANSWER') {
@@ -139,7 +161,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                     id: this.props.id,
                     peerId: this.props.peerId,
                     ownPeerId: this.props.ownPeerId,
-                    answer: JSON.stringify(this.localDescription)
+                    answer: JSON.stringify(this.localDescription),
                 });
             });
         } else if (this.props.connection.state === 'READY') {
@@ -171,7 +193,9 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                                 return;
                             }
                             console.log('INCOMING ICE:' + ice);
-                            await this.peerConnection.addIceCandidate(JSON.parse(ice));
+                            await this.peerConnection.addIceCandidate(
+                                JSON.parse(ice),
+                            );
                         });
                     }
                 }

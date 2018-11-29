@@ -9,7 +9,7 @@ const WelcomeModalWrapper = Glamorous.div({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     backgroundColor: '#fff',
-    backgroundImage: 'url(\'/static/X/confetti.svg\')',
+    backgroundImage: "url('/static/X/confetti.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'top -25px center',
@@ -19,13 +19,13 @@ const WelcomeModalWrapper = Glamorous.div({
     paddingRight: 80,
     width: 620,
     margin: 'auto',
-    borderRadius: 6
+    borderRadius: 6,
 });
 
 const WelcomePopupContent = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const WelcomePopupTitle = Glamorous.div({
@@ -38,7 +38,7 @@ const WelcomePopupTitle = Glamorous.div({
 
 const WelcomeModalRowsWrapper = Glamorous.div({
     alignSelf: 'center',
-    marginBottom: 32
+    marginBottom: 32,
 });
 
 const WelcomeModalRow = Glamorous.div({
@@ -49,19 +49,19 @@ const WelcomeModalRow = Glamorous.div({
     marginBottom: 18,
     '& > img': {
         marginRight: 26,
-        marginTop: 3
-    }
+        marginTop: 3,
+    },
 });
 
 const WelcomeModalText = Glamorous.div({
     fontSize: 15,
     lineHeight: 1.47,
     letterSpacing: -0.2,
-    color: '#334562'
+    color: '#334562',
 });
 
 const WelcomeModalButton = Glamorous(XButton)({
-    width: 190
+    width: 190,
 });
 
 export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
@@ -69,7 +69,7 @@ export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
         super(props);
 
         this.state = {
-            isOpen: false
+            isOpen: false,
         };
     }
 
@@ -78,10 +78,10 @@ export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
             localStorage.removeItem('isnewuser');
 
             this.setState({
-                isOpen: false
+                isOpen: false,
             });
         }
-    }
+    };
 
     componentWillMount() {
         if (canUseDOM) {
@@ -89,7 +89,7 @@ export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
 
             if (needToShow === 'newuser') {
                 this.setState({
-                    isOpen: true
+                    isOpen: true,
                 });
             }
         }
@@ -106,22 +106,38 @@ export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
             >
                 <WelcomeModalWrapper>
                     <WelcomePopupContent>
-                        <WelcomePopupTitle>Welcome to Openland! </WelcomePopupTitle>
+                        <WelcomePopupTitle>
+                            Welcome to Openland!{' '}
+                        </WelcomePopupTitle>
                         <WelcomeModalRowsWrapper>
                             <WelcomeModalRow>
                                 <img src="/static/X/ic-home.svg" />
-                                <WelcomeModalText>Fill out your profile to attract inbound opportunities</WelcomeModalText>
+                                <WelcomeModalText>
+                                    Fill out your profile to attract inbound
+                                    opportunities
+                                </WelcomeModalText>
                             </WelcomeModalRow>
                             <WelcomeModalRow>
                                 <img src="/static/X/ic-organization-big.svg" />
-                                <WelcomeModalText>Explore organizations directory and start conversations</WelcomeModalText>
+                                <WelcomeModalText>
+                                    Explore organizations directory and start
+                                    conversations
+                                </WelcomeModalText>
                             </WelcomeModalRow>
                             <WelcomeModalRow>
                                 <img src="/static/X/ic-messenges.svg" />
-                                <WelcomeModalText>Chat with Openland Support to get help for your research</WelcomeModalText>
+                                <WelcomeModalText>
+                                    Chat with Openland Support to get help for
+                                    your research
+                                </WelcomeModalText>
                             </WelcomeModalRow>
                         </WelcomeModalRowsWrapper>
-                        <WelcomeModalButton style="primary" size="large" text="Got it!" onClick={this.checkModal} />
+                        <WelcomeModalButton
+                            style="primary"
+                            size="large"
+                            text="Got it!"
+                            onClick={this.checkModal}
+                        />
                     </WelcomePopupContent>
                 </WelcomeModalWrapper>
             </XModal>

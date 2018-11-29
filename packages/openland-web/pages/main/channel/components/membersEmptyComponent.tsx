@@ -9,7 +9,7 @@ const EmptyRoot = Glamorous.div({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 'auto'
+    margin: 'auto',
 });
 
 const EmptyContent = Glamorous.div({
@@ -19,7 +19,7 @@ const EmptyContent = Glamorous.div({
     justifyContent: 'center',
     alignItems: 'center',
     flexShrink: 0,
-    marginBottom: 50
+    marginBottom: 50,
 });
 
 const Reactangle = Glamorous.div({
@@ -28,12 +28,12 @@ const Reactangle = Glamorous.div({
     position: 'absolute',
     top: 'calc(50% - 300px)',
     left: 0,
-    backgroundImage: 'url(\'/static/X/messenger/reactangle.svg\')',
+    backgroundImage: "url('/static/X/messenger/reactangle.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'bottom',
     zIndex: 0,
-    pointerEvents: 'none'
+    pointerEvents: 'none',
 });
 
 const ImageWrapper = Glamorous.div({
@@ -41,13 +41,13 @@ const ImageWrapper = Glamorous.div({
     justifyContent: 'center',
     marginTop: 50,
     alignSelf: 'center',
-    marginBottom: 50
+    marginBottom: 50,
 });
 
 const Image = Glamorous.div<{ smaller: boolean }>(props => ({
     width: props.smaller ? 350 : 466,
     height: props.smaller ? 200 : 314,
-    backgroundImage: 'url(\'/static/X/messenger/channel-members.svg\')',
+    backgroundImage: "url('/static/X/messenger/channel-members.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
@@ -59,7 +59,7 @@ const Text = Glamorous.div({
     lineHeight: 1.71,
     letterSpacing: -0.2,
     color: '#5c6a81',
-    marginBottom: 8
+    marginBottom: 8,
 });
 
 const InfoText = Glamorous.div({
@@ -69,10 +69,17 @@ const InfoText = Glamorous.div({
     lineHeight: 1.5,
     letterSpacing: -0.4,
     color: '#334562',
-    marginBottom: 32
+    marginBottom: 32,
 });
 
-export const EmptyComponent = (props: { text: string, aloneMember: boolean, smaller: boolean, channelTitle: string, chatId: string, orgId: string }) => (
+export const EmptyComponent = (props: {
+    text: string;
+    aloneMember: boolean;
+    smaller: boolean;
+    channelTitle: string;
+    chatId: string;
+    orgId: string;
+}) => (
     <EmptyRoot>
         <Reactangle />
         <EmptyContent>
@@ -84,9 +91,7 @@ export const EmptyComponent = (props: { text: string, aloneMember: boolean, smal
             <InviteMembersModal
                 channelTitle={props.channelTitle}
                 roomId={props.chatId}
-                target={
-                    <XButton style="primary" text="Send invitations" />
-                }
+                target={<XButton style="primary" text="Send invitations" />}
             />
         </EmptyContent>
     </EmptyRoot>

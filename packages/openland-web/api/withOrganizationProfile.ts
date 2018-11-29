@@ -7,5 +7,9 @@ import { UpdateOrganizationMutation } from 'openland-api/UpdateOrganizationMutat
 
 export const withOrganizationProfile = graphqlCompose2(
     graphqlRouted(OrganizationProfileQuery, { params: ['organizationId'] }),
-    graphqlMutation(UpdateOrganizationMutation, 'updateOrganizaton', { params: ['organizationId'], refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'] })
+    graphqlMutation(UpdateOrganizationMutation, 'updateOrganizaton', {
+        params: ['organizationId'],
+        refetchQueries: [OrganizationQuery],
+        refetchParams: ['organizationId'],
+    }),
 );

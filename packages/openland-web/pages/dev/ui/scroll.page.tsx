@@ -12,7 +12,7 @@ const Box = Glamorous.div({
     height: '100px',
     backgroundColor: '#0000ff',
     margin: 8,
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 const Container = Glamorous.div({
@@ -20,10 +20,10 @@ const Container = Glamorous.div({
     flexDirection: 'column',
     width: 200,
     height: 500,
-    backgroundColor: '#ff0000'
+    backgroundColor: '#ff0000',
 });
 
-export default withApp('UI Framework - Scroll', 'viewer', (props) => {
+export default withApp('UI Framework - Scroll', 'viewer', props => {
     return (
         <DevDocsScaffold title="Scroll">
             <XContent>

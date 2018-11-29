@@ -9,7 +9,10 @@ import { MessageFull_urlAugmentation } from 'openland-api/Types';
 import { layoutMediaReverse } from './utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from '../../icons/ic-close.svg';
-import { makeInternalLinkRelative, isInternalLink } from './MessageTextComponent';
+import {
+    makeInternalLinkRelative,
+    isInternalLink,
+} from './MessageTextComponent';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 
 const Container = Glamorous(XLink)({
@@ -25,34 +28,36 @@ const Container = Glamorous(XLink)({
     color: '#121e2b !important',
     width: '100%',
     '&:hover .delete-button': {
-        opacity: 1
-    }
+        opacity: 1,
+    },
 });
 
-const DeleteButton = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
-    opacity: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    width: 32,
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-    background: '#ffffff',
-    '& > svg > g > path:last-child': {
-        fill: 'rgba(0, 0, 0, 0.3)'
-    },
-    '&:hover & > svg > g > path:last-child': {
-        fill: 'rgba(0, 0, 0, 0.4)'
-    }
-})));
+const DeleteButton = makeNavigable(
+    Glamorous.div<NavigableChildProps>(() => ({
+        opacity: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: 32,
+        height: 32,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        background: '#ffffff',
+        '& > svg > g > path:last-child': {
+            fill: 'rgba(0, 0, 0, 0.3)',
+        },
+        '&:hover & > svg > g > path:last-child': {
+            fill: 'rgba(0, 0, 0, 0.4)',
+        },
+    })),
+);
 
 const ContentWrapper = Glamorous.div({
     flex: 1,
     paddingRight: 15,
-    width: 'calc(100% - 94px)'
+    width: 'calc(100% - 94px)',
 });
 
 const Hostname = Glamorous.div({
@@ -65,8 +70,8 @@ const Hostname = Glamorous.div({
         height: 12,
         '& path': {
             opacity: 0.5,
-            fill: '#334562'
-        }
+            fill: '#334562',
+        },
     },
     '& span': {
         opacity: 0.5,
@@ -74,8 +79,8 @@ const Hostname = Glamorous.div({
         fontWeight: 600,
         lineHeight: '20px',
         letterSpacing: 0,
-        color: '#334562'
-    }
+        color: '#334562',
+    },
 });
 
 const Favicon = Glamorous.img({
@@ -98,8 +103,8 @@ const Title = Glamorous.div({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     '&:first-child': {
-        marginTop: 0
-    }
+        marginTop: 0,
+    },
 });
 
 const Description = Glamorous.div({
@@ -113,7 +118,7 @@ const Description = Glamorous.div({
     display: 'block',
     overflow: 'hidden',
     '&:first-child': {
-        marginTop: 0
+        marginTop: 0,
     },
     // Webkit line clamp
     '&': {
@@ -128,20 +133,25 @@ const ImageWrapper = Glamorous.div({
     borderRadius: 5,
     overflow: 'hidden',
     '& img': {
-        display: 'block'
+        display: 'block',
     },
 });
 
-interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentation {
+interface MessageUrlAugmentationComponentProps
+    extends MessageFull_urlAugmentation {
     messageId: string;
     isMe: boolean;
 }
 
-export class MessageUrlAugmentationComponent extends React.Component<MessageUrlAugmentationComponentProps> {
+export class MessageUrlAugmentationComponent extends React.Component<
+    MessageUrlAugmentationComponentProps
+> {
     private preprocessed: Span[];
     constructor(props: MessageUrlAugmentationComponentProps) {
         super(props);
-        this.preprocessed = props.description ? preprocessText(props.description) : [];
+        this.preprocessed = props.description
+            ? preprocessText(props.description)
+            : [];
     }
     render() {
         let { hostname, title, photo, imageInfo } = this.props;
@@ -150,15 +160,37 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageUrlA
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
             } else if (v.type === 'link') {
-                return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
+                return (
+                    <XLinkExternal
+                        className="link"
+                        key={'link-' + i}
+                        href={v.link!!}
+                        content={v.text!!}
+                        showIcon={false}
+                    />
+                );
             } else {
-                return <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>;
+                return (
+                    <span key={'text-' + i}>
+                        {emojify(v.text!!, { style: { height: 18 } })}
+                    </span>
+                );
             }
         });
 
         let dimensions = undefined;
-        if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
-            dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
+        if (
+            photo &&
+            imageInfo &&
+            imageInfo.imageWidth &&
+            imageInfo.imageHeight
+        ) {
+            dimensions = layoutMediaReverse(
+                imageInfo.imageWidth,
+                imageInfo.imageHeight,
+                94,
+                94,
+            );
         }
 
         let href: string | undefined = this.props.url;
@@ -170,11 +202,23 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageUrlA
         }
 
         return (
-            <Container href={href} path={path} onClick={(e: any) => e.stopPropagation()}>
+            <Container
+                href={href}
+                path={path}
+                onClick={(e: any) => e.stopPropagation()}
+            >
                 <ContentWrapper>
                     {hostname && (
                         <Hostname>
-                            {this.props.iconRef && <Favicon src={'https://ucarecdn.com/' + this.props.iconRef.uuid + '/'} />}
+                            {this.props.iconRef && (
+                                <Favicon
+                                    src={
+                                        'https://ucarecdn.com/' +
+                                        this.props.iconRef.uuid +
+                                        '/'
+                                    }
+                                />
+                            )}
                             {!this.props.iconRef && <WebsiteIcon />}
                             <span>{hostname}</span>
                         </Hostname>
@@ -182,18 +226,27 @@ export class MessageUrlAugmentationComponent extends React.Component<MessageUrlA
                     {title && <Title>{title}</Title>}
                     {parts && <Description>{parts}</Description>}
                 </ContentWrapper>
-                {photo && dimensions && (
-                    <ImageWrapper>
-                        <XCloudImage
-                            srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
-                            resize="fill"
-                            width={dimensions.width}
-                            height={dimensions.height}
-                        />
-                    </ImageWrapper>
-                )}
+                {photo &&
+                    dimensions && (
+                        <ImageWrapper>
+                            <XCloudImage
+                                srcCloud={
+                                    'https://ucarecdn.com/' + photo.uuid + '/'
+                                }
+                                resize="fill"
+                                width={dimensions.width}
+                                height={dimensions.height}
+                            />
+                        </ImageWrapper>
+                    )}
                 {this.props.isMe && (
-                    <DeleteButton query={{ field: 'deleteUrlAugmentation', value: this.props.messageId }} className="delete-button">
+                    <DeleteButton
+                        query={{
+                            field: 'deleteUrlAugmentation',
+                            value: this.props.messageId,
+                        }}
+                        className="delete-button"
+                    >
                         <DeleteIcon />
                     </DeleteButton>
                 )}
