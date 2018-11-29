@@ -1,0 +1,11 @@
+patch-package
+--- a/node_modules/react-native-sentry/SentryReactNative.podspec
++++ b/node_modules/react-native-sentry/SentryReactNative.podspec
+@@ -17,7 +17,6 @@ Pod::Spec.new do |s|
+ 
+   s.preserve_paths = '*.js'
+ 
+-  s.dependency 'React'
+   s.dependency 'Sentry', '~> 4.0.1'
+ 
+   s.source_files = 'ios/RNSentry*.{h,m}'

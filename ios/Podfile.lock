@@ -19,6 +19,11 @@ PODS:
   - PINRemoteImage/PINCache (3.0.0-beta.13):
     - PINCache (= 3.0.1-beta.6)
     - PINRemoteImage/Core
+  - Sentry (4.0.1):
+    - Sentry/Core (= 4.0.1)
+  - Sentry/Core (4.0.1)
+  - SentryReactNative (0.39.0):
+    - Sentry (~> 4.0.1)
   - SimpleKeychain (0.8.1)
   - SwiftyJSON (4.1.0)
   - Texture (2.7):
@@ -33,6 +38,7 @@ DEPENDENCIES:
   - Answers
   - Auth0 (~> 1.0)
   - Fabric
+  - SentryReactNative (from `../node_modules/react-native-sentry`)
   - SwiftyJSON (~> 4.0)
   - Texture
 
@@ -44,9 +50,14 @@ SPEC REPOS:
     - PINCache
     - PINOperation
     - PINRemoteImage
+    - Sentry
     - SimpleKeychain
     - SwiftyJSON
     - Texture
+
+EXTERNAL SOURCES:
+  SentryReactNative:
+    :path: "../node_modules/react-native-sentry"
 
 SPEC CHECKSUMS:
   Answers: bca35eedaed069c392d01b9dcb2673e0f77d9926
@@ -55,10 +66,12 @@ SPEC CHECKSUMS:
   PINCache: d195fdba255283f7e9900a55e3cced377f431f9b
   PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
+  Sentry: a38f7879924c02239e121b19d993d23bdd1684db
+  SentryReactNative: 0b09efdee93a198fd2ff3ad3ad0cbfdf0e6507e5
   SimpleKeychain: e2485c28d82fcece35e9e41faeac42ebfe614815
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
 
-PODFILE CHECKSUM: ed8af419e98deda8cd38f90c361941747f158109
+PODFILE CHECKSUM: 2398fd81159d525404aa11bf7610392f7b20d3bf
 
 COCOAPODS: 1.5.3

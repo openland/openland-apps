@@ -17,7 +17,6 @@ import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
-import { json } from 'body-parser';
 import { prepareBottomSafeArea } from 'react-native-s/SDevice';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
