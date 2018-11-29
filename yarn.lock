@@ -4837,6 +4837,13 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
+draft-convert@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/draft-convert/-/draft-convert-2.1.4.tgz#b8817000eaf251e95583c987adda085d67254a0d"
+  dependencies:
+    immutable "~3.7.4"
+    invariant "^2.2.1"
+
 draft-js-emoji-plugin@^2.0.6:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/draft-js-emoji-plugin/-/draft-js-emoji-plugin-2.1.1.tgz#34ee28ad07ff4ec75a4182bf75d3d48d8b5d767e"

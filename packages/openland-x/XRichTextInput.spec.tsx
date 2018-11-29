@@ -6,7 +6,6 @@ describe.only('XRichComponent', () => {
         expect(myConvertToHtml(myConvertFromHtml(str))).toBe(str);
     });
 
-
     it('myConvertFromHtml some other string', () => {
         const str = '<p>123</p>';
         expect(myConvertToHtml(myConvertFromHtml(str))).toBe(str);

@@ -162,8 +162,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
                             {textItem}
                             {mention && (
                                 <MentionComponentInner
-                                    isYou={mention.isYou}
-                                    user={mention}
+                                    mention={mention}
                                     hasPopper
                                 >
                                     {mentionMatchesArray[key]}

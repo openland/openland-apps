@@ -2,16 +2,25 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
-import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
+import {
+    EditorState,
+    getDefaultKeyBinding,
+    ContentState,
+    DraftHandleValue,
+} from 'draft-js';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from './icons/ic-emoji.svg';
-import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import createMentionPlugin, {
+    MentionT,
+    defaultSuggestionsFilter,
+} from 'draft-js-mention-plugin';
 import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'openland-x/XView';
+import { myConvertToHtml, myConvertFromHtml } from './draftConversion';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',
@@ -48,12 +57,16 @@ const EmojiWrapper = Glamorous.div({
     },
 });
 
-const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element: HTMLElement) => {
+const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (
+    element: HTMLElement,
+) => {
     if (!element) {
         return null;
     }
 
-    const position = window.getComputedStyle(element).getPropertyValue('position');
+    const position = window
+        .getComputedStyle(element)
+        .getPropertyValue('position');
     if (position !== 'static') {
         return element;
     }
@@ -74,15 +87,21 @@ const emojiPlugin = createEmojiPlugin({
             const relativeParentRect = relativeParent.getBoundingClientRect();
             relativeRect.left = decoratorRect.left - relativeParentRect.left;
             relativeRect.top =
-                decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
+                decoratorRect.top -
+                relativeParentRect.top +
+                relativeParentRect.height;
             console.warn(relativeParentRect);
         } else {
             relativeRect.scrollTop =
                 window.pageYOffset ||
-                (document.documentElement ? document.documentElement.scrollTop : undefined);
+                (document.documentElement
+                    ? document.documentElement.scrollTop
+                    : undefined);
             relativeRect.scrollLeft =
                 window.pageXOffset ||
-                (document.documentElement ? document.documentElement.scrollLeft : undefined);
+                (document.documentElement
+                    ? document.documentElement.scrollLeft
+                    : undefined);
 
             relativeRect.top = decoratorRect.top;
             relativeRect.left = decoratorRect.left;
@@ -182,13 +201,23 @@ type MentionComponentInnerTextProps = {
     inCompose?: boolean;
 };
 
-const MentionComponentInnerText = ({ mention, inCompose, children }: MentionComponentInnerTextProps) => {
-    const paddings = inCompose ? {
-        paddingTop: 1,
-        paddingBottom: 1,
-        paddingLeft: 3,
-        paddingRight: 3,
-    } : {};
+const MentionComponentInnerText = ({
+    mention,
+    inCompose,
+    children,
+}: {
+    mention: MessageFull_mentions;
+    inCompose?: boolean;
+    children?: any;
+}) => {
+    const paddings = inCompose
+        ? {
+              paddingTop: 1,
+              paddingBottom: 1,
+              paddingLeft: 3,
+              paddingRight: 3,
+          }
+        : {};
 
     let style;
 
@@ -197,7 +226,7 @@ const MentionComponentInnerText = ({ mention, inCompose, children }: MentionComp
     }
 
     if (mention.isYou) {
-        return {
+        style = {
             ...paddings,
             backgroundColor: '#fff6e5',
             color: '#1790ff',
@@ -212,17 +241,36 @@ const MentionComponentInnerText = ({ mention, inCompose, children }: MentionComp
     return <span style={style}>{children}</span>;
 };
 
-export class MentionComponentInner extends React.Component<MentionComponentInnerTextProps> {
+export class MentionComponentInner extends React.Component<
+    MentionComponentInnerTextProps
+> {
     render() {
         const { mention, hasPopper } = this.props;
-        if (hasPopper) {    
+        if (hasPopper) {
             return (
-                <UserPopper user={mention} isMe={mention.isYou} noCardOnMe startSelected={false}>
-                    <MentionComponentInnerText {...this.props} />
+                <UserPopper
+                    user={mention}
+                    isMe={mention.isYou}
+                    noCardOnMe
+                    startSelected={false}
+                >
+                    <MentionComponentInnerText
+                        mention={this.props.mention}
+                        inCompose={this.props.inCompose}
+                    >
+                        {this.props.children}
+                    </MentionComponentInnerText>
                 </UserPopper>
             );
         } else {
-            return <MentionComponentInnerText {...this.props} />;
+            return (
+                <MentionComponentInnerText
+                    mention={this.props.mention}
+                    inCompose={this.props.inCompose}
+                >
+                    {this.props.children}
+                </MentionComponentInnerText>
+            );
         }
     }
 }
@@ -233,7 +281,11 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponentInner isYou={props.mention.isYou} className={props.className} inCompose>
+            <MentionComponentInner
+                mention={props.mention}
+                className={props.className}
+                inCompose
+            >
                 {props.children}
             </MentionComponentInner>
         );
@@ -283,7 +335,14 @@ export const MentionEntry = (props: any) => {
             backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
             hoverBackgroundColor={'#f9f9f9'}
         >
-            <XAvatar size={'m-small'} style={'user'} src={mention.avatar} objectName={mention.name} objectId={mention.id} online={mention.online} />
+            <XAvatar
+                size={'m-small'}
+                style={'user'}
+                src={mention.avatar}
+                objectName={mention.name}
+                objectId={mention.id}
+                online={mention.online}
+            />
 
             <XView
                 flexDirection="column"
@@ -321,7 +380,9 @@ export const MentionEntry = (props: any) => {
                 color={isFocused ? '#000000' : 'transparent'}
             >
                 <div style={{ position: 'relative' }}>
-                    <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
+                    <span style={{ top: 2, position: 'absolute', left: -16 }}>
+                        ↵
+                    </span>{' '}
                     <span>to select</span>
                 </div>
             </XView>
@@ -346,7 +407,10 @@ type XRichTextInputState = {
     widthOfContainer: number;
 };
 /// End Mentions
-export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRichTextInputState> {
+export class XRichTextInput extends React.PureComponent<
+    XRichTextInputProps,
+    XRichTextInputState
+> {
     private editorRef = React.createRef<Editor>();
     private containerRef = React.createRef<ContainerWrapper>();
 
@@ -376,19 +440,19 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 suggestions: defaultSuggestionsFilter(value, mentionsData),
             });
         });
-    }
+    };
 
     focus = () => {
         window.requestAnimationFrame(() => {
             this.setState({
-                editorState: EditorState.moveFocusToEnd(this.state.editorState)
+                editorState: EditorState.moveFocusToEnd(this.state.editorState),
             });
-            
+
             if (this.editorRef.current) {
                 this.editorRef.current.focus();
             }
         });
-    }
+    };
 
     reset = () => {
         window.requestAnimationFrame(() => {
@@ -400,7 +464,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 ),
             }));
         });
-    }
+    };
 
     resetAndFocus = () => {
         window.requestAnimationFrame(() => {
@@ -417,7 +481,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 },
             );
         });
-    }
+    };
 
     onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
         if (command === 'x-editor-submit') {
@@ -427,7 +491,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             }
         }
         return 'not-handled';
-    }
+    };
 
     onChange = (editorState: EditorState) => {
         const html = myConvertToHtml(editorState.getCurrentContent());
@@ -443,7 +507,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 }
             },
         );
-    }
+    };
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
@@ -462,7 +526,9 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             this.containerRef &&
             this.containerRef.current &&
             (ReactDOM.findDOMNode(this.containerRef.current) as Element);
-        const widthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
+        const widthOfContainer = containerEl
+            ? containerEl.getBoundingClientRect().width
+            : 0;
         this.setState({
             widthOfContainer,
         });
@@ -471,8 +537,13 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     render() {
         if (canUseDOM) {
             return (
-                <ContainerWrapper {...extractFlexProps(this.props)} ref={this.containerRef}>
-                    <MentionSuggestionsWrapper width={this.state.widthOfContainer}>
+                <ContainerWrapper
+                    {...extractFlexProps(this.props)}
+                    ref={this.containerRef}
+                >
+                    <MentionSuggestionsWrapper
+                        width={this.state.widthOfContainer}
+                    >
                         <MentionSuggestions
                             onSearchChange={this.onSearchChange}
                             suggestions={this.state.suggestions}
