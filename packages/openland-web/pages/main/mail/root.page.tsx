@@ -25,7 +25,10 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
-import { MessagesStateContext, MessagesStateContextProps } from '../../../components/messenger/components/MessagesStateContext';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from '../../../components/messenger/components/MessagesStateContext';
 import { MessageFull } from 'openland-api/Types';
 
 export const ChatContainer = Glamorous.div({
@@ -36,7 +39,7 @@ export const ChatContainer = Glamorous.div({
     width: '100%',
     flexGrow: 1,
     flexShrink: 0,
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 export const ChatListContainer = Glamorous.div({
@@ -50,11 +53,11 @@ export const ChatListContainer = Glamorous.div({
     borderRightColor: XThemeDefault.separatorColor,
     backgroundColor: XThemeDefault.backgroundColor,
     '@media (max-width: 1100px)': {
-        width: 300
+        width: 300,
     },
     '@media (max-width: 950px)': {
-        width: 230
-    }
+        width: 230,
+    },
 });
 
 export const ConversationContainer = Glamorous.div({
@@ -73,7 +76,7 @@ export const ConversationContainer = Glamorous.div({
     },
     '@media (max-width: 950px)': {
         width: 'calc(100% - 230px)',
-    }
+    },
 });
 
 export const Header = Glamorous(XHorizontal)({
@@ -86,7 +89,7 @@ export const Header = Glamorous(XHorizontal)({
 });
 
 export const Title = Glamorous.div({
-    ...XFont.h600
+    ...XFont.h600,
 });
 
 export const OrganizationProfilContainer = Glamorous.div({
@@ -94,28 +97,39 @@ export const OrganizationProfilContainer = Glamorous.div({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    flexShrink: 0
+    flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo((props) => (
-    props.data && props.data.invite
-        ? props.data.invite.room.membership === 'MEMBER'
-            ? <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
-            : <RoomsInviteComponent inviteLink={props.router.routeQuery.invte} room={props.data.invite.room} invite={props.data.invite} />
-        : <XLoader loading={true} />
-));
+export const RoomInviteFromLink = withChannelInviteInfo(
+    props =>
+        props.data && props.data.invite ? (
+            props.data.invite.room.membership === 'MEMBER' ? (
+                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+            ) : (
+                <RoomsInviteComponent
+                    inviteLink={props.router.routeQuery.invte}
+                    room={props.data.invite.room}
+                    invite={props.data.invite}
+                />
+            )
+        ) : (
+            <XLoader loading={true} />
+        ),
+);
 
 export const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
-        transition: 'all .2s'
+        transition: 'all .2s',
     },
     '& svg > g > path:last-child': {
         fill: '#1790ff',
-        opacity: 0.5
-    }
+        opacity: 0.5,
+    },
 });
 
-class ChatListContainerWrapper extends React.PureComponent<{ emptyState: boolean }> {
+class ChatListContainerWrapper extends React.PureComponent<{
+    emptyState: boolean;
+}> {
     render() {
         const emptyState = this.props.emptyState;
         return (
@@ -140,7 +154,10 @@ interface MessagePageInnerState extends MessagesStateContextProps {
     pageTitle: string | undefined;
 }
 
-class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageInnerState> {
+class MessagePageInner extends React.Component<
+    { router: XRouter },
+    MessagePageInnerState
+> {
     constructor(props: { router: XRouter }) {
         super(props);
 
@@ -167,7 +184,11 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
     }
 
     componentWillReceiveProps(nextProps: { router: XRouter }) {
-        if (this.props.router.routeQuery.conversationId !== nextProps.router.routeQuery.conversationId && !this.state.useForwardMessages) {
+        if (
+            this.props.router.routeQuery.conversationId !==
+                nextProps.router.routeQuery.conversationId &&
+            !this.state.useForwardMessages
+        ) {
             this.state.resetAll();
         }
     }
@@ -180,16 +201,16 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             res.add(message);
         }
         this.setState({
-            selectedMessages: res
+            selectedMessages: res,
         });
-    }
+    };
 
     private setEditMessage = (id: string | null, message: string | null) => {
         this.setState({
             editMessageId: id,
-            editMessage: message
+            editMessage: message,
         });
-    }
+    };
 
     private setForwardMessages = (id: Set<string> | null) => {
         let useHeader = false;
@@ -198,33 +219,37 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         }
         this.setState({
             forwardMessagesId: id,
-            useForwardHeader: useHeader
+            useForwardHeader: useHeader,
         });
-    }
+    };
 
     private forwardMessages = () => {
         this.setState({
             useForwardMessages: true,
             useForwardPlaceholder: true,
-            useForwardHeader: false
+            useForwardHeader: false,
         });
-    }
+    };
 
-    private setReplyMessages = (id: Set<string> | null, messages: Set<string> | null, sender: Set<string> | null) => {
+    private setReplyMessages = (
+        id: Set<string> | null,
+        messages: Set<string> | null,
+        sender: Set<string> | null,
+    ) => {
         this.setState({
             replyMessagesId: id,
             replyMessages: messages,
             replyMessagesSender: sender,
-            forwardMessagesId: null
+            forwardMessagesId: null,
         });
-    }
+    };
 
     private changeForwardConverstion = () => {
         this.setState({
             useForwardPlaceholder: false,
-            useForwardHeader: false
+            useForwardHeader: false,
         });
-    }
+    };
 
     private resetAll = () => {
         this.setState({
@@ -237,15 +262,15 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             replyMessagesSender: null,
             useForwardMessages: false,
             useForwardPlaceholder: false,
-            useForwardHeader: false
+            useForwardHeader: false,
         });
-    }
+    };
 
     handlePageTitle = (title?: string) => {
         this.setState({
-            pageTitle: title
+            pageTitle: title,
         });
-    }
+    };
 
     render() {
         let { props, state } = this;
@@ -257,9 +282,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             return (
                 <>
                     <XDocumentHead title={pageTitle} />
-                    <Scaffold>
-                        {}
-                    </Scaffold>
+                    <Scaffold>{}</Scaffold>
                 </>
             );
         }
@@ -272,7 +295,17 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         let oid = props.router.routeQuery.organizationId;
         let uid = props.router.routeQuery.userId;
 
-        let tab: 'empty' | 'conversation' | 'compose' | 'rooms' | 'invite' | 'organization' | 'user' | 'conference' | 'chat' = 'empty';
+        let tab:
+            | 'empty'
+            | 'conversation'
+            | 'compose'
+            | 'rooms'
+            | 'invite'
+            | 'organization'
+            | 'user'
+            | 'conference'
+            | 'chat' =
+            'empty';
 
         if (isCompose) {
             tab = 'compose';
@@ -321,7 +354,9 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MessagesStateContext.Provider value={this.state}>
                             <ChatContainer>
-                                <ChatListContainerWrapper emptyState={tab === 'empty'} />
+                                <ChatListContainerWrapper
+                                    emptyState={tab === 'empty'}
+                                />
 
                                 <ConversationContainer>
                                     {tab === 'compose' && (
@@ -334,29 +369,47 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                                     )}
                                     {tab === 'conversation' && (
                                         <MessengerComponent
-                                            id={props.router.routeQuery.conversationId}
-                                            handlePageTitle={this.handlePageTitle}
+                                            id={
+                                                props.router.routeQuery
+                                                    .conversationId
+                                            }
+                                            handlePageTitle={
+                                                this.handlePageTitle
+                                            }
                                         />
                                     )}
                                     {tab === 'rooms' && (
                                         <RoomsExploreComponent />
                                     )}
-                                    {tab === 'invite' && (
-                                        <RoomInviteFromLink />
-                                    )}
+                                    {tab === 'invite' && <RoomInviteFromLink />}
                                     {tab === 'organization' && (
                                         <OrganizationProfilContainer>
-                                            <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} />
+                                            <OrganizationProfile
+                                                organizationId={oid}
+                                                handlePageTitle={
+                                                    this.handlePageTitle
+                                                }
+                                            />
                                         </OrganizationProfilContainer>
                                     )}
                                     {tab === 'user' && (
                                         <OrganizationProfilContainer>
-                                            <UserProfile userId={uid} handlePageTitle={this.handlePageTitle} />
+                                            <UserProfile
+                                                userId={uid}
+                                                handlePageTitle={
+                                                    this.handlePageTitle
+                                                }
+                                            />
                                         </OrganizationProfilContainer>
                                     )}
                                     {tab === 'chat' && (
                                         <OrganizationProfilContainer>
-                                            <RoomProfile conversationId={cid} handlePageTitle={this.handlePageTitle} />
+                                            <RoomProfile
+                                                conversationId={cid}
+                                                handlePageTitle={
+                                                    this.handlePageTitle
+                                                }
+                                            />
                                         </OrganizationProfilContainer>
                                     )}
                                 </ConversationContainer>
@@ -369,6 +422,12 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
     }
 }
 
-export default withApp('Mail', 'viewer', withRouter(withQueryLoader((props) => {
-    return <MessagePageInner router={props.router} />;
-})));
+export default withApp(
+    'Mail',
+    'viewer',
+    withRouter(
+        withQueryLoader(props => {
+            return <MessagePageInner router={props.router} />;
+        }),
+    ),
+);

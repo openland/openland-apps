@@ -9,10 +9,10 @@ import { XCheckboxBasic } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
 
 const ContentWrapper = Glamorous(XPopper.Content)({
-    minWidth: 180
+    minWidth: 180,
 });
 
-const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
+const PickerButton = Glamorous(XButton)<{ activated?: boolean }>(props => ({
     backgroundColor: props.activated ? '#f6f6f6' : 'none',
     borderColor: props.activated ? 'transparent!important' : 'none',
     borderRadius: 10,
@@ -20,38 +20,43 @@ const PickerButton = Glamorous(XButton)<{ activated?: boolean }>((props) => ({
     fontSize: 14,
     '& .icon': {
         fontSize: 22,
-        marginRight: '8px!important'
+        marginRight: '8px!important',
     },
     '& > div': {
         paddingLeft: '10px!important',
         paddingRight: '12px!important',
-    }
+    },
 }));
 
 const PickerWrapper = Glamorous(XVertical)({
-    margin: -10
+    margin: -10,
 });
 
 const PickerEntries = Glamorous(XHorizontal)({
-    margin: 0
+    margin: 0,
 });
 
-const options = { label: 'Sort by', values: [{ label: 'Last updated', value: 'updatedAt' }, { label: 'Join date', value: 'createdAt' }] };
+const options = {
+    label: 'Sort by',
+    values: [
+        { label: 'Last updated', value: 'updatedAt' },
+        { label: 'Join date', value: 'createdAt' },
+    ],
+};
 
 interface SortControlledPickerProps {
     query?: string;
-    onPick: (location: { label: string, value: string }) => void;
+    onPick: (location: { label: string; value: string }) => void;
     options: {
-        label: string,
+        label: string;
         values: {
-            label: string,
-            value: string
-        }[]
+            label: string;
+            value: string;
+        }[];
     };
 }
 
 class SortControlledPicker extends React.Component<SortControlledPickerProps> {
-
     render() {
         return (
             <MultiplePicker
@@ -74,48 +79,73 @@ const CheckboxWrap = Glamorous.div({
     borderTop: '1px solid #f1f2f5',
 });
 
-export class SortPicker extends React.Component<{ withoutFeatured?: boolean, sort: { orderBy: string, featured: boolean }, onPick: (sort: { orderBy: string, featured: boolean }) => void, options?: { label: string, values: { label: string, value: string }[] } }, { popper: boolean, featured: boolean }> {
+export class SortPicker extends React.Component<
+    {
+        withoutFeatured?: boolean;
+        sort: { orderBy: string; featured: boolean };
+        onPick: (sort: { orderBy: string; featured: boolean }) => void;
+        options?: { label: string; values: { label: string; value: string }[] };
+    },
+    { popper: boolean; featured: boolean }
+> {
     constructor(props: any) {
         super(props);
         this.state = { popper: false, featured: props.sort.featured };
     }
 
-    onPick = (q: { label: string, value: string }) => {
+    onPick = (q: { label: string; value: string }) => {
         this.close();
-        this.props.onPick({ featured: this.props.sort.featured, orderBy: q.value });
-    }
+        this.props.onPick({
+            featured: this.props.sort.featured,
+            orderBy: q.value,
+        });
+    };
 
-    onFeturedChange = (checked: { label: string, checked: boolean }) => {
+    onFeturedChange = (checked: { label: string; checked: boolean }) => {
         this.setState({ featured: checked.checked });
         delay(0).then(() => {
-            this.props.onPick({ featured: checked.checked, orderBy: this.props.sort.orderBy });
+            this.props.onPick({
+                featured: checked.checked,
+                orderBy: this.props.sort.orderBy,
+            });
         });
-    }
+    };
 
     switch = () => {
         this.setState({ popper: !this.state.popper });
-    }
+    };
 
     close = () => {
         this.setState({ popper: false });
-    }
+    };
 
     render() {
         let content = (
             <>
                 <PickerWrapper>
                     <PickerEntries separator="none" width="100%">
-                        <SortControlledPicker onPick={this.onPick} options={this.props.options || options} />
+                        <SortControlledPicker
+                            onPick={this.onPick}
+                            options={this.props.options || options}
+                        />
                     </PickerEntries>
                 </PickerWrapper>
                 {!this.props.withoutFeatured && (
                     <CheckboxWrap>
-                        <XCheckboxBasic label="Featured first" rounded={true} value={this.state.featured ? 'f' : ''} trueValue="f" onChange={this.onFeturedChange} />
+                        <XCheckboxBasic
+                            label="Featured first"
+                            rounded={true}
+                            value={this.state.featured ? 'f' : ''}
+                            trueValue="f"
+                            onChange={this.onFeturedChange}
+                        />
                     </CheckboxWrap>
                 )}
             </>
         );
-        let selected = (this.props.options || options).values.find(v => v.value === this.props.sort.orderBy);
+        let selected = (this.props.options || options).values.find(
+            v => v.value === this.props.sort.orderBy,
+        );
         return (
             <XPopper
                 placement="bottom-end"
@@ -125,9 +155,7 @@ export class SortPicker extends React.Component<{ withoutFeatured?: boolean, sor
                 arrow={null}
                 marginTop={8}
                 marginRight={-1}
-                contentContainer={(
-                    <ContentWrapper />
-                )}
+                contentContainer={<ContentWrapper />}
             >
                 <PickerButton
                     iconOpacity={0.4}

@@ -1,4 +1,3 @@
-
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { AccountAppInviteQuery, AccountAppInviteInfoQuery } from 'openland-api';
 

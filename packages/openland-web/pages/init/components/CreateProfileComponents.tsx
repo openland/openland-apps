@@ -10,30 +10,32 @@ export const RootContainer = Glamorous.div({
     width: '100%',
     position: 'relative',
     backgroundColor: '#fff',
-    minWidth: 600
+    minWidth: 600,
 });
 
-export const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
-    width: props.width ? props.width : 45,
-    height: props.height ? props.height : 45,
-    backgroundImage: 'url(\'/static/logo-purple.svg\')',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    position: 'absolute',
-    top: 15,
-    left: 23
-}));
+export const Logo = Glamorous.div<{ width?: number; height?: number }>(
+    props => ({
+        width: props.width ? props.width : 45,
+        height: props.height ? props.height : 45,
+        backgroundImage: "url('/static/logo-purple.svg')",
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        position: 'absolute',
+        top: 15,
+        left: 23,
+    }),
+);
 
 export const Title = Glamorous.div({
     fontSize: 26,
     fontWeight: 500,
     letterSpacing: 1.8,
     color: '#1f3449',
-    marginBottom: 24
+    marginBottom: 24,
 });
 
 export const TextWrapper = Glamorous.div({
-    marginBottom: 36
+    marginBottom: 36,
 });
 
 export const Label = Glamorous.div({
@@ -42,29 +44,29 @@ export const Label = Glamorous.div({
     lineHeight: 1.27,
     letterSpacing: -0.1,
     color: '#334562',
-    marginBottom: 10
+    marginBottom: 10,
 });
 
 export const OptionalLabel = Glamorous(Label)({
-    opacity: 0.4
+    opacity: 0.4,
 });
 
 export const PhotoContiner = Glamorous(XVertical)({
-    marginLeft: 24
+    marginLeft: 24,
 });
 
 export const InputGroup = Glamorous.div({
     marginBottom: 19,
     width: 360,
     '&:last-child': {
-        marginBottom: 0
-    }
+        marginBottom: 0,
+    },
 });
 
 export const ContentWrapper = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    marginTop: 55
+    marginTop: 55,
 });
 
 export const FormWrapper = Glamorous.div({
@@ -73,10 +75,10 @@ export const FormWrapper = Glamorous.div({
 });
 
 export const FieldHeader = Glamorous(XHorizontal)({
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
 });
 
 export const Footer = Glamorous(XHorizontal)({
     justifyContent: 'space-between',
-    paddingLeft: -14
+    paddingLeft: -14,
 });

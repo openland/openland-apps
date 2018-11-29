@@ -9,7 +9,6 @@ import { XLoader } from 'openland-x/XLoader';
 import { withChanneJoinlnviteSIgnin } from '../../api/withChanneJoinlnviteSIgnin';
 
 class AcceptInviteComponent extends React.Component<{ mutation: any }> {
-
     componentDidMount() {
         this.accept();
     }
@@ -17,22 +16,27 @@ class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     accept = async () => {
         await this.props.mutation({});
         window.location.href = '/';
-    }
+    };
     render() {
-        return (<XLoader loading={true} />);
+        return <XLoader loading={true} />;
     }
 }
 
-export default withAppBase('Room Invite', withChanneJoinlnviteSIgnin((props) => {
-    return (
-        <AuthRouter>
-            <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
-            <XTrack event="Invite">
-                <MessagePage>
-                    <AcceptInviteComponent mutation={props.join} />
-
-                </MessagePage>
-            </XTrack>
-        </AuthRouter>
-    );
-}));
+export default withAppBase(
+    'Room Invite',
+    withChanneJoinlnviteSIgnin(props => {
+        return (
+            <AuthRouter>
+                <XDocumentHead
+                    title={InitTexts.invite.pageTitle}
+                    titleSocial={InitTexts.socialPageTitle}
+                />
+                <XTrack event="Invite">
+                    <MessagePage>
+                        <AcceptInviteComponent mutation={props.join} />
+                    </MessagePage>
+                </XTrack>
+            </AuthRouter>
+        );
+    }),
+);

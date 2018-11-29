@@ -24,12 +24,12 @@ function preprocessRawText(text: string): Span[] {
     for (let p of text.split('\n')) {
         if (res.length > 0) {
             res.push({
-                type: 'new_line'
+                type: 'new_line',
             });
         }
         res.push({
             type: 'text',
-            text: preprocessSpaces(p)
+            text: preprocessSpaces(p),
         });
     }
     return res;
@@ -40,7 +40,8 @@ export function preprocessText(text: string): Span[] {
     let res: Span[] = [];
     let offset = 0;
     let links = linkifyInstance.match(text);
-    if (links !== null) { // Typings are weird
+    if (links !== null) {
+        // Typings are weird
         for (let l of links) {
             if (l.index > offset) {
                 res.push(...preprocessRawText(text.substring(offset, l.index)));
@@ -48,7 +49,7 @@ export function preprocessText(text: string): Span[] {
             res.push({
                 type: 'link',
                 text: l.text,
-                link: l.url
+                link: l.url,
             });
             offset = l.lastIndex;
         }
@@ -61,7 +62,7 @@ export function preprocessText(text: string): Span[] {
     if (res.length === 0) {
         res.push({
             type: 'text',
-            text: ''
+            text: '',
         });
     }
     return res;

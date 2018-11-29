@@ -5,12 +5,27 @@ import {
     ReplyMessageMutation,
     SaveDraftMessageMutation,
     GetDraftMessageQuery,
-    RoomEditMessageMutation
+    RoomEditMessageMutation,
 } from 'openland-api';
 
-export const withReplyMessage = graphqlMutation(ReplyMessageMutation, 'replyMessage');
-export const withEditMessage = graphqlMutation(RoomEditMessageMutation, 'editMessage');
-export const withSaveDraftMessage = graphqlMutation(SaveDraftMessageMutation, 'saveDraft');
-export const withGetDraftMessage = graphqlRouted(GetDraftMessageQuery, { fetchPolicy: 'network-only' });
+export const withReplyMessage = graphqlMutation(
+    ReplyMessageMutation,
+    'replyMessage',
+);
+export const withEditMessage = graphqlMutation(
+    RoomEditMessageMutation,
+    'editMessage',
+);
+export const withSaveDraftMessage = graphqlMutation(
+    SaveDraftMessageMutation,
+    'saveDraft',
+);
+export const withGetDraftMessage = graphqlRouted(GetDraftMessageQuery, {
+    fetchPolicy: 'network-only',
+});
 
-export const withMessageState = graphqlCompose3(withReplyMessage, withEditMessage, withSaveDraftMessage);
+export const withMessageState = graphqlCompose3(
+    withReplyMessage,
+    withEditMessage,
+    withSaveDraftMessage,
+);

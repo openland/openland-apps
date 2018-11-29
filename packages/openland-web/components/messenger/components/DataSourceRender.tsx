@@ -1,8 +1,25 @@
 import * as React from 'react';
-import { DataSourceItem, DataSource, DataSourceWatcher } from 'openland-y-utils/DataSource';
+import {
+    DataSourceItem,
+    DataSource,
+    DataSourceWatcher,
+} from 'openland-y-utils/DataSource';
 
-export class DataSourceRender<T extends DataSourceItem> extends React.PureComponent<{ dataSource: DataSource<T>, render: (props: { items: T[], completed: boolean }) => any, onChange?: (items: T[]) => void }, { items: T[], completed: boolean }> implements DataSourceWatcher<T> {
-    constructor(props: { dataSource: DataSource<T>, render: (props: { items: T[], completed: boolean }) => any, onChange?: (items: T[]) => void }) {
+export class DataSourceRender<T extends DataSourceItem>
+    extends React.PureComponent<
+        {
+            dataSource: DataSource<T>;
+            render: (props: { items: T[]; completed: boolean }) => any;
+            onChange?: (items: T[]) => void;
+        },
+        { items: T[]; completed: boolean }
+    >
+    implements DataSourceWatcher<T> {
+    constructor(props: {
+        dataSource: DataSource<T>;
+        render: (props: { items: T[]; completed: boolean }) => any;
+        onChange?: (items: T[]) => void;
+    }) {
         super(props);
         this.state = { items: [], completed: false };
     }
@@ -11,7 +28,7 @@ export class DataSourceRender<T extends DataSourceItem> extends React.PureCompon
         if (this.props.onChange) {
             this.props.onChange(this.state.items);
         }
-    }
+    };
 
     componentDidMount() {
         this.props.dataSource.watch(this);
@@ -20,7 +37,6 @@ export class DataSourceRender<T extends DataSourceItem> extends React.PureCompon
     onDataSourceInited(data: T[], completed: boolean) {
         this.setState({ completed: completed, items: [...data] });
         this.onChange();
-
     }
     onDataSourceItemAdded(item: T, index: number) {
         let items = [...this.state.items];
@@ -56,6 +72,11 @@ export class DataSourceRender<T extends DataSourceItem> extends React.PureCompon
     }
 
     render() {
-        return <this.props.render completed={this.state.completed} items={this.state.items} />;
+        return (
+            <this.props.render
+                completed={this.state.completed}
+                items={this.state.items}
+            />
+        );
     }
 }

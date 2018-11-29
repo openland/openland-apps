@@ -30,11 +30,7 @@ class FirstText extends React.Component {
         for (let a = 0; a < 1000; a++) {
             ch.push(<XButton key={'b-' + a} text="button" />);
         }
-        return (
-            <XVertical>
-                {ch}
-            </XVertical>
-        );
+        return <XVertical>{ch}</XVertical>;
     }
 }
 
@@ -50,11 +46,7 @@ class SecondText extends React.Component {
         for (let a = 0; a < 1000; a++) {
             ch.push(<FastWrapper key={'b-' + a} />);
         }
-        return (
-            <XVertical>
-                {ch}
-            </XVertical>
-        );
+        return <XVertical>{ch}</XVertical>;
     }
 }
 
@@ -73,14 +65,10 @@ class ThirdText extends React.Component {
                     hoverBackgroundColor="#1585ed"
                 >
                     button
-                </XView>
+                </XView>,
             );
         }
-        return (
-            <XVertical>
-                {ch}
-            </XVertical>
-        );
+        return <XVertical>{ch}</XVertical>;
     }
 }
 

@@ -5,7 +5,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 const EmptyWrapper = Glamorous(XVertical)({
     position: 'relative',
     paddingTop: 30,
-    paddingBottom: 30
+    paddingBottom: 30,
 });
 
 const EmptyContent = Glamorous.div({
@@ -14,13 +14,13 @@ const EmptyContent = Glamorous.div({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 const Image = Glamorous.div({
     width: 329,
     height: 329,
-    backgroundImage: 'url(\'/static/X/messenger/channels-explore-empty.svg\')',
+    backgroundImage: "url('/static/X/messenger/channels-explore-empty.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     backgroundPosition: 'center',
@@ -32,11 +32,16 @@ const EmptyText = Glamorous.div({
     lineHeight: 1.5,
     letterSpacing: -0.3,
     color: '#99a2b0',
-    marginTop: 44
+    marginTop: 44,
 });
 
 export const EmptyComponent = () => (
-    <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
+    <EmptyWrapper
+        separator={10}
+        alignItems="center"
+        justifyContent="center"
+        flexGrow={1}
+    >
         <EmptyContent>
             <Image />
             <EmptyText>No room matches your search</EmptyText>

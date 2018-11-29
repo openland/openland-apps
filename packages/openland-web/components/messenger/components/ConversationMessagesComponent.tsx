@@ -5,7 +5,10 @@ import { XLoader } from 'openland-x/XLoader';
 // import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
-import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
+import {
+    ConversationEngine,
+    ConversationStateHandler,
+} from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { TypignsComponent, TypingContext } from './TypingsComponent';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
@@ -17,14 +20,14 @@ const TypingWrapper = Glamorous.div({
     flexShrink: 0,
     position: 'absolute',
     bottom: 0,
-    left: 0
+    left: 0,
 });
 
 const TypingContent = Glamorous(XHorizontal)({
     backgroundColor: '#fff',
     maxHeight: 33,
     maxWidth: 930,
-    paddingLeft: 92,
+    paddingLeft: 112,
     paddingRight: 40,
     margin: 'auto',
 });
@@ -36,7 +39,7 @@ const TypingString = Glamorous.div({
     letterSpacing: -0.2,
     color: '#334562',
     marginTop: 8,
-    marginBottom: 8
+    marginBottom: 8,
 });
 
 const TypingComponent = (props: { chatId: string }) => (
@@ -44,7 +47,11 @@ const TypingComponent = (props: { chatId: string }) => (
         <TypignsComponent conversatonId={props.chatId}>
             <TypingContext.Consumer>
                 {typing => (
-                    <TypingContent separator={5} alignItems="center" flexGrow={1}>
+                    <TypingContent
+                        separator={5}
+                        alignItems="center"
+                        flexGrow={1}
+                    >
                         {/* {typing.users && (
                             <TypingAvatarWrapper>
                                 {typing.users.map((i, j) => (
@@ -60,9 +67,7 @@ const TypingComponent = (props: { chatId: string }) => (
                             </TypingAvatarWrapper>
                         )} */}
                         {typing.typing && (
-                            <TypingString>
-                                {typing.typing}
-                            </TypingString>
+                            <TypingString>{typing.typing}</TypingString>
                         )}
                     </TypingContent>
                 )}
@@ -81,18 +86,20 @@ interface ConversationMessagesComponentProps {
     me?: UserShort | null;
 }
 
-export class ConversationMessagesComponent extends React.PureComponent<ConversationMessagesComponentProps>  {
+export class ConversationMessagesComponent extends React.PureComponent<
+    ConversationMessagesComponentProps
+> {
     messagesList = React.createRef<MessageListComponent>();
 
     scrollToBottom = () => {
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
-    }
+    };
 
     loadBefore = (id: string) => {
         this.props.conversation.loadBefore(id);
-    }
+    };
 
     render() {
         return (

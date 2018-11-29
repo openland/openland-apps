@@ -8,7 +8,7 @@ const ChatContainer = Glamorous.div({
     width: '100%',
     paddingLeft: 16,
     paddingRight: 16,
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 const MessagesContainerInner = Glamorous.div({
@@ -32,16 +32,16 @@ const MessagesContainerInner = Glamorous.div({
         maxHeight: '100%',
         flexGrow: 1,
         '& > .simplebar-track.horizontal': {
-            display: 'none'
+            display: 'none',
         },
         '& > .simplebar-scroll-content > .simplebar-content': {
             overflowX: 'unset !important',
             overflowY: 'unset !important',
             width: '100%',
             justifyContent: 'flex-end',
-            willChange: 'transform'
-        }
-    }
+            willChange: 'transform',
+        },
+    },
 });
 
 export const MessagesContainer = (props: { children?: any }) => {

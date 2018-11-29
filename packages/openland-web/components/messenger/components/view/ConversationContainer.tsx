@@ -6,5 +6,5 @@ export const ConversationContainer = Glamorous.div({
     width: '100%',
     height: '100%',
     flexBasis: '100%',
-    overflow: 'hidden'
+    overflow: 'hidden',
 });

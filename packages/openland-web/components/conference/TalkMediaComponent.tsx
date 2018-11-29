@@ -8,14 +8,20 @@ export interface TalkMediaComponentProps {
     id: string;
     peerId: string;
     muted: boolean;
-    onStreamsUpdated: (peerId: string, streams: { [key: string]: MediaStream }) => void;
+    onStreamsUpdated: (
+        peerId: string,
+        streams: { [key: string]: MediaStream },
+    ) => void;
 }
 
 export interface TalkMediaComponentState {
     mediaStream?: MediaStream;
 }
 
-export class TalkMediaComponent extends React.Component<TalkMediaComponentProps, TalkMediaComponentState> {
+export class TalkMediaComponent extends React.Component<
+    TalkMediaComponentProps,
+    TalkMediaComponentState
+> {
     private _mounted = true;
     private streams: { [key: string]: MediaStream } = {};
 
@@ -29,19 +35,20 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
         this.streams[peerId] = stream;
 
         this.props.onStreamsUpdated(this.props.peerId, this.streams);
-    }
+    };
 
     onStreamClosed = (peerId: string) => {
         this.streams = { ...this.streams };
         delete this.streams[peerId];
 
         this.props.onStreamsUpdated(this.props.peerId, this.streams);
-    }
+    };
 
     componentDidMount() {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
-            setTimeout(
-                () => {
+        navigator.mediaDevices
+            .getUserMedia({ audio: true, video: true })
+            .then(stream => {
+                setTimeout(() => {
                     if (this._mounted) {
                         if (this.props.muted) {
                             for (let t of stream.getAudioTracks()) {
@@ -58,9 +65,8 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
                             t.stop();
                         }
                     }
-                },
-                10);
-        });
+                }, 10);
+            });
     }
 
     componentWillReceiveProps(nextProps: TalkMediaComponentProps) {
@@ -90,16 +96,21 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
     render() {
         return this.state.mediaStream ? (
             <YApolloContext.Consumer>
-                {apollo =>
-                    <YQuery query={ConferenceQuery} variables={{ id: this.props.id }}>
+                {apollo => (
+                    <YQuery
+                        query={ConferenceQuery}
+                        variables={{ id: this.props.id }}
+                    >
                         {data => {
-                            let connections = data.data!.conference.peers.filter((v) => v.connection);
+                            let connections = data.data!.conference.peers.filter(
+                                v => v.connection,
+                            );
                             if (connections.length === 0) {
                                 return null;
                             }
                             return (
                                 <>
-                                    {connections.map((v) => (
+                                    {connections.map(v => (
                                         <TalkMediaStreamComponent
                                             apollo={apollo!}
                                             id={data.data!.conference.id}
@@ -108,7 +119,9 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
                                             stream={this.state.mediaStream!}
                                             ownPeerId={this.props.peerId}
                                             connection={v.connection!}
-                                            onStreamCreated={this.onStreamCreated}
+                                            onStreamCreated={
+                                                this.onStreamCreated
+                                            }
                                             onStreamClosed={this.onStreamClosed}
                                         />
                                     ))}
@@ -116,7 +129,7 @@ export class TalkMediaComponent extends React.Component<TalkMediaComponentProps,
                             );
                         }}
                     </YQuery>
-                }
+                )}
             </YApolloContext.Consumer>
         ) : null;
     }

@@ -2,15 +2,14 @@ import * as React from 'react';
 import * as Cookie from 'js-cookie';
 
 class LogoutHandler extends React.Component<{}, {}> {
-
     constructor(props: {}) {
         super(props);
     }
 
     componentDidMount() {
-        Cookie.remove('x-openland-org', {path: '/'});
-        Cookie.remove('x-openland-token', {path: '/'});
-        Cookie.remove('sign-redirect', {path: '/'});
+        Cookie.remove('x-openland-org', { path: '/' });
+        Cookie.remove('x-openland-token', { path: '/' });
+        Cookie.remove('sign-redirect', { path: '/' });
 
         let keepDomain = Cookie.defaults.domain;
         let keepPath = Cookie.defaults.path;

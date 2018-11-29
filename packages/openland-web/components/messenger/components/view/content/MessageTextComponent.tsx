@@ -6,7 +6,10 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
-import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
+import {
+    MentionComponentInner,
+    removeEmojiFromText,
+} from 'openland-x/XRichTextInput';
 
 export interface MessageTextComponentProps {
     mentions: MessageFull_mentions[] | null;
@@ -15,25 +18,27 @@ export interface MessageTextComponentProps {
     isEdited: boolean;
 }
 
-const TextWrapper = Glamorous.span<{ isService: boolean, big: boolean }>((props) => ({
-    display: 'inline',
-    whiteSpace: 'pre-wrap',
-    wordWrap: 'break-word',
-    maxWidth: '100%',
-    fontSize: props.big ? 36 : 14,
-    minHeight: props.big ? 44 : undefined,
-    lineHeight: props.big ? '40px' : '22px',
-    letterSpacing: props.big ? -0.5 : 0,
-    fontWeight: props.big ? 600 : 400,
-    color: props.isService ? '#99A2B0' : 'rgba(0, 0, 0, 0.8)',
-    '& .link': {
-        color: '#1790ff',
-        '&:hover': {
+const TextWrapper = Glamorous.span<{ isService: boolean; big: boolean }>(
+    props => ({
+        display: 'inline',
+        whiteSpace: 'pre-wrap',
+        wordWrap: 'break-word',
+        maxWidth: '100%',
+        fontSize: props.big ? 36 : 14,
+        minHeight: props.big ? 44 : undefined,
+        lineHeight: props.big ? '40px' : '22px',
+        letterSpacing: props.big ? -0.5 : 0,
+        fontWeight: props.big ? 600 : 400,
+        color: props.isService ? '#99A2B0' : 'rgba(0, 0, 0, 0.8)',
+        '& .link': {
             color: '#1790ff',
-            textDecoration: 'underline'
-        }
-    }
-}));
+            '&:hover': {
+                color: '#1790ff',
+                textDecoration: 'underline',
+            },
+        },
+    }),
+);
 
 const EditLabel = Glamorous.span({
     display: 'inline-block',
@@ -45,10 +50,18 @@ const EditLabel = Glamorous.span({
     paddingLeft: 6,
 });
 
-let emoji = (text: string, height: number) => emojify(text, { style: { height: height, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } });
+let emoji = (text: string, height: number) =>
+    emojify(text, {
+        style: {
+            height: height,
+            backgroundImage:
+                'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+        },
+    });
 
 export let makeInternalLinkRelative = (url: string) => {
-    let rel = url.replace('http://app.openland.com/', '/')
+    let rel = url
+        .replace('http://app.openland.com/', '/')
         .replace('https://app.openland.com/', '/')
         .replace('//app.openland.com/', '/')
         .replace('http://next.openland.com/', '/')
@@ -59,7 +72,10 @@ export let makeInternalLinkRelative = (url: string) => {
 };
 
 export let isInternalLink = (url: string) => {
-    return url.includes('//app.openland.com/') || url.includes('//next.openland.com/');
+    return (
+        url.includes('//app.openland.com/') ||
+        url.includes('//next.openland.com/')
+    );
 };
 
 const asciiToUnicodeCache = new Map();
@@ -83,9 +99,11 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     mentions: MessageFull_mentions[];
 }> {
     checkIsYou = (mentionName: string) => {
-        const res = this.props.mentions.find(({ name }: any) => name ===  mentionName);
+        const res = this.props.mentions.find(
+            ({ name }: any) => name === mentionName,
+        );
         return res ? res.isYou : false;
-    }
+    };
 
     render() {
         const { text, mentions } = this.props;
@@ -96,23 +114,27 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             // splitting message
             const arr: any = [];
             splittedTextArray.forEach((item: any) => {
-                item.split(getMentionString(name)).forEach((splitted: any) => arr.push(splitted));
+                item.split(getMentionString(name)).forEach((splitted: any) =>
+                    arr.push(splitted),
+                );
             });
 
             splittedTextArray = arr;
 
             // matching mentions
             const result = indexes(text, removeEmojiFromText(name));
-            result.forEach((index) => {
+            result.forEach(index => {
                 mentionMatchesMap[index] = removeEmojiFromText(name);
             });
         });
 
         const mentionMatchesArray: any = [];
 
-        Object.keys(mentionMatchesMap).sort((a: any, b: any) => a - b).forEach((key) => {
-            mentionMatchesArray.push(mentionMatchesMap[key]);
-        });
+        Object.keys(mentionMatchesMap)
+            .sort((a: any, b: any) => a - b)
+            .forEach(key => {
+                mentionMatchesArray.push(mentionMatchesMap[key]);
+            });
 
         const splittedArray: any = [];
         mentions.forEach(({ name }: any) => {
@@ -120,7 +142,9 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
         });
 
         const getMentionByName = (name: string) => {
-            const mention = mentions.find((item: any) => removeEmojiFromText(item.name) === name);
+            const mention = mentions.find(
+                (item: any) => removeEmojiFromText(item.name) === name,
+            );
             if (!mention) {
                 throw Error('no mention was found');
             }
@@ -130,20 +154,32 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
         return (
             <>
                 {splittedTextArray.map((textItem: any, key: any) => {
-                    const mention = mentionMatchesArray[key] ? getMentionByName(mentionMatchesArray[key]) : null;
-                    return (<span key={key}>
-                        {textItem}
-                        {mention && <MentionComponentInner mention={mention} hasPopper>
-                            {mentionMatchesArray[key]}
-                        </MentionComponentInner>}
-                    </span>);
+                    const mention = mentionMatchesArray[key]
+                        ? getMentionByName(mentionMatchesArray[key])
+                        : null;
+                    return (
+                        <span key={key}>
+                            {textItem}
+                            {mention && (
+                                <MentionComponentInner
+                                    isYou={mention.isYou}
+                                    user={mention}
+                                    hasPopper
+                                >
+                                    {mentionMatchesArray[key]}
+                                </MentionComponentInner>
+                            )}
+                        </span>
+                    );
                 })}
             </>
         );
     }
 }
 
-export class MessageTextComponent extends React.PureComponent<MessageTextComponentProps> {
+export class MessageTextComponent extends React.PureComponent<
+    MessageTextComponentProps
+> {
     private preprocessed: Span[];
     big = false;
     insane = false;
@@ -185,7 +221,10 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
             if (asciiToUnicodeCache.has(messageText)) {
                 isAsciiSmile = true;
             } else {
-                for (const [regExp, unicode] of emojiData.asciiToUnicode.entries()) {
+                for (const [
+                    regExp,
+                    unicode,
+                ] of emojiData.asciiToUnicode.entries()) {
                     if (messageText.replace(regExp, unicode) === unicode) {
                         asciiToUnicodeCache.set(messageText, unicode);
                         isAsciiSmile = true;
@@ -197,15 +236,20 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
         if (isAsciiSmile || isShortnameSmile || isUnicodeSmile) {
             this.big = true;
         } else {
-            this.big = messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':');
-            this.insane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
-            this.mouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
+            this.big =
+                messageText.length <= 302 &&
+                messageText.startsWith(':') &&
+                messageText.endsWith(':');
+            this.insane =
+                messageText.startsWith('🌈') && messageText.endsWith('🌈');
+            this.mouthpiece =
+                messageText.startsWith('📣') && messageText.endsWith('📣');
 
             this.textSticker = this.big;
         }
-    }
+    };
 
-    render () {
+    render() {
         let parts = this.preprocessed.map((v, i) => {
             if (v.type === 'new_line') {
                 return <br key={'br-' + i} />;
@@ -224,15 +268,38 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                         url = text;
                     }
 
-                    return <XLink className="link" key={'link-' + i} path={path} onClick={(e: any) => e.stopPropagation()}>{url}</XLink>;
+                    return (
+                        <XLink
+                            className="link"
+                            key={'link-' + i}
+                            path={path}
+                            onClick={(e: any) => e.stopPropagation()}
+                        >
+                            {url}
+                        </XLink>
+                    );
                 }
 
-                return <XLinkExternal className="link" key={'link-' + i} href={v.link!!} content={v.text!!} showIcon={false} />;
+                return (
+                    <XLinkExternal
+                        className="link"
+                        key={'link-' + i}
+                        href={v.link!!}
+                        content={v.text!!}
+                        showIcon={false}
+                    />
+                );
             } else {
                 let text = v.text!!;
 
                 if (this.props.mentions && this.props.mentions.length !== 0) {
-                    return <MessageWithMentionsTextComponent key={'text-' + i} text={text} mentions={this.props.mentions} />;
+                    return (
+                        <MessageWithMentionsTextComponent
+                            key={'text-' + i}
+                            text={text}
+                            mentions={this.props.mentions}
+                        />
+                    );
                 }
 
                 if (this.textSticker) {
@@ -243,16 +310,24 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
                     text = text.replace(/🌈/g, '').replace(/📣/g, '');
                 }
 
-                let smileSize = (this.big || this.insane || this.mouthpiece) ? 44 : 18;
+                let smileSize =
+                    this.big || this.insane || this.mouthpiece ? 44 : 18;
 
                 return (
                     <span
-                        style={this.insane ? {
-                            background: 'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
-                            backgroundClip: 'text, border',
-                            ...{ WebkitBackgroundClip: 'text' } as any,
-                            color: 'transparent'
-                        } : {}}
+                        style={
+                            this.insane
+                                ? {
+                                      background:
+                                          'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
+                                      backgroundClip: 'text, border',
+                                      ...({
+                                          WebkitBackgroundClip: 'text',
+                                      } as any),
+                                      color: 'transparent',
+                                  }
+                                : {}
+                        }
                         key={'text-' + i}
                     >
                         {emoji(text, smileSize)}
@@ -262,7 +337,10 @@ export class MessageTextComponent extends React.PureComponent<MessageTextCompone
         });
 
         return (
-            <TextWrapper big={this.big || this.insane || this.mouthpiece} isService={this.props.isService}>
+            <TextWrapper
+                big={this.big || this.insane || this.mouthpiece}
+                isService={this.props.isService}
+            >
                 {parts}
                 {this.props.isEdited && <EditLabel>(Edited)</EditLabel>}
             </TextWrapper>

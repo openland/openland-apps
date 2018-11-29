@@ -31,7 +31,7 @@ const Footer = glamorous.div({
     left: 0,
     right: 0,
     bottom: 16,
-    margin: 'auto'
+    margin: 'auto',
 });
 
 const FooterText = glamorous.div({
@@ -43,8 +43,8 @@ const FooterText = glamorous.div({
     color: '#334562',
     opacity: 0.4,
     '&:first-child': {
-        marginBottom: 6
-    }
+        marginBottom: 6,
+    },
 });
 
 const FooterLink = glamorous(XLink)({
@@ -55,10 +55,10 @@ const FooterLink = glamorous(XLink)({
     letterSpacing: -0.4,
     fontWeight: 500,
     textAlign: 'center',
-    color: '#334562'
+    color: '#334562',
 });
 
-const CreateProfileForm = withProfileCreate((props) => {
+const CreateProfileForm = withProfileCreate(props => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
@@ -73,14 +73,20 @@ const CreateProfileForm = withProfileCreate((props) => {
                 <XForm
                     defaultData={{
                         input: {
-                            firstName: (props.data.prefill && props.data.prefill.firstName) || '',
-                            lastName: (props.data.prefill && props.data.prefill.lastName) || ''
-                        }
+                            firstName:
+                                (props.data.prefill &&
+                                    props.data.prefill.firstName) ||
+                                '',
+                            lastName:
+                                (props.data.prefill &&
+                                    props.data.prefill.lastName) ||
+                                '',
+                        },
                     }}
-                    defaultAction={async (data) => {
+                    defaultAction={async data => {
                         await props.createProfile({ variables: data });
                         let redirect = props.router.query.redirect;
-                        window.location.href = (redirect ? redirect : '/');
+                        window.location.href = redirect ? redirect : '/';
                         await delayForewer();
                     }}
                     defaultLayout={false}
@@ -90,39 +96,96 @@ const CreateProfileForm = withProfileCreate((props) => {
                         <XFormLoadingContent>
                             <XHorizontal separator="large">
                                 <XVertical width={280}>
-                                    <XFormField field="input.firstName" title={InitTexts.create_profile.firstName}>
-                                        <XInput field="input.firstName" size="large" placeholder="Jane" />
+                                    <XFormField
+                                        field="input.firstName"
+                                        title={
+                                            InitTexts.create_profile.firstName
+                                        }
+                                    >
+                                        <XInput
+                                            field="input.firstName"
+                                            size="large"
+                                            placeholder="Jane"
+                                        />
                                     </XFormField>
-                                    <XFormField field="input.lastName" title={InitTexts.create_profile.lastName}>
-                                        <XInput field="input.lastName" size="large" placeholder="Doe" />
+                                    <XFormField
+                                        field="input.lastName"
+                                        title={
+                                            InitTexts.create_profile.lastName
+                                        }
+                                    >
+                                        <XInput
+                                            field="input.lastName"
+                                            size="large"
+                                            placeholder="Doe"
+                                        />
                                     </XFormField>
-                                    <XFormField field="input.phone" title={InitTexts.create_profile.phone} optional={true}>
-                                        <XInput field="input.phone" size="large" placeholder="123-456-7890" />
+                                    <XFormField
+                                        field="input.phone"
+                                        title={InitTexts.create_profile.phone}
+                                        optional={true}
+                                    >
+                                        <XInput
+                                            field="input.phone"
+                                            size="large"
+                                            placeholder="123-456-7890"
+                                        />
                                     </XFormField>
                                 </XVertical>
-                                <XFormField title={InitTexts.create_profile.photo}>
-                                    <XAvatarUpload field="input.photoRef" size="large" initialUrl={usePhotoPrefill ? props.data.prefill && props.data.prefill.picture : undefined} />
+                                <XFormField
+                                    title={InitTexts.create_profile.photo}
+                                >
+                                    <XAvatarUpload
+                                        field="input.photoRef"
+                                        size="large"
+                                        initialUrl={
+                                            usePhotoPrefill
+                                                ? props.data.prefill &&
+                                                  props.data.prefill.picture
+                                                : undefined
+                                        }
+                                    />
                                 </XFormField>
                             </XHorizontal>
                         </XFormLoadingContent>
                         <XFooter padding={false}>
-                            <XFormSubmit style="primary" text={InitTexts.create_profile.continue} size="large" alignSelf="flex-end" />
+                            <XFormSubmit
+                                style="primary"
+                                text={InitTexts.create_profile.continue}
+                                size="large"
+                                alignSelf="flex-end"
+                            />
                         </XFooter>
                     </XVertical>
                 </XForm>
             </ContentWrapper>
             <Footer>
-                <FooterText>By creating an account you are accepting our <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink> and <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.</FooterText>
-                <FooterText>© {new Date().getFullYear()} Data Makes Perfect Inc.</FooterText>
+                <FooterText>
+                    By creating an account you are accepting our{' '}
+                    <FooterLink href="https://openland.com/terms">
+                        Terms of Service
+                    </FooterLink>{' '}
+                    and{' '}
+                    <FooterLink href="https://openland.com/privacy">
+                        Privacy Policy
+                    </FooterLink>
+                    .
+                </FooterText>
+                <FooterText>
+                    © {new Date().getFullYear()} Data Makes Perfect Inc.
+                </FooterText>
             </Footer>
         </RootContainer>
     );
 });
 
-export default withApp('Create Profile', 'viewer', (props) => {
+export default withApp('Create Profile', 'viewer', props => {
     return (
         <>
-            <XDocumentHead title={InitTexts.create_profile.pageTitle} titleSocial={InitTexts.socialPageTitle} />
+            <XDocumentHead
+                title={InitTexts.create_profile.pageTitle}
+                titleSocial={InitTexts.socialPageTitle}
+            />
             <CreateProfileForm />
         </>
     );

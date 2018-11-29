@@ -9,28 +9,28 @@ import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import {
-    RootWrapper,
-    Sidebar,
-    Container,
-    Results
-} from './components/Layout';
+import { RootWrapper, Sidebar, Container, Results } from './components/Layout';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
 
 interface CommunitiesCardsProps {
-    variables: { query?: string, sort?: string };
+    variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-const CommunitiesCards = withExploreCommunities((props) => {
+const CommunitiesCards = withExploreCommunities(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
 
-    let noData = props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0;
+    let noData =
+        props.error ||
+        props.data === undefined ||
+        props.data.items === undefined ||
+        props.data.items === null ||
+        props.data.items.edges.length === 0;
 
     (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
 
@@ -39,9 +39,15 @@ const CommunitiesCards = withExploreCommunities((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <XCommunityCard key={'_org_card_' + i.node.id} community={i.node} />))
-                    }
-                    <PagePagination pageInfo={props.data.items.pageInfo} currentRoute="/directory/communities" />
+                        <XCommunityCard
+                            key={'_org_card_' + i.node.id}
+                            community={i.node}
+                        />
+                    ))}
+                    <PagePagination
+                        pageInfo={props.data.items.pageInfo}
+                        currentRoute="/directory/communities"
+                    />
                 </XContentWrapper>
             )}
             {noData && (
@@ -61,7 +67,7 @@ interface CommunitiesProps {
 class Communities extends React.PureComponent<CommunitiesProps> {
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
-    }
+    };
 
     render() {
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
@@ -83,7 +89,7 @@ class Communities extends React.PureComponent<CommunitiesProps> {
 
 interface RootComponentState {
     query: string;
-    sort: { orderBy: string, featured: boolean };
+    sort: { orderBy: string; featured: boolean };
     orgCount: number;
     pageTitle: string;
 }
@@ -98,34 +104,34 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             query: '',
             sort: { orderBy: 'createdAt', featured: true },
             orgCount: 0,
-            pageTitle: 'Communities Directory'
+            pageTitle: 'Communities Directory',
         };
     }
 
     handlePageTitle = (title?: string) => {
         this.setState({
-            pageTitle: title || 'Communities Directory'
+            pageTitle: title || 'Communities Directory',
         });
-    }
+    };
 
     onQueryChange = (q: string) => {
         this.resetPage();
         this.setState({ query: q });
-    }
+    };
 
-    changeSort = (sort: { orderBy: string, featured: boolean }) => {
+    changeSort = (sort: { orderBy: string; featured: boolean }) => {
         this.setState({ sort: sort });
-    }
+    };
 
     resetPage = () => {
         this.props.router.replaceQueryParams({ page: undefined });
         this.props.router.replaceQueryParams({ clauses: undefined });
-    }
+    };
 
     reset = () => {
         this.resetPage();
         this.setState({ query: '' });
-    }
+    };
 
     componentDidMount() {
         if (this.props.router.query.clauses !== undefined) {
@@ -135,11 +141,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
     tagsCount = (n: number) => {
         this.setState({ orgCount: n });
-    }
+    };
 
     routerParser = () => {
         this.setState({ query: '' });
-    }
+    };
 
     render() {
         const { orgCount } = this.state;
@@ -161,29 +167,60 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             placeholder="Search communities"
                                         />
                                         <Results>
-                                            {(this.state.query.length <= 0) && (
+                                            {this.state.query.length <= 0 && (
                                                 <XSubHeader
                                                     title="All communities"
-                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                    right={
+                                                        <SortPicker
+                                                            sort={
+                                                                this.state.sort
+                                                            }
+                                                            onPick={
+                                                                this.changeSort
+                                                            }
+                                                        />
+                                                    }
                                                 />
                                             )}
-                                            {(this.state.query.length > 0) && (orgCount > 0) && (
-                                                <XSubHeader
-                                                    title="Communities"
-                                                    counter={orgCount}
-                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
-                                                />
-                                            )}
+                                            {this.state.query.length > 0 &&
+                                                orgCount > 0 && (
+                                                    <XSubHeader
+                                                        title="Communities"
+                                                        counter={orgCount}
+                                                        right={
+                                                            <SortPicker
+                                                                sort={
+                                                                    this.state
+                                                                        .sort
+                                                                }
+                                                                onPick={
+                                                                    this
+                                                                        .changeSort
+                                                                }
+                                                            />
+                                                        }
+                                                    />
+                                                )}
                                             <Communities
-                                                featuredFirst={this.state.sort.featured}
+                                                featuredFirst={
+                                                    this.state.sort.featured
+                                                }
                                                 query={this.state.query}
-                                                orderBy={this.state.sort.orderBy}
+                                                orderBy={
+                                                    this.state.sort.orderBy
+                                                }
                                                 tagsCount={this.tagsCount}
                                             />
                                         </Results>
                                     </XVertical>
                                 )}
-                                {oid && <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
+                                {oid && (
+                                    <OrganizationProfile
+                                        organizationId={oid}
+                                        handlePageTitle={this.handlePageTitle}
+                                        onDirectory={true}
+                                    />
+                                )}
                             </Container>
                         </RootWrapper>
                     </Scaffold.Content>
@@ -193,6 +230,10 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     }
 }
 
-export default withApp('Directory', 'viewer', withRouter((props) => {
-    return <RootComponent router={props.router} />;
-}));
+export default withApp(
+    'Directory',
+    'viewer',
+    withRouter(props => {
+        return <RootComponent router={props.router} />;
+    }),
+);

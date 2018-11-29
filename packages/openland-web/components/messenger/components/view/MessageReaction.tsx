@@ -4,7 +4,10 @@ import { emojify } from 'react-emojione';
 import { MessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
-import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
+import {
+    withSetReaction,
+    withUnsetReaction,
+} from '../../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 // import ReactionIcon from '../icons/ic-emoji2.svg';
 import ReactionIcon from '../icons/ic-reactions.svg';
@@ -13,7 +16,10 @@ const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '1px 6px',
 });
 
-const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }>(props => ({
+const ReactionButton = Glamorous.div<{
+    marginTop?: number;
+    marginLeft?: number;
+}>(props => ({
     display: 'flex',
     alignSelf: 'flex-start',
     alignItems: 'center',
@@ -23,8 +29,8 @@ const ReactionButton = Glamorous.div<{ marginTop?: number, marginLeft?: number }
     marginLeft: props.marginLeft,
     '&:hover svg > path': {
         fill: '#d75454',
-        opacity: 1
-    }
+        opacity: 1,
+    },
 }));
 
 const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
@@ -37,45 +43,51 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
     fontWeight: 600,
     '& span:last-child': {
         margin: '0!important',
-    }
+    },
 }));
 
-class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
+class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
     defaultReactions = ['❤️', '👍', '😢', '😂', '😱', '🎉'];
     state = {
-        show: false
+        show: false,
     };
 
     onClickOutside = () => {
         this.setState({
-            show: false
+            show: false,
         });
-    }
+    };
 
     switch = () => {
         this.setState({
-            show: !this.state.show
+            show: !this.state.show,
         });
-    }
+    };
 
     handleSetReaction = (emj: any) => {
         this.props.setReaction(emj);
         this.setState({
-            show: false
+            show: false,
         });
-    }
+    };
 
     render() {
         return (
             <XHorizontal separator={2} alignItems="center">
                 {this.defaultReactions.map((r: string) => (
                     <ReactionItem
-                        onClick={(e) => {
+                        onClick={e => {
                             e.stopPropagation();
                             this.handleSetReaction(r);
                         }}
                     >
-                        {emojify(r, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
+                        {emojify(r, {
+                            style: {
+                                height: 16,
+                                backgroundImage:
+                                    'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                            },
+                        })}
                     </ReactionItem>
                 ))}
             </XHorizontal>
@@ -83,54 +95,69 @@ class ReactionPicker extends React.Component<{ onRef: any, setReaction: any }> {
     }
 }
 
-class ReactionComponentInner extends React.PureComponent<{ messageId: string, marginTop?: number, marginLeft?: number, mutation: MutationFunc<{}> }> {
+class ReactionComponentInner extends React.PureComponent<{
+    messageId: string;
+    marginTop?: number;
+    marginLeft?: number;
+    mutation: MutationFunc<{}>;
+}> {
     inner = 0;
     state = {
-        show: false
+        show: false,
     };
 
     onClickOutside = () => {
         if (!this.inner) {
             this.setState({
-                show: false
+                show: false,
             });
         }
-    }
+    };
 
     switch = (e: any) => {
         e.stopPropagation();
         this.setState({
-            show: !this.state.show
+            show: !this.state.show,
         });
-    }
+    };
 
     onInner = (ref: any) => {
         this.inner += ref ? 1 : -1;
-    }
+    };
 
     handleSetReaction = (emj: any) => {
         this.props.mutation({
             variables: {
                 messageId: this.props.messageId,
-                reaction: (typeof emj === 'string') ? emj : emj.native
-            }
+                reaction: typeof emj === 'string' ? emj : emj.native,
+            },
         });
         this.setState({
-            show: false
+            show: false,
         });
-    }
+    };
 
     render() {
         return (
             <XPopper
-                content={<ReactionPicker onRef={this.onInner} setReaction={this.handleSetReaction} />}
+                content={
+                    <ReactionPicker
+                        onRef={this.onInner}
+                        setReaction={this.handleSetReaction}
+                    />
+                }
                 show={this.state.show}
                 placement="top"
                 animation={null}
                 onClickOutside={this.onClickOutside}
                 contentContainer={<CustomPickerDiv />}
             >
-                <ReactionButton className="reaction-button" onClick={this.switch} marginTop={this.props.marginTop} marginLeft={this.props.marginLeft}>
+                <ReactionButton
+                    className="reaction-button"
+                    onClick={this.switch}
+                    marginTop={this.props.marginTop}
+                    marginLeft={this.props.marginLeft}
+                >
                     <ReactionIcon />
                 </ReactionButton>
             </XPopper>
@@ -138,20 +165,24 @@ class ReactionComponentInner extends React.PureComponent<{ messageId: string, ma
     }
 }
 
-export const ReactionComponent = withSetReaction((props) => (
+export const ReactionComponent = withSetReaction(props => (
     <ReactionComponentInner
         mutation={props.setReaction}
         messageId={(props as any).messageId}
         marginTop={(props as any).marginTop}
         marginLeft={(props as any).marginLeft}
     />
-)) as React.ComponentType<{ messageId: string, marginTop?: number, marginLeft?: number }>;
+)) as React.ComponentType<{
+    messageId: string;
+    marginTop?: number;
+    marginLeft?: number;
+}>;
 
 const ReactionsWrapper = Glamorous.div({
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
-    paddingTop: 4
+    paddingTop: 4,
 });
 
 const ReactionsInner = Glamorous.div({
@@ -170,36 +201,62 @@ const UsersLabel = Glamorous.div({
     paddingLeft: 5,
 });
 
-class SingleReaction extends React.PureComponent<{ messageId: string, reaction: string, isMy: boolean, mutation: MutationFunc<{}> }> {
+class SingleReaction extends React.PureComponent<{
+    messageId: string;
+    reaction: string;
+    isMy: boolean;
+    mutation: MutationFunc<{}>;
+}> {
     handleChangeReaction = (e: any) => {
         e.stopPropagation();
         this.props.mutation({
             variables: {
                 messageId: this.props.messageId,
-                reaction: this.props.reaction
-            }
+                reaction: this.props.reaction,
+            },
         });
-    }
+    };
     render() {
         return (
-            <ReactionItem isMy={this.props.isMy} onClick={this.handleChangeReaction}>
+            <ReactionItem
+                isMy={this.props.isMy}
+                onClick={this.handleChangeReaction}
+            >
                 {this.props.children}
             </ReactionItem>
         );
     }
 }
 
-const SingleReactionSet = withSetReaction((props) => (
-    <SingleReaction mutation={props.setReaction} messageId={(props as any).messageId} reaction={(props as any).reaction} isMy={(props as any).isMy}>
+const SingleReactionSet = withSetReaction(props => (
+    <SingleReaction
+        mutation={props.setReaction}
+        messageId={(props as any).messageId}
+        reaction={(props as any).reaction}
+        isMy={(props as any).isMy}
+    >
         {props.children}
     </SingleReaction>
-)) as React.ComponentType<{ messageId: string, reaction: string, isMy: boolean }>;
+)) as React.ComponentType<{
+    messageId: string;
+    reaction: string;
+    isMy: boolean;
+}>;
 
-const SingleReactionUnset = withUnsetReaction((props) => (
-    <SingleReaction mutation={props.unsetReaction} messageId={(props as any).messageId} reaction={(props as any).reaction} isMy={(props as any).isMy}>
+const SingleReactionUnset = withUnsetReaction(props => (
+    <SingleReaction
+        mutation={props.unsetReaction}
+        messageId={(props as any).messageId}
+        reaction={(props as any).reaction}
+        isMy={(props as any).isMy}
+    >
         {props.children}
     </SingleReaction>
-)) as React.ComponentType<{ messageId: string, reaction: string, isMy: boolean }>;
+)) as React.ComponentType<{
+    messageId: string;
+    reaction: string;
+    isMy: boolean;
+}>;
 
 interface ReactionsInnerProps {
     messageId: string;
@@ -208,8 +265,14 @@ interface ReactionsInnerProps {
 }
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
-    usersLabelRender = (usersList: string[], foundMyReaction: boolean, key?: string) => {
-        let uniqueUsersList = usersList.filter((item: string, pos: number) => (usersList.indexOf(item) === pos));
+    usersLabelRender = (
+        usersList: string[],
+        foundMyReaction: boolean,
+        key?: string,
+    ) => {
+        let uniqueUsersList = usersList.filter(
+            (item: string, pos: number) => usersList.indexOf(item) === pos,
+        );
         let usersLabel = '';
 
         if (foundMyReaction) {
@@ -224,16 +287,24 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             }
 
             if (uniqueUsersList.length === 3) {
-                usersLabel += ', ' + uniqueUsersList[1] + ' and ' + uniqueUsersList[2];
+                usersLabel +=
+                    ', ' + uniqueUsersList[1] + ' and ' + uniqueUsersList[2];
             }
 
             if (uniqueUsersList.length > 3) {
-                usersLabel += ', ' + uniqueUsersList[1] + ' and ' + (uniqueUsersList.length - 2) + ' more';
+                usersLabel +=
+                    ', ' +
+                    uniqueUsersList[1] +
+                    ' and ' +
+                    (uniqueUsersList.length - 2) +
+                    ' more';
             }
         }
 
-        return (usersLabel.length > 0) ? <UsersLabel key={key}>{usersLabel}</UsersLabel> : null;
-    }
+        return usersLabel.length > 0 ? (
+            <UsersLabel key={key}>{usersLabel}</UsersLabel>
+        ) : null;
+    };
 
     reactionsRender = () => {
         let { reactions, meId } = this.props;
@@ -265,7 +336,11 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                                 usersList.push(i.user.name);
                             }
 
-                            return (<div key={k + '-' + i.user.name}>{i.user.id === meId ? 'You' : i.user.name}</div>);
+                            return (
+                                <div key={k + '-' + i.user.name}>
+                                    {i.user.id === meId ? 'You' : i.user.name}
+                                </div>
+                            );
                         })}
                     >
                         <SingleReactionUnset
@@ -273,9 +348,15 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={true}
                         >
-                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
+                            {emojify(reactionsMap[k][0].reaction, {
+                                style: {
+                                    height: 16,
+                                    backgroundImage:
+                                        'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                                },
+                            })}
                         </SingleReactionUnset>
-                    </XPopper>
+                    </XPopper>,
                 );
             } else {
                 components.push(
@@ -289,7 +370,11 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                                 usersList.push(i.user.name);
                             }
 
-                            return (<div key={k + '-' + i.user.name}>{i.user.id === meId ? 'You' : i.user.name}</div>);
+                            return (
+                                <div key={k + '-' + i.user.name}>
+                                    {i.user.id === meId ? 'You' : i.user.name}
+                                </div>
+                            );
                         })}
                     >
                         <SingleReactionSet
@@ -297,27 +382,35 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={false}
                         >
-                            {emojify(reactionsMap[k][0].reaction, { style: { height: 16, backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)' } })}
+                            {emojify(reactionsMap[k][0].reaction, {
+                                style: {
+                                    height: 16,
+                                    backgroundImage:
+                                        'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                                },
+                            })}
                         </SingleReactionSet>
-                    </XPopper>
+                    </XPopper>,
                 );
             }
         }
 
-        components.push(this.usersLabelRender(usersList, foundMyReaction, 'reactions' + this.props.messageId));
+        components.push(
+            this.usersLabelRender(
+                usersList,
+                foundMyReaction,
+                'reactions' + this.props.messageId,
+            ),
+        );
 
         return components;
-    }
+    };
 
     render() {
-        return (
-            this.props.reactions && this.props.reactions.length > 0 ? (
-                <ReactionsWrapper className="reactions-wrapper">
-                    <ReactionsInner>
-                        {this.reactionsRender()}
-                    </ReactionsInner>
-                </ReactionsWrapper>
-            ) : null
-        );
+        return this.props.reactions && this.props.reactions.length > 0 ? (
+            <ReactionsWrapper className="reactions-wrapper">
+                <ReactionsInner>{this.reactionsRender()}</ReactionsInner>
+            </ReactionsWrapper>
+        ) : null;
     }
 }

@@ -9,13 +9,12 @@ import { logger } from 'openland-y-utils/logger';
 const log = logger('push');
 
 function urlBase64ToUint8Array(base64String: string) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
     const base64 = (base64String + padding)
         .replace(/\-/g, '+')
-        .replace(/_/g, '/')
-        ;
+        .replace(/_/g, '/');
     const rawData = window.atob(base64);
-    return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
+    return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
 }
 
 const FetchPushSettings = gql`
@@ -34,9 +33,13 @@ const RegisterPush = gql`
 
 export class PushEngine {
     private readonly serviceWorkerSupported = 'serviceWorker' in navigator;
-    private readonly notiticationServiceWorkerSupported = this.serviceWorkerSupported && 'showNotification' in ServiceWorkerRegistration.prototype;
+    private readonly notiticationServiceWorkerSupported =
+        this.serviceWorkerSupported &&
+        'showNotification' in ServiceWorkerRegistration.prototype;
     private readonly notificationsClassicalSupported = 'Notification' in window;
-    private readonly notificationsSupported = this.notificationsClassicalSupported || this.notiticationServiceWorkerSupported;
+    private readonly notificationsSupported =
+        this.notificationsClassicalSupported ||
+        this.notiticationServiceWorkerSupported;
     private readonly pushSupported = 'PushManager' in window;
     readonly enablePush: boolean;
     readonly client: OpenApolloClient;
@@ -56,7 +59,9 @@ export class PushEngine {
                     log.log('Registering service worker');
                     let registration: ServiceWorkerRegistration;
                     try {
-                        registration = await navigator.serviceWorker.register('/worker.js');
+                        registration = await navigator.serviceWorker.register(
+                            '/worker.js',
+                        );
                         log.log('Service Worker is registered');
                         log.log(registration);
                     } catch (e) {
@@ -71,7 +76,9 @@ export class PushEngine {
                     if (this.enablePush) {
                         log.log('Waiting for granted state...');
                         AppNotifications.watch(this.handleNotificationsState);
-                        await this.handleNotificationsState(AppNotifications.state);
+                        await this.handleNotificationsState(
+                            AppNotifications.state,
+                        );
                     } else {
                         log.log('Removing all subscriptions...');
                         await this.deleteSubscriptions();
@@ -84,7 +91,7 @@ export class PushEngine {
         } else {
             log.warn('Service Workers not supported');
         }
-    }
+    };
 
     private handleNotificationsState = (state: AppNotifcationsState) => {
         if (state === 'granted' && !this.grantedReceived) {
@@ -92,7 +99,7 @@ export class PushEngine {
             log.log('Granted state received');
             this.createSubscriptions();
         }
-    }
+    };
 
     private deleteSubscriptions = async () => {
         if (this.pushSupported) {
@@ -103,22 +110,30 @@ export class PushEngine {
             }
             log.warn('Push engine stopped');
         }
-    }
+    };
 
     private createSubscriptions = () => {
-        if (this.serviceWorkerSupported && this.notificationsSupported && this.pushSupported) {
+        if (
+            this.serviceWorkerSupported &&
+            this.notificationsSupported &&
+            this.pushSupported
+        ) {
             (async () => {
                 try {
-
                     //
                     // Loading Push Settings
                     //
 
                     log.log('Downloading push settings...');
-                    let settings = await backoff(async () => await this.client.client.query({
-                        query: FetchPushSettings
-                    }));
-                    let key = (settings.data as any).pushSettings.webPushKey as string | null;
+                    let settings = await backoff(
+                        async () =>
+                            await this.client.client.query({
+                                query: FetchPushSettings,
+                            }),
+                    );
+                    let key = (settings.data as any).pushSettings.webPushKey as
+                        | string
+                        | null;
                     if (key) {
                         log.log('Settings downloaded');
                     } else {
@@ -136,16 +151,24 @@ export class PushEngine {
                         if (subsctiption) {
                             if (!subsctiption.options.applicationServerKey) {
                                 // WTF?
-                                log.warn('Unexpected state: No application server key in subscription options. Unsubscribing.');
+                                log.warn(
+                                    'Unexpected state: No application server key in subscription options. Unsubscribing.',
+                                );
                                 await this.handleUnsubscription(subsctiption);
                                 log.warn('Push engine stopped');
                             } else {
-                                let existing = new Uint8Array(subsctiption.options.applicationServerKey);
+                                let existing = new Uint8Array(
+                                    subsctiption.options.applicationServerKey,
+                                );
                                 let isSame = true;
                                 if (existing.length !== encodedKey.length) {
                                     isSame = false;
                                 } else {
-                                    for (let i = 0; i < encodedKey.length; i++) {
+                                    for (
+                                        let i = 0;
+                                        i < encodedKey.length;
+                                        i++
+                                    ) {
                                         if (encodedKey[i] !== existing[i]) {
                                             isSame = false;
                                             break;
@@ -154,25 +177,33 @@ export class PushEngine {
                                     }
                                 }
                                 if (isSame) {
-                                    log.log('Push registration is not changed: reusing existing one.');
+                                    log.log(
+                                        'Push registration is not changed: reusing existing one.',
+                                    );
                                     await this.handleSubscription(subsctiption);
                                 } else {
                                     // Resubscribe
-                                    log.log('It seems that server key was changed: resubscribing.');
+                                    log.log(
+                                        'It seems that server key was changed: resubscribing.',
+                                    );
                                     this.handleUnsubscription(subsctiption);
-                                    let res = await this.registration!!.pushManager.subscribe({
-                                        userVisibleOnly: true,
-                                        applicationServerKey: encodedKey
-                                    });
+                                    let res = await this.registration!!.pushManager.subscribe(
+                                        {
+                                            userVisibleOnly: true,
+                                            applicationServerKey: encodedKey,
+                                        },
+                                    );
                                     await this.handleSubscription(res);
                                 }
                             }
                         } else {
                             log.log('Starting new push subscription');
-                            let res = await this.registration!!.pushManager.subscribe({
-                                userVisibleOnly: true,
-                                applicationServerKey: encodedKey
-                            });
+                            let res = await this.registration!!.pushManager.subscribe(
+                                {
+                                    userVisibleOnly: true,
+                                    applicationServerKey: encodedKey,
+                                },
+                            );
                             await this.handleSubscription(res);
                         }
                     } else {
@@ -189,7 +220,7 @@ export class PushEngine {
         } else {
             log.warn('Push notifications not supported');
         }
-    }
+    };
 
     private async handleUnsubscription(subscription: PushSubscription) {
         log.log('Unsubscribing');
@@ -201,12 +232,15 @@ export class PushEngine {
     private async handleSubscription(subscription: PushSubscription) {
         log.log('Registering subscription');
         log.log(subscription);
-        await backoff(async () => await this.client.client.mutate({
-            mutation: RegisterPush,
-            variables: {
-                endpoint: JSON.stringify(subscription)
-            }
-        }));
+        await backoff(
+            async () =>
+                await this.client.client.mutate({
+                    mutation: RegisterPush,
+                    variables: {
+                        endpoint: JSON.stringify(subscription),
+                    },
+                }),
+        );
         log.log('Push registered successfully.');
     }
 }

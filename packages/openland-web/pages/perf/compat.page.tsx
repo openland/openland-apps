@@ -3,13 +3,21 @@ import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
-const FontDemoRender = Glamorous.div<{ fontSize: number, fontWeight: string }>((props) => ({
-    fontSize: (props as any).fontSize,
-    fontWeight: (props as any).fontWeight
-}));
+const FontDemoRender = Glamorous.div<{ fontSize: number; fontWeight: string }>(
+    props => ({
+        fontSize: (props as any).fontSize,
+        fontWeight: (props as any).fontWeight,
+    }),
+);
 
-const FontDemo = (props: { fontSize: number, fontWeight: string }) => {
-    return <FontDemoRender {...props}>Steve Kite {props.fontSize}px/{props.fontWeight}</FontDemoRender>;
+const FontDemo = (props: { fontSize: number; fontWeight: string }) => {
+    return (
+        <FontDemoRender {...props}>
+            Steve Kite {props.fontSize}
+            px/
+            {props.fontWeight}
+        </FontDemoRender>
+    );
 };
 
 export default class Error extends React.Component {

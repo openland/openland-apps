@@ -9,12 +9,7 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import {
-    RootWrapper,
-    Sidebar,
-    Container,
-    Results,
-} from './components/Layout';
+import { RootWrapper, Sidebar, Container, Results } from './components/Layout';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -22,16 +17,21 @@ import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
 
 interface OrganizationCardsProps {
     onPageChange?: () => void;
-    variables: { query?: string, prefix?: string, sort?: string };
+    variables: { query?: string; prefix?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-const OrganizationCards = withExploreOrganizations((props) => {
+const OrganizationCards = withExploreOrganizations(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
 
-    let noData = props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0;
+    let noData =
+        props.error ||
+        props.data === undefined ||
+        props.data.items === undefined ||
+        props.data.items === null ||
+        props.data.items.edges.length === 0;
 
     (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
 
@@ -40,9 +40,15 @@ const OrganizationCards = withExploreOrganizations((props) => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <XOrganizationCard key={'_org_card_' + i.node.id} organization={i.node} />))
-                    }
-                    <PagePagination pageInfo={props.data.items.pageInfo} onPageChange={(props as any).onPageChange} />
+                        <XOrganizationCard
+                            key={'_org_card_' + i.node.id}
+                            organization={i.node}
+                        />
+                    ))}
+                    <PagePagination
+                        pageInfo={props.data.items.pageInfo}
+                        onPageChange={(props as any).onPageChange}
+                    />
                 </XContentWrapper>
             )}
             {noData && (
@@ -62,7 +68,7 @@ interface OrganizationsProps {
 class Organizations extends React.PureComponent<OrganizationsProps> {
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
-    }
+    };
 
     render() {
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
@@ -85,8 +91,8 @@ class Organizations extends React.PureComponent<OrganizationsProps> {
 interface RootComponentState {
     query: string;
     sort: {
-        orderBy: string,
-        featured: boolean
+        orderBy: string;
+        featured: boolean;
     };
     orgCount: number;
     pageTitle: string;
@@ -103,41 +109,41 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
             query: '',
             sort: {
                 orderBy: 'createdAt',
-                featured: true
+                featured: true,
             },
             orgCount: 0,
-            pageTitle: 'Organizations Directory'
+            pageTitle: 'Organizations Directory',
         };
     }
 
     handlePageTitle = (title?: string) => {
         this.setState({
-            pageTitle: title || 'Organizations Directory'
+            pageTitle: title || 'Organizations Directory',
         });
-    }
+    };
 
-    changeSort = (sort: { orderBy: string, featured: boolean }) => {
+    changeSort = (sort: { orderBy: string; featured: boolean }) => {
         this.setState({
-            sort: sort
+            sort: sort,
         });
-    }
+    };
 
     resetPage = () => {
         this.props.router.replaceQueryParams({ page: undefined });
-    }
+    };
 
     onQueryChange = (q: string) => {
         this.resetPage();
         this.setState({
-            query: q
+            query: q,
         });
-    }
+    };
 
     tagsCount = (n: number) => {
         return this.setState({
-            orgCount: n
+            orgCount: n,
         });
-    }
+    };
 
     render() {
         const { query, orgCount } = this.state;
@@ -159,31 +165,62 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             placeholder="Search organizations"
                                         />
                                         <Results>
-                                            {(query.length <= 0) && (
+                                            {query.length <= 0 && (
                                                 <XSubHeader
                                                     title="All organizations"
-                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
+                                                    right={
+                                                        <SortPicker
+                                                            sort={
+                                                                this.state.sort
+                                                            }
+                                                            onPick={
+                                                                this.changeSort
+                                                            }
+                                                        />
+                                                    }
                                                     paddingBottom={12}
                                                 />
                                             )}
-                                            {(query.length > 0) && (orgCount > 0) && (
-                                                <XSubHeader
-                                                    title="Organizations"
-                                                    counter={orgCount}
-                                                    right={<SortPicker sort={this.state.sort} onPick={this.changeSort} />}
-                                                    paddingBottom={12}
-                                                />
-                                            )}
+                                            {query.length > 0 &&
+                                                orgCount > 0 && (
+                                                    <XSubHeader
+                                                        title="Organizations"
+                                                        counter={orgCount}
+                                                        right={
+                                                            <SortPicker
+                                                                sort={
+                                                                    this.state
+                                                                        .sort
+                                                                }
+                                                                onPick={
+                                                                    this
+                                                                        .changeSort
+                                                                }
+                                                            />
+                                                        }
+                                                        paddingBottom={12}
+                                                    />
+                                                )}
                                             <Organizations
-                                                featuredFirst={this.state.sort.featured}
-                                                orderBy={this.state.sort.orderBy}
+                                                featuredFirst={
+                                                    this.state.sort.featured
+                                                }
+                                                orderBy={
+                                                    this.state.sort.orderBy
+                                                }
                                                 query={query}
                                                 tagsCount={this.tagsCount}
                                             />
                                         </Results>
                                     </XVertical>
                                 )}
-                                {oid && <OrganizationProfile organizationId={oid} handlePageTitle={this.handlePageTitle} onDirectory={true} />}
+                                {oid && (
+                                    <OrganizationProfile
+                                        organizationId={oid}
+                                        handlePageTitle={this.handlePageTitle}
+                                        onDirectory={true}
+                                    />
+                                )}
                             </Container>
                         </RootWrapper>
                     </Scaffold.Content>
@@ -193,6 +230,10 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     }
 }
 
-export default withApp('Directory', 'viewer', withRouter((props) => {
-    return <RootComponent router={props.router} />;
-}));
+export default withApp(
+    'Directory',
+    'viewer',
+    withRouter(props => {
+        return <RootComponent router={props.router} />;
+    }),
+);

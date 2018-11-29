@@ -17,7 +17,7 @@ const Root = Glamorous.div({
     height: '100vh',
     width: '100%',
     backgroundColor: '#ffffff',
-    flexDirection: 'column'
+    flexDirection: 'column',
 });
 
 const Content = Glamorous.div({
@@ -25,31 +25,42 @@ const Content = Glamorous.div({
 });
 
 const InfoText = Glamorous.div({
-    marginBottom: 15
+    marginBottom: 15,
 });
 
 const HeaderWrapper = Glamorous.div({
     paddingLeft: 32,
-    paddingTop: 19
+    paddingTop: 19,
 });
 
 const HeaderLogo = Glamorous.div({
     width: 145,
     height: 42,
     background: 'url(/static/X/signup/logo-2.svg) no-repeat',
-    backgroundSize: '100% 100%'
+    backgroundSize: '100% 100%',
 });
 
-const InviteInfo = withChannelInviteInfo((props) => {
+const InviteInfo = withChannelInviteInfo(props => {
     return (
         <>
             <XDocumentHead
                 title={InitTexts.join.pageTitle}
-                titleSocial={(props.data.invite && props.data.invite.room) && props.data.invite.room.description || InitTexts.socialPageTitle}
-                imgUrl={(props.data.invite && props.data.invite.room) ? props.data.invite.room.photo : undefined}
+                titleSocial={
+                    (props.data.invite &&
+                        props.data.invite.room &&
+                        props.data.invite.room.description) ||
+                    InitTexts.socialPageTitle
+                }
+                imgUrl={
+                    props.data.invite && props.data.invite.room
+                        ? props.data.invite.room.photo
+                        : undefined
+                }
             />
-            {(props as any).instantRedirect && <XPageRedirect path={(props as any).instantRedirect} />}
-            {!(props as any).instantRedirect &&
+            {(props as any).instantRedirect && (
+                <XPageRedirect path={(props as any).instantRedirect} />
+            )}
+            {!(props as any).instantRedirect && (
                 <XTrack event="Join Room">
                     <Root>
                         <HeaderWrapper>
@@ -61,35 +72,63 @@ const InviteInfo = withChannelInviteInfo((props) => {
                                     noLogin={true}
                                     room={props.data.invite.room}
                                     invite={props.data.invite}
-                                    signup={'/signup?redirect=' + encodeURIComponent((props as any).redirect)}
+                                    signup={
+                                        '/signup?redirect=' +
+                                        encodeURIComponent(
+                                            (props as any).redirect,
+                                        )
+                                    }
                                 />
                             )}
-                            {!props.data.invite && !props.loading && (
-                                <MessagePageContent title="Join">
-                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                                </MessagePageContent>
-                            )}
-                            {!props.data.invite && props.loading && (
-                                <XLoader loading={true} />
-                            )}
+                            {!props.data.invite &&
+                                !props.loading && (
+                                    <MessagePageContent title="Join">
+                                        <InfoText>
+                                            {InitTexts.join.unableToFindInvite}
+                                        </InfoText>
+                                    </MessagePageContent>
+                                )}
+                            {!props.data.invite &&
+                                props.loading && <XLoader loading={true} />}
                         </Content>
                     </Root>
-                </XTrack>}
+                </XTrack>
+            )}
         </>
     );
-}) as React.ComponentType<{ variables: { invite: string }, redirect: string, instantRedirect?: string }>;
+}) as React.ComponentType<{
+    variables: { invite: string };
+    redirect: string;
+    instantRedirect?: string;
+}>;
 
-export default withAppBase('Join Room', withUserInfo((props) => {
-    let invite = props.router.routeQuery.invite;
+export default withAppBase(
+    'Join Room',
+    withUserInfo(props => {
+        let invite = props.router.routeQuery.invite;
 
-    Cookie.set('x-openland-invite', invite, { path: '/' });
+        Cookie.set('x-openland-invite', invite, { path: '/' });
 
-    return (
-        <>
-            <XDocumentHead title={InitTexts.invite.pageTitle} titleSocial={InitTexts.socialPageTitle} />
-            <XTrack event="Invite">
-                <InviteInfo variables={{ invite: invite }} redirect={'/acceptChannelInvite/' + invite} instantRedirect={props.isLoggedIn ? (props.isCompleted ? '/mail/joinChannel/' : '/acceptChannelInvite/') + invite : undefined} />
-            </XTrack>
-        </>
-    );
-}));
+        return (
+            <>
+                <XDocumentHead
+                    title={InitTexts.invite.pageTitle}
+                    titleSocial={InitTexts.socialPageTitle}
+                />
+                <XTrack event="Invite">
+                    <InviteInfo
+                        variables={{ invite: invite }}
+                        redirect={'/acceptChannelInvite/' + invite}
+                        instantRedirect={
+                            props.isLoggedIn
+                                ? (props.isCompleted
+                                      ? '/mail/joinChannel/'
+                                      : '/acceptChannelInvite/') + invite
+                                : undefined
+                        }
+                    />
+                </XTrack>
+            </>
+        );
+    }),
+);

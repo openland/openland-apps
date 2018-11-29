@@ -10,61 +10,61 @@ import ListingIcon from './icons/ic-listings-empty.svg';
 const RoomsLineWidth = [
     {
         main: 109,
-        sub: 79
+        sub: 79,
     },
     {
         main: 129,
-        sub: 99
+        sub: 99,
     },
     {
         main: 89,
-        sub: 59
+        sub: 59,
     },
     {
         main: 109,
-        sub: 79
+        sub: 79,
     },
     {
         main: 119,
-        sub: 89
-    }
+        sub: 89,
+    },
 ];
 
 const ChatsLineWidth = [
     {
         main: 106,
-        sub: 143
+        sub: 143,
     },
     {
         main: 126,
-        sub: 105
+        sub: 105,
     },
     {
         main: 96,
-        sub: 173
+        sub: 173,
     },
     {
         main: 106,
-        sub: 113
-    }
+        sub: 113,
+    },
 ];
 
 const ListingsLineWidth = [
     {
         main: 149,
         sub: 63,
-        sm: 33
+        sm: 33,
     },
     {
         main: 129,
         sub: 69,
-        sm: 38
+        sm: 38,
     },
     {
         main: 169,
         sub: 93,
-        sm: 0
-    }
+        sm: 0,
+    },
 ];
 
 const SidebarWrapper = Glamorous(XScrollView)({
@@ -74,18 +74,18 @@ const SidebarWrapper = Glamorous(XScrollView)({
     maxHeight: '100vh',
     backgroundColor: '#F9F9F9',
     paddingLeft: 22,
-    borderRight: '1px solid #E1E3E8'
+    borderRight: '1px solid #E1E3E8',
 });
 
-const Logo = Glamorous.div<{ width?: number, height?: number }>((props) => ({
+const Logo = Glamorous.div<{ width?: number; height?: number }>(props => ({
     width: '100%',
     height: 48,
-    backgroundImage: 'url(\'/static/X/logotype.svg\')',
+    backgroundImage: "url('/static/X/logotype.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     marginBottom: 20,
     marginTop: 27,
-    marginLeft: -6
+    marginLeft: -6,
 }));
 
 const SidebarContent = Glamorous.div({
@@ -96,7 +96,7 @@ const SidebarContent = Glamorous.div({
 const SidebarSection = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
-    marginBottom: 25
+    marginBottom: 25,
 });
 
 const SectionContent = Glamorous(XVertical)({
@@ -109,43 +109,48 @@ const SidebarTitle = Glamorous.div({
     lineHeight: 1.25,
     letterSpacing: -0.4,
     color: '#334562',
-    marginBottom: 18
+    marginBottom: 18,
 });
 
-const ChatAvatarWrapper = Glamorous.div<{ small: boolean, borderRadius: number }>(props => ({
+const ChatAvatarWrapper = Glamorous.div<{
+    small: boolean;
+    borderRadius: number;
+}>(props => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     width: props.small ? 36 : 44,
     height: props.small ? 36 : 44,
     borderRadius: props.borderRadius,
-    backgroundColor: '#ECEEF3'
+    backgroundColor: '#ECEEF3',
 }));
 
-const ChatMainLine = Glamorous.div<{ small: boolean, width: number }>(props => ({
-    width: props.width,
-    height: props.small ? 15 : 16,
-    opacity: 0.3,
-    borderRadius: 5,
-    backgroundColor: '#707ea0'
-}));
+const ChatMainLine = Glamorous.div<{ small: boolean; width: number }>(
+    props => ({
+        width: props.width,
+        height: props.small ? 15 : 16,
+        opacity: 0.3,
+        borderRadius: 5,
+        backgroundColor: '#707ea0',
+    }),
+);
 
-const ChatSubLine = Glamorous.div<{ small: boolean, width: number }>(props => ({
+const ChatSubLine = Glamorous.div<{ small: boolean; width: number }>(props => ({
     width: props.width,
     height: props.small ? 8 : 12,
     borderRadius: 3,
-    backgroundColor: 'rgba(198, 204, 218, 0.4)'
+    backgroundColor: 'rgba(198, 204, 218, 0.4)',
 }));
 
 const ChatSmWrapper = Glamorous(XHorizontal)({
-    paddingLeft: 62
+    paddingLeft: 62,
 });
 
 const ChatSmLine = Glamorous.div<{ width: number }>(props => ({
     width: props.width,
     height: 9,
     borderRadius: 3,
-    backgroundColor: 'rgba(198, 204, 218, 0.4)'
+    backgroundColor: 'rgba(198, 204, 218, 0.4)',
 }));
 
 const Shadow = Glamorous.div({
@@ -155,7 +160,8 @@ const Shadow = Glamorous.div({
     width: '100%',
     height: '100%',
     opacity: 0.6,
-    backgroundImage: 'linear-gradient(to bottom, rgba(249, 250, 251, 0), #F9F9F9)'
+    backgroundImage:
+        'linear-gradient(to bottom, rgba(249, 250, 251, 0), #F9F9F9)',
 });
 
 export const Sidebar = () => {
@@ -174,10 +180,13 @@ export const Sidebar = () => {
                     <RoomIcon />
                 </ChatAvatarWrapper>
                 <XVertical separator={4}>
-                    <ChatMainLine width={RoomsLineWidth[i].main} small={false} />
+                    <ChatMainLine
+                        width={RoomsLineWidth[i].main}
+                        small={false}
+                    />
                     <ChatSubLine width={RoomsLineWidth[i].sub} small={true} />
                 </XVertical>
-            </XHorizontal>
+            </XHorizontal>,
         );
     }
 
@@ -191,7 +200,7 @@ export const Sidebar = () => {
                     <ChatMainLine width={ChatsLineWidth[i].main} small={true} />
                     <ChatSubLine width={ChatsLineWidth[i].sub} small={true} />
                 </XVertical>
-            </XHorizontal>
+            </XHorizontal>,
         );
     }
 
@@ -203,15 +212,21 @@ export const Sidebar = () => {
                         <ListingIcon />
                     </ChatAvatarWrapper>
                     <XVertical separator={5}>
-                        <ChatMainLine width={ChatsLineWidth[i].main} small={false} />
-                        <ChatSubLine width={ChatsLineWidth[i].sub} small={false} />
+                        <ChatMainLine
+                            width={ChatsLineWidth[i].main}
+                            small={false}
+                        />
+                        <ChatSubLine
+                            width={ChatsLineWidth[i].sub}
+                            small={false}
+                        />
                     </XVertical>
                 </XHorizontal>
                 <ChatSmWrapper separator={4}>
-                    {i === 0 && <ChatSmLine width={ListingsLineWidth[i].sm}/>}
-                    <ChatSmLine width={ListingsLineWidth[i].sm}/>
+                    {i === 0 && <ChatSmLine width={ListingsLineWidth[i].sm} />}
+                    <ChatSmLine width={ListingsLineWidth[i].sm} />
                 </ChatSmWrapper>
-            </XVertical>
+            </XVertical>,
         );
     }
 
@@ -223,21 +238,21 @@ export const Sidebar = () => {
                     <SidebarTitle>Rooms</SidebarTitle>
                     <SectionContent>
                         {RoomsComponents}
-                        <Shadow/>
+                        <Shadow />
                     </SectionContent>
                 </SidebarSection>
                 <SidebarSection>
                     <SidebarTitle>Chats</SidebarTitle>
                     <SectionContent>
                         {ChatsComponents}
-                        <Shadow/>
+                        <Shadow />
                     </SectionContent>
                 </SidebarSection>
                 <SidebarSection>
                     <SidebarTitle>Listings</SidebarTitle>
                     <SectionContent>
                         {ListingsComponents}
-                        <Shadow/>
+                        <Shadow />
                     </SectionContent>
                 </SidebarSection>
             </SidebarContent>

@@ -6,5 +6,5 @@ export let MessengerContainer = Glamorous.div({
     flexGrow: 1,
     height: '100vh',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
 });

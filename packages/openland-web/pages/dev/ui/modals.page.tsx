@@ -21,8 +21,14 @@ class ControlledModal extends React.Component<{}, { show: boolean }> {
     render() {
         return (
             <>
-                <XButton text="Show Modal" onClick={() => this.setState({ show: true })} />
-                <XModal isOpen={this.state.show} onClosed={() => this.setState({ show: false })}>
+                <XButton
+                    text="Show Modal"
+                    onClick={() => this.setState({ show: true })}
+                />
+                <XModal
+                    isOpen={this.state.show}
+                    onClosed={() => this.setState({ show: false })}
+                >
                     Hey!
                 </XModal>
             </>
@@ -30,14 +36,16 @@ class ControlledModal extends React.Component<{}, { show: boolean }> {
     }
 }
 
-export default withApp('UI Framework - Modals', 'viewer', (props) => {
+export default withApp('UI Framework - Modals', 'viewer', props => {
     return (
         <DevDocsScaffold title="Modals">
             <XContent>
                 <XVertical>
-
                     <XTitle>for rooms</XTitle>
-                    <BrowseChannelsModal title="Browse rooms" target={<XButton text="Browse rooms" />} />
+                    <BrowseChannelsModal
+                        title="Browse rooms"
+                        target={<XButton text="Browse rooms" />}
+                    />
 
                     <XTitle>Modals</XTitle>
                     <XModal target={<XButton text="Show Modal" />}>
@@ -46,12 +54,16 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XTitle>Controlled</XTitle>
                     <ControlledModal />
                     <XTitle>Routed</XTitle>
-                    <XButton query={{ field: 'modal', value: 'true' }} text="Show Modal" />
-                    <XModal targetQuery="modal">
-                        Hey!
-                    </XModal>
+                    <XButton
+                        query={{ field: 'modal', value: 'true' }}
+                        text="Show Modal"
+                    />
+                    <XModal targetQuery="modal">Hey!</XModal>
                     <XTitle>With Title</XTitle>
-                    <XModal title="Modal Dialog" target={<XButton text="Show Modal" />}>
+                    <XModal
+                        title="Modal Dialog"
+                        target={<XButton text="Show Modal" />}
+                    >
                         <Lorem count={2} />
                     </XModal>
                     <XTitle>Sizes</XTitle>
@@ -61,9 +73,7 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     <XModal target={<XButton text="Large" />} size="large">
                         Hey!
                     </XModal>
-                    <XModal target={<XButton text="Default" />}>
-                        Hey!
-                    </XModal>
+                    <XModal target={<XButton text="Default" />}>Hey!</XModal>
                     <XModal target={<XButton text="Small" />} size="small">
                         Hey!
                     </XModal>
@@ -73,7 +83,6 @@ export default withApp('UI Framework - Modals', 'viewer', (props) => {
                     </XModal>
 
                     <XModal target={<XButton text="Custom XSelect" />}>
-
                         <XSelect
                             options={[
                                 { label: 'option1', value: 'option1' },

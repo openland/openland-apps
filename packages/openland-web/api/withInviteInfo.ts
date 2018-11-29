@@ -6,4 +6,7 @@ import { AccountInviteJoinMutation } from 'openland-api/AccountInviteJoinMutatio
 
 export const withInviteInfo = graphqlCompose2(
     graphqlRouted(AccountInviteInfoQuery, { params: ['inviteKey'] }),
-    graphqlMutation(AccountInviteJoinMutation, 'doJoin', { params: ['inviteKey'] }));
+    graphqlMutation(AccountInviteJoinMutation, 'doJoin', {
+        params: ['inviteKey'],
+    }),
+);

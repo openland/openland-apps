@@ -11,7 +11,7 @@ import { SearchBox } from '../../pages/main/directory/components/SearchBox';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 
 const RoomsListWrapper = Glamorous(XScrollView2)({
-    flexGrow: 1
+    flexGrow: 1,
 });
 
 const Root = Glamorous.div({
@@ -19,23 +19,31 @@ const Root = Glamorous.div({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 interface WithChatSearchRoomsProps {
     variables: {
-        query: string,
-        sort: string
+        query: string;
+        sort: string;
     };
     tagsCount: (n: number) => void;
 }
 
-const Rooms = withChatSearchChannels((props) => {
+const Rooms = withChatSearchChannels(props => {
     if (!(props.data && props.data.items)) {
         return <XLoader loading={true} />;
     }
 
-    if (!(props.error || props.data === undefined || props.data.items === undefined || props.data.items === null || props.data.items.edges.length === 0)) {
+    if (
+        !(
+            props.error ||
+            props.data === undefined ||
+            props.data.items === undefined ||
+            props.data.items === null ||
+            props.data.items.edges.length === 0
+        )
+    ) {
         (props as any).tagsCount(props.data.items.pageInfo.itemsCount);
 
         return (
@@ -61,20 +69,21 @@ const Rooms = withChatSearchChannels((props) => {
     }
 }) as React.ComponentType<WithChatSearchRoomsProps>;
 
-interface RoomExploreComponentProps {
-    
-}
+interface RoomExploreComponentProps {}
 
 interface RoomExploreComponentState {
     count: number;
     query: string;
     sort: {
-        orderBy: string,
-        featured: boolean
+        orderBy: string;
+        featured: boolean;
     };
 }
 
-export class RoomsExploreComponent extends React.Component<RoomExploreComponentProps, RoomExploreComponentState> {
+export class RoomsExploreComponent extends React.Component<
+    RoomExploreComponentProps,
+    RoomExploreComponentState
+> {
     constructor(props: RoomExploreComponentProps) {
         super(props);
         this.state = {
@@ -82,30 +91,30 @@ export class RoomsExploreComponent extends React.Component<RoomExploreComponentP
             query: '',
             sort: {
                 orderBy: 'membersCount',
-                featured: true
-            }
+                featured: true,
+            },
         };
     }
 
-    changeSort = (sort: { orderBy: string, featured: boolean }) => {
+    changeSort = (sort: { orderBy: string; featured: boolean }) => {
         this.setState({
-            sort: sort
+            sort: sort,
         });
-    }
+    };
 
     onQueryChange = (q: string) => {
         this.setState({
-            query: q
+            query: q,
         });
-    }
+    };
 
     handleCount = (n: number) => {
         if (n !== this.state.count) {
             this.setState({
-                count: n
+                count: n,
             });
         }
-    }
+    };
 
     render() {
         let sort = [{ [this.state.sort.orderBy]: { order: 'desc' } }];
@@ -118,10 +127,11 @@ export class RoomsExploreComponent extends React.Component<RoomExploreComponentP
                 sort={this.state.sort}
                 onPick={this.changeSort}
                 options={{
-                    label: 'Sort by', values: [
+                    label: 'Sort by',
+                    values: [
                         { label: 'Members count', value: 'membersCount' },
-                        { label: 'Creation date', value: 'createdAt' }
-                    ]
+                        { label: 'Creation date', value: 'createdAt' },
+                    ],
                 }}
             />
         );
@@ -135,20 +145,21 @@ export class RoomsExploreComponent extends React.Component<RoomExploreComponentP
                 />
                 <RoomsListWrapper>
                     {this.state.query.length <= 0 && (
-                        <XSubHeader
-                            title="Featured rooms"
-                            right={sortBox}
-                        />
+                        <XSubHeader title="Featured rooms" right={sortBox} />
                     )}
-                    {(this.state.query.length > 0 && this.state.count > 0) && (
-                        <XSubHeader
-                            title="Rooms"
-                            counter={this.state.count}
-                            right={sortBox}
-                        />
-                    )}
+                    {this.state.query.length > 0 &&
+                        this.state.count > 0 && (
+                            <XSubHeader
+                                title="Rooms"
+                                counter={this.state.count}
+                                right={sortBox}
+                            />
+                        )}
                     <Rooms
-                        variables={{ query: this.state.query.toLowerCase(), sort: JSON.stringify(sort) }}
+                        variables={{
+                            query: this.state.query.toLowerCase(),
+                            sort: JSON.stringify(sort),
+                        }}
                         tagsCount={this.handleCount}
                     />
                 </RoomsListWrapper>

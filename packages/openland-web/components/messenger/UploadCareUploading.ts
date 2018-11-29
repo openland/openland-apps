@@ -1,4 +1,8 @@
-import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
+import {
+    UploadingFile,
+    FileMetadata,
+    UploadStatus,
+} from 'openland-engines/messenger/types';
 
 export class UplaodCareUploading implements UploadingFile {
     private file: UploadCare.File;
@@ -8,14 +12,14 @@ export class UplaodCareUploading implements UploadingFile {
         let isFirst = true;
         let resolved = false;
         this.infoPromise = new Promise((resolver, reject) => {
-            file.fail((v) => {
+            file.fail(v => {
                 if (resolved) {
                     return;
                 }
                 resolved = true;
                 reject(v);
             });
-            file.progress((v) => {
+            file.progress(v => {
                 if (resolved) {
                     return;
                 }
@@ -27,7 +31,7 @@ export class UplaodCareUploading implements UploadingFile {
                 resolved = true;
                 resolver({ name });
             });
-            file.done((v) => {
+            file.done(v => {
                 if (resolved) {
                     return;
                 }
@@ -42,15 +46,23 @@ export class UplaodCareUploading implements UploadingFile {
         return this.infoPromise;
     }
 
-    watch(handler: (state: { status: UploadStatus, progress?: number, uuid?: string }) => void) {
-        this.file.fail((v) => {
+    watch(
+        handler: (
+            state: { status: UploadStatus; progress?: number; uuid?: string },
+        ) => void,
+    ) {
+        this.file.fail(v => {
             handler({ status: UploadStatus.FAILED });
         });
-        this.file.progress((v) => {
+        this.file.progress(v => {
             handler({ status: UploadStatus.UPLOADING, progress: v.progress });
         });
-        this.file.done((v) => {
-            handler({ status: UploadStatus.COMPLETED, progress: 1, uuid: v.uuid });
+        this.file.done(v => {
+            handler({
+                status: UploadStatus.COMPLETED,
+                progress: 1,
+                uuid: v.uuid,
+            });
         });
     }
 }

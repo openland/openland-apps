@@ -8,7 +8,7 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
 
-export default withApp('UI Framework - Buttons', 'viewer', (props) => {
+export default withApp('UI Framework - Buttons', 'viewer', props => {
     return (
         <DevDocsScaffold title="Buttons">
             <XContent>
@@ -48,53 +48,133 @@ export default withApp('UI Framework - Buttons', 'viewer', (props) => {
                     </XHorizontal>
                     <XHorizontal>
                         <XButton icon="star" iconRight="star" text="default" />
-                        <XButton icon="star" iconRight="star" style="primary" text="primary" />
-                        <XButton icon="star" iconRight="star" style="success" text="success" />
-                        <XButton icon="star" iconRight="star" style="danger" text="danger" />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="primary"
+                            text="primary"
+                        />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="success"
+                            text="success"
+                        />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="danger"
+                            text="danger"
+                        />
                     </XHorizontal>
                     <XHorizontal>
-                        <XButton icon="star" iconRight="star" style="ghost" text="ghost" />
-                        <XButton icon="star" iconRight="star" style="electric" text="electric" />
-                        <XButton icon="star" iconRight="star" style="flat" text="flat" />
-                        <XButton icon="star" iconRight="star" style="light" text="light" />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="ghost"
+                            text="ghost"
+                        />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="electric"
+                            text="electric"
+                        />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="flat"
+                            text="flat"
+                        />
+                        <XButton
+                            icon="star"
+                            iconRight="star"
+                            style="light"
+                            text="light"
+                        />
                     </XHorizontal>
                     <XTitle>Loading</XTitle>
                     <XHorizontal>
                         <XButton loading={true} text="default" />
-                        <XButton loading={true} style="primary" text="primary" />
-                        <XButton loading={true} style="success" text="success" />
+                        <XButton
+                            loading={true}
+                            style="primary"
+                            text="primary"
+                        />
+                        <XButton
+                            loading={true}
+                            style="success"
+                            text="success"
+                        />
                         <XButton loading={true} style="danger" text="danger" />
                         <XButton loading={true} style="ghost" text="ghost" />
-                        <XButton loading={true} style="electric" text="electric" />
+                        <XButton
+                            loading={true}
+                            style="electric"
+                            text="electric"
+                        />
                         <XButton loading={true} style="flat" text="flat" />
                         <XButton loading={true} style="light" text="light" />
                     </XHorizontal>
                     <XTitle>Disabled</XTitle>
                     <XHorizontal>
                         <XButton enabled={false} text="default" />
-                        <XButton enabled={false} style="primary" text="primary" />
+                        <XButton
+                            enabled={false}
+                            style="primary"
+                            text="primary"
+                        />
                         <XButton enabled={false} style="danger" text="danger" />
                         <XButton enabled={false} style="ghost" text="ghost" />
-                        <XButton enabled={false} style="electric" text="electric" />
+                        <XButton
+                            enabled={false}
+                            style="electric"
+                            text="electric"
+                        />
                         <XButton enabled={false} style="flat" text="flat" />
                         <XButton enabled={false} style="light" text="light" />
                     </XHorizontal>
                     <XTitle>Pressed</XTitle>
                     <XHorizontal>
                         <XButton pressed={true} text="default" />
-                        <XButton pressed={true} style="primary" text="primary" />
+                        <XButton
+                            pressed={true}
+                            style="primary"
+                            text="primary"
+                        />
                         <XButton pressed={true} style="danger" text="danger" />
                         <XButton pressed={true} style="ghost" text="ghost" />
-                        <XButton pressed={true} style="electric" text="electric" />
+                        <XButton
+                            pressed={true}
+                            style="electric"
+                            text="electric"
+                        />
                         <XButton pressed={true} style="flat" text="flat" />
                         <XButton pressed={true} style="light" text="light" />
                     </XHorizontal>
                     <XTitle>Responsive button</XTitle>
                     <XHorizontal>
-                        <XButton text="left (custom breakpoint)" breakpoint={1400} tooltipPlacement="left" iconResponsive="star" />
-                        <XButton text="top" tooltipPlacement="top" iconResponsive="star" />
-                        <XButton text="bottom" tooltipPlacement="bottom" iconResponsive="star" />
-                        <XButton text="right" tooltipPlacement="right" iconResponsive="star" />
+                        <XButton
+                            text="left (custom breakpoint)"
+                            breakpoint={1400}
+                            tooltipPlacement="left"
+                            iconResponsive="star"
+                        />
+                        <XButton
+                            text="top"
+                            tooltipPlacement="top"
+                            iconResponsive="star"
+                        />
+                        <XButton
+                            text="bottom"
+                            tooltipPlacement="bottom"
+                            iconResponsive="star"
+                        />
+                        <XButton
+                            text="right"
+                            tooltipPlacement="right"
+                            iconResponsive="star"
+                        />
                     </XHorizontal>
                 </XVertical>
             </XContent>

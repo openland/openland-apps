@@ -21,7 +21,10 @@ import ShortcutsIcon from '../icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from '../icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
 import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
-import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from '../MessagesStateContext';
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
@@ -34,7 +37,7 @@ import {
     SaveDraftMessage,
     MessageFull_mentions,
     SharedRoomKind,
-    RoomMembers_members
+    RoomMembers_members,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 
@@ -53,7 +56,7 @@ const SendMessageWrapper = Glamorous.div({
     paddingBottom: 12,
     borderTopStyle: 'solid',
     borderTopWidth: '1px',
-    borderTopColor: XThemeDefault.separatorColor
+    borderTopColor: XThemeDefault.separatorColor,
 });
 
 const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
@@ -68,7 +71,7 @@ const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
     zIndex: 2,
     padding: 24,
     visibility: props.dragOn ? 'visible' : 'hidden',
-    backgroundColor: props.dragOn ? '#fff' : 'transparent'
+    backgroundColor: props.dragOn ? '#fff' : 'transparent',
 }));
 
 const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
@@ -79,15 +82,17 @@ const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
     alignItems: 'center',
     justifyContent: 'center',
     border: '2px dashed',
-    borderColor: props.dragUnder ? 'rgba(23, 144, 255, 0.2)' : 'rgba(51, 69, 98, 0.1)',
+    borderColor: props.dragUnder
+        ? 'rgba(23, 144, 255, 0.2)'
+        : 'rgba(51, 69, 98, 0.1)',
     borderRadius: 8,
     backgroundColor: props.dragUnder ? 'rgba(23, 144, 255, 0.02)' : '#fff',
     '& > svg': {
         pointerEvents: 'none',
         '& > g': {
-            stroke: props.dragUnder ? '#1790FF' : '#BCC3CC'
-        }
-    }
+            stroke: props.dragUnder ? '#1790FF' : '#BCC3CC',
+        },
+    },
 }));
 
 const DropAreaTitle = Glamorous.div({
@@ -98,7 +103,7 @@ const DropAreaTitle = Glamorous.div({
     textAlign: 'center',
     color: '#334562',
     marginTop: 23,
-    marginBottom: 4
+    marginBottom: 4,
 });
 
 const DropAreaSubtitle = Glamorous.div({
@@ -107,7 +112,7 @@ const DropAreaSubtitle = Glamorous.div({
     lineHeight: 1.71,
     letterSpacing: -0.4,
     textAlign: 'center',
-    color: '#5c6a81'
+    color: '#5c6a81',
 });
 
 const SendMessageContent = Glamorous(XHorizontal)({
@@ -115,10 +120,10 @@ const SendMessageContent = Glamorous(XHorizontal)({
     maxWidth: 930,
     flexBasis: '100%',
     paddingLeft: 97,
-    paddingRight: 112
+    paddingRight: 112,
 });
 
-const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
+const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
     paddingLeft: 12,
     paddingRight: 12,
     height: 32,
@@ -140,27 +145,27 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>((props) => ({
     '@media (max-width: 1150px)': {
         fontSize: 0,
         '& > svg': {
-            marginRight: '0!important'
-        }
+            marginRight: '0!important',
+        },
     },
     '&:hover': {
         color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
         backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
         '& > svg > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)'
-        }
+            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
+        },
     },
     '&.shortcuts-button > svg, &.document-button > svg': {
         marginTop: 1,
-        marginBottom: -1
+        marginBottom: -1,
     },
     '& > svg': {
         flexShrink: 0,
         marginRight: 10,
         '& > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)'
+            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
         },
-    }
+    },
 }));
 
 const TextInputWrapper = Glamorous.div({
@@ -181,12 +186,12 @@ const TextInputWrapper = Glamorous.div({
             paddingBottom: 9,
             paddingLeft: 16,
             paddingRight: 40,
-        }
-    }
+        },
+    },
 });
 
 const KeyboardShortcuts = Glamorous.div({
-    padding: '7px 0 19px'
+    padding: '7px 0 19px',
 });
 
 const KeyboardShortcut = Glamorous.div({
@@ -206,12 +211,12 @@ const KeyboardShortcut = Glamorous.div({
         lineHeight: '20px',
         color: 'rgba(0, 0, 0, 0.5)',
         borderRadius: 8,
-        backgroundColor: 'rgba(0, 0, 0, 0.06)'
+        backgroundColor: 'rgba(0, 0, 0, 0.06)',
     },
 
     '& strong': {
-        fontWeight: 600
-    }
+        fontWeight: 600,
+    },
 });
 
 const ShortcutsModal = () => {
@@ -219,25 +224,55 @@ const ShortcutsModal = () => {
         <XModal
             title="Keyboard shortcuts"
             useTopCloser={true}
-            target={(
+            target={
                 <AttachmentButton className="shortcuts-button">
                     <ShortcutsIcon />
                     <span>Shortcuts</span>
                 </AttachmentButton>
-            )}
+            }
         >
             <KeyboardShortcuts>
-                <KeyboardShortcut><span>Ctrl + S</span> Search chats</KeyboardShortcut>
-                <KeyboardShortcut><span>Esc</span> Close chat</KeyboardShortcut>
-                <KeyboardShortcut><span><strong>↑</strong></span> Edit last message (works when the message box is in focus)</KeyboardShortcut>
-                <KeyboardShortcut><span>Ctrl + E</span> Edit last message</KeyboardShortcut>
-                <KeyboardShortcut><span>Option + ↑ (Mac)</span><span>Alt + ↑ (Windows)</span> Previous chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Option + ↓ (Mac)</span><span>Alt + ↓ (Windows)</span> Next chat</KeyboardShortcut>
-                <KeyboardShortcut><span>Enter</span> Send message</KeyboardShortcut>
-                <KeyboardShortcut><span>Shift + Enter</span> New line</KeyboardShortcut>
-                <KeyboardShortcut><span>Cmd + Enter (Mac)</span><span>Ctrl + Enter (Windows)</span> Submit form</KeyboardShortcut>
-                <KeyboardShortcut><span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)</KeyboardShortcut>
-                <KeyboardShortcut><span>Ctrl + Option + N (Mac)</span><span>Ctrl + Alt + N (Windows)</span> New chat</KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + S</span> Search chats
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Esc</span> Close chat
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>
+                        <strong>↑</strong>
+                    </span>{' '}
+                    Edit last message (works when the message box is in focus)
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + E</span> Edit last message
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Option + ↑ (Mac)</span>
+                    <span>Alt + ↑ (Windows)</span> Previous chat
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Option + ↓ (Mac)</span>
+                    <span>Alt + ↓ (Windows)</span> Next chat
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Enter</span> Send message
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Shift + Enter</span> New line
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Cmd + Enter (Mac)</span>
+                    <span>Ctrl + Enter (Windows)</span> Submit form
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac
+                    shortcut)
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + Option + N (Mac)</span>
+                    <span>Ctrl + Alt + N (Windows)</span> New chat
+                </KeyboardShortcut>
             </KeyboardShortcuts>
         </XModal>
     );
@@ -245,15 +280,15 @@ const ShortcutsModal = () => {
 
 const EditWrapper = Glamorous(XHorizontal)({
     paddingLeft: 14,
-    paddingRight: 14
+    paddingRight: 14,
 });
 
 const VerticalHidden = Glamorous(XVertical)({
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 const HorizontalHidden = Glamorous(XHorizontal)({
-    overflow: 'hidden'
+    overflow: 'hidden',
 });
 
 const BlueLine = Glamorous.div({
@@ -261,14 +296,14 @@ const BlueLine = Glamorous.div({
     height: 36,
     borderRadius: 50,
     backgroundColor: '#1790ff',
-    flexShrink: 0
+    flexShrink: 0,
 });
 
 const EditTitle = Glamorous.div({
     opacity: 0.8,
     fontSize: 14,
     fontWeight: 600,
-    color: '#000'
+    color: '#000',
 });
 
 const EditText = Glamorous.div({
@@ -279,17 +314,30 @@ const EditText = Glamorous.div({
     minWidth: 0,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
 });
 
 const EditCloseBtn = Glamorous.div({
-    cursor: 'pointer'
+    cursor: 'pointer',
 });
 
-const EditView = (props: { title: string, message: string, onCancel: () => void }) => (
-    <EditWrapper justifyContent="space-between" alignItems="center" separator={5}>
+const EditView = (props: {
+    title: string;
+    message: string;
+    onCancel: () => void;
+}) => (
+    <EditWrapper
+        justifyContent="space-between"
+        alignItems="center"
+        separator={5}
+    >
         <BlueLine />
-        <HorizontalHidden flexGrow={1} separator={9} alignItems="center" justifyContent="space-between">
+        <HorizontalHidden
+            flexGrow={1}
+            separator={9}
+            alignItems="center"
+            justifyContent="space-between"
+        >
             <VerticalHidden separator={1}>
                 <EditTitle>{props.title}</EditTitle>
                 <EditText>{props.message}</EditText>
@@ -319,12 +367,18 @@ interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
     members?: RoomMembers_members[];
 }
 
-interface MessageComposeComponentInnerProps extends MessageComposeComponentProps, XWithRouter, UserInfoComponentProps {
+interface MessageComposeComponentInnerProps
+    extends MessageComposeComponentProps,
+        XWithRouter,
+        UserInfoComponentProps {
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
-    saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
+    saveDraft: MutationFunc<
+        SaveDraftMessage,
+        Partial<SaveDraftMessageVariables>
+    >;
     draft?: string | null;
 }
 
@@ -350,16 +404,29 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
     }
     return data.map(({ user }: any) => {
         const { id, name, photo, online, isYou, primaryOrganization } = user;
-        return { id, name: removeEmojiFromText(name), avatar: photo, title: primaryOrganization ? primaryOrganization.name : '', online, isYou };
+        return {
+            id,
+            name: removeEmojiFromText(name),
+            avatar: photo,
+            title: primaryOrganization ? primaryOrganization.name : '',
+            online,
+            isYou,
+        };
     });
 };
 
-class MessageComposeComponentInner extends React.PureComponent<MessageComposeComponentInnerProps, MessageComposeComponentInnerState> {
+class MessageComposeComponentInner extends React.PureComponent<
+    MessageComposeComponentInnerProps,
+    MessageComposeComponentInnerState
+> {
     listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
-        
-        let message = window.localStorage.getItem('conversation_draft_' + props.conversationId) || '';
+
+        let message =
+            window.localStorage.getItem(
+                'conversation_draft_' + props.conversationId,
+            ) || '';
         let draftKey = 'conversation_draft_' + this.props.conversationId;
 
         if (message === draftKey) {
@@ -374,7 +441,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             forwardMessageReply: undefined,
             forwardMessageId: undefined,
             forwardMessageSender: undefined,
-            beDrafted: false
+            beDrafted: false,
         };
         this.listOfMembersNames = [];
     }
@@ -384,34 +451,41 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
     private handleAttach = () => {
         let dialog = UploadCare.openDialog(null, {
-            publicKey: getConfig().uploadcareKey!!
+            publicKey: getConfig().uploadcareKey!!,
         });
-        dialog.done((r) => {
+        dialog.done(r => {
             this.setState({ message: '', dragOn: false }, () => {
                 if (this.props.onSendFile) {
                     this.props.onSendFile(r);
                 }
             });
         });
-    }
+    };
 
     getMentions = (str: string) => {
         if (!this.props.members) {
             return null;
         }
 
-        const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
-        return this.props.members.filter(({ user: { name } }) => {
-            return mentionsNames.indexOf(`@${removeEmojiFromText(name)}`) !== -1;
-        }).map(({ user }) => user);
-    }
+        const mentionsNames = this.listOfMembersNames.filter((name: string) =>
+            str.includes(name),
+        );
+        return this.props.members
+            .filter(({ user: { name } }) => {
+                return (
+                    mentionsNames.indexOf(`@${removeEmojiFromText(name)}`) !==
+                    -1
+                );
+            })
+            .map(({ user }) => user);
+    };
 
     private handleSend = () => {
         let {
             message,
             floatingMessage,
             forwardMessageReply,
-            forwardMessageId
+            forwardMessageId,
         } = this.state as MessageComposeComponentInnerState;
 
         if (message.trim().length > 0) {
@@ -421,7 +495,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
 
                 this.props.onSend(msg, mentions);
                 this.setState({
-                    beDrafted: false
+                    beDrafted: false,
                 });
             }
             if ((floatingMessage || forwardMessageReply) && forwardMessageId) {
@@ -433,28 +507,29 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         this.closeEditor();
         this.changeDraft('');
         this.localDraftCleaner();
-    }
+    };
 
     private replyMessages = () => {
-        let {
-            message,
-            forwardMessageId
-        } = this.state;
+        let { message, forwardMessageId } = this.state;
 
         let messages: string[] = [];
-        if (typeof (forwardMessageId) === 'string') {
+        if (typeof forwardMessageId === 'string') {
             messages = [forwardMessageId];
-        } else if (typeof (forwardMessageId) === 'object') {
+        } else if (typeof forwardMessageId === 'object') {
             messages = [...forwardMessageId];
         }
 
         if (messages.length > 0) {
             let mentions = this.getMentions(message);
-            const currentMessages = this.props.getMessages ? this.props.getMessages() : [];
+            const currentMessages = this.props.getMessages
+                ? this.props.getMessages()
+                : [];
 
-            const replyMessages = currentMessages.filter((item: MessageFull) => {
-                return messages.indexOf(item.id) !== -1;
-            });
+            const replyMessages = currentMessages.filter(
+                (item: MessageFull) => {
+                    return messages.indexOf(item.id) !== -1;
+                },
+            );
 
             const replyMentions = replyMessages.reduce(
                 (accumulator: string[], currentValue: ModelMessage) => {
@@ -462,15 +537,15 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                         return accumulator;
                     }
 
-                    currentValue.mentions.forEach((mention) => {
+                    currentValue.mentions.forEach(mention => {
                         if (accumulator.indexOf(mention.id) === -1) {
                             accumulator.push(mention.id);
                         }
                     });
 
                     return accumulator;
-                }, 
-                mentions ? mentions.map(({id}) => id) : []
+                },
+                mentions ? mentions.map(({ id }) => id) : [],
             );
 
             this.props.replyMessage({
@@ -478,24 +553,24 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     roomId: this.props.conversationId,
                     message: message,
                     mentions: replyMentions,
-                    replyMessages: messages
-                }
+                    replyMessages: messages,
+                },
             });
         }
-    }
+    };
 
     private handleChange = (src: string) => {
         let { forwardMessageId, beDrafted } = this.state;
 
         this.setState({
-            message: src
+            message: src,
         });
 
         if (src.length > 0) {
             this.setState({
-                beDrafted: true
+                beDrafted: true,
             });
-            
+
             this.localDraftSaver(src);
         }
 
@@ -512,27 +587,26 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         this.changeDraft(src);
-
-    }
+    };
 
     private localDraftSaver = (src: string) => {
         let draftKey = 'conversation_draft_' + this.props.conversationId;
         window.localStorage.setItem(draftKey, src);
-    }
+    };
 
     private localDraftCleaner = () => {
         let draftKey = 'conversation_draft_' + this.props.conversationId;
         window.localStorage.setItem(draftKey, draftKey);
-    }
+    };
 
     private changeDraft = (src: string) => {
         this.props.saveDraft({
             variables: {
                 conversationId: this.props.conversationId,
-                message: src
-            }
+                message: src,
+            },
         });
-    }
+    };
 
     private focusIfNeeded = () => {
         if (this.props.enabled !== false && !this.wasFocused) {
@@ -541,14 +615,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                 this.input.current.focus();
             }
         }
-    }
+    };
 
     private handleDrop = (e: any) => {
         e.preventDefault();
 
         this.setState({
             dragOn: false,
-            dragUnder: false
+            dragUnder: false,
         });
 
         let file = e.dataTransfer.files[0];
@@ -558,39 +632,39 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         if (this.props.onSendFile) {
             this.props.onSendFile(ucFile);
         }
-    }
+    };
 
     private handleWindowDragover = (e: any) => {
         e.preventDefault();
         this.setState({
-            dragOn: true
+            dragOn: true,
         });
-    }
+    };
 
     private handleWindowDrop = (e: any) => {
         e.preventDefault();
         this.setState({
-            dragOn: false
+            dragOn: false,
         });
-    }
+    };
 
     private handleDragOver = () => {
         this.setState({
-            dragUnder: true
+            dragUnder: true,
         });
-    }
+    };
 
     private handleDragLeave = (e: any) => {
         let file = e.dataTransfer.files[0];
         if (file === undefined) {
             this.setState({
-                dragOn: false
+                dragOn: false,
             });
         }
         this.setState({
-            dragUnder: false
+            dragUnder: false,
         });
-    }
+    };
 
     private closeEditor = () => {
         this.props.messagesContext.resetAll();
@@ -599,13 +673,13 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             floatingMessage: '',
             forwardMessageReply: undefined,
             forwardMessageId: undefined,
-            forwardMessageSender: undefined
+            forwardMessageSender: undefined,
         });
         if (this.input.current) {
             this.input.current!!.resetAndFocus();
         }
         this.listOfMembersNames = [];
-    }
+    };
 
     keydownHandler = (e: any) => {
         let { forwardMessagesId } = this.props.messagesContext;
@@ -614,31 +688,55 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
         }
 
         let { message, forwardMessageId } = this.state;
-        let hasFocus = this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
+        let hasFocus =
+            this.input.current &&
+            this.input.current.state.editorState.getSelection().getHasFocus();
 
-        if ((message.length === 0 && this.props.conversation) && ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) && !forwardMessageId) {
-            let messages = this.props.conversation.getState().messages.filter(m => isServerMessage(m) && m.message && this.props.user && m.sender.id === this.props.user.id);
+        if (
+            message.length === 0 &&
+            this.props.conversation &&
+            ((e.code === 'ArrowUp' && !e.altKey && hasFocus) ||
+                (e.code === 'KeyE' && e.ctrlKey)) &&
+            !forwardMessageId
+        ) {
+            let messages = this.props.conversation
+                .getState()
+                .messages.filter(
+                    m =>
+                        isServerMessage(m) &&
+                        m.message &&
+                        this.props.user &&
+                        m.sender.id === this.props.user.id,
+                );
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
                 e.preventDefault();
-                this.props.messagesContext.setEditMessage(messageData.id, messageData.message);
+                this.props.messagesContext.setEditMessage(
+                    messageData.id,
+                    messageData.message,
+                );
             }
         }
         if (e.code === 'Escape' && forwardMessageId) {
             this.closeEditor();
         }
-    }
+    };
 
     componentDidMount() {
         const { messagesContext } = this.props;
-        if (messagesContext.useForwardMessages && messagesContext.forwardMessagesId) {
+        if (
+            messagesContext.useForwardMessages &&
+            messagesContext.forwardMessagesId
+        ) {
             messagesContext.changeForwardConverstion();
             this.setState({
                 message: '',
                 floatingMessage: '',
-                forwardMessageReply: `Forward ${messagesContext.forwardMessagesId.size} messages`,
+                forwardMessageReply: `Forward ${
+                    messagesContext.forwardMessagesId.size
+                } messages`,
                 forwardMessageId: messagesContext.forwardMessagesId,
-                forwardMessageSender: 'Forward'
+                forwardMessageSender: 'Forward',
             });
         }
         this.focusIfNeeded();
@@ -665,25 +763,30 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             replyMessagesId,
             replyMessagesSender,
             forwardMessagesId,
-            useForwardMessages
+            useForwardMessages,
         } = nextProps.messagesContext;
 
         if (nextProps.members && nextProps.members !== this.props.members) {
-            this.listOfMembersNames = nextProps.members.map(({ user: { name } }: { user: { name: string } }) => `@${removeEmojiFromText(name)}`);
+            this.listOfMembersNames = nextProps.members.map(
+                ({ user: { name } }: { user: { name: string } }) =>
+                    `@${removeEmojiFromText(name)}`,
+            );
         }
 
         let newState: any = {};
 
-        if ((this.props.conversationId !== nextProps.conversationId)) {
+        if (this.props.conversationId !== nextProps.conversationId) {
             if (useForwardMessages && forwardMessagesId) {
                 this.props.messagesContext.changeForwardConverstion();
                 newState = {
                     ...newState,
                     message: '',
                     floatingMessage: '',
-                    forwardMessageReply: `Forward ${forwardMessagesId.size} messages`,
+                    forwardMessageReply: `Forward ${
+                        forwardMessagesId.size
+                    } messages`,
                     forwardMessageId: forwardMessagesId,
-                    forwardMessageSender: 'Forward'
+                    forwardMessageSender: 'Forward',
                 };
             }
         }
@@ -699,16 +802,18 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     floatingMessage: '',
                     forwardMessageReply: messageReply,
                     forwardMessageId: messageId,
-                    forwardMessageSender: messageSender
+                    forwardMessageSender: messageSender,
                 };
             } else {
                 newState = {
                     ...newState,
                     message: '',
                     floatingMessage: '',
-                    forwardMessageReply: `Reply ${replyMessagesId.size} messages`,
+                    forwardMessageReply: `Reply ${
+                        replyMessagesId.size
+                    } messages`,
                     forwardMessageId: replyMessagesId,
-                    forwardMessageSender: 'Reply'
+                    forwardMessageSender: 'Reply',
                 };
             }
             if (this.input.current) {
@@ -716,10 +821,17 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             }
         }
 
-        let draftChecker = !(replyMessages && replyMessagesId && replyMessagesSender);
+        let draftChecker = !(
+            replyMessages &&
+            replyMessagesId &&
+            replyMessagesSender
+        );
 
         if (draftChecker) {
-            let draft = window.localStorage.getItem('conversation_draft_' + this.props.conversationId) || '';
+            let draft =
+                window.localStorage.getItem(
+                    'conversation_draft_' + this.props.conversationId,
+                ) || '';
             let draftKey = 'conversation_draft_' + this.props.conversationId;
 
             if (!draft && nextProps.draft) {
@@ -731,19 +843,22 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     ...newState,
                     message: '',
                     floatingMessage: '',
-                    beDrafted: true
+                    beDrafted: true,
                 };
             } else if (draft !== draftKey) {
                 newState = {
                     ...newState,
                     message: draft,
                     floatingMessage: draft,
-                    beDrafted: true
+                    beDrafted: true,
                 };
             }
         }
 
-        let focusChecker = this.props.conversationId !== nextProps.conversationId && !editMessage && !editMessageId;
+        let focusChecker =
+            this.props.conversationId !== nextProps.conversationId &&
+            !editMessage &&
+            !editMessageId;
 
         if (focusChecker) {
             if (this.input.current) {
@@ -759,7 +874,7 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             floatingMessage,
             forwardMessageReply,
             forwardMessageId,
-            forwardMessageSender
+            forwardMessageSender,
         } = this.state;
 
         let stateMessage = undefined;
@@ -770,13 +885,13 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
             stateMessage = forwardMessageReply;
         }
 
-        const mentionsData = convertChannelMembersDataToMentionsData(this.props.members);
+        const mentionsData = convertChannelMembersDataToMentionsData(
+            this.props.members,
+        );
 
         return (
             <SendMessageWrapper>
-                <DropArea
-                    dragOn={this.state.dragOn}
-                >
+                <DropArea dragOn={this.state.dragOn}>
                     <DropAreaContent
                         onDrop={this.handleDrop}
                         onDragOver={this.handleDragOver}
@@ -785,14 +900,25 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                     >
                         <UloadIc />
                         <DropAreaTitle>Drop files here</DropAreaTitle>
-                        <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
+                        <DropAreaSubtitle>
+                            To send them as files
+                        </DropAreaSubtitle>
                     </DropAreaContent>
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {(stateMessage && forwardMessageId) && (
-                            <EditView message={stateMessage} title={forwardMessageSender !== undefined ? forwardMessageSender : 'Edit message'} onCancel={this.closeEditor} />
-                        )}
+                        {stateMessage &&
+                            forwardMessageId && (
+                                <EditView
+                                    message={stateMessage}
+                                    title={
+                                        forwardMessageSender !== undefined
+                                            ? forwardMessageSender
+                                            : 'Edit message'
+                                    }
+                                    onCancel={this.closeEditor}
+                                />
+                            )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}
@@ -804,10 +930,18 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                 value={floatingMessage}
                             />
                         </TextInputWrapper>
-                        <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
+                        <XHorizontal
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flexGrow={1}
+                        >
                             <XHorizontal separator="none">
                                 <AttachmentButton
-                                    onClick={this.props.enabled === false ? undefined : this.handleAttach}
+                                    onClick={
+                                        this.props.enabled === false
+                                            ? undefined
+                                            : this.handleAttach
+                                    }
                                     enabled={this.props.enabled === false}
                                     disable={this.props.enabled === false}
                                 >
@@ -815,7 +949,11 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <span>Photo</span>
                                 </AttachmentButton>
                                 <AttachmentButton
-                                    onClick={this.props.enabled === false ? undefined : this.handleAttach}
+                                    onClick={
+                                        this.props.enabled === false
+                                            ? undefined
+                                            : this.handleAttach
+                                    }
                                     enabled={this.props.enabled === false}
                                     disable={this.props.enabled === false}
                                     className="document-button"
@@ -824,7 +962,14 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                                     <span>Document</span>
                                 </AttachmentButton>
                                 <AttachmentButton
-                                    query={this.props.enabled === false ? undefined : { field: 'addItro', value: 'true' }}
+                                    query={
+                                        this.props.enabled === false
+                                            ? undefined
+                                            : {
+                                                  field: 'addItro',
+                                                  value: 'true',
+                                              }
+                                    }
                                     className="intro-button"
                                     disable={this.props.enabled === false}
                                 >
@@ -843,45 +988,55 @@ class MessageComposeComponentInner extends React.PureComponent<MessageComposeCom
                         </XHorizontal>
                     </XVertical>
                 </SendMessageContent>
-                <PostIntroModal targetQuery="addItro" conversationId={this.props.conversationId || ''} />
+                <PostIntroModal
+                    targetQuery="addItro"
+                    conversationId={this.props.conversationId || ''}
+                />
             </SendMessageWrapper>
         );
     }
 }
 
-export const MessageComposeComponent = withMessageState(withUserInfo((props) => {
-    return (
-        <MessagesStateContext.Consumer>
-            {(state: MessagesStateContextProps) => (
-                <MessageComposeComponentInner
-                    {...props}
-                    messagesContext={state}
-                    replyMessage={props.replyMessage}
-                    saveDraft={props.saveDraft}
-                    draft={props.draft}
-                />
-            )}
-        </MessagesStateContext.Consumer>
-    );
-})) as React.ComponentType<MessageComposeWithChannelMembers>;
+export const MessageComposeComponent = withMessageState(
+    withUserInfo(props => {
+        return (
+            <MessagesStateContext.Consumer>
+                {(state: MessagesStateContextProps) => (
+                    <MessageComposeComponentInner
+                        {...props}
+                        messagesContext={state}
+                        replyMessage={props.replyMessage}
+                        saveDraft={props.saveDraft}
+                        draft={props.draft}
+                    />
+                )}
+            </MessagesStateContext.Consumer>
+        );
+    }),
+) as React.ComponentType<MessageComposeWithChannelMembers>;
 
 const MessageComposeComponentChannelMembers = withChannelMembers(props => {
-    return (
-        <MessageComposeComponent
-            members={props.data.members}
-            {...props}
-        />
-    );
-}) as React.ComponentType<MessageComposeComponentProps & { draft: string | null }>;
+    return <MessageComposeComponent members={props.data.members} {...props} />;
+}) as React.ComponentType<
+    MessageComposeComponentProps & { draft: string | null }
+>;
 
-export const MessageComposeComponentDraft = withGetDraftMessage((props: any) => {
-    return (
-        <MessageComposeComponentChannelMembers
-            {...props}          
-            draft={props.data.message}
-        />
-    );
-}) as React.ComponentType<MessageComposeComponentProps & { 
-    variables?: { roomId?: string, conversationId?: string, organizationId: string | null }, 
-    getMessages?: Function 
-}>;
+export const MessageComposeComponentDraft = withGetDraftMessage(
+    (props: any) => {
+        return (
+            <MessageComposeComponentChannelMembers
+                {...props}
+                draft={props.data.message}
+            />
+        );
+    },
+) as React.ComponentType<
+    MessageComposeComponentProps & {
+        variables?: {
+            roomId?: string;
+            conversationId?: string;
+            organizationId: string | null;
+        };
+        getMessages?: Function;
+    }
+>;

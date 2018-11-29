@@ -30,13 +30,13 @@ interface ImgButtonStylesProps {
 
 interface SearchPeopleProps {
     user?: {
-        id: string,
-        name: string,
-        photo: string | null,
+        id: string;
+        name: string;
+        photo: string | null;
         primaryOrganization: {
-            id?: string | null,
-            name?: string | null,
-        } | null
+            id?: string | null;
+            name?: string | null;
+        } | null;
     } | null;
 }
 
@@ -54,14 +54,14 @@ const ImgButtonStyles = Glamorous(XLink)<ImgButtonStylesProps>(props => ({
     height: 32,
     borderRadius: 20,
     '&:first-child': {
-        marginLeft: -12
+        marginLeft: -12,
     },
     '&:hover': {
         color: 'rgba(0, 0, 0, 0.5)',
         backgroundColor: 'rgba(0, 0, 0, 0.03)',
         '& > svg > *': {
-            fill: 'rgba(0, 0, 0, 0.3)'
-        }
+            fill: 'rgba(0, 0, 0, 0.3)',
+        },
     },
     '& > svg': {
         marginRight: props.marginRight,
@@ -69,9 +69,9 @@ const ImgButtonStyles = Glamorous(XLink)<ImgButtonStylesProps>(props => ({
         marginTop: props.marginTop,
         marginBottom: props.marginBottom,
         '& > *': {
-            fill: 'rgba(0, 0, 0, 0.2)'
+            fill: 'rgba(0, 0, 0, 0.2)',
         },
-    }
+    },
 }));
 
 const ImgButton = (props: XLinkProps & ImgButtonStylesProps) => (
@@ -95,7 +95,9 @@ const SearchPeopleModule = withExplorePeople(props => {
                         popper={true}
                         placeholder="Whom do you want to introduce?"
                         rounded={true}
-                        onInputChange={(data) => (props as any).onChangeInput(data)}
+                        onInputChange={data =>
+                            (props as any).onChangeInput(data)
+                        }
                         helpText="Wait..."
                     />
                 }
@@ -108,37 +110,46 @@ const SearchPeopleModule = withExplorePeople(props => {
                 creatable={true}
                 multi={false}
                 field="input.uid"
-                options={props.data.items.edges.map(i => (
-                    {
+                options={
+                    props.data.items.edges.map(i => ({
                         label: i.node.name,
                         value: i.node.id,
                         photo: i.node.photo,
-                        org: (i.node.primaryOrganization ? i.node.primaryOrganization.name : null)
-                    })
-                ) || []}
+                        org: i.node.primaryOrganization
+                            ? i.node.primaryOrganization.name
+                            : null,
+                    })) || []
+                }
                 render={
                     <XSelectCustomUsersRender
                         multi={false}
                         placeholder="Whom do you want to introduce?"
                         rounded={true}
-                        onInputChange={(data) => (props as any).onChangeInput(data)}
+                        onInputChange={data =>
+                            (props as any).onChangeInput(data)
+                        }
                     />
                 }
             />
         </XFormField>
     );
-}) as React.ComponentType<SearchPeopleProps & { variables: { query?: string, sort?: string }, onChangeInput: (data: string) => void }>;
+}) as React.ComponentType<
+    SearchPeopleProps & {
+        variables: { query?: string; sort?: string };
+        onChangeInput: (data: string) => void;
+    }
+>;
 
 class SearchPeople extends React.PureComponent<SearchPeopleProps> {
     state = {
-        query: this.props.user ? this.props.user.name : ''
+        query: this.props.user ? this.props.user.name : '',
     };
 
     handleSearchText = (query: string) => {
         this.setState({
-            query: query
+            query: query,
         });
-    }
+    };
 
     render() {
         return (
@@ -146,7 +157,7 @@ class SearchPeople extends React.PureComponent<SearchPeopleProps> {
                 onChangeInput={this.handleSearchText}
                 user={this.props.user}
                 variables={{
-                    query: this.state.query
+                    query: this.state.query,
                 }}
             />
         );
@@ -165,7 +176,7 @@ const FooterWrap = Glamorous.div({
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
     borderTop: '1px solid',
-    borderTopColor: XThemeDefault.separatorColor
+    borderTopColor: XThemeDefault.separatorColor,
 });
 
 interface UploadedFile {
@@ -183,19 +194,19 @@ interface FileUploaderProps {
 
 class FileUploader extends React.PureComponent<FileUploaderProps> {
     handleFileUpload = (file: UploadedFile | null) => {
-        let key = ('fields.' + this.props.field);
+        let key = 'fields.' + this.props.field;
         if (file) {
             this.props.store.writeValue(key, file.uuid);
             this.props.handleFileUpload(file);
         }
-    }
+    };
 
     render() {
         return (
             <XFileUpload
                 imageOnly={false}
                 onChanged={this.handleFileUpload}
-                component={(pr) => {
+                component={pr => {
                     this.props.handleFileUploading(pr.isLoading, pr.progress);
                     return (
                         <ImgButton
@@ -215,9 +226,9 @@ class FileUploader extends React.PureComponent<FileUploaderProps> {
 
 interface FileComponentProps {
     file: {
-        uuid: string,
-        name: string | null,
-        size: string | null
+        uuid: string;
+        name: string | null;
+        size: string | null;
     } | null;
     field: string;
     store: XStoreState;
@@ -226,24 +237,26 @@ interface FileComponentProps {
 
 class FileComponent extends React.PureComponent<FileComponentProps> {
     handleClearClick = () => {
-        let key = ('fields.' + this.props.field);
+        let key = 'fields.' + this.props.field;
         if (this.props.file) {
             this.props.store.writeValue(key, null);
             this.props.onClearClick();
         }
-    }
+    };
     render() {
         let { file } = this.props;
         return (
             <>
-                {file && file.name && file.size && (
-                    <MessageFileComponent
-                        fileName={file.name}
-                        fileSize={Number(file.size)}
-                        clearButton={true}
-                        onClearClick={this.handleClearClick}
-                    />
-                )}
+                {file &&
+                    file.name &&
+                    file.size && (
+                        <MessageFileComponent
+                            fileName={file.name}
+                            fileSize={Number(file.size)}
+                            clearButton={true}
+                            onClearClick={this.handleClearClick}
+                        />
+                    )}
             </>
         );
     }
@@ -251,18 +264,18 @@ class FileComponent extends React.PureComponent<FileComponentProps> {
 
 interface PostIntroModalRawProps extends Partial<XModalFormProps> {
     file?: {
-        uuid: string,
-        name: string | null,
-        size: string | null
+        uuid: string;
+        name: string | null;
+        size: string | null;
     } | null;
     user?: {
-        id: string,
-        name: string,
-        photo: string | null,
+        id: string;
+        name: string;
+        photo: string | null;
         primaryOrganization: {
-            id?: string | null,
-            name?: string | null,
-        } | null
+            id?: string | null;
+            name?: string | null;
+        } | null;
     } | null;
 }
 
@@ -270,44 +283,47 @@ interface PostIntroModalRawState {
     fileUploading: boolean;
     progress: number | null;
     file: {
-        uuid: string,
-        name: string | null,
-        size: string | null
+        uuid: string;
+        name: string | null;
+        size: string | null;
     } | null;
 }
 
-class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, PostIntroModalRawState> {
+class PostIntroModalRaw extends React.PureComponent<
+    PostIntroModalRawProps,
+    PostIntroModalRawState
+> {
     constructor(props: PostIntroModalRawProps) {
         super(props);
 
         this.state = {
             fileUploading: false,
             progress: null,
-            file: props.file || null
+            file: props.file || null,
         };
     }
 
     handleFileUpload = (file: UploadedFile) => {
         this.setState({
             file: file,
-            progress: null
+            progress: null,
         });
-    }
+    };
 
     handleFileUploading = (isLoading: boolean, progress: number) => {
         this.setState({
             fileUploading: isLoading,
-            progress: progress
+            progress: progress,
         });
-    }
+    };
 
     handleFileClear = () => {
         this.setState({
             fileUploading: false,
             progress: 0,
-            file: null
+            file: null,
         });
-    }
+    };
 
     render() {
         let { file } = this.state;
@@ -324,7 +340,9 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                                     field="input.file"
                                     store={store}
                                     handleFileUpload={this.handleFileUpload}
-                                    handleFileUploading={this.handleFileUploading}
+                                    handleFileUploading={
+                                        this.handleFileUploading
+                                    }
                                 />
                             );
                         }}
@@ -373,15 +391,25 @@ class PostIntroModalRaw extends React.PureComponent<PostIntroModalRawProps, Post
                             );
                         }}
                     </XStoreContext.Consumer>
-                    {(this.state.progress !== 0 && !file && this.state.fileUploading) && (
-                        <MessageUploadComponent
-                            key={'file'}
-                            progress={Math.round((this.state.progress || 0) * 100)}
-                            title={'Uploading (' + Math.round((this.state.progress || 0) * 100) + '%)'}
-                        />
-                    )}
+                    {this.state.progress !== 0 &&
+                        !file &&
+                        this.state.fileUploading && (
+                            <MessageUploadComponent
+                                key={'file'}
+                                progress={Math.round(
+                                    (this.state.progress || 0) * 100,
+                                )}
+                                title={
+                                    'Uploading (' +
+                                    Math.round(
+                                        (this.state.progress || 0) * 100,
+                                    ) +
+                                    '%)'
+                                }
+                            />
+                        )}
                 </XVertical>
-            </XModalForm >
+            </XModalForm>
         );
     }
 }
@@ -391,25 +419,25 @@ interface PostIntroModalProps extends Partial<XModalFormProps> {
     messageId?: string;
     about?: string;
     file?: {
-        uuid: string,
-        name: string | null,
-        size: string | null
+        uuid: string;
+        name: string | null;
+        size: string | null;
     } | null;
     user?: {
-        id: string,
-        name: string,
-        photo: string | null,
+        id: string;
+        name: string;
+        photo: string | null;
         primaryOrganization: {
-            id?: string | null,
-            name?: string | null,
-        } | null
+            id?: string | null;
+            name?: string | null;
+        } | null;
     } | null;
 }
 
-const MutationProvider = withIntro((props) => (
+const MutationProvider = withIntro(props => (
     <PostIntroModalRaw
         {...props}
-        defaultAction={async (data) => {
+        defaultAction={async data => {
             let input = data.input || {};
             if (props.messageId) {
                 await props.editIntro({
@@ -417,8 +445,8 @@ const MutationProvider = withIntro((props) => (
                         messageId: (props as any).messageId,
                         uid: input.uid[0],
                         about: input.about,
-                        file: input.file
-                    }
+                        file: input.file,
+                    },
                 });
             } else {
                 await props.createIntro({
@@ -426,22 +454,24 @@ const MutationProvider = withIntro((props) => (
                         roomId: (props as any).conversationId,
                         uid: input.uid[0],
                         about: input.about,
-                        file: input.file
-                    }
+                        file: input.file,
+                    },
                 });
             }
-
         }}
         defaultData={{
             input: {
                 uid: props.user ? [props.user.id] : undefined,
                 about: props.about,
-                file: (props.file && props.file.uuid)
-            }
+                file: props.file && props.file.uuid,
+            },
         }}
     />
 )) as React.ComponentType<PostIntroModalProps>;
 
-export const PostIntroModal = withIntro((props) => (
-    <MutationProvider {...props} conversationId={(props as any).conversationId} />
+export const PostIntroModal = withIntro(props => (
+    <MutationProvider
+        {...props}
+        conversationId={(props as any).conversationId}
+    />
 )) as React.ComponentType<PostIntroModalProps>;

@@ -5,11 +5,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import {
-    RootWrapper,
-    Sidebar,
-    Container
-} from './components/Layout';
+import { RootWrapper, Sidebar, Container } from './components/Layout';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 
 class RootComponent extends React.Component<XWithRouter> {
@@ -30,23 +26,35 @@ class RootComponent extends React.Component<XWithRouter> {
                 <Sidebar active="rooms" />
                 <Container>
                     {tab === 'rooms' && <RoomsExploreComponent />}
-                    {tab === 'invite' && <MessengerComponent id={router.routeQuery.conversationId} />}
-                    {tab === 'profile' && <RoomProfile conversationId={router.routeQuery.conversationId} />}
+                    {tab === 'invite' && (
+                        <MessengerComponent
+                            id={router.routeQuery.conversationId}
+                        />
+                    )}
+                    {tab === 'profile' && (
+                        <RoomProfile
+                            conversationId={router.routeQuery.conversationId}
+                        />
+                    )}
                 </Container>
             </RootWrapper>
         );
     }
 }
 
-export default withApp('Directory', 'viewer', withRouter((props) => {
-    return (
-        <>
-            <XDocumentHead title="Rooms Directory" />
-            <Scaffold>
-                <Scaffold.Content padding={false} bottomOffset={false}>
-                    <RootComponent router={props.router} />
-                </Scaffold.Content>
-            </Scaffold>
-        </>
-    );
-}));
+export default withApp(
+    'Directory',
+    'viewer',
+    withRouter(props => {
+        return (
+            <>
+                <XDocumentHead title="Rooms Directory" />
+                <Scaffold>
+                    <Scaffold.Content padding={false} bottomOffset={false}>
+                        <RootComponent router={props.router} />
+                    </Scaffold.Content>
+                </Scaffold>
+            </>
+        );
+    }),
+);

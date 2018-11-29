@@ -4,7 +4,11 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { MessageFull_reply_sender, MessageFull_reply_fileMetadata, MessageFull_mentions } from 'openland-api/Types';
+import {
+    MessageFull_reply_sender,
+    MessageFull_reply_fileMetadata,
+    MessageFull_mentions,
+} from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
 import { MessageImageComponent } from './MessageImageComponent';
@@ -23,8 +27,8 @@ const MessageContainer = Glamorous.div({
     marginTop: 12,
     borderRadius: 6,
     '& .time': {
-        opacity: '1 !important'
-    }
+        opacity: '1 !important',
+    },
 });
 
 const MessageWrapper = Glamorous(XVertical)({
@@ -36,18 +40,20 @@ const Name = Glamorous.div({
     fontSize: 14,
     fontWeight: 600,
     lineHeight: '16px',
-    color: 'rgba(0, 0, 0, 0.8)'
+    color: 'rgba(0, 0, 0, 0.8)',
 });
 
-const Organization = makeNavigable(Glamorous.div<NavigableChildProps>(() => ({
-    fontSize: 12,
-    fontWeight: 600,
-    lineHeight: '14px',
-    color: 'rgba(0, 0, 0, 0.4)',
-    letterSpacing: 0,
-    alignSelf: 'flex-end',
-    cursor: 'pointer'
-})));
+const Organization = makeNavigable(
+    Glamorous.div<NavigableChildProps>(() => ({
+        fontSize: 12,
+        fontWeight: 600,
+        lineHeight: '14px',
+        color: 'rgba(0, 0, 0, 0.4)',
+        letterSpacing: 0,
+        alignSelf: 'flex-end',
+        cursor: 'pointer',
+    })),
+);
 
 const DateComponent = Glamorous.div({
     width: 62,
@@ -76,23 +82,61 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
     let content = [];
     if (props.message) {
         content.push(
-            <MessageTextComponent message={props.message} mentions={props.mentions} key={'reply-text'} isService={false} isEdited={props.edited} />
+            <MessageTextComponent
+                message={props.message}
+                mentions={props.mentions}
+                key={'reply-text'}
+                isService={false}
+                isEdited={props.edited}
+            />,
         );
     }
     if (props.file) {
-        let w = props.fileMetadata!!.imageWidth ? props.fileMetadata!!.imageWidth!! : undefined;
-        let h = props.fileMetadata!!.imageHeight ? props.fileMetadata!!.imageHeight!! : undefined;
-        let name = props.fileMetadata!!.name ? props.fileMetadata!!.name!! : undefined;
-        let size = props.fileMetadata!!.size ? props.fileMetadata!!.size!! : undefined;
+        let w = props.fileMetadata!!.imageWidth
+            ? props.fileMetadata!!.imageWidth!!
+            : undefined;
+        let h = props.fileMetadata!!.imageHeight
+            ? props.fileMetadata!!.imageHeight!!
+            : undefined;
+        let name = props.fileMetadata!!.name
+            ? props.fileMetadata!!.name!!
+            : undefined;
+        let size = props.fileMetadata!!.size
+            ? props.fileMetadata!!.size!!
+            : undefined;
 
         if (props.fileMetadata!!.isImage && !!w && !!h) {
             if (props.fileMetadata!!.imageFormat === 'GIF') {
-                content.push(<MessageAnimationComponent key={'file'} file={props.file} fileName={name} width={w} height={h} />);
+                content.push(
+                    <MessageAnimationComponent
+                        key={'file'}
+                        file={props.file}
+                        fileName={name}
+                        width={w}
+                        height={h}
+                    />,
+                );
             } else {
-                content.push(<MessageImageComponent key={'file'} file={props.file} fileName={name} width={w} height={h} startSelected={props.startSelected} />);
+                content.push(
+                    <MessageImageComponent
+                        key={'file'}
+                        file={props.file}
+                        fileName={name}
+                        width={w}
+                        height={h}
+                        startSelected={props.startSelected}
+                    />,
+                );
             }
         } else {
-            content.push(<MessageFileComponent key={'file'} file={props.file} fileName={name} fileSize={size} />);
+            content.push(
+                <MessageFileComponent
+                    key={'file'}
+                    file={props.file}
+                    fileName={name}
+                    fileSize={size}
+                />,
+            );
         }
     }
     let orgPath: string | undefined = undefined;
@@ -110,13 +154,19 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                         style="colorus"
                         objectName={props.sender!!.name}
                         objectId={props.sender!!.id}
-                        cloudImageUuid={props.sender ? props.sender.photo : undefined}
+                        cloudImageUuid={
+                            props.sender ? props.sender.photo : undefined
+                        }
                         path={usrPath}
                     />
                     <MessageWrapper separator={2} flexGrow={1}>
                         <XHorizontal separator={5} alignItems="center">
                             <Name>{props.sender!!.name}</Name>
-                            {props.sender!!.primaryOrganization && <Organization path={orgPath}>{props.sender!!.primaryOrganization!!.name}</Organization>}
+                            {props.sender!!.primaryOrganization && (
+                                <Organization path={orgPath}>
+                                    {props.sender!!.primaryOrganization!!.name}
+                                </Organization>
+                            )}
                         </XHorizontal>
                         <DateComponent className="time">{date}</DateComponent>
                     </MessageWrapper>

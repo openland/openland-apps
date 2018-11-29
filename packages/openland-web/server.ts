@@ -49,55 +49,73 @@ async function start() {
     //
     // API Proxy
     //
-    server.use('/graphql', proxy({
-        changeOrigin: true,
-        target: endpoint,
-        ws: true,
-        pathRewrite: function (path: string) {
-            return '/api';
-        }
-    }));
+    server.use(
+        '/graphql',
+        proxy({
+            changeOrigin: true,
+            target: endpoint,
+            ws: true,
+            pathRewrite: function(path: string) {
+                return '/api';
+            },
+        }),
+    );
 
     //
     // Auth API Proxy
     //
-    server.use('/authenticate', proxy({
-        changeOrigin: true,
-        target: endpoint,
-        pathRewrite: function (path: string) {
-            return '/v2/auth';
-        }
-    }));
+    server.use(
+        '/authenticate',
+        proxy({
+            changeOrigin: true,
+            target: endpoint,
+            pathRewrite: function(path: string) {
+                return '/v2/auth';
+            },
+        }),
+    );
 
     //
     // GraphiQL Sandbox
     //
-    server.use('/sandbox', graphiqlExpress(req => {
-        let wsendpoint = url.format({
-            host: req!!.get('host'),
-            protocol: (req!!.get('host') !== 'localhost:3000' ? 'wss' : 'ws'),
-            pathname: '/graphql'
-        });
-        console.log(wsendpoint);
-        return {
-            endpointURL: '/graphql',
-            subscriptionsEndpoint: wsendpoint
-        };
-    }));
+    server.use(
+        '/sandbox',
+        graphiqlExpress(req => {
+            let wsendpoint = url.format({
+                host: req!!.get('host'),
+                protocol: req!!.get('host') !== 'localhost:3000' ? 'wss' : 'ws',
+                pathname: '/graphql',
+            });
+            console.log(wsendpoint);
+            return {
+                endpointURL: '/graphql',
+                subscriptionsEndpoint: wsendpoint,
+            };
+        }),
+    );
 
     //
     // Favicon support endpoint
     //
-    server.get('/favicon.ico', (req, res) => res.sendFile(__dirname + '/static/favicon.ico'));
-    server.get('/worker.js', (req, res) => res.sendFile(__dirname + '/worker.js'));
-    server.get('/browserconfig.xml', (req, res) => res.sendFile(__dirname + '/static/browserconfig.xml'));
+    server.get('/favicon.ico', (req, res) =>
+        res.sendFile(__dirname + '/static/favicon.ico'),
+    );
+    server.get('/worker.js', (req, res) =>
+        res.sendFile(__dirname + '/worker.js'),
+    );
+    server.get('/browserconfig.xml', (req, res) =>
+        res.sendFile(__dirname + '/static/browserconfig.xml'),
+    );
 
     //
     // Serving static directory
     //
-    server.use('/static', express.static(__dirname + '/static', {
-        maxAge: '1h'
-    }));
+    server.use(
+        '/static',
+        express.static(__dirname + '/static', {
+            maxAge: '1h',
+        }),
+    );
 
     //
     // Main Handler
@@ -108,7 +126,9 @@ async function start() {
     // Starting Server
     //
     server.listen(port, bindHost, (err: any) => {
-        if (err) { throw err; }
+        if (err) {
+            throw err;
+        }
         // tslint:disable
         console.log(`> Ready on http://${bindHost}:${port}`);
         // tslint:enable
@@ -116,11 +136,11 @@ async function start() {
 }
 
 // Hack for handling Ctrl-C
-process.on('SIGINT', function () {
+process.on('SIGINT', function() {
     console.warn('Exiting: received SIGINT');
     process.exit();
 });
-process.on('SIGTERM', function () {
+process.on('SIGTERM', function() {
     console.warn('Exiting: received SIGTERM');
     process.exit();
 });

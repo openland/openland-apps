@@ -11,18 +11,26 @@ import { XButton } from 'openland-x/XButton';
 import { InitTexts } from './_text';
 
 const InfoText = Glamorous.div({
-    marginBottom: 15
+    marginBottom: 15,
 });
 
-export default withAppBase('Need Info', (props) => {
+export default withAppBase('Need Info', props => {
     return (
         <AuthRouter>
-            <XDocumentHead title={InitTexts.need_info.pageTitle} titleSocial={InitTexts.socialPageTitle} />
+            <XDocumentHead
+                title={InitTexts.need_info.pageTitle}
+                titleSocial={InitTexts.socialPageTitle}
+            />
             <XTrack event="View Need Info">
                 <MessagePage>
                     <MessagePageContent title={InitTexts.need_info.title}>
                         <InfoText>{InitTexts.need_info.content}</InfoText>
-                        <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" />
+                        <XButton
+                            path="/auth/logout"
+                            text={TextGlobal.signOut}
+                            style="primary"
+                            alignSelf="center"
+                        />
                     </MessagePageContent>
                 </MessagePage>
             </XTrack>

@@ -10,7 +10,7 @@ interface SidebarContainerProps {
     paddingTop?: number;
 }
 
-const SidebarContainer = Glamorous.div<SidebarContainerProps>((props) => ({
+const SidebarContainer = Glamorous.div<SidebarContainerProps>(props => ({
     display: 'flex',
     flexDirection: 'column',
     width: props.width ? props.width : '100%',
@@ -32,7 +32,7 @@ const SidebarHeader = Glamorous.div({
     fontWeight: 500,
     lineHeight: 1.33,
     letterSpacing: -0.3,
-    color: '#334562'
+    color: '#334562',
     // ...XStyles.text.h600
 });
 
@@ -49,12 +49,12 @@ export const SidebarItem = Glamorous(XLink)({
     paddingLeft: 16,
     paddingRight: 16,
     '&:hover': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)'
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
     },
     '&.is-active': {
         color: '#1790ff',
-        backgroundColor: 'rgba(23, 144, 255, 0.05)'
-    }
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+    },
 });
 
 export const SidebarSubItem = Glamorous(XLink)({
@@ -69,12 +69,12 @@ export const SidebarSubItem = Glamorous(XLink)({
     paddingLeft: 36,
     paddingRight: 16,
     '&:hover': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)'
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
     },
     '&.is-active': {
         color: '#1790ff',
-        backgroundColor: 'rgba(23, 144, 255, 0.05)'
-    }
+        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+    },
 });
 
 interface SidebarProps {

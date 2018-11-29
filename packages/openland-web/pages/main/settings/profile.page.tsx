@@ -23,14 +23,14 @@ import { DateFormater } from 'openland-x/XDate';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,
-    flexGrow: 1
+    flexGrow: 1,
 });
 
 const HeadTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
     letterSpacing: 0,
-    color: '#000000'
+    color: '#000000',
 });
 
 const CardText = Glamorous.div({
@@ -46,19 +46,19 @@ const CardText = Glamorous.div({
     letterSpacing: -0.2,
     color: '#334562',
     '& .bold': {
-        fontWeight: 600
+        fontWeight: 600,
     },
     '& .person': {
-        color: '#1790ff'
-    }
+        color: '#1790ff',
+    },
 });
 
 const TextAreaWrapper = Glamorous.div({
     position: 'relative',
     '& > textarea': {
         height: 85,
-        minHeight: 85
-    }
+        minHeight: 85,
+    },
 });
 
 const TextAreaTitle = Glamorous.div({
@@ -73,137 +73,282 @@ const TextAreaTitle = Glamorous.div({
     backgroundColor: 'white',
     color: 'rgba(0, 0, 0, 0.4)',
     zIndex: 2,
-    pointerEvents: 'none'
+    pointerEvents: 'none',
 });
 
-export default withApp('Profile', 'viewer', withProfile(withQueryLoader((props) => {
-    return (
-        <Navigation title="Edit profile">
-            <Content>
-                <XVertical separator={21}>
-                    <Query query={MyOrganizationsQuery.document}>
-                        {(orgsData) => (
-                            <XVertical separator={25}>
-                                <XForm
-                                    defaultData={{
-                                        input: {
-                                            firstName: props.data.profile!!.firstName,
-                                            lastName: props.data.profile!!.lastName,
-                                            primaryOrganizationId: props.data.profile!!.primaryOrganization && props.data.profile!!.primaryOrganization!!.id,
-                                            role: props.data.profile!!.role,
-                                            about: props.data.profile!!.about,
-                                            photoRef: sanitizeIamgeRef(props.data.profile!!.photoRef)
-                                        }
-                                    }}
-                                    defaultAction={async (data) => {
-                                        await props.updateProfile({
-                                            variables: {
+export default withApp(
+    'Profile',
+    'viewer',
+    withProfile(
+        withQueryLoader(props => {
+            return (
+                <Navigation title="Edit profile">
+                    <Content>
+                        <XVertical separator={21}>
+                            <Query query={MyOrganizationsQuery.document}>
+                                {orgsData => (
+                                    <XVertical separator={25}>
+                                        <XForm
+                                            defaultData={{
                                                 input: {
-                                                    firstName: data.input.firstName,
-                                                    lastName: data.input.lastName,
-                                                    alphaPrimaryOrganizationId: data.input.primaryOrganizationId,
-                                                    alphaRole: data.input.role,
-                                                    about: data.input.about,
-                                                    photoRef: sanitizeIamgeRef(data.input.photoRef)
-                                                }
-                                            }
-                                        });
-                                    }}
-                                    defaultLayout={false}
-                                >
-                                    <XVertical separator={12} maxWidth={660}>
-                                        <HeadTitle>Profile</HeadTitle>
-                                        <XFormError onlyGeneralErrors={true} />
-                                        <XVertical separator={12}>
-                                            <XFormLoadingContent>
-                                                <XHorizontal separator={13}>
-                                                    <XVertical flexGrow={1} width={480} separator={10}>
-                                                        <XInput title="First name" field="input.firstName" size="large" />
-                                                        <XInput title="Last name" field="input.lastName" size="large" />
-                                                        <XSelect
-                                                            title="Primary organization"
-                                                            field="input.primaryOrganizationId"
-                                                            searchable={false}
-                                                            clearable={false}
-                                                            options={((orgsData.data && orgsData.data.myOrganizations) || []).map((org: any) => ({ value: org.id, label: org.name }))}
-                                                        />
-                                                        <TextAreaWrapper>
-                                                            <TextAreaTitle>About</TextAreaTitle>
-                                                            <XTextArea valueStoreKey="fields.input.about" resize={false} />
-                                                        </TextAreaWrapper>
-                                                    </XVertical>
-                                                    <XAvatarUpload field="input.photoRef" />
-                                                </XHorizontal>
-                                            </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
-                                        </XVertical>
-                                    </XVertical>
-                                </XForm>
-                                <XForm
-                                    defaultData={{
-                                        input: {
-                                            phone: props.data.profile!!.phone,
-                                            email: props.data.profile!!.email,
-                                            website: props.data.profile!!.website,
-                                            linkedin: props.data.profile!!.linkedin,
-                                            // locations: props.data.profile!!.locations
-                                        }
-                                    }}
-                                    defaultAction={async (data) => {
-                                        await props.updateProfile({
-                                            variables: {
-                                                input: {
-                                                    phone: data.input.phone,
-                                                    email: data.input.email,
-                                                    website: data.input.website,
-                                                    alphaLinkedin: data.input.linkedin,
-                                                    // alphaLocations: data.input.locations
-                                                }
-
-                                            }
-                                        });
-                                    }}
-                                    defaultLayout={false}
-                                >
-                                    <XVertical separator={12}>
-                                        <HeadTitle>Contacts</HeadTitle>
-                                        <XFormError onlyGeneralErrors={true} />
-                                        <XVertical width={480} separator={12}>
-                                            <XFormLoadingContent>
-                                                <XVertical separator={10}>
-                                                    <XInput field="input.phone" size="large" title="Phone number" />
-                                                    <XInput field="input.email" size="large" title="Email" />
-                                                    <XInput field="input.website" size="large" title="Website" />
-                                                    <XInput field="input.linkedin" size="large" title="LinkedIn" />
+                                                    firstName: props.data
+                                                        .profile!!.firstName,
+                                                    lastName: props.data
+                                                        .profile!!.lastName,
+                                                    primaryOrganizationId:
+                                                        props.data.profile!!
+                                                            .primaryOrganization &&
+                                                        props.data.profile!!
+                                                            .primaryOrganization!!
+                                                            .id,
+                                                    role: props.data.profile!!
+                                                        .role,
+                                                    about: props.data.profile!!
+                                                        .about,
+                                                    photoRef: sanitizeIamgeRef(
+                                                        props.data.profile!!
+                                                            .photoRef,
+                                                    ),
+                                                },
+                                            }}
+                                            defaultAction={async data => {
+                                                await props.updateProfile({
+                                                    variables: {
+                                                        input: {
+                                                            firstName:
+                                                                data.input
+                                                                    .firstName,
+                                                            lastName:
+                                                                data.input
+                                                                    .lastName,
+                                                            alphaPrimaryOrganizationId:
+                                                                data.input
+                                                                    .primaryOrganizationId,
+                                                            alphaRole:
+                                                                data.input.role,
+                                                            about:
+                                                                data.input
+                                                                    .about,
+                                                            photoRef: sanitizeIamgeRef(
+                                                                data.input
+                                                                    .photoRef,
+                                                            ),
+                                                        },
+                                                    },
+                                                });
+                                            }}
+                                            defaultLayout={false}
+                                        >
+                                            <XVertical
+                                                separator={12}
+                                                maxWidth={660}
+                                            >
+                                                <HeadTitle>Profile</HeadTitle>
+                                                <XFormError
+                                                    onlyGeneralErrors={true}
+                                                />
+                                                <XVertical separator={12}>
+                                                    <XFormLoadingContent>
+                                                        <XHorizontal
+                                                            separator={13}
+                                                        >
+                                                            <XVertical
+                                                                flexGrow={1}
+                                                                width={480}
+                                                                separator={10}
+                                                            >
+                                                                <XInput
+                                                                    title="First name"
+                                                                    field="input.firstName"
+                                                                    size="large"
+                                                                />
+                                                                <XInput
+                                                                    title="Last name"
+                                                                    field="input.lastName"
+                                                                    size="large"
+                                                                />
+                                                                <XSelect
+                                                                    title="Primary organization"
+                                                                    field="input.primaryOrganizationId"
+                                                                    searchable={
+                                                                        false
+                                                                    }
+                                                                    clearable={
+                                                                        false
+                                                                    }
+                                                                    options={(
+                                                                        (orgsData.data &&
+                                                                            orgsData
+                                                                                .data
+                                                                                .myOrganizations) ||
+                                                                        []
+                                                                    ).map(
+                                                                        (
+                                                                            org: any,
+                                                                        ) => ({
+                                                                            value:
+                                                                                org.id,
+                                                                            label:
+                                                                                org.name,
+                                                                        }),
+                                                                    )}
+                                                                />
+                                                                <TextAreaWrapper
+                                                                >
+                                                                    <TextAreaTitle
+                                                                    >
+                                                                        About
+                                                                    </TextAreaTitle>
+                                                                    <XTextArea
+                                                                        valueStoreKey="fields.input.about"
+                                                                        resize={
+                                                                            false
+                                                                        }
+                                                                    />
+                                                                </TextAreaWrapper>
+                                                            </XVertical>
+                                                            <XAvatarUpload field="input.photoRef" />
+                                                        </XHorizontal>
+                                                    </XFormLoadingContent>
+                                                    <XFormSubmit
+                                                        text="Save changes"
+                                                        alignSelf="flex-start"
+                                                        style="primary"
+                                                        succesText="Changes saved!"
+                                                    />
                                                 </XVertical>
-                                            </XFormLoadingContent>
-                                            <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
-                                        </XVertical>
+                                            </XVertical>
+                                        </XForm>
+                                        <XForm
+                                            defaultData={{
+                                                input: {
+                                                    phone: props.data.profile!!
+                                                        .phone,
+                                                    email: props.data.profile!!
+                                                        .email,
+                                                    website: props.data
+                                                        .profile!!.website,
+                                                    linkedin: props.data
+                                                        .profile!!.linkedin,
+                                                    // locations: props.data.profile!!.locations
+                                                },
+                                            }}
+                                            defaultAction={async data => {
+                                                await props.updateProfile({
+                                                    variables: {
+                                                        input: {
+                                                            phone:
+                                                                data.input
+                                                                    .phone,
+                                                            email:
+                                                                data.input
+                                                                    .email,
+                                                            website:
+                                                                data.input
+                                                                    .website,
+                                                            alphaLinkedin:
+                                                                data.input
+                                                                    .linkedin,
+                                                            // alphaLocations: data.input.locations
+                                                        },
+                                                    },
+                                                });
+                                            }}
+                                            defaultLayout={false}
+                                        >
+                                            <XVertical separator={12}>
+                                                <HeadTitle>Contacts</HeadTitle>
+                                                <XFormError
+                                                    onlyGeneralErrors={true}
+                                                />
+                                                <XVertical
+                                                    width={480}
+                                                    separator={12}
+                                                >
+                                                    <XFormLoadingContent>
+                                                        <XVertical
+                                                            separator={10}
+                                                        >
+                                                            <XInput
+                                                                field="input.phone"
+                                                                size="large"
+                                                                title="Phone number"
+                                                            />
+                                                            <XInput
+                                                                field="input.email"
+                                                                size="large"
+                                                                title="Email"
+                                                            />
+                                                            <XInput
+                                                                field="input.website"
+                                                                size="large"
+                                                                title="Website"
+                                                            />
+                                                            <XInput
+                                                                field="input.linkedin"
+                                                                size="large"
+                                                                title="LinkedIn"
+                                                            />
+                                                        </XVertical>
+                                                    </XFormLoadingContent>
+                                                    <XFormSubmit
+                                                        text="Save changes"
+                                                        alignSelf="flex-start"
+                                                        style="primary"
+                                                        succesText="Changes saved!"
+                                                    />
+                                                </XVertical>
+                                            </XVertical>
+                                        </XForm>
                                     </XVertical>
-                                </XForm>
+                                )}
+                            </Query>
+                            <XVertical separator={12}>
+                                <XWithRole role="super-admin">
+                                    <HeadTitle>Super admin</HeadTitle>
+                                    <XHorizontal separator={8}>
+                                        {props.data.profile &&
+                                            props.data.profile.joinedAt && (
+                                                <CardText>
+                                                    <span>
+                                                        Joined{' '}
+                                                        <span className="bold">
+                                                            {DateFormater(
+                                                                props.data
+                                                                    .profile
+                                                                    .joinedAt,
+                                                            )}
+                                                        </span>
+                                                    </span>
+                                                </CardText>
+                                            )}
+                                        {props.data.profile && (
+                                            <CardText>
+                                                {!props.data.profile
+                                                    .invitedBy && (
+                                                    <span>Self-registered</span>
+                                                )}
+                                                {props.data.profile
+                                                    .invitedBy && (
+                                                    <span>
+                                                        Invited by{' '}
+                                                        <span className="bold person">
+                                                            {props.data.profile
+                                                                .invitedBy
+                                                                .name ||
+                                                                'John Doe'}
+                                                        </span>
+                                                    </span>
+                                                )}
+                                            </CardText>
+                                        )}
+                                    </XHorizontal>
+                                </XWithRole>
                             </XVertical>
-                        )}
-                    </Query>
-                    <XVertical separator={12}>
-                        <XWithRole role="super-admin">
-                            <HeadTitle>Super admin</HeadTitle>
-                            <XHorizontal separator={8}>
-                                {props.data.profile && props.data.profile.joinedAt && (
-                                    <CardText>
-                                        <span>Joined <span className="bold">{DateFormater(props.data.profile.joinedAt)}</span></span>
-                                    </CardText>
-                                )}
-                                {props.data.profile && (
-                                    <CardText>
-                                        {!props.data.profile.invitedBy && <span>Self-registered</span>}
-                                        {props.data.profile.invitedBy && <span>Invited by <span className="bold person">{(props.data.profile.invitedBy.name || 'John Doe')}</span></span>}
-                                    </CardText>
-                                )}
-                            </XHorizontal>
-                        </XWithRole>
-                    </XVertical>
-                </XVertical>
-            </Content>
-        </Navigation>
-    );
-})));
+                        </XVertical>
+                    </Content>
+                </Navigation>
+            );
+        }),
+    ),
+);

@@ -11,29 +11,29 @@ const Root = Glamorous.div({
     width: '100%',
     background: '#ffffff',
     position: 'relative',
-    flexDirection: 'column'
+    flexDirection: 'column',
 });
 
 const HeaderWrapper = Glamorous.div({
-    padding: '19px 32px'
+    padding: '19px 32px',
 });
 
 const HeaderLogo = Glamorous.div({
     width: 145,
     height: 42,
     background: 'url(/static/X/signup/logo-2.svg) no-repeat',
-    backgroundSize: '100% 100%'
+    backgroundSize: '100% 100%',
 });
 
 const Box = Glamorous.div({
     flex: 1,
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const Inner = Glamorous.div({
     position: 'relative',
-    flex: 1
+    flex: 1,
 });
 
 const Image = Glamorous.div({
@@ -41,7 +41,8 @@ const Image = Glamorous.div({
     width: 346,
     height: 222,
     background: 'url(/static/X/illustration-error.png) no-repeat',
-    backgroundImage: '-webkit-image-set(url(/static/X/illustration-error.png) 1x, url(/static/X/illustration-error@2x.png) 2x)',
+    backgroundImage:
+        '-webkit-image-set(url(/static/X/illustration-error.png) 1x, url(/static/X/illustration-error@2x.png) 2x)',
     backgroundSize: '100% auto',
     backgroundPosition: 'center bottom',
 });
@@ -69,18 +70,18 @@ const Description = Glamorous.div({
         color: '#1790ff',
 
         '&:hover': {
-            textDecoration: 'underline'
-        }
-    }
+            textDecoration: 'underline',
+        },
+    },
 });
 
 const ButtonsWrapper = Glamorous(XHorizontal)({
     width: 150,
-    margin: '0 auto'
+    margin: '0 auto',
 });
 
 const Button = Glamorous(XButton)({
-    flex: 1
+    flex: 1,
 });
 
 const Copyrights = Glamorous.div({
@@ -90,14 +91,23 @@ const Copyrights = Glamorous.div({
     fontWeight: 400,
     lineHeight: '24px',
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.4)'
+    color: 'rgba(0, 0, 0, 0.4)',
 });
 
-export class ErrorPage extends React.Component<{ statusCode: number | null | undefined, message?: string }> {
+export class ErrorPage extends React.Component<{
+    statusCode: number | null | undefined;
+    message?: string;
+}> {
     render() {
         return (
             <>
-                <XDocumentHead title={this.props.statusCode === 404 ? ['Not found'] : ['Something went wrong']} />
+                <XDocumentHead
+                    title={
+                        this.props.statusCode === 404
+                            ? ['Not found']
+                            : ['Something went wrong']
+                    }
+                />
                 <XTrack event="View 404">
                     <Root>
                         <HeaderWrapper>
@@ -106,9 +116,17 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                         <Box>
                             <Inner>
                                 <Image />
-                                <Title>{this.props.statusCode === 404 ? 'Not found' : (this.props.message || 'Something went wrong')}</Title>
+                                <Title>
+                                    {this.props.statusCode === 404
+                                        ? 'Not found'
+                                        : this.props.message ||
+                                          'Something went wrong'}
+                                </Title>
                                 <Description>
-                                    Return home or contact our team at <a href="mailto:hello@openland.com">hello@openland.com</a>
+                                    Return home or contact our team at{' '}
+                                    <a href="mailto:hello@openland.com">
+                                        hello@openland.com
+                                    </a>
                                 </Description>
                                 <ButtonsWrapper separator={12}>
                                     <Button
@@ -122,7 +140,9 @@ export class ErrorPage extends React.Component<{ statusCode: number | null | und
                                 </ButtonsWrapper>
                             </Inner>
                         </Box>
-                        <Copyrights>© Openland {new Date().getFullYear()}</Copyrights>
+                        <Copyrights>
+                            © Openland {new Date().getFullYear()}
+                        </Copyrights>
                     </Root>
                 </XTrack>
             </>

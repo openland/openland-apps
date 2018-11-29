@@ -3,7 +3,6 @@ import * as qs from 'query-string';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 
 class LoginStarter extends React.Component<{}, { error: boolean }> {
-
     constructor(props: {}) {
         super(props);
         this.state = { error: false };
@@ -16,7 +15,7 @@ class LoginStarter extends React.Component<{}, { error: boolean }> {
         } else {
             localStorage.removeItem('redirect_path');
         }
-        createAuth0Client ().authorize({});
+        createAuth0Client().authorize({});
     }
 
     render() {

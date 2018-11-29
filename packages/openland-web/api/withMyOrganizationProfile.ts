@@ -7,5 +7,9 @@ import { OrganizationProfileQuery } from 'openland-api';
 
 export const withMyOrganizationProfile = graphqlCompose2(
     graphqlRouted(OrganizationProfileQuery, { params: ['organizationId'] }),
-    graphqlMutation(UpdateOrganizationMutation, 'updateOrganizaton', { refetchQueries: [OrganizationQuery], refetchParams: ['organizationId'], params: ['organizationId'] })
+    graphqlMutation(UpdateOrganizationMutation, 'updateOrganizaton', {
+        refetchQueries: [OrganizationQuery],
+        refetchParams: ['organizationId'],
+        params: ['organizationId'],
+    }),
 );

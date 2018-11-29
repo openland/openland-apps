@@ -1,25 +1,25 @@
 {
-  "schema": {
-    "request": {
-      "url": "https://statecraft-api-staging.herokuapp.com/api",
-      "method": "POST",
-      "postIntrospectionQuery": true,
-      "options": {
-        "headers": {
-          "x-statecraft-domain": "sf"
+    "schema": {
+        "request": {
+            "url": "https://statecraft-api-staging.herokuapp.com/api",
+            "method": "POST",
+            "postIntrospectionQuery": true,
+            "options": {
+                "headers": {
+                    "x-statecraft-domain": "sf"
+                }
+            }
         }
-      }
-    }
-  },
-  "endpoints": [
-    {
-      "name": "Default (https://api.statecraft.one/api)",
-      "url": "https://statecraft-api-staging.herokuapp.com/api",
-      "options": {
-        "headers": {
-          "x-statecraft-domain": "sf"
+    },
+    "endpoints": [
+        {
+            "name": "Default (https://api.statecraft.one/api)",
+            "url": "https://statecraft-api-staging.herokuapp.com/api",
+            "options": {
+                "headers": {
+                    "x-statecraft-domain": "sf"
+                }
+            }
         }
-      }
-    }
-  ]
+    ]
 }

@@ -6,7 +6,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XTitle } from 'openland-x/XTitle';
 
-export default withApp('UI Framework - Tables', 'viewer', (props) => {
+export default withApp('UI Framework - Tables', 'viewer', props => {
     return (
         <DevDocsScaffold title="Tables">
             <XContent>

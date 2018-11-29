@@ -4,7 +4,10 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from './MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
+import {
+    ModelMessage,
+    isServerMessage,
+} from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
@@ -22,7 +25,7 @@ let months = [
     'Sep',
     'Oct',
     'Nov',
-    'Dec'
+    'Dec',
 ];
 
 function dateFormat(date: number) {
@@ -32,10 +35,14 @@ function dateFormat(date: number) {
     if (now.getFullYear() !== dt.getFullYear()) {
         prefix = dt.getFullYear().toString() + ', ';
     }
-    if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
+    if (
+        now.getFullYear() === dt.getFullYear() &&
+        now.getMonth() === dt.getMonth() &&
+        now.getDate() === dt.getDate()
+    ) {
         return 'Today';
     }
-    return (prefix + months[dt.getMonth()] + ' ' + dt.getDate() + 'th');
+    return prefix + months[dt.getMonth()] + ' ' + dt.getDate() + 'th';
 }
 
 const DateDivider = Glamorous.div({
@@ -62,9 +69,9 @@ const DateDivider = Glamorous.div({
             fontWeight: 500,
             color: '#334562',
             opacity: 0.5,
-            letterSpacing: -0.2
-        }
-    }
+            letterSpacing: -0.2,
+        },
+    },
 });
 
 const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
@@ -77,7 +84,7 @@ const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
     paddingTop: props.empty ? 20 : 96,
     paddingBottom: props.empty ? 0 : 40,
     width: '100%',
-    maxWidth: 930
+    maxWidth: 930,
 }));
 
 interface MessageListProps {
@@ -91,12 +98,16 @@ interface MessageListProps {
 }
 
 const getScrollView = () => {
-    return document.getElementsByClassName('messages-wrapper')[0].getElementsByClassName('simplebar-scroll-content')[0];
+    return document
+        .getElementsByClassName('messages-wrapper')[0]
+        .getElementsByClassName('simplebar-scroll-content')[0];
 };
 
 let lastMessageId = '';
 
-export class MessageListComponent extends React.PureComponent<MessageListProps> {
+export class MessageListComponent extends React.PureComponent<
+    MessageListProps
+> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
@@ -107,7 +118,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
-    }
+    };
 
     componentWillUpdate(newprops: MessageListProps) {
         if (newprops.messages[0] !== this.props.messages[0]) {
@@ -121,7 +132,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (!canUseDOM) {
             return;
         }
-        getScrollView().addEventListener('scroll', this.handleScroll, { passive: true });
+        getScrollView().addEventListener('scroll', this.handleScroll, {
+            passive: true,
+        });
     }
 
     componentWillUnmount() {
@@ -132,7 +145,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (lastMessageId !== '' && e.target.scrollTop < 50) {
             this.props.loadBefore(lastMessageId);
         }
-    }
+    };
 
     componentDidUpdate() {
         if (this.unshifted) {
@@ -143,14 +156,18 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     isEmpty = () => {
-        return this.props.conversation.historyFullyLoaded && this.props.messages.filter(m => m.message && !((m as any).isService)).length < 1;
-    }
+        return (
+            this.props.conversation.historyFullyLoaded &&
+            this.props.messages.filter(m => m.message && !(m as any).isService)
+                .length < 1
+        );
+    };
 
     resizeHandler = (width: number, height: number) => {
         if (canUseDOM) {
             this.scroller.current!!.restorePreviousScroll();
         }
-    }
+    };
 
     // checkEmptyState = () => {
     //     if (this.props.inputShower) {
@@ -158,7 +175,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     //     }
     // }
     render() {
-
         let messages: any[] = [];
         let prevDate: string | undefined;
         let prevMessageDate: number | undefined = undefined;
@@ -167,7 +183,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         let appendDateIfNeeded = (date: number) => {
             let dstr = dateFormat(date);
             if (dstr !== prevDate) {
-                messages.push(<DateDivider key={'date-' + dstr}><div><span>{dstr}</span></div></DateDivider>);
+                messages.push(
+                    <DateDivider key={'date-' + dstr}>
+                        <div>
+                            <span>{dstr}</span>
+                        </div>
+                    </DateDivider>,
+                );
                 prevDate = dstr;
                 prevMessageDate = undefined;
                 prevMessageSender = undefined;
@@ -179,7 +201,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 let delta = prevMessageDate - date;
 
                 // 1 hour
-                if ((delta * -1) > 3600000) {
+                if (delta * -1 > 3600000) {
                     prevMessageDate = date;
                     currentCollapsed = 0;
                     return false;
@@ -207,17 +229,25 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         sender={m.sender as any}
                         message={m}
                         conversation={this.props.conversation}
-                        out={!!(this.props.me && this.props.me.id === m.sender.id)}
+                        out={
+                            !!(
+                                this.props.me &&
+                                this.props.me.id === m.sender.id
+                            )
+                        }
                         me={this.props.me}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
-                    />
+                    />,
                 );
             } else {
                 messages.push(
                     <MessageComponent
                         key={'pending-' + m.key}
-                        compact={shouldCompact(this.props.conversation.engine.user.id, date)}
+                        compact={shouldCompact(
+                            this.props.conversation.engine.user.id,
+                            date,
+                        )}
                         sender={this.props.conversation.engine.user}
                         message={m}
                         conversation={this.props.conversation}
@@ -225,12 +255,14 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         me={this.props.me}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
-                    />
+                    />,
                 );
             }
         }
 
-        let serverMessages = this.props.messages.filter(m => isServerMessage(m));
+        let serverMessages = this.props.messages.filter(m =>
+            isServerMessage(m),
+        );
         let lastMessage = serverMessages[0];
 
         lastMessageId = '';
@@ -238,7 +270,15 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (!this.props.conversation.historyFullyLoaded && lastMessage) {
             let id = (lastMessage as MessageFull).id;
             lastMessageId = id;
-            messages.unshift(<XButton alignSelf="center" style="flat" key={'load_more_' + id} text="Load more" loading={true} />);
+            messages.unshift(
+                <XButton
+                    alignSelf="center"
+                    style="flat"
+                    key={'load_more_' + id}
+                    text="Load more"
+                    loading={true}
+                />,
+            );
         }
 
         return (
@@ -246,12 +286,19 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 {this.isEmpty() && (
                     <XScrollViewReversed ref={this.scroller}>
                         <MessagesWrapper empty={this.isEmpty()}>
-                            <EmptyBlock conversationType={this.props.conversationType} onClick={this.props.inputShower} />
+                            <EmptyBlock
+                                conversationType={this.props.conversationType}
+                                onClick={this.props.inputShower}
+                            />
                         </MessagesWrapper>
                     </XScrollViewReversed>
                 )}
                 {!this.isEmpty() && (
-                    <XResizeDetector handleWidth={false} handleHeight={true} onResize={this.resizeHandler}>
+                    <XResizeDetector
+                        handleWidth={false}
+                        handleHeight={true}
+                        onResize={this.resizeHandler}
+                    >
                         <XScrollViewReversed ref={this.scroller}>
                             <MessagesWrapper empty={this.isEmpty()}>
                                 {messages}

@@ -17,7 +17,7 @@ export const ModalCloser = Glamorous(XLink)({
     backgroundColor: 'transparent',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const ImgDownload = Glamorous.a({
@@ -31,7 +31,7 @@ const ImgDownload = Glamorous.a({
     opacity: 0,
     position: 'absolute',
     top: 20,
-    right: 20
+    right: 20,
 });
 
 export const ModalBody = Glamorous.div({
@@ -41,18 +41,18 @@ export const ModalBody = Glamorous.div({
     position: 'relative',
     marginBottom: 40,
     '&:hover > .download-button': {
-        opacity: 1
-    }
+        opacity: 1,
+    },
 });
 
 const ImgWrapper = Glamorous(XLink)({
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
 });
 
 export const ModalPic = Glamorous(XCloudImage)({
     borderRadius: 8,
     objectFit: 'contain',
-    maxHeight: '90vh'
+    maxHeight: '90vh',
 });
 
 interface MessageImageComponentProps {
@@ -63,12 +63,15 @@ interface MessageImageComponentProps {
     startSelected: boolean;
 }
 
-export class MessageImageComponent extends React.PureComponent<MessageImageComponentProps, { isOpen: boolean }> {
+export class MessageImageComponent extends React.PureComponent<
+    MessageImageComponentProps,
+    { isOpen: boolean }
+> {
     constructor(props: MessageImageComponentProps) {
         super(props);
 
         this.state = {
-            isOpen: false
+            isOpen: false,
         };
     }
 
@@ -78,15 +81,15 @@ export class MessageImageComponent extends React.PureComponent<MessageImageCompo
         }
         e.stopPropagation();
         this.setState({
-            isOpen: true
+            isOpen: true,
         });
-    }
+    };
 
     handleClose = () => {
         this.setState({
-            isOpen: false
+            isOpen: false,
         });
-    }
+    };
 
     render() {
         const { props } = this;
@@ -101,25 +104,31 @@ export class MessageImageComponent extends React.PureComponent<MessageImageCompo
                     transparent={true}
                     isOpen={this.state.isOpen}
                     onClosed={this.handleClose}
-                    body={(
+                    body={
                         <ModalBody>
                             <ModalCloser autoClose={true} className="closer">
                                 <ModalCloseIcon />
                             </ModalCloser>
                             <ModalPic
-                                srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                                srcCloud={
+                                    'https://ucarecdn.com/' + props.file + '/'
+                                }
                                 resize={'fill'}
                                 width={dimensions2.width}
                                 height={dimensions2.height}
                             />
                             <ImgDownload
                                 className="download-button"
-                                href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
+                                href={
+                                    'https://ucarecdn.com/' +
+                                    props.file +
+                                    '/-/preview/-/inline/no/'
+                                }
                             >
                                 <DownloadButtonIcon />
                             </ImgDownload>
                         </ModalBody>
-                    )}
+                    }
                 />
                 <ImgWrapper onClick={this.handleOpen}>
                     <XCloudImage

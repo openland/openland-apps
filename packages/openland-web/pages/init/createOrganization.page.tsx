@@ -37,8 +37,8 @@ const Cancel = Glamorous(XLink)({
     fontWeight: 500,
     '&:hover': {
         color: '#765efd',
-        textDecoration: 'underline'
-    }
+        textDecoration: 'underline',
+    },
 });
 
 const InputTooltipWrapper = Glamorous.div({
@@ -59,8 +59,8 @@ const InputTooltipRow = Glamorous.div({
         paddingBottom: 18,
     },
     '& > img': {
-        marginTop: 6
-    }
+        marginTop: 6,
+    },
 });
 
 const InputTooltipText = Glamorous.div({
@@ -70,81 +70,156 @@ const InputTooltipText = Glamorous.div({
     letterSpacing: -0.3,
     color: '#334562',
     marginLeft: 14,
-    maxWidth: 364
+    maxWidth: 364,
 });
 
 const InputTooltip = () => (
     <InputTooltipWrapper>
         <InputTooltipRow>
-            <img src="/static/X/ic-profile.svg"/>
-            <InputTooltipText>Re-type your full name if you register as a private individual</InputTooltipText>
+            <img src="/static/X/ic-profile.svg" />
+            <InputTooltipText>
+                Re-type your full name if you register as a private individual
+            </InputTooltipText>
         </InputTooltipRow>
         <InputTooltipRow>
-            <img src="/static/X/ic-profile2.svg"/>
-            <InputTooltipText>For large organizations, you can register with your department name or regional office name</InputTooltipText>
+            <img src="/static/X/ic-profile2.svg" />
+            <InputTooltipText>
+                For large organizations, you can register with your department
+                name or regional office name
+            </InputTooltipText>
         </InputTooltipRow>
     </InputTooltipWrapper>
 );
 
-const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props) => {
-
-    return (
-        <RootContainer>
-            <Logo />
-            <ContentWrapper>
-                <TextWrapper>
-                    <Title>{InitTexts.create_organization.title}</Title>
-                </TextWrapper>
-                <XForm
-                    defaultAction={async (data) => {
-                        let res = await props.createOrganization({
-                            variables:
-                            {
+const CreateProfileForm = withCreateOrganization(
+    withRouter(
+        withUserInfo(props => {
+            return (
+                <RootContainer>
+                    <Logo />
+                    <ContentWrapper>
+                        <TextWrapper>
+                            <Title>{InitTexts.create_organization.title}</Title>
+                        </TextWrapper>
+                        <XForm
+                            defaultAction={async data => {
+                                let res = await props.createOrganization({
+                                    variables: {
+                                        input: {
+                                            personal: false,
+                                            name: data.input.name,
+                                            website: data.input.website,
+                                            photoRef: sanitizeIamgeRef(
+                                                data.input.photoRef,
+                                            ),
+                                        },
+                                    },
+                                });
+                                switchOrganization(
+                                    res.data.createOrganization.id,
+                                    props.router.query.redirect,
+                                );
+                                await delayForewer();
+                            }}
+                            defaultData={{
                                 input: {
-                                    personal: false,
-                                    name: data.input.name,
-                                    website: data.input.website,
-                                    photoRef: sanitizeIamgeRef(data.input.photoRef)
-                                }
-                            }
-                        });
-                        switchOrganization(res.data.createOrganization.id, props.router.query.redirect);
-                        await delayForewer();
-                    }}
-                    defaultData={{
-                        input: {
-                            name: '',
-                            website: '',
-                            photoRef: null
-                        }
-                    }}
-                    defaultLayout={false}
-                >
-                    <XVertical separator="large">
-                        <XFormError width={472} />
-                        <XFormLoadingContent>
-                            <XHorizontal separator="large">
-                                <XVertical width={280}>
-                                    <XFormField field="input.name" title={InitTexts.create_organization.name}>
-                                        <XInput
-                                            field="input.name"
-                                            size="large"
-                                            placeholder={InitTexts.create_organization.namePlaceholder}
-                                            tooltipContent={<InputTooltip/>}
-                                        />
-                                    </XFormField>
-                                    <XFormField field="input.website" title={InitTexts.create_organization.website} optional={true}>
-                                        <XInput field="input.website" size="large" placeholder={InitTexts.create_organization.websitePlaceholder} />
-                                    </XFormField>
-                                </XVertical>
-                                <XFormField title={InitTexts.create_organization.photo}>
-                                    <XAvatarUpload cropParams="1:1, free" field="input.photoRef" placeholder={{ add: (<><p>Add</p> <p>organization logo</p></>), change: <><p>Change</p> <p>organization logo</p></> }} size="large" />
-                                </XFormField>
-                            </XHorizontal>
-                        </XFormLoadingContent>
-                        <Footer>
-                            {props.isAccountExists && <Cancel path="/">{InitTexts.create_organization.cancel}</Cancel>}
-                            {/* {!props.isAccountExists && (
+                                    name: '',
+                                    website: '',
+                                    photoRef: null,
+                                },
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XVertical separator="large">
+                                <XFormError width={472} />
+                                <XFormLoadingContent>
+                                    <XHorizontal separator="large">
+                                        <XVertical width={280}>
+                                            <XFormField
+                                                field="input.name"
+                                                title={
+                                                    InitTexts
+                                                        .create_organization
+                                                        .name
+                                                }
+                                            >
+                                                <XInput
+                                                    field="input.name"
+                                                    size="large"
+                                                    placeholder={
+                                                        InitTexts
+                                                            .create_organization
+                                                            .namePlaceholder
+                                                    }
+                                                    tooltipContent={
+                                                        <InputTooltip />
+                                                    }
+                                                />
+                                            </XFormField>
+                                            <XFormField
+                                                field="input.website"
+                                                title={
+                                                    InitTexts
+                                                        .create_organization
+                                                        .website
+                                                }
+                                                optional={true}
+                                            >
+                                                <XInput
+                                                    field="input.website"
+                                                    size="large"
+                                                    placeholder={
+                                                        InitTexts
+                                                            .create_organization
+                                                            .websitePlaceholder
+                                                    }
+                                                />
+                                            </XFormField>
+                                        </XVertical>
+                                        <XFormField
+                                            title={
+                                                InitTexts.create_organization
+                                                    .photo
+                                            }
+                                        >
+                                            <XAvatarUpload
+                                                cropParams="1:1, free"
+                                                field="input.photoRef"
+                                                placeholder={{
+                                                    add: (
+                                                        <>
+                                                            <p>Add</p>{' '}
+                                                            <p>
+                                                                organization
+                                                                logo
+                                                            </p>
+                                                        </>
+                                                    ),
+                                                    change: (
+                                                        <>
+                                                            <p>Change</p>{' '}
+                                                            <p>
+                                                                organization
+                                                                logo
+                                                            </p>
+                                                        </>
+                                                    ),
+                                                }}
+                                                size="large"
+                                            />
+                                        </XFormField>
+                                    </XHorizontal>
+                                </XFormLoadingContent>
+                                <Footer>
+                                    {props.isAccountExists && (
+                                        <Cancel path="/">
+                                            {
+                                                InitTexts.create_organization
+                                                    .cancel
+                                            }
+                                        </Cancel>
+                                    )}
+                                    {/* {!props.isAccountExists && (
                                 <XFormSubmit
                                     style="link"
                                     text={InitTexts.create_organization.skip}
@@ -163,21 +238,34 @@ const CreateProfileForm = withCreateOrganization(withRouter(withUserInfo((props)
                                 />
                             )} */}
 
-                            <div />
+                                    <div />
 
-                            <XFormSubmit style="primary" text={InitTexts.create_organization.continue} size="large" alignSelf="flex-end" />
-                        </Footer>
-                    </XVertical>
-                </XForm>
-            </ContentWrapper>
-        </RootContainer>
-    );
-})));
+                                    <XFormSubmit
+                                        style="primary"
+                                        text={
+                                            InitTexts.create_organization
+                                                .continue
+                                        }
+                                        size="large"
+                                        alignSelf="flex-end"
+                                    />
+                                </Footer>
+                            </XVertical>
+                        </XForm>
+                    </ContentWrapper>
+                </RootContainer>
+            );
+        }),
+    ),
+);
 
-export default withApp('Create Organization', 'viewer', (props) => {
+export default withApp('Create Organization', 'viewer', props => {
     return (
         <>
-            <XDocumentHead title={InitTexts.create_organization.pageTitle} titleSocial={InitTexts.socialPageTitle} />
+            <XDocumentHead
+                title={InitTexts.create_organization.pageTitle}
+                titleSocial={InitTexts.socialPageTitle}
+            />
             <CreateProfileForm />
         </>
     );

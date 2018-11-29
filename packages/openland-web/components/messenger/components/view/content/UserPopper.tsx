@@ -15,28 +15,28 @@ const showAnimation = glamor.keyframes({
         opacity: 0,
         pointerEvents: 'none',
         visibility: 'hidden',
-        display: 'none'
+        display: 'none',
     },
     '60%': {
-        display: 'block'
+        display: 'block',
     },
     '70%': {
         opacity: 0,
         pointerEvents: 'none',
-        visibility: 'hidden'
+        visibility: 'hidden',
     },
     '100%': {
         opacity: 1,
         pointerEvents: 'auto',
-        visibility: 'auto'
-    }
+        visibility: 'auto',
+    },
 });
 
 const UserAvatarWrapper = Glamorous(XAvatar)({
     marginTop: 3,
     '& *': {
-        cursor: 'pointer'
-    }
+        cursor: 'pointer',
+    },
 });
 
 const Container = Glamorous(XPopper.Content)({
@@ -45,8 +45,8 @@ const Container = Glamorous(XPopper.Content)({
     animationName: `${showAnimation}`,
     '& + .arrow': {
         animationDuration: `500ms`,
-        animationName: `${showAnimation}`
-    }
+        animationName: `${showAnimation}`,
+    },
 });
 
 const Wrapper = Glamorous.div({
@@ -58,13 +58,13 @@ const Wrapper = Glamorous.div({
     position: 'relative',
 });
 
-const StatusWrapper = Glamorous.div<{ online: boolean }>((props) => ({
+const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     flex: 1,
     textAlign: 'right',
     color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
     fontSize: 13,
     fontWeight: 400,
-    lineHeight: '17px'
+    lineHeight: '17px',
 }));
 
 const Name = Glamorous.div({
@@ -72,14 +72,14 @@ const Name = Glamorous.div({
     fontSize: 16,
     fontWeight: 600,
     color: 'rgba(0, 0, 0, 0.9)',
-    lineHeight: '19px'
+    lineHeight: '19px',
 });
 
 const OrgTitle = Glamorous.div({
     marginTop: 6,
     fontSize: 14,
     opacity: 0.5,
-    color: '#000000'
+    color: '#000000',
 });
 
 const Role = Glamorous.div({
@@ -87,33 +87,45 @@ const Role = Glamorous.div({
     fontSize: 14,
     fontWeight: 400,
     color: 'rgba(0, 0, 0, 0.5)',
-    lineHeight: '16px'
+    lineHeight: '16px',
 });
 
 const Buttons = Glamorous(XHorizontal)({
     marginTop: 20,
-    width: 224
+    width: 224,
 });
 
 const Status = withOnline(props => {
-    if (props.data.user && (props.data.user.lastSeen && props.data.user.lastSeen !== 'online' && !props.data.user.online)) {
+    if (
+        props.data.user &&
+        (props.data.user.lastSeen &&
+            props.data.user.lastSeen !== 'online' &&
+            !props.data.user.online)
+    ) {
         return (
             <StatusWrapper online={false}>
-                Last seen {props.data.user.lastSeen === 'never_online' ? 'moments ago' : <XDate value={props.data.user.lastSeen} format="humanize_cute" />}
+                Last seen{' '}
+                {props.data.user.lastSeen === 'never_online' ? (
+                    'moments ago'
+                ) : (
+                    <XDate
+                        value={props.data.user.lastSeen}
+                        format="humanize_cute"
+                    />
+                )}
             </StatusWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
-        return (
-            <StatusWrapper online={true}>
-                Online
-            </StatusWrapper>
-        );
+        return <StatusWrapper online={true}>Online</StatusWrapper>;
     } else {
         return null;
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
-export class UserAvatar extends React.PureComponent<{ user: MessageFull_sender, startSelected: boolean }> {
+export class UserAvatar extends React.PureComponent<{
+    user: MessageFull_sender;
+    startSelected: boolean;
+}> {
     render() {
         let usrPath: string | undefined = undefined;
         if (!this.props.startSelected) {
@@ -132,7 +144,13 @@ export class UserAvatar extends React.PureComponent<{ user: MessageFull_sender, 
     }
 }
 
-export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, startSelected: boolean, noCardOnMe?: boolean,  children?: any}) => {
+export const UserPopper = (props: {
+    user: MessageFull_sender;
+    isMe: boolean;
+    startSelected: boolean;
+    noCardOnMe?: boolean;
+    children?: any;
+}) => {
     let { user, isMe, noCardOnMe, children } = props;
     let usrPath: string | undefined = undefined;
     if (!props.startSelected) {
@@ -141,22 +159,22 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, sta
     let content;
     if (noCardOnMe && isMe) {
         content = (
-            <XView 
-                width={78} 
+            <XView
+                width={78}
                 justifyContent="center"
                 alignItems="center"
-                height={30} 
-                color={'white'} 
-                borderRadius={15} 
+                height={30}
+                color={'white'}
+                borderRadius={15}
                 backgroundColor={'#6e7588'}
             >
                 It&apos;s you
             </XView>
         );
-       
     } else {
-
-        const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
+        const organizationName = user.primaryOrganization
+            ? user.primaryOrganization.name
+            : '';
         content = (
             <Wrapper>
                 <XHorizontal>
@@ -173,10 +191,23 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, sta
                 <Name>{user.name}</Name>
                 <OrgTitle>{organizationName}</OrgTitle>
                 <Buttons separator={6}>
-                    {!isMe && <XButton path={'/mail/' + user.id} style="primary" text="Direct chat" size="small" />}
-                    <XButton path={'/mail/u/' + user.id} style="electric" text={isMe ? 'My profile' : 'View profile'} size="small" />
+                    {!isMe && (
+                        <XButton
+                            path={'/mail/' + user.id}
+                            style="primary"
+                            text="Direct chat"
+                            size="small"
+                        />
+                    )}
+                    <XButton
+                        path={'/mail/u/' + user.id}
+                        style="electric"
+                        text={isMe ? 'My profile' : 'View profile'}
+                        size="small"
+                    />
                 </Buttons>
-            </Wrapper>);
+            </Wrapper>
+        );
     }
 
     return (
@@ -188,7 +219,11 @@ export const UserPopper = (props: { user: MessageFull_sender, isMe: boolean, sta
             placement="top-start"
             marginLeft={-2}
         >
-            {children ? children : <UserAvatar user={user} startSelected={props.startSelected} />}
+            {children ? (
+                children
+            ) : (
+                <UserAvatar user={user} startSelected={props.startSelected} />
+            )}
         </XPopper>
     );
 };

@@ -19,14 +19,14 @@ import { DateFormater } from 'openland-x/XDate';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,
-    flexGrow: 1
+    flexGrow: 1,
 });
 
 const CategoryTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 'bold',
     letterSpacing: -0.2,
-    color: '#1f3449'
+    color: '#1f3449',
 });
 
 let shiftArray = (array: any[]) => {
@@ -39,7 +39,7 @@ const SACreatedBlock = Glamorous.div({
     padding: 16,
     borderRadius: 10,
     border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
 });
 
 const SACreatedText = Glamorous.div({
@@ -48,11 +48,11 @@ const SACreatedText = Glamorous.div({
     letterSpacing: -0.2,
     color: '#334562',
     '& .bold': {
-        fontWeight: 600
+        fontWeight: 600,
     },
     '& .author': {
-        color: '#1790ff'
-    }
+        color: '#1790ff',
+    },
 });
 
 const AdminTools = withSuperAccountActions(props => {
@@ -64,53 +64,108 @@ const AdminTools = withSuperAccountActions(props => {
             <SACreatedBlock>
                 <SACreatedText>
                     <span>Created </span>
-                    <span className="bold">{props.data.superAccount.createdAt ? DateFormater(props.data.superAccount.createdAt) : 'once'} </span>
+                    <span className="bold">
+                        {props.data.superAccount.createdAt
+                            ? DateFormater(props.data.superAccount.createdAt)
+                            : 'once'}{' '}
+                    </span>
                     <span>by </span>
-                    <span className="bold author">{props.data.superAccount.createdBy ? props.data.superAccount.createdBy.name : 'John Doe'}</span>
+                    <span className="bold author">
+                        {props.data.superAccount.createdBy
+                            ? props.data.superAccount.createdBy.name
+                            : 'John Doe'}
+                    </span>
                 </SACreatedText>
             </SACreatedBlock>
             <XForm
                 defaultData={{
                     input: {
                         activated: props.data && props.data.superAccount.state,
-                        published: (props as any).published ? 'published' : 'unpublished',
-                        editorial: (props as any).editorial ? 'editorial' : 'noneditorial',
-                        featured: (props as any).featured ? 'featured' : 'nonfeatured',
-                    }
+                        published: (props as any).published
+                            ? 'published'
+                            : 'unpublished',
+                        editorial: (props as any).editorial
+                            ? 'editorial'
+                            : 'noneditorial',
+                        featured: (props as any).featured
+                            ? 'featured'
+                            : 'nonfeatured',
+                    },
                 }}
-                defaultAction={async (data) => {
+                defaultAction={async data => {
                     await (props as any).updateOrganizatonMutations({
                         variables: {
                             input: {
-                                alphaPublished: data.input.published === 'published',
-                                alphaEditorial: data.input.editorial === 'editorial',
-                                alphaFeatured: data.input.featured === 'featured',
-                            }
-                        }
+                                alphaPublished:
+                                    data.input.published === 'published',
+                                alphaEditorial:
+                                    data.input.editorial === 'editorial',
+                                alphaFeatured:
+                                    data.input.featured === 'featured',
+                            },
+                        },
                     });
 
                     if (data.input.activated === 'ACTIVATED') {
-                        props.activate({ variables: { accountId: props.data.superAccount.id } });
+                        props.activate({
+                            variables: {
+                                accountId: props.data.superAccount.id,
+                            },
+                        });
                     } else {
-                        props.pend({ variables: { accountId: props.data.superAccount.id } });
+                        props.pend({
+                            variables: {
+                                accountId: props.data.superAccount.id,
+                            },
+                        });
                     }
                 }}
                 defaultLayout={false}
             >
-
                 <XVertical separator={4}>
                     <XFormLoadingContent>
-                        <XCheckbox label="Activated" trueValue="ACTIVATED" falseValue="PENDING" field="input.activated" />
-                        <XCheckbox label="Published" trueValue="published" falseValue="unpublished" field="input.published" />
-                        <XCheckbox label="Editorial" trueValue="editorial" falseValue="noneditorial" field="input.editorial" />
-                        <XCheckbox label="Featured" trueValue="featured" falseValue="nonfeatured" field="input.featured" />
+                        <XCheckbox
+                            label="Activated"
+                            trueValue="ACTIVATED"
+                            falseValue="PENDING"
+                            field="input.activated"
+                        />
+                        <XCheckbox
+                            label="Published"
+                            trueValue="published"
+                            falseValue="unpublished"
+                            field="input.published"
+                        />
+                        <XCheckbox
+                            label="Editorial"
+                            trueValue="editorial"
+                            falseValue="noneditorial"
+                            field="input.editorial"
+                        />
+                        <XCheckbox
+                            label="Featured"
+                            trueValue="featured"
+                            falseValue="nonfeatured"
+                            field="input.featured"
+                        />
                     </XFormLoadingContent>
-                    <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
+                    <XFormSubmit
+                        text="Save changes"
+                        alignSelf="flex-start"
+                        style="primary"
+                        succesText="Changes saved!"
+                    />
                 </XVertical>
             </XForm>
         </XVertical>
     );
-}) as React.ComponentType<{ updateOrganizatonMutations: any, published: boolean, editorial: boolean, featured: boolean, variables: { accountId: string, viaOrgId: true } }>;
+}) as React.ComponentType<{
+    updateOrganizatonMutations: any;
+    published: boolean;
+    editorial: boolean;
+    featured: boolean;
+    variables: { accountId: string; viaOrgId: true };
+}>;
 
 const Separator = Glamorous.div({
     width: '100%',
@@ -129,36 +184,52 @@ export const OrganizationSettigs = ((props: any) => {
                         <CategoryTitle id="general">General</CategoryTitle>
                         <XForm
                             defaultData={{
-
                                 input: {
                                     name: props.data.organizationProfile.name,
                                     about: props.data.organizationProfile.about,
-                                    photo: props.data.organizationProfile.photoRef,
-                                    photoRef: sanitizeIamgeRef(props.data.organizationProfile.photoRef),
-                                    published: props.data.organizationProfile.published ? 'published' : 'unpublished',
-                                    editorial: props.data.organizationProfile.editorial ? 'editorial' : 'noneditorial',
+                                    photo:
+                                        props.data.organizationProfile.photoRef,
+                                    photoRef: sanitizeIamgeRef(
+                                        props.data.organizationProfile.photoRef,
+                                    ),
+                                    published: props.data.organizationProfile
+                                        .published
+                                        ? 'published'
+                                        : 'unpublished',
+                                    editorial: props.data.organizationProfile
+                                        .editorial
+                                        ? 'editorial'
+                                        : 'noneditorial',
 
-                                    website: props.data.organizationProfile.website,
-                                    twitter: props.data.organizationProfile.twitter,
-                                    facebook: props.data.organizationProfile.facebook,
-                                    linkedin: props.data.organizationProfile.linkedin,
-                                }
+                                    website:
+                                        props.data.organizationProfile.website,
+                                    twitter:
+                                        props.data.organizationProfile.twitter,
+                                    facebook:
+                                        props.data.organizationProfile.facebook,
+                                    linkedin:
+                                        props.data.organizationProfile.linkedin,
+                                },
                             }}
-                            defaultAction={async (data) => {
+                            defaultAction={async data => {
                                 await props.updateOrganizaton({
                                     variables: {
                                         input: {
                                             name: data.input.name,
                                             about: data.input.about,
                                             photoRef: data.input.photoRef,
-                                            alphaPublished: data.input.published === 'published',
-                                            alphaEditorial: data.input.editorial === 'editorial',
+                                            alphaPublished:
+                                                data.input.published ===
+                                                'published',
+                                            alphaEditorial:
+                                                data.input.editorial ===
+                                                'editorial',
                                             website: data.input.website,
                                             twitter: data.input.twitter,
                                             facebook: data.input.facebook,
-                                            linkedin: data.input.linkedin
-                                        }
-                                    }
+                                            linkedin: data.input.linkedin,
+                                        },
+                                    },
                                 });
                             }}
                             defaultLayout={false}
@@ -167,17 +238,52 @@ export const OrganizationSettigs = ((props: any) => {
                                 <XFormLoadingContent>
                                     <XHorizontal separator={12}>
                                         <XVertical flexGrow={1} maxWidth={480}>
-                                            <XInput field="input.name" size="large" placeholder="Organization name" />
-                                            <XInput field="input.about" size="large" placeholder="About" />
-                                            <XInput flexGrow={1} placeholder={TextOrganizationProfile.placeholderSocialInputPlaceholder} field="input.website" size="large" />
-                                            <XInput field="input.twitter" placeholder="Twitter" size="large" />
-                                            <XInput field="input.facebook" placeholder="Facebook" size="large" />
-                                            <XInput field="input.linkedin" placeholder="LinkedIn" size="large" />
+                                            <XInput
+                                                field="input.name"
+                                                size="large"
+                                                placeholder="Organization name"
+                                            />
+                                            <XInput
+                                                field="input.about"
+                                                size="large"
+                                                placeholder="About"
+                                            />
+                                            <XInput
+                                                flexGrow={1}
+                                                placeholder={
+                                                    TextOrganizationProfile.placeholderSocialInputPlaceholder
+                                                }
+                                                field="input.website"
+                                                size="large"
+                                            />
+                                            <XInput
+                                                field="input.twitter"
+                                                placeholder="Twitter"
+                                                size="large"
+                                            />
+                                            <XInput
+                                                field="input.facebook"
+                                                placeholder="Facebook"
+                                                size="large"
+                                            />
+                                            <XInput
+                                                field="input.linkedin"
+                                                placeholder="LinkedIn"
+                                                size="large"
+                                            />
                                         </XVertical>
-                                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
+                                        <XAvatarUpload
+                                            cropParams="1:1, free"
+                                            field="input.photoRef"
+                                        />
                                     </XHorizontal>
                                 </XFormLoadingContent>
-                                <XFormSubmit text="Save changes" alignSelf="flex-start" style="primary" succesText="Changes saved!" />
+                                <XFormSubmit
+                                    text="Save changes"
+                                    alignSelf="flex-start"
+                                    style="primary"
+                                    succesText="Changes saved!"
+                                />
                             </XVertical>
                         </XForm>
                     </XVertical>
@@ -186,19 +292,43 @@ export const OrganizationSettigs = ((props: any) => {
                     <XWithRole role={['super-admin', 'editor']}>
                         <XVertical separator={36}>
                             <XVertical separator={12}>
-                                <CategoryTitle id="super-admin">Super admin</CategoryTitle>
+                                <CategoryTitle id="super-admin">
+                                    Super admin
+                                </CategoryTitle>
                                 <AdminTools
-                                    variables={{ accountId: props.data.organizationProfile!!.id, viaOrgId: true }}
-                                    updateOrganizatonMutations={props.updateOrganizaton}
-                                    published={props.data.organizationProfile!!.published}
-                                    editorial={props.data.organizationProfile!!.editorial}
-                                    featured={props.data.organizationProfile!!.featured}
+                                    variables={{
+                                        accountId: props.data
+                                            .organizationProfile!!.id,
+                                        viaOrgId: true,
+                                    }}
+                                    updateOrganizatonMutations={
+                                        props.updateOrganizaton
+                                    }
+                                    published={
+                                        props.data.organizationProfile!!
+                                            .published
+                                    }
+                                    editorial={
+                                        props.data.organizationProfile!!
+                                            .editorial
+                                    }
+                                    featured={
+                                        props.data.organizationProfile!!
+                                            .featured
+                                    }
                                 />
                             </XVertical>
                         </XVertical>
                     </XWithRole>
                 </XVertical>
             </Content>
-        </Navigation >
+        </Navigation>
     );
-}) as React.ComponentType<XWithRouter & { updateOrganizaton: any, data: { organizationProfile: any }, orgId?: string, hideMembers?: boolean }>;
+}) as React.ComponentType<
+    XWithRouter & {
+        updateOrganizaton: any;
+        data: { organizationProfile: any };
+        orgId?: string;
+        hideMembers?: boolean;
+    }
+>;

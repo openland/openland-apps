@@ -11,16 +11,16 @@ let Title = Glamorous.div({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 24,
-    marginBottom: 15
+    marginBottom: 15,
 });
 
 let Message = Glamorous(XContent)({
     alignContent: 'center',
     textAlign: 'center',
-    width: '100%'
+    width: '100%',
 });
 
-export function MessagePageContent(props: { title: string, children?: any }) {
+export function MessagePageContent(props: { title: string; children?: any }) {
     return (
         <>
             <Title>{props.title}</Title>

@@ -6,6 +6,8 @@ import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { AccountQuery } from 'openland-api/AccountQuery';
 
 export const withCreateUserProfileAndOrganization = graphqlCompose2(
-    graphqlMutation(CreateUserProfileAndOrganizationMutation, 'create', { refetchQueries: [AccountQuery] }),
-    graphqlRouted(ProfilePrefillQuery)
+    graphqlMutation(CreateUserProfileAndOrganizationMutation, 'create', {
+        refetchQueries: [AccountQuery],
+    }),
+    graphqlRouted(ProfilePrefillQuery),
 );

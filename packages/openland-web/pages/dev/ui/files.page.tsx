@@ -7,7 +7,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XTitle } from 'openland-x/XTitle';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
-export default withApp('UI Framework - Files', 'viewer', (props) => {
+export default withApp('UI Framework - Files', 'viewer', props => {
     return (
         <DevDocsScaffold title="Files">
             <XContent>

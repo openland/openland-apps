@@ -8,46 +8,46 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import XStyles from 'openland-x/XStyles';
 
 const H900 = glamorous.div({
-    ...XStyles.text.h900
+    ...XStyles.text.h900,
 });
 
 const H800 = glamorous.div({
-    ...XStyles.text.h800
+    ...XStyles.text.h800,
 });
 
 const H700 = glamorous.div({
-    ...XStyles.text.h700
+    ...XStyles.text.h700,
 });
 
 const H600 = glamorous.div({
-    ...XStyles.text.h600
+    ...XStyles.text.h600,
 });
 
 const H500 = glamorous.div({
-    ...XStyles.text.h500
+    ...XStyles.text.h500,
 });
 
 const H400 = glamorous.div({
-    ...XStyles.text.h400
+    ...XStyles.text.h400,
 });
 
 const H300 = glamorous.div({
-    ...XStyles.text.h300
+    ...XStyles.text.h300,
 });
 
 const H200 = glamorous.div({
-    ...XStyles.text.h200
+    ...XStyles.text.h200,
 });
 
 const H100 = glamorous.div({
-    ...XStyles.text.h100
+    ...XStyles.text.h100,
 });
 
 const M500 = glamorous.div({
-    ...XStyles.text.m500
+    ...XStyles.text.m500,
 });
 
-export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
+export default withApp('UI Framework - Typograpthy', 'viewer', props => {
     return (
         <DevDocsScaffold title="Typography">
             <XContent>
@@ -55,7 +55,10 @@ export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
                     <H900>Text h900</H900>
                     <div>For oversized screen titles. Use in moderation.</div>
                     <H800>Text h800</H800>
-                    <div>Empty states and feature introductions. Top level headers.</div>
+                    <div>
+                        Empty states and feature introductions. Top level
+                        headers.
+                    </div>
                     <H700>Text h700</H700>
                     <div>Main titles, use only once per page.</div>
                     <H600>Text h600</H600>
@@ -65,7 +68,10 @@ export default withApp('UI Framework - Typograpthy', 'viewer', (props) => {
                     <M500>Text m500</M500>
                     <div>Sidebar Items</div>
                     <H400>Text h400</H400>
-                    <div>Deep headings and for highlighting important pieces of information.</div>
+                    <div>
+                        Deep headings and for highlighting important pieces of
+                        information.
+                    </div>
                     <H300>Text h300</H300>
                     <div>Heading up a group of list items.</div>
                     <H200>Text h200</H200>

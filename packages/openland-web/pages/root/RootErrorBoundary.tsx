@@ -6,7 +6,10 @@ import { loadConfig } from 'openland-x-config';
 import { buildConfig } from 'openland-web/config';
 import * as Sentry from '@sentry/browser';
 
-export class RootErrorBoundary extends React.Component<{}, { isError: boolean, code?: number }> {
+export class RootErrorBoundary extends React.Component<
+    {},
+    { isError: boolean; code?: number }
+> {
     constructor(props: {}) {
         super(props);
         this.state = { isError: false };
@@ -35,7 +38,7 @@ export class RootErrorBoundary extends React.Component<{}, { isError: boolean, c
 
     render() {
         if (this.state.isError) {
-            return (<ErrorPage statusCode={this.state.code} />);
+            return <ErrorPage statusCode={this.state.code} />;
         }
         return <>{this.props.children}</>;
     }

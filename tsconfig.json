@@ -1,196 +1,117 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "es5",
-      "es6",
-      "dom",
-      "esnext.asynciterable"
-    ],
-    "sourceMap": true,
-    "allowJs": false,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "rootDir": "packages",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "allowSyntheticDefaultImports": true,
-    "strictPropertyInitialization": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "outDir": "lib/",
-    "baseUrl": "packages",
-    "resolveJsonModule": true,
-    "paths": {
-      "openland-api": [
-        "openland-api"
-      ],
-      "openland-web": [
-        "openland-web"
-      ],
-      "openland-text": [
-        "openland-text"
-      ],
-      "openland-x": [
-        "openland-x"
-      ],
-      "openland-x-routing": [
-        "openland-x-routing"
-      ],
-      "openland-x-config": [
-        "openland-x-config"
-      ],
-      "openland-x-utils": [
-        "openland-x-utils"
-      ],
-      "openland-x-format": [
-        "openland-x-format"
-      ],
-      "openland-x-map": [
-        "openland-x-map"
-      ],
-      "openland-x-charts": [
-        "openland-x-charts"
-      ],
-      "openland-x-modal": [
-        "openland-x-modal"
-      ],
-      "openland-x-forms": [
-        "openland-x-forms"
-      ],
-      "openland-x-layout": [
-        "openland-x-layout"
-      ],
-      "openland-x-permissions": [
-        "openland-x-permissions"
-      ],
-      "openland-x-graphql": [
-        "openland-x-graphql"
-      ],
-      "openland-x-analytics": [
-        "openland-x-analytics"
-      ],
-      "openland-y-store": [
-        "openland-y-store"
-      ],
-      "openland-y-graphql-gen": [
-        "openland-y-graphql-gen"
-      ],
-      "openland-engines": [
-        "openland-engines"
-      ],
-      "openland-y-graphql": [
-        "openland-y-graphql"
-      ],
-      "openland-y-utils": [
-        "openland-y-utils"
-      ],
-      "openland-y-runtime": [
-        "openland-y-runtime"
-      ],
-      "openland-y-runtime-api": [
-        "openland-y-runtime-api"
-      ],
-      "openland-y-runtime-web": [
-        "openland-y-runtime-web"
-      ],
-      "openland-y-runtime-native": [
-        "openland-y-runtime-native"
-      ],
-      "openland-y-runtime-mac": [
-        "openland-y-runtime-mac"
-      ],
-      "openland-mobile": [
-        "openland-mobile"
-      ],
-      "openland-y-forms": [
-        "openland-y-forms"
-      ],
-      "openland-mac": [
-        "openland-mac/src"
-      ],
-      "openland-xp": [
-        "openland-xp"
-      ],
-      "openland-shared": [
-        "openland-shared"
-      ],
-      "react-native-async-view": [
-        "react-native-async-view"
-      ],
-      "react-native-fast-navigation": [
-        "react-native-fast-navigation"
-      ],
-      "react-native-s": [
-        "react-native-s"
-      ],
-      "openland-xs": [
-        "openland-xs"
-      ],
-      "react-native-auth0-s": [
-        "react-native-auth0-s"
-      ]
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "lib": ["es5", "es6", "dom", "esnext.asynciterable"],
+        "sourceMap": true,
+        "allowJs": false,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "rootDir": "packages",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": false,
+        "allowSyntheticDefaultImports": true,
+        "strictPropertyInitialization": true,
+        "typeRoots": ["./node_modules/@types"],
+        "outDir": "lib/",
+        "baseUrl": "packages",
+        "resolveJsonModule": true,
+        "paths": {
+            "openland-api": ["openland-api"],
+            "openland-web": ["openland-web"],
+            "openland-text": ["openland-text"],
+            "openland-x": ["openland-x"],
+            "openland-x-routing": ["openland-x-routing"],
+            "openland-x-config": ["openland-x-config"],
+            "openland-x-utils": ["openland-x-utils"],
+            "openland-x-format": ["openland-x-format"],
+            "openland-x-map": ["openland-x-map"],
+            "openland-x-charts": ["openland-x-charts"],
+            "openland-x-modal": ["openland-x-modal"],
+            "openland-x-forms": ["openland-x-forms"],
+            "openland-x-layout": ["openland-x-layout"],
+            "openland-x-permissions": ["openland-x-permissions"],
+            "openland-x-graphql": ["openland-x-graphql"],
+            "openland-x-analytics": ["openland-x-analytics"],
+            "openland-y-store": ["openland-y-store"],
+            "openland-y-graphql-gen": ["openland-y-graphql-gen"],
+            "openland-engines": ["openland-engines"],
+            "openland-y-graphql": ["openland-y-graphql"],
+            "openland-y-utils": ["openland-y-utils"],
+            "openland-y-runtime": ["openland-y-runtime"],
+            "openland-y-runtime-api": ["openland-y-runtime-api"],
+            "openland-y-runtime-web": ["openland-y-runtime-web"],
+            "openland-y-runtime-native": ["openland-y-runtime-native"],
+            "openland-y-runtime-mac": ["openland-y-runtime-mac"],
+            "openland-mobile": ["openland-mobile"],
+            "openland-y-forms": ["openland-y-forms"],
+            "openland-mac": ["openland-mac/src"],
+            "openland-xp": ["openland-xp"],
+            "openland-shared": ["openland-shared"],
+            "react-native-async-view": ["react-native-async-view"],
+            "react-native-fast-navigation": ["react-native-fast-navigation"],
+            "react-native-s": ["react-native-s"],
+            "openland-xs": ["openland-xs"],
+            "react-native-auth0-s": ["react-native-auth0-s"]
+        },
+        "importHelpers": true
     },
-    "importHelpers": true
-  },
-  "exclude": [
-    "node_modules/**/*",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "packages/openland-web/src/setupTests.ts",
-    "packages/openland-web/src/static",
-    "packages/openland-web/src/less",
-    "**/*.spec.ts"
-  ],
-  "files": [
-    "./packages/openland-web/typings.d.ts",
-    "./packages/openland-mobile/typings.d.ts"
-  ],
-  "include": [
-    "./packages/openland-web",
-    "./packages/openland-api",
-    "./packages/openland-text",
-    "./packages/openland-xp",
-    "./packages/openland-x",
-    "./packages/openland-x-routing",
-    "./packages/openland-x-utils",
-    "./packages/openland-x-format",
-    "./packages/openland-x-map",
-    "./packages/openland-x-charts",
-    "./packages/openland-x-modal",
-    "./packages/openland-y-store",
-    "./packages/openland-x-forms",
-    "./packages/openland-y-forms",
-    "./packages/openland-x-layout",
-    "./packages/openland-x-permissions",
-    "./packages/openland-x-graphql",
-    "./packages/openland-x-analytics",
-    "./packages/openland-x-config",
-    "./packages/openland-engines",
-    "./packages/openland-y-graphql",
-    "./packages/openland-y-utils",
-    "./packages/openland-y-runtime",
-    "./packages/openland-y-runtime-web",
-    "./packages/openland-y-runtime-api",
-    "./packages/openland-mobile",
-    "./packages/openland-y-runtime-native",
-    "./packages/openland-y-runtime-mac",
-    "./packages/openland-mac/src",
-    "./packages/openland-shared",
-    "./packages/openland-xs",
-    "./packages/react-native-async-view",
-    "./packages/react-native-fast-navigation",
-    "./packages/react-native-s",
-    "./packages/react-native-auth0-s"
-  ]
+    "exclude": [
+        "node_modules/**/*",
+        "build",
+        "scripts",
+        "acceptance-tests",
+        "webpack",
+        "jest",
+        "packages/openland-web/src/setupTests.ts",
+        "packages/openland-web/src/static",
+        "packages/openland-web/src/less",
+        "**/*.spec.ts"
+    ],
+    "files": [
+        "./packages/openland-web/typings.d.ts",
+        "./packages/openland-mobile/typings.d.ts"
+    ],
+    "include": [
+        "./packages/openland-web",
+        "./packages/openland-api",
+        "./packages/openland-text",
+        "./packages/openland-xp",
+        "./packages/openland-x",
+        "./packages/openland-x-routing",
+        "./packages/openland-x-utils",
+        "./packages/openland-x-format",
+        "./packages/openland-x-map",
+        "./packages/openland-x-charts",
+        "./packages/openland-x-modal",
+        "./packages/openland-y-store",
+        "./packages/openland-x-forms",
+        "./packages/openland-y-forms",
+        "./packages/openland-x-layout",
+        "./packages/openland-x-permissions",
+        "./packages/openland-x-graphql",
+        "./packages/openland-x-analytics",
+        "./packages/openland-x-config",
+        "./packages/openland-engines",
+        "./packages/openland-y-graphql",
+        "./packages/openland-y-utils",
+        "./packages/openland-y-runtime",
+        "./packages/openland-y-runtime-web",
+        "./packages/openland-y-runtime-api",
+        "./packages/openland-mobile",
+        "./packages/openland-y-runtime-native",
+        "./packages/openland-y-runtime-mac",
+        "./packages/openland-mac/src",
+        "./packages/openland-shared",
+        "./packages/openland-xs",
+        "./packages/react-native-async-view",
+        "./packages/react-native-fast-navigation",
+        "./packages/react-native-s",
+        "./packages/react-native-auth0-s"
+    ]
 }
