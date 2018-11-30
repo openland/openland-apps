@@ -161,7 +161,6 @@ export class XRichTextInput extends React.PureComponent<
     };
 
     onChange = (editorState: EditorState) => {
-        console.log(JSON.stringify(editorState.getCurrentContent(), null, 2));
         const value = toHTML(editorState.getCurrentContent());
 
         this.setState(

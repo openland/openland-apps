@@ -6,7 +6,13 @@ export const htmlMessageToDbFormat = (str: string) => {
     const mentions: any = [];
 
     $('span').each((index, item) => {
-        mentions.push(item.attribs['data-mention-id']);
+        const data = item.children && item.children[0] && item.children[0].data;
+
+        mentions.push({
+            id: item.attribs['data-mention-id'],
+            isYou: item.attribs['data-mention-is-you'] === 'true',
+            name: data && data.slice ? data.slice(1) : '',
+        });
     });
 
     return {
@@ -22,6 +28,8 @@ export const toContentState = (html: any, options?: any) => {
                 return createEntity('mention', 'IMMUTABLE', {
                     mention: {
                         id: node.getAttribute('data-mention-id'),
+                        isYou:
+                            node.getAttribute('data-mention-is-you') === 'true',
                     },
                 });
             }
@@ -35,6 +43,8 @@ export const toHTML = (contentState: any) => {
             if (entity.type === 'mention') {
                 return `<span data-mention-id="${
                     entity.data.mention.id
+                }" data-mention-is-you="${
+                    entity.data.mention.isYou
                 }">${originalText}</span>`;
             }
             return originalText;
