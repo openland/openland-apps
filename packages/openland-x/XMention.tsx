@@ -152,13 +152,6 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
     text: string;
     mentions: MessageFull_mentions[];
 }> {
-    checkIsYou = (mentionName: string) => {
-        const res = this.props.mentions.find(
-            ({ name }: any) => name === mentionName,
-        );
-        return res ? res.isYou : false;
-    };
-
     render() {
         const { text, mentions } = this.props;
 
