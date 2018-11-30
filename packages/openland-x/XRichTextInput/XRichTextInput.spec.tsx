@@ -47,20 +47,20 @@ describe.only('XRichComponent', () => {
         expect(res).toEqual(dbFormat);
     });
 
-    it('db format to react component', () => {
-        expect(
-            renderer
-                .create(
-                    <MessageWithMentionsTextComponent
-                        {...{
-                            ...dbFormat,
-                            mentions: dbFormat.mentions.map(
-                                (mention: any) => mention as any,
-                            ),
-                        }}
-                    />,
-                )
-                .toJSON(),
-        ).toMatchSnapshot();
-    });
+    // it('db format to react component', () => {
+    //     expect(
+    //         renderer
+    //             .create(
+    //                 <MessageWithMentionsTextComponent
+    //                     {...{
+    //                         ...dbFormat,
+    //                         mentions: dbFormat.mentions.map(
+    //                             (mention: any) => mention as any,
+    //                         ),
+    //                     }}
+    //                 />,
+    //             )
+    //             .toJSON(),
+    //     ).toMatchSnapshot();
+    // });
 });
