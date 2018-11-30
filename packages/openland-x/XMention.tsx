@@ -155,14 +155,12 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
     render() {
         const { text, mentions } = this.props;
 
-        const result = getArrayOfPairsTextBeforeMentionAndMention({
-            messageText: text,
-            mentions,
-        });
-
         return (
             <>
-                {result.map(
+                {getArrayOfPairsTextBeforeMentionAndMention({
+                    messageText: text,
+                    mentions,
+                }).map(
                     (
                         {
                             textBeforeMention,
