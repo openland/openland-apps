@@ -32,6 +32,62 @@ type MentionComponentInnerTextProps = {
     inCompose?: boolean;
 };
 
+const MentionComponentInnerText = ({
+    mention,
+    inCompose,
+    children,
+}: {
+    mention: MessageFull_mentions;
+    inCompose?: boolean;
+    children?: any;
+}) => {
+    const paddings = inCompose
+        ? {
+              paddingTop: 1,
+              paddingBottom: 1,
+              paddingLeft: 3,
+              paddingRight: 3,
+          }
+        : {};
+
+    let style;
+
+    if (mention.isYou) {
+        style = {};
+    }
+
+    if (mention.isYou) {
+        style = {
+            ...paddings,
+            backgroundColor: '#fff6e5',
+            color: '#1790ff',
+        };
+    } else {
+        style = {
+            ...paddings,
+            color: '#1790ff',
+        };
+    }
+
+    return <span style={style}>{children}</span>;
+};
+
+export class MentionComponentInner extends React.Component<
+    MentionComponentInnerTextProps
+> {
+    render() {
+        // const { mention, hasPopper } = this.props;
+        return (
+            <MentionComponentInnerText
+                mention={this.props.mention}
+                inCompose={this.props.inCompose}
+            >
+                {this.props.children}
+            </MentionComponentInnerText>
+        );
+    }
+}
+
 export class MessageWithMentionsTextComponent extends React.PureComponent<{
     text: string;
     mentions: MessageFull_mentions[];
@@ -110,62 +166,6 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
                     );
                 })}
             </>
-        );
-    }
-}
-
-const MentionComponentInnerText = ({
-    mention,
-    inCompose,
-    children,
-}: {
-    mention: MessageFull_mentions;
-    inCompose?: boolean;
-    children?: any;
-}) => {
-    const paddings = inCompose
-        ? {
-              paddingTop: 1,
-              paddingBottom: 1,
-              paddingLeft: 3,
-              paddingRight: 3,
-          }
-        : {};
-
-    let style;
-
-    if (mention.isYou) {
-        style = {};
-    }
-
-    if (mention.isYou) {
-        style = {
-            ...paddings,
-            backgroundColor: '#fff6e5',
-            color: '#1790ff',
-        };
-    } else {
-        style = {
-            ...paddings,
-            color: '#1790ff',
-        };
-    }
-
-    return <span style={style}>{children}</span>;
-};
-
-export class MentionComponentInner extends React.Component<
-    MentionComponentInnerTextProps
-> {
-    render() {
-        // const { mention, hasPopper } = this.props;
-        return (
-            <MentionComponentInnerText
-                mention={this.props.mention}
-                inCompose={this.props.inCompose}
-            >
-                {this.props.children}
-            </MentionComponentInnerText>
         );
     }
 }
