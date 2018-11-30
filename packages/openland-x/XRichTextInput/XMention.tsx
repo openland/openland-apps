@@ -55,7 +55,7 @@ const MentionComponentInnerText = ({
         };
     }
 
-    return <span style={style}>{children}</span>;
+    return <span style={style}>{removeEmojiFromText(children)}</span>;
 };
 
 export class MentionComponentInner extends React.Component<
