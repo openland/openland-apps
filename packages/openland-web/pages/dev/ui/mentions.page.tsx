@@ -51,8 +51,6 @@ const mentionsData = [
     },
 ];
 
-const mentionPlugin = createMentionPlugin();
-
 const theme = {
     mention: 'draftJsMentionPlugin__mention__29BEd',
     mentionSuggestions: 'draftJsMentionPlugin__mentionSuggestions__2DWjA',

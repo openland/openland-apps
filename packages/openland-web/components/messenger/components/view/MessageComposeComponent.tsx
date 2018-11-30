@@ -907,17 +907,18 @@ class MessageComposeComponentInner extends React.PureComponent<
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage && forwardMessageId && (
-                            <EditView
-                                message={stateMessage}
-                                title={
-                                    forwardMessageSender !== undefined
-                                        ? forwardMessageSender
-                                        : 'Edit message'
-                                }
-                                onCancel={this.closeEditor}
-                            />
-                        )}
+                        {stateMessage &&
+                            forwardMessageId && (
+                                <EditView
+                                    message={stateMessage}
+                                    title={
+                                        forwardMessageSender !== undefined
+                                            ? forwardMessageSender
+                                            : 'Edit message'
+                                    }
+                                    onCancel={this.closeEditor}
+                                />
+                            )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}

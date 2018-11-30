@@ -11,7 +11,7 @@ import {
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from '../basics/Flex';
 import { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import { toContentState, toHTML } from './XRichTextInput.spec';
+import { toContentState, toHTML } from './conversion';
 import {
     MentionSuggestionsWrapper,
     mentionPlugin,

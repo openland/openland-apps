@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
-import EmojiIcon from './icons/ic-emoji.svg';
+import EmojiIcon from '../icons/ic-emoji.svg';
 
 export const EmojiWrapper = Glamorous.div({
     position: 'absolute',
