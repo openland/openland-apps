@@ -6,7 +6,7 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
-import { MessageWithMentionsTextComponent } from 'openland-x/XMention';
+import { MessageWithMentionsTextComponent } from 'openland-x/XRichTextInput/XMention';
 
 export interface MessageTextComponentProps {
     mentions: MessageFull_mentions[] | null;
