@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { getEmojiRegex } from 'openland-y-utils/getEmojiRegex';
+import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 
 export const removeEmojiFromText = (str: string) => {
-    return str.replace(getEmojiRegex(), '').trim();
+    return str ? str.replace(getEmojiRegex(), '').trim() : '';
 };
 
 const getMentionString = (str: string) => {
@@ -18,59 +19,64 @@ type MentionComponentInnerTextProps = {
     inCompose?: boolean;
 };
 
-const MentionComponentInnerText = ({
-    mention,
-    inCompose,
-    children,
-}: {
+class MentionComponentInnerText extends React.PureComponent<{
     mention: MessageFull_mentions;
     inCompose?: boolean;
     children?: any;
-}) => {
-    const paddings = inCompose
-        ? {
-              paddingTop: 1,
-              paddingBottom: 1,
-              paddingLeft: 3,
-              paddingRight: 3,
-          }
-        : {};
+}> {
+    render() {
+        const { mention, inCompose, children } = this.props;
+        const paddings = inCompose
+            ? {
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 3,
+                  paddingRight: 3,
+              }
+            : {};
 
-    let style;
+        let style;
 
-    if (mention.isYou) {
-        style = {};
+        if (mention.isYou) {
+            style = {};
+        }
+
+        if (mention.isYou) {
+            style = {
+                ...paddings,
+                backgroundColor: '#fff6e5',
+                color: '#1790ff',
+            };
+        } else {
+            style = {
+                ...paddings,
+                color: '#1790ff',
+            };
+        }
+
+        return <span style={style}>{children}</span>;
     }
+}
 
-    if (mention.isYou) {
-        style = {
-            ...paddings,
-            backgroundColor: '#fff6e5',
-            color: '#1790ff',
-        };
-    } else {
-        style = {
-            ...paddings,
-            color: '#1790ff',
-        };
-    }
-
-    return <span style={style}>{removeEmojiFromText(children)}</span>;
-};
-
-export class MentionComponentInner extends React.Component<
+export class MentionComponentInner extends React.PureComponent<
     MentionComponentInnerTextProps
 > {
     render() {
-        // const { mention, hasPopper } = this.props;
-        return (
-            <MentionComponentInnerText
-                mention={this.props.mention}
-                inCompose={this.props.inCompose}
-            >
-                {this.props.children}
-            </MentionComponentInnerText>
-        );
+        const { hasPopper, mention } = this.props;
+        if (hasPopper && mention) {
+            return (
+                <UserPopper
+                    user={mention}
+                    isMe={mention.isYou}
+                    noCardOnMe
+                    startSelected={false}
+                >
+                    <MentionComponentInnerText {...this.props} />
+                </UserPopper>
+            );
+        } else {
+            return <MentionComponentInnerText {...this.props} />;
+        }
     }
 }
 
@@ -142,7 +148,7 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
                                         mention={mention}
                                         hasPopper
                                     >
-                                        {mention.name}
+                                        {removeEmojiFromText(mention.name)}
                                     </MentionComponentInner>
                                 )}
                             </span>
