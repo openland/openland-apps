@@ -19,8 +19,10 @@ export const toContentState = (html: any, options?: any) => {
     return convertFromHTML({
         htmlToEntity: (nodeName: any, node: any, createEntity: any) => {
             if (nodeName === 'span') {
-                return createEntity('MENTION', 'IMMUTABLE', {
-                    'data-mention-id': node.getAttribute('data-mention-id'),
+                return createEntity('mention', 'IMMUTABLE', {
+                    mention: {
+                        id: node.getAttribute('data-mention-id'),
+                    },
                 });
             }
         },
@@ -30,9 +32,9 @@ export const toContentState = (html: any, options?: any) => {
 export const toHTML = (contentState: any) => {
     return convertToHTML({
         entityToHTML: (entity: any, originalText: any) => {
-            if (entity.type === 'MENTION') {
+            if (entity.type === 'mention') {
                 return `<span data-mention-id="${
-                    entity.data['data-mention-id']
+                    entity.data.mention.id
                 }">${originalText}</span>`;
             }
             return originalText;

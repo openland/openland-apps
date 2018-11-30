@@ -68,8 +68,7 @@ type XRichTextInputState = {
 const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
 
 const valueToEditorState = (val: string) => {
-    const nextValue = `<p>${val}</p>`;
-    const contentState = toContentState(nextValue);
+    const contentState = toContentState(val);
 
     return EditorState.moveFocusToEnd(
         EditorState.createWithContent(contentState),
@@ -162,8 +161,8 @@ export class XRichTextInput extends React.PureComponent<
     };
 
     onChange = (editorState: EditorState) => {
-        const html = toHTML(editorState.getCurrentContent());
-        const value = html.slice('<p>'.length).slice(0, '</p>'.length);
+        console.log(JSON.stringify(editorState.getCurrentContent(), null, 2));
+        const value = toHTML(editorState.getCurrentContent());
 
         this.setState(
             {

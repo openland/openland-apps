@@ -192,15 +192,15 @@ export class MessageTextComponent extends React.PureComponent<
             } else {
                 let text = v.text!!;
 
-                if (this.props.mentions && this.props.mentions.length !== 0) {
-                    return (
-                        <MessageWithMentionsTextComponent
-                            key={'text-' + i}
-                            text={text}
-                            mentions={this.props.mentions}
-                        />
-                    );
-                }
+                // if (this.props.mentions && this.props.mentions.length !== 0) {
+                //     return (
+                //         <MessageWithMentionsTextComponent
+                //             key={'text-' + i}
+                //             text={text}
+                //             mentions={this.props.mentions}
+                //         />
+                //     );
+                // }
 
                 if (this.textSticker) {
                     text = text.slice(1, text.length - 1);
