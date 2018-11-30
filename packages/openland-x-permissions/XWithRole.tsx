@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XRoleContext } from './XRoleContext';
-export const XWithRole = (props: { role: string | string[], orgPermission?: string | 'primary', negate?: boolean, children?: any }) => {
+export const XWithRole = (props: { role: string | string[], or?: boolean, orgPermission?: string | 'primary', negate?: boolean, children?: any }) => {
     return (
         <XRoleContext.Consumer>
             {userRoles => {
@@ -16,6 +16,7 @@ export const XWithRole = (props: { role: string | string[], orgPermission?: stri
                         break;
                     }
                 }
+                _hasRole = _hasRole || (props.or !== undefined && props.or);
                 if (props.negate) {
                     if (!_hasRole) {
                         if (React.Children.count(props.children) > 0) {

@@ -46,7 +46,6 @@ interface DialogViewProps {
 const DialogViewInner = (props: DialogViewProps) => {
     let dialog = props.item;
     let isPrivate = props.item.kind === 'PRIVATE';
-
     return (
         <XLink2
             ref={props.handleRef}

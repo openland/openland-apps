@@ -255,7 +255,13 @@ class BlockSwitcherComponent extends React.Component<
 }
 
 class SwitchComponent extends React.Component<
-    { mutation: any; roomId: string; val: boolean; fieldName: string },
+    {
+        mutation: any;
+        roomId: string;
+        val: boolean;
+        fieldName: string;
+        fieldTitle?: string;
+    },
     { val: boolean }
 > {
     constructor(props: any) {
@@ -268,7 +274,7 @@ class SwitchComponent extends React.Component<
             <XMenuItemWrapper>
                 <XVertical>
                     <XCheckbox
-                        label={this.props.fieldName}
+                        label={this.props.fieldTitle || this.props.fieldName}
                         value={this.state.val ? 'featured' : 'unfeatured'}
                         trueValue="featured"
                         onChange={() => {
@@ -294,6 +300,7 @@ export const RoomSetFeatured = withChannelSetFeatured(props => (
         mutation={props.setFeatured}
         val={(props as any).val}
         fieldName={'featured'}
+        fieldTitle={'Featured'}
         roomId={(props as any).roomId}
     />
 )) as React.ComponentType<{ val: boolean; roomId: string }>;
@@ -303,6 +310,7 @@ export const RoomSetHidden = withChannelSetHidden(props => (
         mutation={props.setHidden}
         val={(props as any).val}
         fieldName={'listed'}
+        fieldTitle={'Listed'}
         roomId={(props as any).roomId}
     />
 )) as React.ComponentType<{ val: boolean; roomId: string }>;
@@ -800,8 +808,8 @@ let MessengerComponentLoader = withRoom(
             let title = sharedRoom
                 ? sharedRoom.title
                 : privateRoom
-                    ? privateRoom.user.name
-                    : '';
+                ? privateRoom.user.name
+                : '';
             let titlePath: string | undefined = undefined;
 
             let subtitle = '';
@@ -862,11 +870,11 @@ let MessengerComponentLoader = withRoom(
                                         ? 'organization'
                                         : sharedRoom &&
                                           sharedRoom.kind === 'GROUP'
-                                            ? 'group'
-                                            : sharedRoom &&
-                                              sharedRoom.kind === 'PUBLIC'
-                                                ? 'room'
-                                                : 'colorus'
+                                        ? 'group'
+                                        : sharedRoom &&
+                                          sharedRoom.kind === 'PUBLIC'
+                                        ? 'room'
+                                        : 'colorus'
                                 }
                                 cloudImageUuid={
                                     (sharedRoom && sharedRoom.photo) ||
@@ -880,8 +888,8 @@ let MessengerComponentLoader = withRoom(
                                             ? sharedRoom.organization.id
                                             : sharedRoom.id
                                         : privateRoom
-                                            ? privateRoom.user.id
-                                            : undefined
+                                        ? privateRoom.user.id
+                                        : undefined
                                 }
                             />
                             <XVertical
@@ -913,66 +921,60 @@ let MessengerComponentLoader = withRoom(
                         </XHorizontal>
                     </HeaderLeftContent>
                     <XHorizontal alignItems="center" separator={8}>
-                        {sharedRoom &&
-                            sharedRoom.kind === 'PUBLIC' && (
-                                <XHorizontal separator={8}>
-                                    <XHorizontal
-                                        alignSelf="center"
-                                        alignItems="center"
-                                        separator={12}
-                                    >
-                                        <XWithRole role="feature-non-production">
-                                            <TalkContext.Consumer>
-                                                {ctx =>
-                                                    ctx.cid !==
-                                                        sharedRoom!.id && (
-                                                        <XButton
-                                                            text="Call"
-                                                            onClick={() =>
-                                                                ctx.joinCall(
-                                                                    sharedRoom!
-                                                                        .id,
-                                                                )
-                                                            }
-                                                        />
-                                                    )
-                                                }
-                                            </TalkContext.Consumer>
-                                        </XWithRole>
-                                        <InviteMembersModal
-                                            channelTitle={title}
-                                            roomId={props.data.room!.id}
-                                            target={
-                                                <InviteButton
-                                                    text="Invite"
-                                                    size="small"
-                                                    icon={<PlusIcon />}
-                                                />
+                        {sharedRoom && sharedRoom.kind === 'PUBLIC' && (
+                            <XHorizontal separator={8}>
+                                <XHorizontal
+                                    alignSelf="center"
+                                    alignItems="center"
+                                    separator={12}
+                                >
+                                    <XWithRole role="feature-non-production">
+                                        <TalkContext.Consumer>
+                                            {ctx =>
+                                                ctx.cid !== sharedRoom!.id && (
+                                                    <XButton
+                                                        text="Call"
+                                                        onClick={() =>
+                                                            ctx.joinCall(
+                                                                sharedRoom!.id,
+                                                            )
+                                                        }
+                                                    />
+                                                )
                                             }
-                                        />
-                                    </XHorizontal>
-                                </XHorizontal>
-                            )}
-
-                        {sharedRoom &&
-                            sharedRoom.kind === 'GROUP' && (
-                                <XWithRole role="feature-non-production">
-                                    <TalkContext.Consumer>
-                                        {ctx =>
-                                            ctx.cid !== sharedRoom!.id && (
-                                                <XButton
-                                                    text="Call"
-                                                    onClick={() =>
-                                                        ctx.joinCall(
-                                                            sharedRoom!.id,
-                                                        )
-                                                    }
-                                                />
-                                            )
+                                        </TalkContext.Consumer>
+                                    </XWithRole>
+                                    <InviteMembersModal
+                                        channelTitle={title}
+                                        roomId={props.data.room!.id}
+                                        target={
+                                            <InviteButton
+                                                text="Invite"
+                                                size="small"
+                                                icon={<PlusIcon />}
+                                            />
                                         }
-                                    </TalkContext.Consumer>
-                                </XWithRole>
-                            )}
+                                    />
+                                </XHorizontal>
+                            </XHorizontal>
+                        )}
+
+                        {sharedRoom && sharedRoom.kind === 'GROUP' && (
+                            <XWithRole role="feature-non-production">
+                                <TalkContext.Consumer>
+                                    {ctx =>
+                                        ctx.cid !== sharedRoom!.id && (
+                                            <XButton
+                                                text="Call"
+                                                onClick={() =>
+                                                    ctx.joinCall(sharedRoom!.id)
+                                                }
+                                            />
+                                        )
+                                    }
+                                </TalkContext.Consumer>
+                            </XWithRole>
+                        )}
 
                         {privateRoom && (
                             <XWithRole role="feature-non-production">
@@ -1014,8 +1016,13 @@ let MessengerComponentLoader = withRoom(
                                 placement="bottom-end"
                                 content={
                                     <>
-                                        {(sharedRoom.role === 'ADMIN' ||
-                                            sharedRoom.role === 'OWNER') && (
+                                        <XWithRole
+                                            role="super-admin"
+                                            or={
+                                                sharedRoom.role === 'OWNER' ||
+                                                sharedRoom.role === 'ADMIN'
+                                            }
+                                        >
                                             <XMenuItem
                                                 query={{
                                                     field: 'editChat',
@@ -1024,7 +1031,7 @@ let MessengerComponentLoader = withRoom(
                                             >
                                                 Settings
                                             </XMenuItem>
-                                        )}
+                                        </XWithRole>
                                         <XMenuItem
                                             query={{
                                                 field: 'leaveFromChat',

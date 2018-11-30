@@ -123,8 +123,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 flat={true}
                                 content={
                                     <>
-                                        {(chat.role === 'OWNER' ||
-                                            chat.role === 'ADMIN') && (
+                                        <XWithRole role="super-admin" or={chat.role === 'OWNER' || chat.role === 'ADMIN'}>
                                             <XMenuItem
                                                 query={{
                                                     field: 'editChat',
@@ -133,7 +132,8 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                             >
                                                 Settings
                                             </XMenuItem>
-                                        )}
+                                        </XWithRole>
+
                                         <XMenuItem
                                             query={{
                                                 field: 'leaveFromChat',
@@ -323,7 +323,7 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
     if (members && members.length > 0) {
         let tab: 'requests' | 'members' =
             props.router.query.requests === '1' &&
-            (props.requests || []).length > 0
+                (props.requests || []).length > 0
                 ? 'requests'
                 : 'members';
         return (
@@ -414,7 +414,7 @@ interface RoomGroupProfileInnerProps extends XWithRouter {
 
 class RoomGroupProfileInner extends React.Component<
     RoomGroupProfileInnerProps
-> {
+    > {
     pageTitle: string | undefined = undefined;
 
     constructor(props: RoomGroupProfileInnerProps) {
@@ -481,8 +481,8 @@ const RoomGroupProfileProvider = withRoom(
                 conversationId={(props as any).conversationId}
             />
         ) : (
-            <XLoader loading={true} />
-        );
+                <XLoader loading={true} />
+            );
     }),
 ) as React.ComponentType<{
     variables: { id: string };
@@ -496,10 +496,10 @@ export const RoomProfile = (props: {
     onDirectory?: boolean;
     handlePageTitle?: any;
 }) => (
-    <RoomGroupProfileProvider
-        variables={{ id: props.conversationId }}
-        handlePageTitle={props.handlePageTitle}
-        onDirectory={props.onDirectory}
-        conversationId={props.conversationId}
-    />
-);
+        <RoomGroupProfileProvider
+            variables={{ id: props.conversationId }}
+            handlePageTitle={props.handlePageTitle}
+            onDirectory={props.onDirectory}
+            conversationId={props.conversationId}
+        />
+    );

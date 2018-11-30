@@ -9,7 +9,7 @@ import { XPImage } from 'openland-xp/XPImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
-import { UserQuery } from 'openland-api';
+import { OnlineQuery } from 'openland-api/OnlineQuery';
 
 export type XAvatarSize = 'm-small' | 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;
@@ -355,7 +355,7 @@ const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
             )}
             {props.online === true && <OnlineDot format={props.size} className="online-status-dot" />}
             {(props.style === 'user' && props.objectId && props.online === undefined) && (
-                <Query query={UserQuery.document} variables={{ userId: props.objectId }}>
+                <Query query={OnlineQuery.document} variables={{ userId: props.objectId }} fetchPolicy="network-only">
                     {(data) => {
                         return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
                     }}
