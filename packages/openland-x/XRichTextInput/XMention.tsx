@@ -100,7 +100,7 @@ const getMentionByName = (mentions: any, name: string) => {
 
 type textBeforeMentionAndMentionT = {
     textBeforeMention: string;
-    mention: MessageFull_mentions;
+    mention: MessageFull_mentions | null;
 };
 
 const getArrayOfPairsTextBeforeMentionAndMention = ({
@@ -143,7 +143,9 @@ const getArrayOfPairsTextBeforeMentionAndMention = ({
         });
 
     return splittedTextArray.map((textItem: string, key: number) => {
-        const mention = getMentionByName(mentions, mentionMatchesArray[key]);
+        const mention = mentionMatchesArray[key]
+            ? getMentionByName(mentions, mentionMatchesArray[key])
+            : null;
         return { textBeforeMention: textItem, mention };
     });
 };
@@ -171,12 +173,14 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
                         return (
                             <span key={key}>
                                 {textBeforeMention}
-                                <MentionComponentInner
-                                    mention={mention}
-                                    hasPopper
-                                >
-                                    {mention.name}
-                                </MentionComponentInner>
+                                {mention && (
+                                    <MentionComponentInner
+                                        mention={mention}
+                                        hasPopper
+                                    >
+                                        {mention.name}
+                                    </MentionComponentInner>
+                                )}
                             </span>
                         );
                     },

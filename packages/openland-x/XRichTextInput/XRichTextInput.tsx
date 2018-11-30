@@ -61,11 +61,20 @@ export interface XRichTextInputProps extends XFlexStyles {
 type XRichTextInputState = {
     editorState: EditorState;
     suggestions: Array<MentionT>;
-    html: string;
+    value: string;
     widthOfContainer: number;
 };
 
 const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
+
+const valueToEditorState = (val: string) => {
+    const nextValue = `<p>${val}</p>`;
+    const contentState = toContentState(nextValue);
+
+    return EditorState.moveFocusToEnd(
+        EditorState.createWithContent(contentState),
+    );
+};
 export class XRichTextInput extends React.PureComponent<
     XRichTextInputProps,
     XRichTextInputState
@@ -76,13 +85,13 @@ export class XRichTextInput extends React.PureComponent<
     constructor(props: XRichTextInputProps) {
         super(props);
 
-        const editorState = toHTML(props.value);
+        const editorState = valueToEditorState(props.value);
 
         this.state = {
             widthOfContainer: 200,
             suggestions: this.props.mentionsData || [],
             editorState,
-            html: props.value,
+            value: props.value,
         };
     }
 
@@ -154,15 +163,16 @@ export class XRichTextInput extends React.PureComponent<
 
     onChange = (editorState: EditorState) => {
         const html = toHTML(editorState.getCurrentContent());
+        const value = html.slice('<p>'.length).slice(0, '</p>'.length);
 
         this.setState(
             {
                 editorState,
-                html,
+                value,
             },
             () => {
                 if (this.props.onChange) {
-                    this.props.onChange(html);
+                    this.props.onChange(value);
                 }
             },
         );
@@ -170,12 +180,12 @@ export class XRichTextInput extends React.PureComponent<
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
-        if (this.props.value !== nextValue && this.state.html !== nextValue) {
-            const editorState = toContentState(nextValue);
+        if (this.props.value !== nextValue && this.state.value !== nextValue) {
+            const editorState = valueToEditorState(nextProps.value);
 
             this.setState({
                 editorState: editorState,
-                html: nextValue,
+                value: nextValue,
             });
         }
     }
