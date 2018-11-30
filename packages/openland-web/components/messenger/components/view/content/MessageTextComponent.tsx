@@ -6,10 +6,7 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import emojiData from './data/emoji-data';
-import {
-    MentionComponentInner,
-    removeEmojiFromText,
-} from 'openland-x/XRichTextInput';
+import { MessageWithMentionsTextComponent } from 'openland-x/XMention';
 
 export interface MessageTextComponentProps {
     mentions: MessageFull_mentions[] | null;
@@ -79,102 +76,6 @@ export let isInternalLink = (url: string) => {
 };
 
 const asciiToUnicodeCache = new Map();
-
-function indexes(source: string, find: string) {
-    let result = [];
-    for (let i = 0; i < source.length; ++i) {
-        if (source.substring(i, i + find.length) === find) {
-            result.push(i);
-        }
-    }
-    return result;
-}
-
-const getMentionString = (str: string) => {
-    return `@${removeEmojiFromText(str)}`;
-};
-
-class MessageWithMentionsTextComponent extends React.PureComponent<{
-    text: string;
-    mentions: MessageFull_mentions[];
-}> {
-    checkIsYou = (mentionName: string) => {
-        const res = this.props.mentions.find(
-            ({ name }: any) => name === mentionName,
-        );
-        return res ? res.isYou : false;
-    };
-
-    render() {
-        const { text, mentions } = this.props;
-
-        let splittedTextArray: any = [text];
-        let mentionMatchesMap: any = {};
-        mentions.forEach(({ name }: any) => {
-            // splitting message
-            const arr: any = [];
-            splittedTextArray.forEach((item: any) => {
-                item.split(getMentionString(name)).forEach((splitted: any) =>
-                    arr.push(splitted),
-                );
-            });
-
-            splittedTextArray = arr;
-
-            // matching mentions
-            const result = indexes(text, removeEmojiFromText(name));
-            result.forEach(index => {
-                mentionMatchesMap[index] = removeEmojiFromText(name);
-            });
-        });
-
-        const mentionMatchesArray: any = [];
-
-        Object.keys(mentionMatchesMap)
-            .sort((a: any, b: any) => a - b)
-            .forEach(key => {
-                mentionMatchesArray.push(mentionMatchesMap[key]);
-            });
-
-        const splittedArray: any = [];
-        mentions.forEach(({ name }: any) => {
-            splittedArray.push(text.split(getMentionString(name)));
-        });
-
-        const getMentionByName = (name: string) => {
-            const mention = mentions.find(
-                (item: any) => removeEmojiFromText(item.name) === name,
-            );
-            if (!mention) {
-                throw Error('no mention was found');
-            }
-            return mention;
-        };
-
-        return (
-            <>
-                {splittedTextArray.map((textItem: any, key: any) => {
-                    const mention = mentionMatchesArray[key]
-                        ? getMentionByName(mentionMatchesArray[key])
-                        : null;
-                    return (
-                        <span key={key}>
-                            {textItem}
-                            {mention && (
-                                <MentionComponentInner
-                                    mention={mention}
-                                    hasPopper
-                                >
-                                    {mentionMatchesArray[key]}
-                                </MentionComponentInner>
-                            )}
-                        </span>
-                    );
-                })}
-            </>
-        );
-    }
-}
 
 export class MessageTextComponent extends React.PureComponent<
     MessageTextComponentProps
