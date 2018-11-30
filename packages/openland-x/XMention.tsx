@@ -10,7 +10,7 @@ export const removeEmojiFromText = (str: string) => {
     return str.replace(getEmojiRegex(), '').trim();
 };
 
-function indexes(source: string, find: string) {
+function getAllStartingPositionsOfNameInString(source: string, find: string) {
     let result = [];
     for (let i = 0; i < source.length; ++i) {
         if (source.substring(i, i + find.length) === find) {
@@ -88,6 +88,66 @@ export class MentionComponentInner extends React.Component<
     }
 }
 
+const getMentionByName = (mentions: any, name: string) => {
+    const mention = mentions.find(
+        (item: any) => removeEmojiFromText(item.name) === name,
+    );
+    if (!mention) {
+        throw Error('no mention was found');
+    }
+    return mention;
+};
+
+type textBeforeMentionAndMentionT = {
+    textBeforeMention: string;
+    mention: MessageFull_mentions;
+};
+
+const getArrayOfPairsTextBeforeMentionAndMention = ({
+    messageText,
+    mentions,
+}: {
+    messageText: string;
+    mentions: MessageFull_mentions[];
+}): textBeforeMentionAndMentionT[] => {
+    let splittedTextArray: string[] = [messageText];
+    let mentionMatchesMap: { [key: number]: string } = {};
+    mentions.forEach(({ name }: any) => {
+        // splitting message here we are getting
+        // splittedTextArray splitted by all names matches
+        const arr: any = [];
+        splittedTextArray.forEach((item: any) => {
+            item.split(getMentionString(name)).forEach((splitted: any) =>
+                arr.push(splitted),
+            );
+        });
+
+        splittedTextArray = arr;
+
+        // matching mentions
+        getAllStartingPositionsOfNameInString(
+            messageText,
+            removeEmojiFromText(name),
+        ).forEach((startingPosition: number) => {
+            mentionMatchesMap[startingPosition] = removeEmojiFromText(name);
+        });
+        // mentionMatchesMap contains all
+    });
+
+    const mentionMatchesArray: any = []; // this is array that ordered by mentions names matches
+
+    Object.keys(mentionMatchesMap)
+        .sort((a: any, b: any) => a - b) // error in ts: keys here is actually number
+        .forEach((key: any) => {
+            mentionMatchesArray.push(mentionMatchesMap[key]);
+        });
+
+    return splittedTextArray.map((textItem: string, key: number) => {
+        const mention = getMentionByName(mentions, mentionMatchesArray[key]);
+        return { textBeforeMention: textItem, mention };
+    });
+};
+
 export class MessageWithMentionsTextComponent extends React.PureComponent<{
     text: string;
     mentions: MessageFull_mentions[];
@@ -102,69 +162,34 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
     render() {
         const { text, mentions } = this.props;
 
-        let splittedTextArray: any = [text];
-        let mentionMatchesMap: any = {};
-        mentions.forEach(({ name }: any) => {
-            // splitting message
-            const arr: any = [];
-            splittedTextArray.forEach((item: any) => {
-                item.split(getMentionString(name)).forEach((splitted: any) =>
-                    arr.push(splitted),
-                );
-            });
-
-            splittedTextArray = arr;
-
-            // matching mentions
-            const result = indexes(text, removeEmojiFromText(name));
-            result.forEach(index => {
-                mentionMatchesMap[index] = removeEmojiFromText(name);
-            });
+        const result = getArrayOfPairsTextBeforeMentionAndMention({
+            messageText: text,
+            mentions,
         });
-
-        const mentionMatchesArray: any = [];
-
-        Object.keys(mentionMatchesMap)
-            .sort((a: any, b: any) => a - b)
-            .forEach(key => {
-                mentionMatchesArray.push(mentionMatchesMap[key]);
-            });
-
-        const splittedArray: any = [];
-        mentions.forEach(({ name }: any) => {
-            splittedArray.push(text.split(getMentionString(name)));
-        });
-
-        const getMentionByName = (name: string) => {
-            const mention = mentions.find(
-                (item: any) => removeEmojiFromText(item.name) === name,
-            );
-            if (!mention) {
-                throw Error('no mention was found');
-            }
-            return mention;
-        };
 
         return (
             <>
-                {splittedTextArray.map((textItem: any, key: any) => {
-                    const mention = mentionMatchesArray[key]
-                        ? getMentionByName(mentionMatchesArray[key])
-                        : null;
-                    return (
-                        <span key={key}>
-                            {textItem}
-                            {mention && (
+                {result.map(
+                    (
+                        {
+                            textBeforeMention,
+                            mention,
+                        }: textBeforeMentionAndMentionT,
+                        key: number,
+                    ) => {
+                        return (
+                            <span key={key}>
+                                {textBeforeMention}
                                 <MentionComponentInner
                                     mention={mention}
                                     hasPopper
                                 >
-                                    {mentionMatchesArray[key]}
+                                    {mention.name}
                                 </MentionComponentInner>
-                            )}
-                        </span>
-                    );
-                })}
+                            </span>
+                        );
+                    },
+                )}
             </>
         );
     }
