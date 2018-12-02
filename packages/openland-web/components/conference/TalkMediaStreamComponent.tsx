@@ -43,13 +43,38 @@ export class TalkMediaStreamComponent extends React.Component<
         this.started = true;
         this.peerConnection = new RTCPeerConnection({
             iceServers: [
+                // US
                 {
-                    urls: ['turn:35.185.221.195:3478?transport=udp'],
+                    urls: ['turn:35.237.89.164:443'],
                     username: 'somecalluser',
                     credential: 'samplepassword',
                 },
                 {
-                    urls: ['stun:35.185.221.195:3478?transport=udp'],
+                    urls: ['stun:35.237.89.164:443'],
+                    username: 'somecalluser',
+                    credential: 'samplepassword',
+                },
+
+                // Finland
+                {
+                    urls: ['turn:35.228.255.98:443'],
+                    username: 'somecalluser',
+                    credential: 'samplepassword',
+                },
+                {
+                    urls: ['stun:35.228.255.98:443'],
+                    username: 'somecalluser',
+                    credential: 'samplepassword',
+                },
+
+                // Hongkong
+                {
+                    urls: ['turn:35.241.89.108:443'],
+                    username: 'somecalluser',
+                    credential: 'samplepassword',
+                },
+                {
+                    urls: ['stun:35.241.89.108:443'],
                     username: 'somecalluser',
                     credential: 'samplepassword',
                 },
