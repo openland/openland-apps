@@ -1,4 +1,3 @@
-import '../../../globals';
 import Glamorous from 'glamorous';
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
