@@ -504,7 +504,7 @@ class MessageComponentInner extends React.PureComponent<
                 ) {
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {(message as MessageFull).reply!.map((i, j) => (
+                            {(message as MessageFull).reply!.sort((a, b) => (a.date - b.date)).map((i, j) => (
                                 <MessageReplyComponent
                                     mentions={message.mentions}
                                     sender={i.sender}
