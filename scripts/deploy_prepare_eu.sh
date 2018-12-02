@@ -1,0 +1,1 @@
+gcloud container clusters get-credentials --region=europe-north1 openkube-eu-0
