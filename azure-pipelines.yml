@@ -22,6 +22,6 @@ steps:
     yarn bundle
   displayName: 'Bundle'
 - script: |
-    docker pull node:8.9.4-alpine
+    docker pull node:10.14.0-alpine
     docker build .
   displayName: 'Publish'
