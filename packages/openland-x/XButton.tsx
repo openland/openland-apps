@@ -27,7 +27,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     insaneMode?: boolean;
 }
 
-export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; }>>;
+export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; dataTestId?: string }>>;
 
 let iconsIndentation = styleResolver({
     'large': {
@@ -709,6 +709,7 @@ export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
             breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
             responsive={props.iconResponsive ? true : false}
             insaneMode={props.insaneMode}
+            data-test-id={props.dataTestId}
         >
             <StyledButtonContentWrapper tabIndex={-1} className="button-content">
                 <MainContent className="main-content">

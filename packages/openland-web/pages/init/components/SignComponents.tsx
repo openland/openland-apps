@@ -164,7 +164,7 @@ export const SignContainer = (props: SignContainerProps) => {
                         </FooterText>
                     )}
                     <FooterText>
-                        © {new Date().getFullYear()} Data Makes Perfect Inc.
+                        © {new Date().getFullYear()} Openland
                     </FooterText>
                 </Footer>
             </LeftContainer>
@@ -313,6 +313,7 @@ interface ButtonProps extends XLinkProps {
     primary?: boolean;
     children: any;
     rounded?: boolean;
+    dataTestId?: string;
 }
 
 export const ImgButton = (props: ButtonProps) => {
@@ -566,6 +567,7 @@ export const GoogleButton = (props: {
 }) => {
     return (
         <ImgButton
+            dataTestId="google-button"
             onClick={props.onClick}
             primary={true}
             rounded={props.rounded}
@@ -596,6 +598,7 @@ export const EmailButton = (props: {
 }) => {
     return (
         <ImgButton
+            dataTestId="email-button"
             onClick={props.onClick}
             className="email"
             rounded={props.rounded}

@@ -21,6 +21,7 @@ routes.add('/need_info', '/init/need_info');
 routes.add('/need_info/', '/init/need_info');
 routes.add('/waitlist', '/init/waitlist');
 routes.add('/waitlist/', '/init/waitlist');
+routes.add('/waitlist-test/', '/init/waitlist');
 routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
 routes.add('/createProfile', '/init/createProfile');

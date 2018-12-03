@@ -39,7 +39,7 @@ const LogoWrapper = Glamorous.div({
 const Logo = Glamorous.div<{ width?: number; height?: number }>(props => ({
     width: props.width ? props.width : 45,
     height: props.height ? props.height : 45,
-    backgroundImage: "url('/static/logo-purple.svg')",
+    backgroundImage: "url('/static/logo.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
 }));
@@ -114,9 +114,7 @@ const Container = (props: { children?: any }) => {
         <RootContainer>
             <Header />
             <MainContent>{props.children}</MainContent>
-            <Footer>
-                © {new Date().getFullYear()} Data Makes Perfect Inc.
-            </Footer>
+            <Footer>© {new Date().getFullYear()} Openland</Footer>
         </RootContainer>
     );
 };

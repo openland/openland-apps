@@ -134,7 +134,7 @@ class ChatListContainerWrapper extends React.PureComponent<{
         return (
             <ChatListContainer>
                 <Header alignItems="center" justifyContent="space-between">
-                    <Title>Messages</Title>
+                    <Title data-test-id="messages-title">Messages</Title>
                     <AddButton
                         style="light"
                         path="/mail/new"

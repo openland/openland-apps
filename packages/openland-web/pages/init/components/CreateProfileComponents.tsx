@@ -17,7 +17,7 @@ export const Logo = Glamorous.div<{ width?: number; height?: number }>(
     props => ({
         width: props.width ? props.width : 45,
         height: props.height ? props.height : 45,
-        backgroundImage: "url('/static/logo-purple.svg')",
+        backgroundImage: "url('/static/logo.svg')",
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain',
         position: 'absolute',

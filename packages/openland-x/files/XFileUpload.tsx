@@ -124,6 +124,7 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
         let Component = this.props.component;
         return (
             <Component
+                dataTestId={this.props.dataTestId}
                 file={file || null}
                 isLoading={this.state.isLoading}
                 doClear={this.doClear}

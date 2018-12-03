@@ -56,6 +56,7 @@ export class UserInfoProvider
                 this.props.user.email,
             );
         }
+
         return {
             user: hasUser ? this.props.user : null,
             organization: hasAccount ? this.props.organization : null,

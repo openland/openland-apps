@@ -156,6 +156,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                             field="input.firstName"
                                             size="large"
                                             placeholder="Jane"
+                                            dataTestId="first-name"
                                         />
                                     </XFormField>
                                     <XFormField
@@ -168,6 +169,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                             field="input.lastName"
                                             size="large"
                                             placeholder="Doe"
+                                            dataTestId="last-name"
                                         />
                                     </XFormField>
                                     <XFormField
@@ -181,6 +183,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                             field="input.name"
                                             size="large"
                                             placeholder="Enter organization name"
+                                            dataTestId="organization-name"
                                             tooltipContent={
                                                 <PopupWrapper>
                                                     {
@@ -214,6 +217,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                     <XAvatarUploadStyled
                                         field="input.photoRef"
                                         size="large"
+                                        dataTestId="photo"
                                         initialUrl={
                                             usePrefill
                                                 ? props.data.prefill &&
@@ -230,15 +234,14 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                 style="primary"
                                 text={InitTexts.create_profile.continue}
                                 alignSelf="flex-end"
+                                dataTestId="continue-button"
                             />
                         </XFooter>
                     </XVertical>
                 </XForm>
             </ContentWrapper>
             <Footer>
-                <FooterText>
-                    © {new Date().getFullYear()} Data Makes Perfect Inc.
-                </FooterText>
+                <FooterText>© {new Date().getFullYear()} Openland</FooterText>
             </Footer>
         </RootContainer>
     );

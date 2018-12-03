@@ -33,6 +33,7 @@ export interface XInputBasicProps extends XFlexStyles {
     cleanable?: boolean;
     onFocus?: () => void;
     onBlur?: () => void;
+    dataTestId?: string;
 }
 
 let sizeStyles = styleResolver({
@@ -471,6 +472,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
             onFocus,
             onBlur,
             title,
+            dataTestId,
             ...other
         } = this.props;
 
@@ -532,6 +534,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     onKeyPress={this.handleKey}
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
+                    data-test-id={dataTestId}
                 />
                 {(placeholder && (!v || v === '')) && (
                     <InputPlaceholder

@@ -123,7 +123,6 @@ export const InitTexts = {
         title: 'You have joined the waitlist',
         content: (
             <>
-                <p>Openland is currently in closed beta.</p>
                 <p>
                     We onboard new users in small groups and will let you know
                     when the system is ready for you.

@@ -171,9 +171,7 @@ const CreateProfileForm = withProfileCreate(props => {
                     </FooterLink>
                     .
                 </FooterText>
-                <FooterText>
-                    © {new Date().getFullYear()} Data Makes Perfect Inc.
-                </FooterText>
+                <FooterText>© {new Date().getFullYear()} Openland</FooterText>
             </Footer>
         </RootContainer>
     );

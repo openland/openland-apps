@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 
-export type XLinkProps = NavigableParentProps<{ className?: string }>;
+export type XLinkProps = NavigableParentProps<{
+    className?: string;
+    
+}>;
 
-export const XLink = makeNavigable<{ className?: string }>((props) => {
+export const XLink = makeNavigable<{ className?: string, dataTestId?: string; }>(props => {
     let className = props.className ? props.className : undefined;
     if (props.active) {
         if (className) {
@@ -14,7 +17,8 @@ export const XLink = makeNavigable<{ className?: string }>((props) => {
     }
     return (
         <a
-            style={{cursor: 'pointer'}}
+            data-test-id={props.dataTestId}
+            style={{ cursor: 'pointer' }}
             href={props.href}
             target={props.hrefTarget}
             onClick={props.onClick}

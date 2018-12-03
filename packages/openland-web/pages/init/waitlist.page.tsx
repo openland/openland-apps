@@ -70,11 +70,17 @@ export default withAppBase('Waitlist', props => {
             <XTrack event="View Waitlist">
                 <MessagePage hideLegalText={true}>
                     <Img
-                        src="/static/img/img-moreinfo.png"
-                        srcSet="/static/img/img-moreinfo@2x.png 2x"
+                        src="/static/img/artwork-copy.png"
+                        srcSet="/static/img/artwork-copy@2x.png 2x"
                     />
                     <MessagePageContent title={InitTexts.waitlist.title}>
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
+                        <MailText>
+                            Questions?{' '}
+                            <a href="mailto:hello@openland.com">
+                                hello@openland.com
+                            </a>
+                        </MailText>
                         <ButtonGroup>
                             <XButton
                                 path="/auth/logout"
@@ -84,12 +90,6 @@ export default withAppBase('Waitlist', props => {
                                 flexGrow={1}
                             />
                         </ButtonGroup>
-                        <MailText>
-                            Questions?{' '}
-                            <a href="mailto:hello@openland.com">
-                                hello@openland.com
-                            </a>
-                        </MailText>
                     </MessagePageContent>
                 </MessagePage>
             </XTrack>
