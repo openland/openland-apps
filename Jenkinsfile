@@ -1,9 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('error') {
+    stage('Build') {
       steps {
         sh 'rm yarn.lock && yarn install'
+        sh 'yarn bundle'
       }
     }
   }
