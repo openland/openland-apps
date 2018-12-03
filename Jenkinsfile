@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'rm yarn.lock && yarn install'
+        sh 'yarn install'
         sh 'yarn bundle'
       }
     }
