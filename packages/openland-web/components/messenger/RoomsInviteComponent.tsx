@@ -338,14 +338,16 @@ export class RoomsInviteComponent extends React.Component<
                         <>
                             {(room.membership === 'NONE' ||
                                 room.membership === 'KICKED' ||
-                                (room.membership === 'LEFT' &&
-                                    !this.props.inviteLink)) && (
-                                <JoinButton
-                                    channelId={room.id!}
-                                    refetchVars={{ conversationId: room.id! }}
-                                    text="Request Invite"
-                                />
-                            )}
+                                room.membership === 'LEFT') &&
+                                !this.props.inviteLink && (
+                                    <JoinButton
+                                        channelId={room.id!}
+                                        refetchVars={{
+                                            conversationId: room.id!,
+                                        }}
+                                        text="Request Invite"
+                                    />
+                                )}
                             {this.props.inviteLink && (
                                 <JoinLinkButton
                                     invite={this.props.inviteLink}
