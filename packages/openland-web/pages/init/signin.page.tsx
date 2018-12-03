@@ -73,7 +73,7 @@ class SignInComponent extends React.Component<
                 if (error) {
                     this.setState({
                         emailSending: false,
-                        emailError: error.description!!,
+                        emailError: error.errorDescription!!,
                     });
                 } else {
                     this.setState({ emailSending: false, emailSent: true });
@@ -199,7 +199,7 @@ class SignInComponent extends React.Component<
                 if (error) {
                     this.setState({
                         codeSending: false,
-                        codeError: error.description!!,
+                        codeError: error.errorDescription!!,
                     });
                 } else {
                     // Ignore. Should be redirect to completion page.
