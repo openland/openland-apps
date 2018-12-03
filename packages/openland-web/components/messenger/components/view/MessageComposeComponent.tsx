@@ -551,8 +551,8 @@ class MessageComposeComponentInner extends React.PureComponent<
             this.props.replyMessage({
                 variables: {
                     roomId: this.props.conversationId,
-                    message:  htmlMessageToDbFormat(message).text,
-                    // mentions: replyMentions,
+                    message: message,
+                    mentions: replyMentions,
                     replyMessages: messages,
                 },
             });
