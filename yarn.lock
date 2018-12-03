@@ -2022,6 +2022,11 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.1.tgz#5c85d662f76fa1d34575766c5dcd6615abcd30d8"
   integrity sha512-FZdkNBDqBRHKQ2MEbSC17xnPFOhZxeJ2YGSfr2BKf3sujG49Qe3bB+rGCwQfIaA7WHnGeGkSijX4FuBCdrzW/g==
 
+"@zeit/ncc@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@zeit/ncc/-/ncc-0.3.0.tgz#cd7d26ef65e6dc7758e2e4dbe191b8205347d34d"
+  integrity sha512-Bfv4EyjrvMPy1s5dxFTkKt96fBFBrx8QnQpASZZy/0yIpbBpafOkTJ4tq1QnGeHWGHoLFbIRIFN6+ZttL7gFJg==
+
 "@zeit/next-bundle-analyzer@0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@zeit/next-bundle-analyzer/-/next-bundle-analyzer-0.1.2.tgz#356e3b695a8d7d691a857d11e9ff410058b8248f"
