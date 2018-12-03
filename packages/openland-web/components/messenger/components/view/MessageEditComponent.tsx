@@ -9,7 +9,6 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { MessageFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { htmlMessageToDbFormat } from 'openland-x/XRichTextInput/conversion';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -126,7 +125,7 @@ const EditMessageInline = withEditMessage(props => {
         <XForm
             defaultAction={async data => {
                 await props.editMessage({
-                    variables: { messageId: id, message: htmlMessageToDbFormat(data.message).text },
+                    variables: { messageId: id, message: data.message },
                 });
                 (props as any).onClose();
             }}
