@@ -16,11 +16,11 @@ steps:
     yarn install
   displayName: 'Install'
 - script: |
+    yarn test
+  displayName: 'Test'  
+- script: |
     yarn bundle
   displayName: 'Bundle'
 - script: |
-    yarn test
-  displayName: 'Test'
-- script: |
-    docker -f Docker.runner .
+    docker build -f Docker.runner .
   displayName: 'Publish'
