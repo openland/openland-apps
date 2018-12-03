@@ -23,8 +23,8 @@ const SmartHead = (props: { og?: Partial<OpenGraphObject>, url?: string }) => {
 
     return (
         <Head>
-            <title key="page_title">{og.title || DEFAULT_OG.title}</title>
-            <meta key="og_url" property="og:url" content={props.url || ''} />
+            <title key="page_title">{og.title}</title>
+            <meta key="og_url" property="og:url" content={props.url || 'https://app.openland.com/'} />
             {og.title && <meta key="og_title" property="og:title" content={og.title} />}
             {og.description && <meta key="og_description" property="og:description" content={og.description} />}
             {og.image && <meta key="og_img" property="og:image" content={og.image} />}
