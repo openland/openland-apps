@@ -7,6 +7,7 @@ pipeline {
           steps {
             sh 'yarn install'
             sh 'yarn bundle'
+            sh 'sudo docker build -f Dockerfile.runner'
           }
         }
         stage('Test') {
