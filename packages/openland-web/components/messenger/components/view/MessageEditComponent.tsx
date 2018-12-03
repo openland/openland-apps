@@ -3,10 +3,7 @@ import Glamorous from 'glamorous';
 import { withEditMessage } from '../../../../api/withMessageState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import {
-    XRichTextInput,
-    XRichTextInputProps,
-} from 'openland-x/XRichTextInput/XRichTextInput';
+import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { MessageFull } from 'openland-api/Types';

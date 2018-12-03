@@ -1,12 +1,17 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
-import { MentionEntry } from 'openland-x/XRichTextInput/XMentionSuggestions';
-import createMentionPlugin from 'draft-js-mention-plugin';
+import { MentionEntry } from 'openland-x/XRichTextInput';
+import createMentionPlugin, {
+    defaultSuggestionsFilter,
+} from 'draft-js-mention-plugin';
+import { EditorState } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
 
 const mentionsData = [
     {
@@ -50,6 +55,58 @@ const mentionsData = [
     },
 ];
 
+const mentionPlugin = createMentionPlugin();
+const { MentionSuggestions } = mentionPlugin;
+const plugins = [mentionPlugin];
+
+// class SimpleMentionEditor extends React.Component<any, any> {
+//     editor: any;
+//     state = {
+//         editorState: EditorState.createEmpty(),
+//         suggestions: mentions,
+//     };
+
+//     onChange = (editorState: any) => {
+//         this.setState({
+//             editorState,
+//         });
+//     };
+
+//     onSearchChange = ({ value }: any) => {
+//         this.setState({
+//             suggestions: defaultSuggestionsFilter(value, mentions),
+//         });
+//     };
+
+//     onAddMention = () => {
+//         // get the mention object selected
+//     };
+
+//     focus = () => {
+//         this.editor.focus();
+//     };
+
+//     render() {
+//         return (
+//             <div onClick={this.focus}>
+//                 <Editor
+//                     editorState={this.state.editorState}
+//                     onChange={this.onChange}
+//                     plugins={plugins}
+//                     ref={(element: any) => {
+//                         this.editor = element;
+//                     }}
+//                 />
+//                 <MentionSuggestions
+//                     onSearchChange={this.onSearchChange}
+//                     suggestions={this.state.suggestions}
+//                     onAddMention={this.onAddMention}
+//                 />
+//             </div>
+//         );
+//     }
+// }
+
 const theme = {
     mention: 'draftJsMentionPlugin__mention__29BEd',
     mentionSuggestions: 'draftJsMentionPlugin__mentionSuggestions__2DWjA',
@@ -79,6 +136,7 @@ export default withApp('UI Framework - Mentions', 'viewer', props => {
                             theme={theme}
                         />
                     </XHorizontal>
+                    {/* <SimpleMentionEditor /> */}
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

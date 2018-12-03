@@ -7,7 +7,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTitle } from 'openland-x/XTitle';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XRichTextInput } from 'openland-x/XRichTextInput/XRichTextInput';
+import { XRichTextInput } from 'openland-x/XRichTextInput';
 
 export default withApp('UI Framework - Inputs', 'viewer', props => {
     return (

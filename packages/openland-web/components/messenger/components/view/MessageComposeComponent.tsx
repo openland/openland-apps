@@ -4,8 +4,7 @@ import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { removeEmojiFromText } from 'openland-x/XRichTextInput/XMention';
-import { XRichTextInput } from 'openland-x/XRichTextInput/XRichTextInput';
+import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
@@ -29,6 +28,7 @@ import {
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
+import { withOrganization } from '../../../../api/withOrganizationSimple';
 import { MessageFull } from 'openland-api/Types';
 import {
     ReplyMessageVariables,
@@ -40,7 +40,6 @@ import {
     RoomMembers_members,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { htmlMessageToDbFormat } from 'openland-x/XRichTextInput/conversion';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -489,11 +488,11 @@ class MessageComposeComponentInner extends React.PureComponent<
             forwardMessageId,
         } = this.state as MessageComposeComponentInnerState;
 
-        const { text: plainText, mentions } = htmlMessageToDbFormat(message);
-
-        if (plainText.trim().length > 0) {
-            let msg = plainText.trim();
+        if (message.trim().length > 0) {
+            let msg = message.trim();
             if (this.props.onSend && !forwardMessageId) {
+                let mentions = this.getMentions(msg);
+
                 this.props.onSend(msg, mentions);
                 this.setState({
                     beDrafted: false,
@@ -908,17 +907,18 @@ class MessageComposeComponentInner extends React.PureComponent<
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage && forwardMessageId && (
-                            <EditView
-                                message={stateMessage}
-                                title={
-                                    forwardMessageSender !== undefined
-                                        ? forwardMessageSender
-                                        : 'Edit message'
-                                }
-                                onCancel={this.closeEditor}
-                            />
-                        )}
+                        {stateMessage &&
+                            forwardMessageId && (
+                                <EditView
+                                    message={stateMessage}
+                                    title={
+                                        forwardMessageSender !== undefined
+                                            ? forwardMessageSender
+                                            : 'Edit message'
+                                    }
+                                    onCancel={this.closeEditor}
+                                />
+                            )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}
