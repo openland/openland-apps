@@ -22,5 +22,5 @@ steps:
     yarn bundle
   displayName: 'Bundle'
 - script: |
-    docker build -f Docker.runner .
+    docker build .
   displayName: 'Publish'
