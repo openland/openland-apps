@@ -11,6 +11,7 @@ module.exports = {
         'json',
         'node'
     ],
+    testResultsProcessor: 'jest-teamcity-reporter',
     testRegex: '.*\\.spec\\.tsx?$',
     testPathIgnorePatterns: ['/node_modules/'],
     coverageDirectory: 'coverage',
