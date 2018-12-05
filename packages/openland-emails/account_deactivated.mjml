@@ -3,10 +3,10 @@
         <mj-title>Organization account deactivated</mj-title>
         <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
+    <mj-body>
         <mj-include path="./includes/header.mjml" />
-        <mj-section>
-            <mj-column>
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
                     Organization deactivated
                 </mj-text>
