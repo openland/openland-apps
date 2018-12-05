@@ -40,7 +40,7 @@ export class NotificationsEngine {
             if (msg.message) {
                 AppNotifications.displayNotification({
                     title: 'New Message',
-                    body: msg.sender.name + ': ' + msg.message,
+                    body: msg.sender.name + (!privateRoom ? '@' + sharedRoom!.title : '') + ': ' + msg.message,
                     path: '/mail/' + cid,
                     image: msg.sender.picture,
                     id: doSimpleHash(cid).toString(),
@@ -48,7 +48,7 @@ export class NotificationsEngine {
             } else {
                 AppNotifications.displayNotification({
                     title: 'New Message',
-                    body: msg.sender.name + ': <file>',
+                    body: msg.sender.name + (!privateRoom ? '@' + sharedRoom!.title : '') + ': <file>',
                     path: '/mail/' + conversationId,
                     image: msg.sender.picture,
                     id: doSimpleHash(cid).toString(),
