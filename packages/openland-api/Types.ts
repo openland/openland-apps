@@ -712,6 +712,32 @@ export interface MessageUnsetReactionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: SendPostMessage
+// ====================================================
+
+export interface SendPostMessage_sendPostMessage {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
+export interface SendPostMessage {
+  /**
+   * Message Posts
+   */
+  sendPostMessage: SendPostMessage_sendPostMessage;
+}
+
+export interface SendPostMessageVariables {
+  conversationId: string;
+  title?: string | null;
+  text: string;
+  attachments?: string[] | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SaveDraftMessage
 // ====================================================
 

@@ -252,7 +252,10 @@ class MessagesComponent
         return (
             <ConversationContainer>
                 {this.state.hideChat && (
-                    <CreatePostComponent handleHideChat={this.handleHideChat} />
+                    <CreatePostComponent
+                        handleHideChat={this.handleHideChat}
+                        conversationId={this.props.conversationId}
+                    />
                 )}
                 {!this.state.hideChat && (
                     <>

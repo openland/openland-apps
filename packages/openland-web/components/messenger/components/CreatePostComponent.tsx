@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
+import { MutationFunc } from 'react-apollo';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -11,6 +12,8 @@ import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from './view/content/MessageUploadComponent';
 import { niceBytes } from './view/content/MessageFileComponent';
+import { withSendPostMessage } from '../../../api/withSendPostMessage';
+import { SendPostMessage, SendPostMessageVariables } from 'openland-api/Types';
 import CloseIcon from './icons/ic-close.svg';
 import PostIcon from './icons/ic-attach-post.svg';
 import PhotoIcon from './icons/ic-photo-2.svg';
@@ -73,7 +76,6 @@ const PostText = Glamorous(XVertical)({
         minHeight: '100%',
         flexShrink: 0,
         fontSize: 14,
-        fontWeight: 600,
         border: 'none',
         lineHeight: 1.57,
         resize: 'none',
@@ -247,6 +249,8 @@ const DropAreaSubtitle = Glamorous.div({
 
 interface CreatePostComponentProps {
     handleHideChat: (hide: boolean) => void;
+    conversationId: string;
+    sendPost: MutationFunc<SendPostMessage, Partial<SendPostMessageVariables>>
 }
 
 interface File {
@@ -257,6 +261,8 @@ interface File {
 }
 
 interface CreatePostComponentState {
+    title: string;
+    text: string;
     dragOn: boolean;
     dragUnder: boolean;
     uploadProgress: number | null;
@@ -264,17 +270,31 @@ interface CreatePostComponentState {
     cover: File | null
 }
 
-export class CreatePostComponent extends React.Component<CreatePostComponentProps, CreatePostComponentState> {
+export class CreatePostRoot extends React.Component<CreatePostComponentProps, CreatePostComponentState> {
     constructor(props: CreatePostComponentProps) {
         super(props);
 
         this.state = {
+            title: '',
+            text: '',
             dragOn: false,
             dragUnder: false,
             uploadProgress: null,
             files: null,
             cover: null
         }
+    }
+
+    private titleChange = (src: string) => {
+        this.setState({
+            title: src
+        })
+    }
+
+    private textChange = (src: string) => {
+        this.setState({
+            text: src
+        })
     }
 
     private fileSaver = (file: File | null) => {
@@ -421,6 +441,28 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         });
     };
 
+    private sendPost = () => {
+        const { props } = this;
+        const { files, title, text } = this.state;
+
+        let attachments: string[] | null = null;
+
+        if (files) {
+            attachments = [...files].map(i => i.uuid);
+        }
+
+        props.sendPost({
+            variables: {
+                conversationId: props.conversationId,
+                title: title,
+                text: text,
+                attachments: attachments
+            }
+        });
+
+        props.handleHideChat(false);
+    }
+
     componentDidMount() {
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -451,10 +493,10 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
                                 <PostTitle>
-                                    <XInput placeholder="Title" />
+                                    <XInput placeholder="Title" onChange={this.titleChange} />
                                 </PostTitle>
                                 <PostText flexGrow={1}>
-                                    <XTextArea placeholder="Write your post here. You can share an opportunity, ask for help, or describe an offer." />
+                                    <XTextArea placeholder="Write your post here. You can share an opportunity, ask for help, or describe an offer." onChange={this.textChange} />
                                 </PostText>
                             </XVertical>
                             {cover && (
@@ -525,6 +567,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                         <XButton
                             text="Send"
                             style="primary"
+                            onClick={this.sendPost}
                         />
                     </XHorizontal>
                 </FooterWrapper>
@@ -532,3 +575,11 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         );
     }
 }
+
+export const CreatePostComponent = withSendPostMessage(props => (
+    <CreatePostRoot
+        {...props}
+        handleHideChat={(props as any).handleHideChat}
+        conversationId={(props as any).conversationId}
+    />
+)) as React.ComponentType<{ handleHideChat: (hide: boolean) => void, conversationId: string }>
