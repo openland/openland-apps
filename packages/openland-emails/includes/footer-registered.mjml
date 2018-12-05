@@ -1,0 +1,20 @@
+<mj-section mj-class="wrapper">
+    <mj-column mj-class="container">
+        <mj-divider mj-class="footer-divider"></mj-divider>
+    </mj-column>
+</mj-section>
+
+<mj-section mj-class="footer">
+    <mj-column mj-class="footer-col">
+        <mj-text mj-class="footer-text-links">
+            <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
+                Email settings
+            </a>
+            <span style="display: inline-block; vertical-align: top; font-size: 10px; line-height: 20px; color: rgba(23, 144, 255, 0.5); padding-left: 4px; padding-right: 4px;">•</span>
+            <a href="https://app.openland.com/mail/61gk9KRrl9ComJkvYnvdcddr4o" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
+                Support
+            </a>
+        </mj-text>
+    </mj-column>
+    <mj-include path="./footer-apps.mjml" />
+</mj-section>

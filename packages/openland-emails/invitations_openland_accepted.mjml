@@ -1,21 +1,21 @@
 <mjml>
     <mj-head>
         <mj-title>{{firstName}} {{lastName}} has accepted your invitation</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
                     Invitation accepted
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to join Openland. Happy chatting!
+                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to join <strong>Openland</strong>. Happy chatting!
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">Message {{firstName}}</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/footer-registered.mjml" />
     </mj-body>
 </mjml>

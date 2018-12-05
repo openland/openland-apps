@@ -1,27 +1,24 @@
 <mjml>
     <mj-head>
         <mj-title>You’ve got a new message</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header-user.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
                     You’ve got a new message
                 </mj-text>
-
-                <mj-raw>
-                </mj-raw>
-                    <mj-text mj-class="text">
-                        There's 1 new message in your inbox. Go to Openland Messenger to see it now.
-                    </mj-text>
-                <mj-raw>
-                </mj-raw>
+                <mj-text mj-class="text">
+                    You have a message from <strong>{{firstName}} {{lastName}}</strong>.
+                    <br />
+                    Visit Openland to see it now.
+                </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/mail">View message</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/install-app.mjml" />
     </mj-body>
 </mjml>

@@ -1,0 +1,194 @@
+<mj-attributes>
+    <!-- Default styles -->
+
+    <mj-all
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'" />
+
+    <mj-body
+        background-color="#ffffff"
+        width="auto" />
+
+    <mj-section
+        padding-top="0"
+        padding-bottom="0" />
+
+    <mj-image
+        padding-top="0"
+        padding-bottom="0" />
+
+    <mj-text
+        padding-top="0"
+        padding-bottom="0" />
+
+    <!-- Grid styles -->
+
+    <mj-class
+        name="wrapper"
+
+        text-align="left" />
+
+    <mj-class
+        name="container"
+
+        width="548px" />
+
+    <!-- Custom styles -->
+
+    <mj-class
+        name="header"
+
+        text-align="left"
+        padding-top="60px"
+        padding-bottom="45px" />
+
+    <mj-class
+        name="header-raw"
+
+        text-align="left"
+        padding-top="60px"
+        padding-left="25px"
+        padding-bottom="45px" />
+
+    <mj-class
+        name="logo"
+
+        align="left"
+        width="115px"
+        height="33px" />
+
+    <mj-class
+        name="title"
+
+        font-size="29px"
+        line-height="32px"
+        font-weight="600"
+        padding-top="0"
+        padding-bottom="24px"
+        color="#000000" />
+
+    <mj-class
+        name="title-small"
+
+        font-size="20px"
+        line-height="24px"
+        font-weight="600"
+        padding-top="0"
+        padding-bottom="12px"
+        color="#000000" />
+
+    <mj-class
+        name="text"
+
+        padding-top="0"
+        padding-bottom="12px"
+        font-size="16px"
+        line-height="26px"
+        color="#000000" />
+
+    <mj-class
+        name="text-quote"
+
+        padding-top="4px"
+        padding-bottom="16px"
+        font-size="16px"
+        line-height="26px"
+        color="#000000" />
+
+    <mj-class
+        name="text-divider"
+
+        border-width="1px"
+        border-color="rgba(216, 216, 216, 0.46)"
+        padding-top="20px"
+        padding-bottom="32px" />
+
+    <mj-class
+        name="text-code"
+
+        padding-top="4px"
+        padding-bottom="16px"
+        font-size="24px"
+        line-height="26px"
+        font-weight="600"
+        color="#000000" />
+
+    <mj-class
+        name="button"
+
+        background-color="#1790ff"
+        border-radius="20px"
+        align="left"
+        font-size="15px"
+        line-height="20px"
+        font-weight="600"
+        inner-padding="10px 20px"
+        padding-top="20px"
+        padding-bottom="0" />
+
+    <mj-class
+        name="button-small"
+
+        background-color="#1790ff"
+        border-radius="20px"
+        align="left"
+        font-size="13px"
+        line-height="16px"
+        font-weight="600"
+        inner-padding="8px 16px"
+        padding-top="12px"
+        padding-bottom="0" />
+
+    <mj-class
+        name="footer"
+
+        text-align="left"
+        padding-top="0"
+        padding-bottom="60px" />
+
+    <mj-class
+        name="footer-divider"
+
+        border-width="1px"
+        border-color="rgba(216, 216, 216, 0.46)"
+        padding-top="46px"
+        padding-bottom="17px" />
+
+    <mj-class
+        name="footer-col"
+
+        width="274px" />
+
+    <mj-class
+        name="footer-text"
+
+        padding-top="0"
+        padding-bottom="0"
+        font-size="13px"
+        line-height="20px"
+        color="rgba(0, 0, 0, 0.6)" />
+
+    <mj-class
+        name="footer-text-right"
+
+        padding-top="0"
+        padding-bottom="0"
+        align="right"
+        font-size="0"
+        line-height="0" />
+
+    <mj-class
+        name="footer-text-links"
+
+        padding-top="0"
+        padding-bottom="0"
+        font-size="0"
+        line-height="0" />
+
+    <mj-class
+        name="install-apps"
+
+        text-align="left"
+        padding-top="46px"
+        padding-bottom="60px" />
+
+</mj-attributes>

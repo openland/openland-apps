@@ -1,21 +1,21 @@
 <mjml>
     <mj-head>
         <mj-title>Welcome to Openland!</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    Welcome, {{userFirstName}}
+                    Welcome, {{firstName}} {{lastName}} 🎉
                 </mj-text>
                 <mj-text mj-class="text">
-                    {{userFirstName}}]We are excited to have you on board! At Openland you can seek and share advice, discover new opportunities, and collaborate with other organizations.
+                    We are excited to have you on board! Now you can use Openland to seek and share advice, discover new opportunities, and collaborate with other organizations.
                 </mj-text>
                 <mj-button mj-class="button" href="http://app.openland.com/directory">Start exploring</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/footer-registered.mjml" />
     </mj-body>
 </mjml>

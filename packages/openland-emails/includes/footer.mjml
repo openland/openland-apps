@@ -1,0 +1,14 @@
+<mj-section mj-class="wrapper">
+    <mj-column mj-class="container">
+        <mj-divider mj-class="footer-divider"></mj-divider>
+    </mj-column>
+</mj-section>
+
+<mj-section mj-class="footer">
+    <mj-column mj-class="footer-col">
+        <mj-text mj-class="footer-text">
+            Need help? Just reply.
+        </mj-text>
+    </mj-column>
+    <mj-include path="./footer-apps.mjml" />
+</mj-section>

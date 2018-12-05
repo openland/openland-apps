@@ -1,22 +1,27 @@
 <mjml>
     <mj-head>
-        <mj-title>Organization account activated</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-title>Openland account activated</mj-title>
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    Organization activated
+                    Welcome to Openland 🎉
                 </mj-text>
                 <mj-text mj-class="text">
-                    Good news! The account of <strong>{{organizationName}}</strong> was activated by Openland staff.
+                    Good news! Your account is activated by Openland staff. Now you can use Openland to seek and share advice, discover new opportunities, and collaborate with other organizations.
+                </mj-text>
+                <mj-text mj-class="text">
+                    Full name: <strong>{{firstName}} {{lastName}}</strong>
+                    <br />
+                    Organization: <strong>{{organizationName}}</strong>
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/footer-registered.mjml" />
     </mj-body>
 </mjml>

@@ -1,35 +1,34 @@
 <mjml>
     <mj-head>
         <mj-title>Activation code for Openland: {{code}}</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    Activate account with a click
+                    Your activation code
                 </mj-text>
-
-                <mj-raw>
-                    {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
-                </mj-raw>
-                    <mj-text mj-class="text">
-                        Thank you for signing up for Openland!
-                        Click the button below to activate your account.
-                    </mj-text>
-                    <mj-button mj-class="button" href="{{link}}">Activate account</mj-button>
-                    <mj-text mj-class="text">
-                        Activate account with the code
-                        You can also activate the account by using the following code on your signup page.
-                        Activation code: <strong>{{code}}</strong>
-                    </mj-text>
-                <mj-raw>
-                    {% elsif send == 'code' %}
-                    {% endif %}
-                </mj-raw>
+                <mj-text mj-class="text">
+                    To activate your account, use the following code on your signup page.
+                </mj-text>
+                <mj-text mj-class="text-code">
+                    {{code}}
+                </mj-text>
+                <mj-text mj-class="text">
+                    Don’t share this activation code with anyone. If you didn't request it, simply ignore this email.
+                </mj-text>
+                <mj-divider mj-class="text-divider"></mj-divider>
+                <mj-text mj-class="title-small">
+                    Magic button
+                </mj-text>
+                <mj-text mj-class="text">
+                    You can also activate your account using the magic button below.
+                </mj-text>
+                <mj-button mj-class="button-small" href="{{link}}">Activate account</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer.mjml" />
+        <mj-include path="./includes/footer.mjml" />
     </mj-body>
 </mjml>

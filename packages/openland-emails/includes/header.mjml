@@ -1,0 +1,5 @@
+<mj-section mj-class="header">
+    <mj-column mj-class="container">
+        <mj-image mj-class="logo" src="https://openland.com/shared/email/logo-unicorn@2x.png" />
+    </mj-column>
+</mj-section>
