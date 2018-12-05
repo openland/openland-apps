@@ -9,16 +9,41 @@
         width="auto" />
 
     <mj-section
+        full-width="full-width"
         padding-top="0"
-        padding-bottom="0" />
+        padding-bottom="0"
+        padding-left="0"
+        padding-right="0" />
 
     <mj-image
         padding-top="0"
-        padding-bottom="0" />
+        padding-bottom="0"
+        padding-left="0"
+        padding-right="0" />
 
     <mj-text
         padding-top="0"
-        padding-bottom="0" />
+        padding-bottom="0"
+        padding-left="0"
+        padding-right="0" />
+
+    <mj-divider
+        padding-left="0"
+        padding-right="0"
+        border-width="1px"
+        border-color="#ececec" />
+
+    <mj-button
+        padding-bottom="0"
+        padding-left="0"
+        padding-right="0"
+        align="left" />
+
+    <mj-table
+        padding-top="0"
+        padding-bottom="0"
+        padding-left="0"
+        padding-right="0" />
 
     <!-- Grid styles -->
 
@@ -30,7 +55,9 @@
     <mj-class
         name="container"
 
-        width="610px" />
+        width="680px"
+        padding-left="65px"
+        padding-right="65px" />
 
     <!-- Custom styles -->
 
@@ -42,11 +69,10 @@
         padding-bottom="45px" />
 
     <mj-class
-        name="header-raw"
+        name="header-row"
 
         text-align="left"
         padding-top="60px"
-        padding-left="25px"
         padding-bottom="45px" />
 
     <mj-class
@@ -97,8 +123,6 @@
     <mj-class
         name="text-divider"
 
-        border-width="1px"
-        border-color="rgba(216, 216, 216, 0.46)"
         padding-top="20px"
         padding-bottom="32px" />
 
@@ -117,26 +141,22 @@
 
         background-color="#1790ff"
         border-radius="20px"
-        align="left"
         font-size="15px"
         line-height="20px"
         font-weight="600"
         inner-padding="10px 20px"
-        padding-top="20px"
-        padding-bottom="0" />
+        padding-top="20px" />
 
     <mj-class
         name="button-small"
 
         background-color="#1790ff"
         border-radius="20px"
-        align="left"
         font-size="13px"
         line-height="16px"
         font-weight="600"
         inner-padding="8px 16px"
-        padding-top="12px"
-        padding-bottom="0" />
+        padding-top="12px" />
 
     <mj-class
         name="footer"
@@ -148,41 +168,8 @@
     <mj-class
         name="footer-divider"
 
-        border-width="1px"
-        border-color="#ececec"
         padding-top="46px"
         padding-bottom="17px" />
-
-    <mj-class
-        name="footer-col"
-
-        width="305px" />
-
-    <mj-class
-        name="footer-text"
-
-        padding-top="0"
-        padding-bottom="0"
-        font-size="13px"
-        line-height="20px"
-        color="rgba(0, 0, 0, 0.6)" />
-
-    <mj-class
-        name="footer-text-right"
-
-        padding-top="0"
-        padding-bottom="0"
-        align="right"
-        font-size="0"
-        line-height="0" />
-
-    <mj-class
-        name="footer-text-links"
-
-        padding-top="0"
-        padding-bottom="0"
-        font-size="0"
-        line-height="0" />
 
     <mj-class
         name="install-apps"

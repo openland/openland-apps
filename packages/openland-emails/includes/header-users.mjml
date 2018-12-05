@@ -1,4 +1,4 @@
-<mj-section mj-class="header">
+<mj-section mj-class="header-row">
     <mj-column mj-class="container">
         <mj-text font-size="0" line-height="0">
             <img style="display: inline-block; vertical-align: top;" width="115" height="33" src="https://cdn.openland.com/shared/email/logo-unicorn@2x.png" />

@@ -1,5 +1,5 @@
 <mj-section mj-class="install-apps">
-    <mj-column width="590px">
+    <mj-column width="680px">
         <mj-text>
             <div style="border: 1px solid #e8e8e8; border-radius: 10px; padding-top: 30px; padding-right: 16px; padding-bottom: 34px; padding-left: 32px;">
                 <div style="font-size: 28px; line-height: 26px; padding-bottom: 10px;">

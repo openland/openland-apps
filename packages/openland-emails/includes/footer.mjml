@@ -5,10 +5,20 @@
 </mj-section>
 
 <mj-section mj-class="footer">
-    <mj-column mj-class="footer-col">
-        <mj-text mj-class="footer-text">
-            Need help? Just reply.
-        </mj-text>
+    <mj-column mj-class="container">
+        <mj-table>
+            <tr style="font-size: 0; line-height: 0;">
+                <td width="50%" style="font-size: 13px; line-height: 20px; color: rgba(0, 0, 0, 0.6)">Need help? Just reply.</td>
+                <td width="50%" align="right">
+                    <span style="display: inline-block; vertical-align: top; font-size: 13px; line-height: 20px; color: rgba(0, 0, 0, 0.6)">Mobile apps</span>
+                    <a href="https://oplnd.com/ios" style="display: inline-block; vertical-align: top; padding-left: 6px; padding-right: 6px; margin-left: 3px;">
+                        <img style="display: inline-block; vertical-align: top; width: 16px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-ios@2x.png" />
+                    </a>
+                    <a href="#" style="display: inline-block; vertical-align: top; padding-left: 6px;">
+                        <img style="display: inline-block; vertical-align: top; width: 17px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-android@2x.png" />
+                    </a>
+                </td>
+            </tr>
+        </mj-table>
     </mj-column>
-    <mj-include path="./footer-apps.mjml" />
 </mj-section>
