@@ -143,6 +143,7 @@ const XViewContainer = (props: XViewProps) => {
     let backgroundColor: string | undefined;
     let hoverBackgroundColor: string | undefined;
     let color: string | undefined;
+    let cursor: 'pointer' | undefined;
 
     let fontSize: number | undefined;
     let fontWeight: '400' | '600' | 'normal' | undefined;
@@ -204,6 +205,9 @@ const XViewContainer = (props: XViewProps) => {
     }
     if (props.whiteSpace !== undefined && props.whiteSpace !== null) {
         whiteSpace = props.whiteSpace;
+    }
+    if (props.cursor !== undefined && props.cursor !== null) {
+        cursor = props.cursor;
     }
 
     //
@@ -621,6 +625,13 @@ const XViewContainer = (props: XViewProps) => {
             if (level === '1') {
                 styles.set(key, glamor.css({ border: '1px solid #ececec' }).toString());
             }
+        }
+        css.push(styles.get(key)!);
+    }
+    if (cursor !== undefined) {
+        let key = 'cursor: ' + cursor;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ cursor: cursor }).toString());
         }
         css.push(styles.get(key)!);
     }
