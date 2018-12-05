@@ -7,6 +7,7 @@ let Title = Glamorous.div({
     fontWeight: 500,
     color: '#1f3449',
     letterSpacing: 0.8,
+    fontFamily: 'SFProText-Semibold',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
