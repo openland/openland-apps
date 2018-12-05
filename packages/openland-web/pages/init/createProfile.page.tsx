@@ -149,14 +149,14 @@ const CreateProfileForm = withProfileCreate(props => {
                             <XInputWrapper
                                 field="input.firstName"
                                 size="large"
-                                placeholder="First name"
+                                title="First name"
                                 dataTestId="first-name"
                             />
 
                             <XInputWrapper
                                 field="input.lastName"
                                 size="large"
-                                placeholder="Last name"
+                                title="Last name"
                                 dataTestId="last-name"
                             />
 

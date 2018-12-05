@@ -66,6 +66,7 @@ export const InitTexts = {
     create_organization: {
         pageTitle: 'Add your organization',
         title: 'Add your organization',
+        subTitle: 'Find your organization or create a new one',
         name: 'Organization name',
         namePlaceholder: 'Acme Corporation',
         website: 'Website',

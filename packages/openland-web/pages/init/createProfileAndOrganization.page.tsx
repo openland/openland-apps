@@ -6,14 +6,13 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withApp } from '../../components/withApp';
+import { InitTexts } from './_text';
 import {
     RootContainer,
     Logo,
     Title,
-    TextWrapper,
     ContentWrapper,
 } from './components/CreateProfileComponents';
-import { InitTexts } from './_text';
 import { XForm } from 'openland-x-forms/XForm2';
 import { delayForewer } from 'openland-y-utils/timer';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -96,9 +95,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
         <RootContainer>
             <Logo />
             <ContentWrapper>
-                <TextWrapper>
-                    <Title>{InitTexts.create_profile.title}</Title>
-                </TextWrapper>
+                <Title>{InitTexts.create_profile.title}</Title>
                 <XForm
                     defaultData={{
                         input: {
