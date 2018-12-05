@@ -58,9 +58,12 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                 right={0}
                                                 zIndex={1}
                                                 flexShrink={0}
+                                                paddingTop={8}
+                                                paddingBottom={8}
                                                 alignItems="center"
                                                 justifyContent="center"
                                                 backgroundColor="#32bb78"
+                                                flexDirection="row"
                                             >
                                                 {data.data!.conference.peers.map(
                                                     v => (
@@ -82,8 +85,9 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                                         undefined
                                                                     }
                                                                 />
-                                                                <span>{v.connection && v.connection.state}</span>
+                                                                {/* <span>{v.connection && v.connection.state}</span> */}
                                                             </XView>
+                                                            <XView width={8} />
                                                         </React.Fragment>
                                                     ),
                                                 )}
@@ -101,6 +105,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                                     ctx.toggleMute()
                                                                 }
                                                             />
+                                                            <XView width={8} />
                                                             <XButton
                                                                 style="success"
                                                                 text={
