@@ -11,7 +11,6 @@ import { XTrack } from 'openland-x-analytics/XTrack';
 import {
     SignContainer,
     ButtonsWrapper,
-    Title,
     Separator,
     Description,
     RoomSignup,
@@ -22,6 +21,8 @@ import {
     GoogleButton,
     EmailButton,
 } from './components/SignComponents';
+
+import { SubTitle, Title } from './components/CreateProfileComponents';
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -228,60 +229,59 @@ class SignInComponent extends React.Component<
                 }
                 headerStyle={signin ? 'signin' : 'signup'}
             >
-                {!this.state.fromOutside &&
-                    !this.state.email && (
-                        <>
-                            <RoomTitle>
-                                {signin
-                                    ? 'Sign in and join the conversation'
-                                    : 'Sign up and join the conversation'}
-                            </RoomTitle>
-                            <RoomText>
-                                {signin
-                                    ? 'We are excited to have you back!'
-                                    : 'Creating an account is free and easy'}
-                            </RoomText>
-                            <ButtonsWrapper
-                                marginTop={42}
-                                width={260}
-                                marginBottom={91}
-                            >
-                                <GoogleButton
-                                    onClick={this.loginWithGoogle}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinGoogle
-                                            : InitTexts.auth.signupGoogle
-                                    }
-                                    rounded={true}
-                                />
-                                <Separator marginTop={10} marginBottom={10} />
-                                <EmailButton
-                                    onClick={this.loginWithEmail}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinEmail
-                                            : InitTexts.auth.signupEmail
-                                    }
-                                    rounded={true}
-                                />
-                            </ButtonsWrapper>
+                {!this.state.fromOutside && !this.state.email && (
+                    <>
+                        <RoomTitle>
+                            {signin
+                                ? 'Sign in and join the conversation'
+                                : 'Sign up and join the conversation'}
+                        </RoomTitle>
+                        <RoomText>
+                            {signin
+                                ? 'We are excited to have you back!'
+                                : 'Creating an account is free and easy'}
+                        </RoomText>
+                        <ButtonsWrapper
+                            marginTop={42}
+                            width={260}
+                            marginBottom={91}
+                        >
+                            <GoogleButton
+                                onClick={this.loginWithGoogle}
+                                text={
+                                    signin
+                                        ? InitTexts.auth.signinGoogle
+                                        : InitTexts.auth.signupGoogle
+                                }
+                                rounded={true}
+                            />
+                            <Separator marginTop={10} marginBottom={10} />
+                            <EmailButton
+                                onClick={this.loginWithEmail}
+                                text={
+                                    signin
+                                        ? InitTexts.auth.signinEmail
+                                        : InitTexts.auth.signupEmail
+                                }
+                                rounded={true}
+                            />
+                        </ButtonsWrapper>
 
-                            {!signin && (
-                                <RoomTerms>
-                                    By creating an account you are accepting our{' '}
-                                    <XLink href="https://openland.com/terms">
-                                        Terms of Service
-                                    </XLink>{' '}
-                                    and{' '}
-                                    <XLink href="https://openland.com/privacy">
-                                        Privacy Policy
-                                    </XLink>
-                                    .
-                                </RoomTerms>
-                            )}
-                        </>
-                    )}
+                        {!signin && (
+                            <RoomTerms>
+                                By creating an account you are accepting our{' '}
+                                <XLink href="https://openland.com/terms">
+                                    Terms of Service
+                                </XLink>{' '}
+                                and{' '}
+                                <XLink href="https://openland.com/privacy">
+                                    Privacy Policy
+                                </XLink>
+                                .
+                            </RoomTerms>
+                        )}
+                    </>
+                )}
 
                 {this.state.fromOutside &&
                     (this.state.emailSending || this.state.googleStarting) && (
@@ -290,68 +290,57 @@ class SignInComponent extends React.Component<
                         </RoomLoader>
                     )}
 
-                {this.state.email &&
-                    !this.state.emailSent && (
-                        <div style={{ position: 'relative' }}>
-                            {this.state.emailError !== '' && (
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                    }}
-                                >
-                                    <XServiceMessage
-                                        title={InitTexts.auth.emailInvalid}
-                                    />
-                                </div>
-                            )}
-                            <RoomTitle>
-                                {signin
-                                    ? InitTexts.auth.signinEmail
-                                    : InitTexts.auth.signupEmail}
-                            </RoomTitle>
-                            <ButtonsWrapper marginTop={40} width={280}>
-                                <XInput
-                                    type="email"
-                                    autofocus={true}
-                                    size="large"
-                                    onChange={this.emailChanged}
-                                    value={this.state.emailValue}
-                                    placeholder={
-                                        InitTexts.auth.emailPlaceholder
-                                    }
-                                    onEnter={this.loginEmailStart}
-                                />
-                            </ButtonsWrapper>
-                            <ButtonsWrapper
-                                marginTop={20}
-                                marginBottom={84}
-                                width={280}
+                {this.state.email && !this.state.emailSent && (
+                    <div style={{ position: 'relative' }}>
+                        {this.state.emailError !== '' && (
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                }}
                             >
-                                <XHorizontal>
-                                    <XButton
-                                        onClick={this.loginReset}
-                                        style="ghost"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        text={InitTexts.auth.reset}
-                                    />
-                                    <XButton
-                                        onClick={this.loginEmailStart}
-                                        style="primary"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        loading={this.state.emailSending}
-                                        text={InitTexts.auth.next}
-                                    />
-                                </XHorizontal>
-                            </ButtonsWrapper>
-                        </div>
-                    )}
+                                <XServiceMessage
+                                    title={InitTexts.auth.emailInvalid}
+                                />
+                            </div>
+                        )}
+                        <RoomTitle>
+                            {signin
+                                ? InitTexts.auth.signinEmail
+                                : InitTexts.auth.signupEmail}
+                        </RoomTitle>
+                        <ButtonsWrapper marginTop={40} width={280}>
+                            <XInput
+                                type="email"
+                                autofocus={true}
+                                size="large"
+                                onChange={this.emailChanged}
+                                value={this.state.emailValue}
+                                placeholder={InitTexts.auth.emailPlaceholder}
+                                onEnter={this.loginEmailStart}
+                            />
+                        </ButtonsWrapper>
+                        <ButtonsWrapper
+                            marginTop={20}
+                            marginBottom={84}
+                            width={280}
+                        >
+                            <XHorizontal>
+                                <XButton
+                                    onClick={this.loginEmailStart}
+                                    style="primary"
+                                    size="large"
+                                    alignSelf="stretch"
+                                    flexGrow={1}
+                                    loading={this.state.emailSending}
+                                    text={InitTexts.auth.continue}
+                                />
+                            </XHorizontal>
+                        </ButtonsWrapper>
+                    </div>
+                )}
 
                 {this.state.emailSent && (
                     <div style={{ position: 'relative' }}>
@@ -389,14 +378,6 @@ class SignInComponent extends React.Component<
                         >
                             <XHorizontal>
                                 <XButton
-                                    onClick={this.loginReset}
-                                    size="large"
-                                    style="ghost"
-                                    alignSelf="stretch"
-                                    flexGrow={1}
-                                    text={InitTexts.auth.reset}
-                                />
-                                <XButton
                                     onClick={this.loginCodeStart}
                                     size="large"
                                     style="primary"
@@ -423,103 +404,92 @@ class SignInComponent extends React.Component<
                     signin ? InitTexts.auth.signup : InitTexts.auth.signin
                 }
             >
-                {!this.state.fromOutside &&
-                    !this.state.email && (
-                        <>
-                            <Title>
-                                {signin
-                                    ? InitTexts.auth.signinTitle
-                                    : InitTexts.auth.signupTitle}
-                            </Title>
-                            {signin && (
-                                <Description>
-                                    {InitTexts.auth.signinSubtitle}
-                                </Description>
-                            )}
-                            <ButtonsWrapper marginTop={52}>
-                                <GoogleButton
-                                    onClick={this.loginWithGoogle}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinGoogle
-                                            : InitTexts.auth.signupGoogle
-                                    }
-                                />
-                                <Separator />
-                                <EmailButton
-                                    onClick={this.loginWithEmail}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinEmail
-                                            : InitTexts.auth.signupEmail
-                                    }
-                                />
-                            </ButtonsWrapper>
-                        </>
-                    )}
+                {!this.state.fromOutside && !this.state.email && (
+                    <>
+                        <Title>
+                            {signin
+                                ? InitTexts.auth.signinTitle
+                                : InitTexts.auth.signupTitle}
+                        </Title>
+                        {signin && (
+                            <Description>
+                                {InitTexts.auth.signinSubtitle}
+                            </Description>
+                        )}
+                        <ButtonsWrapper marginTop={52}>
+                            <GoogleButton
+                                onClick={this.loginWithGoogle}
+                                text={
+                                    signin
+                                        ? InitTexts.auth.signinGoogle
+                                        : InitTexts.auth.signupGoogle
+                                }
+                            />
+                            <Separator />
+                            <EmailButton
+                                onClick={this.loginWithEmail}
+                                text={
+                                    signin
+                                        ? InitTexts.auth.signinEmail
+                                        : InitTexts.auth.signupEmail
+                                }
+                            />
+                        </ButtonsWrapper>
+                    </>
+                )}
 
                 {this.state.fromOutside &&
                     (this.state.emailSending || this.state.googleStarting) && (
                         <XLoader loading={!this.state.emailSent} />
                     )}
 
-                {this.state.email &&
-                    !this.state.emailSent && (
-                        <>
-                            <Title marginBottom={20}>
-                                {signin
-                                    ? InitTexts.auth.signinEmail
-                                    : InitTexts.auth.signupEmail}
-                            </Title>
-                            {this.state.emailError !== '' && (
-                                <>
-                                    <XServiceMessage
-                                        title={InitTexts.auth.emailInvalid}
-                                    />
-                                    <EmptyBlock />
-                                </>
-                            )}
-                            <ButtonsWrapper>
-                                <XInput
-                                    type="email"
-                                    size="large"
-                                    onChange={this.emailChanged}
-                                    value={this.state.emailValue}
-                                    placeholder={
-                                        InitTexts.auth.emailPlaceholder
-                                    }
-                                    onEnter={this.loginEmailStart}
+                {this.state.email && !this.state.emailSent && (
+                    <>
+                        <Title>
+                            {signin
+                                ? InitTexts.auth.signinEmailTitle
+                                : InitTexts.auth.signupEmail}
+                        </Title>
+                        <SubTitle>
+                            {InitTexts.auth.signinEmailSubtitle}
+                        </SubTitle>
+                        {this.state.emailError !== '' && (
+                            <>
+                                <XServiceMessage
+                                    title={InitTexts.auth.emailInvalid}
                                 />
-                            </ButtonsWrapper>
-                            <ButtonsWrapper marginTop={20}>
-                                <XHorizontal>
-                                    <XButton
-                                        onClick={this.loginReset}
-                                        style="ghost"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        text={InitTexts.auth.reset}
-                                    />
-                                    <XButton
-                                        onClick={this.loginEmailStart}
-                                        style="primary"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        loading={this.state.emailSending}
-                                        text={InitTexts.auth.next}
-                                    />
-                                </XHorizontal>
-                            </ButtonsWrapper>
-                        </>
-                    )}
+                                <EmptyBlock />
+                            </>
+                        )}
+                        <ButtonsWrapper>
+                            <XInput
+                                type="email"
+                                size="large"
+                                onChange={this.emailChanged}
+                                value={this.state.emailValue}
+                                placeholder={InitTexts.auth.emailPlaceholder}
+                                onEnter={this.loginEmailStart}
+                            />
+                        </ButtonsWrapper>
+                        <ButtonsWrapper marginTop={20}>
+                            <XHorizontal>
+                                <XButton
+                                    onClick={this.loginEmailStart}
+                                    style="primary"
+                                    size="large"
+                                    alignSelf="stretch"
+                                    flexGrow={1}
+                                    loading={this.state.emailSending}
+                                    text={InitTexts.auth.continue}
+                                />
+                            </XHorizontal>
+                        </ButtonsWrapper>
+                    </>
+                )}
 
                 {this.state.emailSent && (
                     <>
-                        <Title marginBottom={20}>
-                            Please, enter activation code
-                        </Title>
+                        <Title>Please, enter activation code</Title>
                         {this.state.codeError !== '' && (
                             <>
                                 <XServiceMessage
@@ -541,13 +511,6 @@ class SignInComponent extends React.Component<
                         </ButtonsWrapper>
                         <ButtonsWrapper marginTop={20}>
                             <XHorizontal>
-                                <XButton
-                                    onClick={this.loginReset}
-                                    size="large"
-                                    alignSelf="stretch"
-                                    flexGrow={1}
-                                    text={InitTexts.auth.reset}
-                                />
                                 <XButton
                                     onClick={this.loginCodeStart}
                                     size="large"
