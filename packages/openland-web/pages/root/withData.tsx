@@ -38,7 +38,7 @@ export function withData(App: React.ComponentType<any>) {
             const apollo = apolloClient({}, token);
 
             if (
-                !canUseDOM ||
+                canUseDOM &&
                 isPageChanged({
                     query: ctx.ctx.query,
                     pathname: ctx.ctx.pathname,
@@ -46,6 +46,7 @@ export function withData(App: React.ComponentType<any>) {
                 })
             ) {
                 try {
+                    let start = Date.now();
                     await getDataFromTree(
                         <App
                             {...appProps}
@@ -54,6 +55,7 @@ export function withData(App: React.ComponentType<any>) {
                             apollo={apollo}
                         />,
                     );
+                    console.log('loaded in ' + (Date.now() - start) + ' ms');
                 } catch (error) {
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
                     // Handle them in components via the data.error prop:
