@@ -28,14 +28,22 @@ routes.add('/suspended/', '/init/suspended');
 routes.add('/suspended-test/', '/init/suspended');
 routes.add('/createProfile', '/init/createProfile');
 routes.add('/createProfile/', '/init/createProfile');
+routes.add('/create-profile-test/', '/init/createProfile');
+routes.add('/create-profile-test', '/init/createProfile');
 routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
+routes.add('/create-organization-test', '/init/createOrganization');
+routes.add('/create-organization-test/', '/init/createOrganization');
 routes.add(
     '/createProfileAndOrganization',
     '/init/createProfileAndOrganization',
 );
 routes.add(
     '/createProfileAndOrganization/',
+    '/init/createProfileAndOrganization',
+);
+routes.add(
+    '/createProfileAndOrganization-test/',
     '/init/createProfileAndOrganization',
 );
 routes.add('/join/:inviteKey', '/init/join');

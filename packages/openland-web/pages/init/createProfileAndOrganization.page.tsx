@@ -155,7 +155,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                         <XInput
                                             field="input.firstName"
                                             size="large"
-                                            placeholder="Jane"
+                                            placeholder="First name"
                                             dataTestId="first-name"
                                         />
                                     </XFormField>
@@ -168,7 +168,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
                                         <XInput
                                             field="input.lastName"
                                             size="large"
-                                            placeholder="Doe"
+                                            placeholder="Last name"
                                             dataTestId="last-name"
                                         />
                                     </XFormField>

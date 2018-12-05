@@ -73,7 +73,7 @@ const AdminTools = withSuperAccountActions(props => {
                     <span className="bold author">
                         {props.data.superAccount.createdBy
                             ? props.data.superAccount.createdBy.name
-                            : 'John Doe'}
+                            : 'First name Last name'}
                     </span>
                 </SACreatedText>
             </SACreatedBlock>

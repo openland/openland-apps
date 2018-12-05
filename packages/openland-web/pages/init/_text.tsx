@@ -49,11 +49,12 @@ export const InitTexts = {
 
     create_profile: {
         pageTitle: 'Create profile',
-        title: 'Set up your account',
+        title: 'Introduce yourself',
+        subTitle: 'Add your name and photo so others can recognize you',
         firstName: 'First Name',
-        firstNamePlaceholder: 'Jane',
+        firstNamePlaceholder: 'First name',
         lastName: 'Last Name',
-        lastNamePlaceholder: 'Doe',
+        lastNamePlaceholder: 'Last name',
         phone: 'Phone',
         photo: 'Photo',
         organizationName: 'Organization Name',

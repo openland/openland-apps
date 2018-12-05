@@ -27,8 +27,8 @@ let DrowAreaSize = styleResolver({
         height: 96,
     },
     default: {
-        width: 120,
-        height: 120,
+        width: 110,
+        height: 110,
     },
     normal: {
         width: 160,
@@ -114,12 +114,12 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
         change: any;
     };
     size?: 'small' | 'normal' | 'large' | 'default';
-    dataTestId ?: string;
+    dataTestId?: string;
 }
 
 let AvatarImageSize = {
     small: 96,
-    default: 120,
+    default: 110,
     normal: 159,
     large: 241,
 };
