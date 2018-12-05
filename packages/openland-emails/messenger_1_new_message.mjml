@@ -11,9 +11,9 @@
                     You’ve got a new message
                 </mj-text>
                 <mj-text mj-class="text">
-                    You have a message from <strong>{{firstName}} {{lastName}}</strong>.
+                    You have a&nbsp;message from <strong>{{firstName}} {{lastName}}</strong>.
                     <br />
-                    Visit Openland to see it now.
+                    Visit Openland to&nbsp;see it&nbsp;now.
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/mail">View message</mj-button>

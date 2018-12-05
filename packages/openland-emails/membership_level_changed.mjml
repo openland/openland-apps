@@ -11,7 +11,7 @@
                     Role updated
                 </mj-text>
                 <mj-text mj-class="text">
-                    Your role at <strong>{{organizationName}}</strong> was updated to <strong>{{levelName}}</strong>
+                    Your role&nbsp;at <strong>{{organizationName}}</strong> was updated&nbsp;to <strong>{{levelName}}</strong>
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>

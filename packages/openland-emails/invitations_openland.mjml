@@ -11,10 +11,10 @@
                     Invitation to Openland
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}}</strong> from <strong>{{organizationName}}</strong> invites you to join Openland, a professional messenger built for productivity and speed.
+                    <strong>{{firstName}}</strong> from <strong>{{organizationName}}</strong> invites you to&nbsp;join Openland, a&nbsp;professional messenger built for productivity and speed.
                 </mj-text>
                 <mj-text mj-class="text">
-                    You can use Openland to seek and share advice, discover new opportunities, and collaborate with other organizations.
+                    You can use Openland to&nbsp;seek and share advice, discover new opportunities, and collaborate with other organizations.
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
             </mj-column>

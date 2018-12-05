@@ -30,7 +30,7 @@
     <mj-class
         name="container"
 
-        width="548px" />
+        width="610px" />
 
     <!-- Custom styles -->
 
@@ -149,14 +149,14 @@
         name="footer-divider"
 
         border-width="1px"
-        border-color="rgba(216, 216, 216, 0.46)"
+        border-color="#ececec"
         padding-top="46px"
         padding-bottom="17px" />
 
     <mj-class
         name="footer-col"
 
-        width="274px" />
+        width="305px" />
 
     <mj-class
         name="footer-text"

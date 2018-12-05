@@ -11,7 +11,7 @@
                     Invitation accepted
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to join <strong>{{roomName}}</strong> chat room. Happy chatting!
+                    <strong>{{firstName}} {{lastName}}</strong> has accepted your invitation to&nbsp;join <strong>{{roomName}}</strong> chat room. Happy chatting!
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">Message {{firstName}}</mj-button>
             </mj-column>

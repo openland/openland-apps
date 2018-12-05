@@ -11,7 +11,7 @@
                     Organization deactivated
                 </mj-text>
                 <mj-text mj-class="text">
-                    The account of <strong>{{organizationName}}</strong> was deactivated by Openland staff. To contact support, simply reply to this email.
+                    The account&nbsp;of <strong>{{organizationName}}</strong> was deactivated by&nbsp;Openland staff. To&nbsp;contact support, simply reply to&nbsp;this email.
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>

@@ -11,7 +11,7 @@
                     An invitation to private chat room
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}}</strong> from {{organizationName}} invites you to <strong>{{roomName}}</strong> chat room at Openland.
+                    <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
             </mj-column>

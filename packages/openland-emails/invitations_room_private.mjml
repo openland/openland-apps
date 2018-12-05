@@ -11,7 +11,7 @@
                     An invitation to private chat room
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}}</strong> from {{organizationName}} invites you to <strong>{{roomName}}</strong> chat room at Openland.
+                    <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
                 </mj-text>
                 <mj-text mj-class="text-quote">
                     <div style="border-left: 3px solid #1790ff; padding-left: 15px;">

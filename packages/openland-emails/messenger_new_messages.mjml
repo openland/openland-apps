@@ -11,10 +11,10 @@
                     You’ve got {{messageCount}} new messages
                 </mj-text>
                 <mj-text mj-class="text">
-                    You have messages from <strong>Derrick Henderson</strong>, <strong>Founders</strong>, <strong>Samuel Handricks</strong>, and 5 more.
+                    You have messages from <strong>Derrick Henderson</strong>, <strong>Founders</strong>, <strong>Samuel Handricks</strong>, and 5&nbsp;more.
                 </mj-text>
                 <mj-text mj-class="text">
-                    Visit Openland to see them now.
+                    Visit Openland to&nbsp;see them now.
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/mail">View messages</mj-button>

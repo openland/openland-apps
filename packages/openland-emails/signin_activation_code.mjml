@@ -11,13 +11,13 @@
                     Your activation code
                 </mj-text>
                 <mj-text mj-class="text">
-                    To enter Openland, use the following one-time code on your sign-in page.
+                    To&nbsp;enter Openland, use the following one-time code on&nbsp;your sign-in page.
                 </mj-text>
                 <mj-text mj-class="text-code">
                     {{code}}
                 </mj-text>
                 <mj-text mj-class="text">
-                    Don’t share this activation code with anyone. If you didn't request it, simply ignore this email.
+                    Don&rsquo;t share this activation code with anyone. If&nbsp;you didn&rsquo;t request&nbsp;it, simply ignore this email.
                 </mj-text>
                 <mj-divider mj-class="text-divider"></mj-divider>
                 <mj-text mj-class="title-small">
