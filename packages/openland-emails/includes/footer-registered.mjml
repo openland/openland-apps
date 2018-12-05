@@ -8,7 +8,7 @@
     <mj-column mj-class="container">
         <mj-table>
             <tr style="font-size: 0; line-height: 0;">
-                <td width="50%">
+                <td valign="top">
                     <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
                         Email settings
                     </a>
@@ -17,7 +17,7 @@
                         Support
                     </a>
                 </td>
-                <td width="50%" align="right">
+                <td valign="top" align="right">
                     <span style="display: inline-block; vertical-align: top; font-size: 13px; line-height: 20px; color: rgba(0, 0, 0, 0.6)">Mobile apps</span>
                     <a href="https://oplnd.com/ios" style="display: inline-block; vertical-align: top; padding-left: 6px; padding-right: 6px; margin-left: 3px;">
                         <img style="display: inline-block; vertical-align: top; width: 16px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-ios@2x.png" />
