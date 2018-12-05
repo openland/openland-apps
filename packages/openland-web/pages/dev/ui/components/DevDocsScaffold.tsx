@@ -87,6 +87,25 @@ export function DevDocsScaffold(props: {
                                 Profile (User - Owner)
                             </Sidebar.Item>
                             <Sidebar.Item path="/ui/lists">Lists</Sidebar.Item>
+                            <Sidebar.Item>Sign Up Components</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/signin/room-auth-mechanism">
+                                RoomAuthMechanism
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/signin/room-create-with-email">
+                                RoomCreateWithEmail
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/signin/room-activation-code">
+                                RoomActivationCode
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/signin/web-signup-auth-mechanism">
+                                WebSignUpAuthMechanism
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/signin/web-signup-create-with-email">
+                                WebSignUpCreateWithEmail
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/signin/web-signup-activation-code">
+                                WebSignUpActivationCode
+                            </Sidebar.Subitem>
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/links">
                                 Links

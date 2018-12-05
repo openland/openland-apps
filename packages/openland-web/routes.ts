@@ -266,6 +266,32 @@ routes.add('/ui/lists/', '/dev/ui/lists');
 routes.add('/ui/mentions', '/dev/ui/mentions');
 routes.add('/ui/mentions/', '/dev/ui/mentions');
 
+routes.add(
+    '/ui/signin/room-auth-mechanism',
+    '/dev/ui/signin/room-auth-mechanism',
+);
+routes.add(
+    '/ui/signin/room-create-with-email',
+    '/dev/ui/signin/room-create-with-email',
+);
+routes.add(
+    '/ui/signin/room-activation-code',
+    '/dev/ui/signin/room-activation-code',
+);
+
+routes.add(
+    '/ui/signin/web-signup-auth-mechanism',
+    '/dev/ui/signin/web-signup-auth-mechanism',
+);
+routes.add(
+    '/ui/signin/web-signup-create-with-email',
+    '/dev/ui/signin/web-signup-create-with-email',
+);
+routes.add(
+    '/ui/signin/web-signup-activation-code',
+    '/dev/ui/signin/web-signup-activation-code',
+);
+
 //
 // Dev Tools
 //
