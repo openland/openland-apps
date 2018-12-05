@@ -59,7 +59,8 @@ export const InitTexts = {
         phone: 'Phone',
         photo: 'Photo',
         organizationName: 'Organization Name',
-        organizationPopup: 'To register as an individual, simply enter your name',
+        organizationPopup:
+            'To register as an individual, simply enter your name',
         continue: 'Continue',
     },
 

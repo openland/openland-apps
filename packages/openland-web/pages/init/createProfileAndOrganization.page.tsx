@@ -250,11 +250,11 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
 class RoomCreateProfileFormInner extends React.Component<
     any,
     {
-        isOrgView: boolean,
-        firstName: string,
-        lastName: string,
-        invalidFirstName: boolean,
-        invalidLastName: boolean,
+        isOrgView: boolean;
+        firstName: string;
+        lastName: string;
+        invalidFirstName: boolean;
+        invalidLastName: boolean;
     }
 > {
     constructor(props: any) {
@@ -275,26 +275,40 @@ class RoomCreateProfileFormInner extends React.Component<
         let props = this.props;
 
         this.setState({
-            firstName: (usePrefill && props.data.prefill && props.data.prefill.firstName) || '',
-            lastName: (usePrefill && props.data.prefill && props.data.prefill.lastName) || '',
+            firstName:
+                (usePrefill &&
+                    props.data.prefill &&
+                    props.data.prefill.firstName) ||
+                '',
+            lastName:
+                (usePrefill &&
+                    props.data.prefill &&
+                    props.data.prefill.lastName) ||
+                '',
         });
-    }
+    };
 
     changeFirstName = (value?: string) => {
         if (typeof value === 'string') {
-            this.setState({
-                firstName: value
-            }, () => this.validateFirstName(true));
+            this.setState(
+                {
+                    firstName: value,
+                },
+                () => this.validateFirstName(true),
+            );
         }
-    }
+    };
 
     changeLastName = (value?: string) => {
         if (typeof value === 'string') {
-            this.setState({
-                lastName: value
-            }, () => this.validateLastName(true));
+            this.setState(
+                {
+                    lastName: value,
+                },
+                () => this.validateLastName(true),
+            );
         }
-    }
+    };
 
     validateFirstName = (onInput?: boolean) => {
         let hasFirstName = this.state.firstName.length > 0;
@@ -304,7 +318,7 @@ class RoomCreateProfileFormInner extends React.Component<
         });
 
         return hasFirstName;
-    }
+    };
 
     validateLastName = (onInput?: boolean) => {
         let hasLastName = this.state.lastName.length > 0;
@@ -314,7 +328,7 @@ class RoomCreateProfileFormInner extends React.Component<
         });
 
         return hasLastName;
-    }
+    };
 
     showOrgView = () => {
         let isValidFirstName = this.validateFirstName();
@@ -353,7 +367,14 @@ class RoomCreateProfileFormInner extends React.Component<
                             style="dark"
                             width={206}
                         >
-                            <span style={{ display: 'inline-block', verticalAlign: 'top', marginTop: 3, marginLeft: 5 }}>
+                            <span
+                                style={{
+                                    display: 'inline-block',
+                                    verticalAlign: 'top',
+                                    marginTop: 3,
+                                    marginLeft: 5,
+                                }}
+                            >
                                 <InfoIcon />
                             </span>
                         </XPopper>
@@ -410,7 +431,10 @@ class RoomCreateProfileFormInner extends React.Component<
                                     <XAvatarUploadStyled
                                         field="input.photoRef"
                                         size="small"
-                                        placeholder={{ add: "Add photo (optional)", change: "Change photo" }}
+                                        placeholder={{
+                                            add: 'Add photo (optional)',
+                                            change: 'Change photo',
+                                        }}
                                         initialUrl={
                                             usePrefill
                                                 ? props.data.prefill &&
@@ -420,13 +444,18 @@ class RoomCreateProfileFormInner extends React.Component<
                                     />
                                 </ProfileAvatarWrapper>
                                 <XVertical separator={10}>
-                                    <XFormField field="input.firstName" separator={3}>
+                                    <XFormField
+                                        field="input.firstName"
+                                        separator={3}
+                                    >
                                         <XInput
                                             field="input.firstName"
                                             size="large"
                                             title="First name"
                                             onChange={this.changeFirstName}
-                                            invalid={this.state.invalidFirstName}
+                                            invalid={
+                                                this.state.invalidFirstName
+                                            }
                                         />
                                         {this.state.invalidFirstName && (
                                             <XView
@@ -439,7 +468,10 @@ class RoomCreateProfileFormInner extends React.Component<
                                             </XView>
                                         )}
                                     </XFormField>
-                                    <XFormField field="input.lastName" separator={3}>
+                                    <XFormField
+                                        field="input.lastName"
+                                        separator={3}
+                                    >
                                         <XInput
                                             field="input.lastName"
                                             size="large"

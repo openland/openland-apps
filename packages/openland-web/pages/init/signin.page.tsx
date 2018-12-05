@@ -324,7 +324,9 @@ class SignInComponent extends React.Component<
                                     size="large"
                                     onChange={this.emailChanged}
                                     value={this.state.emailValue}
-                                    placeholder={InitTexts.auth.emailPlaceholder}
+                                    placeholder={
+                                        InitTexts.auth.emailPlaceholder
+                                    }
                                     onEnter={this.loginEmailStart}
                                     invalid={this.state.emailError !== ''}
                                 />
@@ -374,7 +376,10 @@ class SignInComponent extends React.Component<
                 {this.state.emailSent && (
                     <>
                         <RoomTitle>Enter your activation code</RoomTitle>
-                        <RoomText>We just sent it to <strong>{this.state.emailValue}</strong></RoomText>
+                        <RoomText>
+                            We just sent it to{' '}
+                            <strong>{this.state.emailValue}</strong>
+                        </RoomText>
                         <ButtonsWrapper marginTop={40} width={330}>
                             <XInput
                                 pattern="[0-9]*"
@@ -418,7 +423,7 @@ class SignInComponent extends React.Component<
                         </ButtonsWrapper>
                         <ButtonsWrapper
                             marginTop={40}
-                            marginBottom={(this.state.codeError !== '') ? 50 : 70}
+                            marginBottom={this.state.codeError !== '' ? 50 : 70}
                             width={212}
                         >
                             <XHorizontal>
