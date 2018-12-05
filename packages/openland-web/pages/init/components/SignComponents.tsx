@@ -278,8 +278,8 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
                       },
                       '& span': {
                           fontSize: 16,
-                          fontWeight: 500,
-                          letterSpacing: -0.4,
+                          fontWeight: 600,
+                          letterSpacing: 0,
                           lineHeight: '16px',
                       },
                       '& svg': {
@@ -333,11 +333,9 @@ const SeparatorStyle = Glamorous.div<{
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: 0.7,
     fontSize: 16,
-    lineHeight: 1.5,
-    letterSpacing: 0.5,
-    color: '#1f3449',
+    lineHeight: '24px',
+    color: '#000000',
     zIndex: 0,
     marginTop: props.marginTop ? props.marginTop : 15,
     marginBottom: props.marginBottom ? props.marginBottom : 15,
@@ -350,6 +348,7 @@ const SeparatorStyle = Glamorous.div<{
         height: 1,
         width: '100%',
         backgroundColor: '#dcdee4',
+        opacity: 0.8,
         zIndex: 0,
     },
     '& > div': {
@@ -373,11 +372,11 @@ export const Separator = (props: {
 const RoomSignupWrapper = Glamorous.div({
     position: 'relative',
     background:
-        'rgba(0, 0, 0, 0.8) url(/static/X/signup/background-blur.jpg) no-repeat',
+        'rgba(228, 228, 228, 0.7) url(/static/X/signup/background-blur-light.jpg) no-repeat',
     backgroundSize: 'cover',
     height: '100vh',
     width: '100%',
-    minWidth: 650,
+    minWidth: 670,
 });
 
 const RoomToggler = Glamorous.div({
@@ -385,24 +384,22 @@ const RoomToggler = Glamorous.div({
     top: 28,
     right: 37,
     display: 'flex',
-    color: '#ffffff',
+    color: '#000000',
 });
 
 const RoomTogglerText = Glamorous.div({
     fontSize: 14,
     lineHeight: '24px',
-    letterSpacing: -0.15,
 });
 
 const RoomTogglerLink = Glamorous(XLink)({
     fontSize: 14,
     lineHeight: '24px',
     fontWeight: 600,
-    letterSpacing: -0.4,
-    marginLeft: 7,
+    marginLeft: 6,
     '&:hover': {
-        opacity: 0.7,
-        color: '#ffffff',
+        textDecoration: 'underline',
+        color: '#000000',
     },
 });
 
@@ -415,6 +412,7 @@ const RoomSignupBox = Glamorous.div({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
+    boxShadow: '0 3px 7px 0 rgba(0, 0, 0, 0.06)',
 });
 
 const RoomSignupHeader = Glamorous.div<{
@@ -524,9 +522,7 @@ export const RoomTerms = Glamorous.div({
     paddingBottom: 26,
     color: 'rgba(18, 30, 43, 0.35)',
     fontSize: 13,
-    fontWeight: 500,
-    lineHeight: '19px',
-    letterSpacing: -0.35,
+    lineHeight: '20px',
 
     '& a': {
         borderBottom: '1px solid rgba(18, 30, 43, 0.15)',
@@ -540,23 +536,19 @@ export const RoomTerms = Glamorous.div({
 
 export const RoomTitle = Glamorous.div({
     textAlign: 'center',
-    opacity: 0.9,
     fontSize: 26,
     fontWeight: 600,
-    lineHeight: '31px',
-    letterSpacing: 0.8,
-    color: '#121e2b',
+    lineHeight: '30px',
+    color: 'rgba(0, 0, 0, 0.9)',
     paddingTop: 64,
-    paddingBottom: 9,
+    paddingBottom: 10,
 });
 
 export const RoomText = Glamorous.div({
     textAlign: 'center',
-    opacity: 0.7,
     fontSize: 16,
-    lineHeight: '19px',
-    letterSpacing: -0.15,
-    color: '#121e2b',
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.7)',
 });
 
 export const GoogleButton = (props: {

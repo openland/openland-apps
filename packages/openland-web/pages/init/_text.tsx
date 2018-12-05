@@ -22,14 +22,16 @@ export const InitTexts = {
         signupGoogle: 'Sign up with Google',
         signupEmail: 'Sign up with Email',
 
-        emailInvalid: 'Invalid email',
-        emailPlaceholder: 'Work email',
+        emailInvalid: 'Invalid email address',
+        emailPlaceholder: 'Your email',
         codeInvalid: 'Invalid activation code',
-        codePlaceholder: 'XXXXXX',
+        codePlaceholder: 'Code from email',
 
         reset: 'Reset',
+        back: 'Back',
         next: 'Next',
         complete: 'Continue',
+        continue: 'Continue',
     },
 
     join: {
@@ -57,8 +59,7 @@ export const InitTexts = {
         phone: 'Phone',
         photo: 'Photo',
         organizationName: 'Organization Name',
-        organizationPopup:
-            'Enter your full name if you are registering as a private individual',
+        organizationPopup: 'To register as an individual, simply enter your name',
         continue: 'Continue',
     },
 

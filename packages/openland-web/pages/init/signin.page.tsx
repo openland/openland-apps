@@ -29,6 +29,8 @@ import { XLoader } from 'openland-x/XLoader';
 import * as Cookie from 'js-cookie';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { XLink } from 'openland-x/XLink';
+import { XView } from 'openland-x/XView';
+import { XLink2 } from 'openland-x/XLink2';
 
 const EmptyBlock = Glamorous.div({
     width: '100%',
@@ -183,6 +185,18 @@ class SignInComponent extends React.Component<
         this.fireEmail();
     };
 
+    loginCodeBack = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
+        this.setState({
+            emailSending: false,
+            emailError: '',
+            emailValue: '',
+            emailSent: false,
+        });
+    };
+
     loginCodeStart = async (e?: React.SyntheticEvent<any>) => {
         if (e) {
             e.preventDefault();
@@ -244,7 +258,7 @@ class SignInComponent extends React.Component<
                             <ButtonsWrapper
                                 marginTop={42}
                                 width={260}
-                                marginBottom={91}
+                                marginBottom={84}
                             >
                                 <GoogleButton
                                     onClick={this.loginWithGoogle}
@@ -292,85 +306,76 @@ class SignInComponent extends React.Component<
 
                 {this.state.email &&
                     !this.state.emailSent && (
-                        <div style={{ position: 'relative' }}>
-                            {this.state.emailError !== '' && (
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                    }}
-                                >
-                                    <XServiceMessage
-                                        title={InitTexts.auth.emailInvalid}
-                                    />
-                                </div>
-                            )}
+                        <>
                             <RoomTitle>
                                 {signin
-                                    ? InitTexts.auth.signinEmail
-                                    : InitTexts.auth.signupEmail}
+                                    ? 'Sign in and join the conversation'
+                                    : 'Sign up and join the conversation'}
                             </RoomTitle>
-                            <ButtonsWrapper marginTop={40} width={280}>
+                            <RoomText>
+                                {signin
+                                    ? 'We are excited to have you back!'
+                                    : 'Creating an account is free and easy'}
+                            </RoomText>
+                            <ButtonsWrapper marginTop={40} width={330}>
                                 <XInput
                                     type="email"
                                     autofocus={true}
                                     size="large"
                                     onChange={this.emailChanged}
                                     value={this.state.emailValue}
-                                    placeholder={
-                                        InitTexts.auth.emailPlaceholder
-                                    }
+                                    placeholder={InitTexts.auth.emailPlaceholder}
                                     onEnter={this.loginEmailStart}
+                                    invalid={this.state.emailError !== ''}
                                 />
+                                {this.state.emailError !== '' && (
+                                    <XView
+                                        marginTop={6}
+                                        marginLeft={15}
+                                        marginBottom={-20}
+                                        color="#d75454"
+                                        fontSize={12}
+                                        lineHeight="14px"
+                                    >
+                                        {InitTexts.auth.emailInvalid}
+                                    </XView>
+                                )}
                             </ButtonsWrapper>
                             <ButtonsWrapper
-                                marginTop={20}
-                                marginBottom={84}
-                                width={280}
+                                marginTop={50}
+                                marginBottom={80}
+                                width={108}
                             >
-                                <XHorizontal>
-                                    <XButton
-                                        onClick={this.loginReset}
-                                        style="ghost"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        text={InitTexts.auth.reset}
-                                    />
-                                    <XButton
-                                        onClick={this.loginEmailStart}
-                                        style="primary"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        loading={this.state.emailSending}
-                                        text={InitTexts.auth.next}
-                                    />
-                                </XHorizontal>
+                                <XButton
+                                    onClick={this.loginEmailStart}
+                                    style="primary"
+                                    size="large"
+                                    loading={this.state.emailSending}
+                                    text={InitTexts.auth.continue}
+                                />
                             </ButtonsWrapper>
-                        </div>
+
+                            {!signin && (
+                                <RoomTerms>
+                                    By creating an account you are accepting our{' '}
+                                    <XLink href="https://openland.com/terms">
+                                        Terms of Service
+                                    </XLink>{' '}
+                                    and{' '}
+                                    <XLink href="https://openland.com/privacy">
+                                        Privacy Policy
+                                    </XLink>
+                                    .
+                                </RoomTerms>
+                            )}
+                        </>
                     )}
 
                 {this.state.emailSent && (
-                    <div style={{ position: 'relative' }}>
-                        {this.state.codeError !== '' && (
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                }}
-                            >
-                                <XServiceMessage
-                                    title={InitTexts.auth.codeInvalid}
-                                />
-                            </div>
-                        )}
-                        <RoomTitle>Please, enter activation code</RoomTitle>
-                        <ButtonsWrapper marginTop={40} width={280}>
+                    <>
+                        <RoomTitle>Enter your activation code</RoomTitle>
+                        <RoomText>We just sent it to <strong>{this.state.emailValue}</strong></RoomText>
+                        <ButtonsWrapper marginTop={40} width={330}>
                             <XInput
                                 pattern="[0-9]*"
                                 type="number"
@@ -380,21 +385,50 @@ class SignInComponent extends React.Component<
                                 value={this.state.codeValue}
                                 placeholder={InitTexts.auth.codePlaceholder}
                                 onEnter={this.loginCodeStart}
+                                invalid={this.state.codeError !== ''}
                             />
+                            {this.state.codeError !== '' && (
+                                <XView
+                                    marginTop={6}
+                                    marginLeft={15}
+                                    color="#d75454"
+                                    fontSize={12}
+                                    lineHeight="14px"
+                                >
+                                    {InitTexts.auth.codeInvalid}
+                                </XView>
+                            )}
+                            <XView
+                                marginTop={16}
+                                color="rgba(0, 0, 0, 0.6)"
+                                fontSize={13}
+                                lineHeight="14px"
+                                justifyContent="center"
+                                flexDirection="row"
+                            >
+                                <span>Haven't received our email?</span>
+                                <XLink2
+                                    onClick={this.loginEmailStart}
+                                    color="#1790ff"
+                                    marginLeft={4}
+                                >
+                                    Resend.
+                                </XLink2>
+                            </XView>
                         </ButtonsWrapper>
                         <ButtonsWrapper
-                            marginTop={20}
-                            marginBottom={84}
-                            width={280}
+                            marginTop={40}
+                            marginBottom={(this.state.codeError !== '') ? 50 : 70}
+                            width={212}
                         >
                             <XHorizontal>
                                 <XButton
-                                    onClick={this.loginReset}
+                                    onClick={this.loginCodeBack}
                                     size="large"
                                     style="ghost"
                                     alignSelf="stretch"
                                     flexGrow={1}
-                                    text={InitTexts.auth.reset}
+                                    text={InitTexts.auth.back}
                                 />
                                 <XButton
                                     onClick={this.loginCodeStart}
@@ -407,7 +441,21 @@ class SignInComponent extends React.Component<
                                 />
                             </XHorizontal>
                         </ButtonsWrapper>
-                    </div>
+
+                        {!signin && (
+                            <RoomTerms>
+                                By creating an account you are accepting our{' '}
+                                <XLink href="https://openland.com/terms">
+                                    Terms of Service
+                                </XLink>{' '}
+                                and{' '}
+                                <XLink href="https://openland.com/privacy">
+                                    Privacy Policy
+                                </XLink>
+                                .
+                            </RoomTerms>
+                        )}
+                    </>
                 )}
             </RoomSignup>
         ) : (

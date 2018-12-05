@@ -32,6 +32,9 @@ import {
     ButtonsWrapper,
 } from './components/SignComponents';
 import { XButton } from 'openland-x/XButton';
+import { XView } from 'openland-x/XView';
+import { XPopper } from 'openland-x/XPopper';
+import InfoIcon from './components/icons/ic-info-hover.svg';
 
 const Footer = Glamorous.div({
     position: 'absolute',
@@ -246,19 +249,82 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
 
 class RoomCreateProfileFormInner extends React.Component<
     any,
-    { isOrgView: boolean }
+    {
+        isOrgView: boolean,
+        firstName: string,
+        lastName: string,
+        invalidFirstName: boolean,
+        invalidLastName: boolean,
+    }
 > {
     constructor(props: any) {
         super(props);
         this.state = {
             isOrgView: false,
+            firstName: '',
+            lastName: '',
+            invalidFirstName: false,
+            invalidLastName: false,
         };
+
+        this.setPrefillDataToState();
+    }
+
+    setPrefillDataToState = () => {
+        let usePrefill = Cookie.get('auth-type') !== 'email';
+        let props = this.props;
+
+        this.setState({
+            firstName: (usePrefill && props.data.prefill && props.data.prefill.firstName) || '',
+            lastName: (usePrefill && props.data.prefill && props.data.prefill.lastName) || '',
+        });
+    }
+
+    changeFirstName = (value?: string) => {
+        if (typeof value === 'string') {
+            this.setState({
+                firstName: value
+            }, () => this.validateFirstName(true));
+        }
+    }
+
+    changeLastName = (value?: string) => {
+        if (typeof value === 'string') {
+            this.setState({
+                lastName: value
+            }, () => this.validateLastName(true));
+        }
+    }
+
+    validateFirstName = (onInput?: boolean) => {
+        let hasFirstName = this.state.firstName.length > 0;
+
+        this.setState({
+            invalidFirstName: onInput ? false : !hasFirstName,
+        });
+
+        return hasFirstName;
+    }
+
+    validateLastName = (onInput?: boolean) => {
+        let hasLastName = this.state.lastName.length > 0;
+
+        this.setState({
+            invalidLastName: onInput ? false : !hasLastName,
+        });
+
+        return hasLastName;
     }
 
     showOrgView = () => {
-        this.setState({
-            isOrgView: true,
-        });
+        let isValidFirstName = this.validateFirstName();
+        let isValidLastName = this.validateLastName();
+
+        if (isValidFirstName && isValidLastName) {
+            this.setState({
+                isOrgView: true,
+            });
+        }
     };
 
     render() {
@@ -276,8 +342,22 @@ class RoomCreateProfileFormInner extends React.Component<
                 </RoomTitle>
                 <RoomText>
                     {this.state.isOrgView
-                        ? 'This will help to make new connections and discover opportunities'
+                        ? 'Find your organization or create a new one'
                         : 'Add your name and photo so others can recognize you'}
+
+                    {this.state.isOrgView && (
+                        <XPopper
+                            content={InitTexts.create_profile.organizationPopup}
+                            showOnHover={true}
+                            placement="bottom"
+                            style="dark"
+                            width={206}
+                        >
+                            <span style={{ display: 'inline-block', verticalAlign: 'top', marginTop: 3, marginLeft: 5 }}>
+                                <InfoIcon />
+                            </span>
+                        </XPopper>
+                    )}
                 </RoomText>
                 <ButtonsWrapper marginTop={40} marginBottom={83} width={290}>
                     <XForm
@@ -330,6 +410,7 @@ class RoomCreateProfileFormInner extends React.Component<
                                     <XAvatarUploadStyled
                                         field="input.photoRef"
                                         size="small"
+                                        placeholder={{ add: "Add photo (optional)", change: "Change photo" }}
                                         initialUrl={
                                             usePrefill
                                                 ? props.data.prefill &&
@@ -338,20 +419,44 @@ class RoomCreateProfileFormInner extends React.Component<
                                         }
                                     />
                                 </ProfileAvatarWrapper>
-                                <XVertical>
-                                    <XFormField field="input.firstName">
+                                <XVertical separator={10}>
+                                    <XFormField field="input.firstName" separator={3}>
                                         <XInput
                                             field="input.firstName"
                                             size="large"
-                                            placeholder="First name"
+                                            title="First name"
+                                            onChange={this.changeFirstName}
+                                            invalid={this.state.invalidFirstName}
                                         />
+                                        {this.state.invalidFirstName && (
+                                            <XView
+                                                marginLeft={15}
+                                                color="#d75454"
+                                                fontSize={12}
+                                                lineHeight="14px"
+                                            >
+                                                First name can't be empty
+                                            </XView>
+                                        )}
                                     </XFormField>
-                                    <XFormField field="input.lastName">
+                                    <XFormField field="input.lastName" separator={3}>
                                         <XInput
                                             field="input.lastName"
                                             size="large"
-                                            placeholder="Last name"
+                                            title="Last name"
+                                            onChange={this.changeLastName}
+                                            invalid={this.state.invalidLastName}
                                         />
+                                        {this.state.invalidLastName && (
+                                            <XView
+                                                marginLeft={15}
+                                                color="#d75454"
+                                                fontSize={12}
+                                                lineHeight="14px"
+                                            >
+                                                Last name can't be empty
+                                            </XView>
+                                        )}
                                     </XFormField>
                                 </XVertical>
                             </ResolveView>
@@ -361,15 +466,7 @@ class RoomCreateProfileFormInner extends React.Component<
                                         <XInput
                                             field="input.name"
                                             size="large"
-                                            placeholder="Organization name"
-                                            tooltipContent={
-                                                <PopupWrapper>
-                                                    {
-                                                        InitTexts.create_profile
-                                                            .organizationPopup
-                                                    }
-                                                </PopupWrapper>
-                                            }
+                                            title="Organization name"
                                         />
                                     </XFormField>
                                 </XVertical>

@@ -72,7 +72,7 @@ export function XFormField(props: XFormFieldProps) {
                         <XVertical className={(props as any).className} {...other} separator={separator !== undefined ? separator : 4}>
                             {title && (<XFormFieldTitle invalid={invalided}>{title}{optional && <OptionalLabel> (optional)</OptionalLabel>}</XFormFieldTitle>)}
                             <XFormFieldChildren>
-                                <XVertical>
+                                <XVertical separator={separator !== undefined ? separator : 4}>
                                     {children}
                                 </XVertical>
                                 {!invalided && description && <XFormFieldDescription invalid={false}>{description}</XFormFieldDescription>}
