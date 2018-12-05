@@ -46,7 +46,7 @@ export class TalkMediaComponent extends React.Component<
 
     componentDidMount() {
         navigator.mediaDevices
-            .getUserMedia({ audio: true, video: true })
+            .getUserMedia({ audio: true })
             .then(stream => {
                 setTimeout(() => {
                     if (this._mounted) {
