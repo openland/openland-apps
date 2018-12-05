@@ -428,9 +428,9 @@ class MessageComposeComponentInner extends React.PureComponent<
 
         let message =
             window.localStorage.getItem(
-                'conversation_draft_' + props.conversationId,
+                'conversation_draft_1_' + props.conversationId,
             ) || '';
-        let draftKey = 'conversation_draft_' + this.props.conversationId;
+        let draftKey = 'conversation_draft_1_' + this.props.conversationId;
 
         if (message === draftKey) {
             message = '';
@@ -593,12 +593,12 @@ class MessageComposeComponentInner extends React.PureComponent<
     };
 
     private localDraftSaver = (src: string) => {
-        let draftKey = 'conversation_draft_' + this.props.conversationId;
+        let draftKey = 'conversation_draft_1_' + this.props.conversationId;
         window.localStorage.setItem(draftKey, src);
     };
 
     private localDraftCleaner = () => {
-        let draftKey = 'conversation_draft_' + this.props.conversationId;
+        let draftKey = 'conversation_draft_1_' + this.props.conversationId;
         window.localStorage.setItem(draftKey, draftKey);
     };
 
@@ -840,9 +840,9 @@ class MessageComposeComponentInner extends React.PureComponent<
         if (draftChecker) {
             let draft =
                 window.localStorage.getItem(
-                    'conversation_draft_' + this.props.conversationId,
+                    'conversation_draft_1_' + this.props.conversationId,
                 ) || '';
-            let draftKey = 'conversation_draft_' + this.props.conversationId;
+            let draftKey = 'conversation_draft_1_' + this.props.conversationId;
 
             if (!draft && nextProps.draft) {
                 draft = nextProps.draft;

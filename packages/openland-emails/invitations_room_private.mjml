@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>Invitation to Openland</mj-title>
+        <mj-title>Join {{roomName}} room at Openland</mj-title>
         <mj-include path="./includes/attributes.mjml" />
     </mj-head>
     <mj-body>
@@ -8,13 +8,15 @@
         <mj-section mj-class="wrapper">
             <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    Invitation to Openland
+                    An invitation to private chat room
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}}</strong> from <strong>{{organizationName}}</strong> invites you to&nbsp;join Openland, a&nbsp;professional messenger built for productivity and speed.
+                    <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
                 </mj-text>
-                <mj-text mj-class="text">
-                    You can use Openland to&nbsp;seek and share advice, discover new opportunities, and collaborate with other organizations.
+                <mj-text mj-class="text-quote">
+                    <div style="border-left: 3px solid #1790ff; padding-left: 15px;">
+                        {{roomDescription}}
+                    </div>
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
             </mj-column>

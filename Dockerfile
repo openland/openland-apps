@@ -1,19 +1,15 @@
-FROM node:8.9.4-alpine
+FROM node:10.14.0-alpine
+
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
+
 WORKDIR /app
-EXPOSE 3000
-
-ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
-
-COPY package.json yarn.lock /app/
+ADD package.prod.json /app/package.json
 RUN yarn install
+COPY dist/ /app/
 
-COPY . .
-RUN yarn bundle
-
+EXPOSE 3000
+ENV NODE_ENV=production
 ARG release_id
 ENV RELEASE_ID=$release_id
-
-CMD [ "node", "dist/server.js" ]
+CMD [ "node", "server.js" ]

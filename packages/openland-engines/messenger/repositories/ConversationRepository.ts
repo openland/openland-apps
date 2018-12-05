@@ -1,6 +1,6 @@
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import gql from 'graphql-tag';
-import { defaultDataIdFromObject, ID_KEY } from 'apollo-cache-inmemory';
+import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
 
 let SHARED_ROOM_TINY = gql`
     fragment SharedConversationTiny on SharedRoom {

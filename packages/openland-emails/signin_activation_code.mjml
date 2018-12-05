@@ -1,34 +1,34 @@
 <mjml>
     <mj-head>
         <mj-title>Activation code for Openland: {{code}}</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
                     Your activation code
                 </mj-text>
-
-                <mj-raw>
-                    {% if send == 'link' or send == 'link_ios' or send == 'link_android' %}
-                </mj-raw>
-                    <mj-text mj-class="text">
-                        To get in your Openland account, use the following one-time code on your sign-in page.
-                        <strong>{{code}}</strong> 
-                        Don’t share this activation code with anyone. If you didn't request it, simply ignore this email.
-                        Enter with a click
-                        You can also enter by clicking the button below.
-                     <mj-button mj-class="button" href="{{link}}">Enter the app</mj-button>
-                    <mj-text mj-class="text">   
-                    </mj-text>
-                <mj-raw>
-                    {% elsif send == 'code' %}
-                    {% endif %}
-                </mj-raw>
+                <mj-text mj-class="text">
+                    To&nbsp;enter Openland, use the following one-time code on&nbsp;your sign-in page.
+                </mj-text>
+                <mj-text mj-class="text-code">
+                    {{code}}
+                </mj-text>
+                <mj-text mj-class="text">
+                    Don&rsquo;t share this activation code with anyone. If&nbsp;you didn&rsquo;t request&nbsp;it, simply ignore this email.
+                </mj-text>
+                <mj-divider mj-class="text-divider"></mj-divider>
+                <mj-text mj-class="title-small">
+                    Magic button
+                </mj-text>
+                <mj-text mj-class="text">
+                    You can also enter Openland using the one-time entrance button below.
+                </mj-text>
+                <mj-button mj-class="button-small" href="{{link}}">Enter the app</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer.mjml" />
+        <mj-include path="./includes/footer.mjml" />
     </mj-body>
 </mjml>

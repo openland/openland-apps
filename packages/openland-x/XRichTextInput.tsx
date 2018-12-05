@@ -212,7 +212,7 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
         if (props.hasPopper && props.user) {
             return (
                 <UserPopper user={props.user} isMe={props.isYou} noCardOnMe startSelected={false}>
-                    <MentionComponentInnerText {...props}  />
+                    <MentionComponentInnerText {...props} />
                 </UserPopper>
             );
         } else {
@@ -304,13 +304,14 @@ export const MentionEntry = (props: any) => {
                 {mention.title}
             </XView>
 
+            <XView flexGrow={1} />
+
             <XView
-                marginLeft="auto"
                 flexDirection="column"
                 alignSelf={'center'}
                 opacity={0.4}
                 fontSize={12}
-                fontWeight={'normal'}
+                fontWeight={'400'}
                 lineHeight={1.5}
                 color={isFocused ? '#000000' : 'transparent'}
             >
@@ -378,7 +379,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             this.setState({
                 editorState: EditorState.moveFocusToEnd(this.state.editorState)
             });
-            
+
             if (this.editorRef.current) {
                 this.editorRef.current.focus();
             }

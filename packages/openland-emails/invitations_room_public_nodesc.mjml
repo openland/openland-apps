@@ -1,6 +1,6 @@
 <mjml>
     <mj-head>
-        <mj-title>You’ve got a new message</mj-title>
+        <mj-title>Join {{roomName}} room at Openland</mj-title>
         <mj-include path="./includes/attributes.mjml" />
     </mj-head>
     <mj-body>
@@ -8,17 +8,14 @@
         <mj-section mj-class="wrapper">
             <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    You’ve got a new message
+                    A chat room invitation
                 </mj-text>
                 <mj-text mj-class="text">
-                    You have a&nbsp;message from <strong>{{firstName}} {{lastName}}</strong>.
-                    <br />
-                    Visit Openland to&nbsp;see it&nbsp;now.
+                    <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
                 </mj-text>
-
-                <mj-button mj-class="button" href="https://app.openland.com/mail">View message</mj-button>
+                <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./includes/install-app.mjml" />
+        <mj-include path="./includes/footer.mjml" />
     </mj-body>
 </mjml>

@@ -19,6 +19,8 @@ const app = next({ dev: dev, dir: __dirname });
 const handle = Routes.getRequestHandler(app);
 const endpoint = process.env.API_ENDPOINT || 'http://localhost:9000';
 const bindHost = dev ? '0.0.0.0' : '0.0.0.0';
+const releaseId = process.env.RELEASE_ID || 'unknown';
+const regionId = process.env.REGION_ID || 'unknown';
 
 async function start() {
     await app.prepare();
@@ -27,7 +29,9 @@ async function start() {
     //
     // Health
     //
-    server.get('/status', (req, res) => res.send('Welcome to Openland!'));
+    server.get('/status', (req, res) => {
+        res.send('Openland ' + releaseId + ' at ' + regionId + ' region');
+    });
 
     //
     // Enable Loggin
@@ -55,7 +59,7 @@ async function start() {
             changeOrigin: true,
             target: endpoint,
             ws: true,
-            pathRewrite: function(path: string) {
+            pathRewrite: function (path: string) {
                 return '/api';
             },
         }),
@@ -69,7 +73,7 @@ async function start() {
         proxy({
             changeOrigin: true,
             target: endpoint,
-            pathRewrite: function(path: string) {
+            pathRewrite: function (path: string) {
                 return '/v2/auth';
             },
         }),
@@ -136,11 +140,11 @@ async function start() {
 }
 
 // Hack for handling Ctrl-C
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
     console.warn('Exiting: received SIGINT');
     process.exit();
 });
-process.on('SIGTERM', function() {
+process.on('SIGTERM', function () {
     console.warn('Exiting: received SIGTERM');
     process.exit();
 });

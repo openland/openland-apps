@@ -14,6 +14,14 @@ steps:
 
 - script: |
     yarn install
+  displayName: 'Install'
+- script: |
+    yarn test
+  displayName: 'Test'  
+- script: |
     yarn bundle
-    ./scripts/native_bundle.sh
-  displayName: 'yarn install and bundle'
+  displayName: 'Bundle'
+- script: |
+    docker pull node:10.14.0-alpine
+    docker build .
+  displayName: 'Publish'

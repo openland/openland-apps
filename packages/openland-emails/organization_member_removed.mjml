@@ -1,12 +1,12 @@
 <mjml>
     <mj-head>
         <mj-title>You were removed from {{organizationName}}</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
                     Organization membership updated
                 </mj-text>
@@ -17,6 +17,6 @@
                 <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/footer-registered.mjml" />
     </mj-body>
 </mjml>

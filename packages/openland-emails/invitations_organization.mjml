@@ -1,24 +1,24 @@
 <mjml>
     <mj-head>
         <mj-title>Join {{organizationName}} at Openland</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header-user.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    An invitation from {{firstName}} {{lastName}}
+                    An invitation to Openland
                 </mj-text>
                 <mj-text mj-class="text">
-                    {{firstName}} invites you to join <strong>{{organizationName}}</strong> at Openland, a professional messenger built for productivity and speed. There you can seek and share advice, discover new opportunities, and collaborate with other organizations.
-                    <br/> <br/>
-                    {{customText}}
-                    <br/> <br/> 
+                    <strong>{{firstName}}</strong> invites you to&nbsp;join <strong>{{organizationName}}</strong> at&nbsp;Openland, a&nbsp;professional messenger built for productivity and speed.
                 </mj-text>
-                <mj-button mj-class="button" href="{{link}}">View / Accept</mj-button>
+                <mj-text mj-class="text">
+                    You can use Openland to&nbsp;seek and share advice, discover new opportunities, and collaborate with other organizations.
+                </mj-text>
+                <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer.mjml" />
+        <mj-include path="./includes/footer.mjml" />
     </mj-body>
 </mjml>
