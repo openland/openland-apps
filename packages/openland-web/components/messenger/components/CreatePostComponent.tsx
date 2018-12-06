@@ -13,7 +13,7 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from './view/content/MessageUploadComponent';
 import { niceBytes } from './view/content/MessageFileComponent';
 import { withSendPostMessage } from '../../../api/withSendPostMessage';
-import { SendPostMessage, SendPostMessageVariables } from 'openland-api/Types';
+import { SendPostMessage, SendPostMessageVariables, PostMessageType } from 'openland-api/Types';
 import CloseIcon from './icons/ic-close.svg';
 import PostIcon from './icons/ic-attach-post.svg';
 import PhotoIcon from './icons/ic-photo-2.svg';
@@ -456,7 +456,8 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
                 conversationId: props.conversationId,
                 title: title,
                 text: text,
-                attachments: attachments
+                attachments: attachments,
+                postType: PostMessageType.BLANK
             }
         });
 

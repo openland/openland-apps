@@ -721,17 +721,15 @@ export interface SendPostMessage_sendPostMessage {
 }
 
 export interface SendPostMessage {
-  /**
-   * Message Posts
-   */
   sendPostMessage: SendPostMessage_sendPostMessage;
 }
 
 export interface SendPostMessageVariables {
   conversationId: string;
-  title?: string | null;
+  title: string;
   text: string;
   attachments?: string[] | null;
+  postType: PostMessageType;
 }
 
 /* tslint:disable */
@@ -6628,6 +6626,13 @@ export enum NotificationsDelay {
 export enum OrganizationMemberRole {
   MEMBER = "MEMBER",
   OWNER = "OWNER",
+}
+
+export enum PostMessageType {
+  BLANK = "BLANK",
+  JOB_OPPORTUNITT = "JOB_OPPORTUNITT",
+  OFFICE_HOURS = "OFFICE_HOURS",
+  REQUEST_FOR_STARTUPS = "REQUEST_FOR_STARTUPS",
 }
 
 export enum RoomMemberRole {
