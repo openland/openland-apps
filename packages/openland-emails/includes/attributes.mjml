@@ -31,7 +31,7 @@
         padding-left="0"
         padding-right="0"
         border-width="1px"
-        border-color="#ececec" />
+        border-color="rgba(0, 0, 0, 0.12)" />
 
     <mj-button
         padding-bottom="0"
@@ -55,9 +55,9 @@
     <mj-class
         name="container"
 
-        width="690px"
-        padding-left="65px"
-        padding-right="65px" />
+        width="680px"
+        padding-left="30px"
+        padding-right="30px" />
 
     <!-- Custom styles -->
 
@@ -65,14 +65,14 @@
         name="header"
 
         text-align="left"
-        padding-top="60px"
+        padding-top="30px"
         padding-bottom="45px" />
 
     <mj-class
         name="header-row"
 
         text-align="left"
-        padding-top="60px"
+        padding-top="30px"
         padding-bottom="45px" />
 
     <mj-class
@@ -163,7 +163,7 @@
 
         text-align="left"
         padding-top="0"
-        padding-bottom="60px" />
+        padding-bottom="46px" />
 
     <mj-class
         name="footer-divider"
