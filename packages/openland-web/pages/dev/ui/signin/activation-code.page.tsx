@@ -2,12 +2,12 @@ import * as React from 'react';
 import {
     RoomSignup,
     RoomActivationCode,
+    WebSignUpActivationCode,
 } from '../../../init/components/SignComponents';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import { CreateWrapIntoState } from './utils';
 import { roomSignupKnob, signContainerKnob, activationCodeKnob } from './knobs';
 import { SignContainer } from '../../../init/components/SignComponents';
-import { WebSignUpActivationCode } from '../../../init/signin.page';
 
 const WrapIntoState = CreateWrapIntoState({
     room: { ...roomSignupKnob, ...activationCodeKnob },

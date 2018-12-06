@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
-import { RoomCreateWithEmail } from '../../../init/signin.page';
 import { RoomSignup } from '../../../init/components/SignComponents';
-import { SignContainer } from '../../../init/components/SignComponents';
-import { WebSignUpCreateWithEmail } from '../../../init/signin.page';
+import {
+    SignContainer,
+    WebSignUpCreateWithEmail,
+    RoomCreateWithEmail,
+} from '../../../init/components/SignComponents';
+
 import { CreateWrapIntoState } from './utils';
 import { roomSignupKnob, signContainerKnob, createWithEmail } from './knobs';
 

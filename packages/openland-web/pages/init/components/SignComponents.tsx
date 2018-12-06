@@ -6,6 +6,54 @@ import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { InitTexts } from '../_text';
+import { Title, SubTitle } from './CreateProfileComponents';
+
+const RoomTerms = Glamorous.div({
+    textAlign: 'center',
+    marginTop: -6,
+    paddingBottom: 26,
+    color: 'rgba(18, 30, 43, 0.35)',
+    fontSize: 13,
+    fontWeight: 500,
+    lineHeight: '19px',
+    letterSpacing: -0.35,
+
+    '& a': {
+        borderBottom: '1px solid rgba(18, 30, 43, 0.15)',
+        transition: '.3s all ease',
+        '&:hover': {
+            borderBottomColor: 'rgba(18, 30, 43, 0.3)',
+            color: 'rgba(18, 30, 43, 0.7)',
+        },
+    },
+});
+
+const RoomTitle = Glamorous.div({
+    textAlign: 'center',
+    opacity: 0.9,
+    fontSize: 26,
+    fontWeight: 600,
+    lineHeight: '31px',
+    letterSpacing: 0.8,
+    color: '#121e2b',
+    paddingTop: 64,
+    paddingBottom: 9,
+});
+
+const RoomText = Glamorous.div({
+    textAlign: 'center',
+    opacity: 0.7,
+    fontSize: 16,
+    lineHeight: '19px',
+    letterSpacing: -0.15,
+    color: '#121e2b',
+});
+
+const EmptyBlock = Glamorous.div({
+    width: '100%',
+    height: 15,
+    flexShrink: 0,
+});
 
 const RootContainer = Glamorous.div({
     display: 'flex',
@@ -95,7 +143,7 @@ const SignupButton = Glamorous(XLink)({
     fontSize: 16,
     lineHeight: 1.5,
     letterSpacing: 0.5,
-    color: '#5640d6',
+    color: '#1790ff',
     marginLeft: 5,
     '&:hover': {
         color: '#1f3449',
@@ -131,11 +179,11 @@ const Header = (props: HeaderProps) => (
 );
 
 const MainContent = Glamorous.div({
-    width: 390,
+    width: 442,
     margin: 'auto',
     '@media(max-width: 530px)': {
         width: '100%',
-        maxWidth: 390,
+        maxWidth: 442,
     },
 });
 
@@ -177,22 +225,11 @@ export const SignContainer = (props: SignContainerProps) => {
     );
 };
 
-export const Title = Glamorous.div<{ marginBottom?: number }>(props => ({
-    fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: 0.6,
-    textAlign: 'center',
-    color: '#1f3449',
-    marginBottom: props.marginBottom ? props.marginBottom : 11,
-}));
-
 export const Description = Glamorous.div({
-    opacity: 0.7,
     fontSize: 16,
-    lineHeight: 1.5,
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
     textAlign: 'center',
-    color: '#1f3449',
+    color: '#000',
 });
 
 export const ButtonsWrapper = Glamorous.div<{
@@ -214,9 +251,9 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
             width: '100%',
             height: 48,
             transition: 'all .15s ease',
-            backgroundColor: props.primary ? '#654bfa' : '#ffffff',
+            backgroundColor: props.primary ? '#1790ff' : '#ffffff',
             color: props.primary ? '#fff' : '#334562',
-            borderRadius: 6,
+            borderRadius: props.rounded ? 24 : 6,
             border: props.primary
                 ? 'solid 1px transparent'
                 : 'solid 1px #dcdee4',
@@ -229,8 +266,8 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
                     '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
             },
             '&:active': {
-                color: props.primary ? '#fff' : '#5640d6',
-                backgroundColor: props.primary ? '#5640d6' : '#eeecfa',
+                color: props.primary ? '#fff' : '#1790ff',
+                backgroundColor: props.primary ? '#1790ff' : '#eeecfa',
             },
             '& span': {
                 fontSize: 18,
@@ -254,7 +291,7 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
                 },
                 '&:active': {
                     '& svg path:first-child': {
-                        fill: '#5640d6',
+                        fill: '#1790ff',
                     },
                 },
             },
@@ -262,7 +299,7 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
         props =>
             props.rounded
                 ? {
-                      height: 40,
+                      height: 44,
                       borderRadius: 20,
                       backgroundColor: props.primary ? '#1790ff' : '#ffffff',
                       color: props.primary ? '#ffffff' : '#334562',
@@ -524,6 +561,268 @@ export class RoomSignup extends React.Component<RoomSignupProps> {
     }
 }
 
+export const RoomCreateWithEmail = ({
+    signin,
+    emailError,
+    emailChanged,
+    emailValue,
+    loginEmailStart,
+    emailSending,
+}: {
+    signin: boolean;
+    emailError: string;
+    emailChanged: (value: string) => void;
+    emailValue: string;
+    loginEmailStart: () => void;
+    emailSending: boolean;
+}) => {
+    return (
+        <div style={{ position: 'relative' }}>
+            {emailError !== '' && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                    }}
+                >
+                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
+                </div>
+            )}
+            <RoomTitle>
+                {signin
+                    ? InitTexts.auth.signinEmail
+                    : InitTexts.auth.signupEmail}
+            </RoomTitle>
+            <ButtonsWrapper marginTop={40} width={280}>
+                <XInput
+                    type="email"
+                    autofocus={true}
+                    size="large"
+                    onChange={emailChanged}
+                    value={emailValue}
+                    placeholder={InitTexts.auth.emailPlaceholder}
+                    onEnter={loginEmailStart}
+                />
+            </ButtonsWrapper>
+            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
+                <XHorizontal>
+                    <XButton
+                        onClick={loginEmailStart}
+                        style="primary"
+                        size="large"
+                        alignSelf="stretch"
+                        flexGrow={1}
+                        loading={emailSending}
+                        text={InitTexts.auth.continue}
+                    />
+                </XHorizontal>
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+export const WebSignUpActivationCode = ({
+    codeError,
+    codeChanged,
+    codeSending,
+    codeValue,
+    loginCodeStart,
+}: {
+    codeError: string;
+    codeChanged: (value: string) => void;
+    codeSending: boolean;
+    codeValue: string;
+    loginCodeStart: (event?: React.MouseEvent<any>) => void;
+}) => {
+    return (
+        <div>
+            <Title>Please, enter activation code</Title>
+            {codeError !== '' && (
+                <>
+                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
+                    <EmptyBlock />
+                </>
+            )}
+            <ButtonsWrapper>
+                <XInput
+                    pattern="[0-9]*"
+                    type="number"
+                    size="large"
+                    onChange={codeChanged}
+                    value={codeValue}
+                    placeholder={InitTexts.auth.codePlaceholder}
+                    onEnter={loginCodeStart}
+                />
+            </ButtonsWrapper>
+            <ButtonsWrapper marginTop={20}>
+                <XHorizontal>
+                    <XButton
+                        onClick={loginCodeStart}
+                        size="large"
+                        style="primary"
+                        alignSelf="stretch"
+                        flexGrow={1}
+                        loading={codeSending}
+                        text={InitTexts.auth.complete}
+                    />
+                </XHorizontal>
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+export const WebSignUpCreateWithEmail = ({
+    signin,
+    emailError,
+    emailChanged,
+    emailValue,
+    loginEmailStart,
+    emailSending,
+}: {
+    signin: boolean;
+    emailError: string;
+    emailChanged: (value: string) => void;
+    emailValue: string;
+    loginEmailStart: () => void;
+    emailSending: boolean;
+}) => {
+    return (
+        <div>
+            <Title>
+                {signin
+                    ? InitTexts.auth.signinEmailTitle
+                    : InitTexts.auth.signupEmail}
+            </Title>
+            <SubTitle>{InitTexts.auth.signinEmailSubtitle}</SubTitle>
+            {emailError !== '' && (
+                <>
+                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
+                    <EmptyBlock />
+                </>
+            )}
+            <ButtonsWrapper>
+                <XInput
+                    type="email"
+                    size="large"
+                    onChange={emailChanged}
+                    value={emailValue}
+                    placeholder={InitTexts.auth.emailPlaceholder}
+                    onEnter={loginEmailStart}
+                />
+            </ButtonsWrapper>
+            <ButtonsWrapper marginTop={20}>
+                <XHorizontal>
+                    <XButton
+                        onClick={loginEmailStart}
+                        style="primary"
+                        size="large"
+                        alignSelf="stretch"
+                        flexGrow={1}
+                        loading={emailSending}
+                        text={InitTexts.auth.continue}
+                    />
+                </XHorizontal>
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+export const RoomAuthMechanism = ({
+    signin,
+    loginWithGoogle,
+    loginWithEmail,
+}: {
+    signin: boolean;
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+}) => {
+    const auth = InitTexts.auth;
+    const title = signin
+        ? 'Sign in and join the conversation'
+        : 'Sign up and join the conversation';
+
+    const subTitle = signin
+        ? 'We are excited to have you back!'
+        : 'Creating an account is free and easy';
+
+    const googleButtonText = signin
+        ? InitTexts.auth.signinEmail
+        : InitTexts.auth.signupEmail;
+
+    const emailText = signin ? auth.signinEmail : auth.signupEmail;
+
+    return (
+        <div>
+            <RoomTitle>{title}</RoomTitle>
+            <RoomText>{subTitle}</RoomText>
+            <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
+                <GoogleButton
+                    onClick={loginWithGoogle}
+                    text={googleButtonText}
+                    rounded={true}
+                />
+                <Separator marginTop={10} marginBottom={10} />
+                <EmailButton
+                    onClick={loginWithEmail}
+                    text={emailText}
+                    rounded={true}
+                />
+            </ButtonsWrapper>
+
+            {!signin && (
+                <RoomTerms>
+                    By creating an account you are accepting our{' '}
+                    <XLink href="https://openland.com/terms">
+                        Terms of Service
+                    </XLink>{' '}
+                    and{' '}
+                    <XLink href="https://openland.com/privacy">
+                        Privacy Policy
+                    </XLink>
+                    .
+                </RoomTerms>
+            )}
+        </div>
+    );
+};
+
+export const WebSignUpAuthMechanism = ({
+    signin,
+    loginWithGoogle,
+    loginWithEmail,
+}: {
+    signin: boolean;
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+}) => {
+    const auth = InitTexts.auth;
+    const title = signin ? auth.signinTitle : auth.signupTitle;
+    const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
+    const emailText = signin ? auth.signinEmail : auth.signupEmail;
+
+    return (
+        <div>
+            <Title>{title}</Title>
+            {signin && <Description>{auth.signinSubtitle}</Description>}
+            <ButtonsWrapper marginTop={52} width={280}>
+                <GoogleButton
+                    rounded
+                    onClick={loginWithGoogle}
+                    text={googleButtonText}
+                />
+                <Separator />
+                <EmailButton
+                    rounded
+                    onClick={loginWithEmail}
+                    text={emailText}
+                />
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
 export const RoomActivationCode = ({
     codeError,
     codeChanged,
@@ -580,51 +879,6 @@ export const RoomActivationCode = ({
         </div>
     );
 };
-export const RoomLoader = Glamorous.div({
-    height: 150,
-    position: 'relative',
-});
-
-export const RoomTerms = Glamorous.div({
-    textAlign: 'center',
-    marginTop: -6,
-    paddingBottom: 26,
-    color: 'rgba(18, 30, 43, 0.35)',
-    fontSize: 13,
-    fontWeight: 500,
-    lineHeight: '19px',
-    letterSpacing: -0.35,
-
-    '& a': {
-        borderBottom: '1px solid rgba(18, 30, 43, 0.15)',
-        transition: '.3s all ease',
-        '&:hover': {
-            borderBottomColor: 'rgba(18, 30, 43, 0.3)',
-            color: 'rgba(18, 30, 43, 0.7)',
-        },
-    },
-});
-
-export const RoomTitle = Glamorous.div({
-    textAlign: 'center',
-    opacity: 0.9,
-    fontSize: 26,
-    fontWeight: 600,
-    lineHeight: '31px',
-    letterSpacing: 0.8,
-    color: '#121e2b',
-    paddingTop: 64,
-    paddingBottom: 9,
-});
-
-export const RoomText = Glamorous.div({
-    textAlign: 'center',
-    opacity: 0.7,
-    fontSize: 16,
-    lineHeight: '19px',
-    letterSpacing: -0.15,
-    color: '#121e2b',
-});
 
 export const GoogleButton = (props: {
     onClick: any;
