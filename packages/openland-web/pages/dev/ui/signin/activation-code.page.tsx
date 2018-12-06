@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {
-    RoomSignup,
+    RoomSignupContainer,
     RoomActivationCode,
     WebSignUpActivationCode,
 } from '../../../init/components/SignComponents';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import { CreateWrapIntoState } from './utils';
 import { roomSignupKnob, signContainerKnob, activationCodeKnob } from './knobs';
-import { SignContainer } from '../../../init/components/SignComponents';
+import { WebSignUpContainer } from '../../../init/components/SignComponents';
 
 const WrapIntoState = CreateWrapIntoState({
     room: { ...roomSignupKnob, ...activationCodeKnob },
@@ -21,9 +21,9 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignup headerStyle={headerStyle}>
+                        <RoomSignupContainer headerStyle={headerStyle}>
                             <RoomActivationCode {...other} />
-                        </RoomSignup>
+                        </RoomSignupContainer>
                     );
                 } else {
                     const {
@@ -36,7 +36,7 @@ export default () => (
                     } = branchProps;
 
                     return (
-                        <SignContainer
+                        <WebSignUpContainer
                             {...{
                                 signin,
                                 headerStyle,
@@ -46,7 +46,7 @@ export default () => (
                             }}
                         >
                             <WebSignUpActivationCode {...other} />
-                        </SignContainer>
+                        </WebSignUpContainer>
                     );
                 }
             }}

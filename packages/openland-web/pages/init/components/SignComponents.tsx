@@ -161,7 +161,7 @@ const EmptyBlock = Glamorous.div({
     flexShrink: 0,
 });
 
-// SignContainer start
+// WebSignUpContainer start
 
 const RootContainer = Glamorous.div({
     display: 'flex',
@@ -300,7 +300,7 @@ interface SignContainerProps extends HeaderProps {
     children?: any;
 }
 
-export const SignContainer = (props: SignContainerProps) => {
+export const WebSignUpContainer = (props: SignContainerProps) => {
     return (
         <RootContainer>
             <LeftContainer>
@@ -333,7 +333,7 @@ export const SignContainer = (props: SignContainerProps) => {
     );
 };
 
-// SignContainer end
+// WebSignUpContainer end
 // RoomSignup start
 
 const ButtonsWrapper = Glamorous.div<{
@@ -464,7 +464,7 @@ const RoomSignupHeader = Glamorous.div<{
             : {},
 ]);
 
-interface RoomSignupProps {
+interface RoomSignupContainerProps {
     headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
     text?: string;
     path?: string;
@@ -472,7 +472,9 @@ interface RoomSignupProps {
     children?: any;
 }
 
-export class RoomSignup extends React.Component<RoomSignupProps> {
+export class RoomSignupContainer extends React.Component<
+    RoomSignupContainerProps
+> {
     render() {
         const props = this.props;
 
@@ -495,199 +497,6 @@ export class RoomSignup extends React.Component<RoomSignupProps> {
     }
 }
 // RoomSignup end
-// CreateWithEmail start
-
-type CreateWithEmailProps = {
-    signin: boolean;
-    emailError: string;
-    emailChanged: (value: string) => void;
-    emailValue: string;
-    loginEmailStart: () => void;
-    emailSending: boolean;
-};
-
-export const RoomCreateWithEmail = ({
-    signin,
-    emailError,
-    emailChanged,
-    emailValue,
-    loginEmailStart,
-    emailSending,
-}: CreateWithEmailProps) => {
-    return (
-        <div style={{ position: 'relative' }}>
-            {emailError !== '' && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                    }}
-                >
-                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
-                </div>
-            )}
-            <RoomTitle>
-                {signin
-                    ? InitTexts.auth.signinEmail
-                    : InitTexts.auth.signupEmail}
-            </RoomTitle>
-            <ButtonsWrapper marginTop={40} width={280}>
-                <XInput
-                    type="email"
-                    autofocus={true}
-                    size="large"
-                    onChange={emailChanged}
-                    value={emailValue}
-                    placeholder={InitTexts.auth.emailPlaceholder}
-                    onEnter={loginEmailStart}
-                />
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                <XVertical alignItems="center">
-                    <XButton
-                        onClick={loginEmailStart}
-                        style="primary"
-                        size="large"
-                        loading={emailSending}
-                        text={InitTexts.auth.continue}
-                    />
-                </XVertical>
-            </ButtonsWrapper>
-        </div>
-    );
-};
-
-export const WebSignUpCreateWithEmail = ({
-    signin,
-    emailError,
-    emailChanged,
-    emailValue,
-    loginEmailStart,
-    emailSending,
-}: CreateWithEmailProps) => {
-    return (
-        <div>
-            <Title>
-                {signin
-                    ? InitTexts.auth.signinEmailTitle
-                    : InitTexts.auth.signupEmail}
-            </Title>
-            <SubTitle>{InitTexts.auth.signinEmailSubtitle}</SubTitle>
-            {emailError !== '' && (
-                <>
-                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
-                    <EmptyBlock />
-                </>
-            )}
-            <ButtonsWrapper>
-                <XInput
-                    type="email"
-                    size="large"
-                    onChange={emailChanged}
-                    value={emailValue}
-                    placeholder={InitTexts.auth.emailPlaceholder}
-                    onEnter={loginEmailStart}
-                />
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XButton
-                        onClick={loginEmailStart}
-                        style="primary"
-                        size="large"
-                        alignSelf="center"
-                        loading={emailSending}
-                        text={InitTexts.auth.continue}
-                    />
-                </XVertical>
-            </ButtonsWrapper>
-        </div>
-    );
-};
-
-// CreateWithEmail end
-// CreateProfile start
-
-const XInputWrapper = Glamorous(XInput)({
-    minWidth: 330,
-});
-
-const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
-    marginBottom: 26,
-});
-
-const XFormSubmitWrapper = Glamorous(XFormSubmit)({
-    marginTop: 50,
-});
-
-export const CreateProfileFormInner = (props: {
-    roomView: boolean;
-    prefill: any;
-    usePhotoPrefill: boolean;
-    defaultAction: (data: any) => any;
-}) => {
-    const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
-    console.log(props);
-    const MyTitle = roomView ? RoomTitle : Title;
-    return (
-        <div>
-            <MyTitle>{InitTexts.create_profile.title}</MyTitle>
-            <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-            <XForm
-                defaultData={{
-                    input: {
-                        firstName: (prefill && prefill.firstName) || '',
-                        lastName: (prefill && prefill.lastName) || '',
-                    },
-                }}
-                defaultAction={defaultAction}
-                defaultLayout={false}
-            >
-                <XFormError onlyGeneralErrors={true} width={472} />
-                <XFormLoadingContent>
-                    <XVertical alignItems="center">
-                        <XAvatarUploadWrapper
-                            field="input.photoRef"
-                            dataTestId="photo"
-                            size="default"
-                            initialUrl={
-                                usePhotoPrefill
-                                    ? prefill && prefill.picture
-                                    : undefined
-                            }
-                        />
-
-                        <XInputWrapper
-                            field="input.firstName"
-                            size="large"
-                            title="First name"
-                            dataTestId="first-name"
-                        />
-
-                        <XInputWrapper
-                            field="input.lastName"
-                            size="large"
-                            title="Last name"
-                            dataTestId="last-name"
-                        />
-                        <ButtonsWrapper marginBottom={84}>
-                            <XFormSubmitWrapper
-                                dataTestId="continue-button"
-                                style="primary"
-                                text={InitTexts.create_profile.continue}
-                                size="large"
-                            />
-                        </ButtonsWrapper>
-                    </XVertical>
-                </XFormLoadingContent>
-            </XForm>
-        </div>
-    );
-};
-
-// CreateProfile end
 // AuthMechanism start
 
 const SeparatorStyle = Glamorous.div<{
@@ -1117,6 +926,199 @@ export const RoomActivationCode = ({
 };
 
 // ActivationCode end
+// CreateWithEmail start
+
+type CreateWithEmailProps = {
+    signin: boolean;
+    emailError: string;
+    emailChanged: (value: string) => void;
+    emailValue: string;
+    loginEmailStart: () => void;
+    emailSending: boolean;
+};
+
+export const RoomCreateWithEmail = ({
+    signin,
+    emailError,
+    emailChanged,
+    emailValue,
+    loginEmailStart,
+    emailSending,
+}: CreateWithEmailProps) => {
+    return (
+        <div style={{ position: 'relative' }}>
+            {emailError !== '' && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                    }}
+                >
+                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
+                </div>
+            )}
+            <RoomTitle>
+                {signin
+                    ? InitTexts.auth.signinEmail
+                    : InitTexts.auth.signupEmail}
+            </RoomTitle>
+            <ButtonsWrapper marginTop={40} width={280}>
+                <XInput
+                    type="email"
+                    autofocus={true}
+                    size="large"
+                    onChange={emailChanged}
+                    value={emailValue}
+                    placeholder={InitTexts.auth.emailPlaceholder}
+                    onEnter={loginEmailStart}
+                />
+            </ButtonsWrapper>
+            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
+                <XVertical alignItems="center">
+                    <XButton
+                        onClick={loginEmailStart}
+                        style="primary"
+                        size="large"
+                        loading={emailSending}
+                        text={InitTexts.auth.continue}
+                    />
+                </XVertical>
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+export const WebSignUpCreateWithEmail = ({
+    signin,
+    emailError,
+    emailChanged,
+    emailValue,
+    loginEmailStart,
+    emailSending,
+}: CreateWithEmailProps) => {
+    return (
+        <div>
+            <Title>
+                {signin
+                    ? InitTexts.auth.signinEmailTitle
+                    : InitTexts.auth.signupEmail}
+            </Title>
+            <SubTitle>{InitTexts.auth.signinEmailSubtitle}</SubTitle>
+            {emailError !== '' && (
+                <>
+                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
+                    <EmptyBlock />
+                </>
+            )}
+            <ButtonsWrapper>
+                <XInput
+                    type="email"
+                    size="large"
+                    onChange={emailChanged}
+                    value={emailValue}
+                    placeholder={InitTexts.auth.emailPlaceholder}
+                    onEnter={loginEmailStart}
+                />
+            </ButtonsWrapper>
+            <ButtonsWrapper marginTop={20}>
+                <XVertical alignItems="center">
+                    <XButton
+                        onClick={loginEmailStart}
+                        style="primary"
+                        size="large"
+                        alignSelf="center"
+                        loading={emailSending}
+                        text={InitTexts.auth.continue}
+                    />
+                </XVertical>
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+// CreateWithEmail end
+// CreateProfile start
+
+const XInputWrapper = Glamorous(XInput)({
+    minWidth: 330,
+});
+
+const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
+    marginBottom: 26,
+});
+
+const XFormSubmitWrapper = Glamorous(XFormSubmit)({
+    marginTop: 50,
+});
+
+export const CreateProfileFormInner = (props: {
+    roomView: boolean;
+    prefill: any;
+    usePhotoPrefill: boolean;
+    defaultAction: (data: any) => any;
+}) => {
+    const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
+    console.log(props);
+    const MyTitle = roomView ? RoomTitle : Title;
+    return (
+        <div>
+            <MyTitle>{InitTexts.create_profile.title}</MyTitle>
+            <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
+            <XForm
+                defaultData={{
+                    input: {
+                        firstName: (prefill && prefill.firstName) || '',
+                        lastName: (prefill && prefill.lastName) || '',
+                    },
+                }}
+                defaultAction={defaultAction}
+                defaultLayout={false}
+            >
+                <XFormError onlyGeneralErrors={true} width={472} />
+                <XFormLoadingContent>
+                    <XVertical alignItems="center">
+                        <XAvatarUploadWrapper
+                            field="input.photoRef"
+                            dataTestId="photo"
+                            size="default"
+                            initialUrl={
+                                usePhotoPrefill
+                                    ? prefill && prefill.picture
+                                    : undefined
+                            }
+                        />
+
+                        <XInputWrapper
+                            field="input.firstName"
+                            size="large"
+                            title="First name"
+                            dataTestId="first-name"
+                        />
+
+                        <XInputWrapper
+                            field="input.lastName"
+                            size="large"
+                            title="Last name"
+                            dataTestId="last-name"
+                        />
+                        <ButtonsWrapper marginBottom={84}>
+                            <XFormSubmitWrapper
+                                dataTestId="continue-button"
+                                style="primary"
+                                text={InitTexts.create_profile.continue}
+                                size="large"
+                            />
+                        </ButtonsWrapper>
+                    </XVertical>
+                </XFormLoadingContent>
+            </XForm>
+        </div>
+    );
+};
+
+// CreateProfile end
 // CreateOrganization start
 
 const InfoText = Glamorous.span({
@@ -1319,5 +1321,4 @@ export class CreateOrganizationFormInner extends React.Component<
         );
     }
 }
-
 // CreateOrganization end

@@ -1,12 +1,12 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { withAppBase } from '../../components/withAppBase';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import {
-    SignContainer,
-    RoomSignup,
-    RoomLoader,
+    WebSignUpContainer,
+    RoomSignupContainer,
     RoomActivationCode,
     RoomAuthMechanism,
     WebSignUpAuthMechanism,
@@ -20,6 +20,11 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import * as Cookie from 'js-cookie';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+
+const RoomLoader = Glamorous.div({
+    height: 150,
+    position: 'relative',
+});
 
 class SignInComponent extends React.Component<
     { redirect?: string | null; roomView?: boolean } & XWithRouter,
@@ -205,7 +210,9 @@ class SignInComponent extends React.Component<
 
         const linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
 
-        const Container = this.props.roomView ? RoomSignup : SignContainer;
+        const Container = this.props.roomView
+            ? RoomSignupContainer
+            : WebSignUpContainer;
         const AuthMechanism = this.props.roomView
             ? RoomAuthMechanism
             : WebSignUpAuthMechanism;

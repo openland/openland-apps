@@ -258,13 +258,10 @@ routes.add('/ui/signin/accept-invitation', '/dev/ui/signin/accept-invitation');
 routes.add('/ui/signin/auth-mechanism', '/dev/ui/signin/auth-mechanism');
 routes.add('/ui/signin/create-with-email', '/dev/ui/signin/create-with-email');
 routes.add('/ui/signin/activation-code', '/dev/ui/signin/activation-code');
+routes.add('/ui/signin/create-profile', '/dev/ui/signin/create-profile');
 routes.add(
-    '/ui/signin/introduce-yourself',
-    '/dev/ui/signin/introduce-yourself',
-);
-routes.add(
-    '/ui/signin/enter-organization',
-    '/dev/ui/signin/enter-organization',
+    '/ui/signin/create-organization',
+    '/dev/ui/signin/create-organization',
 );
 
 //

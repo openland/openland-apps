@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
-import { RoomSignup } from '../../../init/components/SignComponents';
+import { RoomSignupContainer } from '../../../init/components/SignComponents';
 import {
-    SignContainer,
+    WebSignUpContainer,
     WebSignUpCreateWithEmail,
     RoomCreateWithEmail,
 } from '../../../init/components/SignComponents';
@@ -22,9 +22,9 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignup headerStyle={headerStyle}>
+                        <RoomSignupContainer headerStyle={headerStyle}>
                             <RoomCreateWithEmail {...other} />
-                        </RoomSignup>
+                        </RoomSignupContainer>
                     );
                 } else {
                     const {
@@ -36,7 +36,7 @@ export default () => (
                         ...other
                     } = branchProps;
                     return (
-                        <SignContainer
+                        <WebSignUpContainer
                             {...{
                                 signin,
                                 headerStyle,
@@ -46,7 +46,7 @@ export default () => (
                             }}
                         >
                             <WebSignUpCreateWithEmail {...other} />
-                        </SignContainer>
+                        </WebSignUpContainer>
                     );
                 }
             }}

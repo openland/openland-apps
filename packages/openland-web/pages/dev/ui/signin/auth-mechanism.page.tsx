@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import {
-    RoomSignup,
+    RoomSignupContainer,
     WebSignUpAuthMechanism,
     RoomAuthMechanism,
 } from '../../../init/components/SignComponents';
-import { SignContainer } from '../../../init/components/SignComponents';
+import { WebSignUpContainer } from '../../../init/components/SignComponents';
 import { CreateWrapIntoState } from './utils';
 
 import { roomSignupKnob, signContainerKnob, authMechanismKnob } from './knobs';
@@ -22,9 +22,9 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignup headerStyle={headerStyle}>
+                        <RoomSignupContainer headerStyle={headerStyle}>
                             <RoomAuthMechanism {...other} />
-                        </RoomSignup>
+                        </RoomSignupContainer>
                     );
                 } else {
                     const {
@@ -37,7 +37,7 @@ export default () => (
                     } = branchProps;
 
                     return (
-                        <SignContainer
+                        <WebSignUpContainer
                             {...{
                                 signin,
                                 headerStyle,
@@ -47,7 +47,7 @@ export default () => (
                             }}
                         >
                             <WebSignUpAuthMechanism {...{ ...other, signin }} />
-                        </SignContainer>
+                        </WebSignUpContainer>
                     );
                 }
             }}

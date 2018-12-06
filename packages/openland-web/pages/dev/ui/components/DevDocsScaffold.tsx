@@ -101,14 +101,14 @@ export function DevDocsScaffold(props: {
                             <Sidebar.Subitem path="/ui/signin/activation-code">
                                 ActivationCode
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/introduce-yourself">
-                                Introduce Yourself
+                            <Sidebar.Subitem path="/ui/signin/create-profile">
+                                CreateProfile
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/enter-organization">
-                                Enter Organization
+                            <Sidebar.Subitem path="/ui/signin/create-organization">
+                                CreateOrganization
                             </Sidebar.Subitem>
                             <Sidebar.Subitem path="/waitlist-test/">
-                                Wait List
+                                WaitList
                             </Sidebar.Subitem>
 
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
