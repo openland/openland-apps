@@ -26,6 +26,7 @@ import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentatio
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../../../api/withChatLeave';
+import { CreatePostComponent } from './CreatePostComponent';
 
 interface MessagesComponentProps {
     organizationId: string | null;
@@ -40,6 +41,7 @@ interface MessagesComponentState {
     hideInput: boolean;
     loading: boolean;
     messages: ModelMessage[];
+    hideChat: boolean;
 }
 
 const DeleteMessageComponent = withDeleteMessage(props => {
@@ -119,6 +121,7 @@ class MessagesComponent
             hideInput: false,
             messages: [],
             loading: true,
+            hideChat: false
         };
     }
 
@@ -178,6 +181,12 @@ class MessagesComponent
 
     componentWillReceiveProps(props: MessagesComponentProps) {
         this.updateConversation(props);
+
+        if (this.props.conversationId !== props.conversationId) {
+            this.setState({
+                hideChat: false
+            });
+        }
     }
 
     handleChange = async (text: string) => {
@@ -221,6 +230,12 @@ class MessagesComponent
         });
     };
 
+    handleHideChat = (show: boolean) => {
+        this.setState({
+            hideChat: show
+        })
+    }
+
     getMessages = () => {
         return this.state.messages;
     };
@@ -236,37 +251,48 @@ class MessagesComponent
 
         return (
             <ConversationContainer>
-                <ConversationMessagesComponent
-                    ref={this.messagesList}
-                    key={this.props.conversationId}
-                    me={this.props.me}
-                    messages={this.state.messages}
-                    loading={this.state.loading}
-                    conversation={this.conversation}
-                    conversationId={this.props.conversationId}
-                    conversationType={this.props.conversationType}
-                    inputShower={this.handleShowIput}
-                />
-                {this.state.hideInput === false && (
-                    <MessageComposeComponentDraft
-                        getMessages={this.getMessages}
-                        conversation={this.conversation}
-                        onChange={this.handleChange}
-                        onSend={this.handleSend}
-                        onSendFile={this.handleSendFile}
-                        enabled={true}
-                        conversationType={this.props.conversationType}
+                {this.state.hideChat && (
+                    <CreatePostComponent
+                        handleHideChat={this.handleHideChat}
                         conversationId={this.props.conversationId}
-                        variables={{
-                            roomId: this.props.conversationId,
-                            conversationId: this.props.conversationId,
-                            organizationId: this.props.organizationId,
-                        }}
                     />
                 )}
-                <DeleteUrlAugmentationComponent />
-                <DeleteMessageComponent />
-                <LeaveChatComponent />
+                {!this.state.hideChat && (
+                    <>
+                        <ConversationMessagesComponent
+                            ref={this.messagesList}
+                            key={this.props.conversationId}
+                            me={this.props.me}
+                            messages={this.state.messages}
+                            loading={this.state.loading}
+                            conversation={this.conversation}
+                            conversationId={this.props.conversationId}
+                            conversationType={this.props.conversationType}
+                            inputShower={this.handleShowIput}
+                        />
+                        {this.state.hideInput === false && (
+                            <MessageComposeComponentDraft
+                                getMessages={this.getMessages}
+                                conversation={this.conversation}
+                                onChange={this.handleChange}
+                                onSend={this.handleSend}
+                                onSendFile={this.handleSendFile}
+                                enabled={true}
+                                conversationType={this.props.conversationType}
+                                conversationId={this.props.conversationId}
+                                handleHideChat={this.handleHideChat}
+                                variables={{
+                                    roomId: this.props.conversationId,
+                                    conversationId: this.props.conversationId,
+                                    organizationId: this.props.organizationId,
+                                }}
+                            />
+                        )}
+                        <DeleteUrlAugmentationComponent />
+                        <DeleteMessageComponent />
+                        <LeaveChatComponent />
+                    </>
+                )}
             </ConversationContainer>
         );
     }

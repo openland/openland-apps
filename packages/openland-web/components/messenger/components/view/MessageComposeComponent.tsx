@@ -17,6 +17,7 @@ import PhotoIcon from '../icons/ic-photo-2.svg';
 import FileIcon from '../icons/ic-file-3.svg';
 import UloadIc from '../icons/file-upload.svg';
 import IntroIc from '../icons/ic-attach-intro-3.svg';
+import PostIcon from '../icons/ic-add-post.svg';
 import ShortcutsIcon from '../icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from '../icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
@@ -326,28 +327,28 @@ const EditView = (props: {
     message: string;
     onCancel: () => void;
 }) => (
-    <EditWrapper
-        justifyContent="space-between"
-        alignItems="center"
-        separator={5}
-    >
-        <BlueLine />
-        <HorizontalHidden
-            flexGrow={1}
-            separator={9}
-            alignItems="center"
+        <EditWrapper
             justifyContent="space-between"
+            alignItems="center"
+            separator={5}
         >
-            <VerticalHidden separator={1}>
-                <EditTitle>{props.title}</EditTitle>
-                <EditText>{props.message}</EditText>
-            </VerticalHidden>
-            <EditCloseBtn onClick={props.onCancel}>
-                <CloseIcon />
-            </EditCloseBtn>
-        </HorizontalHidden>
-    </EditWrapper>
-);
+            <BlueLine />
+            <HorizontalHidden
+                flexGrow={1}
+                separator={9}
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <VerticalHidden separator={1}>
+                    <EditTitle>{props.title}</EditTitle>
+                    <EditText>{props.message}</EditText>
+                </VerticalHidden>
+                <EditCloseBtn onClick={props.onCancel}>
+                    <CloseIcon />
+                </EditCloseBtn>
+            </HorizontalHidden>
+        </EditWrapper>
+    );
 
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
@@ -357,6 +358,7 @@ export interface MessageComposeComponentProps {
     onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
+    handleHideChat?: (show: boolean) => void;
 }
 
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
@@ -365,19 +367,20 @@ interface MessageComposeWithDraft extends MessageComposeComponentProps {
 
 interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
     members?: RoomMembers_members[];
+    handleHideChat?: (show: boolean) => void;
 }
 
 interface MessageComposeComponentInnerProps
     extends MessageComposeComponentProps,
-        XWithRouter,
-        UserInfoComponentProps {
+    XWithRouter,
+    UserInfoComponentProps {
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<
-        SaveDraftMessage,
-        Partial<SaveDraftMessageVariables>
+    SaveDraftMessage,
+    Partial<SaveDraftMessageVariables>
     >;
     draft?: string | null;
 }
@@ -418,7 +421,7 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
 class MessageComposeComponentInner extends React.PureComponent<
     MessageComposeComponentInnerProps,
     MessageComposeComponentInnerState
-> {
+    > {
     listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
@@ -648,6 +651,13 @@ class MessageComposeComponentInner extends React.PureComponent<
         });
     };
 
+    private handleMouseOut = () => {
+        this.setState({
+            dragOn: false,
+            dragUnder: false
+        });
+    };
+
     private handleDragOver = () => {
         this.setState({
             dragUnder: true,
@@ -734,7 +744,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                 floatingMessage: '',
                 forwardMessageReply: `Forward ${
                     messagesContext.forwardMessagesId.size
-                } messages`,
+                    } messages`,
                 forwardMessageId: messagesContext.forwardMessagesId,
                 forwardMessageSender: 'Forward',
             });
@@ -784,7 +794,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                     floatingMessage: '',
                     forwardMessageReply: `Forward ${
                         forwardMessagesId.size
-                    } messages`,
+                        } messages`,
                     forwardMessageId: forwardMessagesId,
                     forwardMessageSender: 'Forward',
                 };
@@ -811,7 +821,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                     floatingMessage: '',
                     forwardMessageReply: `Reply ${
                         replyMessagesId.size
-                    } messages`,
+                        } messages`,
                     forwardMessageId: replyMessagesId,
                     forwardMessageSender: 'Reply',
                 };
@@ -896,6 +906,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                         onDrop={this.handleDrop}
                         onDragOver={this.handleDragOver}
                         onDragLeave={this.handleDragLeave}
+                        onMouseOut={this.handleMouseOut}
                         dragUnder={this.state.dragUnder}
                     >
                         <UloadIc />
@@ -962,13 +973,28 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     <span>Document</span>
                                 </AttachmentButton>
                                 <AttachmentButton
+                                    onClick={() =>
+                                        this.props.enabled === false
+                                            ? undefined
+                                            : this.props.handleHideChat
+                                                ? this.props.handleHideChat(true)
+                                                : undefined
+                                    }
+                                    enabled={this.props.enabled === false}
+                                    disable={this.props.enabled === false}
+                                    className="document-button"
+                                >
+                                    <PostIcon />
+                                    <span>Post</span>
+                                </AttachmentButton>
+                                <AttachmentButton
                                     query={
                                         this.props.enabled === false
                                             ? undefined
                                             : {
-                                                  field: 'addItro',
-                                                  value: 'true',
-                                              }
+                                                field: 'addItro',
+                                                value: 'true',
+                                            }
                                     }
                                     className="intro-button"
                                     disable={this.props.enabled === false}
@@ -1016,9 +1042,9 @@ export const MessageComposeComponent = withMessageState(
 ) as React.ComponentType<MessageComposeWithChannelMembers>;
 
 const MessageComposeComponentChannelMembers = withChannelMembers(props => {
-    return <MessageComposeComponent members={props.data.members} {...props} />;
+    return <MessageComposeComponent members={props.data.members} {...props} handleHideChat={(props as any).handleHideChat} />;
 }) as React.ComponentType<
-    MessageComposeComponentProps & { draft: string | null }
+MessageComposeComponentProps & { draft: string | null }
 >;
 
 export const MessageComposeComponentDraft = withGetDraftMessage(
@@ -1031,12 +1057,12 @@ export const MessageComposeComponentDraft = withGetDraftMessage(
         );
     },
 ) as React.ComponentType<
-    MessageComposeComponentProps & {
-        variables?: {
-            roomId?: string;
-            conversationId?: string;
-            organizationId: string | null;
-        };
-        getMessages?: Function;
-    }
+MessageComposeComponentProps & {
+    variables?: {
+        roomId?: string;
+        conversationId?: string;
+        organizationId: string | null;
+    };
+    getMessages?: Function;
+}
 >;

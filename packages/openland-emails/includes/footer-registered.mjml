@@ -1,0 +1,32 @@
+<mj-section mj-class="wrapper">
+    <mj-column mj-class="container">
+        <mj-divider mj-class="footer-divider"></mj-divider>
+    </mj-column>
+</mj-section>
+
+<mj-section mj-class="footer">
+    <mj-column mj-class="container">
+        <mj-table>
+            <tr style="font-size: 0; line-height: 0;">
+                <td valign="top">
+                    <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
+                        Email settings
+                    </a>
+                    <span style="display: inline-block; vertical-align: top; font-size: 10px; line-height: 20px; color: rgba(23, 144, 255, 0.5); padding-left: 4px; padding-right: 4px;">•</span>
+                    <a href="https://app.openland.com/mail/61gk9KRrl9ComJkvYnvdcddr4o" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
+                        Support
+                    </a>
+                </td>
+                <td valign="top" align="right">
+                    <span style="display: inline-block; vertical-align: top; font-size: 13px; line-height: 20px; color: rgba(0, 0, 0, 0.6)">Mobile apps</span>
+                    <a href="https://oplnd.com/ios" style="display: inline-block; vertical-align: top; padding-left: 6px; padding-right: 6px; margin-left: 3px;">
+                        <img style="display: inline-block; vertical-align: top; width: 16px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-ios@2x.png" />
+                    </a>
+                    <a href="#" style="display: inline-block; vertical-align: top; padding-left: 6px;">
+                        <img style="display: inline-block; vertical-align: top; width: 17px; height: 20px;" src="https://cdn.openland.com/shared/email/ic-android@2x.png" />
+                    </a>
+                </td>
+            </tr>
+        </mj-table>
+    </mj-column>
+</mj-section>

@@ -26,12 +26,15 @@ export interface XViewProps {
     //
     // Sizing
     //
-
-    margin?: number | 'auto' | null;
-    marginTop?: number | 'auto' | null;
-    marginBottom?: number | 'auto' | null;
-    marginLeft?: number | 'auto' | null;
-    marginRight?: number | 'auto' | null;
+    top?: number | null;
+    bottom?: number | null;
+    left?: number | null;
+    right?: number | null;
+    margin?: number | null;
+    marginTop?: number | null;
+    marginBottom?: number | null;
+    marginLeft?: number | null;
+    marginRight?: number | null;
     padding?: number | null;
     paddingTop?: number | null;
     paddingBottom?: number | null;
@@ -43,6 +46,7 @@ export interface XViewProps {
     minWidth?: number | string | null;
     maxHeight?: number | string | null;
     maxWidth?: number | string | null;
+    zIndex?: number | null;
 
     //
     // Visual
@@ -69,7 +73,7 @@ export interface XViewProps {
     //
 
     fontSize?: number | null;
-    fontWeight?: '400' | '600' | 'normal';
+    fontWeight?: '400' | '600';
     lineHeight?: number | string | null;
     overflow?: 'hidden' | null;
     textOverflow?: 'ellipsis' | null;
@@ -99,7 +103,7 @@ const base = glamor.css({
 
 const XViewContainer = (props: XViewProps) => {
 
-    let position: 'relative' | 'absolute' | 'fixed' | undefined;
+    let position: 'relative' | 'absolute' | 'fixed' | undefined = 'relative';
 
     let flexGrow: number | undefined = 0;
     let flexShrink: number | undefined = 0;
@@ -108,6 +112,11 @@ const XViewContainer = (props: XViewProps) => {
     let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;
+
+    let top: number | undefined;
+    let left: number | undefined;
+    let right: number | undefined;
+    let bottom: number | undefined;
 
     let marginTop: number | 'auto' | undefined;
     let marginBottom: number | 'auto' | undefined;
@@ -126,12 +135,15 @@ const XViewContainer = (props: XViewProps) => {
     let maxWidth: number | string | undefined;
     let maxHeight: number | string | undefined;
 
+    let zIndex: number | undefined;
+
     let opacity: number | undefined;
     let borderRadius: number | string | undefined;
     let level: '1' | undefined;
     let backgroundColor: string | undefined;
     let hoverBackgroundColor: string | undefined;
     let color: string | undefined;
+    let cursor: 'pointer' | undefined;
 
     let fontSize: number | undefined;
     let fontWeight: '400' | '600' | 'normal' | undefined;
@@ -194,6 +206,9 @@ const XViewContainer = (props: XViewProps) => {
     if (props.whiteSpace !== undefined && props.whiteSpace !== null) {
         whiteSpace = props.whiteSpace;
     }
+    if (props.cursor !== undefined && props.cursor !== null) {
+        cursor = props.cursor;
+    }
 
     //
     // Position
@@ -201,6 +216,21 @@ const XViewContainer = (props: XViewProps) => {
 
     if (props.position !== undefined && props.position !== null) {
         position = props.position;
+    }
+    if (props.top !== undefined && props.top !== null) {
+        top = props.top;
+    }
+    if (props.bottom !== undefined && props.bottom !== null) {
+        bottom = props.bottom;
+    }
+    if (props.left !== undefined && props.left !== null) {
+        left = props.left;
+    }
+    if (props.right !== undefined && props.right !== null) {
+        right = props.right;
+    }
+    if (props.zIndex !== undefined && props.zIndex !== null) {
+        zIndex = props.zIndex;
     }
 
     //
@@ -411,6 +441,42 @@ const XViewContainer = (props: XViewProps) => {
         css.push(styles.get(key)!);
     }
 
+    if (top !== undefined) {
+        let key = 'top: ' + top;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ top: top }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (bottom !== undefined) {
+        let key = 'bottom: ' + bottom;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ bottom: bottom }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (left !== undefined) {
+        let key = 'left: ' + left;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ left: left }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (right !== undefined) {
+        let key = 'right: ' + right;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ right: right }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+    if (zIndex !== undefined) {
+        let key = 'zIndex: ' + zIndex;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ zIndex: zIndex }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
+
     if (width !== undefined) {
         let key = 'width: ' + width;
         if (!styles.has(key)) {
@@ -562,6 +628,13 @@ const XViewContainer = (props: XViewProps) => {
         }
         css.push(styles.get(key)!);
     }
+    if (cursor !== undefined) {
+        let key = 'cursor: ' + cursor;
+        if (!styles.has(key)) {
+            styles.set(key, glamor.css({ cursor: cursor }).toString());
+        }
+        css.push(styles.get(key)!);
+    }
 
     let className = css.join(' ');
     if (props.as === 'a') {
@@ -572,7 +645,7 @@ const XViewContainer = (props: XViewProps) => {
         );
     } else {
         return (
-            <div className={className} onClick={props.onClick} onMouseDown={props.onMouseDown} onMouseEnter={props.onMouseEnter} onMouseUp={props.onMouseUp}  ref={props.ref}>
+            <div className={className} onClick={props.onClick} onMouseDown={props.onMouseDown} onMouseEnter={props.onMouseEnter} onMouseUp={props.onMouseUp} ref={props.ref}>
                 {props.children}
             </div>
         );

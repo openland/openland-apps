@@ -77,6 +77,14 @@ export const MessageUnsetReactionMutation = gql`
     }
 `;
 
+export const SendPostMessageMutation = gql`
+    mutation SendPostMessage($conversationId: ID!, $title: String, $text: String!, $attachments: [String!]) {
+        sendPostMessage: alphaSendPostMessage(conversationId: $conversationId, title: $title, text: $text, attachments: $attachments) {
+            seq
+        }
+    }
+`;
+
 export const SaveDraftMessageMutation = gql`
     mutation SaveDraftMessage($conversationId: ID!, $message: String!) {
         conversationDraftUpdate(conversationId: $conversationId, message: $message)

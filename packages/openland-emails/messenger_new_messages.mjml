@@ -1,27 +1,25 @@
 <mjml>
     <mj-head>
-        <mj-title>You’ve got new messages</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-title>You’ve got a new messages</mj-title>
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header-users.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    You’ve got new messages
+                    You’ve got {{messageCount}} new messages
                 </mj-text>
-
-                <mj-raw>
-                </mj-raw>
-                    <mj-text mj-class="text">
-                        There are {{messageCount}} new messages in your inbox. Go to Openland Messenger to see them now.
-                    </mj-text>
-                <mj-raw>
-                </mj-raw>
+                <mj-text mj-class="text">
+                    You have messages from <strong>Derrick Henderson</strong>, <strong>Founders</strong>, <strong>Samuel Handricks</strong>, and 5&nbsp;more.
+                </mj-text>
+                <mj-text mj-class="text">
+                    Visit Openland to&nbsp;see them now.
+                </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/mail">View messages</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/install-app.mjml" />
     </mj-body>
 </mjml>

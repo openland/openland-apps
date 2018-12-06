@@ -55,6 +55,8 @@ import { withUserInfo } from '../UserInfo';
 import { withDeleteMessages } from '../../api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
 import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
+import NotificationsIcon from './components/icons/ic-notifications.svg';
+import NotificationsOffIcon from './components/icons/ic-notifications-off.svg';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -315,6 +317,16 @@ export const RoomSetHidden = withChannelSetHidden(props => (
     />
 )) as React.ComponentType<{ val: boolean; roomId: string }>;
 
+const NotificationsWrapper = Glamorous(XVertical)({
+    cursor: 'pointer',
+    '& svg path:last-child': {
+        fill: 'rgba(0, 0, 0, 0.2)',
+    },
+    '&:hover svg path:last-child': {
+        fill: '#1790ff'
+    },
+});
+
 class NotificationSettingsComponent extends React.Component<
     { mutation: any; settings: { mute: boolean }; roomId: string },
     { settings: { mute: boolean } }
@@ -324,40 +336,31 @@ class NotificationSettingsComponent extends React.Component<
         this.state = { settings: props.settings };
     }
 
-    apply = (mute: boolean) => {
+    handleClick = () => {
+        let value = !this.state.settings.mute;
+
         this.props.mutation({
             variables: {
                 settings: {
-                    mute: mute,
+                    mute: value,
                 },
                 roomId: this.props.roomId,
             },
         });
-    };
+
+        this.setState({
+            settings: {
+                ...this.state.settings,
+                mute: value,
+            },
+        });
+    }
 
     render() {
         return (
-            <XVertical separator={0}>
-                <XMenuItemWrapper key="mute">
-                    <XVertical>
-                        <XCheckbox
-                            label="Mute"
-                            switcher={true}
-                            value={this.state.settings.mute ? 'true' : 'false'}
-                            trueValue="true"
-                            onChange={checked => {
-                                this.apply(checked.checked);
-                                this.setState({
-                                    settings: {
-                                        ...this.state.settings,
-                                        mute: !this.state.settings.mute,
-                                    },
-                                });
-                            }}
-                        />
-                    </XVertical>
-                </XMenuItemWrapper>
-            </XVertical>
+            <NotificationsWrapper onClick={this.handleClick}>
+                {this.state.settings.mute ? <NotificationsOffIcon /> : <NotificationsIcon />}
+            </NotificationsWrapper>
         );
     }
 }
@@ -372,32 +375,6 @@ const NotificationSettings = withConversationSettingsUpdate(props => (
     settings: { mute: boolean | null };
     roomId: string;
 }>;
-
-const RoomTabs = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-});
-
-const RoomTab = Glamorous(XLink)({
-    padding: '20px 5px 17px',
-    borderBottom: '3px solid transparent',
-    color: 'rgba(51, 69, 98, 0.5)',
-    fontSize: 14,
-    lineHeight: '16px',
-    fontWeight: 500,
-    margin: '0 0 -1px 19px',
-    display: 'block',
-    letterSpacing: -0.4,
-
-    '&:hover': {
-        color: '#334562',
-    },
-
-    '&.is-active': {
-        color: '#334562',
-        borderColor: '#1790ff',
-    },
-});
 
 export const RoomEditComponent = withAlterChat(props => {
     let editTitle = (props as any).title;
@@ -993,23 +970,11 @@ let MessengerComponentLoader = withRoom(
                             </XWithRole>
                         )}
 
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            notificationStyle={true}
-                            content={
-                                <div style={{ width: 160 }}>
-                                    <XMenuTitle>Notifications</XMenuTitle>
-                                    <NotificationSettings
-                                        settings={
-                                            (sharedRoom || privateRoom)!
-                                                .settings
-                                        }
-                                        roomId={props.data.room!.id}
-                                    />
-                                </div>
-                            }
+                        <NotificationSettings
+                            settings={(sharedRoom || privateRoom)!.settings}
+                            roomId={props.data.room!.id}
                         />
+
                         {sharedRoom && (
                             <XOverflow
                                 flat={true}

@@ -1,0 +1,12 @@
+<mj-section mj-class="header-row">
+    <mj-column mj-class="container">
+        <mj-text font-size="0" line-height="0">
+            <img style="display: inline-block; vertical-align: top;" width="115" height="33" src="https://cdn.openland.com/shared/email/logo-unicorn@2x.png" />
+            <span style="display: inline-block; vertical-align: top; color: rgba(0, 0, 0, 0.2); font-size: 13px; line-height: 15px; font-weight: 600; padding-top: 12px; padding-left: 13px; padding-right: 12px;">•</span>
+            <img style="display: inline-block; vertical-align: top; width: 26px; height: 26px; margin-top: 6px; border-radius: 13px; margin-right: 6px;" src="http://placehold.it/100" />
+            <span style="display: inline-block; vertical-align: top; width: 26px; height: 26px; margin-top: 6px; border-radius: 13px; margin-right: 6px; background-color: #aa22ff; background-image: linear-gradient(138deg, #aa22ff, #8e00e6); color: #ffffff; text-align: center; font-size: 11px; font-weight: 600; line-height: 26px;">JD</span>
+            <img style="display: inline-block; vertical-align: top; width: 26px; height: 26px; margin-top: 6px; border-radius: 13px; margin-right: 6px;" src="http://placehold.it/100" />
+            <span style="display: inline-block; vertical-align: top; color: #000000; font-size: 13px; line-height: 15px; font-weight: 600; padding-top: 12px; padding-left: 3px; padding-right: 12px;">+5 more</span>
+        </mj-text>
+    </mj-column>
+</mj-section>

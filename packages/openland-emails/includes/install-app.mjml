@@ -1,0 +1,26 @@
+<mj-section mj-class="install-apps">
+    <mj-column mj-class="container">
+        <mj-text>
+            <div style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 10px; padding-top: 30px; padding-right: 16px; padding-bottom: 24px; padding-left: 32px;">
+                <div style="font-size: 28px; line-height: 26px; padding-bottom: 10px;">
+                    🦄
+                </div>
+                <div style="font-size: 20px; line-height: 26px; font-weight: 600; color: #000000; padding-bottom: 4px;">
+                    Getting email notifications too often?
+                </div>
+                <div style="font-size: 14px; line-height: 26px; color: #000000; padding-bottom: 16px;">
+                    Update your settings or&nbsp;install a&nbsp;mobile app to&nbsp;get messages on&nbsp;the&nbsp;go.
+                </div>
+                <div style="font-size: 0; line-height: 0;">
+                    <a href="https://oplnd.com/ios" style="display: inline-block; vertical-align: top; margin-top: 1px; margin-right: 12px; margin-bottom: 10px;">
+                        <img src="https://cdn.openland.com/shared/email/appstore@2x.png" width="99" height="32" />
+                    </a>
+                    <a href="#" style="display: inline-block; vertical-align: top; margin-top: 1px; margin-right: 12px; margin-bottom: 10px;">
+                        <img src="https://cdn.openland.com/shared/email/googleplay@2x.png" width="99" height="32" />
+                    </a>
+                    <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; margin-bottom: 10px; border-radius: 5px; color: #000000; border: 1px solid rgba(0, 0, 0, 0.17); padding: 9px 16px; font-size: 12px; line-height: 14px; text-decoration: none;">Email settings</a>
+                </div>
+            </div>
+        </mj-text>
+    </mj-column>
+</mj-section>

@@ -45,24 +45,24 @@ export class TalkMediaStreamComponent extends React.Component<
             iceServers: [
                 // US
                 {
-                    urls: ['turn:35.237.89.164:443'],
+                    urls: ['turn:35.237.41.98:443'],
                     username: 'somecalluser',
                     credential: 'samplepassword',
                 },
                 {
-                    urls: ['stun:35.237.89.164:443'],
+                    urls: ['stun:35.237.41.98:443'],
                     username: 'somecalluser',
                     credential: 'samplepassword',
                 },
 
                 // Finland
                 {
-                    urls: ['turn:35.228.255.98:443'],
+                    urls: ['turn:35.228.111.16:443'],
                     username: 'somecalluser',
                     credential: 'samplepassword',
                 },
                 {
-                    urls: ['stun:35.228.255.98:443'],
+                    urls: ['stun:35.228.111.16:443'],
                     username: 'somecalluser',
                     credential: 'samplepassword',
                 },
@@ -79,6 +79,7 @@ export class TalkMediaStreamComponent extends React.Component<
                     credential: 'samplepassword',
                 },
             ],
+            // iceTransportPolicy: 'relay'
         });
         this.peerConnection.onicecandidate = ev => {
             backoff(async () => {

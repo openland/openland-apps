@@ -1,0 +1,26 @@
+<mjml>
+    <mj-head>
+        <mj-title>Join {{roomName}} room at Openland</mj-title>
+        <mj-include path="./includes/attributes.mjml" />
+    </mj-head>
+    <mj-body>
+        <mj-include path="./includes/header-user.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
+                <mj-text mj-class="title">
+                    A chat room invitation
+                </mj-text>
+                <mj-text mj-class="text">
+                    <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
+                </mj-text>
+                <mj-text mj-class="text-quote">
+                    <div style="border-left: 3px solid #1790ff; padding-left: 15px;">
+                        {{roomDescription}}
+                    </div>
+                </mj-text>
+                <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
+            </mj-column>
+        </mj-section>
+        <mj-include path="./includes/footer.mjml" />
+    </mj-body>
+</mjml>

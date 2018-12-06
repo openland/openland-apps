@@ -1,22 +1,22 @@
 <mjml>
     <mj-head>
         <mj-title>Your role at {{organizationName}} was updated</mj-title>
-        <mj-include path="./attributes.mjml" />
+        <mj-include path="./includes/attributes.mjml" />
     </mj-head>
-    <mj-body background-color="#ffffff">
-        <mj-include path="./header.mjml" />
-        <mj-section>
-            <mj-column>
+    <mj-body>
+        <mj-include path="./includes/header.mjml" />
+        <mj-section mj-class="wrapper">
+            <mj-column mj-class="container">
                 <mj-text mj-class="title">
                     Role updated
                 </mj-text>
                 <mj-text mj-class="text">
-                    Your role at <strong>{{organizationName}}</strong> was updated to <strong>{{levelName}}</strong>
+                    Your role&nbsp;at <strong>{{organizationName}}</strong> was updated&nbsp;to <strong>{{levelName}}</strong>
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./footer-registered.mjml" />
+        <mj-include path="./includes/footer-registered.mjml" />
     </mj-body>
 </mjml>

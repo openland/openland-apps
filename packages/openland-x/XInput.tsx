@@ -36,7 +36,7 @@ class XInputStored extends React.PureComponent<XInputProps & { store: XStoreStat
     }
 
     render() {
-        let { valueStoreKey, invalidStoreKey, enabledStoreKey, store, field, ...other } = this.props;
+        let { valueStoreKey, invalidStoreKey, enabledStoreKey, store, field, onChange, ...other } = this.props;
         let value = this.props.value;
         if (valueStoreKey || field) {
             let existing = store.readValue(valueStoreKey || ('fields.' + field));

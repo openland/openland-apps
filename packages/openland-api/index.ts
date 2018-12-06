@@ -31,6 +31,7 @@ export const RoomSuperQuery = typedQuery<Types.RoomSuper, Types.RoomSuperVariabl
 export const MessageSetReactionMutation = typedMutation<Types.MessageSetReaction, Types.MessageSetReactionVariables>(Chats.MessageSetReactionMutation);
 export const SwitchReactionMutation = typedMutation<Types.SwitchReaction, Types.SwitchReactionVariables>(Chats.SwitchReactionMutation);
 export const MessageUnsetReactionMutation = typedMutation<Types.MessageUnsetReaction, Types.MessageUnsetReactionVariables>(Chats.MessageUnsetReactionMutation);
+export const SendPostMessageMutation = typedMutation<Types.SendPostMessage, Types.SendPostMessageVariables>(Chats.SendPostMessageMutation);
 export const SaveDraftMessageMutation = typedMutation<Types.SaveDraftMessage, Types.SaveDraftMessageVariables>(Chats.SaveDraftMessageMutation);
 export const GetDraftMessageQuery = typedQuery<Types.GetDraftMessage, Types.GetDraftMessageVariables>(Chats.GetDraftMessageQuery);
 export const GlobalCounterQuery = typedQuery<Types.GlobalCounter, {}>(Chats.GlobalCounterQuery);
