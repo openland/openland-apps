@@ -185,6 +185,13 @@ declare module 'markdown' {
     };
 }
 
+declare module 'react-localstorage-hoc' {
+    const ReturnType: (
+        a: React.ComponentClass<any>,
+    ) => React.ComponentClass<any>;
+    export default ReturnType;
+}
+
 declare module 'lodash.flowright' {
 
 }

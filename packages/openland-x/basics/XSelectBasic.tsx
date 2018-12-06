@@ -289,7 +289,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         position: 'absolute',
         top: '100%',
         width: '100%',
-        zIndex: 1,
+        zIndex: 10000000,
         WebkitOverflowScrolling: 'touch',
         overflow: 'hidden'
     },
@@ -441,7 +441,7 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 
 const SelectWrapper = Glamorous.div({
     position: 'relative',
-    zIndex: 10
+    
 });
 
 const Title = Glamorous.div<{ inside?: boolean }>(

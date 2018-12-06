@@ -20,6 +20,7 @@ import {
     RoomText,
     GoogleButton,
     EmailButton,
+    RoomActivationCode,
 } from './components/SignComponents';
 
 import { SubTitle, Title } from './components/CreateProfileComponents';
@@ -244,63 +245,6 @@ export const WebSignUpCreateWithEmail = ({
     );
 };
 
-export const RoomActivationCode = ({
-    codeError,
-    codeChanged,
-    codeSending,
-    codeValue,
-    loginCodeStart,
-}: {
-    codeError: string;
-    codeChanged: (value: string) => void;
-    codeSending: boolean;
-    codeValue: string;
-    loginCodeStart: (event?: React.MouseEvent<any>) => void;
-}) => {
-    return (
-        <div style={{ position: 'relative' }}>
-            {codeError !== '' && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                    }}
-                >
-                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
-                </div>
-            )}
-            <RoomTitle>Please, enter activation code</RoomTitle>
-            <ButtonsWrapper marginTop={40} width={280}>
-                <XInput
-                    pattern="[0-9]*"
-                    type="number"
-                    autofocus={true}
-                    size="large"
-                    onChange={codeChanged}
-                    value={codeValue}
-                    placeholder={InitTexts.auth.codePlaceholder}
-                    onEnter={loginCodeStart}
-                />
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                <XHorizontal>
-                    <XButton
-                        onClick={loginCodeStart}
-                        size="large"
-                        style="primary"
-                        alignSelf="stretch"
-                        flexGrow={1}
-                        loading={codeSending}
-                        text={InitTexts.auth.complete}
-                    />
-                </XHorizontal>
-            </ButtonsWrapper>
-        </div>
-    );
-};
-
 export const WebSignUpActivationCode = ({
     codeError,
     codeChanged,
@@ -355,15 +299,12 @@ class SignInComponent extends React.Component<
     { redirect?: string | null; roomView?: boolean } & XWithRouter,
     {
         googleStarting: boolean;
-
         email: boolean;
         emailValue: string;
         emailSending: boolean;
         emailError: string;
-
         emailSent: boolean;
         fromOutside: boolean;
-
         codeValue: string;
         codeSending: boolean;
         codeError: string;

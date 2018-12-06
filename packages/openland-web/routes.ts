@@ -266,30 +266,17 @@ routes.add('/ui/lists/', '/dev/ui/lists');
 routes.add('/ui/mentions', '/dev/ui/mentions');
 routes.add('/ui/mentions/', '/dev/ui/mentions');
 
+routes.add('/ui/signin/accept-invitation', '/dev/ui/signin/accept-invitation');
+routes.add('/ui/signin/auth-mechanism', '/dev/ui/signin/auth-mechanism');
+routes.add('/ui/signin/create-with-email', '/dev/ui/signin/create-with-email');
+routes.add('/ui/signin/activation-code', '/dev/ui/signin/activation-code');
 routes.add(
-    '/ui/signin/room-auth-mechanism',
-    '/dev/ui/signin/room-auth-mechanism',
+    '/ui/signin/introduce-yourself',
+    '/dev/ui/signin/introduce-yourself',
 );
 routes.add(
-    '/ui/signin/room-create-with-email',
-    '/dev/ui/signin/room-create-with-email',
-);
-routes.add(
-    '/ui/signin/room-activation-code',
-    '/dev/ui/signin/room-activation-code',
-);
-
-routes.add(
-    '/ui/signin/web-signup-auth-mechanism',
-    '/dev/ui/signin/web-signup-auth-mechanism',
-);
-routes.add(
-    '/ui/signin/web-signup-create-with-email',
-    '/dev/ui/signin/web-signup-create-with-email',
-);
-routes.add(
-    '/ui/signin/web-signup-activation-code',
-    '/dev/ui/signin/web-signup-activation-code',
+    '/ui/signin/enter-organization',
+    '/dev/ui/signin/enter-organization',
 );
 
 //

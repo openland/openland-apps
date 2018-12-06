@@ -1,6 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XButton } from 'openland-x/XButton';
+import { XInput } from 'openland-x/XInput';
+import { XServiceMessage } from 'openland-x/XServiceMessage';
+import { InitTexts } from '../_text';
 
 const RootContainer = Glamorous.div({
     display: 'flex',
@@ -495,25 +500,86 @@ interface RoomSignupProps {
     children?: any;
 }
 
-export const RoomSignup = (props: RoomSignupProps) => {
+export class RoomSignup extends React.Component<RoomSignupProps> {
+    render() {
+        const props = this.props;
+
+        return (
+            <RoomSignupWrapper>
+                {props.text && (
+                    <RoomToggler>
+                        <RoomTogglerText>{props.text}</RoomTogglerText>
+                        <RoomTogglerLink path={props.path}>
+                            {props.linkText}
+                        </RoomTogglerLink>
+                    </RoomToggler>
+                )}
+                <RoomSignupBox>
+                    <RoomSignupHeader headerStyle={props.headerStyle} />
+
+                    {props.children}
+                </RoomSignupBox>
+            </RoomSignupWrapper>
+        );
+    }
+}
+
+export const RoomActivationCode = ({
+    codeError,
+    codeChanged,
+    codeSending,
+    codeValue,
+    loginCodeStart,
+}: {
+    codeError: string;
+    codeChanged: (value: string) => void;
+    codeSending: boolean;
+    codeValue: string;
+    loginCodeStart: (event?: React.MouseEvent<any>) => void;
+}) => {
     return (
-        <RoomSignupWrapper>
-            {props.text && (
-                <RoomToggler>
-                    <RoomTogglerText>{props.text}</RoomTogglerText>
-                    <RoomTogglerLink path={props.path}>
-                        {props.linkText}
-                    </RoomTogglerLink>
-                </RoomToggler>
+        <div style={{ position: 'relative' }}>
+            {codeError !== '' && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                    }}
+                >
+                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
+                </div>
             )}
-            <RoomSignupBox>
-                <RoomSignupHeader headerStyle={props.headerStyle} />
-                {props.children}
-            </RoomSignupBox>
-        </RoomSignupWrapper>
+            <RoomTitle>Please, enter activation code</RoomTitle>
+            <ButtonsWrapper marginTop={40} width={280}>
+                <XInput
+                    pattern="[0-9]*"
+                    type="number"
+                    autofocus={true}
+                    size="large"
+                    onChange={codeChanged}
+                    value={codeValue}
+                    placeholder={InitTexts.auth.codePlaceholder}
+                    onEnter={loginCodeStart}
+                />
+            </ButtonsWrapper>
+            <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
+                <XHorizontal>
+                    <XButton
+                        onClick={loginCodeStart}
+                        size="large"
+                        style="primary"
+                        alignSelf="stretch"
+                        flexGrow={1}
+                        loading={codeSending}
+                        text={InitTexts.auth.complete}
+                    />
+                </XHorizontal>
+            </ButtonsWrapper>
+        </div>
     );
 };
-
 export const RoomLoader = Glamorous.div({
     height: 150,
     position: 'relative',

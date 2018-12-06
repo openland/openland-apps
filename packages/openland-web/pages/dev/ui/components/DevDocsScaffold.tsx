@@ -22,6 +22,7 @@ export function DevDocsScaffold(props: {
     return (
         <>
             {props.title !== undefined && <XDocumentHead title={props.title} />}
+
             <Scaffold>
                 {props.hideSidebar !== true && (
                     <Scaffold.Menu>
@@ -88,24 +89,22 @@ export function DevDocsScaffold(props: {
                             </Sidebar.Item>
                             <Sidebar.Item path="/ui/lists">Lists</Sidebar.Item>
                             <Sidebar.Item>Sign Up Components</Sidebar.Item>
-                            <Sidebar.Subitem path="/ui/signin/room-auth-mechanism">
-                                RoomAuthMechanism
+                            <Sidebar.Subitem path="/ui/signin/auth-mechanism">
+                                AuthMechanism
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/room-create-with-email">
-                                RoomCreateWithEmail
+                            <Sidebar.Subitem path="/ui/signin/create-with-email">
+                                CreateWithEmail
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/room-activation-code">
-                                RoomActivationCode
+                            <Sidebar.Subitem path="/ui/signin/activation-code">
+                                ActivationCode
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/web-signup-auth-mechanism">
-                                WebSignUpAuthMechanism
+                            <Sidebar.Subitem path="/ui/signin/introduce-yourself">
+                                Introduce Yourself
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/web-signup-create-with-email">
-                                WebSignUpCreateWithEmail
+                            <Sidebar.Subitem path="/ui/signin/enter-organization">
+                                Enter Organization
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/signin/web-signup-activation-code">
-                                WebSignUpActivationCode
-                            </Sidebar.Subitem>
+
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/links">
                                 Links
