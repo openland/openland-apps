@@ -766,8 +766,8 @@ export const RoomAuthMechanism = ({
     const subTitle = signin ? auth.signinSubtitle : auth.signupSubtitle;
 
     const googleButtonText = signin
-        ? InitTexts.auth.signinEmail
-        : InitTexts.auth.signupEmail;
+        ? InitTexts.auth.signupGoogle
+        : InitTexts.auth.signupGoogle;
 
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
