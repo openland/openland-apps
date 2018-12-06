@@ -18,6 +18,7 @@ import { XFormError } from 'openland-x-forms/XFormError';
 import IcInfo from '../components/icons/ic-info.svg';
 import IcAdd from '../components/icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XStoreContext } from 'openland-y-store/XStoreContext';
 
 export const RoomLoader = Glamorous.div({
     height: 150,
@@ -843,108 +844,194 @@ const OrganizationSelector = Glamorous(XSelect)({
     minWidth: 330,
 });
 
-const NewOrganizationButton = () => {
-    return (
-        <XView flexDirection="row" alignItems="center">
-            <XView>
-                <IcAdd />
-            </XView>
-            <XView color="#1790ff" marginLeft={6}>
-                <span
-                    style={{
-                        fontFamily: 'SFProText-Regular',
-                    }}
-                >
-                    New organization
-                </span>
-            </XView>
-        </XView>
-    );
-};
-
-export const CreateOrganizationFormInner = ({
-    roomView,
-    defaultAction,
+const NewOrganizationButton = ({
+    onClick,
 }: {
-    roomView: boolean;
-    defaultAction: (data: any) => any;
+    onClick?: (event: React.MouseEvent<any>) => void;
 }) => {
-    const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
-    const MyTitle = roomView ? RoomTitle : Title;
     return (
-        <div>
-            <MyTitle>{InitTexts.create_organization.title}</MyTitle>
-            <SubTitle>
-                {InitTexts.create_organization.subTitle}
-
-                <XPopper
-                    content={
-                        <InfoText>
-                            To register as an individual,
-                            <br />
-                            simply enter your name
-                        </InfoText>
-                    }
-                    showOnHover={true}
-                    placement="bottom"
-                    style="dark"
-                >
-                    <XIconWrapper>
-                        <IcInfo />
-                    </XIconWrapper>
-                </XPopper>
-            </SubTitle>
-            <XForm
-                defaultAction={defaultAction}
-                defaultData={{
-                    input: {
-                        name: '',
-                        website: '',
-                        photoRef: null,
-                    },
-                }}
-                defaultLayout={false}
-            >
-                <XVertical separator="large">
-                    <XFormError width={472} />
-                    <XFormLoadingContent>
-                        <ButtonsWrapper marginBottom={84}>
-                            <XVertical alignItems="center">
-                                <OrganizationSelector
-                                    field="input.name"
-                                    dataTestId="organization-name"
-                                    creatable
-                                    title={InitTexts.create_organization.name}
-                                    options={[
-                                        {
-                                            value: NEW_ORGANIZATION_BUTTON_VALUE,
-                                            label: <NewOrganizationButton />,
-                                        },
-                                        {
-                                            value:
-                                                'ACME Corporation, John Doe +1 more',
-                                            label:
-                                                'ACME Corporation, John Doe +1 more',
-                                        },
-                                    ]}
-                                />
-
-                                <XFormSubmit
-                                    dataTestId="continue-button"
-                                    style="primary"
-                                    text={
-                                        InitTexts.create_organization.continue
-                                    }
-                                    size="large"
-                                />
-                            </XVertical>
-                        </ButtonsWrapper>
-                    </XFormLoadingContent>
-                </XVertical>
-            </XForm>
+        <div onClick={onClick}>
+            <XView flexDirection="row" alignItems="center">
+                <XView>
+                    <IcAdd />
+                </XView>
+                <XView color="#1790ff" marginLeft={6}>
+                    <span
+                        style={{
+                            fontFamily: 'SFProText-Regular',
+                        }}
+                    >
+                        New organization
+                    </span>
+                </XView>
+            </XView>
         </div>
     );
 };
+
+const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
+
+const options = [
+    {
+        value: NEW_ORGANIZATION_BUTTON_VALUE,
+        label: <NewOrganizationButton />,
+    },
+    {
+        value: 1,
+        label: 'ACME Corporation, John Doe +1 more',
+    },
+    {
+        value: 123,
+        label: '123',
+    },
+] as any;
+
+export class CreateOrganizationFormInner extends React.Component<
+    {
+        roomView: boolean;
+        defaultAction: (data: any) => any;
+    },
+    {
+        inputValue: string;
+    }
+> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            inputValue: '',
+        };
+    }
+    handleOnChange = (src: any, store: any) => {
+        if (!store) {
+            return;
+        }
+        let val = src ? (src.value as string) : 'unknown';
+        let cval = null;
+        if (Array.isArray(src)) {
+            if (src.length > 0) {
+                cval = src.map(r => r.value);
+            }
+        } else if (val !== 'unknown') {
+            cval = val;
+        }
+
+        if (cval === NEW_ORGANIZATION_BUTTON_VALUE) {
+            store.writeValue('fields.input.name', {
+                label: this.state.inputValue,
+                value: this.state.inputValue,
+            });
+            return;
+        }
+
+        store.writeValue('fields.input.name', cval);
+    };
+
+    filterOptions = (_: any, val: any) => {
+        const res = options.filter(
+            ({ label, value }: any) =>
+                (label.includes && label.includes(val)) ||
+                value === NEW_ORGANIZATION_BUTTON_VALUE,
+        );
+
+        return res;
+    };
+
+    renderSelect = (store: any) => {
+        if (!store) {
+            return;
+        }
+
+        return (
+            <div>
+                <OrganizationSelector
+                    filterOptions={this.filterOptions}
+                    field="input.name"
+                    dataTestId="organization-name"
+                    title={InitTexts.create_organization.name}
+                    onInputChange={
+                        ((inputValue: any) => {
+                            setTimeout(() => {
+                                this.setState({
+                                    inputValue: inputValue,
+                                });
+                            });
+                        }) as any
+                    }
+                    onChange={(src: any) => {
+                        this.handleOnChange(src, store);
+                    }}
+                    options={options}
+                />
+            </div>
+        );
+    };
+
+    render() {
+        const { roomView, defaultAction } = this.props;
+
+        const MyTitle = roomView ? RoomTitle : Title;
+
+        return (
+            <div>
+                <MyTitle>{InitTexts.create_organization.title}</MyTitle>
+                <SubTitle>
+                    {InitTexts.create_organization.subTitle}
+
+                    <XPopper
+                        content={
+                            <InfoText>
+                                To register as an individual,
+                                <br />
+                                simply enter your name
+                            </InfoText>
+                        }
+                        showOnHover={true}
+                        placement="bottom"
+                        style="dark"
+                    >
+                        <XIconWrapper>
+                            <IcInfo />
+                        </XIconWrapper>
+                    </XPopper>
+                </SubTitle>
+                <XForm
+                    defaultAction={defaultAction}
+                    defaultData={{
+                        input: {
+                            name: '',
+                            website: '',
+                            photoRef: null,
+                        },
+                    }}
+                    defaultLayout={false}
+                >
+                    <XVertical separator="large">
+                        <XFormError width={472} />
+                        <XFormLoadingContent>
+                            <ButtonsWrapper marginBottom={84}>
+                                <XVertical alignItems="center">
+                                    <XStoreContext.Consumer>
+                                        {this.renderSelect}
+                                    </XStoreContext.Consumer>
+
+                                    <XFormSubmit
+                                        dataTestId="continue-button"
+                                        style="primary"
+                                        text={
+                                            InitTexts.create_organization
+                                                .continue
+                                        }
+                                        size="large"
+                                    />
+                                </XVertical>
+                            </ButtonsWrapper>
+                        </XFormLoadingContent>
+                    </XVertical>
+                </XForm>
+            </div>
+        );
+    }
+}
 
 export const WebSignUpAuthMechanism = ({
     signin,
