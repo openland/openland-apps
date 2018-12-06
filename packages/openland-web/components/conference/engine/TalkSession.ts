@@ -8,6 +8,7 @@ import { ConferenceQuery } from 'openland-api';
 export class TalkSession {
     readonly client: OpenApolloClient;
     readonly cid: string;
+    readonly sid: string;
     state: 'connecting' | 'online' | 'completed';
     private peerId!: string;
     private convId!: string;
@@ -15,10 +16,12 @@ export class TalkSession {
     private destroyed = false;
 
     constructor(
+        sid: string,
         cid: string,
         client: OpenApolloClient,
         callback: (peerId: string, convId: string) => void,
     ) {
+        this.sid = sid;
         this.cid = cid;
         this.client = client;
         this.state = 'connecting';

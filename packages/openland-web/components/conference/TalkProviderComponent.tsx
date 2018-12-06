@@ -2,6 +2,7 @@ import * as React from 'react';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { TalkSession } from './engine/TalkSession';
 import { TalkMediaComponent } from './TalkMediaComponent';
+import UUID from 'uuid/v4';
 
 export const TalkContext = React.createContext<{
     cid?: string;
@@ -24,10 +25,11 @@ export class TalkProviderComponent extends React.Component<
         cid?: string;
         convId?: string;
         peerId?: string;
+        sessionId?: string;
         muted: boolean;
         streams?: { [key: string]: MediaStream };
     }
-> {
+    > {
     private session?: TalkSession;
 
     constructor(props: TalkProviderComponentProps) {
@@ -39,12 +41,14 @@ export class TalkProviderComponent extends React.Component<
         if (this.session) {
             this.session.close();
         }
+        let sessionId = UUID();
         this.session = new TalkSession(
+            sessionId,
             cid,
             this.props.client,
             this.handleStateChange,
         );
-        this.setState({ cid });
+        this.setState({ cid, sessionId });
     };
 
     private handleStateChange = (peerId: string, convId: string) => {
@@ -90,11 +94,13 @@ export class TalkProviderComponent extends React.Component<
             >
                 {this.state.cid &&
                     this.state.peerId &&
-                    this.state.convId && (
+                    this.state.convId &&
+                    this.state.sessionId && (
                         <TalkMediaComponent
                             id={this.state.cid}
                             peerId={this.state.peerId}
                             muted={this.state.muted}
+                            sessionId={this.state.sessionId}
                             onStreamsUpdated={this.handleStreamsUpdated}
                         />
                     )}

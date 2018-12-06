@@ -6,6 +6,7 @@ import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 
 export interface TalkMediaComponentProps {
     id: string;
+    sessionId: string;
     peerId: string;
     muted: boolean;
     onStreamsUpdated: (
@@ -46,7 +47,12 @@ export class TalkMediaComponent extends React.Component<
 
     componentDidMount() {
         navigator.mediaDevices
-            .getUserMedia({ audio: true })
+            .getUserMedia({
+                audio: {
+                    noiseSuppression: true,
+                    autoGainControl: false
+                } as any
+            })
             .then(stream => {
                 setTimeout(() => {
                     if (this._mounted) {
