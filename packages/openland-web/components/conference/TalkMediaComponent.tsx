@@ -21,7 +21,7 @@ export interface TalkMediaComponentState {
 export class TalkMediaComponent extends React.Component<
     TalkMediaComponentProps,
     TalkMediaComponentState
-> {
+    > {
     private _mounted = true;
     private streams: { [key: string]: MediaStream } = {};
 
@@ -114,14 +114,13 @@ export class TalkMediaComponent extends React.Component<
                                         <TalkMediaStreamComponent
                                             apollo={apollo!}
                                             id={data.data!.conference.id}
+                                            conference={data.data!.conference}
                                             key={v.id}
                                             peerId={v.id}
                                             stream={this.state.mediaStream!}
                                             ownPeerId={this.props.peerId}
                                             connection={v.connection!}
-                                            onStreamCreated={
-                                                this.onStreamCreated
-                                            }
+                                            onStreamCreated={this.onStreamCreated}
                                             onStreamClosed={this.onStreamClosed}
                                         />
                                     ))}

@@ -2807,10 +2807,18 @@ export interface Conference_conference_peers {
   connection: Conference_conference_peers_connection | null;
 }
 
+export interface Conference_conference_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface Conference_conference {
   __typename: "Conference";
   id: string;
   peers: Conference_conference_peers[];
+  iceServers: Conference_conference_iceServers[];
 }
 
 export interface Conference {
@@ -2864,10 +2872,18 @@ export interface ConferenceJoin_conferenceJoin_conference_peers {
   connection: ConferenceJoin_conferenceJoin_conference_peers_connection | null;
 }
 
+export interface ConferenceJoin_conferenceJoin_conference_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceJoin_conferenceJoin_conference {
   __typename: "Conference";
   id: string;
   peers: ConferenceJoin_conferenceJoin_conference_peers[];
+  iceServers: ConferenceJoin_conferenceJoin_conference_iceServers[];
 }
 
 export interface ConferenceJoin_conferenceJoin {
@@ -2927,10 +2943,18 @@ export interface ConferenceLeave_conferenceLeave_peers {
   connection: ConferenceLeave_conferenceLeave_peers_connection | null;
 }
 
+export interface ConferenceLeave_conferenceLeave_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceLeave_conferenceLeave {
   __typename: "Conference";
   id: string;
   peers: ConferenceLeave_conferenceLeave_peers[];
+  iceServers: ConferenceLeave_conferenceLeave_iceServers[];
 }
 
 export interface ConferenceLeave {
@@ -2985,10 +3009,18 @@ export interface ConferenceKeepAlive_conferenceKeepAlive_peers {
   connection: ConferenceKeepAlive_conferenceKeepAlive_peers_connection | null;
 }
 
+export interface ConferenceKeepAlive_conferenceKeepAlive_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceKeepAlive_conferenceKeepAlive {
   __typename: "Conference";
   id: string;
   peers: ConferenceKeepAlive_conferenceKeepAlive_peers[];
+  iceServers: ConferenceKeepAlive_conferenceKeepAlive_iceServers[];
 }
 
 export interface ConferenceKeepAlive {
@@ -3043,10 +3075,18 @@ export interface ConferenceWatch_alphaConferenceWatch_peers {
   connection: ConferenceWatch_alphaConferenceWatch_peers_connection | null;
 }
 
+export interface ConferenceWatch_alphaConferenceWatch_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceWatch_alphaConferenceWatch {
   __typename: "Conference";
   id: string;
   peers: ConferenceWatch_alphaConferenceWatch_peers[];
+  iceServers: ConferenceWatch_alphaConferenceWatch_iceServers[];
 }
 
 export interface ConferenceWatch {
@@ -3100,10 +3140,18 @@ export interface ConferenceOffer_peerConnectionOffer_peers {
   connection: ConferenceOffer_peerConnectionOffer_peers_connection | null;
 }
 
+export interface ConferenceOffer_peerConnectionOffer_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceOffer_peerConnectionOffer {
   __typename: "Conference";
   id: string;
   peers: ConferenceOffer_peerConnectionOffer_peers[];
+  iceServers: ConferenceOffer_peerConnectionOffer_iceServers[];
 }
 
 export interface ConferenceOffer {
@@ -3160,10 +3208,18 @@ export interface ConferenceAnswer_peerConnectionAnswer_peers {
   connection: ConferenceAnswer_peerConnectionAnswer_peers_connection | null;
 }
 
+export interface ConferenceAnswer_peerConnectionAnswer_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceAnswer_peerConnectionAnswer {
   __typename: "Conference";
   id: string;
   peers: ConferenceAnswer_peerConnectionAnswer_peers[];
+  iceServers: ConferenceAnswer_peerConnectionAnswer_iceServers[];
 }
 
 export interface ConferenceAnswer {
@@ -3220,10 +3276,18 @@ export interface ConferenceCandidate_peerConnectionCandidate_peers {
   connection: ConferenceCandidate_peerConnectionCandidate_peers_connection | null;
 }
 
+export interface ConferenceCandidate_peerConnectionCandidate_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceCandidate_peerConnectionCandidate {
   __typename: "Conference";
   id: string;
   peers: ConferenceCandidate_peerConnectionCandidate_peers[];
+  iceServers: ConferenceCandidate_peerConnectionCandidate_iceServers[];
 }
 
 export interface ConferenceCandidate {
@@ -4723,10 +4787,18 @@ export interface ConferenceFull_peers {
   connection: ConferenceFull_peers_connection | null;
 }
 
+export interface ConferenceFull_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
 export interface ConferenceFull {
   __typename: "Conference";
   id: string;
   peers: ConferenceFull_peers[];
+  iceServers: ConferenceFull_iceServers[];
 }
 
 /* tslint:disable */
