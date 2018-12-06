@@ -133,8 +133,8 @@ const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(
             props.isIntro === true
                 ? {}
                 : {
-                      width: 'calc(100% + 20px)',
-                  },
+                    width: 'calc(100% + 20px)',
+                },
     }),
 );
 
@@ -182,7 +182,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 class MessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-> {
+    > {
     static getDerivedStateFromProps = (
         props: MessageComponentInnerProps,
         state: { isEditView: boolean },
@@ -220,10 +220,12 @@ class MessageComponentInner extends React.PureComponent<
     private setEditMessage = (e: any) => {
         let { message, messagesContext } = this.props;
         if (isServerMessage(this.props.message)) {
+            message = message as MessageFull;
+
             e.stopPropagation();
             messagesContext.resetAll();
             messagesContext.setEditMessage(
-                (message as MessageFull).id,
+                message.id,
                 message.message,
             );
         }
@@ -237,18 +239,18 @@ class MessageComponentInner extends React.PureComponent<
             messagesContext.resetAll();
             let singleReplyMessageMessage = new Set().add(message.message);
             let singleReplyMessageId = new Set().add(
-                (message as MessageFull).id,
+                message.id,
             );
             let singleReplyMessageSender = new Set().add(
-                (message as MessageFull).sender.name,
+                message.sender.name,
             );
 
             if (
-                (message as MessageFull).file &&
-                !(message as MessageFull).urlAugmentation
+                message.file &&
+                !message.urlAugmentation
             ) {
                 singleReplyMessageMessage = new Set().add('File');
-                if ((message as MessageFull).fileMetadata!!.isImage) {
+                if (message.fileMetadata!!.isImage) {
                     singleReplyMessageMessage = new Set().add('Photo');
                 }
             }
@@ -302,71 +304,80 @@ class MessageComponentInner extends React.PureComponent<
     };
 
     private menuRender = () => {
-        const { message, out } = this.props;
+        let { message, out } = this.props;
 
-        return (
-            <XHorizontal
-                alignItems="center"
-                alignSelf="flex-start"
-                justifyContent="flex-start"
-                width={83}
-                flexShrink={0}
-                separator={5}
-                className="menu-wrapper"
-            >
-                <XHorizontal alignItems="center" separator={8}>
-                    {(!(message as MessageFull).urlAugmentation ||
-                        ((message as MessageFull).urlAugmentation &&
-                            (message as MessageFull).urlAugmentation!.type !==
-                                'intro')) && (
-                        <ReactionComponent
-                            messageId={(message as MessageFull).id}
-                        />
-                    )}
-                    <IconButton onClick={this.setReplyMessages}>
-                        <ReplyIcon />
-                    </IconButton>
-                    {out &&
-                        message.message && (
+        if (isServerMessage(message)) {
+            message = message as MessageFull;
+
+            const isNotIntro = (!message.urlAugmentation || (message.urlAugmentation && message.urlAugmentation!.type !== 'intro'))
+
+            return (
+                <XHorizontal
+                    alignItems="center"
+                    alignSelf="flex-start"
+                    justifyContent="flex-start"
+                    width={83}
+                    flexShrink={0}
+                    separator={5}
+                    className="menu-wrapper"
+                >
+                    <XHorizontal alignItems="center" separator={8}>
+                        {isNotIntro && (
+                            <ReactionComponent
+                                messageId={message.id}
+                            />
+                        )}
+                        <IconButton onClick={this.setReplyMessages}>
+                            <ReplyIcon />
+                        </IconButton>
+                        {out && message.message && (
                             <IconButton onClick={this.setEditMessage}>
                                 <EditIcon />
                             </IconButton>
                         )}
+                    </XHorizontal>
                 </XHorizontal>
-            </XHorizontal>
-        );
+            );
+        } else {
+            return null;
+        }
     };
 
     private reactionsRender = () => {
-        const { message } = this.props;
+        let { message } = this.props;
 
-        if (
-            !(message as MessageFull).urlAugmentation ||
-            ((message as MessageFull).urlAugmentation &&
-                (message as MessageFull).urlAugmentation!.type !== 'intro')
-        ) {
-            return (
-                <Reactions
-                    messageId={(message as MessageFull).id}
-                    reactions={(message as MessageFull).reactions}
-                    meId={(this.props.me as UserShort).id}
-                />
-            );
+        if (isServerMessage(message)) {
+            message = message as MessageFull;
+
+            if (
+                !message.urlAugmentation ||
+                (message.urlAugmentation &&
+                    message.urlAugmentation!.type !== 'intro')
+            ) {
+                return (
+                    <Reactions
+                        messageId={message.id}
+                        reactions={message.reactions}
+                        meId={(this.props.me as UserShort).id}
+                    />
+                );
+            }
         }
+
         return null;
     };
 
     render() {
-        const { message } = this.props;
+        let { message } = this.props;
         const { compact } = this.props;
 
         let content: any[] = [];
         let date: any = null;
-        let edited =
-            isServerMessage(this.props.message) && this.props.message.edited;
+        let edited = isServerMessage(message) && message.edited;
 
         let isSelect = false;
         let hideMenu = false;
+        let isIntro = false;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
             isSelect = forwardMessagesId.has((message as MessageFull).id);
@@ -376,6 +387,11 @@ class MessageComponentInner extends React.PureComponent<
         }
 
         if (isServerMessage(message)) {
+            message = message as MessageFull;
+            if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
+                isIntro = true;
+            }
+
             if (this.state.isEditView && message.message) {
                 content.push(
                     <EditMessageInlineWrapper
@@ -467,8 +483,8 @@ class MessageComponentInner extends React.PureComponent<
                                     message.urlAugmentation
                                         .user as MessageFull_urlAugmentation_user_User
                                 }
-                                messageId={(message as MessageFull).id}
-                                reactions={(message as MessageFull).reactions}
+                                messageId={message.id}
+                                reactions={message.reactions}
                                 meId={(this.props.me as UserShort).id}
                                 senderId={message.sender.id}
                                 conversationType={this.props.conversationType}
@@ -491,7 +507,7 @@ class MessageComponentInner extends React.PureComponent<
                                 isMe={
                                     this.props.sender && this.props.me
                                         ? this.props.sender.id ===
-                                          this.props.me.id
+                                        this.props.me.id
                                         : false
                                 }
                             />,
@@ -499,12 +515,12 @@ class MessageComponentInner extends React.PureComponent<
                     }
                 }
                 if (
-                    (message as MessageFull).reply &&
-                    (message as MessageFull).reply!.length > 0
+                    message.reply &&
+                    message.reply!.length > 0
                 ) {
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {(message as MessageFull).reply!.sort((a, b) => (a.date - b.date)).map((i, j) => (
+                            {message.reply!.sort((a, b) => (a.date - b.date)).map((i, j) => (
                                 <MessageReplyComponent
                                     mentions={message.mentions}
                                     sender={i.sender}
@@ -586,13 +602,6 @@ class MessageComponentInner extends React.PureComponent<
             );
         }
 
-        let isIntro = false;
-        if (
-            (message as MessageFull).urlAugmentation &&
-            (message as MessageFull).urlAugmentation!.type === 'intro'
-        ) {
-            isIntro = true;
-        }
         let orgPath: string | undefined = undefined;
         if (this.props.sender!!.primaryOrganization && !hideMenu) {
             orgPath = '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
@@ -642,7 +651,13 @@ class MessageComponentInner extends React.PureComponent<
             );
         }
 
-        let { sender } = this.props;
+        let { sender, conversationType, me } = this.props;
+        let isMe = false;
+
+        if (isServerMessage(message)) {
+            sender = sender as UserShort;
+            isMe = me ? sender.id === me.id : false;
+        }
 
         return (
             <MessageWrapper
@@ -664,25 +679,22 @@ class MessageComponentInner extends React.PureComponent<
                     maxWidth="calc(100% - 125px)"
                 >
                     <XHorizontal alignSelf="stretch">
-                        {sender &&
-                            this.props.conversationType !== 'PRIVATE' && (
-                                <UserPopper
-                                    user={sender}
-                                    isMe={
-                                        this.props.me
-                                            ? sender.id === this.props.me.id
-                                            : false
-                                    }
-                                    startSelected={hideMenu}
-                                />
-                            )}
-                        {sender &&
-                            this.props.conversationType === 'PRIVATE' && (
-                                <UserAvatar
-                                    user={sender}
-                                    startSelected={hideMenu}
-                                />
-                            )}
+                        {sender && (
+                            <>
+                                {conversationType === 'PRIVATE' ? (
+                                    <UserAvatar
+                                        user={sender}
+                                        startSelected={hideMenu}
+                                    />
+                                ) : (
+                                        <UserPopper
+                                            user={sender}
+                                            startSelected={hideMenu}
+                                            isMe={isMe}
+                                        />
+                                    )}
+                            </>
+                        )}
                         <XVertical
                             separator={2}
                             flexGrow={1}
@@ -694,38 +706,25 @@ class MessageComponentInner extends React.PureComponent<
                                         separator={4}
                                         alignItems="center"
                                     >
-                                        {this.props.sender &&
-                                        this.props.conversationType !==
-                                            'PRIVATE' ? (
-                                            <UserPopper
-                                                user={this.props.sender}
-                                                isMe={
-                                                    this.props.me
-                                                        ? this.props.sender
-                                                              .id ===
-                                                          this.props.me.id
-                                                        : false
-                                                }
-                                                startSelected={hideMenu}
-                                            >
-                                                <Name>
-                                                    {this.props.sender!!.name}
-                                                </Name>
-                                            </UserPopper>
-                                        ) : (
-                                            <Name>
-                                                {this.props.sender!!.name}
-                                            </Name>
-                                        )}
-                                        {this.props.sender!!
-                                            .primaryOrganization && (
-                                            <Organization path={orgPath}>
-                                                {
-                                                    this.props.sender!!
-                                                        .primaryOrganization!!
-                                                        .name
-                                                }
-                                            </Organization>
+                                        {sender && (
+                                            <>
+                                                {conversationType !== 'PRIVATE' ? (
+                                                    <UserPopper
+                                                        user={sender}
+                                                        startSelected={hideMenu}
+                                                        isMe={isMe}
+                                                    >
+                                                        <Name>{sender.name}</Name>
+                                                    </UserPopper>
+                                                ) : (
+                                                        <Name>{sender.name}</Name>
+                                                    )}
+                                                {sender.primaryOrganization && (
+                                                    <Organization path={orgPath}>
+                                                        {sender.primaryOrganization.name}
+                                                    </Organization>
+                                                )}
+                                            </>
                                         )}
                                     </XHorizontal>
                                     <DateComponent className="time">

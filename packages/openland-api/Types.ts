@@ -787,6 +787,29 @@ export interface GlobalCounter {
 // GraphQL query operation: RoomHistory
 // ====================================================
 
+export interface RoomHistory_messages_alphaButtons {
+  __typename: "MessageButton";
+  id: string;
+  title: string;
+  style: MessageButtonStyle;
+}
+
+export interface RoomHistory_messages_alphaAttachments_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface RoomHistory_messages_alphaAttachments {
+  __typename: "MessageAttachment";
+  fileId: string;
+  fileMetadata: RoomHistory_messages_alphaAttachments_fileMetadata | null;
+}
+
 export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
 }
@@ -1000,11 +1023,17 @@ export interface RoomHistory_messages_urlAugmentation {
 export interface RoomHistory_messages {
   __typename: "RoomMessage";
   id: string;
+  date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  alphaType: MessageType;
+  alphaTitle: string | null;
+  plainText: string | null;
+  alphaButtons: (RoomHistory_messages_alphaButtons[] | null)[];
+  alphaAttachments: RoomHistory_messages_alphaAttachments[];
   serviceMetadata: RoomHistory_messages_serviceMetadata | null;
   fileMetadata: RoomHistory_messages_fileMetadata | null;
   sender: RoomHistory_messages_sender;
@@ -1012,7 +1041,6 @@ export interface RoomHistory_messages {
   reactions: RoomHistory_messages_reactions[];
   mentions: RoomHistory_messages_mentions[] | null;
   urlAugmentation: RoomHistory_messages_urlAugmentation | null;
-  date: any;
 }
 
 export interface RoomHistory_state {
@@ -4808,6 +4836,29 @@ export interface ConferenceFull {
 // GraphQL fragment: ConversationShort
 // ====================================================
 
+export interface ConversationShort_AnonymousConversation_topMessage_alphaButtons {
+  __typename: "MessageButton";
+  id: string;
+  title: string;
+  style: MessageButtonStyle;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_alphaAttachments_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_alphaAttachments {
+  __typename: "MessageAttachment";
+  fileId: string;
+  fileMetadata: ConversationShort_AnonymousConversation_topMessage_alphaAttachments_fileMetadata | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
 }
@@ -5021,11 +5072,17 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
 export interface ConversationShort_AnonymousConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
+  date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  alphaType: MessageType;
+  alphaTitle: string | null;
+  plainText: string | null;
+  alphaButtons: (ConversationShort_AnonymousConversation_topMessage_alphaButtons[] | null)[];
+  alphaAttachments: ConversationShort_AnonymousConversation_topMessage_alphaAttachments[];
   serviceMetadata: ConversationShort_AnonymousConversation_topMessage_serviceMetadata | null;
   fileMetadata: ConversationShort_AnonymousConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_AnonymousConversation_topMessage_sender;
@@ -5033,7 +5090,6 @@ export interface ConversationShort_AnonymousConversation_topMessage {
   reactions: ConversationShort_AnonymousConversation_topMessage_reactions[];
   mentions: ConversationShort_AnonymousConversation_topMessage_mentions[] | null;
   urlAugmentation: ConversationShort_AnonymousConversation_topMessage_urlAugmentation | null;
-  date: any;
 }
 
 export interface ConversationShort_AnonymousConversation_settings {
@@ -5052,6 +5108,29 @@ export interface ConversationShort_AnonymousConversation {
   photos: string[];
   topMessage: ConversationShort_AnonymousConversation_topMessage | null;
   settings: ConversationShort_AnonymousConversation_settings;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaButtons {
+  __typename: "MessageButton";
+  id: string;
+  title: string;
+  style: MessageButtonStyle;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaAttachments_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaAttachments {
+  __typename: "MessageAttachment";
+  fileId: string;
+  fileMetadata: ConversationShort_GroupConversation_topMessage_alphaAttachments_fileMetadata | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
@@ -5267,11 +5346,17 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation 
 export interface ConversationShort_GroupConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
+  date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  alphaType: MessageType;
+  alphaTitle: string | null;
+  plainText: string | null;
+  alphaButtons: (ConversationShort_GroupConversation_topMessage_alphaButtons[] | null)[];
+  alphaAttachments: ConversationShort_GroupConversation_topMessage_alphaAttachments[];
   serviceMetadata: ConversationShort_GroupConversation_topMessage_serviceMetadata | null;
   fileMetadata: ConversationShort_GroupConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_GroupConversation_topMessage_sender;
@@ -5279,7 +5364,6 @@ export interface ConversationShort_GroupConversation_topMessage {
   reactions: ConversationShort_GroupConversation_topMessage_reactions[];
   mentions: ConversationShort_GroupConversation_topMessage_mentions[] | null;
   urlAugmentation: ConversationShort_GroupConversation_topMessage_urlAugmentation | null;
-  date: any;
 }
 
 export interface ConversationShort_GroupConversation_settings {
@@ -5314,6 +5398,29 @@ export interface ConversationShort_GroupConversation {
   settings: ConversationShort_GroupConversation_settings;
   photo: string | null;
   photoRef: ConversationShort_GroupConversation_photoRef | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaButtons {
+  __typename: "MessageButton";
+  id: string;
+  title: string;
+  style: MessageButtonStyle;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaAttachments_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaAttachments {
+  __typename: "MessageAttachment";
+  fileId: string;
+  fileMetadata: ConversationShort_ChannelConversation_topMessage_alphaAttachments_fileMetadata | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
@@ -5529,11 +5636,17 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
 export interface ConversationShort_ChannelConversation_topMessage {
   __typename: "ConversationMessage";
   id: string;
+  date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  alphaType: MessageType;
+  alphaTitle: string | null;
+  plainText: string | null;
+  alphaButtons: (ConversationShort_ChannelConversation_topMessage_alphaButtons[] | null)[];
+  alphaAttachments: ConversationShort_ChannelConversation_topMessage_alphaAttachments[];
   serviceMetadata: ConversationShort_ChannelConversation_topMessage_serviceMetadata | null;
   fileMetadata: ConversationShort_ChannelConversation_topMessage_fileMetadata | null;
   sender: ConversationShort_ChannelConversation_topMessage_sender;
@@ -5541,7 +5654,6 @@ export interface ConversationShort_ChannelConversation_topMessage {
   reactions: ConversationShort_ChannelConversation_topMessage_reactions[];
   mentions: ConversationShort_ChannelConversation_topMessage_mentions[] | null;
   urlAugmentation: ConversationShort_ChannelConversation_topMessage_urlAugmentation | null;
-  date: any;
 }
 
 export interface ConversationShort_ChannelConversation_settings {
@@ -5589,6 +5701,29 @@ export type ConversationShort = ConversationShort_AnonymousConversation | Conver
 // ====================================================
 // GraphQL fragment: MessageFull
 // ====================================================
+
+export interface MessageFull_alphaButtons {
+  __typename: "MessageButton";
+  id: string;
+  title: string;
+  style: MessageButtonStyle;
+}
+
+export interface MessageFull_alphaAttachments_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface MessageFull_alphaAttachments {
+  __typename: "MessageAttachment";
+  fileId: string;
+  fileMetadata: MessageFull_alphaAttachments_fileMetadata | null;
+}
 
 export interface MessageFull_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
@@ -5803,11 +5938,17 @@ export interface MessageFull_urlAugmentation {
 export interface MessageFull {
   __typename: "ConversationMessage";
   id: string;
+  date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  alphaType: MessageType;
+  alphaTitle: string | null;
+  plainText: string | null;
+  alphaButtons: (MessageFull_alphaButtons[] | null)[];
+  alphaAttachments: MessageFull_alphaAttachments[];
   serviceMetadata: MessageFull_serviceMetadata | null;
   fileMetadata: MessageFull_fileMetadata | null;
   sender: MessageFull_sender;
@@ -5815,7 +5956,6 @@ export interface MessageFull {
   reactions: MessageFull_reactions[];
   mentions: MessageFull_mentions[] | null;
   urlAugmentation: MessageFull_urlAugmentation | null;
-  date: any;
 }
 
 /* tslint:disable */
@@ -5824,6 +5964,29 @@ export interface MessageFull {
 // ====================================================
 // GraphQL fragment: RoomMessageFull
 // ====================================================
+
+export interface RoomMessageFull_alphaButtons {
+  __typename: "MessageButton";
+  id: string;
+  title: string;
+  style: MessageButtonStyle;
+}
+
+export interface RoomMessageFull_alphaAttachments_fileMetadata {
+  __typename: "FileMetadata";
+  name: string;
+  size: number;
+  isImage: boolean;
+  imageWidth: number | null;
+  imageHeight: number | null;
+  imageFormat: string | null;
+}
+
+export interface RoomMessageFull_alphaAttachments {
+  __typename: "MessageAttachment";
+  fileId: string;
+  fileMetadata: RoomMessageFull_alphaAttachments_fileMetadata | null;
+}
 
 export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata";
@@ -6038,11 +6201,17 @@ export interface RoomMessageFull_urlAugmentation {
 export interface RoomMessageFull {
   __typename: "RoomMessage";
   id: string;
+  date: any;
   message: string | null;
   edited: boolean;
   file: string | null;
   repeatKey: string | null;
   isService: boolean;
+  alphaType: MessageType;
+  alphaTitle: string | null;
+  plainText: string | null;
+  alphaButtons: (RoomMessageFull_alphaButtons[] | null)[];
+  alphaAttachments: RoomMessageFull_alphaAttachments[];
   serviceMetadata: RoomMessageFull_serviceMetadata | null;
   fileMetadata: RoomMessageFull_fileMetadata | null;
   sender: RoomMessageFull_sender;
@@ -6050,7 +6219,6 @@ export interface RoomMessageFull {
   reactions: RoomMessageFull_reactions[];
   mentions: RoomMessageFull_mentions[] | null;
   urlAugmentation: RoomMessageFull_urlAugmentation | null;
-  date: any;
 }
 
 /* tslint:disable */
@@ -6683,6 +6851,16 @@ export enum EmailFrequency {
   WEEK_1 = "WEEK_1",
 }
 
+export enum MessageButtonStyle {
+  DEFAULT = "DEFAULT",
+  LIGHT = "LIGHT",
+}
+
+export enum MessageType {
+  MESSAGE = "MESSAGE",
+  POST = "POST",
+}
+
 export enum NotificationMessages {
   ALL = "ALL",
   DIRECT = "DIRECT",
@@ -6702,7 +6880,7 @@ export enum OrganizationMemberRole {
 
 export enum PostMessageType {
   BLANK = "BLANK",
-  JOB_OPPORTUNITT = "JOB_OPPORTUNITT",
+  JOB_OPPORTUNITY = "JOB_OPPORTUNITY",
   OFFICE_HOURS = "OFFICE_HOURS",
   REQUEST_FOR_STARTUPS = "REQUEST_FOR_STARTUPS",
 }

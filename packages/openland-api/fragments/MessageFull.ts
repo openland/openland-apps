@@ -3,11 +3,31 @@ import gql from 'graphql-tag';
 export const MessageFull = gql`
  fragment MessageFull on ConversationMessage {
     id
+    date
     message
     edited
     file
     repeatKey
     isService
+    alphaType
+    alphaTitle
+    plainText
+    alphaButtons {
+      id
+      title
+      style
+    }
+    alphaAttachments {
+     	fileId
+      fileMetadata {
+        name
+        size
+        isImage
+        imageWidth
+        imageHeight
+        imageFormat
+      }
+    }
     serviceMetadata{
         ...on KickServiceMetadata{
             user {
@@ -106,18 +126,37 @@ export const MessageFull = gql`
             }
         }
     }
-    date
  }
 `;
 
 export const RoomMessageFull = gql`
  fragment RoomMessageFull on RoomMessage {
     id
+    date
     message
     edited
     file
     repeatKey
     isService
+    alphaType
+    alphaTitle
+    plainText
+    alphaButtons {
+      id
+      title
+      style
+    }
+    alphaAttachments {
+     	fileId
+      fileMetadata {
+        name
+        size
+        isImage
+        imageWidth
+        imageHeight
+        imageFormat
+      }
+    }
     serviceMetadata{
         ...on KickServiceMetadata{
             user {
@@ -216,6 +255,5 @@ export const RoomMessageFull = gql`
             }
         }
     }
-    date
  }
 `;
