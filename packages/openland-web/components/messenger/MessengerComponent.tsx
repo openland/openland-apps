@@ -43,8 +43,6 @@ import {
 } from 'openland-api/Types';
 import { withRoomAddMembers } from '../../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { TalkBarComponent } from '../conference/TalkBarComponent';
-import { TalkContext } from '../conference/TalkProviderComponent';
 import { XDate } from 'openland-x/XDate';
 import {
     MessagesStateContext,
@@ -57,6 +55,8 @@ import { XMutation } from 'openland-x/XMutation';
 import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
 import NotificationsIcon from './components/icons/ic-notifications.svg';
 import NotificationsOffIcon from './components/icons/ic-notifications-off.svg';
+import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
+import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',

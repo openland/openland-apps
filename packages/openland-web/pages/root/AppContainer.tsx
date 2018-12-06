@@ -9,7 +9,7 @@ import {
     YApolloProvider,
     YApolloContext,
 } from 'openland-y-graphql/YApolloProvider';
-import { TalkProviderComponent } from 'openland-web/components/conference/TalkProviderComponent';
+import { TalkProviderComponent } from '../main/mail/components/conference/TalkProviderComponent';
 
 export const AppContainer = withAccountQuery(
     withQueryLoader(props => {
