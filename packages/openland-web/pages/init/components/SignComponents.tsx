@@ -8,6 +8,13 @@ import { XInput } from 'openland-x/XInput';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { InitTexts } from '../_text';
 import { Title, SubTitle } from './CreateProfileComponents';
+import { XForm } from 'openland-x-forms/XForm2';
+import { XPopper } from 'openland-x/XPopper';
+import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
+import { XFormError } from 'openland-x-forms/XFormError';
+import IcInfo from '../components/icons/ic-info.svg';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
 export const RoomLoader = Glamorous.div({
     height: 150,
@@ -729,6 +736,180 @@ export const RoomAuthMechanism = ({
     );
 };
 
+const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
+    marginBottom: 26,
+});
+
+const XFormSubmitWrapper = Glamorous(XFormSubmit)({
+    marginTop: 50,
+});
+
+export const CreateProfileFormInner = ({
+    roomView,
+    prefill,
+    usePhotoPrefill,
+    defaultAction,
+}: {
+    roomView: boolean;
+    prefill: any;
+    usePhotoPrefill: boolean;
+    defaultAction: (data: any) => any;
+}) => {
+    const MyTitle = roomView ? RoomTitle : Title;
+    return (
+        <div>
+            <MyTitle>{InitTexts.create_profile.title}</MyTitle>
+            <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
+            <XForm
+                defaultData={{
+                    input: {
+                        firstName: (prefill && prefill.firstName) || '',
+                        lastName: (prefill && prefill.lastName) || '',
+                    },
+                }}
+                defaultAction={defaultAction}
+                defaultLayout={false}
+            >
+                <XFormError onlyGeneralErrors={true} width={472} />
+                <XFormLoadingContent>
+                    <XVertical alignItems="center">
+                        <XAvatarUploadWrapper
+                            field="input.photoRef"
+                            dataTestId="photo"
+                            size="default"
+                            initialUrl={
+                                usePhotoPrefill
+                                    ? prefill && prefill.picture
+                                    : undefined
+                            }
+                        />
+
+                        <XInputWrapper
+                            field="input.firstName"
+                            size="large"
+                            title="First name"
+                            dataTestId="first-name"
+                        />
+
+                        <XInputWrapper
+                            field="input.lastName"
+                            size="large"
+                            title="Last name"
+                            dataTestId="last-name"
+                        />
+                        <ButtonsWrapper marginBottom={84}>
+                            <XFormSubmitWrapper
+                                style="primary"
+                                text={InitTexts.create_profile.continue}
+                                size="large"
+                            />
+                        </ButtonsWrapper>
+                    </XVertical>
+                </XFormLoadingContent>
+            </XForm>
+        </div>
+    );
+};
+
+const XInputWrapper = Glamorous(XInput)({
+    minWidth: 330,
+});
+
+const InfoText = Glamorous.span({
+    fontSize: 14,
+});
+
+const XIconWrapper = Glamorous.span({
+    fontSize: 20,
+    marginLeft: 5,
+
+    '& svg': {
+        marginBottom: -3,
+    },
+
+    '&:hover': {
+        cursor: 'pointer',
+        '& svg': {
+            '& > g > path:last-child': {
+                fill: '#1790ff',
+                opacity: 1,
+            },
+        },
+    },
+});
+
+export const CreateOrganizationFormInner = ({
+    roomView,
+    defaultAction,
+}: {
+    roomView: boolean;
+    defaultAction: (data: any) => any;
+}) => {
+    const MyTitle = roomView ? RoomTitle : Title;
+    return (
+        <div>
+            <MyTitle>{InitTexts.create_organization.title}</MyTitle>
+            <SubTitle>
+                {InitTexts.create_organization.subTitle}
+
+                <XPopper
+                    content={
+                        <InfoText>
+                            To register as an individual,
+                            <br />
+                            simply enter your name
+                        </InfoText>
+                    }
+                    showOnHover={true}
+                    placement="bottom"
+                    style="dark"
+                >
+                    <XIconWrapper>
+                        <IcInfo />
+                    </XIconWrapper>
+                </XPopper>
+            </SubTitle>
+            <XForm
+                defaultAction={defaultAction}
+                defaultData={{
+                    input: {
+                        name: '',
+                        website: '',
+                        photoRef: null,
+                    },
+                }}
+                defaultLayout={false}
+            >
+                <XVertical separator="large">
+                    <XFormError width={472} />
+                    <XFormLoadingContent>
+                        <ButtonsWrapper marginBottom={84}>
+                            <XVertical alignItems="center">
+                                <XInputWrapper
+                                    field="input.name"
+                                    size="large"
+                                    title={
+                                        InitTexts.create_organization
+                                            .namePlaceholder
+                                    }
+                                />
+
+                                <XFormSubmit
+                                    style="primary"
+                                    text={
+                                        InitTexts.create_organization.continue
+                                    }
+                                    size="large"
+                                />
+                            </XVertical>
+                        </ButtonsWrapper>
+                    </XFormLoadingContent>
+                </XVertical>
+            </XForm>
+        </div>
+    );
+};
+
 export const WebSignUpAuthMechanism = ({
     signin,
     loginWithGoogle,
@@ -792,6 +973,7 @@ const ResendButton = Glamorous(XButton)({
 
 export const WebSignUpActivationCode = ({
     backButtonClick,
+    resendCodeClick,
     codeError,
     emailSendedTo,
     codeChanged,
@@ -800,6 +982,7 @@ export const WebSignUpActivationCode = ({
     loginCodeStart,
 }: {
     backButtonClick: (event?: React.MouseEvent<any>) => void;
+    resendCodeClick: (event?: React.MouseEvent<any>) => void;
     codeError: string;
     emailSendedTo?: string;
     codeChanged: (value: string) => void;
@@ -838,7 +1021,7 @@ export const WebSignUpActivationCode = ({
                         {InitTexts.auth.haveNotReceiveCode}
                     </SmallerText>
                     <ResendButton
-                        onClick={loginCodeStart}
+                        onClick={resendCodeClick}
                         style="link"
                         text={InitTexts.auth.resend}
                     />
@@ -869,6 +1052,7 @@ export const WebSignUpActivationCode = ({
 
 export const RoomActivationCode = ({
     backButtonClick,
+    resendCodeClick,
     codeError,
     emailSendedTo,
     codeChanged,
@@ -877,6 +1061,7 @@ export const RoomActivationCode = ({
     loginCodeStart,
 }: {
     backButtonClick: (event?: React.MouseEvent<any>) => void;
+    resendCodeClick: (event?: React.MouseEvent<any>) => void;
     codeError: string;
     emailSendedTo?: string;
     codeChanged: (value: string) => void;
@@ -922,7 +1107,7 @@ export const RoomActivationCode = ({
                         {InitTexts.auth.haveNotReceiveCode}
                     </SmallerText>
                     <ResendButton
-                        onClick={loginCodeStart}
+                        onClick={resendCodeClick}
                         style="link"
                         text={InitTexts.auth.resend}
                     />

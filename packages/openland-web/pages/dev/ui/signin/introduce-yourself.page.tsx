@@ -3,8 +3,8 @@ import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import {
     RoomSignup,
     SignContainer,
+    CreateProfileFormInner,
 } from '../../../init/components/SignComponents';
-import { CreateProfileFormInner } from '../../../init/createProfile.page';
 import { CreateWrapIntoState } from './utils';
 import { roomSignupKnob, signContainerKnob } from './knobs';
 
@@ -19,10 +19,18 @@ export default () => (
             {({ branch, ...branchProps }: any) => {
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
-                    const CreateProfileFormAny = CreateProfileFormInner as any;
+
                     return (
                         <RoomSignup headerStyle={headerStyle}>
-                            <CreateProfileFormAny data={{ prefill: {} }} />;
+                            <CreateProfileFormInner
+                                roomView={true}
+                                usePhotoPrefill={true}
+                                prefill={{}}
+                                defaultAction={() => {
+                                    //
+                                }}
+                            />
+                            ;
                         </RoomSignup>
                     );
                 } else {
@@ -35,7 +43,6 @@ export default () => (
                         ...other
                     } = branchProps;
 
-                    const CreateProfileFormAny = CreateProfileFormInner as any;
                     return (
                         <SignContainer
                             {...{
@@ -46,7 +53,15 @@ export default () => (
                                 linkText,
                             }}
                         >
-                            <CreateProfileFormAny data={{ prefill: {} }} />;
+                            <CreateProfileFormInner
+                                roomView={false}
+                                prefill={{}}
+                                usePhotoPrefill={true}
+                                defaultAction={() => {
+                                    //
+                                }}
+                            />
+                            ;
                         </SignContainer>
                     );
                 }

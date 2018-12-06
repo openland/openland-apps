@@ -252,6 +252,8 @@ class SignInComponent extends React.Component<
 
                 {this.state.emailSent && (
                     <MyWebSignUpActivationCode
+                        resendCodeClick={() => console.log('resendCodeClick')}
+                        backButtonClick={() => console.log('back')}
                         codeError={this.state.codeError}
                         codeChanged={this.codeChanged}
                         codeSending={this.state.codeSending}

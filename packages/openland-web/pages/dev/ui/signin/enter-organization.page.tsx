@@ -3,8 +3,8 @@ import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import {
     RoomSignup,
     SignContainer,
+    CreateOrganizationFormInner,
 } from '../../../init/components/SignComponents';
-import { CreateOrganizationFormInner } from '../../../init/createOrganization.page';
 import { CreateWrapIntoState } from './utils';
 import { roomSignupKnob, signContainerKnob } from './knobs';
 
@@ -19,11 +19,15 @@ export default () => (
             {({ branch, ...branchProps }: any) => {
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
-                    const CreateOrganizationFormAny = CreateOrganizationFormInner as any;
 
                     return (
                         <RoomSignup headerStyle={headerStyle}>
-                            <CreateOrganizationFormAny data={{ prefill: {} }} />
+                            <CreateOrganizationFormInner
+                                roomView={true}
+                                defaultAction={() => {
+                                    //
+                                }}
+                            />
                         </RoomSignup>
                     );
                 } else {
@@ -36,7 +40,6 @@ export default () => (
                         ...other
                     } = branchProps;
 
-                    const CreateOrganizationFormAny = CreateOrganizationFormInner as any;
                     return (
                         <SignContainer
                             {...{
@@ -47,7 +50,12 @@ export default () => (
                                 linkText,
                             }}
                         >
-                            <CreateOrganizationFormAny data={{ prefill: {} }} />
+                            <CreateOrganizationFormInner
+                                roomView={false}
+                                defaultAction={() => {
+                                    //
+                                }}
+                            />
                         </SignContainer>
                     );
                 }
