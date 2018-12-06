@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XInput } from 'openland-x/XInput';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
@@ -600,17 +601,15 @@ export const RoomCreateWithEmail = ({
                 />
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                <XHorizontal>
+                <XVertical alignItems="center">
                     <XButton
                         onClick={loginEmailStart}
                         style="primary"
                         size="large"
-                        alignSelf="stretch"
-                        flexGrow={1}
                         loading={emailSending}
                         text={InitTexts.auth.continue}
                     />
-                </XHorizontal>
+                </XVertical>
             </ButtonsWrapper>
         </div>
     );
@@ -650,17 +649,15 @@ export const WebSignUpActivationCode = ({
                 />
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20}>
-                <XHorizontal>
+                <XVertical alignItems="center">
                     <XButton
                         onClick={loginCodeStart}
                         size="large"
                         style="primary"
-                        alignSelf="stretch"
-                        flexGrow={1}
                         loading={codeSending}
                         text={InitTexts.auth.complete}
                     />
-                </XHorizontal>
+                </XVertical>
             </ButtonsWrapper>
         </div>
     );
@@ -706,17 +703,16 @@ export const WebSignUpCreateWithEmail = ({
                 />
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20}>
-                <XHorizontal>
+                <XVertical alignItems="center">
                     <XButton
                         onClick={loginEmailStart}
                         style="primary"
                         size="large"
-                        alignSelf="stretch"
-                        flexGrow={1}
+                        alignSelf="center"
                         loading={emailSending}
                         text={InitTexts.auth.continue}
                     />
-                </XHorizontal>
+                </XVertical>
             </ButtonsWrapper>
         </div>
     );
@@ -853,17 +849,15 @@ export const RoomActivationCode = ({
                 />
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
-                <XHorizontal>
+                <XVertical alignItems="center">
                     <XButton
                         onClick={loginCodeStart}
                         size="large"
                         style="primary"
-                        alignSelf="stretch"
-                        flexGrow={1}
                         loading={codeSending}
                         text={InitTexts.auth.complete}
                     />
-                </XHorizontal>
+                </XVertical>
             </ButtonsWrapper>
         </div>
     );

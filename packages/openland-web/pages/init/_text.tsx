@@ -24,7 +24,7 @@ export const InitTexts = {
         signupTitle: 'Sign up for Openland',
         signupSubtitle: 'Creating an account is free and easy',
         signupGoogle: 'Sign up with Google',
-        signupEmail: 'Sign up with Email',
+        signupEmail: 'Sign up for Openland',
 
         emailInvalid: 'Invalid email',
         emailPlaceholder: 'Your email',
