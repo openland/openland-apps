@@ -12901,6 +12901,239 @@
                 "defaultValue": null
               },
               {
+                "name": "title",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "text",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "attachments",
+                "description": "",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "postType",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "PostMessageType",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "repeatKey",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ConversationEventMessage",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "alphaEditPostMessage",
+            "description": "",
+            "args": [
+              {
+                "name": "messageId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "title",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "text",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "attachments",
+                "description": "",
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "postType",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "PostMessageType",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ConversationEventMessage",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "alphaRespondPostMessage",
+            "description": "",
+            "args": [
+              {
+                "name": "messageId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "buttonId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "conversationDraftUpdate",
+            "description": "",
+            "args": [
+              {
+                "name": "conversationId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "message",
                 "description": "",
                 "type": {
@@ -13369,37 +13602,6 @@
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "featureFlagAdd",
-            "description": "",
-            "args": [
-              {
-                "name": "key",
-                "description": "",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
                     "name": "String",
                     "ofType": null
                   }
@@ -13425,8 +13627,13 @@
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
+<<<<<<< HEAD
+                "kind": "SCALAR",
+                "name": "String",
+=======
                 "kind": "OBJECT",
                 "name": "FeatureFlag",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
                 "ofType": null
               }
             },
@@ -13434,7 +13641,68 @@
             "deprecationReason": null
           },
           {
+<<<<<<< HEAD
+            "name": "featureFlagAdd",
+=======
             "name": "superAccountFeatureAdd",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
+            "description": "",
+            "args": [
+              {
+                "name": "key",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+<<<<<<< HEAD
+                "name": "title",
+=======
+                "name": "featureId",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+<<<<<<< HEAD
+                "name": "FeatureFlag",
+=======
+                "name": "SuperAccount",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+<<<<<<< HEAD
+            "name": "superAccountFeatureAdd",
+=======
+            "name": "superAccountFeatureRemove",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
             "description": "",
             "args": [
               {
@@ -13479,7 +13747,11 @@
             "deprecationReason": null
           },
           {
+<<<<<<< HEAD
             "name": "superAccountFeatureRemove",
+=======
+            "name": "conferenceJoin",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
             "description": "",
             "args": [
               {
@@ -13495,9 +13767,30 @@
                   }
                 },
                 "defaultValue": null
-              },
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ConferenceJoinResult",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "conferenceKeepAlive",
+            "description": "",
+            "args": [
               {
+<<<<<<< HEAD
                 "name": "featureId",
+=======
+                "name": "id",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -13555,7 +13848,11 @@
             "deprecationReason": null
           },
           {
+<<<<<<< HEAD
             "name": "conferenceKeepAlive",
+=======
+            "name": "conferenceLeave",
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
             "description": "",
             "args": [
               {
@@ -13574,6 +13871,7 @@
               },
               {
                 "name": "peerId",
+<<<<<<< HEAD
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -13605,6 +13903,8 @@
             "args": [
               {
                 "name": "id",
+=======
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -13616,6 +13916,7 @@
                   }
                 },
                 "defaultValue": null
+<<<<<<< HEAD
               },
               {
                 "name": "peerId",
@@ -13630,6 +13931,8 @@
                   }
                 },
                 "defaultValue": null
+=======
+>>>>>>> f6b45f17d47107830c1bb1e3ae0114c6b4be10ef
               }
             ],
             "type": {
@@ -16170,6 +16473,41 @@
           },
           {
             "name": "ANDROID",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "PostMessageType",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "BLANK",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "JOB_OPPORTUNITT",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "OFFICE_HOURS",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "REQUEST_FOR_STARTUPS",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null
@@ -19181,6 +19519,54 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "onOperation",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": true,
+            "deprecationReason": "Use `locations`."
+          },
+          {
+            "name": "onFragment",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": true,
+            "deprecationReason": "Use `locations`."
+          },
+          {
+            "name": "onField",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": true,
+            "deprecationReason": "Use `locations`."
           }
         ],
         "inputFields": null,
@@ -19235,12 +19621,6 @@
           {
             "name": "INLINE_FRAGMENT",
             "description": "Location adjacent to an inline fragment.",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "VARIABLE_DEFINITION",
-            "description": "Location adjacent to a variable definition.",
             "isDeprecated": false,
             "deprecationReason": null
           },

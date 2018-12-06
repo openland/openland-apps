@@ -78,8 +78,8 @@ export const MessageUnsetReactionMutation = gql`
 `;
 
 export const SendPostMessageMutation = gql`
-    mutation SendPostMessage($conversationId: ID!, $title: String!, $text: String!, $attachments: [String!]) {
-        sendPostMessage: alphaSendPostMessage(conversationId: $conversationId, title: $title, text: $text, attachments: $attachments, postType: BLANK) {
+    mutation SendPostMessage($conversationId: ID!, $title: String!, $text: String!, $attachments: [String!], $postType: PostMessageType!) {
+        sendPostMessage: alphaSendPostMessage(conversationId: $conversationId, title: $title, text: $text, attachments: $attachments, postType: $postType) {
             seq
         }
     }

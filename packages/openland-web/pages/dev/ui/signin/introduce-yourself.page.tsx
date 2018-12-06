@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import {
-    RoomSignup,
-    SignContainer,
+    RoomSignupContainer,
+    WebSignUpContainer,
     CreateProfileFormInner,
 } from '../../../init/components/SignComponents';
 import { CreateWrapIntoState } from './utils';
@@ -21,7 +21,7 @@ export default () => (
                     const { headerStyle, ...other } = branchProps;
 
                     return (
-                        <RoomSignup headerStyle={headerStyle}>
+                        <RoomSignupContainer headerStyle={headerStyle}>
                             <CreateProfileFormInner
                                 roomView={true}
                                 usePhotoPrefill={true}
@@ -31,7 +31,7 @@ export default () => (
                                 }}
                             />
                             ;
-                        </RoomSignup>
+                        </RoomSignupContainer>
                     );
                 } else {
                     const {
@@ -44,7 +44,7 @@ export default () => (
                     } = branchProps;
 
                     return (
-                        <SignContainer
+                        <WebSignUpContainer
                             {...{
                                 signin,
                                 headerStyle,
@@ -62,7 +62,7 @@ export default () => (
                                 }}
                             />
                             ;
-                        </SignContainer>
+                        </WebSignUpContainer>
                     );
                 }
             }}

@@ -9,8 +9,8 @@ import { InitTexts } from './_text';
 import { delayForewer } from 'openland-y-utils/timer';
 import { sanitizeIamgeRef } from '../../utils/sanitizer';
 import {
-    SignContainer,
-    RoomSignup,
+    WebSignUpContainer,
+    RoomSignupContainer,
     CreateOrganizationFormInner,
 } from './components/SignComponents';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -22,13 +22,14 @@ const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
     return (
         <>
             {children({
-                data: !props.data || !props.data.items 
-                    ? []
-                    : props.data.items.edges.map(
-                          ({ node: { id, name } }: any) => {
-                              return { value: id, label: name };
-                          },
-                      ),
+                data:
+                    !props.data || !props.data.items
+                        ? []
+                        : props.data.items.edges.map(
+                              ({ node: { id, name } }: any) => {
+                                  return { value: id, label: name };
+                              },
+                          ),
                 loading: false,
             })}
         </>
@@ -126,7 +127,7 @@ class CreateOrganizationPrefixHolder extends React.Component<
     render() {
         const props = this.props;
         const roomView = props.roomView;
-        const Container = roomView ? RoomSignup : SignContainer;
+        const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
         return (
             <Container>

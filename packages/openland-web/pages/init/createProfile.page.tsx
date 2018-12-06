@@ -7,8 +7,8 @@ import { InitTexts } from './_text';
 import { delayForewer } from 'openland-y-utils/timer';
 import * as Cookie from 'js-cookie';
 import {
-    SignContainer,
-    RoomSignup,
+    WebSignUpContainer,
+    RoomSignupContainer,
     CreateProfileFormInner,
 } from './components/SignComponents';
 
@@ -21,7 +21,7 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
     const router = props.router;
     const prefill = props.data.prefill;
     const createProfile = props.createProfile;
-    const Container = roomView ? RoomSignup : SignContainer;
+    const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
     if (props.loading) {
         return <div />;
@@ -45,7 +45,7 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
     );
 });
 
-export default withApp('Create Profile', 'viewer', props => {
+export default withApp('CreateProfile', 'viewer', props => {
     return (
         <>
             <XDocumentHead

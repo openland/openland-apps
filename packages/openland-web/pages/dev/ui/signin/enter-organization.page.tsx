@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import {
-    RoomSignup,
-    SignContainer,
+    RoomSignupContainer,
+    WebSignUpContainer,
     CreateOrganizationFormInner,
 } from '../../../init/components/SignComponents';
 import { CreateWrapIntoState } from './utils';
@@ -22,14 +22,14 @@ export default () => (
 
                     const CreateOrganizationFormInnerAny = CreateOrganizationFormInner as any;
                     return (
-                        <RoomSignup headerStyle={headerStyle}>
+                        <RoomSignupContainer headerStyle={headerStyle}>
                             <CreateOrganizationFormInnerAny
                                 roomView={true}
                                 defaultAction={() => {
                                     //
                                 }}
                             />
-                        </RoomSignup>
+                        </RoomSignupContainer>
                     );
                 } else {
                     const {
@@ -43,7 +43,7 @@ export default () => (
 
                     const CreateOrganizationFormInnerAny = CreateOrganizationFormInner as any;
                     return (
-                        <SignContainer
+                        <WebSignUpContainer
                             {...{
                                 signin,
                                 headerStyle,
@@ -58,7 +58,7 @@ export default () => (
                                     //
                                 }}
                             />
-                        </SignContainer>
+                        </WebSignUpContainer>
                     );
                 }
             }}
