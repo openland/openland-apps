@@ -46,7 +46,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
         other.text = this.state.success ? this.props.succesText : other.text;
         return (
             <XButton
-                {...other}
+                {...other}                
                 onClick={this.handleClick}
                 enabled={this.state.loading || formEnabled}
                 loading={this.state.loading}
@@ -61,6 +61,7 @@ export interface XFormSubmitProps extends XButtonStyleProps {
     action?: (data: any) => any;
     keyDownSubmit?: boolean;
     succesText?: string;
+    dataTestId?: string; 
 }
 
 export function XFormSubmit(props: XFormSubmitProps) {

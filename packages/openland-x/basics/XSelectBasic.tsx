@@ -289,7 +289,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         position: 'absolute',
         top: '100%',
         width: '100%',
-        zIndex: 1,
+        zIndex: 10000000,
         WebkitOverflowScrolling: 'touch',
         overflow: 'hidden'
     },
@@ -427,6 +427,7 @@ const StyledSelect = Glamorous(Select)(Styles);
 const StyledSelectCreatable = Glamorous(Creatable)(Styles);
 
 export type XSelectBasicProps = ReactSelectProps & {
+    dataTestId?: string,
     ref?: any;
     attach?: 'left' | 'right' | 'both';
     creatable?: boolean;
@@ -441,7 +442,7 @@ export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
 
 const SelectWrapper = Glamorous.div({
     position: 'relative',
-    zIndex: 10
+    
 });
 
 const Title = Glamorous.div<{ inside?: boolean }>(
@@ -543,7 +544,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
         let { placeholder, title, onChange, onFocus, onBlur, ...other } = this.props;
 
         return (
-            <SelectWrapper>
+            <SelectWrapper data-test-id={this.props.dataTestId}>
                 {title && (
                     <Title inside={!(this.state.hasValue || this.state.hasInputValue || this.state.isFocused)}>{title}</Title>
                 )}

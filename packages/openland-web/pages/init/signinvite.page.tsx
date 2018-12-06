@@ -148,7 +148,7 @@ const InviteInfo = withAppInviteInfo(props => {
                 </XHorizontal>
 
                 <XHorizontal separator={5}>
-                    <LogoAvatar size="medium" src="/static/logo-purple.svg" />
+                    <LogoAvatar size="medium" src="/static/logo.svg" />
                     <BubbleMsg separator={3}>
                         <XText
                             letterSpacing={-0.2}

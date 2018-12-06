@@ -59,7 +59,7 @@ export function withData(App: React.ComponentType<any>) {
                     );
                 }
 
-                // getDataFromTree does not call componentWillUnmount
+                // getDataFromTree Last names not call componentWillUnmount
                 // head side effect therefore need to be cleared manually
                 if (!canUseDOM) {
                     Head.rewind();

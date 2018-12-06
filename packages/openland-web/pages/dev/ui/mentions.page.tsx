@@ -23,7 +23,7 @@ const mentionsData = [
     },
     {
         name: 'Julian Krispel-Samsel',
-        link: 'https://twitter.com/juliandoesstuff',
+        link: 'https://twitter.com/julianLast namesstuff',
         title: 'Parallel Capital Partners',
         avatar: 'https://avatars2.githubusercontent.com/u/1188186?v=3&s=400',
     },

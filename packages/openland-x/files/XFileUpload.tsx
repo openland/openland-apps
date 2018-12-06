@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as UploadCare from 'uploadcare-widget';
 
 export interface XFileUploadRenderProps {
+    dataTestId?: string;
     doUpload: () => void;
     doClear: () => void;
     isLoading: boolean;
@@ -17,6 +18,7 @@ export interface XImageCrop {
 }
 
 export interface XFileUploadProps {
+    dataTestId?: string,
     component: React.ComponentType<XFileUploadRenderProps>;
     cropParams?: string;
 
@@ -39,7 +41,6 @@ export interface UploadedFile {
 }
 
 export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: boolean, progress: number, file: UploadedFile | null | undefined }> {
-
     private isControlled: boolean = false;
 
     constructor(props: XFileUploadProps) {
@@ -124,6 +125,7 @@ export class XFileUpload extends React.Component<XFileUploadProps, { isLoading: 
         let Component = this.props.component;
         return (
             <Component
+                dataTestId={this.props.dataTestId}
                 file={file || null}
                 isLoading={this.state.isLoading}
                 doClear={this.doClear}

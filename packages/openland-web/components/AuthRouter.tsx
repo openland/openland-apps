@@ -20,7 +20,6 @@ export const AuthRouter = withUserInfo(props => {
                 '/waitlist',
                 '/suspended',
                 '/createProfile',
-                '/createProfileAndOrganization',
                 '/signin',
                 '/signup',
             ].indexOf(props.router.path) < 0
@@ -117,13 +116,9 @@ export const AuthRouter = withUserInfo(props => {
     // Redirect to profile and organization creation
     if (!handled && !props.isProfileCreated) {
         handled = true;
-        if (['/createProfileAndOrganization'].indexOf(props.router.path) < 0) {
+        if (['/createProfile'].indexOf(props.router.path) < 0) {
             console.warn('NoProfile');
-            return (
-                <XPageRedirect
-                    path={'/createProfileAndOrganization' + redirect}
-                />
-            );
+            return <XPageRedirect path={'/createProfile' + redirect} />;
         }
     }
 
@@ -177,8 +172,6 @@ export const AuthRouter = withUserInfo(props => {
                 '/waitlist',
                 '/suspended',
                 '/createProfile',
-                // '/createProfileAndOrganization',
-                // '/createOrganization', // Do not redirect to createOrganization
                 '/signin',
                 '/signup',
             ].indexOf(props.router.path) >= 0 ||

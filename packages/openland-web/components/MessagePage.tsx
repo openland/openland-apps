@@ -18,9 +18,9 @@ const ErrorDiv = Glamorous.div({
 });
 
 const Logo = Glamorous.div<{ width?: number; height?: number }>(props => ({
-    width: props.width ? props.width : 45,
-    height: props.height ? props.height : 45,
-    backgroundImage: "url('/static/logo-purple.svg')",
+    width: props.width ? props.width : 145,
+    height: props.height ? props.height : 42,
+    backgroundImage: "url('/static/logo.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     position: 'absolute',
@@ -92,9 +92,7 @@ export function MessagePage(props: {
                         .
                     </FooterText>
                 )}
-                <FooterText>
-                    © {new Date().getFullYear()} Data Makes Perfect Inc.
-                </FooterText>
+                <FooterText>© {new Date().getFullYear()} Openland</FooterText>
             </Footer>
         </ErrorDiv>
     );

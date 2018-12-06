@@ -18,6 +18,7 @@ export interface XAvatarUploadBasicProps {
     size?: 'small' | 'normal' | 'large' | 'default';
     initialUrl?: string | null;
     cropParams?: string;
+    dataTestId?: string;
 }
 
 let DrowAreaSize = styleResolver({
@@ -26,8 +27,8 @@ let DrowAreaSize = styleResolver({
         height: 96,
     },
     default: {
-        width: 120,
-        height: 120,
+        width: 110,
+        height: 110,
     },
     normal: {
         width: 160,
@@ -113,11 +114,12 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
         change: any;
     };
     size?: 'small' | 'normal' | 'large' | 'default';
+    dataTestId?: string;
 }
 
 let AvatarImageSize = {
     small: 96,
-    default: 120,
+    default: 110,
     normal: 159,
     large: 241,
 };
@@ -161,8 +163,10 @@ class AvatarRender extends React.PureComponent<
             this.props.file &&
             this.props.file.crop &&
             this.props.file.crop.height !== this.props.file.crop.width;
+
         return (
             <DropAreaWrapper
+                data-test-id={this.props.dataTestId}
                 hasImage={hasImage}
                 onClick={this.props.doUpload}
                 avatarSize={this.props.size}
@@ -220,6 +224,7 @@ export class XAvatarUploadBasic extends React.PureComponent<
                     return (
                         <AvatarRender
                             {...rp}
+                            dataTestId={this.props.dataTestId}
                             placeholder={this.props.placeholder}
                             size={this.props.size}
                             {...{ className: (this.props as any).className }}

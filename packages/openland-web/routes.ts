@@ -19,26 +19,27 @@ routes.add('/activation', '/init/activation');
 routes.add('/activation/', '/init/activation');
 routes.add('/need_info', '/init/need_info');
 routes.add('/need_info/', '/init/need_info');
+routes.add('/need_info-test/', '/init/need_info');
 routes.add('/waitlist', '/init/waitlist');
 routes.add('/waitlist/', '/init/waitlist');
+routes.add('/waitlist-test/', '/init/waitlist');
 routes.add('/suspended', '/init/suspended');
 routes.add('/suspended/', '/init/suspended');
+routes.add('/suspended-test/', '/init/suspended');
 routes.add('/createProfile', '/init/createProfile');
 routes.add('/createProfile/', '/init/createProfile');
+routes.add('/create-profile-test/', '/init/createProfile');
+routes.add('/create-profile-test', '/init/createProfile');
 routes.add('/createOrganization', '/init/createOrganization');
 routes.add('/createOrganization/', '/init/createOrganization');
-routes.add(
-    '/createProfileAndOrganization',
-    '/init/createProfileAndOrganization',
-);
-routes.add(
-    '/createProfileAndOrganization/',
-    '/init/createProfileAndOrganization',
-);
+routes.add('/create-organization-test', '/init/createOrganization');
+routes.add('/create-organization-test/', '/init/createOrganization');
 routes.add('/join/:inviteKey', '/init/join');
 routes.add('/join/:inviteKey/', '/init/join');
+routes.add('/join-test/:inviteKey/', '/init/join');
 routes.add('/invite/:inviteKey', '/init/invite');
 routes.add('/invite/:inviteKey/', '/init/invite');
+routes.add('/invite-test/:inviteKey/', '/init/invite');
 routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 routes.add('/404', '/404');
@@ -155,6 +156,7 @@ routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
 routes.add('/joinChannel/:invite', '/init/signChannelInvite');
 routes.add('/joinChannel/:invite/', '/init/signChannelInvite');
+routes.add('/joinChannel-test/:invite/', '/init/signChannelInvite');
 routes.add('/mail/joinChannel/:invite', '/main/mail/root');
 routes.add('/mail/joinChannel/:invite/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
@@ -251,6 +253,19 @@ routes.add('/ui/lists', '/dev/ui/lists');
 routes.add('/ui/lists/', '/dev/ui/lists');
 routes.add('/ui/mentions', '/dev/ui/mentions');
 routes.add('/ui/mentions/', '/dev/ui/mentions');
+
+routes.add('/ui/signin/accept-invitation', '/dev/ui/signin/accept-invitation');
+routes.add('/ui/signin/auth-mechanism', '/dev/ui/signin/auth-mechanism');
+routes.add('/ui/signin/create-with-email', '/dev/ui/signin/create-with-email');
+routes.add('/ui/signin/activation-code', '/dev/ui/signin/activation-code');
+routes.add(
+    '/ui/signin/introduce-yourself',
+    '/dev/ui/signin/introduce-yourself',
+);
+routes.add(
+    '/ui/signin/enter-organization',
+    '/dev/ui/signin/enter-organization',
+);
 
 //
 // Dev Tools

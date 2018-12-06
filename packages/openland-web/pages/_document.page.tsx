@@ -148,6 +148,7 @@ export default class OpenlandDocument extends Document {
                         href="/static/css/draft-mentions.css"
                     />
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
+                    <link rel="stylesheet" href="/static/css/SFTextPro.css" />
                     <style
                         dangerouslySetInnerHTML={{ __html: this.props.glamCss }}
                     />

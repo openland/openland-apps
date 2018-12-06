@@ -1,26 +1,18 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withAppBase } from '../../components/withAppBase';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
-import { XButton } from 'openland-x/XButton';
-import { XInput } from 'openland-x/XInput';
-import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import {
     SignContainer,
-    ButtonsWrapper,
-    Title,
-    Separator,
-    Description,
     RoomSignup,
     RoomLoader,
-    RoomTerms,
-    RoomTitle,
-    RoomText,
-    GoogleButton,
-    EmailButton,
+    RoomActivationCode,
+    RoomAuthMechanism,
+    WebSignUpAuthMechanism,
+    RoomCreateWithEmail,
+    WebSignUpCreateWithEmail,
+    WebSignUpActivationCode,
 } from './components/SignComponents';
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
@@ -28,29 +20,17 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import * as Cookie from 'js-cookie';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
-import { XLink } from 'openland-x/XLink';
-import { XView } from 'openland-x/XView';
-import { XLink2 } from 'openland-x/XLink2';
-
-const EmptyBlock = Glamorous.div({
-    width: '100%',
-    height: 15,
-    flexShrink: 0,
-});
 
 class SignInComponent extends React.Component<
     { redirect?: string | null; roomView?: boolean } & XWithRouter,
     {
         googleStarting: boolean;
-
         email: boolean;
         emailValue: string;
         emailSending: boolean;
         emailError: string;
-
         emailSent: boolean;
         fromOutside: boolean;
-
         codeValue: string;
         codeSending: boolean;
         codeError: string;
@@ -88,13 +68,11 @@ class SignInComponent extends React.Component<
         super(props);
         let state = {
             googleStarting: false,
-
             email: false,
             emailValue: '',
             emailSending: false,
             emailError: '',
             emailSent: false,
-
             codeValue: '',
             codeSending: false,
             codeError: '',
@@ -134,30 +112,34 @@ class SignInComponent extends React.Component<
         this.fireGoogle();
     };
 
-    loginWithEmail = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginWithEmail = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({
             email: true,
             emailValue: '',
             emailSending: false,
             emailError: '',
             emailSent: false,
-
             codeValue: '',
             codeSending: false,
             codeError: '',
         });
     };
 
-    loginReset = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginReset = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({
             email: false,
             emailValue: '',
             emailSending: false,
             emailError: '',
             emailSent: false,
-
             codeValue: '',
             codeSending: false,
             codeError: '',
@@ -183,18 +165,6 @@ class SignInComponent extends React.Component<
             emailSent: false,
         });
         this.fireEmail();
-    };
-
-    loginCodeBack = (e?: React.SyntheticEvent<any>) => {
-        if (e) {
-            e.preventDefault();
-        }
-        this.setState({
-            emailSending: false,
-            emailError: '',
-            emailValue: '',
-            emailSent: false,
-        });
     };
 
     loginCodeStart = async (e?: React.SyntheticEvent<any>) => {
@@ -228,393 +198,83 @@ class SignInComponent extends React.Component<
             ? '?redirect=' +
               encodeURIComponent(this.props.router.query.redirect)
             : '';
-        console.warn(redirect);
-        return this.props.roomView ? (
-            <RoomSignup
-                text={
-                    signin
-                        ? InitTexts.auth.signupHint
-                        : InitTexts.auth.signinHint
-                }
+
+        const signupText = signin
+            ? InitTexts.auth.signupHint
+            : InitTexts.auth.signinHint;
+
+        const linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
+
+        const Container = this.props.roomView ? RoomSignup : SignContainer;
+        const AuthMechanism = this.props.roomView
+            ? RoomAuthMechanism
+            : WebSignUpAuthMechanism;
+        const Loader = this.props.roomView
+            ? () => (
+                  <RoomLoader>
+                      <XLoader loading={true} />
+                  </RoomLoader>
+              )
+            : () => <XLoader loading={!this.state.emailSent} />;
+
+        const MyCreateWithEmail = this.props.roomView
+            ? RoomCreateWithEmail
+            : WebSignUpCreateWithEmail;
+
+        const MyActivationCode = this.props.roomView
+            ? RoomActivationCode
+            : WebSignUpActivationCode;
+
+        return (
+            <Container
+                text={signupText}
                 path={(signin ? '/signup' : '/signin') + redirect}
-                linkText={
-                    signin ? InitTexts.auth.signup : InitTexts.auth.signin
-                }
+                linkText={linkText}
                 headerStyle={signin ? 'signin' : 'signup'}
             >
-                {!this.state.fromOutside &&
-                    !this.state.email && (
-                        <>
-                            <RoomTitle>
-                                {signin
-                                    ? 'Sign in and join the conversation'
-                                    : 'Sign up and join the conversation'}
-                            </RoomTitle>
-                            <RoomText>
-                                {signin
-                                    ? 'We are excited to have you back!'
-                                    : 'Creating an account is free and easy'}
-                            </RoomText>
-                            <ButtonsWrapper
-                                marginTop={42}
-                                width={260}
-                                marginBottom={84}
-                            >
-                                <GoogleButton
-                                    onClick={this.loginWithGoogle}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinGoogle
-                                            : InitTexts.auth.signupGoogle
-                                    }
-                                    rounded={true}
-                                />
-                                <Separator marginTop={10} marginBottom={10} />
-                                <EmailButton
-                                    onClick={this.loginWithEmail}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinEmail
-                                            : InitTexts.auth.signupEmail
-                                    }
-                                    rounded={true}
-                                />
-                            </ButtonsWrapper>
-
-                            {!signin && (
-                                <RoomTerms>
-                                    By creating an account you are accepting our{' '}
-                                    <XLink href="https://openland.com/terms">
-                                        Terms of Service
-                                    </XLink>{' '}
-                                    and{' '}
-                                    <XLink href="https://openland.com/privacy">
-                                        Privacy Policy
-                                    </XLink>
-                                    .
-                                </RoomTerms>
-                            )}
-                        </>
-                    )}
+                {!this.state.fromOutside && !this.state.email && (
+                    <AuthMechanism
+                        signin={signin}
+                        loginWithGoogle={this.loginWithGoogle}
+                        loginWithEmail={this.loginWithEmail}
+                    />
+                )}
 
                 {this.state.fromOutside &&
                     (this.state.emailSending || this.state.googleStarting) && (
-                        <RoomLoader>
-                            <XLoader loading={true} />
-                        </RoomLoader>
+                        <Loader />
                     )}
 
-                {this.state.email &&
-                    !this.state.emailSent && (
-                        <>
-                            <RoomTitle>
-                                {signin
-                                    ? 'Sign in and join the conversation'
-                                    : 'Sign up and join the conversation'}
-                            </RoomTitle>
-                            <RoomText>
-                                {signin
-                                    ? 'We are excited to have you back!'
-                                    : 'Creating an account is free and easy'}
-                            </RoomText>
-                            <ButtonsWrapper marginTop={40} width={330}>
-                                <XInput
-                                    type="email"
-                                    autofocus={true}
-                                    size="large"
-                                    onChange={this.emailChanged}
-                                    value={this.state.emailValue}
-                                    placeholder={
-                                        InitTexts.auth.emailPlaceholder
-                                    }
-                                    onEnter={this.loginEmailStart}
-                                    invalid={this.state.emailError !== ''}
-                                />
-                                {this.state.emailError !== '' && (
-                                    <XView
-                                        marginTop={6}
-                                        marginLeft={15}
-                                        marginBottom={-20}
-                                        color="#d75454"
-                                        fontSize={12}
-                                        lineHeight="14px"
-                                    >
-                                        {InitTexts.auth.emailInvalid}
-                                    </XView>
-                                )}
-                            </ButtonsWrapper>
-                            <ButtonsWrapper
-                                marginTop={50}
-                                marginBottom={80}
-                                width={108}
-                            >
-                                <XButton
-                                    onClick={this.loginEmailStart}
-                                    style="primary"
-                                    size="large"
-                                    loading={this.state.emailSending}
-                                    text={InitTexts.auth.continue}
-                                />
-                            </ButtonsWrapper>
-
-                            {!signin && (
-                                <RoomTerms>
-                                    By creating an account you are accepting our{' '}
-                                    <XLink href="https://openland.com/terms">
-                                        Terms of Service
-                                    </XLink>{' '}
-                                    and{' '}
-                                    <XLink href="https://openland.com/privacy">
-                                        Privacy Policy
-                                    </XLink>
-                                    .
-                                </RoomTerms>
-                            )}
-                        </>
-                    )}
+                {this.state.email && !this.state.emailSent && (
+                    <MyCreateWithEmail
+                        signin={signin}
+                        emailError={this.state.emailError}
+                        emailChanged={this.emailChanged}
+                        emailValue={this.state.emailValue}
+                        loginEmailStart={this.loginEmailStart}
+                        emailSending={this.state.emailSending}
+                    />
+                )}
 
                 {this.state.emailSent && (
-                    <>
-                        <RoomTitle>Enter your activation code</RoomTitle>
-                        <RoomText>
-                            We just sent it to{' '}
-                            <strong>{this.state.emailValue}</strong>
-                        </RoomText>
-                        <ButtonsWrapper marginTop={40} width={330}>
-                            <XInput
-                                pattern="[0-9]*"
-                                type="number"
-                                autofocus={true}
-                                size="large"
-                                onChange={this.codeChanged}
-                                value={this.state.codeValue}
-                                placeholder={InitTexts.auth.codePlaceholder}
-                                onEnter={this.loginCodeStart}
-                                invalid={this.state.codeError !== ''}
-                            />
-                            {this.state.codeError !== '' && (
-                                <XView
-                                    marginTop={6}
-                                    marginLeft={15}
-                                    color="#d75454"
-                                    fontSize={12}
-                                    lineHeight="14px"
-                                >
-                                    {InitTexts.auth.codeInvalid}
-                                </XView>
-                            )}
-                            <XView
-                                marginTop={16}
-                                color="rgba(0, 0, 0, 0.6)"
-                                fontSize={13}
-                                lineHeight="14px"
-                                justifyContent="center"
-                                flexDirection="row"
-                            >
-                                <span>Haven't received our email?</span>
-                                <XLink2
-                                    onClick={this.loginEmailStart}
-                                    color="#1790ff"
-                                    marginLeft={4}
-                                >
-                                    Resend.
-                                </XLink2>
-                            </XView>
-                        </ButtonsWrapper>
-                        <ButtonsWrapper
-                            marginTop={40}
-                            marginBottom={this.state.codeError !== '' ? 50 : 70}
-                            width={212}
-                        >
-                            <XHorizontal>
-                                <XButton
-                                    onClick={this.loginCodeBack}
-                                    size="large"
-                                    style="ghost"
-                                    alignSelf="stretch"
-                                    flexGrow={1}
-                                    text={InitTexts.auth.back}
-                                />
-                                <XButton
-                                    onClick={this.loginCodeStart}
-                                    size="large"
-                                    style="primary"
-                                    alignSelf="stretch"
-                                    flexGrow={1}
-                                    loading={this.state.codeSending}
-                                    text={InitTexts.auth.complete}
-                                />
-                            </XHorizontal>
-                        </ButtonsWrapper>
-
-                        {!signin && (
-                            <RoomTerms>
-                                By creating an account you are accepting our{' '}
-                                <XLink href="https://openland.com/terms">
-                                    Terms of Service
-                                </XLink>{' '}
-                                and{' '}
-                                <XLink href="https://openland.com/privacy">
-                                    Privacy Policy
-                                </XLink>
-                                .
-                            </RoomTerms>
-                        )}
-                    </>
+                    <MyActivationCode
+                        resendCodeClick={() => {
+                            this.setState({
+                                emailSending: true,
+                            });
+                            this.fireEmail();
+                        }}
+                        backButtonClick={this.loginWithEmail}
+                        codeError={this.state.codeError}
+                        codeChanged={this.codeChanged}
+                        codeSending={
+                            this.state.codeSending || this.state.emailSending
+                        }
+                        codeValue={this.state.codeValue}
+                        loginCodeStart={this.loginCodeStart}
+                    />
                 )}
-            </RoomSignup>
-        ) : (
-            <SignContainer
-                signin={signin}
-                text={
-                    signin
-                        ? InitTexts.auth.signupHint
-                        : InitTexts.auth.signinHint
-                }
-                path={(signin ? '/signup' : '/signin') + redirect}
-                linkText={
-                    signin ? InitTexts.auth.signup : InitTexts.auth.signin
-                }
-            >
-                {!this.state.fromOutside &&
-                    !this.state.email && (
-                        <>
-                            <Title>
-                                {signin
-                                    ? InitTexts.auth.signinTitle
-                                    : InitTexts.auth.signupTitle}
-                            </Title>
-                            {signin && (
-                                <Description>
-                                    {InitTexts.auth.signinSubtitle}
-                                </Description>
-                            )}
-                            <ButtonsWrapper marginTop={52}>
-                                <GoogleButton
-                                    onClick={this.loginWithGoogle}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinGoogle
-                                            : InitTexts.auth.signupGoogle
-                                    }
-                                />
-                                <Separator />
-                                <EmailButton
-                                    onClick={this.loginWithEmail}
-                                    text={
-                                        signin
-                                            ? InitTexts.auth.signinEmail
-                                            : InitTexts.auth.signupEmail
-                                    }
-                                />
-                            </ButtonsWrapper>
-                        </>
-                    )}
-
-                {this.state.fromOutside &&
-                    (this.state.emailSending || this.state.googleStarting) && (
-                        <XLoader loading={!this.state.emailSent} />
-                    )}
-
-                {this.state.email &&
-                    !this.state.emailSent && (
-                        <>
-                            <Title marginBottom={20}>
-                                {signin
-                                    ? InitTexts.auth.signinEmail
-                                    : InitTexts.auth.signupEmail}
-                            </Title>
-                            {this.state.emailError !== '' && (
-                                <>
-                                    <XServiceMessage
-                                        title={InitTexts.auth.emailInvalid}
-                                    />
-                                    <EmptyBlock />
-                                </>
-                            )}
-                            <ButtonsWrapper>
-                                <XInput
-                                    type="email"
-                                    size="large"
-                                    onChange={this.emailChanged}
-                                    value={this.state.emailValue}
-                                    placeholder={
-                                        InitTexts.auth.emailPlaceholder
-                                    }
-                                    onEnter={this.loginEmailStart}
-                                />
-                            </ButtonsWrapper>
-                            <ButtonsWrapper marginTop={20}>
-                                <XHorizontal>
-                                    <XButton
-                                        onClick={this.loginReset}
-                                        style="ghost"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        text={InitTexts.auth.reset}
-                                    />
-                                    <XButton
-                                        onClick={this.loginEmailStart}
-                                        style="primary"
-                                        size="large"
-                                        alignSelf="stretch"
-                                        flexGrow={1}
-                                        loading={this.state.emailSending}
-                                        text={InitTexts.auth.next}
-                                    />
-                                </XHorizontal>
-                            </ButtonsWrapper>
-                        </>
-                    )}
-
-                {this.state.emailSent && (
-                    <>
-                        <Title marginBottom={20}>
-                            Please, enter activation code
-                        </Title>
-                        {this.state.codeError !== '' && (
-                            <>
-                                <XServiceMessage
-                                    title={InitTexts.auth.codeInvalid}
-                                />
-                                <EmptyBlock />
-                            </>
-                        )}
-                        <ButtonsWrapper>
-                            <XInput
-                                pattern="[0-9]*"
-                                type="number"
-                                size="large"
-                                onChange={this.codeChanged}
-                                value={this.state.codeValue}
-                                placeholder={InitTexts.auth.codePlaceholder}
-                                onEnter={this.loginCodeStart}
-                            />
-                        </ButtonsWrapper>
-                        <ButtonsWrapper marginTop={20}>
-                            <XHorizontal>
-                                <XButton
-                                    onClick={this.loginReset}
-                                    size="large"
-                                    alignSelf="stretch"
-                                    flexGrow={1}
-                                    text={InitTexts.auth.reset}
-                                />
-                                <XButton
-                                    onClick={this.loginCodeStart}
-                                    size="large"
-                                    style="primary"
-                                    alignSelf="stretch"
-                                    flexGrow={1}
-                                    loading={this.state.codeSending}
-                                    text={InitTexts.auth.complete}
-                                />
-                            </XHorizontal>
-                        </ButtonsWrapper>
-                    </>
-                )}
-            </SignContainer>
+            </Container>
         );
     }
 }

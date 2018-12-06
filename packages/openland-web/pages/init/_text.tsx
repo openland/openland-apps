@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XLink } from 'openland-x/XLink';
+
 export const InitTexts = {
     rootPageTitle: 'Openland | An Open Marketplace for Land',
     socialPageTitle: 'Openland | An Open Marketplace for Land',
@@ -9,29 +10,30 @@ export const InitTexts = {
         signinPageTitle: 'Sign in',
         signinHint: 'Already have an account?',
         signin: 'Sign in',
-        signinTitle: 'Sign in to your Openland account',
-        signinSubtitle: 'Welcome back!',
+        signinTitle: 'Sign in to Openland account',
+        signinSubtitle:
+            'Welcome back! Get your messages and explore what’s new',
         signinGoogle: 'Sign in with Google',
         signinEmail: 'Sign in with Email',
-
+        signinEmailTitle: 'Sign up for Openland',
+        signinEmailSubtitle: 'Creating an account is free and easy',
         signupPageTitle: 'Sign up',
         signupHint: "Don't have an Openland account?",
         signup: 'Sign up',
         signupTitle: 'Sign up for Openland',
-        signupSubtitle: 'Get a free account and start exploring',
+        signupSubtitle: 'Creating an account is free and easy',
         signupGoogle: 'Sign up with Google',
-        signupEmail: 'Sign up with Email',
-
-        emailInvalid: 'Invalid email address',
+        signupEmail: 'Sign up for Openland',
+        enterActivationCode: 'Enter your activation code',
+        resend: 'Resend.',
+        haveNotReceiveCode: "Haven't received our email?",
+        emailInvalid: 'Invalid email',
         emailPlaceholder: 'Your email',
         codeInvalid: 'Invalid activation code',
         codePlaceholder: 'Code from email',
-
-        reset: 'Reset',
-        back: 'Back',
-        next: 'Next',
-        complete: 'Continue',
         continue: 'Continue',
+        back: 'Back',
+        complete: 'Continue',
     },
 
     join: {
@@ -51,22 +53,24 @@ export const InitTexts = {
 
     create_profile: {
         pageTitle: 'Create profile',
-        title: 'Set up your account',
+        title: 'Introduce yourself',
+        subTitle: 'Add your name and photo so others can recognize you',
         firstName: 'First Name',
-        firstNamePlaceholder: 'Jane',
+        firstNamePlaceholder: 'First name',
         lastName: 'Last Name',
-        lastNamePlaceholder: 'Doe',
+        lastNamePlaceholder: 'Last name',
         phone: 'Phone',
         photo: 'Photo',
         organizationName: 'Organization Name',
         organizationPopup:
-            'To register as an individual, simply enter your name',
+            'Enter your full name if you are registering as a private individual',
         continue: 'Continue',
     },
 
     create_organization: {
         pageTitle: 'Add your organization',
         title: 'Add your organization',
+        subTitle: 'Find your organization or create a new one',
         name: 'Organization name',
         namePlaceholder: 'Acme Corporation',
         website: 'Website',
@@ -125,7 +129,6 @@ export const InitTexts = {
         title: 'You have joined the waitlist',
         content: (
             <>
-                <p>Openland is currently in closed beta.</p>
                 <p>
                     We onboard new users in small groups and will let you know
                     when the system is ready for you.

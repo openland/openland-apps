@@ -76,6 +76,7 @@ export class XInput extends React.PureComponent<XInputProps> {
 
     render() {
         let { valueStoreKey, invalidStoreKey, enabledStoreKey, field, ...other } = this.props;
+        
         if (valueStoreKey || invalidStoreKey || enabledStoreKey || field) {
             let valueStoreKeyCached = valueStoreKey;
             let invalidStoreKeyCached = invalidStoreKey;

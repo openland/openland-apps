@@ -4,14 +4,12 @@ import { XContent } from 'openland-x-layout/XContent';
 
 let Title = Glamorous.div({
     fontSize: 24,
-    fontWeight: 500,
-    color: '#1f3449',
-    letterSpacing: 0.8,
+    color: '#000',
+    fontFamily: 'SFProText-Semibold',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 24,
-    marginBottom: 15,
+    marginBottom: 12,
 });
 
 let Message = Glamorous(XContent)({

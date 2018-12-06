@@ -40,7 +40,8 @@ const HeaderLogo = Glamorous.div({
     backgroundSize: '100% 100%',
 });
 
-const InviteInfo = withChannelInviteInfo(props => {
+export const InviteInfoInner = (props: any) => {
+    console.log(JSON.stringify(props.data));
     return (
         <>
             <XDocumentHead
@@ -80,23 +81,27 @@ const InviteInfo = withChannelInviteInfo(props => {
                                     }
                                 />
                             )}
-                            {!props.data.invite &&
-                                !props.loading && (
-                                    <MessagePageContent title="Join">
-                                        <InfoText>
-                                            {InitTexts.join.unableToFindInvite}
-                                        </InfoText>
-                                    </MessagePageContent>
-                                )}
-                            {!props.data.invite &&
-                                props.loading && <XLoader loading={true} />}
+                            {!props.data.invite && !props.loading && (
+                                <MessagePageContent title="Join">
+                                    <InfoText>
+                                        {InitTexts.join.unableToFindInvite}
+                                    </InfoText>
+                                </MessagePageContent>
+                            )}
+                            {!props.data.invite && props.loading && (
+                                <XLoader loading={true} />
+                            )}
                         </Content>
                     </Root>
                 </XTrack>
             )}
         </>
     );
-}) as React.ComponentType<{
+};
+
+export const InviteInfo = withChannelInviteInfo(
+    InviteInfoInner,
+) as React.ComponentType<{
     variables: { invite: string };
     redirect: string;
     instantRedirect?: string;

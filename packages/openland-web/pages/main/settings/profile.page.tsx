@@ -193,10 +193,8 @@ export default withApp(
                                                                         }),
                                                                     )}
                                                                 />
-                                                                <TextAreaWrapper
-                                                                >
-                                                                    <TextAreaTitle
-                                                                    >
+                                                                <TextAreaWrapper>
+                                                                    <TextAreaTitle>
                                                                         About
                                                                     </TextAreaTitle>
                                                                     <XTextArea
@@ -336,7 +334,7 @@ export default withApp(
                                                             {props.data.profile
                                                                 .invitedBy
                                                                 .name ||
-                                                                'John Doe'}
+                                                                'First name Last name'}
                                                         </span>
                                                     </span>
                                                 )}

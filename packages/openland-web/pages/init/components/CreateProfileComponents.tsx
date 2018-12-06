@@ -1,8 +1,10 @@
-import Glamorous from 'glamorous';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import * as React from 'react';
+import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { XInput } from 'openland-x/XInput';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import glamorous from 'glamorous';
 
-export const RootContainer = Glamorous.div({
+export const RootContainer = glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -13,72 +15,75 @@ export const RootContainer = Glamorous.div({
     minWidth: 600,
 });
 
-export const Logo = Glamorous.div<{ width?: number; height?: number }>(
-    props => ({
-        width: props.width ? props.width : 45,
-        height: props.height ? props.height : 45,
-        backgroundImage: "url('/static/logo-purple.svg')",
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'contain',
-        position: 'absolute',
-        top: 15,
-        left: 23,
-    }),
-);
+export const Logo = glamorous.div({
+    width: 145,
+    height: 42,
+    backgroundImage: "url('/static/logo.svg')",
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    position: 'absolute',
+    top: 19,
+    left: 32,
+});
 
-export const Title = Glamorous.div({
-    fontSize: 26,
-    fontWeight: 500,
-    letterSpacing: 1.8,
-    color: '#1f3449',
+export const XAvatarUploadWrapper = glamorous(XAvatarUpload)({
+    marginBottom: 26,
+});
+
+export const XFormSubmitWrapper = glamorous(XFormSubmit)({
+    marginTop: 50,
+});
+
+export const Title = glamorous.div({
+    fontFamily: 'SFProText-Semibold',
+    fontSize: 32,
+    color: '#000',
+    textAlign: 'center',
+    marginTop: 0,
     marginBottom: 24,
 });
 
-export const TextWrapper = Glamorous.div({
-    marginBottom: 36,
-});
-
-export const Label = Glamorous.div({
-    fontSize: 15,
-    fontWeight: 500,
-    lineHeight: 1.27,
+export const SubTitle = glamorous.div({
+    fontFamily: 'SFProText-Regular',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: 1.5,
+    color: '#000',
+    marginTop: 0,
     letterSpacing: -0.1,
-    color: '#334562',
-    marginBottom: 10,
+    marginBottom: 32,
 });
 
-export const OptionalLabel = Glamorous(Label)({
-    opacity: 0.4,
+export const XInputWrapper = glamorous(XInput)({
+    minWidth: 330,
 });
 
-export const PhotoContiner = Glamorous(XVertical)({
-    marginLeft: 24,
-});
-
-export const InputGroup = Glamorous.div({
-    marginBottom: 19,
-    width: 360,
-    '&:last-child': {
-        marginBottom: 0,
-    },
-});
-
-export const ContentWrapper = Glamorous.div({
+export const ContentWrapper = glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     marginTop: 55,
 });
 
-export const FormWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
+export const Footer = glamorous.div({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 16,
+    margin: 'auto',
 });
 
-export const FieldHeader = Glamorous(XHorizontal)({
-    justifyContent: 'space-between',
-});
-
-export const Footer = Glamorous(XHorizontal)({
-    justifyContent: 'space-between',
-    paddingLeft: -14,
+export const FooterText = glamorous.div({
+    fontSize: 14,
+    lineHeight: 1.71,
+    letterSpacing: -0.4,
+    fontWeight: 500,
+    textAlign: 'center',
+    color: '#334562',
+    opacity: 0.4,
+    '&:first-child': {
+        marginBottom: 6,
+    },
 });
