@@ -5,11 +5,19 @@ import { XInput } from 'openland-x/XInput';
 import persist from 'react-localstorage-hoc';
 import * as lodash from 'lodash';
 
+const getDefaultStateFromBranchSchema = (schema: any) => {
+    return lodash.fromPairs(
+        lodash.toPairs(schema).map(([key, value]) => {
+            return [key, (value as any).default];
+        }),
+    );
+};
+
 const getDefaultStateFromSchema = (schema: any) => {
     return lodash.fromPairs(
-        lodash
-            .toPairs(schema)
-            .map(([key, value]) => [key, (value as any).default]),
+        lodash.toPairs(schema).map(([key, value]) => {
+            return [key, getDefaultStateFromBranchSchema(value as any)];
+        }),
     );
 };
 export const CreateWrapIntoState = (schema: any) => {
@@ -24,16 +32,41 @@ export const CreateWrapIntoState = (schema: any) => {
                 super(props);
 
                 if (!!schema.root) {
-                    const branchSchema = schema.root;
-                    this.state = getDefaultStateFromSchema(branchSchema);
+                    this.state = {
+                        branch: 'root',
+                        branchesStates: getDefaultStateFromSchema(schema),
+                    };
                 } else {
                     const initialBranch = Object.keys(schema)[0];
                     this.state = {
                         branch: initialBranch,
-                        ...getDefaultStateFromSchema(schema[initialBranch]),
+                        branchesStates: getDefaultStateFromSchema(schema),
                     };
                 }
             }
+
+            getBranchState = () => {
+                return this.state.branchesStates[this.state.branch];
+            };
+
+            getBranchValueState = (key: any) => {
+                return this.getBranchState()[key];
+            };
+
+            setBranchState = (key: any, value: any) => {
+                const newState = {
+                    ...this.state,
+                    branchesStates: {
+                        ...this.state.branchesStates,
+                        [this.state.branch]: {
+                            ...this.getBranchState(),
+                            [key]: value,
+                        },
+                    },
+                };
+
+                this.setState(newState);
+            };
 
             render() {
                 let branchSchema;
@@ -63,7 +96,7 @@ export const CreateWrapIntoState = (schema: any) => {
                                         });
                                     }}
                                 />
-                                <br/>
+                                <br />
                             </div>
                         )}
                         {lodash.toPairs(branchSchema).map(([key, myValue]) => {
@@ -72,7 +105,7 @@ export const CreateWrapIntoState = (schema: any) => {
                             if (anyValue.type === 'select') {
                                 return (
                                     <XSelect
-                                        value={this.state[key]}
+                                        value={this.getBranchValueState(key)}
                                         options={anyValue.value.map(
                                             (item: any) => ({
                                                 value: item,
@@ -83,9 +116,8 @@ export const CreateWrapIntoState = (schema: any) => {
                                             const value = val
                                                 ? val.value
                                                 : null;
-                                            this.setState({
-                                                [key]: value,
-                                            });
+
+                                            this.setBranchState(key, value);
                                         }}
                                     />
                                 );
@@ -95,11 +127,9 @@ export const CreateWrapIntoState = (schema: any) => {
                                     <XCheckbox
                                         label={key}
                                         switcher={true}
-                                        checked={this.state[key]}
+                                        checked={this.getBranchValueState(key)}
                                         onChange={({ checked }) => {
-                                            this.setState({
-                                                [key]: checked,
-                                            });
+                                            this.setBranchState(key, checked);
                                         }}
                                     />
                                 );
@@ -110,11 +140,9 @@ export const CreateWrapIntoState = (schema: any) => {
                                     <XInput
                                         size="large"
                                         title={key}
-                                        value={this.state[key]}
+                                        value={this.getBranchValueState(key)}
                                         onChange={value =>
-                                            this.setState({
-                                                [key]: value,
-                                            })
+                                            this.setBranchState(key, value)
                                         }
                                     />
                                 );
@@ -122,7 +150,8 @@ export const CreateWrapIntoState = (schema: any) => {
                             return null;
                         })}
                         {this.props.children({
-                            ...this.state,
+                            branch: this.state.branch,
+                            ...this.getBranchState(),
                             ...lodash.fromPairs(
                                 lodash
                                     .toPairs(schema)

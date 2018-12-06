@@ -54,7 +54,7 @@ const XIconWrapper = Glamorous.span({
     },
 });
 
-const CreateProfileForm = withCreateOrganization(
+export const CreateOrganizationForm = withCreateOrganization(
     withRouter(
         withUserInfo(props => {
             return (
@@ -155,7 +155,7 @@ export default withApp('Create Organization', 'viewer', props => {
                 title={InitTexts.create_organization.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <CreateProfileForm />
+            <CreateOrganizationForm />
         </>
     );
 });

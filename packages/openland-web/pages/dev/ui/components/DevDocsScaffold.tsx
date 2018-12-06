@@ -89,6 +89,9 @@ export function DevDocsScaffold(props: {
                             </Sidebar.Item>
                             <Sidebar.Item path="/ui/lists">Lists</Sidebar.Item>
                             <Sidebar.Item>Sign Up Components</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/signin/accept-invitation">
+                                Accept Invitation
+                            </Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/signin/auth-mechanism">
                                 AuthMechanism
                             </Sidebar.Subitem>
@@ -103,6 +106,9 @@ export function DevDocsScaffold(props: {
                             </Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/signin/enter-organization">
                                 Enter Organization
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/waitlist-test/">
+                                Wait List
                             </Sidebar.Subitem>
 
                             <Sidebar.Item>Basic Styles</Sidebar.Item>

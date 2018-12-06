@@ -99,11 +99,13 @@ const FooterText = glamorous.div({
     },
 });
 
-const CreateProfileForm = withProfileCreate(props => {
+export const CreateProfileForm = withProfileCreate(props => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+
+    const prefill = props.data.prefill;
     return (
         <RootContainer>
             <Logo />
@@ -113,14 +115,8 @@ const CreateProfileForm = withProfileCreate(props => {
                 <XForm
                     defaultData={{
                         input: {
-                            firstName:
-                                (props.data.prefill &&
-                                    props.data.prefill.firstName) ||
-                                '',
-                            lastName:
-                                (props.data.prefill &&
-                                    props.data.prefill.lastName) ||
-                                '',
+                            firstName: (prefill && prefill.firstName) || '',
+                            lastName: (prefill && prefill.lastName) || '',
                         },
                     }}
                     defaultAction={async data => {
@@ -140,8 +136,7 @@ const CreateProfileForm = withProfileCreate(props => {
                                 size="default"
                                 initialUrl={
                                     usePhotoPrefill
-                                        ? props.data.prefill &&
-                                          props.data.prefill.picture
+                                        ? prefill && prefill.picture
                                         : undefined
                                 }
                             />

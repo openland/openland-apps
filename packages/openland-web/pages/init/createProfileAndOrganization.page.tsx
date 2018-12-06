@@ -244,7 +244,7 @@ const CreateProfileForm = withCreateUserProfileAndOrganization(props => {
     );
 });
 
-class RoomCreateProfileFormInner extends React.Component<
+export class RoomCreateProfileFormInner extends React.Component<
     any,
     { isOrgView: boolean }
 > {
