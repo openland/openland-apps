@@ -17,7 +17,6 @@ export const InitTexts = {
         signinEmail: 'Sign in with Email',
         signinEmailTitle: 'Sign up for Openland',
         signinEmailSubtitle: 'Creating an account is free and easy',
-
         signupPageTitle: 'Sign up',
         signupHint: "Don't have an Openland account?",
         signup: 'Sign up',
@@ -26,12 +25,14 @@ export const InitTexts = {
         signupGoogle: 'Sign up with Google',
         signupEmail: 'Sign up for Openland',
         enterActivationCode: 'Enter your activation code',
-
+        resend: 'Resend.',
+        haveNotReceiveCode: "Haven't received our email?",
         emailInvalid: 'Invalid email',
         emailPlaceholder: 'Your email',
         codeInvalid: 'Invalid activation code',
-        codePlaceholder: 'XXXXXX',
+        codePlaceholder: 'Code from email',
         continue: 'Continue',
+        back: 'Back',
         complete: 'Continue',
     },
 

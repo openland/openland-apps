@@ -615,61 +615,6 @@ export const RoomCreateWithEmail = ({
     );
 };
 
-export const WebSignUpActivationCode = ({
-    codeError,
-    emailSendedTo,
-    codeChanged,
-    codeSending,
-    codeValue,
-    loginCodeStart,
-}: {
-    codeError: string;
-    emailSendedTo?: string;
-    codeChanged: (value: string) => void;
-    codeSending: boolean;
-    codeValue: string;
-    loginCodeStart: (event?: React.MouseEvent<any>) => void;
-}) => {
-    return (
-        <div>
-            <Title>{InitTexts.auth.enterActivationCode}</Title>
-            {emailSendedTo && (
-                <SubTitle>
-                    We just sent it to <strong>{emailSendedTo}</strong>
-                </SubTitle>
-            )}
-            {codeError !== '' && (
-                <>
-                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
-                    <EmptyBlock />
-                </>
-            )}
-            <ButtonsWrapper>
-                <XInput
-                    pattern="[0-9]*"
-                    type="number"
-                    size="large"
-                    onChange={codeChanged}
-                    value={codeValue}
-                    placeholder={InitTexts.auth.codePlaceholder}
-                    onEnter={loginCodeStart}
-                />
-            </ButtonsWrapper>
-            <ButtonsWrapper marginTop={20}>
-                <XVertical alignItems="center">
-                    <XButton
-                        onClick={loginCodeStart}
-                        size="large"
-                        style="primary"
-                        loading={codeSending}
-                        text={InitTexts.auth.complete}
-                    />
-                </XVertical>
-            </ButtonsWrapper>
-        </div>
-    );
-};
-
 export const WebSignUpCreateWithEmail = ({
     signin,
     emailError,
@@ -815,7 +760,33 @@ export const WebSignUpAuthMechanism = ({
     );
 };
 
-export const RoomActivationCode = ({
+const SmallerText = Glamorous.div({
+    opacity: 0.6,
+    fontSize: 13,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: 1.85,
+    letterSpacing: 'normal',
+    color: '#000000',
+});
+
+const ResendCodeRow = Glamorous(XVertical)({
+    marginTop: 12,
+});
+
+const ResendButton = Glamorous(XButton)({
+    '& .button-content': {
+        paddingLeft: 4,
+        paddingRight: 0,
+        fontFamily: 'SFProText-Regular',
+        fontWeight: 'normal',
+        fontSize: 13,
+    },
+});
+
+export const WebSignUpActivationCode = ({
+    backButtonClick,
     codeError,
     emailSendedTo,
     codeChanged,
@@ -823,6 +794,84 @@ export const RoomActivationCode = ({
     codeValue,
     loginCodeStart,
 }: {
+    backButtonClick: (event?: React.MouseEvent<any>) => void;
+    codeError: string;
+    emailSendedTo?: string;
+    codeChanged: (value: string) => void;
+    codeSending: boolean;
+    codeValue: string;
+    loginCodeStart: (event?: React.MouseEvent<any>) => void;
+}) => {
+    return (
+        <div>
+            <Title>{InitTexts.auth.enterActivationCode}</Title>
+            {emailSendedTo && (
+                <SubTitle>
+                    We just sent it to <strong>{emailSendedTo}</strong>
+                </SubTitle>
+            )}
+            {codeError !== '' && (
+                <>
+                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
+                    <EmptyBlock />
+                </>
+            )}
+            <ButtonsWrapper>
+                <XInput
+                    pattern="[0-9]*"
+                    type="number"
+                    size="large"
+                    onChange={codeChanged}
+                    value={codeValue}
+                    placeholder={InitTexts.auth.codePlaceholder}
+                    onEnter={loginCodeStart}
+                />
+            </ButtonsWrapper>
+            <ResendCodeRow alignItems="center">
+                <XHorizontal alignItems="center" separator="none">
+                    <SmallerText>
+                        {InitTexts.auth.haveNotReceiveCode}
+                    </SmallerText>
+                    <ResendButton
+                        onClick={loginCodeStart}
+                        style="link"
+                        text={InitTexts.auth.resend}
+                    />
+                </XHorizontal>
+            </ResendCodeRow>
+            <ButtonsWrapper marginTop={20}>
+                <XVertical alignItems="center">
+                    <XHorizontal alignItems="center">
+                        <XButton
+                            onClick={backButtonClick}
+                            size="large"
+                            style="ghost"
+                            text={InitTexts.auth.back}
+                        />
+                        <XButton
+                            onClick={loginCodeStart}
+                            size="large"
+                            style="primary"
+                            loading={codeSending}
+                            text={InitTexts.auth.complete}
+                        />
+                    </XHorizontal>
+                </XVertical>
+            </ButtonsWrapper>
+        </div>
+    );
+};
+
+export const RoomActivationCode = ({
+    backButtonClick,
+    codeError,
+    emailSendedTo,
+    codeChanged,
+    codeSending,
+    codeValue,
+    loginCodeStart,
+}: {
+    backButtonClick: (event?: React.MouseEvent<any>) => void;
     codeError: string;
     emailSendedTo?: string;
     codeChanged: (value: string) => void;
@@ -862,15 +911,36 @@ export const RoomActivationCode = ({
                     onEnter={loginCodeStart}
                 />
             </ButtonsWrapper>
+            <ResendCodeRow alignItems="center">
+                <XHorizontal alignItems="center" separator="none">
+                    <SmallerText>
+                        {InitTexts.auth.haveNotReceiveCode}
+                    </SmallerText>
+                    <ResendButton
+                        onClick={loginCodeStart}
+                        style="link"
+                        text={InitTexts.auth.resend}
+                    />
+                </XHorizontal>
+            </ResendCodeRow>
+
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
-                    <XButton
-                        onClick={loginCodeStart}
-                        size="large"
-                        style="primary"
-                        loading={codeSending}
-                        text={InitTexts.auth.complete}
-                    />
+                    <XHorizontal alignItems="center">
+                        <XButton
+                            onClick={backButtonClick}
+                            size="large"
+                            style="ghost"
+                            text={InitTexts.auth.back}
+                        />
+                        <XButton
+                            onClick={loginCodeStart}
+                            size="large"
+                            style="primary"
+                            loading={codeSending}
+                            text={InitTexts.auth.complete}
+                        />
+                    </XHorizontal>
                 </XVertical>
             </ButtonsWrapper>
         </div>
