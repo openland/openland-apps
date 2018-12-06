@@ -14,28 +14,7 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import glamorous from 'glamorous';
 import * as Cookie from 'js-cookie';
-
-const RootContainer = glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    width: '100%',
-    position: 'relative',
-    backgroundColor: '#fff',
-    minWidth: 600,
-});
-
-const Logo = glamorous.div({
-    width: 145,
-    height: 42,
-    backgroundImage: "url('/static/logo.svg')",
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    position: 'absolute',
-    top: 19,
-    left: 32,
-});
+import { SignContainer, RoomSignup } from './components/SignComponents';
 
 const XAvatarUploadWrapper = glamorous(XAvatarUpload)({
     marginBottom: 26,
@@ -72,102 +51,95 @@ const XInputWrapper = glamorous(XInput)({
     minWidth: 330,
 });
 
-const ContentWrapper = glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: 55,
-});
+export const CreateProfileFormInner = ({
+    prefill,
+    usePhotoPrefill,
+    defaultAction,
+}: {
+    prefill: any;
+    usePhotoPrefill: boolean;
+    defaultAction: (data: any) => any;
+}) => {
+    return (
+        <div>
+            <Title>{InitTexts.create_profile.title}</Title>
+            <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
+            <XForm
+                defaultData={{
+                    input: {
+                        firstName: (prefill && prefill.firstName) || '',
+                        lastName: (prefill && prefill.lastName) || '',
+                    },
+                }}
+                defaultAction={defaultAction}
+                defaultLayout={false}
+            >
+                <XFormError onlyGeneralErrors={true} width={472} />
+                <XFormLoadingContent>
+                    <XVertical alignItems="center">
+                        <XAvatarUploadWrapper
+                            field="input.photoRef"
+                            dataTestId="photo"
+                            size="default"
+                            initialUrl={
+                                usePhotoPrefill
+                                    ? prefill && prefill.picture
+                                    : undefined
+                            }
+                        />
 
-const Footer = glamorous.div({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 16,
-    margin: 'auto',
-});
+                        <XInputWrapper
+                            field="input.firstName"
+                            size="large"
+                            title="First name"
+                            dataTestId="first-name"
+                        />
 
-const FooterText = glamorous.div({
-    fontSize: 14,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    fontWeight: 500,
-    textAlign: 'center',
-    color: '#334562',
-    opacity: 0.4,
-    '&:first-child': {
-        marginBottom: 6,
-    },
-});
+                        <XInputWrapper
+                            field="input.lastName"
+                            size="large"
+                            title="Last name"
+                            dataTestId="last-name"
+                        />
 
-export const CreateProfileForm = withProfileCreate(props => {
+                        <XFormSubmitWrapper
+                            style="primary"
+                            text={InitTexts.create_profile.continue}
+                            size="large"
+                        />
+                    </XVertical>
+                </XFormLoadingContent>
+            </XForm>
+        </div>
+    );
+};
+
+export const CreateProfileForm = withProfileCreate((props: any) => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
 
+    const router = props.router;
     const prefill = props.data.prefill;
+    const createProfile = props.createProfile;
+    const Container = props.roomView ? RoomSignup : SignContainer;
+
     return (
-        <RootContainer>
-            <Logo />
-            <ContentWrapper>
-                <Title>{InitTexts.create_profile.title}</Title>
-                <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-                <XForm
-                    defaultData={{
-                        input: {
-                            firstName: (prefill && prefill.firstName) || '',
-                            lastName: (prefill && prefill.lastName) || '',
-                        },
-                    }}
-                    defaultAction={async data => {
-                        await props.createProfile({ variables: data });
-                        let redirect = props.router.query.redirect;
+        <Container>
+            <CreateProfileFormInner
+                {...{
+                    prefill,
+                    usePhotoPrefill,
+                    defaultAction: async (data: any) => {
+                        await createProfile({ variables: data });
+                        let redirect = router.query.redirect;
                         window.location.href = redirect ? redirect : '/';
                         await delayForewer();
-                    }}
-                    defaultLayout={false}
-                >
-                    <XFormError onlyGeneralErrors={true} width={472} />
-                    <XFormLoadingContent>
-                        <XVertical alignItems="center">
-                            <XAvatarUploadWrapper
-                                field="input.photoRef"
-                                dataTestId="photo"
-                                size="default"
-                                initialUrl={
-                                    usePhotoPrefill
-                                        ? prefill && prefill.picture
-                                        : undefined
-                                }
-                            />
-
-                            <XInputWrapper
-                                field="input.firstName"
-                                size="large"
-                                title="First name"
-                                dataTestId="first-name"
-                            />
-
-                            <XInputWrapper
-                                field="input.lastName"
-                                size="large"
-                                title="Last name"
-                                dataTestId="last-name"
-                            />
-
-                            <XFormSubmitWrapper
-                                style="primary"
-                                text={InitTexts.create_profile.continue}
-                                size="large"
-                            />
-                        </XVertical>
-                    </XFormLoadingContent>
-                </XForm>
-            </ContentWrapper>
-            <Footer>
-                <FooterText>© {new Date().getFullYear()} Openland</FooterText>
-            </Footer>
-        </RootContainer>
+                    },
+                }}
+            />
+        </Container>
     );
 });
 

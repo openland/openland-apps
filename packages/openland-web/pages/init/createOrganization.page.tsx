@@ -4,15 +4,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withApp } from '../../components/withApp';
 import { withCreateOrganization } from '../../api/withCreateOrganization';
-import {
-    RootContainer,
-    SubTitle,
-    Logo,
-    Title,
-    ContentWrapper,
-    FooterText,
-    Footer,
-} from './components/CreateProfileComponents';
+import { SubTitle, Title } from './components/CreateProfileComponents';
 import { withRouter } from 'next/router';
 import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
@@ -26,6 +18,7 @@ import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { sanitizeIamgeRef } from '../../utils/sanitizer';
 import IcInfo from './components/icons/ic-info.svg';
+import { SignContainer, RoomSignup } from './components/SignComponents';
 
 const XInputWrapper = Glamorous(XInput)({
     minWidth: 330,
@@ -54,36 +47,81 @@ const XIconWrapper = Glamorous.span({
     },
 });
 
+export const CreateOrganizationFormInner = ({
+    defaultAction,
+}: {
+    defaultAction: (data: any) => any;
+}) => {
+    return (
+        <div>
+            <Title>{InitTexts.create_organization.title}</Title>
+            <SubTitle>
+                {InitTexts.create_organization.subTitle}
+
+                <XPopper
+                    content={
+                        <InfoText>
+                            To register as an individual,
+                            <br />
+                            simply enter your name
+                        </InfoText>
+                    }
+                    showOnHover={true}
+                    placement="bottom"
+                    style="dark"
+                >
+                    <XIconWrapper>
+                        <IcInfo />
+                    </XIconWrapper>
+                </XPopper>
+            </SubTitle>
+            <XForm
+                defaultAction={defaultAction}
+                defaultData={{
+                    input: {
+                        name: '',
+                        website: '',
+                        photoRef: null,
+                    },
+                }}
+                defaultLayout={false}
+            >
+                <XVertical separator="large">
+                    <XFormError width={472} />
+                    <XFormLoadingContent>
+                        <XVertical alignItems="center">
+                            <XInputWrapper
+                                field="input.name"
+                                size="large"
+                                title={
+                                    InitTexts.create_organization
+                                        .namePlaceholder
+                                }
+                            />
+
+                            <XFormSubmit
+                                style="primary"
+                                text={InitTexts.create_organization.continue}
+                                size="large"
+                            />
+                        </XVertical>
+                    </XFormLoadingContent>
+                </XVertical>
+            </XForm>
+        </div>
+    );
+};
+
 export const CreateOrganizationForm = withCreateOrganization(
     withRouter(
-        withUserInfo(props => {
-            return (
-                <RootContainer>
-                    <Logo />
-                    <ContentWrapper>
-                        <Title>{InitTexts.create_organization.title}</Title>
-                        <SubTitle>
-                            {InitTexts.create_organization.subTitle}
+        withUserInfo((props: any) => {
+            const Container = props.roomView ? RoomSignup : SignContainer;
 
-                            <XPopper
-                                content={
-                                    <InfoText>
-                                        To register as an individual,
-                                        <br />
-                                        simply enter your name
-                                    </InfoText>
-                                }
-                                showOnHover={true}
-                                placement="bottom"
-                                style="dark"
-                            >
-                                <XIconWrapper>
-                                    <IcInfo />
-                                </XIconWrapper>
-                            </XPopper>
-                        </SubTitle>
-                        <XForm
-                            defaultAction={async data => {
+            return (
+                <Container>
+                    <CreateOrganizationFormInner
+                        {...{
+                            defaultAction: async (data: any) => {
                                 let res = await props.createOrganization({
                                     variables: {
                                         input: {
@@ -101,48 +139,10 @@ export const CreateOrganizationForm = withCreateOrganization(
                                     props.router.query.redirect,
                                 );
                                 await delayForewer();
-                            }}
-                            defaultData={{
-                                input: {
-                                    name: '',
-                                    website: '',
-                                    photoRef: null,
-                                },
-                            }}
-                            defaultLayout={false}
-                        >
-                            <XVertical separator="large">
-                                <XFormError width={472} />
-                                <XFormLoadingContent>
-                                    <XVertical alignItems="center">
-                                        <XInputWrapper
-                                            field="input.name"
-                                            size="large"
-                                            title={
-                                                InitTexts.create_organization
-                                                    .namePlaceholder
-                                            }
-                                        />
-
-                                        <XFormSubmit
-                                            style="primary"
-                                            text={
-                                                InitTexts.create_organization
-                                                    .continue
-                                            }
-                                            size="large"
-                                        />
-                                    </XVertical>
-                                </XFormLoadingContent>
-                            </XVertical>
-                        </XForm>
-                    </ContentWrapper>
-                    <Footer>
-                        <FooterText>
-                            © {new Date().getFullYear()} Openland
-                        </FooterText>
-                    </Footer>
-                </RootContainer>
+                            },
+                        }}
+                    />
+                </Container>
             );
         }),
     ),

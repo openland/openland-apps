@@ -9,6 +9,11 @@ import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { InitTexts } from '../_text';
 import { Title, SubTitle } from './CreateProfileComponents';
 
+export const RoomLoader = Glamorous.div({
+    height: 150,
+    position: 'relative',
+});
+
 const RoomTerms = Glamorous.div({
     textAlign: 'center',
     marginTop: -6,
@@ -164,9 +169,9 @@ const SignupContainer = Glamorous.div({
 });
 
 interface HeaderProps {
-    text: string;
-    path: string;
-    linkText: string;
+    text?: string;
+    path?: string;
+    linkText?: string;
 }
 
 const Header = (props: HeaderProps) => (
@@ -189,7 +194,7 @@ const MainContent = Glamorous.div({
 });
 
 interface SignContainerProps extends HeaderProps {
-    signin: boolean;
+    signin?: boolean;
     children?: any;
 }
 

@@ -1,19 +1,55 @@
 import * as React from 'react';
 import { DevDocsScaffold } from '../components/DevDocsScaffold';
-import { CreateProfileForm } from '../../../init/createProfile.page';
+import {
+    RoomSignup,
+    SignContainer,
+} from '../../../init/components/SignComponents';
+import { CreateProfileFormInner } from '../../../init/createProfile.page';
 import { CreateWrapIntoState } from './utils';
-import { roomSignupKnob, authMechanismKnob } from './knobs';
+import { roomSignupKnob, signContainerKnob } from './knobs';
 
 const WrapIntoState = CreateWrapIntoState({
-    root: { ...roomSignupKnob },
+    room: { ...roomSignupKnob },
+    webSignup: { ...signContainerKnob },
 });
 
 export default () => (
     <DevDocsScaffold>
         <WrapIntoState>
             {({ branch, ...branchProps }: any) => {
-                const CreateProfileFormAny = CreateProfileForm as any;
-                return <CreateProfileFormAny data={{ prefill: {} }} />;
+                if (branch === 'room') {
+                    const { headerStyle, ...other } = branchProps;
+                    const CreateProfileFormAny = CreateProfileFormInner as any;
+                    return (
+                        <RoomSignup headerStyle={headerStyle}>
+                            <CreateProfileFormAny data={{ prefill: {} }} />;
+                        </RoomSignup>
+                    );
+                } else {
+                    const {
+                        headerStyle,
+                        signin,
+                        text,
+                        path,
+                        linkText,
+                        ...other
+                    } = branchProps;
+
+                    const CreateProfileFormAny = CreateProfileFormInner as any;
+                    return (
+                        <SignContainer
+                            {...{
+                                signin,
+                                headerStyle,
+                                text,
+                                path,
+                                linkText,
+                            }}
+                        >
+                            <CreateProfileFormAny data={{ prefill: {} }} />;
+                        </SignContainer>
+                    );
+                }
             }}
         </WrapIntoState>
     </DevDocsScaffold>
