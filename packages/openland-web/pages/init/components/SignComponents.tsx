@@ -871,25 +871,11 @@ const NewOrganizationButton = ({
 
 const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
 
-const options = [
-    {
-        value: NEW_ORGANIZATION_BUTTON_VALUE,
-        label: <NewOrganizationButton />,
-    },
-    {
-        value: 1,
-        label: 'ACME Corporation, John Doe +1 more',
-    },
-    {
-        value: 123,
-        label: '123',
-    },
-] as any;
-
 export class CreateOrganizationFormInner extends React.Component<
     {
         roomView: boolean;
         defaultAction: (data: any) => any;
+        organizations: any;
     },
     {
         inputValue: string;
@@ -901,6 +887,17 @@ export class CreateOrganizationFormInner extends React.Component<
             inputValue: '',
         };
     }
+
+    getOrganizations = () => {
+        return [
+            {
+                value: NEW_ORGANIZATION_BUTTON_VALUE,
+                label: <NewOrganizationButton />,
+            },
+            ...this.props.organizations,
+        ];
+    };
+
     handleOnChange = (src: any, store: any) => {
         if (!store) {
             return;
@@ -927,7 +924,7 @@ export class CreateOrganizationFormInner extends React.Component<
     };
 
     filterOptions = (_: any, val: any) => {
-        const res = options.filter(
+        const res = this.getOrganizations().filter(
             ({ label, value }: any) =>
                 (label.includes && label.includes(val)) ||
                 value === NEW_ORGANIZATION_BUTTON_VALUE,
@@ -960,7 +957,7 @@ export class CreateOrganizationFormInner extends React.Component<
                     onChange={(src: any) => {
                         this.handleOnChange(src, store);
                     }}
-                    options={options}
+                    options={this.getOrganizations()}
                 />
             </div>
         );
