@@ -225,13 +225,6 @@ export const SignContainer = (props: SignContainerProps) => {
     );
 };
 
-export const Description = Glamorous.div({
-    fontSize: 16,
-    letterSpacing: 0.2,
-    textAlign: 'center',
-    color: '#000',
-});
-
 export const ButtonsWrapper = Glamorous.div<{
     marginTop?: number;
     marginBottom?: number;
@@ -739,13 +732,8 @@ export const RoomAuthMechanism = ({
     loginWithEmail: Function;
 }) => {
     const auth = InitTexts.auth;
-    const title = signin
-        ? 'Sign in and join the conversation'
-        : 'Sign up and join the conversation';
-
-    const subTitle = signin
-        ? 'We are excited to have you back!'
-        : 'Creating an account is free and easy';
+    const title = signin ? auth.signinTitle : auth.signupTitle;
+    const subTitle = signin ? auth.signinSubtitle : auth.signupSubtitle;
 
     const googleButtonText = signin
         ? InitTexts.auth.signinEmail
@@ -799,13 +787,14 @@ export const WebSignUpAuthMechanism = ({
 }) => {
     const auth = InitTexts.auth;
     const title = signin ? auth.signinTitle : auth.signupTitle;
+    const subTitle = signin ? auth.signinSubtitle : auth.signupSubtitle;
     const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
         <div>
             <Title>{title}</Title>
-            {signin && <Description>{auth.signinSubtitle}</Description>}
+            <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
                 <GoogleButton
                     rounded

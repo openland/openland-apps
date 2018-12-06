@@ -22,7 +22,7 @@ export const InitTexts = {
         signupHint: "Don't have an Openland account?",
         signup: 'Sign up',
         signupTitle: 'Sign up for Openland',
-        signupSubtitle: 'Get a free account and start exploring',
+        signupSubtitle: 'Creating an account is free and easy',
         signupGoogle: 'Sign up with Google',
         signupEmail: 'Sign up with Email',
 

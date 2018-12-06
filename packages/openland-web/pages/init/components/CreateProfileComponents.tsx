@@ -51,9 +51,9 @@ export const SubTitle = glamorous.div({
     fontStyle: 'normal',
     fontStretch: 'normal',
     lineHeight: 1.5,
-    letterSpacing: 'normal',
     color: '#000',
     marginTop: 0,
+    letterSpacing: -0.1,
     marginBottom: 32,
 });
 
