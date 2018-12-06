@@ -427,6 +427,7 @@ const StyledSelect = Glamorous(Select)(Styles);
 const StyledSelectCreatable = Glamorous(Creatable)(Styles);
 
 export type XSelectBasicProps = ReactSelectProps & {
+    dataTestId?: string,
     ref?: any;
     attach?: 'left' | 'right' | 'both';
     creatable?: boolean;

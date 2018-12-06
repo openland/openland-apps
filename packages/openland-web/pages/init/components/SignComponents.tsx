@@ -4,7 +4,9 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
+import { XView } from 'openland-x/XView';
 import { XInput } from 'openland-x/XInput';
+import { XSelect } from 'openland-x/XSelect';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { InitTexts } from '../_text';
 import { Title, SubTitle } from './CreateProfileComponents';
@@ -14,6 +16,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import IcInfo from '../components/icons/ic-info.svg';
+import IcAdd from '../components/icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 
 export const RoomLoader = Glamorous.div({
@@ -796,6 +799,7 @@ export const CreateProfileFormInner = (props: {
                         />
                         <ButtonsWrapper marginBottom={84}>
                             <XFormSubmitWrapper
+                                dataTestId="continue-button"
                                 style="primary"
                                 text={InitTexts.create_profile.continue}
                                 size="large"
@@ -835,6 +839,29 @@ const XIconWrapper = Glamorous.span({
     },
 });
 
+const OrganizationSelector = Glamorous(XSelect)({
+    minWidth: 330,
+});
+
+const NewOrganizationButton = () => {
+    return (
+        <XView flexDirection="row" alignItems="center">
+            <XView>
+                <IcAdd />
+            </XView>
+            <XView color="#1790ff" marginLeft={6}>
+                <span
+                    style={{
+                        fontFamily: 'SFProText-Regular',
+                    }}
+                >
+                    New organization
+                </span>
+            </XView>
+        </XView>
+    );
+};
+
 export const CreateOrganizationFormInner = ({
     roomView,
     defaultAction,
@@ -842,6 +869,7 @@ export const CreateOrganizationFormInner = ({
     roomView: boolean;
     defaultAction: (data: any) => any;
 }) => {
+    const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
     const MyTitle = roomView ? RoomTitle : Title;
     return (
         <div>
@@ -882,16 +910,27 @@ export const CreateOrganizationFormInner = ({
                     <XFormLoadingContent>
                         <ButtonsWrapper marginBottom={84}>
                             <XVertical alignItems="center">
-                                <XInputWrapper
+                                <OrganizationSelector
                                     field="input.name"
-                                    size="large"
-                                    title={
-                                        InitTexts.create_organization
-                                            .namePlaceholder
-                                    }
+                                    dataTestId="organization-name"
+                                    creatable
+                                    title={InitTexts.create_organization.name}
+                                    options={[
+                                        {
+                                            value: NEW_ORGANIZATION_BUTTON_VALUE,
+                                            label: <NewOrganizationButton />,
+                                        },
+                                        {
+                                            value:
+                                                'ACME Corporation, John Doe +1 more',
+                                            label:
+                                                'ACME Corporation, John Doe +1 more',
+                                        },
+                                    ]}
                                 />
 
                                 <XFormSubmit
+                                    dataTestId="continue-button"
                                     style="primary"
                                     text={
                                         InitTexts.create_organization.continue
