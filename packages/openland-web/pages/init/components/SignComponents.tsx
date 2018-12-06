@@ -912,7 +912,7 @@ const NewOrganizationButton = ({
     onClick?: (event: React.MouseEvent<any>) => void;
 }) => {
     return (
-        <div onClick={onClick}>
+        <div onClick={onClick} data-test-id="new-organization-button">
             <XView flexDirection="row" alignItems="center">
                 <XView>
                     <IcAdd />

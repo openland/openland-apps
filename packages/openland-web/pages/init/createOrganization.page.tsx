@@ -22,7 +22,7 @@ const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
     return (
         <>
             {children({
-                data: !props.data.items
+                data: !props.data || !props.data.items 
                     ? []
                     : props.data.items.edges.map(
                           ({ node: { id, name } }: any) => {

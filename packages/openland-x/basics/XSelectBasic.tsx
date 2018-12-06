@@ -544,7 +544,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
         let { placeholder, title, onChange, onFocus, onBlur, ...other } = this.props;
 
         return (
-            <SelectWrapper>
+            <SelectWrapper data-test-id={this.props.dataTestId}>
                 {title && (
                     <Title inside={!(this.state.hasValue || this.state.hasInputValue || this.state.isFocused)}>{title}</Title>
                 )}
