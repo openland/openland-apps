@@ -5,23 +5,32 @@ import {
     DataSourceWatcher,
 } from 'openland-y-utils/DataSource';
 
+export interface DataSourceRenderProps<T extends DataSourceItem> {
+    dataSource: DataSource<T>;
+    render: (props: { items: T[]; completed: boolean }) => any;
+    onChange?: (items: T[]) => void;
+}
+
+interface DataSourceRenderState<T extends DataSourceItem> {
+    items: T[];
+    completed: boolean;
+}
+
 export class DataSourceRender<T extends DataSourceItem>
-    extends React.PureComponent<
-        {
-            dataSource: DataSource<T>;
-            render: (props: { items: T[]; completed: boolean }) => any;
-            onChange?: (items: T[]) => void;
-        },
-        { items: T[]; completed: boolean }
-    >
+    extends React.Component<DataSourceRenderProps<T>, DataSourceRenderState<T>>
     implements DataSourceWatcher<T> {
-    constructor(props: {
-        dataSource: DataSource<T>;
-        render: (props: { items: T[]; completed: boolean }) => any;
-        onChange?: (items: T[]) => void;
-    }) {
+
+    constructor(props: DataSourceRenderProps<T>) {
         super(props);
         this.state = { items: [], completed: false };
+    }
+
+    componentDidMount() {
+        this.props.dataSource.watch(this);
+    }
+
+    shouldComponentUpdate(nextProps: DataSourceRenderProps<T>, nextState: DataSourceRenderState<T>) {
+        return this.state.items !== nextState.items || this.state.completed !== nextState.completed;
     }
 
     onChange = () => {
@@ -29,10 +38,6 @@ export class DataSourceRender<T extends DataSourceItem>
             this.props.onChange(this.state.items);
         }
     };
-
-    componentDidMount() {
-        this.props.dataSource.watch(this);
-    }
 
     onDataSourceInited(data: T[], completed: boolean) {
         this.setState({ completed: completed, items: [...data] });

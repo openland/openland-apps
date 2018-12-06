@@ -5,7 +5,6 @@ import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import {
     DialogListEngine,
     DialogDataSourceItem,
-    formatMessage,
 } from 'openland-engines/messenger/DialogListEngine';
 import {
     MessengerEngine,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css } from 'linaria';
 import { emojify } from 'react-emojione';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -10,31 +9,7 @@ import ForwardIcon from './icons/ic-reply-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'openland-x/XView';
 import { XLink2 } from 'openland-x/XLink2';
-
-let iconClass = css`
-    display: inline-block;
-    vertical-align: top;
-    margin: 1px 5px -1px 1px;
-
-    path {
-        fill: rgba(0, 0, 0, 0.3);
-    }
-`;
-
-let iconActiveClass = css`
-    display: inline-block;
-    vertical-align: top;
-    margin: 1px 5px -1px 1px;
-
-    path {
-        fill: rgba(255, 255, 255, 0.9);
-    }
-`;
-
-let documentIcon = css`
-    margin-top: 0;
-    margin-bottom: 0;
-`;
+import { iconActiveClass, iconClass, documentIcon } from './DialogView.styles';
 
 interface DialogViewProps {
     item: DialogDataSourceItem;
@@ -158,7 +133,7 @@ const DialogViewInner = (props: DialogViewProps) => {
                                                             : isPrivate
                                                                 ? null
                                                                 : dialog.sender +
-                                                                  ':'}{' '}
+                                                                ':'}{' '}
                                                         {emojify(
                                                             dialog.message,
                                                             {
@@ -179,7 +154,7 @@ const DialogViewInner = (props: DialogViewProps) => {
                                                             : isPrivate
                                                                 ? null
                                                                 : dialog.sender +
-                                                                  ':'}{' '}
+                                                                ':'}{' '}
                                                         <ForwardIcon
                                                             className={
                                                                 (active
@@ -200,7 +175,7 @@ const DialogViewInner = (props: DialogViewProps) => {
                                                             : isPrivate
                                                                 ? null
                                                                 : dialog.sender +
-                                                                  ':'}{' '}
+                                                                ':'}{' '}
                                                         <PhotoIcon
                                                             className={
                                                                 active
@@ -219,7 +194,7 @@ const DialogViewInner = (props: DialogViewProps) => {
                                                             : isPrivate
                                                                 ? null
                                                                 : dialog.sender +
-                                                                  ':'}{' '}
+                                                                ':'}{' '}
                                                         <FileIcon
                                                             className={
                                                                 (active
@@ -337,10 +312,12 @@ const DialogViewCompactInner = (props: DialogViewProps) => {
     );
 };
 
-export const DialogView = (props: DialogViewProps) => {
-    return props.compact ? (
-        <DialogViewCompactInner {...props} />
-    ) : (
-        <DialogViewInner {...props} />
-    );
-};
+export class DialogView extends React.PureComponent<DialogViewProps> {
+    render() {
+        return this.props.compact ? (
+            <DialogViewCompactInner {...this.props} />
+        ) : (
+                <DialogViewInner {...this.props} />
+            );
+    }
+}
