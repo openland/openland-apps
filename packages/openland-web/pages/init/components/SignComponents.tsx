@@ -617,12 +617,14 @@ export const RoomCreateWithEmail = ({
 
 export const WebSignUpActivationCode = ({
     codeError,
+    emailSendedTo,
     codeChanged,
     codeSending,
     codeValue,
     loginCodeStart,
 }: {
     codeError: string;
+    emailSendedTo?: string;
     codeChanged: (value: string) => void;
     codeSending: boolean;
     codeValue: string;
@@ -630,7 +632,12 @@ export const WebSignUpActivationCode = ({
 }) => {
     return (
         <div>
-            <Title>Please, enter activation code</Title>
+            <Title>{InitTexts.auth.enterActivationCode}</Title>
+            {emailSendedTo && (
+                <SubTitle>
+                    We just sent it to <strong>{emailSendedTo}</strong>
+                </SubTitle>
+            )}
             {codeError !== '' && (
                 <>
                     <XServiceMessage title={InitTexts.auth.codeInvalid} />
@@ -810,12 +817,14 @@ export const WebSignUpAuthMechanism = ({
 
 export const RoomActivationCode = ({
     codeError,
+    emailSendedTo,
     codeChanged,
     codeSending,
     codeValue,
     loginCodeStart,
 }: {
     codeError: string;
+    emailSendedTo?: string;
     codeChanged: (value: string) => void;
     codeSending: boolean;
     codeValue: string;
@@ -835,7 +844,12 @@ export const RoomActivationCode = ({
                     <XServiceMessage title={InitTexts.auth.codeInvalid} />
                 </div>
             )}
-            <RoomTitle>Please, enter activation code</RoomTitle>
+            <RoomTitle>{InitTexts.auth.enterActivationCode}</RoomTitle>
+            {emailSendedTo && (
+                <SubTitle>
+                    We just sent it to <strong>{emailSendedTo}</strong>
+                </SubTitle>
+            )}
             <ButtonsWrapper marginTop={40} width={280}>
                 <XInput
                     pattern="[0-9]*"

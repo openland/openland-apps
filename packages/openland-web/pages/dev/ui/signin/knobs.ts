@@ -45,6 +45,7 @@ export const createWithEmail = {
         type: 'checkbox',
         default: false,
     },
+
     emailError: {
         type: 'input',
         default: '',
@@ -72,6 +73,10 @@ export const activationCodeKnob = {
     codeError: {
         type: 'input',
         default: '',
+    },
+    emailSendedTo: {
+        type: 'input',
+        default: 'demarco_kshlerin@yahoo.com',
     },
     codeValue: {
         type: 'input',
