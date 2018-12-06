@@ -23,6 +23,9 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
     const createProfile = props.createProfile;
     const Container = roomView ? RoomSignup : SignContainer;
 
+    if (props.loading) {
+        return <div />;
+    }
     return (
         <Container>
             <CreateProfileFormInner

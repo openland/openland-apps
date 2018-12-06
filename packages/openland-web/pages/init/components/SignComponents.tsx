@@ -744,17 +744,14 @@ const XFormSubmitWrapper = Glamorous(XFormSubmit)({
     marginTop: 50,
 });
 
-export const CreateProfileFormInner = ({
-    roomView,
-    prefill,
-    usePhotoPrefill,
-    defaultAction,
-}: {
+export const CreateProfileFormInner = (props: {
     roomView: boolean;
     prefill: any;
     usePhotoPrefill: boolean;
     defaultAction: (data: any) => any;
 }) => {
+    const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
+    console.log(props);
     const MyTitle = roomView ? RoomTitle : Title;
     return (
         <div>
