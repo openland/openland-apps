@@ -112,8 +112,11 @@ class SignInComponent extends React.Component<
         this.fireGoogle();
     };
 
-    loginWithEmail = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginWithEmail = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({
             email: true,
             emailValue: '',
@@ -126,8 +129,11 @@ class SignInComponent extends React.Component<
         });
     };
 
-    loginReset = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginReset = (e?: React.SyntheticEvent<any>) => {
+        if (e) {
+            e.preventDefault();
+        }
+
         this.setState({
             email: false,
             emailValue: '',
@@ -211,11 +217,11 @@ class SignInComponent extends React.Component<
               )
             : () => <XLoader loading={!this.state.emailSent} />;
 
-        const MyWebSignUpCreateWithEmail = this.props.roomView
+        const MyCreateWithEmail = this.props.roomView
             ? RoomCreateWithEmail
             : WebSignUpCreateWithEmail;
 
-        const MyWebSignUpActivationCode = this.props.roomView
+        const MyActivationCode = this.props.roomView
             ? RoomActivationCode
             : WebSignUpActivationCode;
 
@@ -240,7 +246,7 @@ class SignInComponent extends React.Component<
                     )}
 
                 {this.state.email && !this.state.emailSent && (
-                    <MyWebSignUpCreateWithEmail
+                    <MyCreateWithEmail
                         signin={signin}
                         emailError={this.state.emailError}
                         emailChanged={this.emailChanged}
@@ -251,12 +257,19 @@ class SignInComponent extends React.Component<
                 )}
 
                 {this.state.emailSent && (
-                    <MyWebSignUpActivationCode
-                        resendCodeClick={() => console.log('resendCodeClick')}
-                        backButtonClick={() => console.log('back')}
+                    <MyActivationCode
+                        resendCodeClick={() => {
+                            this.setState({
+                                emailSending: true,
+                            });
+                            this.fireEmail();
+                        }}
+                        backButtonClick={this.loginWithEmail}
                         codeError={this.state.codeError}
                         codeChanged={this.codeChanged}
-                        codeSending={this.state.codeSending}
+                        codeSending={
+                            this.state.codeSending || this.state.emailSending
+                        }
                         codeValue={this.state.codeValue}
                         loginCodeStart={this.loginCodeStart}
                     />
