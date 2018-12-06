@@ -20,10 +20,16 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
 
-                    const CreateOrganizationFormInnerAny = CreateOrganizationFormInner as any;
                     return (
                         <RoomSignupContainer headerStyle={headerStyle}>
-                            <CreateOrganizationFormInnerAny
+                            <CreateOrganizationFormInner
+                                organizations={{
+                                    data: [],
+                                    loading: false,
+                                }}
+                                onPrefixChanges={() => {
+                                    //
+                                }}
                                 roomView={true}
                                 defaultAction={() => {
                                     //
@@ -41,7 +47,6 @@ export default () => (
                         ...other
                     } = branchProps;
 
-                    const CreateOrganizationFormInnerAny = CreateOrganizationFormInner as any;
                     return (
                         <WebSignUpContainer
                             {...{
@@ -52,7 +57,14 @@ export default () => (
                                 linkText,
                             }}
                         >
-                            <CreateOrganizationFormInnerAny
+                            <CreateOrganizationFormInner
+                                organizations={{
+                                    data: [],
+                                    loading: false,
+                                }}
+                                onPrefixChanges={() => {
+                                    //
+                                }}
                                 roomView={false}
                                 defaultAction={() => {
                                     //
