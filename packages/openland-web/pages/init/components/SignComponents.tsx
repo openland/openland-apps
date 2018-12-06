@@ -9,7 +9,7 @@ import { XInput } from 'openland-x/XInput';
 import { XSelect } from 'openland-x/XSelect';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { InitTexts } from '../_text';
-import { Title, SubTitle } from './CreateProfileComponents';
+import { SubTitle } from './CreateProfileComponents';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XPopper } from 'openland-x/XPopper';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -143,7 +143,7 @@ const ImgButton = (props: ButtonProps) => {
     );
 };
 
-const RoomTitle = Glamorous.div({
+const Title = Glamorous.div({
     textAlign: 'center',
     opacity: 0.9,
     fontSize: 26,
@@ -163,7 +163,7 @@ const EmptyBlock = Glamorous.div({
 
 // WebSignUpContainer start
 
-const RootContainer = Glamorous.div({
+const RootContainer123 = Glamorous.div({
     display: 'flex',
     height: '100vh',
     width: '100%',
@@ -302,7 +302,7 @@ interface SignContainerProps extends HeaderProps {
 
 export const WebSignUpContainer = (props: SignContainerProps) => {
     return (
-        <RootContainer>
+        <RootContainer123>
             <LeftContainer>
                 <Header
                     text={props.text}
@@ -329,7 +329,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                     </FooterText>
                 </Footer>
             </LeftContainer>
-        </RootContainer>
+        </RootContainer123>
     );
 };
 
@@ -673,7 +673,7 @@ export const RoomAuthMechanism = ({
 
     return (
         <div>
-            <RoomTitle>{title}</RoomTitle>
+            <Title>{title}</Title>
             <RoomText>{subTitle}</RoomText>
             <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
                 <GoogleButton
@@ -801,7 +801,7 @@ export const WebSignUpActivationCode = ({
                     <EmptyBlock />
                 </>
             )}
-            <ButtonsWrapper>
+            <ButtonsWrapper width={280}>
                 <XInput
                     pattern="[0-9]*"
                     type="number"
@@ -871,7 +871,7 @@ export const RoomActivationCode = ({
                     <XServiceMessage title={InitTexts.auth.codeInvalid} />
                 </div>
             )}
-            <RoomTitle>{InitTexts.auth.enterActivationCode}</RoomTitle>
+            <Title>{InitTexts.auth.enterActivationCode}</Title>
             {emailSendedTo && (
                 <SubTitle>
                     We just sent it to <strong>{emailSendedTo}</strong>
@@ -959,11 +959,11 @@ export const RoomCreateWithEmail = ({
                     <XServiceMessage title={InitTexts.auth.emailInvalid} />
                 </div>
             )}
-            <RoomTitle>
+            <Title>
                 {signin
                     ? InitTexts.auth.signinEmail
                     : InitTexts.auth.signupEmail}
-            </RoomTitle>
+            </Title>
             <ButtonsWrapper marginTop={40} width={280}>
                 <XInput
                     type="email"
@@ -1012,7 +1012,7 @@ export const WebSignUpCreateWithEmail = ({
                     <EmptyBlock />
                 </>
             )}
-            <ButtonsWrapper>
+            <ButtonsWrapper width={280}>
                 <XInput
                     type="email"
                     size="large"
@@ -1061,7 +1061,7 @@ export const CreateProfileFormInner = (props: {
 }) => {
     const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
     console.log(props);
-    const MyTitle = roomView ? RoomTitle : Title;
+    const MyTitle = roomView ? Title : Title;
     return (
         <div>
             <MyTitle>{InitTexts.create_profile.title}</MyTitle>
@@ -1258,7 +1258,7 @@ export class CreateOrganizationFormInner extends React.Component<
     render() {
         const { roomView, defaultAction } = this.props;
 
-        const MyTitle = roomView ? RoomTitle : Title;
+        const MyTitle = roomView ? Title : Title;
 
         return (
             <div>

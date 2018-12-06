@@ -4,17 +4,6 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import glamorous from 'glamorous';
 
-export const RootContainer = glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    width: '100%',
-    position: 'relative',
-    backgroundColor: '#fff',
-    minWidth: 600,
-});
-
 export const Logo = glamorous.div({
     width: 145,
     height: 42,
