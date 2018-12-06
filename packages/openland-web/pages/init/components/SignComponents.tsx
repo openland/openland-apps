@@ -873,6 +873,7 @@ const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
 
 export class CreateOrganizationFormInner extends React.Component<
     {
+        onPrefixChanges: (prefix: string) => void;
         roomView: boolean;
         defaultAction: (data: any) => any;
         organizations: any;
@@ -894,7 +895,7 @@ export class CreateOrganizationFormInner extends React.Component<
                 value: NEW_ORGANIZATION_BUTTON_VALUE,
                 label: <NewOrganizationButton />,
             },
-            ...this.props.organizations,
+            ...this.props.organizations.data,
         ];
     };
 
@@ -941,20 +942,26 @@ export class CreateOrganizationFormInner extends React.Component<
         return (
             <div>
                 <OrganizationSelector
+                    onSelectResetsInput={false}
+                    onBlurResetsInput={false}
                     filterOptions={this.filterOptions}
                     field="input.name"
                     dataTestId="organization-name"
                     title={InitTexts.create_organization.name}
                     onInputChange={
                         ((inputValue: any) => {
-                            setTimeout(() => {
-                                this.setState({
-                                    inputValue: inputValue,
-                                });
-                            });
+                            this.setState(
+                                {
+                                    inputValue,
+                                },
+                                () => {
+                                    this.props.onPrefixChanges(inputValue);
+                                },
+                            );
                         }) as any
                     }
                     onChange={(src: any) => {
+                        console.log('onChange', src);
                         this.handleOnChange(src, store);
                     }}
                     options={this.getOrganizations()}

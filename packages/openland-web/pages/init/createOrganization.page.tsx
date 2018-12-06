@@ -14,72 +14,138 @@ import {
     CreateOrganizationFormInner,
 } from './components/SignComponents';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { withExploreOrganizations } from '../../api/withExploreOrganizations';
 
-const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(
-    withQueryLoader(props => {
-        const children = props.children as Function;
+const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
+    const children = props.children as Function;
+
+    return (
+        <>
+            {children({
+                data: !props.data.items
+                    ? []
+                    : props.data.items.edges.map(
+                          ({ node: { id, name } }: any) => {
+                              return { value: id, label: name };
+                          },
+                      ),
+                loading: false,
+            })}
+        </>
+    );
+});
+
+class OrganizationsSelectorOptionsFetcherInner extends React.Component<
+    {
+        organizations: any;
+        roomView: any;
+        onPrefixChanges: any;
+        createOrganization: any;
+        router: any;
+    },
+    {
+        lastLoadedOrganizations: any;
+    }
+> {
+    componentWillReceiveProps(nextProps: any) {
+        this.setState({
+            lastLoadedOrganizations: nextProps.organizations,
+        });
+    }
+
+    render() {
+        const {
+            organizations,
+            roomView,
+            onPrefixChanges,
+            createOrganization,
+            router,
+        } = this.props;
+
+        const fetchedOrPrevOrganizations = organizations.loading
+            ? this.state.lastLoadedOrganizations
+            : organizations;
         return (
-            <>
-                {children(
-                    props.data.items!!.edges.map(
-                        ({ node: { id, name } }: any) => {
-                            return { value: id, label: name };
+            <CreateOrganizationFormInner
+                organizations={fetchedOrPrevOrganizations}
+                onPrefixChanges={onPrefixChanges}
+                roomView={roomView}
+                defaultAction={async (data: any) => {
+                    let res = await createOrganization({
+                        variables: {
+                            input: {
+                                personal: false,
+                                name: data.input.name,
+                                website: data.input.website,
+                                photoRef: sanitizeIamgeRef(data.input.photoRef),
+                            },
                         },
-                    ),
-                )}
-            </>
+                    });
+                    switchOrganization(
+                        res.data.createOrganization.id,
+                        router.query.redirect,
+                    );
+                    await delayForewer();
+                }}
+            />
         );
-    }),
-);
+    }
+}
+
+class CreateOrganizationPrefixHolder extends React.Component<
+    any,
+    { organizationPrefix: string; lastLoadedOrganizations: any[] }
+> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            organizationPrefix: '',
+            lastLoadedOrganizations: [],
+        };
+    }
+
+    onPrefixChanges = (organizationPrefix: any) => {
+        this.setState({
+            organizationPrefix,
+        });
+    };
+
+    renderOrganizationsSelectorOptionsFetcherInner = (organizations: any) => {
+        const OrganizationsSelectorOptionsFetcherInnerAny = OrganizationsSelectorOptionsFetcherInner as any;
+        return (
+            <OrganizationsSelectorOptionsFetcherInnerAny
+                {...{
+                    organizations,
+                    ...this.props,
+                    onPrefixChanges: this.onPrefixChanges,
+                }}
+            />
+        );
+    };
+
+    render() {
+        const props = this.props;
+        const roomView = props.roomView;
+        const Container = roomView ? RoomSignup : SignContainer;
+
+        return (
+            <Container>
+                <OrganizationsSelectorOptionsFetcher
+                    variables={{
+                        prefix: this.state.organizationPrefix,
+                        sort: JSON.stringify([]),
+                    }}
+                >
+                    {this.renderOrganizationsSelectorOptionsFetcherInner}
+                </OrganizationsSelectorOptionsFetcher>
+            </Container>
+        );
+    }
+}
 
 export const CreateOrganizationForm = withCreateOrganization(
-    withRouter(
-        withUserInfo((props: any) => {
-            const roomView = props.roomView;
-            const Container = roomView ? RoomSignup : SignContainer;
-
-            return (
-                <Container>
-                    <OrganizationsSelectorOptionsFetcher
-                        variables={{
-                            prefix: '',
-                            sort: JSON.stringify([]),
-                        }}
-                    >
-                        {(organizations: any) => (
-                            <CreateOrganizationFormInner
-                                organizations={organizations}
-                                roomView={roomView}
-                                defaultAction={async (data: any) => {
-                                    let res = await props.createOrganization({
-                                        variables: {
-                                            input: {
-                                                personal: false,
-                                                name: data.input.name,
-                                                website: data.input.website,
-                                                photoRef: sanitizeIamgeRef(
-                                                    data.input.photoRef,
-                                                ),
-                                            },
-                                        },
-                                    });
-                                    switchOrganization(
-                                        res.data.createOrganization.id,
-                                        props.router.query.redirect,
-                                    );
-                                    await delayForewer();
-                                }}
-                            />
-                        )}
-                    </OrganizationsSelectorOptionsFetcher>
-                </Container>
-            );
-        }),
-    ),
+    withRouter(withUserInfo(CreateOrganizationPrefixHolder)),
 );
-
-import { withExploreOrganizations } from '../../api/withExploreOrganizations';
-import { withQueryLoader } from '../../components/withQueryLoader';
 
 export default withApp('Create Organization', 'viewer', props => {
     if (!canUseDOM) {
