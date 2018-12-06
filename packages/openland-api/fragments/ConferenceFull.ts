@@ -14,5 +14,10 @@ export const ConferenceFull = gql`
                 ice
             }
         }
+        iceServers {
+            urls
+            username
+            credential
+        }
     }
 `;

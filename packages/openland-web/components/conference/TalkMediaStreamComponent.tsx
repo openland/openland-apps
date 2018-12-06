@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { Conference_conference_peers_connection } from 'openland-api/Types';
+import { Conference_conference_peers_connection, Conference_conference } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import {
     ConferenceCandidateMutation,
@@ -15,13 +15,14 @@ export interface TalkMediaStreamComponentProps {
     peerId: string;
     stream: MediaStream;
     connection: Conference_conference_peers_connection;
+    conference: Conference_conference;
     onStreamCreated: (peerId: string, stream: MediaStream) => void;
     onStreamClosed: (peerId: string) => void;
 }
 
 export class TalkMediaStreamComponent extends React.Component<
     TalkMediaStreamComponentProps
-> {
+    > {
     container = React.createRef<HTMLDivElement>();
     started = false;
     answerHandled = false;
@@ -36,50 +37,18 @@ export class TalkMediaStreamComponent extends React.Component<
     componentDidMount() {
         console.log(
             'Connection mounted: ' +
-                this.props.id +
-                ': ' +
-                this.props.connection.state,
+            this.props.id +
+            ': ' +
+            this.props.connection.state,
         );
         this.started = true;
         this.peerConnection = new RTCPeerConnection({
-            iceServers: [
-                // US
-                {
-                    urls: ['turn:35.237.41.98:443'],
-                    username: 'somecalluser',
-                    credential: 'samplepassword',
-                },
-                {
-                    urls: ['stun:35.237.41.98:443'],
-                    username: 'somecalluser',
-                    credential: 'samplepassword',
-                },
-
-                // Finland
-                {
-                    urls: ['turn:35.228.111.16:443'],
-                    username: 'somecalluser',
-                    credential: 'samplepassword',
-                },
-                {
-                    urls: ['stun:35.228.111.16:443'],
-                    username: 'somecalluser',
-                    credential: 'samplepassword',
-                },
-
-                // Hongkong
-                {
-                    urls: ['turn:35.241.89.108:443'],
-                    username: 'somecalluser',
-                    credential: 'samplepassword',
-                },
-                {
-                    urls: ['stun:35.241.89.108:443'],
-                    username: 'somecalluser',
-                    credential: 'samplepassword',
-                },
-            ],
-            // iceTransportPolicy: 'relay'
+            iceServers: this.props.conference.iceServers.map((v) => ({
+                urls: v.urls,
+                credential: v.credential ? v.credential : undefined,
+                username: v.username ? v.username : undefined
+            })),
+            iceTransportPolicy: 'relay'
         });
         this.peerConnection.onicecandidate = ev => {
             backoff(async () => {
@@ -121,9 +90,9 @@ export class TalkMediaStreamComponent extends React.Component<
     componentDidUpdate() {
         console.log(
             'Connection updated: ' +
-                this.props.id +
-                ': ' +
-                this.props.connection.state,
+            this.props.id +
+            ': ' +
+            this.props.connection.state,
         );
         this.handleState();
     }
