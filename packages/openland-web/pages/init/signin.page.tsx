@@ -30,6 +30,7 @@ class SignInComponent extends React.Component<
     { redirect?: string | null; roomView?: boolean } & XWithRouter,
     {
         googleStarting: boolean;
+        emailWasResend: boolean;
         email: boolean;
         emailValue: string;
         emailSending: boolean;
@@ -49,21 +50,26 @@ class SignInComponent extends React.Component<
         });
     };
 
-    fireEmail = async () => {
+    fireEmail = async (cb?: Function) => {
         Cookie.set('auth-type', 'email', { path: '/' });
         if (this.props.redirect) {
             Cookie.set('sign-redirect', this.props.redirect, { path: '/' });
         }
         createAuth0Client().passwordlessStart(
             { connection: 'email', send: 'link', email: this.state.emailValue },
-            (error, v) => {
+            (error: any, v) => {
                 if (error) {
                     this.setState({
                         emailSending: false,
-                        emailError: error.errorDescription!!,
+                        emailError: error.description,
                     });
                 } else {
-                    this.setState({ emailSending: false, emailSent: true });
+                    setTimeout(() => {
+                        this.setState({ emailSending: false, emailSent: true });
+                        if (cb) {
+                            cb();
+                        }
+                    }, 500);
                 }
             },
         );
@@ -74,6 +80,7 @@ class SignInComponent extends React.Component<
         let state = {
             googleStarting: false,
             email: false,
+            emailWasResend: false,
             emailValue: '',
             emailSending: false,
             emailError: '',
@@ -152,12 +159,12 @@ class SignInComponent extends React.Component<
         });
     };
 
-    emailChanged = (val: string) => {
-        this.setState({ emailValue: val });
+    emailChanged = (val: string, cb: () => void) => {
+        this.setState({ emailValue: val }, cb);
     };
 
-    codeChanged = (val: string) => {
-        this.setState({ codeValue: val });
+    codeChanged = (val: string, cb: () => void) => {
+        this.setState({ codeValue: val }, cb);
     };
 
     loginEmailStart = (e?: React.SyntheticEvent<any>) => {
@@ -183,12 +190,12 @@ class SignInComponent extends React.Component<
                 email: this.state.emailValue,
                 verificationCode: this.state.codeValue,
             },
-            (error, v) => {
+            (error: any, v) => {
                 console.warn(error);
                 if (error) {
                     this.setState({
                         codeSending: false,
-                        codeError: error.errorDescription!!,
+                        codeError: error.description,
                     });
                 } else {
                     // Ignore. Should be redirect to completion page.
@@ -265,18 +272,23 @@ class SignInComponent extends React.Component<
 
                 {this.state.emailSent && (
                     <MyActivationCode
+                        emailWasResend={this.state.emailWasResend}
                         resendCodeClick={() => {
                             this.setState({
                                 emailSending: true,
                             });
-                            this.fireEmail();
+                            this.fireEmail(() => {
+                                this.setState({
+                                    emailWasResend: true,
+                                });
+                            });
                         }}
+                        emailSendedTo={this.state.emailValue}
                         backButtonClick={this.loginWithEmail}
                         codeError={this.state.codeError}
                         codeChanged={this.codeChanged}
-                        codeSending={
-                            this.state.codeSending || this.state.emailSending
-                        }
+                        codeSending={this.state.codeSending}
+                        emailSending={this.state.emailSending}
                         codeValue={this.state.codeValue}
                         loginCodeStart={this.loginCodeStart}
                     />

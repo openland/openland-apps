@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { makeNavigable, NavigableParentProps } from './Navigable';
-import { makeActionable, ActionableParentProps } from './Actionable';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XPhotoRef } from './XCloudImage';
@@ -10,6 +8,8 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { OnlineQuery } from 'openland-api/OnlineQuery';
+import { XRouting } from 'openland-x-routing/XRouting';
+import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 
 export type XAvatarSize = 'm-small' | 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;
@@ -24,7 +24,10 @@ export interface XAvatarStyleProps extends XFlexStyles {
     online?: boolean;
 }
 
-export type XAvatarProps = ActionableParentProps<NavigableParentProps<XAvatarStyleProps & { src?: string, cloudImageUuid?: string | null, photoRef?: XPhotoRef }>>;
+export type XAvatarProps = XAvatarStyleProps & {
+    path?: string, src?: string, cloudImageUuid?: string | null, photoRef?: XPhotoRef,
+    onClick?: () => void
+};
 
 let sizeStyles = styleResolver({
     'x-large': {
@@ -299,70 +302,77 @@ const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
     cursor: 'default'
 }));
 
-const XAvatarRaw = makeActionable(makeNavigable<XAvatarProps>((props) => {
+class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting }> {
+    render() {
+        let props = this.props;
 
-    let avatarWrapperProps = {
-        avatarSize: props.size,
-        avatarStyle: props.style,
-        attach: props.attach,
-        flexBasis: props.flexBasis,
-        flexGrow: props.flexGrow,
-        flexShrink: props.flexShrink,
-        alignSelf: props.alignSelf,
-        zIndex: props.zIndex,
-        className: props.className,
-    };
+        let avatarWrapperProps = {
+            avatarSize: props.size,
+            avatarStyle: props.style,
+            attach: props.attach,
+            flexBasis: props.flexBasis,
+            flexGrow: props.flexGrow,
+            flexShrink: props.flexShrink,
+            alignSelf: props.alignSelf,
+            zIndex: props.zIndex,
+            className: props.className,
+            onClick: props.onClick,
+        };
 
-    let avatarProps = {
-        href: props.href,
-        target: props.hrefTarget,
-        avatarSize: props.size,
-        avatarStyle: props.style,
-        onClick: props.onClick,
-        src: props.src || undefined,
-        enabled: !!(props.onClick)
-    };
+        let avatarProps = {
+            // href: props.href,
+            avatarSize: props.size,
+            avatarStyle: props.style,
+            // onClick: props.onClick,
+            src: props.src || undefined,
+            // enabled: !!(props.onClick)
+        };
 
-    let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
-    let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
-    let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
+        let imageWidth = typeof props.size === 'number' ? props.size : sizeStyles(props.size).width as number;
+        let imageHeight = typeof props.size === 'number' ? props.size : sizeStyles(props.size).height as number;
+        let fontSize = typeof props.size === 'number' ? props.size : sizeStyles(props.size).fontSize as number;
 
-    let initials = props.objectName && extractPlaceholder(props.objectName);
+        let initials = props.objectName && extractPlaceholder(props.objectName);
 
-    let imageLink = props.cloudImageUuid && !props.cloudImageUuid.startsWith('ph://') ? props.cloudImageUuid : undefined;
-    return (
-        <AvatarWrapper {...avatarWrapperProps}>
-            {props.src && (
-                <StyledAvatarSrc {...avatarProps} />
-            )}
-            {(props.photoRef || imageLink) && (
-                <StyledAvatar {...avatarProps}>
-                    <XPImage source={imageLink ? imageLink : props.photoRef!!} width={imageWidth} height={imageHeight} />
-                </StyledAvatar>
-            )}
-            {!props.src && !(props.photoRef || imageLink) && (
-                <StyledPlaceholder {...avatarProps} >
-                    {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
-                    {!(props.style === undefined || props.style === 'person') && (
-                        <ColorusStub
-                            fontSize={fontSize}
-                            backgroundImage={props.objectId && ColorusArr[Math.abs(doSimpleHash(props.objectId)) % ColorusArr.length] || ColorusArr[1]}
-                        >
-                            {initials}
-                        </ColorusStub>
-                    )}
-                </StyledPlaceholder>
-            )}
-            {props.online === true && <OnlineDot format={props.size} className="online-status-dot" />}
-            {(props.style === 'user' && props.objectId && props.online === undefined) && (
-                <Query query={OnlineQuery.document} variables={{ userId: props.objectId }} fetchPolicy="network-only">
-                    {(data) => {
-                        return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
-                    }}
-                </Query>
-            )}
-        </AvatarWrapper>
-    );
-}));
+        let imageLink = props.cloudImageUuid && !props.cloudImageUuid.startsWith('ph://') ? props.cloudImageUuid : undefined;
+        return (
+            <AvatarWrapper {...avatarWrapperProps}>
+                {props.src && (
+                    <StyledAvatarSrc {...avatarProps} />
+                )}
+                {(props.photoRef || imageLink) && (
+                    <StyledAvatar {...avatarProps}>
+                        <XPImage source={imageLink ? imageLink : props.photoRef!!} width={imageWidth} height={imageHeight} />
+                    </StyledAvatar>
+                )}
+                {!props.src && !(props.photoRef || imageLink) && (
+                    <StyledPlaceholder {...avatarProps} >
+                        {(props.style === undefined || props.style === 'person') && ((props.size === 'large' || props.size === 'x-large' || props.size === 's-large') ? <AvatarStub className="user-large" /> : <AvatarStub className="user" />)}
+                        {!(props.style === undefined || props.style === 'person') && (
+                            <ColorusStub
+                                fontSize={fontSize}
+                                backgroundImage={props.objectId && ColorusArr[Math.abs(doSimpleHash(props.objectId)) % ColorusArr.length] || ColorusArr[1]}
+                            >
+                                {initials}
+                            </ColorusStub>
+                        )}
+                    </StyledPlaceholder>
+                )}
+                {props.online === true && <OnlineDot format={props.size} className="online-status-dot" />}
+                {(props.style === 'user' && props.objectId && props.online === undefined) && (
+                    <Query query={OnlineQuery.document} variables={{ userId: props.objectId }} fetchPolicy="network-only">
+                        {(data) => {
+                            return (data.data && data.data.user && data.data.user.online) ? <OnlineDot format={props.size} className="online-status-dot" /> : null;
+                        }}
+                    </Query>
+                )}
+            </AvatarWrapper>
+        );
+    }
+}
 
-export const XAvatar = Glamorous(XAvatarRaw)();
+export const XAvatar = Glamorous((props: XAvatarProps) => (
+    <XRoutingContext.Consumer>
+        {routing => (<XAvatarWrapper {...props} routing={routing!} />)}
+    </XRoutingContext.Consumer>
+))();

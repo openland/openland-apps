@@ -49,7 +49,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
                 {...other}                
                 onClick={this.handleClick}
                 enabled={this.state.loading || formEnabled}
-                loading={this.state.loading}
+                loading={this.state.loading || other.loading}
                 style={this.state.success ? 'success' : other.style}
                 icon={this.state.success ? <CheckIcon/> : other.icon}
             />

@@ -19,6 +19,7 @@ export interface XButtonStyleProps extends XFlexStyles {
     iconRight?: string | any;
     iconResponsive?: string | any;
     iconOpacity?: number;
+    loading?: boolean;
     size?: XButtonSize;
     style?: XButtonStyle;
     attach?: 'left' | 'right' | 'both';

@@ -15,7 +15,7 @@ export const InitTexts = {
             'Welcome back! Get your messages and explore what’s new',
         signinGoogle: 'Sign in with Google',
         signinEmail: 'Sign in with Email',
-        signinEmailTitle: 'Sign up for Openland',
+        signinEmailTitle: 'Sign up and join the conversation',
         signinEmailSubtitle: 'Creating an account is free and easy',
         signupPageTitle: 'Sign up',
         signupHint: "Don't have an Openland account?",
@@ -34,6 +34,10 @@ export const InitTexts = {
         continue: 'Continue',
         back: 'Back',
         complete: 'Continue',
+        organizationIsEmptyError: `Organization field is required. To register as
+        an individual, simply enter your name.`,
+        firstNameIsEmptyError: "First name can't be empty",
+        lastNameIsEmptyError: "Last name can't be empty",
     },
 
     join: {

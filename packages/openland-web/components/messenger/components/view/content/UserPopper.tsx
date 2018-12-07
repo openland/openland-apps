@@ -82,14 +82,6 @@ const OrgTitle = Glamorous.div({
     color: '#000000',
 });
 
-const Role = Glamorous.div({
-    marginTop: 6,
-    fontSize: 14,
-    fontWeight: 400,
-    color: 'rgba(0, 0, 0, 0.5)',
-    lineHeight: '16px',
-});
-
 const Buttons = Glamorous(XHorizontal)({
     marginTop: 20,
     width: 224,
@@ -144,86 +136,123 @@ export class UserAvatar extends React.PureComponent<{
     }
 }
 
-export const UserPopper = (props: {
-    user: MessageFull_sender;
-    isMe: boolean;
-    startSelected: boolean;
-    noCardOnMe?: boolean;
-    children?: any;
-}) => {
-    let { user, isMe, noCardOnMe, children } = props;
-    let usrPath: string | undefined = undefined;
-    if (!props.startSelected) {
-        usrPath = '/mail/u/' + user.id;
+export class UserPopper extends React.PureComponent<
+    {
+        user: MessageFull_sender;
+        isMe: boolean;
+        startSelected: boolean;
+        noCardOnMe?: boolean;
+        children?: any;
+    },
+    {
+        showPopper: boolean;
     }
-    let content;
-    if (noCardOnMe && isMe) {
-        content = (
-            <XView
-                width={78}
-                justifyContent="center"
-                alignItems="center"
-                height={30}
-                color={'white'}
-                borderRadius={15}
-                backgroundColor={'#6e7588'}
-            >
-                It&apos;s you
-            </XView>
-        );
-    } else {
-        const organizationName = user.primaryOrganization
-            ? user.primaryOrganization.name
-            : '';
-        content = (
-            <Wrapper>
-                <XHorizontal>
-                    <XAvatar
-                        size="l-medium"
-                        style="user"
-                        objectName={user.name}
-                        objectId={user.id}
-                        cloudImageUuid={user.photo || undefined}
-                        path={usrPath}
-                    />
-                    <Status variables={{ userId: user.id }} />
-                </XHorizontal>
-                <Name>{user.name}</Name>
-                <OrgTitle>{organizationName}</OrgTitle>
-                <Buttons separator={6}>
-                    {!isMe && (
-                        <XButton
-                            path={'/mail/' + user.id}
-                            style="primary"
-                            text="Direct chat"
-                            size="small"
-                        />
-                    )}
-                    <XButton
-                        path={'/mail/u/' + user.id}
-                        style="electric"
-                        text={isMe ? 'My profile' : 'View profile'}
-                        size="small"
-                    />
-                </Buttons>
-            </Wrapper>
-        );
+> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            showPopper: false,
+        };
     }
 
-    return (
-        <XPopper
-            style={noCardOnMe && isMe ? 'dark' : 'default'}
-            showOnHover={true}
-            content={content}
-            contentContainer={<Container />}
-            placement="top-start"
-            marginLeft={-2}
-        >
-            {children ? (
-                children
-            ) : (
-                <UserAvatar user={user} startSelected={props.startSelected} />
-            )}
-        </XPopper>
-    );
-};
+    showPopper = () => {
+        this.setState({
+            showPopper: true,
+        });
+    };
+
+    hidePopper = () => {
+        this.setState({
+            showPopper: false,
+        });
+    };
+
+    render() {
+        const props = this.props;
+        let { user, isMe, noCardOnMe, children } = this.props;
+
+        let usrPath: string | undefined = undefined;
+        if (!props.startSelected) {
+            usrPath = '/mail/u/' + user.id;
+        }
+        let content;
+        if (noCardOnMe && isMe) {
+            content = (
+                <XView
+                    width={78}
+                    justifyContent="center"
+                    alignItems="center"
+                    height={30}
+                    color={'white'}
+                    borderRadius={15}
+                    backgroundColor={'#6e7588'}
+                >
+                    It&apos;s you
+                </XView>
+            );
+        } else {
+            const organizationName = user.primaryOrganization
+                ? user.primaryOrganization.name
+                : '';
+            content = (
+                <Wrapper>
+                    <XHorizontal>
+                        <XAvatar
+                            size="l-medium"
+                            style="user"
+                            objectName={user.name}
+                            objectId={user.id}
+                            cloudImageUuid={user.photo || undefined}
+                            path={usrPath}
+                        />
+                        <Status variables={{ userId: user.id }} />
+                    </XHorizontal>
+                    <Name>{user.name}</Name>
+                    <OrgTitle>{organizationName}</OrgTitle>
+                    <Buttons separator={6}>
+                        {!isMe && (
+                            <XButton
+                                path={'/mail/' + user.id}
+                                style="primary"
+                                text="Direct chat"
+                                size="small"
+                            />
+                        )}
+                        <XButton
+                            path={'/mail/u/' + user.id}
+                            style="electric"
+                            text={isMe ? 'My profile' : 'View profile'}
+                            size="small"
+                        />
+                    </Buttons>
+                </Wrapper>
+            );
+        }
+
+        return (
+            <XPopper
+                style={noCardOnMe && isMe ? 'dark' : 'default'}
+                show={this.state.showPopper}
+                content={content}
+                contentContainer={<Container />}
+                placement="top-start"
+                marginLeft={-2}
+            >
+                {children ? (
+                    children
+                ) : (
+                    <div
+                        onMouseEnter={this.showPopper}
+                        onMouseLeave={this.hidePopper}
+                    >
+                        <UserAvatar
+                            user={user}
+                            startSelected={props.startSelected}
+                        />
+                    </div>
+                )}
+            </XPopper>
+        );
+    }
+}

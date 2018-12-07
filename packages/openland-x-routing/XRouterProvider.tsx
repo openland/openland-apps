@@ -4,6 +4,8 @@ import * as qs from 'query-string';
 import { XRouter } from './XRouter';
 import { RouterProps } from 'next/router';
 import { XRouterContext } from './XRouterContext';
+import { XRouting } from './XRouting';
+import { XRoutingContext } from './XRoutingContext';
 
 interface NextRoutes {
     Router: {
@@ -19,10 +21,20 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
     };
 
     private xRouterState: XRouter;
+    private xRouting: XRouting;
 
     constructor(props: { routes: NextRoutes, hostName: string, protocol: string }, context: any) {
         super(props, context);
         this.xRouterState = this.buildState(context);
+        this.xRouting = {
+            push: this.push,
+            pushQuery: this.pushQuery,
+            pushQueryParams: this.pushQueryParams,
+            replace: this.replace,
+            replaceQuery: this.replaceQuery,
+            replaceQueryParams: this.replaceQueryParams,
+            resolveLink: this.resolveLink
+        }
     }
 
     buildState(context: any) {
@@ -118,6 +130,12 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
     }
 
     render() {
-        return <XRouterContext.Provider value={this.xRouterState}>{this.props.children}</XRouterContext.Provider>;
+        return (
+            <XRouterContext.Provider value={this.xRouterState}>
+                <XRoutingContext.Provider value={this.xRouting}>
+                    {this.props.children}
+                </XRoutingContext.Provider>
+            </XRouterContext.Provider>
+        );
     }
 }
