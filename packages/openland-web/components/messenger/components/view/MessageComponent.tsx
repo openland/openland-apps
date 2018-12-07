@@ -10,6 +10,7 @@ import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageIntroComponent } from './content/MessageIntroComponent';
+import { MessagePostComponent } from './content/MessagePostComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
@@ -371,6 +372,7 @@ class MessageComponentInner extends React.PureComponent<
         let isSelect = false;
         let hideMenu = false;
         let isIntro = false;
+        let isPost = false;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
             isSelect = forwardMessagesId.has((message as MessageFull).id);
@@ -385,17 +387,30 @@ class MessageComponentInner extends React.PureComponent<
             if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
                 isIntro = true;
             }
+            if (message.message && message.alphaTitle && message.alphaType === "POST") {
+                isPost = true;
+                content.push(
+                    <MessagePostComponent
+                        key={'post_message' + message.id}
+                        message={message.message}
+                        alphaTitle={message.alphaTitle}
+                        alphaButtons={message.alphaButtons}
+                        alphaAttachments={message.alphaAttachments}
+                        edited={edited}
+                    />
+                );
+            }
 
-            if (this.state.isEditView && message.message) {
+            if (this.state.isEditView && message.message && !isPost) {
                 content.push(
                     <EditMessageInlineWrapper
                         message={message}
                         key={'editForm'}
                         onClose={this.hideEditView}
-                    />,
+                    />
                 );
             } else {
-                if (message.message && message.message.length > 0 && !isIntro) {
+                if (message.message && message.message.length > 0 && !isIntro && !isPost) {
                     content.push(
                         <MessageTextComponent
                             message={message.message}
@@ -403,7 +418,7 @@ class MessageComponentInner extends React.PureComponent<
                             key={'text'}
                             isService={message.isService}
                             isEdited={edited}
-                        />,
+                        />
                     );
                 }
 
@@ -431,7 +446,7 @@ class MessageComponentInner extends React.PureComponent<
                                     fileName={name}
                                     width={w}
                                     height={h}
-                                />,
+                                />
                             );
                         } else {
                             content.push(
@@ -442,7 +457,7 @@ class MessageComponentInner extends React.PureComponent<
                                     width={w}
                                     height={h}
                                     startSelected={hideMenu}
-                                />,
+                                />
                             );
                         }
                     } else {
@@ -452,7 +467,7 @@ class MessageComponentInner extends React.PureComponent<
                                 file={file}
                                 fileName={name}
                                 fileSize={size}
-                            />,
+                            />
                         );
                     }
                 }
@@ -473,7 +488,7 @@ class MessageComponentInner extends React.PureComponent<
                                 meId={(this.props.me as UserShort).id}
                                 senderId={message.sender.id}
                                 conversationType={this.props.conversationType}
-                            />,
+                            />
                         );
                     } else {
                         if (
@@ -495,7 +510,7 @@ class MessageComponentInner extends React.PureComponent<
                                         this.props.me.id
                                         : false
                                 }
-                            />,
+                            />
                         );
                     }
                 }
@@ -516,7 +531,7 @@ class MessageComponentInner extends React.PureComponent<
                                     startSelected={hideMenu}
                                 />
                             ))}
-                        </ReplyMessageWrapper>,
+                        </ReplyMessageWrapper>
                     );
                 }
                 date = <XDate value={message.date} format="time" />;
@@ -530,7 +545,7 @@ class MessageComponentInner extends React.PureComponent<
                         key={'text'}
                         isService={false}
                         isEdited={edited}
-                    />,
+                    />
                 );
             }
             if (message.file) {
@@ -541,7 +556,7 @@ class MessageComponentInner extends React.PureComponent<
                         key={'file'}
                         progress={progress}
                         title={title}
-                    />,
+                    />
                 );
             }
             date = 'Sending...';
@@ -558,7 +573,7 @@ class MessageComponentInner extends React.PureComponent<
                             onClick={() => this.props.conversation.retryMessage(key)}
                             text="Try Again"
                         />
-                    </XHorizontal>,
+                    </XHorizontal>
                 );
             }
         }
@@ -572,7 +587,7 @@ class MessageComponentInner extends React.PureComponent<
                     key={'text'}
                     isService={false}
                     isEdited={edited}
-                />,
+                />
             );
         }
 

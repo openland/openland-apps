@@ -99,12 +99,6 @@ const FileItem = Glamorous(XHorizontal)({
     fontSize: 13,
     lineHeight: 1.54,
     color: '#000',
-    '& > svg': {
-        width: 11,
-        '& > path': {
-            fill: '#C7C7C7'
-        }
-    },
     '& .remove': {
         marginTop: 1,
         cursor: 'pointer',
@@ -115,6 +109,15 @@ const FileItem = Glamorous(XHorizontal)({
             fill: '#4a4a4a'
         }
     }
+});
+
+const FileImage = Glamorous.div({
+    width: 11,
+    height: 14,
+    flexShrink: 0,
+    backgroundImage: "url('/static/X/file.svg')",
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
 });
 
 const FooterWrapper = Glamorous(XHorizontal)({
@@ -165,7 +168,10 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
 const CoverWrapper = Glamorous.div({
     borderRadius: 6,
     overflow: 'hidden',
-    position: 'relative'
+    position: 'relative',
+    '& > img': {
+        display: 'block'
+    }
 });
 
 const CoverDelButton = Glamorous.div({
@@ -518,7 +524,7 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
                             <FilesWrapper>
                                 {moreFiles.map(i => (
                                     <FileItem key={'file' + i.uuid} separator={4} alignItems="center">
-                                        <FileIcon />
+                                        <FileImage />
                                         <XHorizontal alignItems="center" separator={2}>
                                             <div>{i.name} • {niceBytes(Number(i.size))}</div>
                                             <XHorizontal alignItems="center" className="remove" onClick={() => this.fileRemover(i)}>
