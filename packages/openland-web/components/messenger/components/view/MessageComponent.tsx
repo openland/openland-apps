@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
-import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
@@ -12,20 +11,14 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageIntroComponent } from './content/MessageIntroComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import {
-    isServerMessage,
-    PendingMessage,
-} from 'openland-engines/messenger/types';
+import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
+import { MessageFull, UserShort, SharedRoomKind, MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
-import {
-    MessagesStateContext,
-    MessagesStateContextProps,
-} from '../MessagesStateContext';
+import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
@@ -294,8 +287,8 @@ class MessageComponentInner extends React.PureComponent<
             selectedMessageId.add(message.id);
             messagesContext.setForwardMessages(selectedMessageId);
         }
-        if (isServerMessage(this.props.message)) {
-            messagesContext.switchMessageSelect(this.props.message);
+        if (isServerMessage(message)) {
+            messagesContext.switchMessageSelect(message);
         }
     };
 
@@ -309,7 +302,7 @@ class MessageComponentInner extends React.PureComponent<
         if (isServerMessage(message)) {
             message = message as MessageFull;
 
-            const isNotIntro = (!message.urlAugmentation || (message.urlAugmentation && message.urlAugmentation!.type !== 'intro'))
+            const isNotIntro = (!message.urlAugmentation || message.urlAugmentation!.type !== 'intro')
 
             return (
                 <XHorizontal
@@ -388,6 +381,7 @@ class MessageComponentInner extends React.PureComponent<
 
         if (isServerMessage(message)) {
             message = message as MessageFull;
+
             if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
                 isIntro = true;
             }
@@ -401,24 +395,18 @@ class MessageComponentInner extends React.PureComponent<
                     />,
                 );
             } else {
-                if (message.message && message.message.length > 0) {
-                    if (
-                        message.urlAugmentation &&
-                        message.urlAugmentation.type === 'intro'
-                    ) {
-                        content.push(null);
-                    } else {
-                        content.push(
-                            <MessageTextComponent
-                                message={message.message}
-                                mentions={message.mentions}
-                                key={'text'}
-                                isService={message.isService}
-                                isEdited={edited}
-                            />,
-                        );
-                    }
+                if (message.message && message.message.length > 0 && !isIntro) {
+                    content.push(
+                        <MessageTextComponent
+                            message={message.message}
+                            mentions={message.mentions}
+                            key={'text'}
+                            isService={message.isService}
+                            isEdited={edited}
+                        />,
+                    );
                 }
+
                 const { file, fileMetadata } = message;
                 if (file && !message.urlAugmentation) {
                     let w = fileMetadata!!.imageWidth
@@ -469,10 +457,7 @@ class MessageComponentInner extends React.PureComponent<
                     }
                 }
                 if (message.urlAugmentation) {
-                    if (
-                        message.urlAugmentation.type === 'intro' &&
-                        message.urlAugmentation.user
-                    ) {
+                    if (isIntro) {
                         content.push(
                             <MessageIntroComponent
                                 key="intro"
@@ -514,10 +499,7 @@ class MessageComponentInner extends React.PureComponent<
                         );
                     }
                 }
-                if (
-                    message.reply &&
-                    message.reply!.length > 0
-                ) {
+                if (message.reply && message.reply!.length > 0) {
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
                             {message.reply!.sort((a, b) => (a.date - b.date)).map((i, j) => (
@@ -552,17 +534,13 @@ class MessageComponentInner extends React.PureComponent<
                 );
             }
             if (message.file) {
+                let progress = Math.round(message.progress * 100);
+                let title = 'Uploading ' + message.file + ' (' + progress + '%)';
                 content.push(
                     <MessageUploadComponent
                         key={'file'}
-                        progress={Math.round(message.progress * 100)}
-                        title={
-                            'Uploading ' +
-                            message.file +
-                            ' (' +
-                            Math.round(message.progress * 100) +
-                            '%)'
-                        }
+                        progress={progress}
+                        title={title}
                     />,
                 );
             }
@@ -573,15 +551,11 @@ class MessageComponentInner extends React.PureComponent<
                 content.push(
                     <XHorizontal>
                         <XButton
-                            onClick={() =>
-                                this.props.conversation.cancelMessage(key)
-                            }
+                            onClick={() => this.props.conversation.cancelMessage(key)}
                             text="Cancel"
                         />
                         <XButton
-                            onClick={() =>
-                                this.props.conversation.retryMessage(key)
-                            }
+                            onClick={() => this.props.conversation.retryMessage(key)}
                             text="Try Again"
                         />
                     </XHorizontal>,
@@ -600,11 +574,6 @@ class MessageComponentInner extends React.PureComponent<
                     isEdited={edited}
                 />,
             );
-        }
-
-        let orgPath: string | undefined = undefined;
-        if (this.props.sender!!.primaryOrganization && !hideMenu) {
-            orgPath = '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
         }
 
         if (compact) {
@@ -652,10 +621,14 @@ class MessageComponentInner extends React.PureComponent<
         }
 
         let { sender, conversationType, me } = this.props;
-        let isMe = false;
+        let isMe: boolean = false;
+        let orgPath: string | undefined = undefined;
 
         if (isServerMessage(message)) {
             sender = sender as UserShort;
+            if (sender.primaryOrganization && !hideMenu) {
+                orgPath = '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
+            }
             isMe = me ? sender.id === me.id : false;
         }
 
