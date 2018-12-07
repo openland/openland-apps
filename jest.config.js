@@ -74,6 +74,8 @@ module.exports = {
         'openland-x-graphql-gen': '<rootDir>/packages/openland-x-graphql-gen',
         'openland-x-config/(.*)': '<rootDir>/packages/openland-x-config/$1',
         'openland-x-config': '<rootDir>/packages/openland-x-config',
+        'openland-x-codemod/(.*)': '<rootDir>/packages/openland-x-codemod/$1',
+        'openland-x-codemod': '<rootDir>/packages/openland-x-codemod',
         'openland-xs/(.*)': '<rootDir>/packages/openland-xs/$1',
         'openland-xs': '<rootDir>/packages/openland-xs',
         'openland-xp/(.*)': '<rootDir>/packages/openland-xp/$1',

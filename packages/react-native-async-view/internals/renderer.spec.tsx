@@ -5,12 +5,12 @@ describe('renderer', () => {
     it('should render correctly', () => {
 
         // Simple renderer
-        let renderer = new AsyncRenderer((state: any) => console.log(state), (
+        let renderer = new AsyncRenderer((state: any) => {/*console.log(state)*/ }, (
             <asyncview asyncViewName="root" flexDirection="row">
                 <asyncview key="1" asyncViewName="child" flex2="row2">somerandomtext</asyncview>
             </asyncview>
         ));
-        console.log(JSON.stringify(renderer.getState()));
+        // console.log(JSON.stringify(renderer.getState()));
 
         // Adding new item
         renderer.render((
@@ -19,7 +19,7 @@ describe('renderer', () => {
                 <asyncview key="1" asyncViewName="child" flex2="row2" />
             </asyncview>
         ));
-        console.log(JSON.stringify(renderer.getState()));
+        // console.log(JSON.stringify(renderer.getState()));
 
         // Inner updates
         var setStateLocal: any;
@@ -43,6 +43,6 @@ describe('renderer', () => {
             </asyncview>
         ));
         setStateLocal({ state: '111' });
-        console.log(JSON.stringify(renderer.getState()));
+        // console.log(JSON.stringify(renderer.getState()));
     });
 });
