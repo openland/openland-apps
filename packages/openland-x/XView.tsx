@@ -18,7 +18,7 @@ export interface XViewProps extends XStyles {
 }
 
 const XViewContainer = (props: XViewProps) => {
-    let className = calculateStyles(props, props.selected || false);
+    let className = calculateStyles(props, props.selected || false, !!(props as any).className);
     if ((props as any).className) {
         className = (props as any).className + ' ' + className;
     }

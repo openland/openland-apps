@@ -6,15 +6,15 @@ const base = glamor.css({
     display: 'flex'
 }).toString();
 
-export function calculateStyles(styles: XStyles, selected: boolean = false) {
+export function calculateStyles(styles: XStyles, selected: boolean = false, ignoreDefaults: boolean = false) {
     let css: string[] = [base];
 
-    let position: 'relative' | 'absolute' | 'fixed' | undefined = 'relative';
+    let position: 'relative' | 'absolute' | 'fixed' | undefined = ignoreDefaults ? undefined : 'relative';
 
-    let flexGrow: number | undefined = 0;
-    let flexShrink: number | undefined = 0;
+    let flexGrow: number | undefined = ignoreDefaults ? undefined : 0;
+    let flexShrink: number | undefined = ignoreDefaults ? undefined : 0;
     let flexBasis: number | undefined;
-    let flexDirection: 'row' | 'column' | undefined = 'column';
+    let flexDirection: 'row' | 'column' | undefined = ignoreDefaults ? undefined : 'column';
     let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;
