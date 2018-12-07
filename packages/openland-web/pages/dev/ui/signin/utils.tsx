@@ -104,47 +104,81 @@ export const CreateWrapIntoState = (schema: any) => {
 
                             if (anyValue.type === 'select') {
                                 return (
-                                    <XSelect
-                                        value={this.getBranchValueState(key)}
-                                        options={anyValue.value.map(
-                                            (item: any) => ({
-                                                value: item,
-                                                label: item,
-                                            }),
-                                        )}
-                                        onChange={(val: any) => {
-                                            const value = val
-                                                ? val.value
-                                                : null;
+                                    <div
+                                        style={
+                                            anyValue.hide
+                                                ? { display: 'none' }
+                                                : {}
+                                        }
+                                    >
+                                        <XSelect
+                                            value={this.getBranchValueState(
+                                                key,
+                                            )}
+                                            options={anyValue.value.map(
+                                                (item: any) => ({
+                                                    value: item,
+                                                    label: item,
+                                                }),
+                                            )}
+                                            onChange={(val: any) => {
+                                                const value = val
+                                                    ? val.value
+                                                    : null;
 
-                                            this.setBranchState(key, value);
-                                        }}
-                                    />
+                                                this.setBranchState(key, value);
+                                            }}
+                                        />
+                                    </div>
                                 );
                             }
                             if (anyValue.type === 'checkbox') {
                                 return (
-                                    <XCheckbox
-                                        label={key}
-                                        switcher={true}
-                                        checked={this.getBranchValueState(key)}
-                                        onChange={({ checked }) => {
-                                            this.setBranchState(key, checked);
-                                        }}
-                                    />
+                                    <div
+                                        style={
+                                            anyValue.hide
+                                                ? { display: 'none' }
+                                                : {}
+                                        }
+                                    >
+                                        <XCheckbox
+                                            label={key}
+                                            switcher={true}
+                                            checked={this.getBranchValueState(
+                                                key,
+                                            )}
+                                            onChange={({ checked }) => {
+                                                this.setBranchState(
+                                                    key,
+                                                    checked,
+                                                );
+                                            }}
+                                        />
+                                    </div>
                                 );
                             }
 
                             if (anyValue.type === 'input') {
+                                console.log(anyValue);
                                 return (
-                                    <XInput
-                                        size="large"
-                                        title={key}
-                                        value={this.getBranchValueState(key)}
-                                        onChange={value =>
-                                            this.setBranchState(key, value)
+                                    <div
+                                        style={
+                                            anyValue.hide
+                                                ? { display: 'none' }
+                                                : {}
                                         }
-                                    />
+                                    >
+                                        <XInput
+                                            size="large"
+                                            title={key}
+                                            value={this.getBranchValueState(
+                                                key,
+                                            )}
+                                            onChange={value =>
+                                                this.setBranchState(key, value)
+                                            }
+                                        />
+                                    </div>
                                 );
                             }
                             return null;

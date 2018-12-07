@@ -8,7 +8,10 @@ import { storeMerge } from 'openland-y-store/utils/storeMerge';
 import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';
-import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
+import {
+    XModalContext,
+    XModalContextValue,
+} from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
 import { delay } from 'openland-y-utils/timer';
 
@@ -16,6 +19,7 @@ const LOGGING = false;
 
 export interface XFormProps {
     defaultData?: any;
+    validate?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
     resetAfterSubmit?: boolean;
@@ -25,6 +29,7 @@ export interface XFormProps {
 }
 
 interface XFormControllerProps {
+    validate?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
     store: XStoreState;
@@ -35,11 +40,16 @@ interface XFormControllerProps {
 
 const FormContainer = Glamorous.form({
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
 });
 
-class XFormController extends React.PureComponent<XFormControllerProps & { modal?: XModalContextValue, autoClose?: boolean | number }, { loading: boolean, error?: string }> {
-
+class XFormController extends React.PureComponent<
+    XFormControllerProps & {
+        modal?: XModalContextValue;
+        autoClose?: boolean | number;
+    },
+    { loading: boolean; error?: string }
+> {
     // Keep local copy since setState is async
     private _isLoading = false;
     private contextValue: XFormContextValue;
@@ -51,22 +61,105 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             store: this.props.store,
             submit: (action?: (data: any) => any) => {
                 return this.submit(action);
-            }
+            },
+            validated: this.clientValidation(this.props),
+            touched: [],
         };
     }
 
+    clientValidation = (props: any) => {
+        if (
+            !(
+                this.props.store.export().fields &&
+                this.props.store.export().fields.input
+            )
+        ) {
+            return [];
+        }
+
+        const inputData = props.store.data.fields.input;
+        const inputValidate = props.validate.input;
+
+        const collectedErrors = Object.keys(inputData).map(fieldName => {
+            const prefix = 'input.';
+            const field = inputData[fieldName];
+            const validateRules = inputValidate[fieldName] || [];
+            const errors: string[] = [];
+
+            validateRules.forEach(
+                ({
+                    rule,
+                    errorMessage,
+                }: {
+                    rule: Function;
+                    errorMessage: string;
+                }) => {
+                    if (!rule(field)) {
+                        errors.push(errorMessage);
+                    }
+                },
+            );
+
+            return [`${prefix}${fieldName}`, errors];
+        });
+
+        return collectedErrors;
+    };
+
     componentWillReceiveProps(nextProps: XFormControllerProps) {
+        let nextTouched: any[] = [];
+        if (
+            this.props.store.export().fields &&
+            this.props.store.export().fields.input
+        ) {
+            const previousTouched = this.contextValue.touched;
+            const prevFields = this.props.store.export().fields;
+            const nextFields = nextProps.store.export().fields;
+            const prevInputFields = prevFields.input;
+            const nextInputFields = nextFields.input;
+
+            nextTouched = [
+                ...previousTouched,
+                ...Object.keys(nextInputFields)
+                    .filter(fieldName => {
+                        return (
+                            previousTouched.indexOf(`input.${fieldName}`) ===
+                                -1 &&
+                            nextInputFields[fieldName] !==
+                                prevInputFields[fieldName]
+                        );
+                    })
+                    .map(fieldName => `input.${fieldName}`),
+            ];
+        }
+
         if (this.props.store !== nextProps.store) {
             this.contextValue = {
                 store: nextProps.store,
                 submit: (action?: (data: any) => any) => {
                     return this.submit(action);
-                }
+                },
+                validated: this.clientValidation(nextProps),
+                touched: nextTouched,
             };
         }
     }
 
     private submit = async (action?: (data: any) => any) => {
+        let clientValidationFailed = false;
+        if (
+            this.props.store.export().fields &&
+            this.props.store.export().fields.input
+        ) {
+            this.contextValue.touched = Object.keys(
+                this.props.store.export().fields.input,
+            ).map((fieldName: string) => `input.${fieldName}`);
+
+            clientValidationFailed =
+                this.contextValue.validated.filter(
+                    ([first, second]: any) => second.length,
+                ).length !== 0;
+        }
         if (this._isLoading) {
             return;
         }
@@ -80,16 +173,21 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
         this.setState({ loading: true, error: undefined });
         let act = action || this.props.defaultAction;
         try {
-            await act(data);
-            if (this.props.autoClose) {
-                if (this.props.modal) {
-                    if (typeof this.props.autoClose === 'number') {
-                        delay(this.props.autoClose).then(this.props.modal.close);
-                    } else {
-                        this.props.modal.close();
+            if (!clientValidationFailed) {
+                await act(data);
+                if (this.props.autoClose) {
+                    if (this.props.modal) {
+                        if (typeof this.props.autoClose === 'number') {
+                            delay(this.props.autoClose).then(
+                                this.props.modal.close,
+                            );
+                        } else {
+                            this.props.modal.close();
+                        }
                     }
                 }
             }
+
             this.setState({ loading: false, error: undefined });
             if (this.props.resetAfterSubmit) {
                 this.props.store.reset();
@@ -109,20 +207,22 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             // writeValue can throw exception for wrong field name
             try {
                 this.props.store.writeValue('form.error', message);
-                this.props.store.writeValue('form.error_fields', fields.length !== 0);
+                this.props.store.writeValue(
+                    'form.error_fields',
+                    fields.length !== 0,
+                );
                 for (let f of fields) {
                     this.props.store.writeValue('errors.' + f.key, f.messages);
                 }
             } catch (e) {
                 console.warn(e);
             }
-
         } finally {
             this._isLoading = false;
             this.props.store.writeValue('form.loading', false);
             this.props.store.writeValue('form.enabled', true);
         }
-    }
+    };
 
     render() {
         if (LOGGING) {
@@ -151,17 +251,16 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
 }
 
 export class XForm extends React.PureComponent<XFormProps> {
-
     private defaultData: any;
 
     constructor(props: XFormProps) {
         super(props);
         this.defaultData = {
-            fields: (this.props.defaultData || {}),
+            fields: this.props.defaultData || {},
             form: {
                 enabled: true,
-                loading: false
-            }
+                loading: false,
+            },
         };
     }
 
@@ -171,8 +270,9 @@ export class XForm extends React.PureComponent<XFormProps> {
                 <XStoreContext.Consumer>
                     {store => (
                         <XModalContext.Consumer>
-                            {(modal) => (
+                            {modal => (
                                 <XFormController
+                                    validate={this.props.validate}
                                     staticData={this.props.staticData}
                                     defaultAction={this.props.defaultAction}
                                     store={store!!}
@@ -180,13 +280,14 @@ export class XForm extends React.PureComponent<XFormProps> {
                                     autoClose={this.props.autoClose}
                                     className={this.props.className}
                                     defaultLayout={this.props.defaultLayout}
-                                    resetAfterSubmit={this.props.resetAfterSubmit}
+                                    resetAfterSubmit={
+                                        this.props.resetAfterSubmit
+                                    }
                                 >
                                     {this.props.children}
                                 </XFormController>
                             )}
                         </XModalContext.Consumer>
-
                     )}
                 </XStoreContext.Consumer>
             </XStore>

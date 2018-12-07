@@ -4,5 +4,9 @@ import { XStoreState } from 'openland-y-store/XStoreState';
 export interface XFormContextValue {
     store: XStoreState;
     submit: (action?: (data: any) => any) => any;
+    validated: any;
+    touched: string[];
 }
-export const XFormContext = React.createContext<XFormContextValue | undefined>(undefined);
+export const XFormContext = React.createContext<XFormContextValue | undefined>(
+    undefined,
+);

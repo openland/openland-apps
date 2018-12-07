@@ -30,7 +30,6 @@ export default () => (
                                     //
                                 }}
                             />
-                            ;
                         </RoomSignupContainer>
                     );
                 } else {
@@ -61,7 +60,6 @@ export default () => (
                                     //
                                 }}
                             />
-                            ;
                         </WebSignUpContainer>
                     );
                 }
