@@ -82,14 +82,6 @@ const OrgTitle = Glamorous.div({
     color: '#000000',
 });
 
-const Role = Glamorous.div({
-    marginTop: 6,
-    fontSize: 14,
-    fontWeight: 400,
-    color: 'rgba(0, 0, 0, 0.5)',
-    lineHeight: '16px',
-});
-
 const Buttons = Glamorous(XHorizontal)({
     marginTop: 20,
     width: 224,
