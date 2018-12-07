@@ -306,10 +306,13 @@ export const SignInPage = (props: any) => {
         : null;
     const signin = props.router.path.endsWith('signin');
 
-    Cookie.set(
-        'x-openland-invite',
-        props.router.routeQuery.redirect.slice('/invite/'.length),
-    );
+    if (props.router.routeQuery.redirect) {
+        Cookie.set(
+            'x-openland-invite',
+            props.router.routeQuery.redirect.slice('/invite/'.length),
+        );
+    }
+
     const fromRoom = Cookie.get('x-openland-invite');
 
     return (
