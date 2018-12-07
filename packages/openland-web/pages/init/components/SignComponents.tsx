@@ -688,7 +688,7 @@ export const RoomAuthMechanism = ({
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
     const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
     const googleButtonText = signin
-        ? InitTexts.auth.signupGoogle
+        ? InitTexts.auth.signinGoogle
         : InitTexts.auth.signupGoogle;
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
@@ -736,7 +736,7 @@ export const WebSignUpAuthMechanism = ({
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
     const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
     const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
-    const emailText = signin ? auth.signinEmail : auth.signupWebSignUpEmail;
+    const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
         <div>
