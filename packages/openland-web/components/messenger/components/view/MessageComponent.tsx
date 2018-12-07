@@ -489,7 +489,7 @@ class MessageComponentInner extends React.PureComponent<
                         );
                     }
                 }
-                if (message.urlAugmentation) {
+                if (message.urlAugmentation && !isPost) {
                     if (isIntro) {
                         content.push(
                             <MessageIntroComponent

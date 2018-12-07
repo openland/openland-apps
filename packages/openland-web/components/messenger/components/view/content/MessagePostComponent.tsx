@@ -8,12 +8,12 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XLink } from 'openland-x/XLink';
+import { MessageTextComponent } from './MessageTextComponent';
 import { niceBytes } from '../../view/content/MessageFileComponent';
 
 const Wrapper = Glamorous(XVertical)({
     paddingTop: 4,
-    paddingBottom: 4,
-    maxWidth: 550,
+    paddingBottom: 4
 });
 
 const Root = Glamorous(XVertical)({
@@ -34,12 +34,6 @@ const PostTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
     color: 'rgba(0, 0, 0, 0.8)'
-});
-
-const PostText = Glamorous.div({
-    fontSize: 14,
-    lineHeight: 1.57,
-    color: '#000'
 });
 
 const FilesWrapper = Glamorous(XVertical)({
@@ -107,14 +101,21 @@ export const MessagePostComponent = (props: MessagePostComponentProps) => {
         }
     }
 
+    // console.log(props)
+
     return (
-        <Wrapper>
+        <Wrapper flexGrow={1}>
             <Root>
                 <Container>
                     <XHorizontal justifyContent="space-between" separator={9}>
                         <XVertical separator={3} flexGrow={1}>
                             <PostTitle>{props.alphaTitle}</PostTitle>
-                            <PostText>{props.message}</PostText>
+                            <MessageTextComponent
+                                message={props.message}
+                                mentions={null}
+                                isEdited={false}
+                                isService={false}
+                            />
                         </XVertical>
                         {cover && (cover as MessageFull_alphaAttachments).fileId && (
                             <CoverWrapper>
