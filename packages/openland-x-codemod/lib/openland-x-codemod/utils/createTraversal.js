@@ -4,7 +4,6 @@ const tslib_1 = require("tslib");
 const t = tslib_1.__importStar(require("@babel/types"));
 const XStyles_1 = require("../../openland-x-styles/XStyles"); // Do not use absolute path
 const v4_1 = tslib_1.__importDefault(require("uuid/v4"));
-const parse_1 = require("./parse");
 function createTraversal() {
     let isImported = false;
     let pageHasStyles = false;
@@ -19,9 +18,9 @@ function createTraversal() {
             exit(traversePath) {
                 if (!isImported && pageHasStyles) {
                     body.unshift(t.importDeclaration([t.importSpecifier(t.identifier('calculateStyles'), t.identifier('calculateStyles'))], t.stringLiteral('openland-x-styles/calculateStyles')));
-                    console.log('start------');
-                    console.log(parse_1.generate2(traversePath.node));
-                    console.log('end------');
+                    // console.log('start------');
+                    // console.log(generate2(traversePath.node));
+                    // console.log('end------');
                 }
             }
         },
@@ -70,11 +69,9 @@ function createTraversal() {
                     }
                     let uuid = 'style_' + key;
                     body.unshift(t.variableDeclaration('var', [
-                        t.variableDeclarator(t.identifier('___' + uuid), t.stringLiteral('')
-                        // t.callExpression(t.identifier('calculateStyles'), [
-                        //     t.objectExpression(styles)
-                        // ])
-                        )
+                        t.variableDeclarator(t.identifier('___' + uuid), t.callExpression(t.identifier('calculateStyles'), [
+                            t.objectExpression(styles)
+                        ]))
                     ]));
                     traversePath.node.openingElement.attributes.push(t.jsxAttribute(t.jsxIdentifier('className'), t.jsxExpressionContainer(t.identifier('___' + uuid))));
                 }
