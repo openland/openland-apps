@@ -793,7 +793,7 @@ export const CreateRoom = withCreateChannel(props => {
     );
 });
 
-export class Scaffold extends React.Component<{}> {
+export class Scaffold extends React.PureComponent {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
 

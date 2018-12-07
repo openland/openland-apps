@@ -12648,6 +12648,7 @@ react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
 react-localstorage-hoc@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/react-localstorage-hoc/-/react-localstorage-hoc-0.0.2.tgz#e1f5ae1925743f51d187af3ca4f96b2da9e57988"
+  integrity sha512-2bANVi1CsPBAiv2LI8ouU/dgAAMOwtwfEs/GDvTQ9gxs5lU2s5iX7QTYxe5SL+Wlu0r/RbMk+ycjQ1cf8TZ/uQ==
   dependencies:
     global "^4.3.2"
 

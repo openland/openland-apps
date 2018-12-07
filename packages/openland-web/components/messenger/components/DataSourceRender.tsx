@@ -19,7 +19,6 @@ interface DataSourceRenderState<T extends DataSourceItem> {
 export class DataSourceRender<T extends DataSourceItem>
     extends React.Component<DataSourceRenderProps<T>, DataSourceRenderState<T>>
     implements DataSourceWatcher<T> {
-
     constructor(props: DataSourceRenderProps<T>) {
         super(props);
         this.state = { items: [], completed: false };
@@ -29,8 +28,14 @@ export class DataSourceRender<T extends DataSourceItem>
         this.props.dataSource.watch(this);
     }
 
-    shouldComponentUpdate(nextProps: DataSourceRenderProps<T>, nextState: DataSourceRenderState<T>) {
-        return this.state.items !== nextState.items || this.state.completed !== nextState.completed;
+    shouldComponentUpdate(
+        nextProps: DataSourceRenderProps<T>,
+        nextState: DataSourceRenderState<T>,
+    ) {
+        return (
+            this.state.items !== nextState.items ||
+            this.state.completed !== nextState.completed
+        );
     }
 
     onChange = () => {
