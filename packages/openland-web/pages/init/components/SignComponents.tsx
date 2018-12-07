@@ -191,7 +191,11 @@ const LeftContainer = Glamorous.div({
 });
 
 const Footer = Glamorous.div({
-    marginTop: 'auto',
+    position: 'absolute',
+    margin: 'auto',
+    left: 0,
+    right: 0,
+    bottom: 20,
 });
 
 const FooterText = Glamorous.div({
@@ -202,9 +206,6 @@ const FooterText = Glamorous.div({
     textAlign: 'center',
     color: '#334562',
     opacity: 0.4,
-    '&:first-child': {
-        marginBottom: 6,
-    },
 });
 
 const FooterLink = Glamorous(XLink)({
@@ -300,6 +301,7 @@ const MainContent = Glamorous.div({
 });
 
 interface SignContainerProps extends HeaderProps {
+    showTerms?: boolean;
     signin?: boolean;
     children?: any;
 }
@@ -1181,10 +1183,9 @@ const XFormSubmitWrapper = Glamorous(XFormSubmit)({
 export const CreateProfileFormInner = (props: {
     roomView: boolean;
     prefill: any;
-    usePhotoPrefill: boolean;
     defaultAction: (data: any) => any;
 }) => {
-    const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
+    const { roomView, prefill, defaultAction } = props;
     const MyTitle = roomView ? Title : Title;
 
     return (
@@ -1226,11 +1227,7 @@ export const CreateProfileFormInner = (props: {
                             field="input.photoRef"
                             dataTestId="photo"
                             size="default"
-                            initialUrl={
-                                usePhotoPrefill
-                                    ? prefill && prefill.picture
-                                    : undefined
-                            }
+                            initialUrl={prefill ? prefill.picture : undefined}
                         />
 
                         <XView>

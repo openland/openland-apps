@@ -33,7 +33,7 @@ const InfoText = Glamorous.div({
 });
 
 const MailText = Glamorous.span({
-    fontFamily: 'SFProText-Regular',
+    fontFamily: 'SFProText-Semibold',
     fontSize: 13,
     marginBottom: 32,
 });
@@ -45,6 +45,7 @@ const QuestionsSpan = Glamorous.span({
 
 const HelloA = Glamorous.a({
     color: '#1790ff',
+    marginLeft: 2,
 });
 
 export default withAppBase('Waitlist', props => {
@@ -63,7 +64,7 @@ export default withAppBase('Waitlist', props => {
                     <MessagePageContent title={InitTexts.waitlist.title}>
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
                         <MailText>
-                            <QuestionsSpan>Questions?</QuestionsSpan>{' '}
+                            <QuestionsSpan>Questions?</QuestionsSpan>
                             <HelloA href="mailto:hello@openland.com">
                                 hello@openland.com
                             </HelloA>

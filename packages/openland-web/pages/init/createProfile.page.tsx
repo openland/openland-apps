@@ -17,9 +17,10 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
         localStorage.setItem('isnewuser', 'newuser');
     }
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+
     const roomView = props.roomView;
     const router = props.router;
-    const prefill = props.data.prefill;
+    const prefill = usePhotoPrefill ? props.data.prefill : null;
     const createProfile = props.createProfile;
     const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
@@ -32,7 +33,7 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
                 {...{
                     roomView,
                     prefill,
-                    usePhotoPrefill,
+
                     defaultAction: async (data: any) => {
                         await createProfile({ variables: data });
                         let redirect = router.query.redirect;
