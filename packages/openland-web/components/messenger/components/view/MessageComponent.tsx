@@ -11,14 +11,25 @@ import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageIntroComponent } from './content/MessageIntroComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
+import {
+    isServerMessage,
+    PendingMessage,
+} from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { MessageFull, UserShort, SharedRoomKind, MessageFull_urlAugmentation_user_User } from 'openland-api/Types';
+import {
+    MessageFull,
+    UserShort,
+    SharedRoomKind,
+    MessageFull_urlAugmentation_user_User,
+} from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
-import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from '../MessagesStateContext';
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
@@ -114,8 +125,8 @@ const MessageWrapper = Glamorous(XHorizontal)<{
             pointerEvents: props.startSelected
                 ? 'none'
                 : props.isEditView
-                    ? 'none'
-                    : 'auto',
+                ? 'none'
+                : 'auto',
         },
     },
 }));
@@ -126,8 +137,8 @@ const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(
             props.isIntro === true
                 ? {}
                 : {
-                    width: 'calc(100% + 20px)',
-                },
+                      width: 'calc(100% + 20px)',
+                  },
     }),
 );
 
@@ -175,7 +186,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 class MessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-    > {
+> {
     static getDerivedStateFromProps = (
         props: MessageComponentInnerProps,
         state: { isEditView: boolean },
@@ -194,6 +205,8 @@ class MessageComponentInner extends React.PureComponent<
 
         return null;
     };
+
+    userPopperRef = React.createRef<UserPopper>();
 
     componentDidUpdate() {
         if (this.state.isEditView) {
@@ -217,10 +230,7 @@ class MessageComponentInner extends React.PureComponent<
 
             e.stopPropagation();
             messagesContext.resetAll();
-            messagesContext.setEditMessage(
-                message.id,
-                message.message,
-            );
+            messagesContext.setEditMessage(message.id, message.message);
         }
     };
 
@@ -231,17 +241,10 @@ class MessageComponentInner extends React.PureComponent<
             e.stopPropagation();
             messagesContext.resetAll();
             let singleReplyMessageMessage = new Set().add(message.message);
-            let singleReplyMessageId = new Set().add(
-                message.id,
-            );
-            let singleReplyMessageSender = new Set().add(
-                message.sender.name,
-            );
+            let singleReplyMessageId = new Set().add(message.id);
+            let singleReplyMessageSender = new Set().add(message.sender.name);
 
-            if (
-                message.file &&
-                !message.urlAugmentation
-            ) {
+            if (message.file && !message.urlAugmentation) {
                 singleReplyMessageMessage = new Set().add('File');
                 if (message.fileMetadata!!.isImage) {
                     singleReplyMessageMessage = new Set().add('Photo');
@@ -302,7 +305,9 @@ class MessageComponentInner extends React.PureComponent<
         if (isServerMessage(message)) {
             message = message as MessageFull;
 
-            const isNotIntro = (!message.urlAugmentation || message.urlAugmentation!.type !== 'intro')
+            const isNotIntro =
+                !message.urlAugmentation ||
+                message.urlAugmentation!.type !== 'intro';
 
             return (
                 <XHorizontal
@@ -316,9 +321,7 @@ class MessageComponentInner extends React.PureComponent<
                 >
                     <XHorizontal alignItems="center" separator={8}>
                         {isNotIntro && (
-                            <ReactionComponent
-                                messageId={message.id}
-                            />
+                            <ReactionComponent messageId={message.id} />
                         )}
                         <IconButton onClick={this.setReplyMessages}>
                             <ReplyIcon />
@@ -360,6 +363,18 @@ class MessageComponentInner extends React.PureComponent<
         return null;
     };
 
+    showUserPopper = () => {
+        if (this.userPopperRef.current) {
+            this.userPopperRef.current.showPopper();
+        }
+    };
+
+    hideUserPopper = () => {
+        if (this.userPopperRef.current) {
+            this.userPopperRef.current.hidePopper();
+        }
+    };
+
     render() {
         let { message } = this.props;
         const { compact } = this.props;
@@ -382,7 +397,10 @@ class MessageComponentInner extends React.PureComponent<
         if (isServerMessage(message)) {
             message = message as MessageFull;
 
-            if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
+            if (
+                message.urlAugmentation &&
+                message.urlAugmentation!.type === 'intro'
+            ) {
                 isIntro = true;
             }
 
@@ -492,7 +510,7 @@ class MessageComponentInner extends React.PureComponent<
                                 isMe={
                                     this.props.sender && this.props.me
                                         ? this.props.sender.id ===
-                                        this.props.me.id
+                                          this.props.me.id
                                         : false
                                 }
                             />,
@@ -502,20 +520,22 @@ class MessageComponentInner extends React.PureComponent<
                 if (message.reply && message.reply!.length > 0) {
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {message.reply!.sort((a, b) => (a.date - b.date)).map((i, j) => (
-                                <MessageReplyComponent
-                                    mentions={message.mentions}
-                                    sender={i.sender}
-                                    date={i.date}
-                                    message={i.message}
-                                    id={i.id}
-                                    key={'reply_message' + i.id + j}
-                                    edited={i.edited}
-                                    file={i.file}
-                                    fileMetadata={i.fileMetadata}
-                                    startSelected={hideMenu}
-                                />
-                            ))}
+                            {message
+                                .reply!.sort((a, b) => a.date - b.date)
+                                .map((i, j) => (
+                                    <MessageReplyComponent
+                                        mentions={message.mentions}
+                                        sender={i.sender}
+                                        date={i.date}
+                                        message={i.message}
+                                        id={i.id}
+                                        key={'reply_message' + i.id + j}
+                                        edited={i.edited}
+                                        file={i.file}
+                                        fileMetadata={i.fileMetadata}
+                                        startSelected={hideMenu}
+                                    />
+                                ))}
                         </ReplyMessageWrapper>,
                     );
                 }
@@ -535,7 +555,8 @@ class MessageComponentInner extends React.PureComponent<
             }
             if (message.file) {
                 let progress = Math.round(message.progress * 100);
-                let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+                let title =
+                    'Uploading ' + message.file + ' (' + progress + '%)';
                 content.push(
                     <MessageUploadComponent
                         key={'file'}
@@ -551,11 +572,15 @@ class MessageComponentInner extends React.PureComponent<
                 content.push(
                     <XHorizontal>
                         <XButton
-                            onClick={() => this.props.conversation.cancelMessage(key)}
+                            onClick={() =>
+                                this.props.conversation.cancelMessage(key)
+                            }
                             text="Cancel"
                         />
                         <XButton
-                            onClick={() => this.props.conversation.retryMessage(key)}
+                            onClick={() =>
+                                this.props.conversation.retryMessage(key)
+                            }
                             text="Try Again"
                         />
                     </XHorizontal>,
@@ -627,7 +652,8 @@ class MessageComponentInner extends React.PureComponent<
         if (isServerMessage(message)) {
             sender = sender as UserShort;
             if (sender.primaryOrganization && !hideMenu) {
-                orgPath = '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
+                orgPath =
+                    '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
             }
             isMe = me ? sender.id === me.id : false;
         }
@@ -660,12 +686,13 @@ class MessageComponentInner extends React.PureComponent<
                                         startSelected={hideMenu}
                                     />
                                 ) : (
-                                        <UserPopper
-                                            user={sender}
-                                            startSelected={hideMenu}
-                                            isMe={isMe}
-                                        />
-                                    )}
+                                    <UserPopper
+                                        ref={this.userPopperRef}
+                                        user={sender}
+                                        startSelected={hideMenu}
+                                        isMe={isMe}
+                                    />
+                                )}
                             </>
                         )}
                         <XVertical
@@ -681,10 +708,25 @@ class MessageComponentInner extends React.PureComponent<
                                     >
                                         {sender && (
                                             <>
-                                                <Name>{sender.name}</Name>
+                                                <div
+                                                    onMouseEnter={
+                                                        this.showUserPopper
+                                                    }
+                                                    onMouseLeave={
+                                                        this.hideUserPopper
+                                                    }
+                                                >
+                                                    <Name>{sender.name}</Name>
+                                                </div>
                                                 {sender.primaryOrganization && (
-                                                    <Organization path={orgPath}>
-                                                        {sender.primaryOrganization.name}
+                                                    <Organization
+                                                        path={orgPath}
+                                                    >
+                                                        {
+                                                            sender
+                                                                .primaryOrganization
+                                                                .name
+                                                        }
                                                     </Organization>
                                                 )}
                                             </>
