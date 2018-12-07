@@ -6,13 +6,13 @@ const stylesCache = new Map();
 const base = glamor.css({
     display: 'flex'
 }).toString();
-function calculateStyles(styles, selected = false) {
+function calculateStyles(styles, selected = false, ignoreDefaults = false) {
     let css = [base];
-    let position = 'relative';
-    let flexGrow = 0;
-    let flexShrink = 0;
+    let position = ignoreDefaults ? undefined : 'relative';
+    let flexGrow = ignoreDefaults ? undefined : 0;
+    let flexShrink = ignoreDefaults ? undefined : 0;
     let flexBasis;
-    let flexDirection = 'column';
+    let flexDirection = ignoreDefaults ? undefined : 'column';
     let alignSelf;
     let alignItems;
     let justifyContent;
