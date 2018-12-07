@@ -1182,10 +1182,9 @@ const XFormSubmitWrapper = Glamorous(XFormSubmit)({
 export const CreateProfileFormInner = (props: {
     roomView: boolean;
     prefill: any;
-    usePhotoPrefill: boolean;
     defaultAction: (data: any) => any;
 }) => {
-    const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
+    const { roomView, prefill, defaultAction } = props;
     const MyTitle = roomView ? Title : Title;
 
     return (
@@ -1227,11 +1226,7 @@ export const CreateProfileFormInner = (props: {
                             field="input.photoRef"
                             dataTestId="photo"
                             size="default"
-                            initialUrl={
-                                usePhotoPrefill
-                                    ? prefill && prefill.picture
-                                    : undefined
-                            }
+                            initialUrl={prefill ? prefill.picture : undefined}
                         />
 
                         <XView>
