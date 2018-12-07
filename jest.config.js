@@ -76,6 +76,8 @@ module.exports = {
         'openland-x-config': '<rootDir>/packages/openland-x-config',
         'openland-x-codemod/(.*)': '<rootDir>/packages/openland-x-codemod/$1',
         'openland-x-codemod': '<rootDir>/packages/openland-x-codemod',
+        'openland-x-styles/(.*)': '<rootDir>/packages/openland-x-styles/$1',
+        'openland-x-styles': '<rootDir>/packages/openland-x-styles',
         'openland-xs/(.*)': '<rootDir>/packages/openland-xs/$1',
         'openland-xs': '<rootDir>/packages/openland-xs',
         'openland-xp/(.*)': '<rootDir>/packages/openland-xp/$1',
