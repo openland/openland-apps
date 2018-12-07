@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const t = tslib_1.__importStar(require("@babel/types"));
 const XStyles_1 = require("../../openland-x-styles/XStyles"); // Do not use absolute path
 const v4_1 = tslib_1.__importDefault(require("uuid/v4"));
+const parse_1 = require("./parse");
 function createTraversal() {
     let isImported = false;
     let pageHasStyles = false;
@@ -23,6 +24,7 @@ function createTraversal() {
                         body.unshift(p);
                     }
                     body.unshift(t.importDeclaration([t.importSpecifier(t.identifier('calculateStyles'), t.identifier('calculateStyles'))], t.stringLiteral('openland-x-styles/calculateStyles')));
+                    console.log(parse_1.generate2(traversePath.node));
                 }
             }
         },

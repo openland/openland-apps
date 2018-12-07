@@ -2,19 +2,19 @@ import { XStyles } from "./XStyles";
 import * as glamor from 'glamor';
 
 const stylesCache = new Map<string, string>();
-const base = glamor.css({
-    display: 'flex'
-}).toString();
+// const base = glamor.css({
+//     display: 'flex'
+// }).toString();
 
-export function calculateStyles(styles: XStyles, selected: boolean = false, ignoreDefaults: boolean = false) {
-    let css: string[] = [base];
+export function calculateStyles(styles: XStyles, selected: boolean = false) {
+    let css: string[] = ['x'];
 
-    let position: 'relative' | 'absolute' | 'fixed' | undefined = ignoreDefaults ? undefined : 'relative';
+    let position: 'relative' | 'absolute' | 'fixed' | undefined;
 
-    let flexGrow: number | undefined = ignoreDefaults ? undefined : 0;
-    let flexShrink: number | undefined = ignoreDefaults ? undefined : 0;
+    let flexGrow: number | undefined;
+    let flexShrink: number | undefined;
     let flexBasis: number | undefined;
-    let flexDirection: 'row' | 'column' | undefined = ignoreDefaults ? undefined : 'column';
+    let flexDirection: 'row' | 'column' | undefined;
     let alignSelf: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let alignItems: 'flex-start' | 'flex-end' | 'center' | 'stretch' | undefined;
     let justifyContent: 'flex-start' | 'flex-end' | 'center' | 'space-between' | undefined;

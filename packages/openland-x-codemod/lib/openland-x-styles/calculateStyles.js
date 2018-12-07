@@ -3,16 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const glamor = tslib_1.__importStar(require("glamor"));
 const stylesCache = new Map();
-const base = glamor.css({
-    display: 'flex'
-}).toString();
-function calculateStyles(styles, selected = false, ignoreDefaults = false) {
-    let css = [base];
-    let position = ignoreDefaults ? undefined : 'relative';
-    let flexGrow = ignoreDefaults ? undefined : 0;
-    let flexShrink = ignoreDefaults ? undefined : 0;
+// const base = glamor.css({
+//     display: 'flex'
+// }).toString();
+function calculateStyles(styles, selected = false) {
+    let css = ['x'];
+    let position;
+    let flexGrow;
+    let flexShrink;
     let flexBasis;
-    let flexDirection = ignoreDefaults ? undefined : 'column';
+    let flexDirection;
     let alignSelf;
     let alignItems;
     let justifyContent;
