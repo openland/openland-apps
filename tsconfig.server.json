@@ -5,7 +5,7 @@
         "lib": ["es5", "es6", "dom", "esnext.asynciterable"],
         "sourceMap": true,
         "allowJs": false,
-        "jsx": "preserve",
+        "jsx": "react",
         "moduleResolution": "node",
         "rootDir": "packages/openland-web",
         "forceConsistentCasingInFileNames": true,
