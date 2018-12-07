@@ -78,6 +78,10 @@ class XFormController extends React.PureComponent<
         }
 
         const inputData = props.store.data.fields.input;
+        if (!props.validate || !props.validate.input) {
+            return [];
+        }
+
         const inputValidate = props.validate.input;
 
         const collectedErrors = Object.keys(inputData).map(fieldName => {
