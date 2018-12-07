@@ -191,7 +191,11 @@ const LeftContainer = Glamorous.div({
 });
 
 const Footer = Glamorous.div({
-    marginTop: 'auto',
+    position: 'absolute',
+    margin: 'auto',
+    left: 0,
+    right: 0,
+    bottom: 20,
 });
 
 const FooterText = Glamorous.div({
@@ -202,9 +206,6 @@ const FooterText = Glamorous.div({
     textAlign: 'center',
     color: '#334562',
     opacity: 0.4,
-    '&:first-child': {
-        marginBottom: 6,
-    },
 });
 
 const FooterLink = Glamorous(XLink)({
