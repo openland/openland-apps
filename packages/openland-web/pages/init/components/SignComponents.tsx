@@ -1198,94 +1198,106 @@ export const CreateProfileFormInner = (props: {
         <div>
             <MyTitle>{InitTexts.create_profile.title}</MyTitle>
             <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-            <XForm
-                defaultData={{
-                    input: {
-                        firstName: (prefill && prefill.firstName) || '',
-                        lastName: (prefill && prefill.lastName) || '',
-                    },
-                }}
-                validate={{
-                    input: {
-                        firstName: [
-                            {
-                                rule: (value: string) => value !== '',
-                                errorMessage:
-                                    InitTexts.auth.firstNameIsEmptyError,
-                            },
-                        ],
-                        lastName: [
-                            {
-                                rule: (value: string) => value !== '',
-                                errorMessage:
-                                    InitTexts.auth.lastNameIsEmptyError,
-                            },
-                        ],
-                    },
-                }}
-                defaultAction={defaultAction}
-                defaultLayout={false}
-            >
-                <XFormError onlyGeneralErrors={true} width={472} />
-                <XFormLoadingContent>
-                    <XVertical alignItems="center">
-                        <XAvatarUploadWrapper
-                            field="input.photoRef"
-                            dataTestId="photo"
-                            size="default"
-                            initialUrl={prefill ? prefill.picture : undefined}
-                        />
-
-                        <XView>
-                            <XFormField2 field="input.firstName">
-                                {({ showError }: { showError: boolean }) => (
-                                    <>
-                                        <XInputWrapper
-                                            invalid={showError}
-                                            field="input.firstName"
-                                            size="large"
-                                            title="First name"
-                                            dataTestId="first-name"
-                                        />
-
-                                        {showError && (
-                                            <XFormError field="input.firstName" />
-                                        )}
-                                    </>
-                                )}
-                            </XFormField2>
-                        </XView>
-
-                        <XView>
-                            <XFormField2 field="input.lastName">
-                                {({ showError }: { showError: boolean }) => (
-                                    <>
-                                        <XInputWrapper
-                                            invalid={showError}
-                                            field="input.lastName"
-                                            size="large"
-                                            title="Last name"
-                                            dataTestId="last-name"
-                                        />
-                                        {showError && (
-                                            <XFormError field="input.lastName" />
-                                        )}
-                                    </>
-                                )}
-                            </XFormField2>
-                        </XView>
-
-                        <ButtonsWrapper marginBottom={84}>
-                            <XFormSubmitWrapper
-                                dataTestId="continue-button"
-                                style="primary"
-                                text={InitTexts.create_profile.continue}
-                                size="large"
+            <ButtonsWrapper marginTop={40} width={280} marginBottom={80}>
+                <XForm
+                    defaultData={{
+                        input: {
+                            firstName: (prefill && prefill.firstName) || '',
+                            lastName: (prefill && prefill.lastName) || '',
+                        },
+                    }}
+                    validate={{
+                        input: {
+                            firstName: [
+                                {
+                                    rule: (value: string) => value !== '',
+                                    errorMessage:
+                                        InitTexts.auth.firstNameIsEmptyError,
+                                },
+                            ],
+                            lastName: [
+                                {
+                                    rule: (value: string) => value !== '',
+                                    errorMessage:
+                                        InitTexts.auth.lastNameIsEmptyError,
+                                },
+                            ],
+                        },
+                    }}
+                    defaultAction={defaultAction}
+                    defaultLayout={false}
+                >
+                    <XFormError onlyGeneralErrors={true} width={472} />
+                    <XFormLoadingContent>
+                        <XVertical alignItems="center">
+                            <XAvatarUploadWrapper
+                                field="input.photoRef"
+                                dataTestId="photo"
+                                size="default"
+                                initialUrl={
+                                    prefill ? prefill.picture : undefined
+                                }
                             />
-                        </ButtonsWrapper>
-                    </XVertical>
-                </XFormLoadingContent>
-            </XForm>
+
+                            <XView>
+                                <XFormField2 field="input.firstName">
+                                    {({
+                                        showError,
+                                    }: {
+                                        showError: boolean;
+                                    }) => (
+                                        <>
+                                            <XInputWrapper
+                                                invalid={showError}
+                                                field="input.firstName"
+                                                size="large"
+                                                title="First name"
+                                                dataTestId="first-name"
+                                            />
+
+                                            {showError && (
+                                                <XFormError field="input.firstName" />
+                                            )}
+                                        </>
+                                    )}
+                                </XFormField2>
+                            </XView>
+
+                            <XView>
+                                <XFormField2 field="input.lastName">
+                                    {({
+                                        showError,
+                                    }: {
+                                        showError: boolean;
+                                    }) => (
+                                        <>
+                                            <XInputWrapper
+                                                invalid={showError}
+                                                field="input.lastName"
+                                                size="large"
+                                                title="Last name"
+                                                dataTestId="last-name"
+                                            />
+                                            {showError && (
+                                                <XFormError field="input.lastName" />
+                                            )}
+                                        </>
+                                    )}
+                                </XFormField2>
+                            </XView>
+
+                            <ButtonsWrapper marginBottom={84}>
+                                <XFormSubmitWrapper
+                                    dataTestId="continue-button"
+                                    style="primary"
+                                    text={InitTexts.create_profile.continue}
+                                    size="large"
+                                />
+                            </ButtonsWrapper>
+                        </XVertical>
+                    </XFormLoadingContent>
+                </XForm>
+            </ButtonsWrapper>
         </div>
     );
 };
@@ -1479,21 +1491,22 @@ export class CreateOrganizationFormInner extends React.Component<
                     <XVertical separator="large">
                         <XFormError width={472} />
                         <XFormLoadingContent>
-                            <ButtonsWrapper marginBottom={84}>
-                                <XVertical alignItems="center">
+                            <ButtonsWrapper marginBottom={84} marginTop={34}>
+                                <XVertical alignItems="center" separator="none">
                                     <XStoreContext.Consumer>
                                         {this.renderSelect}
                                     </XStoreContext.Consumer>
-
-                                    <XFormSubmit
-                                        dataTestId="continue-button"
-                                        style="primary"
-                                        text={
-                                            InitTexts.create_organization
-                                                .continue
-                                        }
-                                        size="large"
-                                    />
+                                    <XView marginTop={50}>
+                                        <XFormSubmit
+                                            dataTestId="continue-button"
+                                            style="primary"
+                                            text={
+                                                InitTexts.create_organization
+                                                    .continue
+                                            }
+                                            size="large"
+                                        />
+                                    </XView>
                                 </XVertical>
                             </ButtonsWrapper>
                         </XFormLoadingContent>
