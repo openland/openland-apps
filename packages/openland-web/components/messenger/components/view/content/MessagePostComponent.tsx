@@ -211,7 +211,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                 <Root>
                     <Container>
                         <XHorizontal justifyContent="space-between" separator={9}>
-                            <XVertical separator={3} flexGrow={1}>
+                            <XVertical separator={3} flexGrow={1} maxWidth={cover && (cover as MessageFull_alphaAttachments).fileId ? 'calc(100% - 152px)' : '100%'}>
                                 <PostTitle>{props.alphaTitle}</PostTitle>
                                 <MessageTextComponent
                                     message={props.message}
