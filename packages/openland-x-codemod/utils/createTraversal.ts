@@ -31,6 +31,7 @@ export function createTraversal() {
                 let i = 0;
                 let removed = false;
                 let styles: (t.ObjectProperty)[] = [];
+                let selectedStyles: (t.ObjectProperty)[] = [];
                 let hasStyles = false;
                 if ((traversePath.node.openingElement.name as t.JSXIdentifier).name !== 'XView') {
                     return;
@@ -40,9 +41,17 @@ export function createTraversal() {
                     if (a.type === 'JSXAttribute' && a.name.type === 'JSXIdentifier' && a.value) {
                         if (XStyleKeys.findIndex((v) => v === (a as any).name.name) >= 0) {
                             if (a.value.type === 'StringLiteral') {
-                                styles.push(t.objectProperty(t.identifier(a.name.name),
-                                    t.stringLiteral(a.value.value)
-                                ));
+                                if (a.name.name.startsWith('selected')) {
+                                    let c = a.name.name.substring(8, 9).toLowerCase() + a.name.name.substring(9);
+                                    console.log(c);
+                                    selectedStyles.push(t.objectProperty(t.identifier(c),
+                                        t.stringLiteral(a.value.value)
+                                    ));
+                                } else {
+                                    styles.push(t.objectProperty(t.identifier(a.name.name),
+                                        t.stringLiteral(a.value.value)
+                                    ));
+                                }
                                 // styles[a.name.name] = a.value;
                                 traversePath.node.openingElement.attributes.splice(i, 1);
                                 removed = true;
@@ -51,9 +60,17 @@ export function createTraversal() {
                             } else if (a.value.type === 'JSXExpressionContainer') {
                                 if (a.value.expression.type === 'StringLiteral' || a.value.expression.type === 'NumericLiteral' || a.value.expression.type === 'BooleanLiteral') {
                                     // styles[a.name.name] = a.value.expression;
-                                    styles.push(t.objectProperty(t.identifier(a.name.name),
-                                        a.value.expression
-                                    ));
+                                    if (a.name.name.startsWith('selected')) {
+                                        let c = a.name.name.substring(8, 9).toLowerCase() + a.name.name.substring(9);
+                                        console.log(c);
+                                        selectedStyles.push(t.objectProperty(t.identifier(c),
+                                            a.value.expression
+                                        ));
+                                    } else {
+                                        styles.push(t.objectProperty(t.identifier(a.name.name),
+                                            a.value.expression
+                                        ));
+                                    }
                                     traversePath.node.openingElement.attributes.splice(i, 1);
                                     removed = true;
                                     hasStyles = true;
@@ -74,20 +91,42 @@ export function createTraversal() {
                         key = key.replace('-', '_');
                     }
                     let uuid = 'style_' + key;
-                    pending.push(
-                        t.variableDeclaration('var', [
-                            t.variableDeclarator(
-                                t.identifier('___' + uuid),
-                                t.callExpression(t.identifier('calculateStyles'), [
-                                    t.objectExpression(styles)
-                                ])
-                            )])
-                    );
+                    if (styles.length > 0) {
+                        pending.push(
+                            t.variableDeclaration('var', [
+                                t.variableDeclarator(
+                                    t.identifier('___' + uuid + '_n'),
+                                    t.callExpression(t.identifier('calculateStyles'), [
+                                        t.objectExpression(styles)
+                                    ])
+                                )])
+                        );
 
-                    traversePath.node.openingElement.attributes.push(t.jsxAttribute(
-                        t.jsxIdentifier('className'),
-                        t.jsxExpressionContainer(t.identifier('___' + uuid))
-                    ))
+                        traversePath.node.openingElement.attributes.push(t.jsxAttribute(
+                            t.jsxIdentifier('__styleClassName'),
+                            t.jsxExpressionContainer(t.identifier('___' + uuid + '_n'))
+                        ))
+                    }
+                    if (selectedStyles.length > 0) {
+                        pending.push(
+                            t.variableDeclaration('var', [
+                                t.variableDeclarator(
+                                    t.identifier('___' + uuid + '_s'),
+                                    t.callExpression(t.identifier('calculateStyles'), [
+                                        t.objectExpression([...styles, ...selectedStyles])
+                                    ])
+                                )])
+                        );
+
+                        traversePath.node.openingElement.attributes.push(t.jsxAttribute(
+                            t.jsxIdentifier('__styleSelectedClassName'),
+                            t.jsxExpressionContainer(t.identifier('___' + uuid + '_s'))
+                        ))
+                        traversePath.node.openingElement.attributes.push(t.jsxAttribute(
+                            t.jsxIdentifier('__styleSelectable'),
+                            t.jsxExpressionContainer(t.booleanLiteral(true))
+                        ));
+                    }
                 }
             }
         }

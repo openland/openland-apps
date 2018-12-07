@@ -19,8 +19,17 @@ export interface XViewProps extends XStyles {
 
 const XViewContainer = (props: XViewProps) => {
     let className = calculateStyles(props, props.selected || false);
-    if ((props as any).className) {
-        className = (props as any).className + ' ' + className;
+
+    if (props.selected) {
+        if ((props as any).__styleSelectedClassName) {
+            className = (props as any).__styleSelectedClassName + ' ' + className;
+        } else if ((props as any).__styleClassName) {
+            className = (props as any).__styleClassName + ' ' + className;
+        }
+    } else {
+        if ((props as any).__styleClassName) {
+            className = (props as any).__styleClassName + ' ' + className;
+        }
     }
     if (props.as === 'a') {
         return (
@@ -39,7 +48,7 @@ const XViewContainer = (props: XViewProps) => {
 
 export const XView = (props: XViewProps) => {
     let shouldTrackSelected = props.selected === undefined && (
-        props.selectedBackgroundColor || props.selectedHoverBackgroundColor || props.selectedColor);
+        props.selectedBackgroundColor || props.selectedHoverBackgroundColor || props.selectedColor || (props as any).__styleSelectable);
     if (shouldTrackSelected) {
         return (
             <XViewSelectedContext.Consumer>
