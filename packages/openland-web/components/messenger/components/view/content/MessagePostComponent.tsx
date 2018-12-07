@@ -249,7 +249,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                 </Root>
                 <XHorizontal justifyContent="space-between">
                     {props.alphaButtons.map((i, j) => i && (
-                        <XVertical key={'post_buttons_group' + j}>
+                        <XHorizontal key={'post_buttons_group' + j} alignItems="center" separator={6}>
                             {i.map(k => (
                                 <XHorizontal key={'post_button' + k.id} alignSelf="flex-start">
                                     <RespondPost
@@ -259,12 +259,12 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                     >
                                         <XButton
                                             text={k.title}
-                                            style="primary"
+                                            style={k.style === 'DEFAULT' ? 'primary' : 'light'}
                                         />
                                     </RespondPost>
                                 </XHorizontal>
                             ))}
-                        </XVertical>
+                        </XHorizontal>
                     ))}
                     <XHorizontal separator={1} alignItems="center">
                         {respondUsers.length > 0 && (
