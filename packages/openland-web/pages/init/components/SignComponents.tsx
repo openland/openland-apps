@@ -8,7 +8,6 @@ import { XView } from 'openland-x/XView';
 import { XInput } from 'openland-x/XInput';
 import { XSelect } from 'openland-x/XSelect';
 import { InitTexts } from '../_text';
-import { SubTitle } from './CreateProfileComponents';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XPopper } from 'openland-x/XPopper';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -24,6 +23,19 @@ function validateEmail(email: string) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+export const SubTitle = Glamorous.div({
+    fontFamily: 'SFProText-Regular',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: 1.5,
+    color: '#000',
+    marginTop: 0,
+    letterSpacing: -0.1,
+});
 interface ButtonProps extends XLinkProps {
     primary?: boolean;
     children: any;
@@ -669,8 +681,8 @@ export const RoomAuthMechanism = ({
     loginWithEmail,
 }: AuthMechanism) => {
     const auth = InitTexts.auth;
-    const title = signin ? auth.signinTitle : auth.signupTitle;
-    const subTitle = signin ? auth.signinSubtitle : auth.signupSubtitle;
+    const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
+    const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
     const googleButtonText = signin
         ? InitTexts.auth.signupGoogle
         : InitTexts.auth.signupGoogle;
@@ -717,10 +729,10 @@ export const WebSignUpAuthMechanism = ({
     loginWithEmail,
 }: AuthMechanism) => {
     const auth = InitTexts.auth;
-    const title = signin ? auth.signinTitle : auth.signupTitle;
-    const subTitle = signin ? auth.signinSubtitle : auth.signupSubtitle;
+    const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
+    const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
     const googleButtonText = signin ? auth.signinGoogle : auth.signupGoogle;
-    const emailText = signin ? auth.signinEmail : auth.signupEmail;
+    const emailText = signin ? auth.signinEmail : auth.signupWebSignUpEmail;
 
     return (
         <div>
@@ -825,7 +837,7 @@ export const WebSignUpActivationCode = ({
                     We just sent it to <strong>{emailSendedTo}</strong>
                 </SubTitle>
             )}
-            <ButtonsWrapper width={280}>
+            <ButtonsWrapper marginTop={40} width={280}>
                 <XFormField2 field="input.code">
                     {({ showError }: { showError: boolean }) => (
                         <>
@@ -1047,9 +1059,10 @@ export const RoomCreateWithEmail = ({
         >
             <Title>
                 {signin
-                    ? InitTexts.auth.signinEmail
-                    : InitTexts.auth.signupEmail}
+                    ? InitTexts.auth.signinRoomSignUpEmail
+                    : InitTexts.auth.signupRoomSignUpEmail}
             </Title>
+            <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280}>
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (
@@ -1093,7 +1106,6 @@ export const WebSignUpCreateWithEmail = ({
     loginEmailStart,
     emailSending,
 }: CreateWithEmailProps) => {
-    console.log(emailError);
     return (
         <XForm
             defaultData={{
@@ -1121,11 +1133,11 @@ export const WebSignUpCreateWithEmail = ({
         >
             <Title>
                 {signin
-                    ? InitTexts.auth.signinEmailTitle
+                    ? InitTexts.auth.signinEmail
                     : InitTexts.auth.signupEmail}
             </Title>
-            <SubTitle>{InitTexts.auth.signinEmailSubtitle}</SubTitle>
-            <ButtonsWrapper width={280}>
+            <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
+            <ButtonsWrapper marginTop={40} width={280}>
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (
                         <>
