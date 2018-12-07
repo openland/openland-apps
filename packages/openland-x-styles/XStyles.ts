@@ -1,5 +1,3 @@
-import XStyles from 'openland-x/XStyles';
-
 export interface XStyles {
 
     //

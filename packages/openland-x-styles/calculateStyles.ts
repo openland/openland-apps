@@ -6,7 +6,7 @@ const base = glamor.css({
     display: 'flex'
 }).toString();
 
-export function calculateStyles(styles: XStyles, selected: boolean) {
+export function calculateStyles(styles: XStyles, selected: boolean = false) {
     let position: 'relative' | 'absolute' | 'fixed' | undefined = 'relative';
 
     let flexGrow: number | undefined = 0;

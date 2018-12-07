@@ -18,5 +18,7 @@ export function parse(src: string) {
 }
 
 export function generate2(ast: File) {
-    return babelGenerator(ast).code;
+    return babelGenerator(ast, {
+        quotes: 'single'
+    }).code;
 }
