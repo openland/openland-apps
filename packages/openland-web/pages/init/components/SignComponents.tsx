@@ -561,7 +561,7 @@ const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
 
 const XIconWrapper = Glamorous.span({
     fontSize: 20,
-    marginLeft: 5,
+    marginLeft: 11,
 
     '& svg': {
         marginBottom: -3,
@@ -1447,26 +1447,7 @@ export class CreateOrganizationFormInner extends React.Component<
         return (
             <div>
                 <MyTitle>{InitTexts.create_organization.title}</MyTitle>
-                <SubTitle>
-                    {InitTexts.create_organization.subTitle}
-
-                    <XPopper
-                        content={
-                            <InfoText>
-                                To register as an individual,
-                                <br />
-                                simply enter your name
-                            </InfoText>
-                        }
-                        showOnHover={true}
-                        placement="bottom"
-                        style="dark"
-                    >
-                        <XIconWrapper>
-                            <IcInfo />
-                        </XIconWrapper>
-                    </XPopper>
-                </SubTitle>
+                <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={defaultAction}
                     defaultData={{
@@ -1493,9 +1474,31 @@ export class CreateOrganizationFormInner extends React.Component<
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
                                 <XVertical alignItems="center" separator="none">
-                                    <XStoreContext.Consumer>
-                                        {this.renderSelect}
-                                    </XStoreContext.Consumer>
+                                    <XHorizontal
+                                        separator="none"
+                                        alignItems="center"
+                                    >
+                                        <XStoreContext.Consumer>
+                                            {this.renderSelect}
+                                        </XStoreContext.Consumer>
+                                        <XPopper
+                                            content={
+                                                <InfoText>
+                                                    To register as an
+                                                    individual,
+                                                    <br />
+                                                    simply enter your name
+                                                </InfoText>
+                                            }
+                                            showOnHover={true}
+                                            placement="top"
+                                            style="dark"
+                                        >
+                                            <XIconWrapper>
+                                                <IcInfo />
+                                            </XIconWrapper>
+                                        </XPopper>
+                                    </XHorizontal>
                                     <XView marginTop={50}>
                                         <XFormSubmit
                                             dataTestId="continue-button"
