@@ -736,6 +736,24 @@ export interface SendPostMessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: RespondPostMessage
+// ====================================================
+
+export interface RespondPostMessage {
+  alphaRespondPostMessage: boolean | null;
+  betaReactionSet: boolean;
+}
+
+export interface RespondPostMessageVariables {
+  messageId: string;
+  buttonId: string;
+  reaction: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SaveDraftMessage
 // ====================================================
 

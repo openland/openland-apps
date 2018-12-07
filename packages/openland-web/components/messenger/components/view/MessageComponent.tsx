@@ -306,6 +306,8 @@ class MessageComponentInner extends React.PureComponent<
         if (isServerMessage(message)) {
             message = message as MessageFull;
 
+            const isPost = message.message && message.alphaTitle && message.alphaType === "POST";
+
             const isNotIntro =
                 !message.urlAugmentation ||
                 message.urlAugmentation!.type !== 'intro';
@@ -321,7 +323,7 @@ class MessageComponentInner extends React.PureComponent<
                     className="menu-wrapper"
                 >
                     <XHorizontal alignItems="center" separator={8}>
-                        {isNotIntro && (
+                        {isNotIntro && !isPost && (
                             <ReactionComponent messageId={message.id} />
                         )}
                         <IconButton onClick={this.setReplyMessages}>
@@ -407,14 +409,20 @@ class MessageComponentInner extends React.PureComponent<
             }
             if (message.message && message.alphaTitle && message.alphaType === "POST") {
                 isPost = true;
+                let meId = this.props.me ? this.props.me.id : '';
+
                 content.push(
                     <MessagePostComponent
                         key={'post_message' + message.id}
+                        messageId={message.id}
+                        userId={message.sender.id}
                         message={message.message}
                         alphaTitle={message.alphaTitle}
                         alphaButtons={message.alphaButtons}
                         alphaAttachments={message.alphaAttachments}
+                        reactions={message.reactions}
                         edited={edited}
+                        meId={meId}
                     />
                 );
             }
@@ -649,7 +657,7 @@ class MessageComponentInner extends React.PureComponent<
                                 maxWidth="100%"
                             >
                                 {content}
-                                {this.reactionsRender()}
+                                {!isPost && this.reactionsRender()}
                             </MessageCompactContent>
                         </XHorizontal>
                     </XHorizontal>
@@ -751,7 +759,7 @@ class MessageComponentInner extends React.PureComponent<
                                 </XHorizontal>
                             </XHorizontal>
                             {content}
-                            {this.reactionsRender()}
+                            {!isPost && this.reactionsRender()}
                         </XVertical>
                     </XHorizontal>
                 </XVertical>

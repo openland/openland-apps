@@ -85,6 +85,13 @@ export const SendPostMessageMutation = gql`
     }
 `;
 
+export const RespondPostMessageMutation = gql`
+    mutation RespondPostMessage($messageId: ID!, $buttonId: ID!, $reaction: String!) {
+        alphaRespondPostMessage(messageId: $messageId, buttonId: $buttonId)
+        betaReactionSet(mid: $messageId, reaction: $reaction)
+    }
+`;
+
 export const SaveDraftMessageMutation = gql`
     mutation SaveDraftMessage($conversationId: ID!, $message: String!) {
         conversationDraftUpdate(conversationId: $conversationId, message: $message)
