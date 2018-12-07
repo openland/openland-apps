@@ -1,6 +1,6 @@
 import * as babelParser from '@babel/parser';
 import babelGenerator from '@babel/generator';
-import { File } from '@babel/types';
+import { File, Node } from '@babel/types';
 
 export function parse(src: string) {
     return babelParser.parse(src, {
@@ -17,7 +17,7 @@ export function parse(src: string) {
     });
 }
 
-export function generate2(ast: File) {
+export function generate2(ast: Node) {
     return babelGenerator(ast, {
         quotes: 'single'
     }).code;

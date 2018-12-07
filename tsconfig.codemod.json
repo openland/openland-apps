@@ -21,6 +21,7 @@
         "outDir": "packages/openland-x-codemod/lib/",
         "baseUrl": "packages",
         "resolveJsonModule": true,
+        "esModuleInterop": true,
         "paths": {
             "openland-x-codemod": ["openland-x-codemod"],
             "openland-x-styles": ["openland-x-styles"]

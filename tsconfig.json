@@ -5,7 +5,7 @@
         "lib": ["es5", "es6", "dom", "esnext.asynciterable"],
         "sourceMap": true,
         "allowJs": false,
-        "jsx": "react",
+        "jsx": "preserve",
         "moduleResolution": "node",
         "rootDir": "packages",
         "forceConsistentCasingInFileNames": true,

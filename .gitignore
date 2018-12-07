@@ -22,10 +22,10 @@ yarn-error.log*
 .idea/workspace.xml
 src/.next
 .vscode
-lib
+/lib
 packages/openland-web/.next
 .cache-loader
-dist
+/dist
 packages/openland-mobile/packages/openland-api
 packages/openland-mobile/packages/openland-x-graphql
 .expo

@@ -40,14 +40,14 @@ const config = {
         // Modules are not loading by default since root folder is out of scope
         // let tsLoader = defaultLoaders.babel;
 
-        config.module.rules.unshift({
-            test: /\.(tsx)$/,
-            include: [path.resolve(dir + '/../')],
-            exclude: /node_modules/,
-            use: [{
-                loader: path.resolve(dir + '/../openland-x-codemod/lib/openland-x-codemod/loader.js'),
-            }]
-        });
+        // config.module.rules.unshift({
+        //     test: /\.(tsx)$/,
+        //     include: [path.resolve(dir + '/../')],
+        //     exclude: /node_modules/,
+        //     use: [{
+        //         loader: path.resolve(dir + '/../openland-x-codemod/lib/openland-x-codemod/loader.js'),
+        //     }]
+        // });
 
         config.module.rules.push({
             test: /\.(ts|tsx)$/,
