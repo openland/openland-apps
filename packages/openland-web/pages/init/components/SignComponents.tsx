@@ -19,6 +19,11 @@ import IcInfo from '../components/icons/ic-info.svg';
 import IcAdd from '../components/icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
+
+function validateEmail(email: string) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 interface ButtonProps extends XLinkProps {
     primary?: boolean;
     children: any;
@@ -1000,7 +1005,8 @@ export const RoomCreateWithEmail = ({
                 input: {
                     email: [
                         {
-                            rule: (value: string) => value !== '',
+                            rule: (value: string) =>
+                                value !== '' && validateEmail(value),
                             errorMessage: InitTexts.auth.emailInvalid,
                         },
                     ],
@@ -1073,7 +1079,8 @@ export const WebSignUpCreateWithEmail = ({
                 input: {
                     email: [
                         {
-                            rule: (value: string) => value !== '',
+                            rule: (value: string) =>
+                                value !== '' && validateEmail(value),
                             errorMessage: InitTexts.auth.emailInvalid,
                         },
                     ],
