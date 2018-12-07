@@ -681,17 +681,7 @@ class MessageComponentInner extends React.PureComponent<
                                     >
                                         {sender && (
                                             <>
-                                                {conversationType !== 'PRIVATE' ? (
-                                                    <UserPopper
-                                                        user={sender}
-                                                        startSelected={hideMenu}
-                                                        isMe={isMe}
-                                                    >
-                                                        <Name>{sender.name}</Name>
-                                                    </UserPopper>
-                                                ) : (
-                                                        <Name>{sender.name}</Name>
-                                                    )}
+                                                <Name>{sender.name}</Name>
                                                 {sender.primaryOrganization && (
                                                     <Organization path={orgPath}>
                                                         {sender.primaryOrganization.name}
