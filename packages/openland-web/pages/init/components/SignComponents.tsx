@@ -232,7 +232,6 @@ const Logo = Glamorous(XLink)({
 const HeaderStyled = Glamorous.div({
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: 'auto',
     '@media(max-width: 600px)': {
         flexDirection: 'column',
         justifyContent: 'center',
@@ -974,11 +973,6 @@ export const RoomActivationCode = ({
                             />
                         </>
                     )}
-                    <ResendButton
-                        onClick={resendCodeClick}
-                        style="link"
-                        text={InitTexts.auth.resend}
-                    />
                 </XHorizontal>
             </ResendCodeRow>
 
