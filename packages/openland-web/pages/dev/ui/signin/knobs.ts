@@ -13,9 +13,11 @@ export const signContainerKnob = {
     },
     text: {
         type: 'input',
+        hide: true,
         default: 'Already have an account?',
     },
     linkText: {
+        hide: true,
         type: 'input',
         default: 'Sign in',
     },

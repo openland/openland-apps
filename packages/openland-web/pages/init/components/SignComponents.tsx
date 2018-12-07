@@ -7,7 +7,6 @@ import { XButton } from 'openland-x/XButton';
 import { XView } from 'openland-x/XView';
 import { XInput } from 'openland-x/XInput';
 import { XSelect } from 'openland-x/XSelect';
-import { XServiceMessage } from 'openland-x/XServiceMessage';
 import { InitTexts } from '../_text';
 import { SubTitle } from './CreateProfileComponents';
 import { XForm } from 'openland-x-forms/XForm2';
@@ -15,17 +14,23 @@ import { XPopper } from 'openland-x/XPopper';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
+import { XFormField2 } from 'openland-x-forms/XFormField2';
 import IcInfo from '../components/icons/ic-info.svg';
 import IcAdd from '../components/icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
-
 interface ButtonProps extends XLinkProps {
     primary?: boolean;
     children: any;
     rounded?: boolean;
     dataTestId?: string;
 }
+const ErrorText = Glamorous.span({
+    fontFamily: 'SFProText-Regular',
+    fontSize: '12px',
+    color: '#d75454',
+    marginLeft: '17px',
+});
 
 const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
     [
@@ -163,7 +168,7 @@ const EmptyBlock = Glamorous.div({
 
 // WebSignUpContainer start
 
-const RootContainer123 = Glamorous.div({
+const RootContainer = Glamorous.div({
     display: 'flex',
     height: '100vh',
     width: '100%',
@@ -302,7 +307,7 @@ interface SignContainerProps extends HeaderProps {
 
 export const WebSignUpContainer = (props: SignContainerProps) => {
     return (
-        <RootContainer123>
+        <RootContainer>
             <LeftContainer>
                 <Header
                     text={props.text}
@@ -329,7 +334,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                     </FooterText>
                 </Footer>
             </LeftContainer>
-        </RootContainer123>
+        </RootContainer>
     );
 };
 
@@ -795,14 +800,9 @@ export const WebSignUpActivationCode = ({
                     We just sent it to <strong>{emailSendedTo}</strong>
                 </SubTitle>
             )}
-            {codeError !== '' && (
-                <>
-                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
-                    <EmptyBlock />
-                </>
-            )}
             <ButtonsWrapper width={280}>
                 <XInput
+                    invalid={true}
                     pattern="[0-9]*"
                     type="number"
                     size="large"
@@ -811,6 +811,9 @@ export const WebSignUpActivationCode = ({
                     placeholder={InitTexts.auth.codePlaceholder}
                     onEnter={loginCodeStart}
                 />
+                {codeError !== '' && (
+                    <ErrorText>{InitTexts.auth.codeInvalid}</ErrorText>
+                )}
             </ButtonsWrapper>
             <ResendCodeRow alignItems="center">
                 <XHorizontal alignItems="center" separator="none">
@@ -859,18 +862,6 @@ export const RoomActivationCode = ({
 }: ActivationCodeProps) => {
     return (
         <div style={{ position: 'relative' }}>
-            {codeError !== '' && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                    }}
-                >
-                    <XServiceMessage title={InitTexts.auth.codeInvalid} />
-                </div>
-            )}
             <Title>{InitTexts.auth.enterActivationCode}</Title>
             {emailSendedTo && (
                 <SubTitle>
@@ -879,6 +870,7 @@ export const RoomActivationCode = ({
             )}
             <ButtonsWrapper marginTop={40} width={280}>
                 <XInput
+                    invalid={true}
                     pattern="[0-9]*"
                     type="number"
                     autofocus={true}
@@ -888,6 +880,9 @@ export const RoomActivationCode = ({
                     placeholder={InitTexts.auth.codePlaceholder}
                     onEnter={loginCodeStart}
                 />
+                {codeError !== '' && (
+                    <ErrorText>{InitTexts.auth.codeInvalid}</ErrorText>
+                )}
             </ButtonsWrapper>
             <ResendCodeRow alignItems="center">
                 <XHorizontal alignItems="center" separator="none">
@@ -947,18 +942,6 @@ export const RoomCreateWithEmail = ({
 }: CreateWithEmailProps) => {
     return (
         <div style={{ position: 'relative' }}>
-            {emailError !== '' && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                    }}
-                >
-                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
-                </div>
-            )}
             <Title>
                 {signin
                     ? InitTexts.auth.signinEmail
@@ -966,6 +949,7 @@ export const RoomCreateWithEmail = ({
             </Title>
             <ButtonsWrapper marginTop={40} width={280}>
                 <XInput
+                    invalid={true}
                     type="email"
                     autofocus={true}
                     size="large"
@@ -974,6 +958,9 @@ export const RoomCreateWithEmail = ({
                     placeholder={InitTexts.auth.emailPlaceholder}
                     onEnter={loginEmailStart}
                 />
+                {emailError !== '' && (
+                    <ErrorText>{InitTexts.auth.emailInvalid}</ErrorText>
+                )}
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
@@ -1006,14 +993,9 @@ export const WebSignUpCreateWithEmail = ({
                     : InitTexts.auth.signupEmail}
             </Title>
             <SubTitle>{InitTexts.auth.signinEmailSubtitle}</SubTitle>
-            {emailError !== '' && (
-                <>
-                    <XServiceMessage title={InitTexts.auth.emailInvalid} />
-                    <EmptyBlock />
-                </>
-            )}
             <ButtonsWrapper width={280}>
                 <XInput
+                    invalid={true}
                     type="email"
                     size="large"
                     onChange={emailChanged}
@@ -1021,6 +1003,9 @@ export const WebSignUpCreateWithEmail = ({
                     placeholder={InitTexts.auth.emailPlaceholder}
                     onEnter={loginEmailStart}
                 />
+                {emailError !== '' && (
+                    <ErrorText>{InitTexts.auth.emailInvalid}</ErrorText>
+                )}
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20}>
                 <XVertical alignItems="center">
@@ -1060,8 +1045,8 @@ export const CreateProfileFormInner = (props: {
     defaultAction: (data: any) => any;
 }) => {
     const { roomView, prefill, usePhotoPrefill, defaultAction } = props;
-    console.log(props);
     const MyTitle = roomView ? Title : Title;
+
     return (
         <div>
             <MyTitle>{InitTexts.create_profile.title}</MyTitle>
@@ -1071,6 +1056,24 @@ export const CreateProfileFormInner = (props: {
                     input: {
                         firstName: (prefill && prefill.firstName) || '',
                         lastName: (prefill && prefill.lastName) || '',
+                    },
+                }}
+                validate={{
+                    input: {
+                        firstName: [
+                            {
+                                rule: (value: string) => value !== '',
+                                errorMessage:
+                                    InitTexts.auth.firstNameIsEmptyError,
+                            },
+                        ],
+                        lastName: [
+                            {
+                                rule: (value: string) => value !== '',
+                                errorMessage:
+                                    InitTexts.auth.lastNameIsEmptyError,
+                            },
+                        ],
                     },
                 }}
                 defaultAction={defaultAction}
@@ -1090,19 +1093,40 @@ export const CreateProfileFormInner = (props: {
                             }
                         />
 
-                        <XInputWrapper
-                            field="input.firstName"
-                            size="large"
-                            title="First name"
-                            dataTestId="first-name"
-                        />
+                        <XFormField2 field="input.firstName">
+                            {({ showError }: { showError: boolean }) => (
+                                <>
+                                    <XInputWrapper
+                                        invalid={showError}
+                                        field="input.firstName"
+                                        size="large"
+                                        title="First name"
+                                        dataTestId="first-name"
+                                    />
+                                    {showError && (
+                                        <XFormError field="input.firstName" />
+                                    )}
+                                </>
+                            )}
+                        </XFormField2>
 
-                        <XInputWrapper
-                            field="input.lastName"
-                            size="large"
-                            title="Last name"
-                            dataTestId="last-name"
-                        />
+                        <XFormField2 field="input.lastName">
+                            {({ showError }: { showError: boolean }) => (
+                                <>
+                                    <XInputWrapper
+                                        invalid={showError}
+                                        field="input.lastName"
+                                        size="large"
+                                        title="Last name"
+                                        dataTestId="last-name"
+                                    />
+                                    {showError && (
+                                        <XFormError field="input.lastName" />
+                                    )}
+                                </>
+                            )}
+                        </XFormField2>
+
                         <ButtonsWrapper marginBottom={84}>
                             <XFormSubmitWrapper
                                 dataTestId="continue-button"
@@ -1224,6 +1248,7 @@ export class CreateOrganizationFormInner extends React.Component<
             return;
         }
 
+        const organizationInvalid = true;
         return (
             <div>
                 <OrganizationSelector
@@ -1288,8 +1313,18 @@ export class CreateOrganizationFormInner extends React.Component<
                     defaultData={{
                         input: {
                             name: '',
-                            website: '',
                             photoRef: null,
+                        },
+                    }}
+                    validate={{
+                        input: {
+                            name: [
+                                {
+                                    rule: (value: string) => value !== '',
+                                    errorMessage:
+                                        InitTexts.auth.organizationIsEmptyError,
+                                },
+                            ],
                         },
                     }}
                     defaultLayout={false}

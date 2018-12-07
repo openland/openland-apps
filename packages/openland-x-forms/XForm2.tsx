@@ -19,6 +19,7 @@ const LOGGING = false;
 
 export interface XFormProps {
     defaultData?: any;
+    validate?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
     resetAfterSubmit?: boolean;
@@ -28,6 +29,7 @@ export interface XFormProps {
 }
 
 interface XFormControllerProps {
+    validate?: any;
     staticData?: any;
     defaultAction: (data: any) => any;
     store: XStoreState;
@@ -60,16 +62,69 @@ class XFormController extends React.PureComponent<
             submit: (action?: (data: any) => any) => {
                 return this.submit(action);
             },
+            validated: this.clientValidation(this.props),
+            touched: [],
         };
     }
 
+    clientValidation = (props: any) => {
+        const inputData = props.store.data.fields.input;
+        const inputValidate = props.validate.input;
+
+        const collectedErrors = Object.keys(inputData).map(fieldName => {
+            const prefix = 'input.';
+            const field = inputData[fieldName];
+            const validateRules = inputValidate[fieldName];
+            const errors: string[] = [];
+
+            validateRules.forEach(
+                ({
+                    rule,
+                    errorMessage,
+                }: {
+                    rule: Function;
+                    errorMessage: string;
+                }) => {
+                    if (!rule(field)) {
+                        errors.push(errorMessage);
+                    }
+                },
+            );
+
+            return [`${prefix}${fieldName}`, errors];
+        });
+
+        return collectedErrors;
+    };
+
     componentWillReceiveProps(nextProps: XFormControllerProps) {
+        const previousTouched = this.contextValue.touched;
+        const prevFields = this.props.store.export().fields;
+        const nextFields = nextProps.store.export().fields;
+        const prevInputFields = prevFields.input;
+        const nextInputFields = nextFields.input;
+
+        const nextTouched = [
+            ...previousTouched,
+            ...Object.keys(nextInputFields)
+                .filter(fieldName => {
+                    return (
+                        previousTouched.indexOf(`input.${fieldName}`) === -1 &&
+                        nextInputFields[fieldName] !==
+                            prevInputFields[fieldName]
+                    );
+                })
+                .map(fieldName => `input.${fieldName}`),
+        ];
+
         if (this.props.store !== nextProps.store) {
             this.contextValue = {
                 store: nextProps.store,
                 submit: (action?: (data: any) => any) => {
                     return this.submit(action);
                 },
+                validated: this.clientValidation(nextProps),
+                touched: nextTouched,
             };
         }
     }
@@ -184,6 +239,7 @@ export class XForm extends React.PureComponent<XFormProps> {
                         <XModalContext.Consumer>
                             {modal => (
                                 <XFormController
+                                    validate={this.props.validate}
                                     staticData={this.props.staticData}
                                     defaultAction={this.props.defaultAction}
                                     store={store!!}

@@ -11,8 +11,7 @@ export const InitTexts = {
         signinHint: 'Already have an account?',
         signin: 'Sign in',
         signinTitle: 'Sign in to Openland account',
-        signinSubtitle:
-            'Welcome back! Get your messages and explore what’s new',
+        signinSubtitle: 'Welcome back! Get your messages and explore what’s new',
         signinGoogle: 'Sign in with Google',
         signinEmail: 'Sign in with Email',
         signinEmailTitle: 'Sign up for Openland',
@@ -34,6 +33,10 @@ export const InitTexts = {
         continue: 'Continue',
         back: 'Back',
         complete: 'Continue',
+        organizationIsEmptyError: `Organization field is required. To register as
+        an individual, simply enter your name.`,
+        firstNameIsEmptyError: "First name can't be empty",
+        lastNameIsEmptyError: "Last name can't be empty",
     },
 
     join: {
@@ -62,8 +65,7 @@ export const InitTexts = {
         phone: 'Phone',
         photo: 'Photo',
         organizationName: 'Organization Name',
-        organizationPopup:
-            'To register as an individual, simply enter your name',
+        organizationPopup: 'To register as an individual, simply enter your name',
         continue: 'Continue',
     },
 
@@ -118,8 +120,7 @@ export const InitTexts = {
         content: (
             <>
                 We onboard new members in small groups. Contact{' '}
-                <XLink href="mailto:support@openland.com">support</XLink> to
-                request an account activation.
+                <XLink href="mailto:support@openland.com">support</XLink> to request an account activation.
             </>
         ),
     },
@@ -129,10 +130,7 @@ export const InitTexts = {
         title: 'You have joined the waitlist',
         content: (
             <>
-                <p>
-                    We onboard new users in small groups and will let you know
-                    when the system is ready for you.
-                </p>
+                <p>We onboard new users in small groups and will let you know when the system is ready for you.</p>
             </>
         ),
     },
@@ -143,8 +141,7 @@ export const InitTexts = {
         content: (
             <>
                 This account has been suspended. Please, contact{' '}
-                <XLink href="mailto:support@openland.com">support</XLink> to
-                restore access to your account.
+                <XLink href="mailto:support@openland.com">support</XLink> to restore access to your account.
             </>
         ),
     },
