@@ -751,7 +751,6 @@ const SmallerText = Glamorous.div({
     fontWeight: 'normal',
     fontStyle: 'normal',
     fontStretch: 'normal',
-    lineHeight: 1.85,
     letterSpacing: 'normal',
     color: '#000000',
 });
@@ -771,6 +770,8 @@ const ResendButton = Glamorous(XButton)({
 });
 
 type ActivationCodeProps = {
+    emailWasResend: boolean;
+    emailSending: boolean;
     backButtonClick: (event?: React.MouseEvent<any>) => void;
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
     codeError: string;
@@ -785,6 +786,8 @@ export const WebSignUpActivationCode = ({
     backButtonClick,
     resendCodeClick,
     emailSendedTo,
+    emailSending,
+    emailWasResend,
     codeSending,
     loginCodeStart,
     codeChanged,
@@ -843,14 +846,24 @@ export const WebSignUpActivationCode = ({
             </ButtonsWrapper>
             <ResendCodeRow alignItems="center">
                 <XHorizontal alignItems="center" separator="none">
-                    <SmallerText>
-                        {InitTexts.auth.haveNotReceiveCode}
-                    </SmallerText>
-                    <ResendButton
-                        onClick={resendCodeClick}
-                        style="link"
-                        text={InitTexts.auth.resend}
-                    />
+                    {emailSending ? (
+                        <>
+                            <SmallerText>Sending code...</SmallerText>
+                        </>
+                    ) : (
+                        <>
+                            <SmallerText>
+                                {emailWasResend
+                                    ? 'Code successfully sent.'
+                                    : InitTexts.auth.haveNotReceiveCode}
+                            </SmallerText>
+                            <ResendButton
+                                onClick={resendCodeClick}
+                                style="link"
+                                text={InitTexts.auth.resend}
+                            />
+                        </>
+                    )}
                 </XHorizontal>
             </ResendCodeRow>
             <ButtonsWrapper marginTop={20}>
@@ -878,6 +891,8 @@ export const WebSignUpActivationCode = ({
 };
 
 export const RoomActivationCode = ({
+    emailWasResend,
+    emailSending,
     backButtonClick,
     resendCodeClick,
     emailSendedTo,
@@ -939,9 +954,24 @@ export const RoomActivationCode = ({
             </ButtonsWrapper>
             <ResendCodeRow alignItems="center">
                 <XHorizontal alignItems="center" separator="none">
-                    <SmallerText>
-                        {InitTexts.auth.haveNotReceiveCode}
-                    </SmallerText>
+                    {emailSending ? (
+                        <>
+                            <SmallerText>Sending code...</SmallerText>
+                        </>
+                    ) : (
+                        <>
+                            <SmallerText>
+                                {emailWasResend
+                                    ? 'Code successfully sent.'
+                                    : InitTexts.auth.haveNotReceiveCode}
+                            </SmallerText>
+                            <ResendButton
+                                onClick={resendCodeClick}
+                                style="link"
+                                text={InitTexts.auth.resend}
+                            />
+                        </>
+                    )}
                     <ResendButton
                         onClick={resendCodeClick}
                         style="link"

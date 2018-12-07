@@ -30,6 +30,7 @@ class SignInComponent extends React.Component<
     { redirect?: string | null; roomView?: boolean } & XWithRouter,
     {
         googleStarting: boolean;
+        emailWasResend: boolean;
         email: boolean;
         emailValue: string;
         emailSending: boolean;
@@ -49,7 +50,7 @@ class SignInComponent extends React.Component<
         });
     };
 
-    fireEmail = async () => {
+    fireEmail = async (cb?: Function) => {
         Cookie.set('auth-type', 'email', { path: '/' });
         if (this.props.redirect) {
             Cookie.set('sign-redirect', this.props.redirect, { path: '/' });
@@ -63,7 +64,12 @@ class SignInComponent extends React.Component<
                         emailError: error.description,
                     });
                 } else {
-                    this.setState({ emailSending: false, emailSent: true });
+                    setTimeout(() => {
+                        this.setState({ emailSending: false, emailSent: true });
+                        if (cb) {
+                            cb();
+                        }
+                    }, 500);
                 }
             },
         );
@@ -74,6 +80,7 @@ class SignInComponent extends React.Component<
         let state = {
             googleStarting: false,
             email: false,
+            emailWasResend: false,
             emailValue: '',
             emailSending: false,
             emailError: '',
@@ -265,18 +272,22 @@ class SignInComponent extends React.Component<
 
                 {this.state.emailSent && (
                     <MyActivationCode
+                        emailWasResend={this.state.emailWasResend}
                         resendCodeClick={() => {
                             this.setState({
                                 emailSending: true,
                             });
-                            this.fireEmail();
+                            this.fireEmail(() => {
+                                this.setState({
+                                    emailWasResend: true,
+                                });
+                            });
                         }}
                         backButtonClick={this.loginWithEmail}
                         codeError={this.state.codeError}
                         codeChanged={this.codeChanged}
-                        codeSending={
-                            this.state.codeSending || this.state.emailSending
-                        }
+                        codeSending={this.state.codeSending}
+                        emailSending={this.state.emailSending}
                         codeValue={this.state.codeValue}
                         loginCodeStart={this.loginCodeStart}
                     />
