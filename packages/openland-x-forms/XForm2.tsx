@@ -74,7 +74,7 @@ class XFormController extends React.PureComponent<
         const collectedErrors = Object.keys(inputData).map(fieldName => {
             const prefix = 'input.';
             const field = inputData[fieldName];
-            const validateRules = inputValidate[fieldName];
+            const validateRules = inputValidate[fieldName] || [];
             const errors: string[] = [];
 
             validateRules.forEach(

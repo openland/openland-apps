@@ -4,11 +4,12 @@ import { XFormContext } from './XFormContext';
 import { XServiceMessage } from 'openland-x/XServiceMessage';
 import Glamorous from 'glamorous';
 
-const ErrorText = Glamorous.span({
+const ErrorText = Glamorous.div({
     fontFamily: 'SFProText-Regular',
     fontSize: '12px',
     color: '#d75454',
     marginLeft: '17px',
+    marginTop: '5px',
 });
 
 export function XFormError(
