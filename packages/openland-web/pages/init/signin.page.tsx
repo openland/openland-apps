@@ -283,6 +283,7 @@ class SignInComponent extends React.Component<
                                 });
                             });
                         }}
+                        emailSendedTo={this.state.emailValue}
                         backButtonClick={this.loginWithEmail}
                         codeError={this.state.codeError}
                         codeChanged={this.codeChanged}

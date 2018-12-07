@@ -775,7 +775,7 @@ type ActivationCodeProps = {
     backButtonClick: (event?: React.MouseEvent<any>) => void;
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
     codeError: string;
-    emailSendedTo?: string;
+    emailSendedTo: string;
     codeChanged: (value: string, cb: () => void) => void;
     codeSending: boolean;
     codeValue: string;
