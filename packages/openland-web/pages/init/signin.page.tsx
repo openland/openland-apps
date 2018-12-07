@@ -298,37 +298,41 @@ class SignInComponent extends React.Component<
     }
 }
 
-export default withAppBase(
-    'Sign In',
-    withRouter(props => {
-        let redirect = props.router.query
+export const SignInPage = (props: any) => {
+    let redirect = props.router.query
+        ? props.router.query.redirect
             ? props.router.query.redirect
-                ? props.router.query.redirect
-                : null
-            : null;
-        const signin = props.router.path.endsWith('signin');
-        const fromRoom = Cookie.get('x-openland-invite');
+            : null
+        : null;
+    const signin = props.router.path.endsWith('signin');
 
-        return (
-            <AuthRouter>
-                <XDocumentHead
-                    title={
-                        signin
-                            ? InitTexts.auth.signinPageTitle
-                            : InitTexts.auth.signupPageTitle
-                    }
-                    titleSocial={InitTexts.socialPageTitle}
-                />
-                <XTrack event={signin ? 'View Signin' : 'View Signup'}>
-                    {canUseDOM && (
-                        <SignInComponent
-                            redirect={redirect}
-                            router={props.router}
-                            roomView={fromRoom ? true : false}
-                        />
-                    )}
-                </XTrack>
-            </AuthRouter>
-        );
-    }),
-);
+    Cookie.set(
+        'x-openland-invite',
+        props.router.routeQuery.redirect.slice('/invite/'.length),
+    );
+    const fromRoom = Cookie.get('x-openland-invite');
+
+    return (
+        <AuthRouter>
+            <XDocumentHead
+                title={
+                    signin
+                        ? InitTexts.auth.signinPageTitle
+                        : InitTexts.auth.signupPageTitle
+                }
+                titleSocial={InitTexts.socialPageTitle}
+            />
+            <XTrack event={signin ? 'View Signin' : 'View Signup'}>
+                {canUseDOM && (
+                    <SignInComponent
+                        redirect={redirect}
+                        router={props.router}
+                        roomView={fromRoom ? true : false}
+                    />
+                )}
+            </XTrack>
+        </AuthRouter>
+    );
+};
+
+export default withAppBase('Sign In', withRouter(SignInPage));

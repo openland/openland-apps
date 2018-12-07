@@ -17,8 +17,8 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
         localStorage.setItem('isnewuser', 'newuser');
     }
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
+    const roomView = props.roomView || Cookie.get('x-openland-invite');
 
-    const roomView = props.roomView;
     const router = props.router;
     const prefill = usePhotoPrefill ? props.data.prefill : null;
     const createProfile = props.createProfile;
@@ -47,6 +47,7 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
 });
 
 export default withApp('CreateProfile', 'viewer', props => {
+    const fromRoom = Cookie.get('x-openland-invite');
     return (
         <>
             <XDocumentHead

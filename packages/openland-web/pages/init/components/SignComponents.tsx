@@ -387,6 +387,7 @@ const RoomTogglerText = Glamorous.div({
     fontSize: 14,
     lineHeight: '24px',
     letterSpacing: -0.15,
+    color: '#000000',
 });
 
 const RoomTogglerLink = Glamorous(XLink)({
@@ -394,10 +395,11 @@ const RoomTogglerLink = Glamorous(XLink)({
     lineHeight: '24px',
     fontWeight: 600,
     letterSpacing: -0.4,
+    color: '#000000',
     marginLeft: 7,
     '&:hover': {
         opacity: 0.7,
-        color: '#ffffff',
+        color: '#000000',
     },
 });
 
@@ -506,7 +508,9 @@ export class RoomSignupContainer extends React.Component<
                     </RoomToggler>
                 )}
                 <RoomSignupBox>
-                    <RoomSignupHeader headerStyle={props.headerStyle} />
+                    <RoomSignupHeader
+                        headerStyle={props.headerStyle || 'signin'}
+                    />
                     {props.children}
                 </RoomSignupBox>
             </RoomSignupWrapper>

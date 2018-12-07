@@ -104,13 +104,6 @@ export const ImgButton = (props: ButtonProps) => {
     );
 };
 
-const XTextMargin = Glamorous(XText)({
-    marginBottom: 46,
-    fontSize: 24,
-    color: '#1f3449',
-    textAlign: 'center',
-});
-
 const InviteInfo = withAppInviteInfo(props => {
     let signPath =
         '/signup?redirect=' + encodeURIComponent((props as any).redirect);

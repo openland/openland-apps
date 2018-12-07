@@ -15,6 +15,7 @@ import {
 } from './components/SignComponents';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withExploreOrganizations } from '../../api/withExploreOrganizations';
+import * as Cookie from 'js-cookie';
 
 const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
     const children = props.children as Function;
@@ -126,7 +127,8 @@ class CreateOrganizationPrefixHolder extends React.Component<
 
     render() {
         const props = this.props;
-        const roomView = props.roomView;
+        const roomView = props.roomView || Cookie.get('x-openland-invite');
+
         const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
         return (
