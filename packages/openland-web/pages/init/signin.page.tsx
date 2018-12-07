@@ -56,11 +56,11 @@ class SignInComponent extends React.Component<
         }
         createAuth0Client().passwordlessStart(
             { connection: 'email', send: 'link', email: this.state.emailValue },
-            (error, v) => {
+            (error: any, v) => {
                 if (error) {
                     this.setState({
                         emailSending: false,
-                        emailError: error.errorDescription!!,
+                        emailError: error.description,
                     });
                 } else {
                     this.setState({ emailSending: false, emailSent: true });
@@ -152,12 +152,12 @@ class SignInComponent extends React.Component<
         });
     };
 
-    emailChanged = (val: string) => {
-        this.setState({ emailValue: val });
+    emailChanged = (val: string, cb: () => void) => {
+        this.setState({ emailValue: val }, cb);
     };
 
-    codeChanged = (val: string) => {
-        this.setState({ codeValue: val });
+    codeChanged = (val: string, cb: () => void) => {
+        this.setState({ codeValue: val }, cb);
     };
 
     loginEmailStart = (e?: React.SyntheticEvent<any>) => {
@@ -183,12 +183,12 @@ class SignInComponent extends React.Component<
                 email: this.state.emailValue,
                 verificationCode: this.state.codeValue,
             },
-            (error, v) => {
+            (error: any, v) => {
                 console.warn(error);
                 if (error) {
                     this.setState({
                         codeSending: false,
-                        codeError: error.errorDescription!!,
+                        codeError: error.description,
                     });
                 } else {
                     // Ignore. Should be redirect to completion page.

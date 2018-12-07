@@ -9,8 +9,6 @@ export function XFormField2(props: { children: Function; field: string }) {
                     throw Error('Unable to find form!');
                 }
 
-                console.log(form);
-
                 const errors = form.validated.filter(
                     ([fieldName]: any) => fieldName === props.field,
                 );

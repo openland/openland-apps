@@ -68,6 +68,15 @@ class XFormController extends React.PureComponent<
     }
 
     clientValidation = (props: any) => {
+        if (
+            !(
+                this.props.store.export().fields &&
+                this.props.store.export().fields.input
+            )
+        ) {
+            return [];
+        }
+
         const inputData = props.store.data.fields.input;
         const inputValidate = props.validate.input;
 
@@ -98,24 +107,31 @@ class XFormController extends React.PureComponent<
     };
 
     componentWillReceiveProps(nextProps: XFormControllerProps) {
-        const previousTouched = this.contextValue.touched;
-        const prevFields = this.props.store.export().fields;
-        const nextFields = nextProps.store.export().fields;
-        const prevInputFields = prevFields.input;
-        const nextInputFields = nextFields.input;
+        let nextTouched: any[] = [];
+        if (
+            this.props.store.export().fields &&
+            this.props.store.export().fields.input
+        ) {
+            const previousTouched = this.contextValue.touched;
+            const prevFields = this.props.store.export().fields;
+            const nextFields = nextProps.store.export().fields;
+            const prevInputFields = prevFields.input;
+            const nextInputFields = nextFields.input;
 
-        const nextTouched = [
-            ...previousTouched,
-            ...Object.keys(nextInputFields)
-                .filter(fieldName => {
-                    return (
-                        previousTouched.indexOf(`input.${fieldName}`) === -1 &&
-                        nextInputFields[fieldName] !==
-                            prevInputFields[fieldName]
-                    );
-                })
-                .map(fieldName => `input.${fieldName}`),
-        ];
+            nextTouched = [
+                ...previousTouched,
+                ...Object.keys(nextInputFields)
+                    .filter(fieldName => {
+                        return (
+                            previousTouched.indexOf(`input.${fieldName}`) ===
+                                -1 &&
+                            nextInputFields[fieldName] !==
+                                prevInputFields[fieldName]
+                        );
+                    })
+                    .map(fieldName => `input.${fieldName}`),
+            ];
+        }
 
         if (this.props.store !== nextProps.store) {
             this.contextValue = {
@@ -130,6 +146,20 @@ class XFormController extends React.PureComponent<
     }
 
     private submit = async (action?: (data: any) => any) => {
+        let clientValidationFailed = false;
+        if (
+            this.props.store.export().fields &&
+            this.props.store.export().fields.input
+        ) {
+            this.contextValue.touched = Object.keys(
+                this.props.store.export().fields.input,
+            ).map((fieldName: string) => `input.${fieldName}`);
+
+            clientValidationFailed =
+                this.contextValue.validated.filter(
+                    ([first, second]: any) => second.length,
+                ).length !== 0;
+        }
         if (this._isLoading) {
             return;
         }
@@ -143,18 +173,21 @@ class XFormController extends React.PureComponent<
         this.setState({ loading: true, error: undefined });
         let act = action || this.props.defaultAction;
         try {
-            await act(data);
-            if (this.props.autoClose) {
-                if (this.props.modal) {
-                    if (typeof this.props.autoClose === 'number') {
-                        delay(this.props.autoClose).then(
-                            this.props.modal.close,
-                        );
-                    } else {
-                        this.props.modal.close();
+            if (!clientValidationFailed) {
+                await act(data);
+                if (this.props.autoClose) {
+                    if (this.props.modal) {
+                        if (typeof this.props.autoClose === 'number') {
+                            delay(this.props.autoClose).then(
+                                this.props.modal.close,
+                            );
+                        } else {
+                            this.props.modal.close();
+                        }
                     }
                 }
             }
+
             this.setState({ loading: false, error: undefined });
             if (this.props.resetAfterSubmit) {
                 this.props.store.reset();

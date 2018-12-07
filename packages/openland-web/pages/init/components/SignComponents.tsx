@@ -770,7 +770,7 @@ type ActivationCodeProps = {
     resendCodeClick: (event?: React.MouseEvent<any>) => void;
     codeError: string;
     emailSendedTo?: string;
-    codeChanged: (value: string) => void;
+    codeChanged: (value: string, cb: () => void) => void;
     codeSending: boolean;
     codeValue: string;
     loginCodeStart: (event?: React.MouseEvent<any>) => void;
@@ -790,7 +790,7 @@ export const WebSignUpActivationCode = ({
         <XForm
             defaultData={{
                 input: {
-                    code: '',
+                    code: codeValue,
                 },
             }}
             validate={{
@@ -803,8 +803,10 @@ export const WebSignUpActivationCode = ({
                     ],
                 },
             }}
-            defaultAction={() => {
-                //
+            defaultAction={({ input: { code } }) => {
+                codeChanged(code, () => {
+                    loginCodeStart();
+                });
             }}
             defaultLayout={false}
         >
@@ -829,6 +831,7 @@ export const WebSignUpActivationCode = ({
                                 onEnter={loginCodeStart}
                             />
                             {showError && <XFormError field="input.code" />}
+                            {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
                 </XFormField2>
@@ -854,12 +857,13 @@ export const WebSignUpActivationCode = ({
                             style="ghost"
                             text={InitTexts.auth.back}
                         />
-                        <XButton
-                            onClick={loginCodeStart}
-                            size="large"
+                        <XFormSubmit
+                            dataTestId="continue-button"
                             style="primary"
                             loading={codeSending}
-                            text={InitTexts.auth.complete}
+                            size="large"
+                            alignSelf="center"
+                            text={InitTexts.auth.continue}
                         />
                     </XHorizontal>
                 </XVertical>
@@ -882,7 +886,7 @@ export const RoomActivationCode = ({
         <XForm
             defaultData={{
                 input: {
-                    code: '',
+                    code: codeValue,
                 },
             }}
             validate={{
@@ -895,8 +899,10 @@ export const RoomActivationCode = ({
                     ],
                 },
             }}
-            defaultAction={() => {
-                //
+            defaultAction={({ input: { code } }) => {
+                codeChanged(code, () => {
+                    loginCodeStart();
+                });
             }}
             defaultLayout={false}
         >
@@ -921,6 +927,7 @@ export const RoomActivationCode = ({
                                 onEnter={loginCodeStart}
                             />
                             {showError && <XFormError field="input.code" />}
+                            {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
                 </XFormField2>
@@ -947,12 +954,13 @@ export const RoomActivationCode = ({
                             style="ghost"
                             text={InitTexts.auth.back}
                         />
-                        <XButton
-                            onClick={loginCodeStart}
-                            size="large"
+                        <XFormSubmit
+                            dataTestId="continue-button"
                             style="primary"
                             loading={codeSending}
-                            text={InitTexts.auth.complete}
+                            size="large"
+                            alignSelf="center"
+                            text={InitTexts.auth.continue}
                         />
                     </XHorizontal>
                 </XVertical>
@@ -967,7 +975,7 @@ export const RoomActivationCode = ({
 type CreateWithEmailProps = {
     signin: boolean;
     emailError: string;
-    emailChanged: (value: string) => void;
+    emailChanged: (value: string, cb: () => void) => void;
     emailValue: string;
     loginEmailStart: () => void;
     emailSending: boolean;
@@ -985,7 +993,7 @@ export const RoomCreateWithEmail = ({
         <XForm
             defaultData={{
                 input: {
-                    email: '',
+                    email: emailValue,
                 },
             }}
             validate={{
@@ -998,8 +1006,10 @@ export const RoomCreateWithEmail = ({
                     ],
                 },
             }}
-            defaultAction={() => {
-                //
+            defaultAction={({ input: { email } }) => {
+                emailChanged(email, () => {
+                    loginEmailStart();
+                });
             }}
             defaultLayout={false}
         >
@@ -1022,17 +1032,19 @@ export const RoomCreateWithEmail = ({
                                 onEnter={loginEmailStart}
                             />
                             {showError && <XFormError field="input.email" />}
+                            {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
                 </XFormField2>
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20} marginBottom={84} width={280}>
                 <XVertical alignItems="center">
-                    <XButton
-                        onClick={loginEmailStart}
+                    <XFormSubmit
+                        dataTestId="continue-button"
                         style="primary"
-                        size="large"
                         loading={emailSending}
+                        size="large"
+                        alignSelf="center"
                         text={InitTexts.auth.continue}
                     />
                 </XVertical>
@@ -1044,14 +1056,17 @@ export const RoomCreateWithEmail = ({
 export const WebSignUpCreateWithEmail = ({
     signin,
     emailError,
+    emailChanged,
+    emailValue,
     loginEmailStart,
     emailSending,
 }: CreateWithEmailProps) => {
+    console.log(emailError);
     return (
         <XForm
             defaultData={{
                 input: {
-                    email: '',
+                    email: emailValue,
                 },
             }}
             validate={{
@@ -1064,8 +1079,10 @@ export const WebSignUpCreateWithEmail = ({
                     ],
                 },
             }}
-            defaultAction={() => {
-                //
+            defaultAction={({ input: { email } }) => {
+                emailChanged(email, () => {
+                    loginEmailStart();
+                });
             }}
             defaultLayout={false}
         >
@@ -1086,21 +1103,21 @@ export const WebSignUpCreateWithEmail = ({
                                 type="email"
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
-                                onEnter={loginEmailStart}
                             />
                             {showError && <XFormError field="input.email" />}
+                            {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
                 </XFormField2>
             </ButtonsWrapper>
             <ButtonsWrapper marginTop={20}>
                 <XVertical alignItems="center">
-                    <XButton
-                        onClick={loginEmailStart}
+                    <XFormSubmit
+                        dataTestId="continue-button"
                         style="primary"
+                        loading={emailSending}
                         size="large"
                         alignSelf="center"
-                        loading={emailSending}
                         text={InitTexts.auth.continue}
                     />
                 </XVertical>
