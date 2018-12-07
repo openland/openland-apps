@@ -300,6 +300,7 @@ const MainContent = Glamorous.div({
 });
 
 interface SignContainerProps extends HeaderProps {
+    showTerms?: boolean;
     signin?: boolean;
     children?: any;
 }
