@@ -58,39 +58,54 @@ function normalizePath(src: string): string {
 export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChildProps>): React.ComponentType<NavigableParentProps<T>> {
 
     // Actionable component
-    let Actionable = class ActionableComponent extends React.Component<NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }> {
-        resolveIsActive() {
-            if (this.props.active !== undefined && this.props.active !== null) {
-                return this.props.active as boolean; // as boolean for simplifying derived types
+    let Actionable = class ActionableComponent extends React.PureComponent<NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }, { active: boolean }> {
+
+        constructor(props: NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }) {
+            super(props);
+            this.state = { active: this.resolveIsActive(props) };
+        }
+
+        componentWillReceiveProps(nextProps: NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }) {
+            if (this.props !== nextProps) {
+                this.setState({ active: this.resolveIsActive(nextProps) });
             }
-            if (this.props.path) {
-                let ncurrent = normalizePath(this.props.__router.path);
+        }
+
+        resolveIsActive(props: NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }) {
+            if (props.enabled === false) {
+                return false;
+            }
+            if (props.active !== undefined && props.active !== null) {
+                return props.active as boolean; // as boolean for simplifying derived types
+            }
+            if (props.path) {
+                let ncurrent = normalizePath(props.__router.path);
                 let ntarget = undefined;
-                if (typeof(this.props.path) === 'string') {
-                    ntarget = normalizePath(this.props.path);
+                if (typeof (props.path) === 'string') {
+                    ntarget = normalizePath(props.path);
                 }
-                
-                if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && this.props.activateForSubpaths)) {
+
+                if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && props.activateForSubpaths)) {
                     return true;
                 }
-            } else if (this.props.query) {
-                return this.props.__router.query[this.props.query.field] === this.props.query.value;
+            } else if (props.query) {
+                return props.__router.query[props.query.field] === props.query.value;
             }
             return false;
         }
 
         onClick: React.MouseEventHandler<any> = (e) => {
-            const { 
-                __router, 
+            const {
+                __router,
                 __modal,
-                path, 
-                query, 
-                replace, 
-                anchor, 
-                enabled, 
-                onClick, 
-                autoClose, 
-                href 
+                path,
+                query,
+                replace,
+                anchor,
+                enabled,
+                onClick,
+                autoClose,
+                href
             } = this.props;
 
             // Anchors are handled by default - no need to preventDefault
@@ -134,7 +149,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 if (__router) {
                     if (path) {
                         console.warn(path);
-                        if (typeof(path) === 'string') {
+                        if (typeof (path) === 'string') {
                             __router.push(path);
                         }
                     } else if (query) {
@@ -157,17 +172,17 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
         render() {
             let linkHref = '#';
             let target = undefined;
-            let isActive = this.resolveIsActive();
+            let isActive = this.state.active;
 
             // Resolving Url
-            if (typeof(this.props.anchor) === 'string') {
+            if (typeof (this.props.anchor) === 'string') {
                 linkHref = this.props.anchor!;
-            } else if (typeof(this.props.path) === 'string') {
+            } else if (typeof (this.props.path) === 'string') {
                 linkHref = this.props.__router.resolveLink(this.props.path);
             } else if (this.props.query) {
                 let linkPath = resolveActionPath(this.props, this.props.__router);
                 linkHref = this.props.__router.resolveLink(linkPath);
-            } else if (typeof(this.props.href) === 'string') {
+            } else if (typeof (this.props.href) === 'string') {
                 linkHref = this.props.href!!;
                 target = '_blank';
             }
@@ -175,7 +190,6 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             // Resolving state
             if (this.props.enabled === false) {
                 linkHref = '#';
-                isActive = false;
             }
 
             // Split 

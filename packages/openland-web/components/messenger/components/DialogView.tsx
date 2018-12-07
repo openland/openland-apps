@@ -18,210 +18,216 @@ interface DialogViewProps {
     onSelect?: () => void;
 }
 
-const DialogViewInner = (props: DialogViewProps) => {
-    let dialog = props.item;
-    let isPrivate = props.item.kind === 'PRIVATE';
-    return (
-        <XLink2
-            ref={props.handleRef}
-            path={'/mail/' + dialog.key}
-            height={72}
-            flexDirection="row"
-            paddingLeft={16}
-            paddingTop={4}
-            paddingBottom={4}
-            minWidth={0}
-            alignItems="center"
-            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
-            selectedBackgroundColor="#4596e1"
-            selectedHoverBackgroundColor="#4596e1"
-        >
-            <XAvatar
-                style={
-                    dialog.kind === 'INTERNAL'
-                        ? 'organization'
-                        : dialog.kind === 'GROUP'
-                            ? 'group'
-                            : dialog.kind === 'PUBLIC'
-                                ? 'room'
-                                : dialog.kind === 'PRIVATE'
-                                    ? 'user'
-                                    : undefined
-                }
-                objectName={dialog.title}
-                objectId={dialog.flexibleId}
-                online={dialog.online}
-                cloudImageUuid={dialog.photo}
-            />
-            <XView
-                flexDirection="column"
-                flexGrow={1}
-                flexShrink={1}
-                paddingLeft={12}
-                paddingRight={16}
+class DialogViewInner extends React.Component<DialogViewProps> {
+    shouldComponentUpdate(nextProps: DialogViewProps) {
+        return nextProps.item !== this.props.item;
+    }
+    render() {
+        let props = this.props;
+        let dialog = props.item;
+        let isPrivate = props.item.kind === 'PRIVATE';
+        return (
+            <XLink2
+                ref={props.handleRef}
+                path={'/mail/' + dialog.key}
+                height={72}
+                flexDirection="row"
+                paddingLeft={16}
+                paddingTop={4}
+                paddingBottom={4}
                 minWidth={0}
+                alignItems="center"
+                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                selectedBackgroundColor="#4596e1"
+                selectedHoverBackgroundColor="#4596e1"
             >
+                <XAvatar
+                    style={
+                        dialog.kind === 'INTERNAL'
+                            ? 'organization'
+                            : dialog.kind === 'GROUP'
+                                ? 'group'
+                                : dialog.kind === 'PUBLIC'
+                                    ? 'room'
+                                    : dialog.kind === 'PRIVATE'
+                                        ? 'user'
+                                        : undefined
+                    }
+                    objectName={dialog.title}
+                    objectId={dialog.flexibleId}
+                    online={dialog.online}
+                    cloudImageUuid={dialog.photo}
+                />
                 <XView
-                    flexDirection="row"
-                    flexGrow={1}
-                    flexShrink={0}
-                    minWidth={0}
-                    marginBottom={3}
-                >
-                    <XView
-                        flexGrow={1}
-                        flexShrink={1}
-                        minWidth={0}
-                        fontSize={14}
-                        fontWeight="600"
-                        lineHeight="18px"
-                        color="#000"
-                        selectedColor="#fff"
-                        overflow="hidden"
-                        whiteSpace="nowrap"
-                        textOverflow="ellipsis"
-                    >
-                        {dialog.title}
-                    </XView>
-                    {dialog.date && (
-                        <XView
-                            height={18}
-                            color="rgba(0, 0, 0, 0.3)"
-                            selectedColor="rgba(255, 255, 255, 0.8)"
-                            marginLeft={5}
-                            fontSize={12}
-                            fontWeight="600"
-                            lineHeight="18px"
-                            whiteSpace="nowrap"
-                        >
-                            <XDate
-                                value={dialog.date.toString()}
-                                format="datetime_short"
-                            />
-                        </XView>
-                    )}
-                </XView>
-                <XView
-                    flexDirection="row"
-                    minWidth={0}
+                    flexDirection="column"
                     flexGrow={1}
                     flexShrink={1}
-                    color="rgba(0, 0, 0, 0.5)"
-                    selectedColor="#fff"
+                    paddingLeft={12}
+                    paddingRight={16}
+                    minWidth={0}
                 >
                     <XView
-                        height={34}
+                        flexDirection="row"
+                        flexGrow={1}
+                        flexShrink={0}
+                        minWidth={0}
+                        marginBottom={3}
+                    >
+                        <XView
+                            flexGrow={1}
+                            flexShrink={1}
+                            minWidth={0}
+                            fontSize={14}
+                            fontWeight="600"
+                            lineHeight="18px"
+                            color="#000"
+                            selectedColor="#fff"
+                            overflow="hidden"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                        >
+                            {dialog.title}
+                        </XView>
+                        {dialog.date && (
+                            <XView
+                                height={18}
+                                color="rgba(0, 0, 0, 0.3)"
+                                selectedColor="rgba(255, 255, 255, 0.8)"
+                                marginLeft={5}
+                                fontSize={12}
+                                fontWeight="600"
+                                lineHeight="18px"
+                                whiteSpace="nowrap"
+                            >
+                                <XDate
+                                    value={dialog.date.toString()}
+                                    format="datetime_short"
+                                />
+                            </XView>
+                        )}
+                    </XView>
+                    <XView
+                        flexDirection="row"
+                        minWidth={0}
                         flexGrow={1}
                         flexShrink={1}
-                        flexBasis={0}
-                        minWidth={0}
-                        fontSize={13}
-                        fontWeight="400"
-                        lineHeight="17px"
-                        overflow="hidden"
+                        color="rgba(0, 0, 0, 0.5)"
+                        selectedColor="#fff"
                     >
-                        <XViewSelectedContext.Consumer>
-                            {active => (
-                                <>
-                                    {dialog.typing || (
-                                        <>
-                                            {!!dialog.message &&
-                                                !dialog.fileMeta && (
-                                                    <span>
-                                                        {dialog.isOut
-                                                            ? 'You:'
-                                                            : isPrivate
-                                                                ? null
-                                                                : dialog.sender +
-                                                                ':'}{' '}
-                                                        {emojify(
-                                                            dialog.message,
-                                                            {
-                                                                style: {
-                                                                    height: 13,
-                                                                    backgroundImage:
-                                                                        'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                        <XView
+                            height={34}
+                            flexGrow={1}
+                            flexShrink={1}
+                            flexBasis={0}
+                            minWidth={0}
+                            fontSize={13}
+                            fontWeight="400"
+                            lineHeight="17px"
+                            overflow="hidden"
+                        >
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <>
+                                        {dialog.typing || (
+                                            <>
+                                                {!!dialog.message &&
+                                                    !dialog.fileMeta && (
+                                                        <span>
+                                                            {dialog.isOut
+                                                                ? 'You:'
+                                                                : isPrivate
+                                                                    ? null
+                                                                    : dialog.sender +
+                                                                    ':'}{' '}
+                                                            {emojify(
+                                                                dialog.message,
+                                                                {
+                                                                    style: {
+                                                                        height: 13,
+                                                                        backgroundImage:
+                                                                            'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                                                                    },
                                                                 },
-                                                            },
-                                                        )}
+                                                            )}
+                                                        </span>
+                                                    )}
+                                                {!dialog.message &&
+                                                    !dialog.fileMeta && (
+                                                        <span>
+                                                            {dialog.isOut
+                                                                ? 'You:'
+                                                                : isPrivate
+                                                                    ? null
+                                                                    : dialog.sender +
+                                                                    ':'}{' '}
+                                                            <ForwardIcon
+                                                                className={
+                                                                    (active
+                                                                        ? iconActiveClass
+                                                                        : iconClass) +
+                                                                    ' ' +
+                                                                    documentIcon
+                                                                }
+                                                            />
+                                                            Forward
                                                     </span>
-                                                )}
-                                            {!dialog.message &&
-                                                !dialog.fileMeta && (
-                                                    <span>
-                                                        {dialog.isOut
-                                                            ? 'You:'
-                                                            : isPrivate
-                                                                ? null
-                                                                : dialog.sender +
-                                                                ':'}{' '}
-                                                        <ForwardIcon
-                                                            className={
-                                                                (active
-                                                                    ? iconActiveClass
-                                                                    : iconClass) +
-                                                                ' ' +
-                                                                documentIcon
-                                                            }
-                                                        />
-                                                        Forward
+                                                    )}
+                                                {dialog.fileMeta &&
+                                                    dialog.fileMeta.isImage && (
+                                                        <span>
+                                                            {dialog.isOut
+                                                                ? 'You:'
+                                                                : isPrivate
+                                                                    ? null
+                                                                    : dialog.sender +
+                                                                    ':'}{' '}
+                                                            <PhotoIcon
+                                                                className={
+                                                                    active
+                                                                        ? iconActiveClass
+                                                                        : iconClass
+                                                                }
+                                                            />
+                                                            Image
                                                     </span>
-                                                )}
-                                            {dialog.fileMeta &&
-                                                dialog.fileMeta.isImage && (
-                                                    <span>
-                                                        {dialog.isOut
-                                                            ? 'You:'
-                                                            : isPrivate
-                                                                ? null
-                                                                : dialog.sender +
-                                                                ':'}{' '}
-                                                        <PhotoIcon
-                                                            className={
-                                                                active
-                                                                    ? iconActiveClass
-                                                                    : iconClass
-                                                            }
-                                                        />
-                                                        Image
+                                                    )}
+                                                {dialog.fileMeta &&
+                                                    !dialog.fileMeta.isImage && (
+                                                        <span>
+                                                            {dialog.isOut
+                                                                ? 'You:'
+                                                                : isPrivate
+                                                                    ? null
+                                                                    : dialog.sender +
+                                                                    ':'}{' '}
+                                                            <FileIcon
+                                                                className={
+                                                                    (active
+                                                                        ? iconActiveClass
+                                                                        : iconClass) +
+                                                                    ' ' +
+                                                                    documentIcon
+                                                                }
+                                                            />
+                                                            Document
                                                     </span>
-                                                )}
-                                            {dialog.fileMeta &&
-                                                !dialog.fileMeta.isImage && (
-                                                    <span>
-                                                        {dialog.isOut
-                                                            ? 'You:'
-                                                            : isPrivate
-                                                                ? null
-                                                                : dialog.sender +
-                                                                ':'}{' '}
-                                                        <FileIcon
-                                                            className={
-                                                                (active
-                                                                    ? iconActiveClass
-                                                                    : iconClass) +
-                                                                ' ' +
-                                                                documentIcon
-                                                            }
-                                                        />
-                                                        Document
-                                                    </span>
-                                                )}
-                                        </>
-                                    )}
-                                </>
-                            )}
-                        </XViewSelectedContext.Consumer>
-                    </XView>
-                    {dialog.unread > 0 && (
-                        <XView paddingLeft={12} alignSelf="center">
-                            <XCounter big={true} count={dialog.unread} />
+                                                    )}
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </XViewSelectedContext.Consumer>
                         </XView>
-                    )}
+                        {dialog.unread > 0 && (
+                            <XView paddingLeft={12} alignSelf="center">
+                                <XCounter big={true} count={dialog.unread} />
+                            </XView>
+                        )}
+                    </XView>
                 </XView>
-            </XView>
-        </XLink2>
-    );
+            </XLink2>
+        );
+    }
 };
 
 const DialogViewCompactInner = (props: DialogViewProps) => {
