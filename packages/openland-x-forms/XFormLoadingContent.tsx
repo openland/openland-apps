@@ -3,12 +3,15 @@ import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from 'openland-x/basics/Flex';
 import { XFormContext } from './XFormContext';
 
-const DefaultContainer = Glamorous.div<{ loading: boolean } & XFlexStyles>([(props) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    opacity: props.loading ? 0.5 : 1,
-    pointerEvents: props.loading ? 'none' : 'auto'
-}), applyFlex]);
+const DefaultContainer = Glamorous.div<{ loading: boolean } & XFlexStyles>([
+    props => ({
+        display: 'flex',
+        flexDirection: 'column',
+        opacity: props.loading ? 0.5 : 1,
+        pointerEvents: props.loading ? 'none' : 'auto',
+    }),
+    applyFlex,
+]);
 
 export function XFormLoadingContent(props: XFlexStyles & { children?: any }) {
     return (

@@ -8,7 +8,10 @@ import { storeMerge } from 'openland-y-store/utils/storeMerge';
 import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';
-import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
+import {
+    XModalContext,
+    XModalContextValue,
+} from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
 import { delay } from 'openland-y-utils/timer';
 
@@ -35,11 +38,16 @@ interface XFormControllerProps {
 
 const FormContainer = Glamorous.form({
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
 });
 
-class XFormController extends React.PureComponent<XFormControllerProps & { modal?: XModalContextValue, autoClose?: boolean | number }, { loading: boolean, error?: string }> {
-
+class XFormController extends React.PureComponent<
+    XFormControllerProps & {
+        modal?: XModalContextValue;
+        autoClose?: boolean | number;
+    },
+    { loading: boolean; error?: string }
+> {
     // Keep local copy since setState is async
     private _isLoading = false;
     private contextValue: XFormContextValue;
@@ -51,7 +59,7 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             store: this.props.store,
             submit: (action?: (data: any) => any) => {
                 return this.submit(action);
-            }
+            },
         };
     }
 
@@ -61,7 +69,7 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
                 store: nextProps.store,
                 submit: (action?: (data: any) => any) => {
                     return this.submit(action);
-                }
+                },
             };
         }
     }
@@ -84,7 +92,9 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             if (this.props.autoClose) {
                 if (this.props.modal) {
                     if (typeof this.props.autoClose === 'number') {
-                        delay(this.props.autoClose).then(this.props.modal.close);
+                        delay(this.props.autoClose).then(
+                            this.props.modal.close,
+                        );
                     } else {
                         this.props.modal.close();
                     }
@@ -109,20 +119,22 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
             // writeValue can throw exception for wrong field name
             try {
                 this.props.store.writeValue('form.error', message);
-                this.props.store.writeValue('form.error_fields', fields.length !== 0);
+                this.props.store.writeValue(
+                    'form.error_fields',
+                    fields.length !== 0,
+                );
                 for (let f of fields) {
                     this.props.store.writeValue('errors.' + f.key, f.messages);
                 }
             } catch (e) {
                 console.warn(e);
             }
-
         } finally {
             this._isLoading = false;
             this.props.store.writeValue('form.loading', false);
             this.props.store.writeValue('form.enabled', true);
         }
-    }
+    };
 
     render() {
         if (LOGGING) {
@@ -151,17 +163,16 @@ class XFormController extends React.PureComponent<XFormControllerProps & { modal
 }
 
 export class XForm extends React.PureComponent<XFormProps> {
-
     private defaultData: any;
 
     constructor(props: XFormProps) {
         super(props);
         this.defaultData = {
-            fields: (this.props.defaultData || {}),
+            fields: this.props.defaultData || {},
             form: {
                 enabled: true,
-                loading: false
-            }
+                loading: false,
+            },
         };
     }
 
@@ -171,7 +182,7 @@ export class XForm extends React.PureComponent<XFormProps> {
                 <XStoreContext.Consumer>
                     {store => (
                         <XModalContext.Consumer>
-                            {(modal) => (
+                            {modal => (
                                 <XFormController
                                     staticData={this.props.staticData}
                                     defaultAction={this.props.defaultAction}
@@ -180,13 +191,14 @@ export class XForm extends React.PureComponent<XFormProps> {
                                     autoClose={this.props.autoClose}
                                     className={this.props.className}
                                     defaultLayout={this.props.defaultLayout}
-                                    resetAfterSubmit={this.props.resetAfterSubmit}
+                                    resetAfterSubmit={
+                                        this.props.resetAfterSubmit
+                                    }
                                 >
                                     {this.props.children}
                                 </XFormController>
                             )}
                         </XModalContext.Consumer>
-
                     )}
                 </XStoreContext.Consumer>
             </XStore>
