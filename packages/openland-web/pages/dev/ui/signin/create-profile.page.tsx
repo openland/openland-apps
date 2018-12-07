@@ -24,7 +24,6 @@ export default () => (
                         <RoomSignupContainer headerStyle={headerStyle}>
                             <CreateProfileFormInner
                                 roomView={true}
-                                usePhotoPrefill={true}
                                 prefill={{}}
                                 defaultAction={() => {
                                     //
@@ -55,7 +54,6 @@ export default () => (
                             <CreateProfileFormInner
                                 roomView={false}
                                 prefill={{}}
-                                usePhotoPrefill={true}
                                 defaultAction={() => {
                                     //
                                 }}
