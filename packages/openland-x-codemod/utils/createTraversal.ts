@@ -2,25 +2,26 @@ import * as t from '@babel/types';
 import { XStyleKeys } from '../../openland-x-styles/XStyles'; // Do not use absolute path
 import UUID from 'uuid/v4';
 import { VisitNodeObject, NodePath } from '@babel/traverse';
-import { generate2 } from './parse';
 
 export function createTraversal() {
     let isImported = false;
     let pageHasStyles = false;
     let body: t.Statement[] = [];
+    let pending: t.Statement[] = [];
     const traverseOptions: { JSXElement: VisitNodeObject<t.JSXElement>, Program: VisitNodeObject<t.Program> } = {
         Program: {
             enter(traversePath: NodePath<t.Program>) {
                 isImported = false;
                 pageHasStyles = false;
                 body = traversePath.node.body;
+                pending = [];
             },
             exit(traversePath: NodePath<t.Program>) {
                 if (!isImported && pageHasStyles) {
+                    for (let p of pending) {
+                        body.unshift(p);
+                    }
                     body.unshift(t.importDeclaration([t.importSpecifier(t.identifier('calculateStyles'), t.identifier('calculateStyles'))], t.stringLiteral('openland-x-styles/calculateStyles')));
-                    // console.log('start------');
-                    // console.log(generate2(traversePath.node));
-                    // console.log('end------');
                 }
             }
         },
@@ -73,7 +74,7 @@ export function createTraversal() {
                         key = key.replace('-', '_');
                     }
                     let uuid = 'style_' + key;
-                    body.unshift(
+                    pending.push(
                         t.variableDeclaration('var', [
                             t.variableDeclarator(
                                 t.identifier('___' + uuid),

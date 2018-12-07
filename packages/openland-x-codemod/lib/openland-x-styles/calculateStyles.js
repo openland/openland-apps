@@ -7,6 +7,7 @@ const base = glamor.css({
     display: 'flex'
 }).toString();
 function calculateStyles(styles, selected = false) {
+    let css = [base];
     let position = 'relative';
     let flexGrow = 0;
     let flexShrink = 0;
@@ -212,10 +213,6 @@ function calculateStyles(styles, selected = false) {
     if (styles.paddingRight !== undefined && styles.paddingRight !== null) {
         paddingRight = styles.paddingRight;
     }
-    //
-    // Resolve Class Names
-    //
-    let css = [base];
     if (flexGrow !== undefined) {
         let key = 'flex-grow: ' + flexGrow;
         if (!stylesCache.has(key)) {
