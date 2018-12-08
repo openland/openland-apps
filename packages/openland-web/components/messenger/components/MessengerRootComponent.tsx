@@ -19,7 +19,7 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
 import { UplaodCareUploading } from '../UploadCareUploading';
 import { withUserInfo } from '../../UserInfo';
-import { UserShort, SharedRoomKind } from 'openland-api/Types';
+import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../../../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
@@ -42,6 +42,7 @@ interface MessagesComponentState {
     loading: boolean;
     messages: ModelMessage[];
     hideChat: boolean;
+    postType: PostMessageType | null;
 }
 
 const DeleteMessageComponent = withDeleteMessage(props => {
@@ -121,7 +122,8 @@ class MessagesComponent
             hideInput: false,
             messages: [],
             loading: true,
-            hideChat: false
+            hideChat: false,
+            postType: null
         };
     }
 
@@ -230,10 +232,11 @@ class MessagesComponent
         });
     };
 
-    handleHideChat = (show: boolean) => {
+    handleHideChat = (show: boolean, postTipe: PostMessageType | null) => {
         this.setState({
-            hideChat: show
-        })
+            hideChat: show,
+            postType: postTipe
+        });
     }
 
     getMessages = () => {
@@ -255,6 +258,7 @@ class MessagesComponent
                     <CreatePostComponent
                         handleHideChat={this.handleHideChat}
                         conversationId={this.props.conversationId}
+                        postType={this.state.postType}
                     />
                 )}
                 {!this.state.hideChat && (

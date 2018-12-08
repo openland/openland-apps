@@ -8,6 +8,9 @@ import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
 import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
+import { XPopper } from 'openland-x/XPopper';
+import { XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
@@ -30,8 +33,8 @@ import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
 import { withOrganization } from '../../../../api/withOrganizationSimple';
-import { MessageFull } from 'openland-api/Types';
 import {
+    MessageFull,
     ReplyMessageVariables,
     ReplyMessage,
     SaveDraftMessageVariables,
@@ -39,6 +42,7 @@ import {
     MessageFull_mentions,
     SharedRoomKind,
     RoomMembers_members,
+    PostMessageType,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 
@@ -358,7 +362,7 @@ export interface MessageComposeComponentProps {
     onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
-    handleHideChat?: (show: boolean) => void;
+    handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
 }
 
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
@@ -416,6 +420,65 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
             isYou,
         };
     });
+};
+
+const PostButton = (props: { enabled?: boolean, handleHideChat?: (show: boolean, postType: PostMessageType | null) => void }) => {
+    let onClickHandler = props.enabled === false ? undefined : props.handleHideChat ? props.handleHideChat : undefined;
+
+    let enableProps = {
+        enabled: props.enabled === false,
+        disable: props.enabled === false
+    };
+
+    return (
+        <XPopper
+            placement="top"
+            arrow={null}
+            showOnHover={props.enabled !== false}
+            contentContainer={<XMenuVertical />}
+            content={
+                <>
+                    <XMenuItem
+                        style="gray"
+                        {...enableProps}
+                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.JOB_OPPORTUNITY)}
+                    >
+                        Job opportunity
+                    </XMenuItem>
+                    <XMenuItem
+                        style="gray"
+                        {...enableProps}
+                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.OFFICE_HOURS)}
+                    >
+                        Office hours
+                    </XMenuItem>
+                    <XMenuItem
+                        style="gray"
+                        {...enableProps}
+                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.REQUEST_FOR_STARTUPS)}
+                    >
+                        Request for startups
+                    </XMenuItem>
+                    <XMenuItem
+                        style="gray"
+                        {...enableProps}
+                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.BLANK)}
+                    >
+                        Blank post
+                    </XMenuItem>
+                </>
+            }
+        >
+            <AttachmentButton
+                {...enableProps}
+                onClick={() => onClickHandler && onClickHandler(true, PostMessageType.BLANK)}
+                className="document-button"
+            >
+                <PostIcon />
+                <span>Post</span>
+            </AttachmentButton>
+        </XPopper>
+    )
 };
 
 class MessageComposeComponentInner extends React.PureComponent<
@@ -972,21 +1035,12 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     <FileIcon />
                                     <span>Document</span>
                                 </AttachmentButton>
-                                <AttachmentButton
-                                    onClick={() =>
-                                        this.props.enabled === false
-                                            ? undefined
-                                            : this.props.handleHideChat
-                                                ? this.props.handleHideChat(true)
-                                                : undefined
-                                    }
-                                    enabled={this.props.enabled === false}
-                                    disable={this.props.enabled === false}
-                                    className="document-button"
-                                >
-                                    <PostIcon />
-                                    <span>Post</span>
-                                </AttachmentButton>
+                                {this.props.conversationType !== 'PRIVATE' && (
+                                    <PostButton
+                                        enabled={this.props.enabled}
+                                        handleHideChat={this.props.handleHideChat}
+                                    />
+                                )}
                                 <AttachmentButton
                                     query={
                                         this.props.enabled === false

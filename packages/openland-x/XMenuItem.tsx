@@ -10,7 +10,7 @@ import DropdownRoomIcon from './icons/ic-dropdown-channel.svg';
 import DropdownCommunityIcon from './icons/ic-dropdown-community.svg';
 import DropdownOrganizationIcon from './icons/ic-dropdown-organization.svg';
 
-type XMenuItemStyle = 'default' | 'danger';
+type XMenuItemStyle = 'default' | 'danger' | 'gray';
 
 interface XMenuItemProps extends XLinkProps {
     style?: XMenuItemStyle;
@@ -55,6 +55,13 @@ let XMenuItemColorStyles = styleResolver({
             '& svg *': {
                 fill: '#d75454'
             }
+        }
+    },
+    'gray': {
+        color: 'rgba(0, 0, 0, 0.8)',
+        '&:hover': {
+            color: 'rgba(0, 0, 0, 0.8)',
+            backgroundColor: '#f6f6f6'
         }
     }
 });

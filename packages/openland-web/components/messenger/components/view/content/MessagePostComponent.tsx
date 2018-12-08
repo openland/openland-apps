@@ -107,6 +107,7 @@ const RespondWrapper = Glamorous(XHorizontal)({
     '& > div': {
         opacity: 0.3,
         fontSize: 13,
+        lineHeight: 1.2,
         color: '#000'
     },
     '&.active > div': {
@@ -185,8 +186,66 @@ interface MessagePostComponentProps {
 }
 
 export class MessagePostComponent extends React.PureComponent<MessagePostComponentProps> {
+
+    respondRender = () => {
+        let { props } = this;
+        let { reactions } = props;
+
+        let respondUsers = reactions.filter(i => i.reaction === 'respondPost');
+        let likesUsers = reactions.filter(i => i.reaction === 'like');
+        let meLike = likesUsers.find(i => i.user.id === props.meId);
+
+        return (
+            <XHorizontal>
+                {respondUsers.length > 0 && (
+                    <RespondWrapper separator={2} alignItems="center">
+                        <ReplyIcon />
+                        <div>{respondUsers.length}</div>
+                    </RespondWrapper>
+                )}
+                {!likesUsers || likesUsers.length === 0 && (
+                    <SetLike messageId={props.messageId}>
+                        <RespondWrapper separator={2} alignItems="center" className="like">
+                            <ReactionIcon />
+                        </RespondWrapper>
+                    </SetLike>
+                )}
+                {likesUsers && likesUsers.length > 0 && !meLike && (
+                    <SetLike messageId={props.messageId}>
+                        <RespondWrapper separator={2} alignItems="center" className="like">
+                            <ReactionIcon />
+                            <div>{likesUsers.length}</div>
+                        </RespondWrapper>
+                    </SetLike>
+                )}
+                {likesUsers && likesUsers.length > 0 && meLike && (
+                    <UnsetLike messageId={props.messageId}>
+                        <RespondWrapper separator={2} alignItems="center" className="active like">
+                            <ReactionIcon />
+                            <div>{likesUsers.length}</div>
+                        </RespondWrapper>
+                    </UnsetLike>
+                )}
+            </XHorizontal>
+        );
+    }
+
     render() {
         let { props } = this;
+        let { reactions } = props;
+        let meRespond: any[] | boolean = reactions.filter(i => ((i.reaction === 'respondPost') && (i.user.id === props.meId)));
+        let meSender = false;
+
+        if (props.userId === props.meId) {
+            meSender = true;
+        }
+
+        if (meRespond.length === 0) {
+            meRespond = false
+        } else if (meRespond.length !== 0) {
+            meRespond = true
+        }
+
         let cover: MessageFull_alphaAttachments[] | MessageFull_alphaAttachments | null = null;
         let moreFiles: MessageFull_alphaAttachments[] | null = null;
 
@@ -199,12 +258,6 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                 moreFiles = props.alphaAttachments.filter(i => i.fileId !== (cover as MessageFull_alphaAttachments).fileId);
             }
         }
-
-        let { reactions } = props;
-
-        let respondUsers = reactions.filter(i => i.reaction === 'respondPost');
-        let likesUsers = reactions.filter(i => i.reaction === 'like');
-        let meLike = likesUsers.find(i => i.user.id === props.meId)
 
         return (
             <Wrapper flexGrow={1} separator={6}>
@@ -248,55 +301,38 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                     )}
                 </Root>
                 <XHorizontal justifyContent="space-between">
-                    {props.alphaButtons.map((i, j) => i && (
-                        <XHorizontal key={'post_buttons_group' + j} alignItems="center" separator={6}>
-                            {i.map(k => (
-                                <XHorizontal key={'post_button' + k.id} alignSelf="flex-start">
-                                    <RespondPost
-                                        messageId={props.messageId}
-                                        buttonId={k.id}
-                                        userId={props.userId}
-                                    >
-                                        <XButton
-                                            text={k.title}
-                                            style={k.style === 'DEFAULT' ? 'primary' : 'light'}
-                                        />
-                                    </RespondPost>
+                    {!meSender && (
+                        <>
+                            {!meRespond && props.alphaButtons.map((i, j) => i && (
+                                <XHorizontal key={'post_buttons_group' + j} alignItems="center" separator={6}>
+                                    {i.map(k => (
+                                        <XHorizontal key={'post_button' + k.id} alignSelf="flex-start">
+                                            <RespondPost
+                                                messageId={props.messageId}
+                                                buttonId={k.id}
+                                                userId={props.userId}
+                                            >
+                                                <XButton
+                                                    text={k.title}
+                                                    style={k.style === 'DEFAULT' ? 'primary' : 'light'}
+                                                />
+                                            </RespondPost>
+                                        </XHorizontal>
+                                    ))}
                                 </XHorizontal>
                             ))}
-                        </XHorizontal>
-                    ))}
-                    <XHorizontal separator={1} alignItems="center">
-                        {respondUsers.length > 0 && (
-                            <RespondWrapper separator={2} alignItems="center">
-                                <ReplyIcon />
-                                <div>{respondUsers.length}</div>
-                            </RespondWrapper>
-                        )}
-                        {!likesUsers || likesUsers.length === 0 && (
-                            <SetLike messageId={props.messageId}>
-                                <RespondWrapper separator={2} alignItems="center" className="like">
-                                    <ReactionIcon />
-                                </RespondWrapper>
-                            </SetLike>
-                        )}
-                        {likesUsers && likesUsers.length > 0 && !meLike && (
-                            <SetLike messageId={props.messageId}>
-                                <RespondWrapper separator={2} alignItems="center" className="like">
-                                    <ReactionIcon />
-                                    <div>{likesUsers.length}</div>
-                                </RespondWrapper>
-                            </SetLike>
-                        )}
-                        {likesUsers && likesUsers.length > 0 && meLike && (
-                            <UnsetLike messageId={props.messageId}>
-                                <RespondWrapper separator={2} alignItems="center" className="active like">
-                                    <ReactionIcon />
-                                    <div>{likesUsers.length}</div>
-                                </RespondWrapper>
-                            </UnsetLike>
-                        )}
-                    </XHorizontal>
+                            {meRespond && (
+                                <XHorizontal alignItems="center" alignSelf="flex-start">
+                                    <XButton
+                                        text="Message"
+                                        path={'/mail/' + props.userId}
+                                        style="primary"
+                                    />
+                                </XHorizontal>
+                            )}
+                        </>
+                    )}
+                    {this.respondRender()}
                 </XHorizontal>
             </Wrapper>
         );

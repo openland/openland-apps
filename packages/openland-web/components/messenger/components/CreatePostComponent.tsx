@@ -20,6 +20,61 @@ import PhotoIcon from './icons/ic-photo-2.svg';
 import FileIcon from './icons/ic-file-3.svg';
 import UloadIc from './icons/file-upload.svg';
 
+const postTexts = {
+    "BLANK": {
+        header: 'Blank post',
+        titlePlaceholder: 'Title',
+        text: '',
+        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+    },
+    "JOB_OPPORTUNITY": {
+        header: 'Job opportunity',
+        titlePlaceholder: 'Job title or opportunity',
+        text: `💸Salary range $XXX-XXX
+
+🥇🏆About company
+    • Short description
+    • Company size
+    • Funding, progress to date...
+    • etc
+
+🔨🔧🎨Responsibilities
+    • A
+    • B 
+    • C
+
+🎯💡Qualifications
+    • A
+    • B 
+    • C
+
+🎮🧁 🍩Benefits
+    • A
+    • B 
+    • C
+        `,
+        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+    },
+    "OFFICE_HOURS": {
+        header: 'Office hours',
+        titlePlaceholder: 'Office hours with XX',
+        text: 'About you / expertise areas \n 🍀Who can apply \n 💌📞📧⏰PAvailability / preferred way to connect',
+        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+    },
+    "REQUEST_FOR_STARTUPS": {
+        header: 'Request for startups',
+        titlePlaceholder: 'XX — Request for startups',
+        text: `💸Average check
+🎯Investment process and average decision time
+⏰Preferred moment to invest / criteria
+🌎Markets / geographies / keywords
+🧲Website / links
+💌📞📧Preferred way to be contacted (intros, directly, etc.)
+        `,
+        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+    }
+}
+
 const Wrapper = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
@@ -254,9 +309,10 @@ const DropAreaSubtitle = Glamorous.div({
 });
 
 interface CreatePostComponentProps {
-    handleHideChat: (hide: boolean) => void;
+    handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
     conversationId: string;
-    sendPost: MutationFunc<SendPostMessage, Partial<SendPostMessageVariables>>
+    sendPost: MutationFunc<SendPostMessage, Partial<SendPostMessageVariables>>;
+    postType: PostMessageType | null;
 }
 
 interface File {
@@ -280,9 +336,12 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
     constructor(props: CreatePostComponentProps) {
         super(props);
 
+        let postType = props.postType || 'BLANK';
+        const textValue = postTexts[postType].text;
+
         this.state = {
             title: '',
-            text: '',
+            text: textValue,
             dragOn: false,
             dragUnder: false,
             uploadProgress: null,
@@ -457,17 +516,19 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
             attachments = [...files].map(i => i.uuid);
         }
 
-        props.sendPost({
-            variables: {
-                conversationId: props.conversationId,
-                title: title,
-                text: text,
-                attachments: attachments,
-                postType: PostMessageType.BLANK
-            }
-        });
-
-        props.handleHideChat(false);
+        if (title.trim().length > 0 && text.trim().length > 0) {
+            props.sendPost({
+                variables: {
+                    conversationId: props.conversationId,
+                    title: title,
+                    text: text,
+                    attachments: attachments,
+                    postType: props.postType ? props.postType : PostMessageType.BLANK
+                }
+            });
+    
+            props.handleHideChat(false, null);
+        }
     }
 
     componentDidMount() {
@@ -481,6 +542,12 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
     }
 
     render() {
+        let postType = this.props.postType || 'BLANK';
+
+        const header = postTexts[postType].header;
+        const titlePlaceholder = postTexts[postType].titlePlaceholder;
+        const textPlaceholder = postTexts[postType].textPlaceholder;
+
         const { uploadProgress, files, cover } = this.state;
         let moreFiles: File[] | null = null;
         if (files && files.size > 0) {
@@ -491,19 +558,19 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
                 <Header alignItems="center" justifyContent="space-between">
                     <XHorizontal>
                         <PostIcon />
-                        <HeadTitle>Blank post</HeadTitle>
+                        <HeadTitle>{header}</HeadTitle>
                     </XHorizontal>
-                    <CloseIcon onClick={() => this.props.handleHideChat(false)} />
+                    <CloseIcon onClick={() => this.props.handleHideChat(false, null)} />
                 </Header>
                 <Body>
                     <XVertical maxWidth={700} flexGrow={1}>
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
                                 <PostTitle>
-                                    <XInput placeholder="Title" onChange={this.titleChange} />
+                                    <XInput placeholder={titlePlaceholder} onChange={this.titleChange} />
                                 </PostTitle>
                                 <PostText flexGrow={1}>
-                                    <XTextArea placeholder="Write your post here. You can share an opportunity, ask for help, or describe an offer." onChange={this.textChange} />
+                                    <XTextArea placeholder={textPlaceholder} value={this.state.text} onChange={this.textChange} />
                                 </PostText>
                             </XVertical>
                             {cover && (
@@ -586,7 +653,8 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
 export const CreatePostComponent = withSendPostMessage(props => (
     <CreatePostRoot
         {...props}
+        postType={(props as any).postType}
         handleHideChat={(props as any).handleHideChat}
         conversationId={(props as any).conversationId}
     />
-)) as React.ComponentType<{ handleHideChat: (hide: boolean) => void, conversationId: string }>
+)) as React.ComponentType<{ handleHideChat: (hide: boolean, postType: PostMessageType | null) => void, conversationId: string, postType: PostMessageType | null }>
