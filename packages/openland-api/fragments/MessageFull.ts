@@ -73,6 +73,11 @@ export const MessageFull = gql`
         user {
             id
             name
+            photo
+            primaryOrganization {
+                name
+                id
+            }
         }
         reaction
     }
@@ -202,6 +207,11 @@ export const RoomMessageFull = gql`
         user {
             id
             name
+            photo
+            primaryOrganization {
+                name
+                id
+            }
         }
         reaction
     }

@@ -927,10 +927,18 @@ export interface RoomHistory_messages_reply {
   fileMetadata: RoomHistory_messages_reply_fileMetadata | null;
 }
 
+export interface RoomHistory_messages_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  name: string;
+  id: string;
+}
+
 export interface RoomHistory_messages_reactions_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: RoomHistory_messages_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomHistory_messages_reactions {
@@ -4976,10 +4984,18 @@ export interface ConversationShort_AnonymousConversation_topMessage_reply {
   fileMetadata: ConversationShort_AnonymousConversation_topMessage_reply_fileMetadata | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  name: string;
+  id: string;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_reactions {
@@ -5250,10 +5266,18 @@ export interface ConversationShort_GroupConversation_topMessage_reply {
   fileMetadata: ConversationShort_GroupConversation_topMessage_reply_fileMetadata | null;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  name: string;
+  id: string;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_reactions {
@@ -5540,10 +5564,18 @@ export interface ConversationShort_ChannelConversation_topMessage_reply {
   fileMetadata: ConversationShort_ChannelConversation_topMessage_reply_fileMetadata | null;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  name: string;
+  id: string;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_reactions_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_reactions_user_primaryOrganization | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_reactions {
@@ -5842,10 +5874,18 @@ export interface MessageFull_reply {
   fileMetadata: MessageFull_reply_fileMetadata | null;
 }
 
+export interface MessageFull_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  name: string;
+  id: string;
+}
+
 export interface MessageFull_reactions_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: MessageFull_reactions_user_primaryOrganization | null;
 }
 
 export interface MessageFull_reactions {
@@ -6105,10 +6145,18 @@ export interface RoomMessageFull_reply {
   fileMetadata: RoomMessageFull_reply_fileMetadata | null;
 }
 
+export interface RoomMessageFull_reactions_user_primaryOrganization {
+  __typename: "Organization";
+  name: string;
+  id: string;
+}
+
 export interface RoomMessageFull_reactions_user {
   __typename: "User";
   id: string;
   name: string;
+  photo: string | null;
+  primaryOrganization: RoomMessageFull_reactions_user_primaryOrganization | null;
 }
 
 export interface RoomMessageFull_reactions {

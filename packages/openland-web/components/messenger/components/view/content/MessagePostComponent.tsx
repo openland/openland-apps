@@ -11,6 +11,10 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { XMutation } from 'openland-x/XMutation';
+import { XPopper } from 'openland-x/XPopper';
+import { XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { XAvatar } from 'openland-x/XAvatar';
 import { MessageTextComponent } from './MessageTextComponent';
 import { niceBytes } from '../../view/content/MessageFileComponent';
 import { withRespondPostMessage } from '../../../../../api/withRespondPostMessage';
@@ -173,6 +177,35 @@ const RespondPost = withRespondPostMessage(props => (
     userId: string;
 }>;
 
+const RespondUserWrapper = Glamorous(XMenuItem)({
+    height: 36
+});
+
+const RespondUserContent = Glamorous(XHorizontal)({
+    '& > a': {
+        height: 22
+    }
+});
+
+const RespondUserAvatar = Glamorous(XAvatar)({
+    width: 24,
+    height: 24
+});
+
+const RespondUserName = Glamorous.div({
+    fontSize: 12,
+    fontWeight: 600,
+    lineHeight: 1.67,
+    color: '#000'
+});
+
+const RespondUserCompany = Glamorous.div({
+    fontSize: 12,
+    fontWeight: 600,
+    lineHeight: 1.67,
+    color: 'rgba(0, 0, 0, 0.4)'
+});
+
 interface MessagePostComponentProps {
     messageId: string;
     userId: string;
@@ -187,7 +220,7 @@ interface MessagePostComponentProps {
 
 export class MessagePostComponent extends React.PureComponent<MessagePostComponentProps> {
 
-    respondRender = () => {
+    private respondRender = () => {
         let { props } = this;
         let { reactions } = props;
 
@@ -198,10 +231,37 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         return (
             <XHorizontal>
                 {respondUsers.length > 0 && (
-                    <RespondWrapper separator={2} alignItems="center">
-                        <ReplyIcon />
-                        <div>{respondUsers.length}</div>
-                    </RespondWrapper>
+                    <XPopper
+                        placement="top"
+                        showOnHover={true}
+                        contentContainer={<XMenuVertical />}
+                        content={respondUsers.map((i, j) => (
+                            <RespondUserWrapper key={'post_respond' + j} style="gray" path={'/mail/u/' + i.user.id}>
+                                <RespondUserContent justifyContent="space-between" alignItems="center">
+                                    <XHorizontal separator={6} alignItems="center">
+                                        <RespondUserAvatar
+                                            cloudImageUuid={i.user.photo}
+                                            objectId={i.user.id}
+                                            objectName={i.user.name}
+                                            size="m-small"
+                                        />
+                                        <XHorizontal separator={5} alignItems="center">
+                                            <RespondUserName>{i.user.name}</RespondUserName>
+                                            {i.user.primaryOrganization && (
+                                                <RespondUserCompany>{i.user.primaryOrganization.name}</RespondUserCompany>
+                                            )}
+                                        </XHorizontal>
+                                    </XHorizontal>
+                                    {i.user.id !== props.meId && <XButton style="primary" text="Message" size="tiny" path={'/mail/' + i.user.id} />}
+                                </RespondUserContent>
+                            </RespondUserWrapper>
+                        ))}
+                    >
+                        <RespondWrapper separator={2} alignItems="center">
+                            <ReplyIcon />
+                            <div>{respondUsers.length}</div>
+                        </RespondWrapper>
+                    </XPopper>
                 )}
                 {!likesUsers || likesUsers.length === 0 && (
                     <SetLike messageId={props.messageId}>
@@ -211,20 +271,42 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                     </SetLike>
                 )}
                 {likesUsers && likesUsers.length > 0 && !meLike && (
-                    <SetLike messageId={props.messageId}>
-                        <RespondWrapper separator={2} alignItems="center" className="like">
-                            <ReactionIcon />
-                            <div>{likesUsers.length}</div>
-                        </RespondWrapper>
-                    </SetLike>
+                    <XPopper
+                        placement="bottom"
+                        style="dark"
+                        showOnHover={true}
+                        content={likesUsers.map((i, j) => (
+                            <div key={'post_like' + j}>
+                                {i.user.id === props.meId ? 'You' : i.user.name}
+                            </div>
+                        ))}
+                    >
+                        <SetLike messageId={props.messageId}>
+                            <RespondWrapper separator={2} alignItems="center" className="like">
+                                <ReactionIcon />
+                                <div>{likesUsers.length}</div>
+                            </RespondWrapper>
+                        </SetLike>
+                    </XPopper>
                 )}
                 {likesUsers && likesUsers.length > 0 && meLike && (
-                    <UnsetLike messageId={props.messageId}>
-                        <RespondWrapper separator={2} alignItems="center" className="active like">
-                            <ReactionIcon />
-                            <div>{likesUsers.length}</div>
-                        </RespondWrapper>
-                    </UnsetLike>
+                    <XPopper
+                        placement="bottom"
+                        style="dark"
+                        showOnHover={true}
+                        content={likesUsers.map((i, j) => (
+                            <div key={'post_like' + j}>
+                                {i.user.id === props.meId ? 'You' : i.user.name}
+                            </div>
+                        ))}
+                    >
+                        <UnsetLike messageId={props.messageId}>
+                            <RespondWrapper separator={2} alignItems="center" className="active like">
+                                <ReactionIcon />
+                                <div>{likesUsers.length}</div>
+                            </RespondWrapper>
+                        </UnsetLike>
+                    </XPopper>
                 )}
             </XHorizontal>
         );
