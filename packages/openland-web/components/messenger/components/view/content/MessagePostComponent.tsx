@@ -189,7 +189,11 @@ const RespondUserContent = Glamorous(XHorizontal)({
 
 const RespondUserAvatar = Glamorous(XAvatar)({
     width: 24,
-    height: 24
+    height: 24,
+    '& img': {
+        width: '24px !important',
+        height: '24px !important'
+    }
 });
 
 const RespondUserName = Glamorous.div({
