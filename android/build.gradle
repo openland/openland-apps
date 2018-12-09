@@ -58,7 +58,8 @@ subprojects { project ->
             name.contains('react-native-image-picker') || 
             name.contains('react-native-linear-gradient') ||
             name.contains('react-native-reanimated') ||
-            name.contains('react-native-vector-icons')) {
+            name.contains('react-native-vector-icons') ||
+            name.contains('rn-fetch-blob')) {
         buildscript {
             repositories {
                 maven { url "https://dl.bintray.com/android/android-tools/"  }
