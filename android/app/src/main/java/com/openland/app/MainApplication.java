@@ -12,7 +12,6 @@ import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
-import com.reactlibrary.RNReactNativeHapticFeedbackPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -58,7 +57,6 @@ public class MainApplication extends Application implements ReactApplication {
                     new MainReactPackage(),
                     new RNSharePackage(),
                     new RCTImageCapInsetPackage(),
-                    new RNReactNativeHapticFeedbackPackage(),
                     new RNGestureHandlerPackage(),
                     new LottiePackage(),
                     new LinearGradientPackage(),
