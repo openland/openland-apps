@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>Activation code for Openland: {{code}}</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            To activate your account, use the following code on your signup page.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />

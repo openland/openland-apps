@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>Join {{organizationName}} at Openland</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            {{firstName}} invites you to join {{organizationName}} at Openland, a professional messenger built for productivity and speed.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />

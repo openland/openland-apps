@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>Organization account deactivated</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            The account of {{organizationName}} was deactivated by Openland staff. To contact support, simply reply to this email.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />

@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>You’ve got a new messages</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            You have messages from ___ LIST OF ROOMS AND USERS AS IN CONTENT ___.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-users.mjml" />

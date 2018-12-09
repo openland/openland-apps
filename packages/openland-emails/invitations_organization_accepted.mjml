@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>{{firstName}} {{lastName}} has accepted your invitation</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            {{firstName}} {{lastName}} has accepted your invitation to join {{organizationName}}. Happy chatting!
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />

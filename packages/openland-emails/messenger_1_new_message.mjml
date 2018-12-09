@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>You’ve got a new message</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            You have a message from {{firstName}} {{lastName}}. Visit Openland to see it now.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />

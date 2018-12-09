@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>Join {{roomName}} room at Openland</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            {{firstName}} from {{organizationName}} invites you to {{roomName}} chat room at Openland.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />

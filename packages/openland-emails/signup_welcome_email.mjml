@@ -2,6 +2,9 @@
     <mj-head>
         <mj-title>Welcome to Openland!</mj-title>
         <mj-include path="./includes/attributes.mjml" />
+        <mj-preview>
+            We are excited to have you on board! Now you can use Openland to seek and share advice, discover new opportunities, and collaborate with other organizations.
+        </mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />
