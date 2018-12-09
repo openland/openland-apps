@@ -423,6 +423,7 @@ class MessageComponentInner extends React.PureComponent<
                         reactions={message.reactions}
                         edited={edited}
                         meId={meId}
+                        privateConversation={this.props.conversationType === 'PRIVATE'}
                     />
                 );
             }

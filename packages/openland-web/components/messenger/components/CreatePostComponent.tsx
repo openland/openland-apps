@@ -58,19 +58,24 @@ const postTexts = {
     "OFFICE_HOURS": {
         header: 'Office hours',
         titlePlaceholder: 'Office hours with XX',
-        text: 'About you / expertise areas \n 🍀Who can apply \n 💌📞📧⏰PAvailability / preferred way to connect',
+        text: 
+`🎓 About you / your expertise areas 
+🙄 Who can apply 
+💬 Preferred way to connect
+`,
         textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
     },
     "REQUEST_FOR_STARTUPS": {
         header: 'Request for startups',
         titlePlaceholder: 'XX — Request for startups',
-        text: `💸Average check
-🎯Investment process and average decision time
-⏰Preferred moment to invest / criteria
-🌎Markets / geographies / keywords
-🧲Website / links
-💌📞📧Preferred way to be contacted (intros, directly, etc.)
-        `,
+        text: 
+`💰 Typical check size
+⏳ Investment process and average decision time
+✅ Preferred moment to invest / criteria
+🌎 Markets / geographies / keywords
+🔗 Website / links
+📞 Preferred way to be contacted (intros, directly, etc.)
+`,
         textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
     }
 }
@@ -137,6 +142,7 @@ const PostText = Glamorous(XVertical)({
         padding: 0,
         flexGrow: 1,
         display: 'block',
+        borderRadius: 0,
         '&:focus, &:active': {
             boxShadow: 'none',
             border: 'none'
@@ -153,6 +159,7 @@ const FileItem = Glamorous(XHorizontal)({
     opacity: 0.5,
     fontSize: 13,
     lineHeight: 1.54,
+    fontWeight: 500,
     color: '#000',
     '& .remove': {
         marginTop: 1,
@@ -163,6 +170,9 @@ const FileItem = Glamorous(XHorizontal)({
         '&:hover > svg > g > path:last-child': {
             fill: '#4a4a4a'
         }
+    },
+    '& span': {
+        opacity: 0.6
     }
 });
 
@@ -592,8 +602,8 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
                                 {moreFiles.map(i => (
                                     <FileItem key={'file' + i.uuid} separator={4} alignItems="center">
                                         <FileImage />
-                                        <XHorizontal alignItems="center" separator={2}>
-                                            <div>{i.name} • {niceBytes(Number(i.size))}</div>
+                                        <XHorizontal alignItems="center" separator={3}>
+                                            <div>{i.name} <span>•</span> {niceBytes(Number(i.size))}</div>
                                             <XHorizontal alignItems="center" className="remove" onClick={() => this.fileRemover(i)}>
                                                 <CloseIcon />
                                             </XHorizontal>

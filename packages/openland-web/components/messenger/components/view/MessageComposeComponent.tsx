@@ -422,64 +422,94 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
     });
 };
 
-const PostButton = (props: { enabled?: boolean, handleHideChat?: (show: boolean, postType: PostMessageType | null) => void }) => {
-    let onClickHandler = props.enabled === false ? undefined : props.handleHideChat ? props.handleHideChat : undefined;
+interface PostButtonProps {
+    enabled?: boolean;
+    handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
+}
 
-    let enableProps = {
-        enabled: props.enabled === false,
-        disable: props.enabled === false
+class PostButton extends React.PureComponent<PostButtonProps> {
+    state = {
+        show: false
     };
 
-    return (
-        <XPopper
-            placement="top"
-            arrow={null}
-            showOnHover={props.enabled !== false}
-            contentContainer={<XMenuVertical />}
-            content={
-                <>
-                    <XMenuItem
-                        style="gray"
-                        {...enableProps}
-                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.JOB_OPPORTUNITY)}
-                    >
-                        Job opportunity
+    private handleShowMenu = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    }
+
+    private handleCloseMenu = () => {
+        this.setState({
+            show: false
+        });
+    }
+
+    render() {
+        const { props } = this;
+        let onClickHandler = props.enabled === false ? undefined : props.handleHideChat ? props.handleHideChat : undefined;
+
+        let enableProps = {
+            enabled: props.enabled === false,
+            disable: props.enabled === false
+        };
+
+        return (
+            <XPopper
+                placement="top"
+                arrow={null}
+                showOnHover={false}
+                show={this.state.show}
+                contentContainer={<XMenuVertical />}
+                onClickOutside={this.handleCloseMenu}
+                content={
+                    <>
+                        <XMenuItem
+                            style="gray"
+                            {...enableProps}
+                            onClick={() => onClickHandler && onClickHandler(true, PostMessageType.JOB_OPPORTUNITY)}
+                        >
+                            Job opportunity
                     </XMenuItem>
-                    <XMenuItem
-                        style="gray"
-                        {...enableProps}
-                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.OFFICE_HOURS)}
-                    >
-                        Office hours
+                        <XMenuItem
+                            style="gray"
+                            {...enableProps}
+                            onClick={() => onClickHandler && onClickHandler(true, PostMessageType.OFFICE_HOURS)}
+                        >
+                            Office hours
                     </XMenuItem>
-                    <XMenuItem
-                        style="gray"
-                        {...enableProps}
-                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.REQUEST_FOR_STARTUPS)}
-                    >
-                        Request for startups
+                        <XMenuItem
+                            style="gray"
+                            {...enableProps}
+                            onClick={() => onClickHandler && onClickHandler(true, PostMessageType.REQUEST_FOR_STARTUPS)}
+                        >
+                            Request for startups
                     </XMenuItem>
-                    <XMenuItem
-                        style="gray"
-                        {...enableProps}
-                        onClick={() => onClickHandler && onClickHandler(true, PostMessageType.BLANK)}
-                    >
-                        Blank post
+                        <XMenuItem
+                            style="gray"
+                            {...enableProps}
+                            onClick={() => onClickHandler && onClickHandler(true, PostMessageType.BLANK)}
+                        >
+                            Blank post
                     </XMenuItem>
-                </>
-            }
-        >
-            <AttachmentButton
-                {...enableProps}
-                onClick={() => onClickHandler && onClickHandler(true, PostMessageType.BLANK)}
-                className="document-button"
+                    </>
+                }
             >
-                <PostIcon />
-                <span>Post</span>
-            </AttachmentButton>
-        </XPopper>
-    )
-};
+                <AttachmentButton
+                    {...enableProps}
+                    onClick={
+                        this.props.enabled === false
+                            ? undefined
+                            : this.handleShowMenu
+                    }
+                    className="document-button"
+                >
+                    <PostIcon />
+                    <span>Post</span>
+                </AttachmentButton>
+            </XPopper>
+        );
+    }
+}
 
 class MessageComposeComponentInner extends React.PureComponent<
     MessageComposeComponentInnerProps,
@@ -1035,12 +1065,10 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     <FileIcon />
                                     <span>Document</span>
                                 </AttachmentButton>
-                                {this.props.conversationType !== 'PRIVATE' && (
-                                    <PostButton
-                                        enabled={this.props.enabled}
-                                        handleHideChat={this.props.handleHideChat}
-                                    />
-                                )}
+                                <PostButton
+                                    enabled={this.props.enabled}
+                                    handleHideChat={this.props.handleHideChat}
+                                />
                                 <AttachmentButton
                                     query={
                                         this.props.enabled === false

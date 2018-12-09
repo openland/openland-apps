@@ -38,8 +38,8 @@ const Root = Glamorous(XVertical)({
 });
 
 const Container = Glamorous(XVertical)({
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingTop: 20,
+    paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 20,
 });
@@ -62,6 +62,7 @@ const FileItem = Glamorous(XLink)({
     opacity: 0.5,
     fontSize: 13,
     lineHeight: 1.54,
+    fontWeight: 500,
     color: '#000',
     '&:hover': {
         '& .icon': {
@@ -69,6 +70,9 @@ const FileItem = Glamorous(XLink)({
         },
         opacity: 1,
         color: '#1790ff'
+    },
+    '& span': {
+        opacity: 0.6
     }
 });
 
@@ -220,9 +224,20 @@ interface MessagePostComponentProps {
     alphaAttachments: MessageFull_alphaAttachments[];
     reactions: MessageFull_reactions[];
     edited: boolean;
+    privateConversation: boolean;
 }
 
 export class MessagePostComponent extends React.PureComponent<MessagePostComponentProps> {
+
+    // state = {
+    //     showMore: true
+    // };
+
+    // private handleTextTrim = () => {
+    //     this.setState({
+    //         showMore: !this.state.showMore
+    //     });
+    // }
 
     private respondRender = () => {
         let { props } = this;
@@ -232,9 +247,15 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         let likesUsers = reactions.filter(i => i.reaction === 'like');
         let meLike = likesUsers.find(i => i.user.id === props.meId);
 
+        let meSender = false;
+
+        if (props.userId === props.meId) {
+            meSender = true;
+        }
+
         return (
-            <XHorizontal>
-                {respondUsers.length > 0 && (
+            <XHorizontal justifyContent="flex-end" flexGrow={1} alignSelf="center">
+                {respondUsers.length > 0 && meSender && (
                     <XPopper
                         placement="top"
                         showOnHover={true}
@@ -347,7 +368,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
 
         return (
             <Wrapper flexGrow={1} separator={6}>
-                <Root>
+                <Root separator={0}>
                     <Container>
                         <XHorizontal justifyContent="space-between" separator={9}>
                             <XVertical separator={3} flexGrow={1} maxWidth={cover && (cover as MessageFull_alphaAttachments).fileId ? 'calc(100% - 152px)' : '100%'}>
@@ -378,7 +399,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                     <XHorizontal separator={4} alignItems="center">
                                         <FileImage className="icon" />
                                         <XHorizontal alignItems="center" separator={2}>
-                                            <div>{i.fileMetadata.name} • {niceBytes(Number(i.fileMetadata.size))}</div>
+                                            <div>{i.fileMetadata.name} <span>•</span> {niceBytes(Number(i.fileMetadata.size))}</div>
                                         </XHorizontal>
                                     </XHorizontal>
                                 </FileItem>
@@ -387,38 +408,42 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                     )}
                 </Root>
                 <XHorizontal justifyContent="space-between">
-                    {!meSender && (
+                    {!props.privateConversation && (
                         <>
-                            {!meRespond && props.alphaButtons.map((i, j) => i && (
-                                <XHorizontal key={'post_buttons_group' + j} alignItems="center" separator={6}>
-                                    {i.map(k => (
-                                        <XHorizontal key={'post_button' + k.id} alignSelf="flex-start">
-                                            <RespondPost
-                                                messageId={props.messageId}
-                                                buttonId={k.id}
-                                                userId={props.userId}
-                                            >
-                                                <XButton
-                                                    text={k.title}
-                                                    style={k.style === 'DEFAULT' ? 'primary' : 'light'}
-                                                />
-                                            </RespondPost>
+                            {!meSender && (
+                                <>
+                                    {!meRespond && props.alphaButtons.map((i, j) => i && (
+                                        <XHorizontal key={'post_buttons_group' + j} alignItems="center" separator={6}>
+                                            {i.map(k => (
+                                                <XHorizontal key={'post_button' + k.id} alignSelf="flex-start">
+                                                    <RespondPost
+                                                        messageId={props.messageId}
+                                                        buttonId={k.id}
+                                                        userId={props.userId}
+                                                    >
+                                                        <XButton
+                                                            text={k.title}
+                                                            style={k.style === 'DEFAULT' ? 'primary' : 'light'}
+                                                        />
+                                                    </RespondPost>
+                                                </XHorizontal>
+                                            ))}
                                         </XHorizontal>
                                     ))}
-                                </XHorizontal>
-                            ))}
-                            {meRespond && (
-                                <XHorizontal alignItems="center" alignSelf="flex-start">
-                                    <XButton
-                                        text="Message"
-                                        path={'/mail/' + props.userId}
-                                        style="primary"
-                                    />
-                                </XHorizontal>
+                                    {meRespond && (
+                                        <XHorizontal alignItems="center" alignSelf="flex-start">
+                                            <XButton
+                                                text="Message"
+                                                path={'/mail/' + props.userId}
+                                                style="primary"
+                                            />
+                                        </XHorizontal>
+                                    )}
+                                </>
                             )}
+                            {this.respondRender()}
                         </>
                     )}
-                    {this.respondRender()}
                 </XHorizontal>
             </Wrapper>
         );
