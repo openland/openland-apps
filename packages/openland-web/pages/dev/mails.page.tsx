@@ -6,7 +6,6 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { withDebugMails } from '../../api/withDebugMails';
 import { DebugEmailType } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContent } from 'openland-x-layout/XContent';
 
 interface DebugMailButtonProps {
@@ -14,40 +13,39 @@ interface DebugMailButtonProps {
     emailType: DebugEmailType;
 }
 
-class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { showLabel: boolean; }> {
+class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSended: boolean; }> {
     state = {
-        showLabel: false
+        isSended: false
     }
 
     handleSended = () => {
         this.setState({
-            showLabel: true
+            isSended: true
         })
 
         setTimeout(() => {
             this.setState({
-                showLabel: false
+                isSended: false
             })
         }, 3000);
     }
 
     render () {
         return (
-            <XHorizontal alignItems="center">
-                <XButton
-                    text={this.props.emailType.toString()}
-                    style="primary"
-                    action={async () => {
-                        await this.props.sendMail({
-                            variables: {
-                                type: this.props.emailType
-                            }
-                        })
-                    }}
-                    onSuccess={this.handleSended}
-                />
-                {this.state.showLabel && <div>Sended!</div>}
-            </XHorizontal>
+            <XButton
+                alignSelf="flex-start"
+                icon={this.state.isSended ? 'check' : undefined}
+                text={this.state.isSended ? 'Sended!' : this.props.emailType.toString()}
+                style={this.state.isSended ? 'success' : 'primary'}
+                action={async () => {
+                    await this.props.sendMail({
+                        variables: {
+                            type: this.props.emailType
+                        }
+                    })
+                }}
+                onSuccess={this.handleSended}
+            />
         );
     }
 }
