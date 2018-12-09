@@ -162,6 +162,10 @@ export class UserPopper extends React.PureComponent<
         }
     };
 
+    getXPopperTargetNode = (elem: Element | null | Text) => {
+        return elem && elem instanceof Element ? elem.children[0] : elem;
+    };
+
     render() {
         const props = this.props;
         let { user, isMe, noCardOnMe, children } = this.props;
@@ -227,6 +231,7 @@ export class UserPopper extends React.PureComponent<
         return (
             <XPopper
                 ref={this.xPopperRef}
+                nodeSelector={this.getXPopperTargetNode}
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
                 content={
                     <div
@@ -240,19 +245,19 @@ export class UserPopper extends React.PureComponent<
                 placement="top-start"
                 marginLeft={-2}
             >
-                {children ? (
-                    children
-                ) : (
-                    <div
-                        onMouseEnter={this.showPopper}
-                        onMouseLeave={this.hidePopper}
-                    >
+                <div
+                    onMouseEnter={this.showPopper}
+                    onMouseLeave={this.hidePopper}
+                >
+                    {children ? (
+                        children
+                    ) : (
                         <UserAvatar
                             user={user}
                             startSelected={props.startSelected}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
             </XPopper>
         );
     }

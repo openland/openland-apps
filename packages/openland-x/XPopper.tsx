@@ -26,6 +26,7 @@ export type Placement = 'auto-start'
 
 interface XPopperProps {
     placement?: Placement;
+    nodeSelector?: (elem: Element | null | Text) => Element | null | Text;
 
     content: any;
     show?: boolean;
@@ -207,6 +208,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     caputureTargetNode = (node: any | null) => {
         if (node) {
             let newTargetNode = ReactDOM.findDOMNode(node);
+            newTargetNode = this.props.nodeSelector ? this.props.nodeSelector(newTargetNode) : newTargetNode;
             if (newTargetNode !== this._targetNode) {
                 this._targetNode = newTargetNode as Element;
                 if (this._targetNode && this.props.showOnHover) {
