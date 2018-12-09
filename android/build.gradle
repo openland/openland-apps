@@ -4,7 +4,6 @@ buildscript {
     ext.kotlin_version = '1.2.61'
     repositories {
         mavenLocal()
-        maven { url "https://dl.bintray.com/android/android-tools/"  }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
@@ -50,6 +49,20 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
     }
+}
+
+subprojects { project ->
+    def name = project.name
+    if (name.contains('react-native-blur') || 
+            name.contains('react-native-fast-image') || 
+            name.contains('react-native-image-picker') || 
+            name.contains('react-native-linear-gradient')) {
+        buildscript {
+            repositories {
+                maven { url "https://dl.bintray.com/android/android-tools/"  }
+            }
+        }
+    } 
 }
 
 subprojects {
