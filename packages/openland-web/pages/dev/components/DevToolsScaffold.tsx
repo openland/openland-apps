@@ -18,6 +18,7 @@ export function DevToolsScaffold(props: {
                         <Sidebar.Item path="/super">Organizations</Sidebar.Item>
                         <Sidebar.Item path="/super/users">Online</Sidebar.Item>
                         <Sidebar.Item path="/super/stats">Stats</Sidebar.Item>
+                        <Sidebar.Item path="/super/mails">Mails</Sidebar.Item>
                         <Sidebar.Item path="/super/features">
                             Features
                         </Sidebar.Item>
