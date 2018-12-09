@@ -51,6 +51,17 @@ allprojects {
     }
 }
 
+subprojects { project ->
+    def name = project.name
+    if (name.contains('react-native-blur')) {
+        buildscript {
+            repositories {
+                maven { url "https://dl.bintray.com/android/android-tools/"  }
+            }
+        }
+    } 
+}
+
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
