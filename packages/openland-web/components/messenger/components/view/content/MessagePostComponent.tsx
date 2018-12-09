@@ -229,9 +229,9 @@ interface MessagePostComponentProps {
 
 export class MessagePostComponent extends React.PureComponent<MessagePostComponentProps> {
 
-    // state = {
-    //     showMore: true
-    // };
+    state = {
+        showMore: true
+    };
 
     // private handleTextTrim = () => {
     //     this.setState({
