@@ -53,7 +53,7 @@ allprojects {
 
 subprojects { project ->
     def name = project.name
-    if (name.contains('react-native-blur') || name.contains('react-native-fast-image')) {
+    if (name.contains('react-native-blur') || name.contains('react-native-fast-image') || name.contains('react-native-image-picker')) {
         buildscript {
             repositories {
                 maven { url "https://dl.bintray.com/android/android-tools/"  }
