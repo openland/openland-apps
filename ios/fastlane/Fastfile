@@ -21,4 +21,7 @@ platform :ios do
     increment_build_number(build_number: ENV["BUILD_NUMBER"],xcodeproj: "openland.xcodeproj")
     build_app(workspace: "openland.xcworkspace", scheme: "Production")
   end
+  lane :deploy do
+    upload_to_testflight
+  end
 end
