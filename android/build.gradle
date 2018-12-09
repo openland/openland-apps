@@ -56,7 +56,8 @@ subprojects { project ->
     if (name.contains('react-native-blur') || 
             name.contains('react-native-fast-image') || 
             name.contains('react-native-image-picker') || 
-            name.contains('react-native-linear-gradient')) {
+            name.contains('react-native-linear-gradient')
+            name.contains('react-native-reanimated')) {
         buildscript {
             repositories {
                 maven { url "https://dl.bintray.com/android/android-tools/"  }
