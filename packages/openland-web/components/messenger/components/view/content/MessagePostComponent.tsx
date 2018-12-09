@@ -24,6 +24,7 @@ import {
 } from '../../../../../api/withSetReaction';
 import ReplyIcon from '../../icons/ic-reply1.svg';
 import ReactionIcon from '../../icons/ic-reactions.svg';
+import MoreIcon from '../../icons/ic-arrow-down-blue.svg';
 
 const Wrapper = Glamorous(XVertical)({
     paddingTop: 4,
@@ -214,6 +215,16 @@ const RespondUserCompany = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.4)'
 });
 
+const ShowMore = Glamorous(XHorizontal)<{active: boolean}>(props => ({
+    cursor: 'pointer',
+    fontSize: 13,
+    lineHeight: 1.54,
+    color: '#1790ff',
+    '& svg': {
+        transform: `rotate(${props.active ? '0' : '180deg'})`
+    }
+}));
+
 interface MessagePostComponentProps {
     messageId: string;
     userId: string;
@@ -233,11 +244,11 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         showMore: true
     };
 
-    // private handleTextTrim = () => {
-    //     this.setState({
-    //         showMore: !this.state.showMore
-    //     });
-    // }
+    private handleTextTrim = () => {
+        this.setState({
+            showMore: !this.state.showMore
+        });
+    }
 
     private respondRender = () => {
         let { props } = this;
@@ -366,6 +377,14 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
             }
         }
 
+        let message = props.message;
+        let moreButton = false;
+
+        if (message.length >= 170) {
+            message = this.state.showMore ? message.substring(0, 170) + '...' : message;
+            moreButton = true;
+        }
+
         return (
             <Wrapper flexGrow={1} separator={6}>
                 <Root separator={0}>
@@ -374,11 +393,23 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                             <XVertical separator={3} flexGrow={1} maxWidth={cover && (cover as MessageFull_alphaAttachments).fileId ? 'calc(100% - 152px)' : '100%'}>
                                 <PostTitle>{props.alphaTitle}</PostTitle>
                                 <MessageTextComponent
-                                    message={props.message}
+                                    message={message}
                                     mentions={null}
                                     isEdited={false}
                                     isService={false}
                                 />
+                                {moreButton && (
+                                    <ShowMore
+                                        alignSelf="flex-start"
+                                        alignItems="center"
+                                        separator={3}
+                                        onClick={this.handleTextTrim}
+                                        active={this.state.showMore}
+                                    >
+                                        <MoreIcon />
+                                        <div>{this.state.showMore ? 'Show more' : 'Show less'}</div>
+                                    </ShowMore>
+                                )}
                             </XVertical>
                             {cover && (cover as MessageFull_alphaAttachments).fileId && (
                                 <CoverWrapper>
