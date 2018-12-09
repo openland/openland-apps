@@ -6,185 +6,80 @@ import { DevToolsScaffold } from './components/DevToolsScaffold';
 import { withDebugMails } from '../../api/withDebugMails';
 import { DebugEmailType } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XContent } from 'openland-x-layout/XContent';
+
+interface DebugMailButtonProps {
+    sendMail?: any;
+    emailType: DebugEmailType;
+}
+
+class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { showLabel: boolean; }> {
+    state = {
+        showLabel: false
+    }
+
+    handleSended = () => {
+        this.setState({
+            showLabel: true
+        })
+
+        setTimeout(() => {
+            this.setState({
+                showLabel: false
+            })
+        }, 3000);
+    }
+
+    render () {
+        return (
+            <XHorizontal alignItems="center">
+                <XButton
+                    text={this.props.emailType.toString()}
+                    style="primary"
+                    action={async () => {
+                        await this.props.sendMail({
+                            variables: {
+                                type: this.props.emailType
+                            }
+                        })
+                    }}
+                    onSuccess={this.handleSended}
+                />
+                {this.state.showLabel && <div>Sended!</div>}
+            </XHorizontal>
+        );
+    }
+}
+
+const DebugMailButton = withDebugMails(props => (
+    <DebugMailButtonInner {...props as any} />
+)) as React.ComponentType<DebugMailButtonProps>;
 
 export default withApp(
     'Super Debug',
     ['super-admin', 'software-developer'],
-    withDebugMails(props => {
-        return (
-            <DevToolsScaffold title="Mails">
-                <XHeader text="Mails" />
+    props => (
+        <DevToolsScaffold title="Mails">
+            <XHeader text="Mails" />
+            <XContent>
                 <XVertical>
-                    <XButton
-                        text="WELCOME"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.WELCOME
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="ACCOUNT_ACTIVATED"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.ACCOUNT_ACTIVATED
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="ACCOUNT_DEACTIVATED"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.ACCOUNT_DEACTIVATED
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="MEMBER_REMOVED"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.MEMBER_REMOVED
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="MEMBERSHIP_LEVEL_CHANGED"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.MEMBERSHIP_LEVEL_CHANGED
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="INVITE"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.INVITE
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="MEMBER_JOINED"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.MEMBER_JOINED
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="SIGNUP_CODE"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.SIGNUP_CODE
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="SIGIN_CODE"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.SIGIN_CODE
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="UNREAD_MESSAGE"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.UNREAD_MESSAGE
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="UNREAD_MESSAGES"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.UNREAD_MESSAGES
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="PUBLIC_ROOM_INVITE"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.PUBLIC_ROOM_INVITE
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="PRIVATE_ROOM_INVITE"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.PRIVATE_ROOM_INVITE
-                                }
-                            })
-                        }}
-                    />
-                    <XButton
-                        text="ROOM_INVITE_ACCEPTED"
-                        alignSelf="flex-start"
-                        style="primary"
-                        onClick={async () => {
-                            await props.sendMail({
-                                variables: {
-                                    type: DebugEmailType.ROOM_INVITE_ACCEPTED
-                                }
-                            })
-                        }}
-                    />
+                    <DebugMailButton emailType={DebugEmailType.WELCOME} />
+                    <DebugMailButton emailType={DebugEmailType.ACCOUNT_ACTIVATED} />
+                    <DebugMailButton emailType={DebugEmailType.ACCOUNT_DEACTIVATED} />
+                    <DebugMailButton emailType={DebugEmailType.MEMBER_REMOVED} />
+                    <DebugMailButton emailType={DebugEmailType.MEMBERSHIP_LEVEL_CHANGED} />
+                    <DebugMailButton emailType={DebugEmailType.INVITE} />
+                    <DebugMailButton emailType={DebugEmailType.MEMBER_JOINED} />
+                    <DebugMailButton emailType={DebugEmailType.SIGNUP_CODE} />
+                    <DebugMailButton emailType={DebugEmailType.SIGIN_CODE} />
+                    <DebugMailButton emailType={DebugEmailType.UNREAD_MESSAGE} />
+                    <DebugMailButton emailType={DebugEmailType.UNREAD_MESSAGES} />
+                    <DebugMailButton emailType={DebugEmailType.PUBLIC_ROOM_INVITE} />
+                    <DebugMailButton emailType={DebugEmailType.PRIVATE_ROOM_INVITE} />
+                    <DebugMailButton emailType={DebugEmailType.ROOM_INVITE_ACCEPTED} />
                 </XVertical>
-            </DevToolsScaffold>
-        );
-    }),
+            </XContent>
+        </DevToolsScaffold>
+    ),
 );
