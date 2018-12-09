@@ -3,7 +3,7 @@
         <mj-text>
             <div style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 10px; padding-top: 30px; padding-right: 16px; padding-bottom: 24px; padding-left: 32px;">
                 <div style="font-size: 28px; line-height: 26px; padding-bottom: 10px;">
-                    🦄
+                    <img width="32" height="32" src="https://cdn.openland.com/shared/email/emojione/1f984.png" />
                 </div>
                 <div style="font-size: 20px; line-height: 26px; font-weight: 600; color: #000000; padding-bottom: 4px;">
                     Getting email notifications too often?
