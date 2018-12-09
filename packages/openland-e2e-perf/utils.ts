@@ -1,7 +1,7 @@
 import * as os from 'os';
 import * as Rsync from 'rsync';
 import * as tmp from 'tmp';
-import * as puppeteer from 'puppeteer';
+const puppeteer = require('puppeteer');
 
 export const repeatArray = (array: string[], repeatNumber: number) => {
     let res: string[] = [];
@@ -25,46 +25,48 @@ export const runAndMeasureAsyncAction = async ({
 }) => {
     const result: any = [];
     let i = 0;
-    for await (const iteratable of array) {
-        await delay(1000);
 
-        let hrstart: any;
-        let pause = 0;
+    const iteratable = array[0];
+    // for await (const iteratable of array) {
+    await delay(1000);
 
-        await someAsyncAction(
-            iteratable,
-            () => {
-                hrstart = process.hrtime();
-            },
-            () => {
-                const hrend = process.hrtime(hrstart);
-                const preciseMilliSeconds = hrend[1] / 1000000;
-                const preciseWithoutPause = preciseMilliSeconds - pause;
-                if (preciseWithoutPause < 0) {
-                    console.log('drop negative measure');
-                } else {
-                    result.push(preciseWithoutPause);
-                    if (i === 0) {
-                        console.log(`execute on ${iteratable} 
+    let hrstart: any;
+    let pause = 0;
+
+    await someAsyncAction(
+        iteratable,
+        () => {
+            hrstart = process.hrtime();
+        },
+        () => {
+            const hrend = process.hrtime(hrstart);
+            const preciseMilliSeconds = hrend[1] / 1000000;
+            const preciseWithoutPause = preciseMilliSeconds - pause;
+            if (preciseWithoutPause < 0) {
+                console.log('drop negative measure');
+            } else {
+                result.push(preciseWithoutPause);
+                if (i === 0) {
+                    console.log(`execute on ${iteratable} 
   in ${preciseWithoutPause}
   `);
-                    } else {
-                        console.log(
-                            `execute on: ${iteratable} 
+                } else {
+                    console.log(
+                        `execute on: ${iteratable} 
   with previous: ${array[i - 1]} 
   in ${preciseWithoutPause}
   `,
-                        );
-                    }
+                    );
                 }
-            },
-            (pauseVal: number) => {
-                pause += pauseVal;
-            },
-        );
+            }
+        },
+        (pauseVal: number) => {
+            pause += pauseVal;
+        },
+    );
 
-        i++;
-    }
+    i++;
+    // }
     return result;
 };
 
