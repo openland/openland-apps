@@ -125,12 +125,14 @@ android {
         renderscriptSupportModeEnabled true
         // multiDexEnabled true
     }
-    signingConfigs {
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
+    if(project.hasProperty("RELEASE_STORE_FILE")) {
+        signingConfigs {
+            release {
+                storeFile file(RELEASE_STORE_FILE)
+                storePassword RELEASE_STORE_PASSWORD
+                keyAlias RELEASE_KEY_ALIAS
+                keyPassword RELEASE_KEY_PASSWORD
+            }
         }
     }
     splits {
@@ -143,7 +145,9 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if(project.hasProperty("RELEASE_STORE_FILE")) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
