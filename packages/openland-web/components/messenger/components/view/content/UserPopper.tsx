@@ -148,24 +148,18 @@ export class UserPopper extends React.PureComponent<
         showPopper: boolean;
     }
 > {
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            showPopper: false,
-        };
-    }
+    xPopperRef = React.createRef<XPopper>();
 
     showPopper = () => {
-        this.setState({
-            showPopper: true,
-        });
+        if (this.xPopperRef.current) {
+            this.xPopperRef.current.onMouseOverTarget();
+        }
     };
 
     hidePopper = () => {
-        this.setState({
-            showPopper: false,
-        });
+        if (this.xPopperRef.current) {
+            this.xPopperRef.current.onMouseOutTarget();
+        }
     };
 
     render() {
@@ -232,9 +226,16 @@ export class UserPopper extends React.PureComponent<
 
         return (
             <XPopper
+                ref={this.xPopperRef}
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
-                show={this.state.showPopper}
-                content={content}
+                content={
+                    <div
+                        onMouseEnter={this.showPopper}
+                        onMouseLeave={this.hidePopper}
+                    >
+                        {content}
+                    </div>
+                }
                 contentContainer={<Container />}
                 placement="top-start"
                 marginLeft={-2}
