@@ -9,6 +9,12 @@ export const PermissionsQuery = gql`
     }
 `;
 
+export const DebugMailsMutation = gql`
+    mutation DebugMails($type: DebugEmailType!) {
+        debugSendEmail(type: $type)
+    }
+`
+
 export const SuperAdminsQuery = gql`
     query SuperAdmins {
         superAdmins {

@@ -469,28 +469,28 @@ class PostButton extends React.PureComponent<PostButtonProps> {
                             onClick={() => onClickHandler && onClickHandler(true, PostMessageType.JOB_OPPORTUNITY)}
                         >
                             Job opportunity
-                    </XMenuItem>
+                        </XMenuItem>
                         <XMenuItem
                             style="gray"
                             {...enableProps}
                             onClick={() => onClickHandler && onClickHandler(true, PostMessageType.OFFICE_HOURS)}
                         >
                             Office hours
-                    </XMenuItem>
+                        </XMenuItem>
                         <XMenuItem
                             style="gray"
                             {...enableProps}
                             onClick={() => onClickHandler && onClickHandler(true, PostMessageType.REQUEST_FOR_STARTUPS)}
                         >
                             Request for startups
-                    </XMenuItem>
+                        </XMenuItem>
                         <XMenuItem
                             style="gray"
                             {...enableProps}
                             onClick={() => onClickHandler && onClickHandler(true, PostMessageType.BLANK)}
                         >
                             Blank post
-                    </XMenuItem>
+                        </XMenuItem>
                     </>
                 }
             >

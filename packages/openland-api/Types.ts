@@ -4054,6 +4054,21 @@ export interface Permissions {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: DebugMails
+// ====================================================
+
+export interface DebugMails {
+  debugSendEmail: boolean | null;
+}
+
+export interface DebugMailsVariables {
+  type: DebugEmailType;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: SuperAdmins
 // ====================================================
 
@@ -6900,6 +6915,23 @@ export enum ConferencePeerConnectionState {
   READY = "READY",
   WAIT_ANSWER = "WAIT_ANSWER",
   WAIT_OFFER = "WAIT_OFFER",
+}
+
+export enum DebugEmailType {
+  ACCOUNT_ACTIVATED = "ACCOUNT_ACTIVATED",
+  ACCOUNT_DEACTIVATED = "ACCOUNT_DEACTIVATED",
+  INVITE = "INVITE",
+  MEMBERSHIP_LEVEL_CHANGED = "MEMBERSHIP_LEVEL_CHANGED",
+  MEMBER_JOINED = "MEMBER_JOINED",
+  MEMBER_REMOVED = "MEMBER_REMOVED",
+  PRIVATE_ROOM_INVITE = "PRIVATE_ROOM_INVITE",
+  PUBLIC_ROOM_INVITE = "PUBLIC_ROOM_INVITE",
+  ROOM_INVITE_ACCEPTED = "ROOM_INVITE_ACCEPTED",
+  SIGIN_CODE = "SIGIN_CODE",
+  SIGNUP_CODE = "SIGNUP_CODE",
+  UNREAD_MESSAGE = "UNREAD_MESSAGE",
+  UNREAD_MESSAGES = "UNREAD_MESSAGES",
+  WELCOME = "WELCOME",
 }
 
 export enum DialogKind {

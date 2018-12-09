@@ -95,6 +95,7 @@ export const OrganizationActivateByInviteMutation = typedMutation<Types.Organiza
 export const OrganizationAlterPublishedMutation = typedMutation<Types.OrganizationAlterPublished, Types.OrganizationAlterPublishedVariables>(Organization.OrganizationAlterPublishedMutation);
 export const OrganizationByPrefixQuery = typedQuery<Types.OrganizationByPrefix, Types.OrganizationByPrefixVariables>(Organization.OrganizationByPrefixQuery);
 export const PermissionsQuery = typedQuery<Types.Permissions, {}>(Permissions.PermissionsQuery);
+export const DebugMailsMutation = typedMutation<Types.DebugMails, Types.DebugMailsVariables>(Permissions.DebugMailsMutation);
 export const SuperAdminsQuery = typedQuery<Types.SuperAdmins, {}>(Permissions.SuperAdminsQuery);
 export const SuperAccountsQuery = typedQuery<Types.SuperAccounts, {}>(Permissions.SuperAccountsQuery);
 export const SuperAccountQuery = typedQuery<Types.SuperAccount, Types.SuperAccountVariables>(Permissions.SuperAccountQuery);
