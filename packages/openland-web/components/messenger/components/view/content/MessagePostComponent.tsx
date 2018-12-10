@@ -20,12 +20,7 @@ import { niceBytes } from '../../view/content/MessageFileComponent';
 import { ReactionComponent } from '../MessageReaction';
 import { Reactions } from '../MessageReaction';
 import { withRespondPostMessage } from '../../../../../api/withRespondPostMessage';
-import {
-    withSetReaction,
-    withUnsetReaction,
-} from '../../../../../api/withSetReaction';
 import ReplyIcon from '../../icons/ic-reply1.svg';
-import ReactionIcon from '../../icons/ic-reactions.svg';
 import MoreIcon from '../../icons/ic-arrow-down-blue.svg';
 
 const Wrapper = Glamorous(XVertical)({
@@ -129,36 +124,6 @@ const RespondWrapper = Glamorous(XHorizontal)({
         opacity: 1
     }
 });
-
-const SetLike = withSetReaction(props => (
-    <XMutation
-        action={async () => {
-            await props.setReaction({
-                variables: {
-                    messageId: (props as any).messageId,
-                    reaction: 'like'
-                }
-            });
-        }}
-    >
-        {props.children}
-    </XMutation>
-)) as React.ComponentType<{ messageId: string, children: any }>;
-
-const UnsetLike = withUnsetReaction(props => (
-    <XMutation
-        action={async () => {
-            await props.unsetReaction({
-                variables: {
-                    messageId: (props as any).messageId,
-                    reaction: 'like'
-                }
-            });
-        }}
-    >
-        {props.children}
-    </XMutation>
-)) as React.ComponentType<{ messageId: string, children: any }>;
 
 const RespondPost = withRespondPostMessage(props => (
     <XMutation
