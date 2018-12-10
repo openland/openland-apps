@@ -22,7 +22,7 @@ import UloadIc from './icons/file-upload.svg';
 
 const postTexts = {
     "BLANK": {
-        header: 'Blank post',
+        header: 'Quick post',
         titlePlaceholder: 'Title',
         text: '',
         textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
