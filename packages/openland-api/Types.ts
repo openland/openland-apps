@@ -7027,6 +7027,7 @@ export interface ContactPersonInput {
 }
 
 export interface CreateOrganizationInput {
+  id?: string | null;
   name: string;
   website?: string | null;
   personal: boolean;
