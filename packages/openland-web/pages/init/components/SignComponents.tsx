@@ -1435,7 +1435,6 @@ export class CreateOrganizationFormInner extends React.Component<
                         }) as any
                     }
                     onChange={(src: any) => {
-                        console.log('onChange', src);
                         this.handleOnChange(src, store);
                     }}
                     options={this.getOrganizations()}
@@ -1491,7 +1490,6 @@ export class CreateOrganizationFormInner extends React.Component<
                                                 <InfoText>
                                                     To register as an
                                                     individual,
-                                                    <br />
                                                     simply enter your name
                                                 </InfoText>
                                             }
