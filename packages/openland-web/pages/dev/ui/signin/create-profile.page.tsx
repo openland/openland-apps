@@ -21,7 +21,10 @@ export default () => (
                     const { headerStyle, ...other } = branchProps;
 
                     return (
-                        <RoomSignupContainer headerStyle={headerStyle}>
+                        <RoomSignupContainer
+                            headerStyle={headerStyle}
+                            pageMode="CreateProfile"
+                        >
                             <CreateProfileFormInner
                                 roomView={true}
                                 prefill={{}}
@@ -43,6 +46,7 @@ export default () => (
 
                     return (
                         <WebSignUpContainer
+                            pageMode="CreateProfile"
                             {...{
                                 signin,
                                 headerStyle,

@@ -132,7 +132,7 @@ class CreateOrganizationPrefixHolder extends React.Component<
         const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
         return (
-            <Container>
+            <Container pageMode="CreateOrganization">
                 <OrganizationsSelectorOptionsFetcher
                     variables={{
                         prefix: this.state.organizationPrefix,

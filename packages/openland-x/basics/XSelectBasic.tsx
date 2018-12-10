@@ -5,6 +5,7 @@ import Select, {
     Async,
     ReactSelectProps,
     ReactAsyncSelectProps,
+    ReactCreatableSelectProps,
     Creatable,
 } from 'react-select';
 
@@ -453,9 +454,16 @@ const Styles = (props: {
 
 const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<
     ReactAsyncSelectProps
->; // Some Weird typing problems
-const StyledSelect = Glamorous(Select)(Styles);
-const StyledSelectCreatable = Glamorous(Creatable)(Styles);
+>;
+
+const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<
+    ReactSelectProps & { invalid?: boolean; noArrow?: boolean }
+>;
+const StyledSelectCreatable = Glamorous(Creatable)(
+    Styles,
+) as React.ComponentType<
+    ReactCreatableSelectProps & { invalid?: boolean; noArrow?: boolean }
+>;
 
 export type XSelectBasicProps = ReactSelectProps & {
     invalid?: boolean;

@@ -28,7 +28,7 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
         return <div />;
     }
     return (
-        <Container>
+        <Container pageMode="CreateProfile">
             <CreateProfileFormInner
                 {...{
                     roomView,

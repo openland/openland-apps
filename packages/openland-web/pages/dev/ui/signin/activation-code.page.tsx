@@ -21,7 +21,10 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignupContainer headerStyle={headerStyle}>
+                        <RoomSignupContainer
+                            headerStyle={headerStyle}
+                            pageMode="ActivationCode"
+                        >
                             <RoomActivationCode {...other} />
                         </RoomSignupContainer>
                     );
@@ -37,6 +40,7 @@ export default () => (
 
                     return (
                         <WebSignUpContainer
+                            pageMode="ActivationCode"
                             {...{
                                 signin,
                                 headerStyle,

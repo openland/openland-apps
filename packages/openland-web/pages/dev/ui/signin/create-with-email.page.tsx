@@ -22,7 +22,10 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignupContainer headerStyle={headerStyle}>
+                        <RoomSignupContainer
+                            headerStyle={headerStyle}
+                            pageMode="CreateFromEmail"
+                        >
                             <RoomCreateWithEmail {...other} />
                         </RoomSignupContainer>
                     );
@@ -37,6 +40,7 @@ export default () => (
                     } = branchProps;
                     return (
                         <WebSignUpContainer
+                            pageMode="CreateFromEmail"
                             {...{
                                 signin,
                                 headerStyle,

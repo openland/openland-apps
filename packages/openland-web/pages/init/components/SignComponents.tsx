@@ -315,7 +315,9 @@ export type PageModeT =
     | 'ActivationCode'
     | 'CreateFromEmail'
     | 'Loading'
-    | 'AuthMechanism';
+    | 'AuthMechanism'
+    | 'CreateOrganization'
+    | 'CreateProfile';
 
 interface SignContainerProps extends HeaderProps {
     pageMode: PageModeT;
@@ -1511,11 +1513,7 @@ export class CreateOrganizationFormInner extends React.Component<
                 <MyTitle>{InitTexts.create_organization.title}</MyTitle>
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
-                    defaultAction={(...args) => {
-                        console.log(args);
-                        console.log('defaultAction');
-                        defaultAction(...args);
-                    }}
+                    defaultAction={defaultAction}
                     defaultData={{
                         input: {
                             name: '',

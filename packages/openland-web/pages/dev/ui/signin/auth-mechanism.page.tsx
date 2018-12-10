@@ -22,7 +22,10 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignupContainer headerStyle={headerStyle}>
+                        <RoomSignupContainer
+                            headerStyle={headerStyle}
+                            pageMode="AuthMechanism"
+                        >
                             <RoomAuthMechanism {...other} />
                         </RoomSignupContainer>
                     );
@@ -38,6 +41,7 @@ export default () => (
 
                     return (
                         <WebSignUpContainer
+                            pageMode="AuthMechanism"
                             {...{
                                 signin,
                                 headerStyle,
