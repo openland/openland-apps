@@ -1425,7 +1425,8 @@ export class CreateOrganizationFormInner extends React.Component<
     filterOptions = (_: any, val: any) => {
         const res = this.getOrganizations().filter(
             ({ label, value }: any) =>
-                (label.includes && label.includes(val)) ||
+                (label.includes &&
+                    label.toLowerCase().includes(val.toLowerCase())) ||
                 value === NEW_ORGANIZATION_BUTTON_VALUE,
         );
 

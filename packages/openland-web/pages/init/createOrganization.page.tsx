@@ -76,7 +76,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                     let res = await createOrganization({
                         variables: {
                             input: {
-                                personal: false, 
+                                personal: false,
                                 name: data.name,
                                 id: data.id,
                             },
@@ -135,8 +135,10 @@ class CreateOrganizationPrefixHolder extends React.Component<
                 <OrganizationsSelectorOptionsFetcher
                     variables={{
                         prefix: this.state.organizationPrefix,
-                        all: true,
-                        sort: JSON.stringify([]),
+                        sort: JSON.stringify([
+                            { featured: { order: 'desc' } },
+                            { createdAt: { order: 'desc' } },
+                        ]),
                     }}
                 >
                     {this.renderOrganizationsSelectorOptionsFetcherInner}
