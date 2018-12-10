@@ -736,6 +736,30 @@ export interface SendPostMessageVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: EditPostMessage
+// ====================================================
+
+export interface EditPostMessage_editPostMessage {
+  __typename: "ConversationEventMessage";
+  seq: number;
+}
+
+export interface EditPostMessage {
+  editPostMessage: EditPostMessage_editPostMessage;
+}
+
+export interface EditPostMessageVariables {
+  messageId: string;
+  title: string;
+  text: string;
+  attachments?: string[] | null;
+  postType: PostMessageType;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: RespondPostMessage
 // ====================================================
 

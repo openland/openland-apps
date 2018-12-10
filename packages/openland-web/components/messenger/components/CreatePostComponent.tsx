@@ -12,7 +12,7 @@ import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from './view/content/MessageUploadComponent';
 import { niceBytes } from './view/content/MessageFileComponent';
-import { withSendPostMessage } from '../../../api/withSendPostMessage';
+import { withSendPostMessage, withEditPostMessage } from '../../../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
 import CloseIcon from './icons/ic-close.svg';
@@ -376,6 +376,53 @@ const SendPostButton = withSendPostMessage(props => {
     );
 }) as React.ComponentType<SendPostButtonProps>;
 
+interface EditPostButtonProps {
+    messageId: string;
+    children: any;
+    title: string;
+    text: string;
+    files: Set<File> | null;
+    postType: PostMessageType | null | string;
+    handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
+}
+
+const EditPostButton = withEditPostMessage(props => {
+    const { files, title, text } = props as any;
+
+    let attachments: string[] | null = null;
+
+    if (files) {
+        attachments = [...files].map(i => i.uuid);
+    }
+
+    const checkApplySend = (title.trim().length > 0 && text.trim().length > 0);
+
+    return (
+        <XMutation
+            action={async () => {
+                if (checkApplySend) {
+                    await props.editPost({
+                        variables: {
+                            messageId: (props as any).messageId,
+                            title: title,
+                            text: text,
+                            attachments: attachments,
+                            postType: (props as any).postType ? (props as any).postType : PostMessageType.BLANK
+                        }
+                    });
+                }
+            }}
+            onSuccess={() => {
+                if (checkApplySend) {
+                    (props as any).handleHideChat(false, null);
+                }
+            }}
+        >
+            {props.children}
+        </XMutation>
+    );
+}) as React.ComponentType<EditPostButtonProps>;
+
 interface CreatePostComponentProps {
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
     conversationId: string;
@@ -437,6 +484,28 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         this.setState({
             text: src
         })
+    }
+
+    private propsFileSaver = (files: Set<File>) => {
+        let cover: File | null = null;
+        let coversFinder = [...files].filter(i => i.isImage);
+
+        if (coversFinder[0]) {
+            cover = coversFinder[0];
+        }
+
+        let moreFiles = new Set();
+
+        [...files].filter(i => {
+            if (i !== cover) {
+                moreFiles.add(i);
+            }
+        });
+
+        this.setState({
+            files: moreFiles,
+            cover: cover
+        });
     }
 
     private fileSaver = (file: File | null) => {
@@ -587,9 +656,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
 
-        let { editData } = this.props;
+        const { editData } = this.props;
         if (editData && editData.files) {
-            [...editData.files].map(i => this.fileSaver(i));
+            this.propsFileSaver(editData.files);
         }
     }
 
@@ -611,6 +680,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         if (files && files.size > 0) {
             moreFiles = [...files].filter(i => i !== cover);
         }
+
         return (
             <Wrapper>
                 <Header justifyContent="center">
@@ -700,20 +770,38 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 <span>Document</span>
                             </AttachmentButton>
                         </XHorizontal>
-                        <SendPostButton
-                            conversationId={props.conversationId}
-                            postType={postType}
-                            title={state.title}
-                            text={state.text}
-                            files={state.files}
-                            handleHideChat={props.handleHideChat}
-                        >
-                            <XButton
-                                text="Send"
-                                style="primary"
-                                iconRight="send"
-                            />
-                        </SendPostButton>
+                        {!props.editData && (
+                            <SendPostButton
+                                conversationId={props.conversationId}
+                                postType={postType}
+                                title={state.title}
+                                text={state.text}
+                                files={state.files}
+                                handleHideChat={props.handleHideChat}
+                            >
+                                <XButton
+                                    text="Send"
+                                    style="primary"
+                                    iconRight="send"
+                                />
+                            </SendPostButton>
+                        )}
+                        {props.editData && (
+                            <EditPostButton
+                                messageId={props.editData.messageId}
+                                postType={postType}
+                                title={state.title}
+                                text={state.text}
+                                files={state.files}
+                                handleHideChat={props.handleHideChat}
+                            >
+                                <XButton
+                                    text="Send"
+                                    style="primary"
+                                    iconRight="send"
+                                />
+                            </EditPostButton>
+                        )}
                     </XHorizontal>
                 </FooterWrapper>
             </Wrapper>

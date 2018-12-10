@@ -32,6 +32,7 @@ export const MessageSetReactionMutation = typedMutation<Types.MessageSetReaction
 export const SwitchReactionMutation = typedMutation<Types.SwitchReaction, Types.SwitchReactionVariables>(Chats.SwitchReactionMutation);
 export const MessageUnsetReactionMutation = typedMutation<Types.MessageUnsetReaction, Types.MessageUnsetReactionVariables>(Chats.MessageUnsetReactionMutation);
 export const SendPostMessageMutation = typedMutation<Types.SendPostMessage, Types.SendPostMessageVariables>(Chats.SendPostMessageMutation);
+export const EditPostMessageMutation = typedMutation<Types.EditPostMessage, Types.EditPostMessageVariables>(Chats.EditPostMessageMutation);
 export const RespondPostMessageMutation = typedMutation<Types.RespondPostMessage, Types.RespondPostMessageVariables>(Chats.RespondPostMessageMutation);
 export const SaveDraftMessageMutation = typedMutation<Types.SaveDraftMessage, Types.SaveDraftMessageVariables>(Chats.SaveDraftMessageMutation);
 export const GetDraftMessageQuery = typedQuery<Types.GetDraftMessage, Types.GetDraftMessageVariables>(Chats.GetDraftMessageQuery);

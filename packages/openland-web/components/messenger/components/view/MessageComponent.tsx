@@ -180,7 +180,7 @@ interface MessageComponentProps {
     me?: UserShort | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId: string;
-    editPostHandler: (data: EditPostProps) => void;
+    editPostHandler?: (data: EditPostProps) => void;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -240,7 +240,7 @@ class MessageComponentInner extends React.PureComponent<
 
     private setEditPostMessage = (e: any) => {
         let { message, editPostHandler } = this.props;
-        if (isServerMessage(message)) {
+        if (isServerMessage(message) && editPostHandler) {
             message = message as MessageFull;
 
             let postFiles: Set<File> = new Set();
@@ -262,7 +262,8 @@ class MessageComponentInner extends React.PureComponent<
                 title: 'qweqwe',
                 text: 'qweqwe',
                 postTipe: (message as any).alphaPostType,
-                files: postFiles
+                files: postFiles,
+                messageId: message.id
             };
 
             editPostHandler(postData);

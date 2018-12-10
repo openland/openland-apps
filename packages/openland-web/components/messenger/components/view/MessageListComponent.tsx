@@ -96,7 +96,7 @@ interface MessageListProps {
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     conversationId: string;
-    editPostHandler: (data: EditPostProps) => void;
+    editPostHandler?: (data: EditPostProps) => void;
 }
 
 const getScrollView = () => {

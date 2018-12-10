@@ -85,6 +85,14 @@ export const SendPostMessageMutation = gql`
     }
 `;
 
+export const EditPostMessageMutation = gql`
+    mutation EditPostMessage($messageId: ID!, $title: String!, $text: String!, $attachments: [String!], $postType: PostMessageType!) {
+        editPostMessage: alphaEditPostMessage(messageId: $messageId, title: $title, text: $text, attachments: $attachments, postType: $postType) {
+            seq
+        }
+    }
+`;
+
 export const RespondPostMessageMutation = gql`
     mutation RespondPostMessage($messageId: ID!, $buttonId: ID!, $reaction: String!) {
         alphaRespondPostMessage(messageId: $messageId, buttonId: $buttonId)

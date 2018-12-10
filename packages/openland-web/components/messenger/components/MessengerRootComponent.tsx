@@ -40,6 +40,7 @@ export interface EditPostProps {
     text: string;
     postTipe: PostMessageType | null;
     files: Set<File> | null;
+    messageId: string;
 }
 
 interface MessagesComponentProps {

@@ -85,7 +85,7 @@ interface ConversationMessagesComponentProps {
     messages: ModelMessage[];
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
-    editPostHandler: (data: EditPostProps) => void;
+    editPostHandler?: (data: EditPostProps) => void;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<
