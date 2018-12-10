@@ -135,6 +135,8 @@ class ReactionComponentInner extends React.PureComponent<{
                 animation={null}
                 contentContainer={<CustomPickerDiv />}
                 marginBottom={6}
+                animationOut="fade"
+                animationDurationOut={2000}
             >
                 <ReactionButton
                     className="reaction-button"

@@ -452,6 +452,7 @@ class MessageComponentInner extends React.PureComponent<
                     <MessagePostComponent
                         key={'post_message' + message.id}
                         messageId={message.id}
+                        senderName={message.sender.firstName}
                         userId={message.sender.id}
                         message={message.message}
                         alphaTitle={message.alphaTitle}

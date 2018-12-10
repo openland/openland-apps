@@ -203,6 +203,7 @@ interface MessagePostComponentProps {
     messageId: string;
     userId: string;
     meId: string;
+    senderName: string;
     message: string;
     alphaTitle: string;
     alphaButtons: (MessageFull_alphaButtons[] | null)[];
@@ -403,7 +404,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                     {meRespond && (
                                         <XHorizontal alignItems="center" alignSelf="flex-start">
                                             <XButton
-                                                text="Message"
+                                                text={'Message ' + props.senderName}
                                                 path={'/mail/' + props.userId}
                                                 style="primary"
                                             />

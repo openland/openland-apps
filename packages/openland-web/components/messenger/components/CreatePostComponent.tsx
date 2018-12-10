@@ -258,6 +258,7 @@ const CoverWrapper = Glamorous.div({
     borderRadius: 6,
     overflow: 'hidden',
     position: 'relative',
+    alignSelf: 'flex-start',
     '& > img': {
         display: 'block'
     }
@@ -823,9 +824,8 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 handleHideChat={props.handleHideChat}
                             >
                                 <XButton
-                                    text="Send"
+                                    text="Save changes"
                                     style="primary"
-                                    iconRight="send"
                                 />
                             </EditPostButton>
                         )}
