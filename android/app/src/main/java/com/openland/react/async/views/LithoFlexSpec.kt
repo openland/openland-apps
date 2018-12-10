@@ -2,10 +2,6 @@ package com.openland.react.async.views
 
 import android.graphics.drawable.RippleDrawable
 import android.view.View
-import com.facebook.litho.Column
-import com.facebook.litho.Component
-import com.facebook.litho.ComponentContext
-import com.facebook.litho.Row
 import com.facebook.litho.annotations.LayoutSpec
 import com.facebook.litho.annotations.OnCreateLayout
 import com.facebook.litho.annotations.Prop
@@ -13,12 +9,12 @@ import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaJustify
 import com.openland.react.async.*
 import com.facebook.litho.annotations.FromEvent
-import com.facebook.litho.ClickEvent
 import com.facebook.litho.annotations.OnEvent
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.WritableNativeMap
 import android.content.res.ColorStateList
+import com.facebook.litho.*
 import com.facebook.yoga.YogaEdge
 import com.facebook.yoga.YogaPositionType
 
@@ -53,7 +49,8 @@ object LithoFlexSpec {
         res.justifyContent(justifyContent)
 
         if (spec.touchableKey != null) {
-            res.clickHandler(LithoFlex.onClick(context))
+//            res.clickHandler(LithoFlex.onClick(context))
+            res.longClickHandler(LithoFlex.onLongClick(context))
             if (spec.highlightColor != null) {
                 res.background(RippleDrawable(ColorStateList(
                         arrayOf(intArrayOf()),
@@ -88,5 +85,22 @@ object LithoFlexSpec {
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("async_on_press", map)
+    }
+
+    @OnEvent(LongClickEvent::class)
+    @JvmName("onLongClick")
+    internal fun onLongClick(c: ComponentContext, @FromEvent view: View, @Prop spec: AsyncFlexSpec, @Prop reactContext: ReactContext): Boolean {
+        val map = WritableNativeMap()
+        map.putString("key", spec.touchableKey)
+        val loc = IntArray(2)
+        view.getLocationInWindow(loc)
+        map.putInt("x", loc[0])
+        map.putInt("y", loc[1])
+        map.putInt("w", view.width)
+        map.putInt("h", view.height)
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("async_on_long_press", map)
+        return true
     }
 }

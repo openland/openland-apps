@@ -36,6 +36,13 @@ export class ASEventEmitterHolder {
                 }
             });
 
+            DeviceEventEmitter.addListener('async_on_long_press', (args: ASPressEvent) => {
+                let p = this.onLongPress.get(args.key);
+                if (p) {
+                    p(args);
+                }
+            });
+
             DeviceEventEmitter.addListener('async_on_load_more', (args: { key: string }) => {
                 let p = this.onLoadMore.get(args.key);
                 if (p) {
