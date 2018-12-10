@@ -245,7 +245,7 @@ export class UserPopper extends React.PureComponent<
                 placement="top-start"
                 marginLeft={-2}
             >
-                <div
+                <span
                     onMouseEnter={this.showPopper}
                     onMouseLeave={this.hidePopper}
                 >
@@ -257,7 +257,7 @@ export class UserPopper extends React.PureComponent<
                             startSelected={props.startSelected}
                         />
                     )}
-                </div>
+                </span>
             </XPopper>
         );
     }

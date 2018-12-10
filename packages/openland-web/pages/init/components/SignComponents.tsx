@@ -377,7 +377,7 @@ const ButtonsWrapper = Glamorous.div<{
 const RoomSignupWrapper = Glamorous.div({
     position: 'relative',
     background:
-        'rgba(0, 0, 0, 0.8) url(/static/X/signup/background-blur-light.jpg) no-repeat',
+        'rgba(255, 255, 255, 0.8) url(/static/X/signup/background-blur-light.jpg) no-repeat',
     backgroundSize: 'cover',
     height: '100vh',
     width: '100%',
