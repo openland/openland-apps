@@ -3,7 +3,7 @@
         <mj-include path="./includes/attributes.mjml" />
         <mj-breakpoint width="680px" />
         <mj-title>Invitation to Openland</mj-title>
-        <mj-preview>{{firstName}} from {{organizationName}} invites you to join Openland, a professional messenger built for productivity and speed.</mj-preview>
+        <mj-preview>{{firstName}} invites you to join Openland, a professional messenger built for productivity and speed.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />
@@ -13,7 +13,7 @@
                     Invitation to Openland
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}}</strong> from <strong>{{organizationName}}</strong> invites you to&nbsp;join Openland, a&nbsp;professional messenger built for productivity and speed.
+                    <strong>{{firstName}}</strong> invites you to&nbsp;join Openland, a&nbsp;professional messenger built for productivity and speed.
                 </mj-text>
                 <mj-text mj-class="text">
                     You can use Openland to&nbsp;seek and share advice, discover new opportunities, and collaborate with other organizations.

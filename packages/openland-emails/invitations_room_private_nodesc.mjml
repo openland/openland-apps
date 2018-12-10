@@ -3,7 +3,7 @@
         <mj-include path="./includes/attributes.mjml" />
         <mj-breakpoint width="680px" />
         <mj-title>Join {{roomName}} room at Openland</mj-title>
-        <mj-preview>{{firstName}} from {{organizationName}} invites you to {{roomName}} chat room at Openland.</mj-preview>
+        <mj-preview>{{firstName}} invites you to {{roomName}} chat room at Openland.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />
@@ -13,7 +13,7 @@
                     An invitation to private chat room
                 </mj-text>
                 <mj-text mj-class="text">
-                    <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
+                    <strong>{{firstName}}</strong> invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
                 </mj-text>
                 <mj-button mj-class="button" href="{{link}}">View / Accept invitation</mj-button>
             </mj-column>
