@@ -9,7 +9,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
-import { XMenuVertical } from 'openland-x/XMenuItem';
+import { XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
@@ -455,7 +455,7 @@ class PostButton extends React.PureComponent<PostButtonProps> {
 
         return (
             <XPopper
-                placement="top"
+                placement="top-start"
                 arrow={null}
                 showOnHover={false}
                 show={this.state.show}
@@ -470,6 +470,7 @@ class PostButton extends React.PureComponent<PostButtonProps> {
                         >
                             Quick post
                         </XMenuItem>
+                        <XMenuItemSeparator />
                         <XMenuItem
                             style="gray"
                             {...enableProps}

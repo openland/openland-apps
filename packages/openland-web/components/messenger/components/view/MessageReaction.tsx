@@ -9,11 +9,11 @@ import {
     withUnsetReaction,
 } from '../../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-// import ReactionIcon from '../icons/ic-emoji2.svg';
 import ReactionIcon from '../icons/ic-reactions.svg';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
-    padding: '1px 6px',
+    padding: '4px 6px',
+    borderRadius: 18
 });
 
 const ReactionButton = Glamorous.div<{
@@ -27,6 +27,7 @@ const ReactionButton = Glamorous.div<{
     cursor: 'pointer',
     marginTop: props.marginTop,
     marginLeft: props.marginLeft,
+    paddingTop: 6,
     '&:hover svg > path': {
         fill: '#d75454',
         opacity: 1,
@@ -83,7 +84,7 @@ class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
                     >
                         {emojify(r, {
                             style: {
-                                height: 16,
+                                height: 24,
                                 backgroundImage:
                                     'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
                             },
@@ -102,24 +103,6 @@ class ReactionComponentInner extends React.PureComponent<{
     mutation: MutationFunc<{}>;
 }> {
     inner = 0;
-    state = {
-        show: false,
-    };
-
-    onClickOutside = () => {
-        if (!this.inner) {
-            this.setState({
-                show: false,
-            });
-        }
-    };
-
-    switch = (e: any) => {
-        e.stopPropagation();
-        this.setState({
-            show: !this.state.show,
-        });
-    };
 
     onInner = (ref: any) => {
         this.inner += ref ? 1 : -1;
@@ -132,10 +115,11 @@ class ReactionComponentInner extends React.PureComponent<{
                 reaction: typeof emj === 'string' ? emj : emj.native,
             },
         });
-        this.setState({
-            show: false,
-        });
     };
+
+    handleClick = () => {
+        this.handleSetReaction('❤️');
+    }
 
     render() {
         return (
@@ -146,15 +130,15 @@ class ReactionComponentInner extends React.PureComponent<{
                         setReaction={this.handleSetReaction}
                     />
                 }
-                show={this.state.show}
+                showOnHover={true}
                 placement="top"
                 animation={null}
-                onClickOutside={this.onClickOutside}
                 contentContainer={<CustomPickerDiv />}
+                marginBottom={6}
             >
                 <ReactionButton
                     className="reaction-button"
-                    onClick={this.switch}
+                    onClick={this.handleClick}
                     marginTop={this.props.marginTop}
                     marginLeft={this.props.marginLeft}
                 >

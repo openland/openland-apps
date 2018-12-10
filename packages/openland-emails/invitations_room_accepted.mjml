@@ -1,10 +1,9 @@
 <mjml>
     <mj-head>
-        <mj-title>{{firstName}} {{lastName}} has accepted your invitation</mj-title>
         <mj-include path="./includes/attributes.mjml" />
-        <mj-preview>
-            {{firstName}} {{lastName}} has accepted your invitation to join {{roomName}} chat room. Happy chatting!
-        </mj-preview>
+        <mj-breakpoint width="680px" />
+        <mj-title>{{firstName}} {{lastName}} has accepted your invitation</mj-title>
+        <mj-preview>{{firstName}} {{lastName}} has accepted your invitation to join {{roomName}} chat room. Happy chatting!</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />

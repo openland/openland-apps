@@ -73,12 +73,12 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                 onPrefixChanges={onPrefixChanges}
                 roomView={roomView}
                 defaultAction={async (data: any) => {
-                    // debugger;
                     let res = await createOrganization({
                         variables: {
                             input: {
-                                personal: false,
-                                name: data.input.name,
+                                personal: false, 
+                                name: data.name,
+                                id: data.id,
                             },
                         },
                     });

@@ -1,10 +1,9 @@
 <mjml>
     <mj-head>
-        <mj-title>You were removed from {{organizationName}}</mj-title>
         <mj-include path="./includes/attributes.mjml" />
-        <mj-preview>
-            You were removed from organization {{organizationName}}.
-        </mj-preview>
+        <mj-breakpoint width="680px" />
+        <mj-title>You were removed from {{organizationName}}</mj-title>
+        <mj-preview>You were removed from organization {{organizationName}}.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />

@@ -1,10 +1,9 @@
 <mjml>
     <mj-head>
-        <mj-title>Invitation to Openland</mj-title>
         <mj-include path="./includes/attributes.mjml" />
-        <mj-preview>
-            {{firstName}} from {{organizationName}} invites you to join Openland, a professional messenger built for productivity and speed.
-        </mj-preview>
+        <mj-breakpoint width="680px" />
+        <mj-title>Invitation to Openland</mj-title>
+        <mj-preview>{{firstName}} from {{organizationName}} invites you to join Openland, a professional messenger built for productivity and speed.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />

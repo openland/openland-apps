@@ -102,7 +102,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{
         opacity: props.compact ? 0 : 1,
     },
     '& .menu-wrapper': {
-        marginTop: props.compact ? 6 : 12,
+        marginTop: props.compact ? 0 : 6,
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
         opacity: 0,
@@ -164,6 +164,7 @@ const IconButton = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 6,
     '&:hover svg path:last-child': {
         fill: '#1790ff',
         opacity: 1,
@@ -577,20 +578,25 @@ class MessageComponentInner extends React.PureComponent<
                 if (message.reply && message.reply!.length > 0) {
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {message.reply!.sort((a, b) => (a.date - b.date)).map((i, j) => (
-                                <MessageReplyComponent
-                                    mentions={message.mentions}
-                                    sender={i.sender}
-                                    date={i.date}
-                                    message={i.message}
-                                    id={i.id}
-                                    key={'reply_message' + i.id + j}
-                                    edited={i.edited}
-                                    file={i.file}
-                                    fileMetadata={i.fileMetadata}
-                                    startSelected={hideMenu}
-                                />
-                            ))}
+                            {message.reply!.sort((a, b) => (a.date - b.date)).map((item, index, array) => {
+                                let isCompact = (index > 0) ? ((array[index - 1].sender === item.sender) ? true : false) : false;
+
+                                return (
+                                    <MessageReplyComponent
+                                        mentions={message.mentions}
+                                        sender={item.sender}
+                                        date={item.date}
+                                        message={item.message}
+                                        id={item.id}
+                                        key={'reply_message' + item.id + index}
+                                        edited={item.edited}
+                                        file={item.file}
+                                        fileMetadata={item.fileMetadata}
+                                        startSelected={hideMenu}
+                                        compact={isCompact || undefined}
+                                    />
+                                );
+                            })}
                         </ReplyMessageWrapper>
                     );
                 }
