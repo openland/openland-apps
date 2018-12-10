@@ -1287,6 +1287,16 @@
                 "defaultValue": null
               },
               {
+                "name": "all",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "prefix",
                 "description": "",
                 "type": {

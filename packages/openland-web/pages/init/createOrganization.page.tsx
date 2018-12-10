@@ -73,13 +73,12 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                 onPrefixChanges={onPrefixChanges}
                 roomView={roomView}
                 defaultAction={async (data: any) => {
+                    // debugger;
                     let res = await createOrganization({
                         variables: {
                             input: {
                                 personal: false,
                                 name: data.input.name,
-                                website: data.input.website,
-                                photoRef: sanitizeIamgeRef(data.input.photoRef),
                             },
                         },
                     });
@@ -136,6 +135,7 @@ class CreateOrganizationPrefixHolder extends React.Component<
                 <OrganizationsSelectorOptionsFetcher
                     variables={{
                         prefix: this.state.organizationPrefix,
+                        all: true,
                         sort: JSON.stringify([]),
                     }}
                 >

@@ -3751,6 +3751,7 @@ export interface ExploreOrganizationsVariables {
   sort?: string | null;
   page?: number | null;
   after?: string | null;
+  all?: boolean | null;
 }
 
 /* tslint:disable */
