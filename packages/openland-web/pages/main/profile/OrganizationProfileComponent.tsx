@@ -48,6 +48,7 @@ import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -902,63 +903,29 @@ export const OrganizationInfoWrapper = Glamorous.div({
 
 interface OrganizationProfileInnerProps extends XWithRouter {
     organizationQuery: Organization;
-    handlePageTitle?: any;
     onDirectory?: boolean;
 }
 
-class OrganizationProfileInner extends React.Component<
-    OrganizationProfileInnerProps
-> {
-    pageTitle: string | undefined = undefined;
+const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
+    let organization = props.organizationQuery.organization;
 
-    constructor(props: OrganizationProfileInnerProps) {
-        super(props);
-
-        if (this.props.handlePageTitle) {
-            this.pageTitle = props.organizationQuery.organization.name;
-            this.props.handlePageTitle(this.pageTitle);
-        }
-    }
-
-    componentWillReceiveProps(newProps: OrganizationProfileInnerProps) {
-        if (newProps.handlePageTitle) {
-            let title = newProps.organizationQuery.organization.name;
-
-            if (title !== this.pageTitle) {
-                this.pageTitle = title;
-
-                newProps.handlePageTitle(title);
-            }
-        }
-    }
-
-    handleRef = (ref?: any) => {
-        if (!ref && this.props.onDirectory) {
-            if (this.props.handlePageTitle) {
-                this.pageTitle = undefined;
-                this.props.handlePageTitle(undefined);
-            }
-        }
-    };
-
-    render() {
-        let organization = this.props.organizationQuery.organization;
-
-        return (
-            <OrganizationInfoWrapper innerRef={this.handleRef}>
+    return (
+        <>
+            <XDocumentHead title={organization.name} />
+            <OrganizationInfoWrapper>
                 <BackButton />
                 <Header organization={organization} />
                 <XScrollView2 height="calc(100% - 136px)">
                     <About organization={organization} />
                     <Members
                         organization={organization}
-                        router={this.props.router}
+                        router={props.router}
                     />
                     <Rooms organization={organization} />
                 </XScrollView2>
             </OrganizationInfoWrapper>
-        );
-    }
+        </>
+    );
 }
 
 const OrganizationProvider = withOrganization(
@@ -968,7 +935,6 @@ const OrganizationProvider = withOrganization(
                 <OrganizationProfileInner
                     organizationQuery={props.data}
                     router={props.router}
-                    handlePageTitle={(props as any).handlePageTitle}
                     onDirectory={(props as any).onDirectory}
                 />
             ) : (
@@ -978,18 +944,15 @@ const OrganizationProvider = withOrganization(
 ) as React.ComponentType<{
     variables: { organizationId: string };
     onDirectory?: boolean;
-    handlePageTitle?: any;
 }>;
 
 export const OrganizationProfile = (props: {
     organizationId: string;
     onDirectory?: boolean;
-    handlePageTitle?: any;
 }) => {
     return (
         <OrganizationProvider
             variables={{ organizationId: props.organizationId }}
-            handlePageTitle={props.handlePageTitle}
             onDirectory={props.onDirectory}
         />
     );

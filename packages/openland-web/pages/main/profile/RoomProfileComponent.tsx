@@ -54,6 +54,7 @@ import { InviteMembersModal } from '../channel/components/inviteMembersModal';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
     fontSize: 13,
@@ -405,66 +406,34 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
 
 interface RoomGroupProfileInnerProps extends XWithRouter {
     chat: Room_room_SharedRoom;
-    handlePageTitle?: any;
     onDirectory?: boolean;
     conversationId: string;
 }
 
-class RoomGroupProfileInner extends React.Component<
-    RoomGroupProfileInnerProps
-> {
-    pageTitle: string | undefined = undefined;
+const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
+    let chat = props.chat;
 
-    constructor(props: RoomGroupProfileInnerProps) {
-        super(props);
-
-        if (this.props.handlePageTitle) {
-            this.pageTitle = props.chat.title;
-            this.props.handlePageTitle(this.pageTitle);
-        }
-    }
-
-    componentWillReceiveProps(newProps: RoomGroupProfileInnerProps) {
-        if (newProps.handlePageTitle) {
-            let title = newProps.chat.title;
-
-            if (title !== this.pageTitle) {
-                this.pageTitle = title;
-                newProps.handlePageTitle(title);
-            }
-        }
-    }
-
-    handleRef = (ref?: any) => {
-        if (!ref && this.props.onDirectory) {
-            if (this.props.handlePageTitle) {
-                this.pageTitle = undefined;
-                this.props.handlePageTitle(undefined);
-            }
-        }
-    };
-
-    render() {
-        let chat = this.props.chat;
-        return (
-            <OrganizationInfoWrapper innerRef={this.handleRef}>
+    return (
+        <>
+            <XDocumentHead title={chat.title} />
+            <OrganizationInfoWrapper>
                 <BackButton />
                 <Header chat={chat} />
                 <XScrollView2 height="calc(100% - 136px)">
                     <About chat={chat} />
                     <MembersProvider
                         kind={chat.kind}
-                        router={this.props.router}
+                        router={props.router}
                         members={chat.members}
                         requests={chat.requests}
-                        chatId={this.props.conversationId}
+                        chatId={props.conversationId}
                         meOwner={chat.membership === 'MEMBER'}
                         chatTitle={chat.title}
                     />
                 </XScrollView2>
             </OrganizationInfoWrapper>
-        );
-    }
+        </>
+    );
 }
 
 const RoomGroupProfileProvider = withRoom(
@@ -474,7 +443,6 @@ const RoomGroupProfileProvider = withRoom(
             <RoomGroupProfileInner
                 chat={chat}
                 router={props.router}
-                handlePageTitle={(props as any).handlePageTitle}
                 onDirectory={(props as any).onDirectory}
                 conversationId={(props as any).conversationId}
             />
@@ -485,18 +453,15 @@ const RoomGroupProfileProvider = withRoom(
 ) as React.ComponentType<{
     variables: { id: string };
     onDirectory?: boolean;
-    handlePageTitle?: any;
     conversationId: string;
 }>;
 
 export const RoomProfile = (props: {
     conversationId: string;
     onDirectory?: boolean;
-    handlePageTitle?: any;
 }) => (
     <RoomGroupProfileProvider
         variables={{ id: props.conversationId }}
-        handlePageTitle={props.handlePageTitle}
         onDirectory={props.onDirectory}
         conversationId={props.conversationId}
     />

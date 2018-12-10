@@ -33,6 +33,7 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XDate } from 'openland-x/XDate';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const HeaderAvatar = Glamorous.div({
     paddingRight: 18,
@@ -242,56 +243,23 @@ const About = (props: { user: User_user }) => {
 
 interface UserProfileInnerProps extends XWithRouter {
     userQuery: User;
-    handlePageTitle?: any;
     onDirectory?: boolean;
 }
 
-class UserProfileInner extends React.Component<UserProfileInnerProps> {
-    pageTitle: string | undefined = undefined;
+const UserProfileInner = (props: UserProfileInnerProps) => {
+    let { user } = props.userQuery;
 
-    constructor(props: UserProfileInnerProps) {
-        super(props);
+    return (
+        <>
+            <XDocumentHead title={user.name} />
 
-        if (this.props.handlePageTitle) {
-            this.pageTitle = props.userQuery.user.name;
-            this.props.handlePageTitle(this.pageTitle);
-        }
-    }
-
-    componentWillReceiveProps(newProps: UserProfileInnerProps) {
-        if (newProps.handlePageTitle) {
-            let title = newProps.userQuery.user.name;
-
-            if (title !== this.pageTitle) {
-                this.pageTitle = title;
-
-                newProps.handlePageTitle(title);
-            }
-        }
-    }
-
-    handleRef = (ref?: any) => {
-        if (!ref && this.props.onDirectory) {
-            if (this.props.handlePageTitle) {
-                this.pageTitle = undefined;
-                this.props.handlePageTitle(undefined);
-            }
-        }
-    };
-
-    render() {
-        let { user } = this.props.userQuery;
-
-        return (
-            <div ref={this.handleRef}>
-                <BackButton />
-                <Header user={user} />
-                <XScrollView2 height="calc(100% - 136px)">
-                    <About user={user} />
-                </XScrollView2>
-            </div>
-        );
-    }
+            <BackButton />
+            <Header user={user} />
+            <XScrollView2 height="calc(100% - 136px)">
+                <About user={user} />
+            </XScrollView2>
+        </>
+    );
 }
 
 const UserProvider = withUser(
@@ -301,7 +269,6 @@ const UserProvider = withUser(
                 <UserProfileInner
                     userQuery={props.data}
                     router={props.router}
-                    handlePageTitle={(props as any).handlePageTitle}
                     onDirectory={(props as any).onDirectory}
                 />
             ) : (
@@ -311,17 +278,14 @@ const UserProvider = withUser(
 ) as React.ComponentType<{
     variables: { userId: string };
     onDirectory?: boolean;
-    handlePageTitle?: any;
 }>;
 
 export const UserProfile = (props: {
     userId: string;
     onDirectory?: boolean;
-    handlePageTitle?: any;
 }) => (
     <UserProvider
         variables={{ userId: props.userId }}
-        handlePageTitle={props.handlePageTitle}
         onDirectory={props.onDirectory}
     />
 );

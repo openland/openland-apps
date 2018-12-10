@@ -95,7 +95,6 @@ interface RootComponentState {
         featured: boolean;
     };
     orgCount: number;
-    pageTitle: string;
 }
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
@@ -112,15 +111,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 featured: true,
             },
             orgCount: 0,
-            pageTitle: 'Organizations Directory',
         };
     }
-
-    handlePageTitle = (title?: string) => {
-        this.setState({
-            pageTitle: title || 'Organizations Directory',
-        });
-    };
 
     changeSort = (sort: { orderBy: string; featured: boolean }) => {
         this.setState({
@@ -151,7 +143,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
         return (
             <>
-                <XDocumentHead title={this.state.pageTitle} />
+                <XDocumentHead title="Organizations Directory" />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <RootWrapper>
@@ -217,7 +209,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 {oid && (
                                     <OrganizationProfile
                                         organizationId={oid}
-                                        handlePageTitle={this.handlePageTitle}
                                         onDirectory={true}
                                     />
                                 )}

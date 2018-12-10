@@ -90,7 +90,6 @@ interface RootComponentState {
         featured: boolean;
     };
     orgCount: number;
-    pageTitle: string;
 }
 
 class RootComponent extends React.Component<XWithRouter, RootComponentState> {
@@ -106,15 +105,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 featured: true,
             },
             orgCount: 0,
-            pageTitle: 'People Directory',
         };
     }
-
-    handlePageTitle = (title?: string) => {
-        this.setState({
-            pageTitle: title || 'People Directory',
-        });
-    };
 
     onQueryChange = (q: string) => {
         this.resetPage();
@@ -149,7 +141,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
 
         return (
             <>
-                <XDocumentHead title={this.state.pageTitle} />
+                <XDocumentHead title="People Directory" />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <RootWrapper>
@@ -219,7 +211,6 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                 {uid && (
                                     <UserProfile
                                         userId={uid}
-                                        handlePageTitle={this.handlePageTitle}
                                         onDirectory={true}
                                     />
                                 )}

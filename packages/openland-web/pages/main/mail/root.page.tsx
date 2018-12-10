@@ -92,7 +92,7 @@ export const Title = Glamorous.div({
     ...XFont.h600,
 });
 
-export const OrganizationProfilContainer = Glamorous.div({
+export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
@@ -150,7 +150,7 @@ class ChatListContainerWrapper extends React.PureComponent<{
 }
 
 interface MessagePageInnerState extends MessagesStateContextProps {
-    pageTitle: string | undefined;
+    
 }
 
 class MessagePageInner extends React.Component<
@@ -161,7 +161,6 @@ class MessagePageInner extends React.Component<
         super(props);
 
         this.state = {
-            pageTitle: undefined,
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
@@ -265,17 +264,11 @@ class MessagePageInner extends React.Component<
         });
     };
 
-    handlePageTitle = (title?: string) => {
-        this.setState({
-            pageTitle: title,
-        });
-    };
-
     render() {
         let { props, state } = this;
 
         let isCompose = props.router.path.endsWith('/new');
-        let pageTitle = isCompose ? 'New chat' : state.pageTitle;
+        let pageTitle = isCompose ? 'New chat' : undefined;
 
         if (!canUseDOM) {
             return (
@@ -371,9 +364,6 @@ class MessagePageInner extends React.Component<
                                                 props.router.routeQuery
                                                     .conversationId
                                             }
-                                            handlePageTitle={
-                                                this.handlePageTitle
-                                            }
                                         />
                                     )}
                                     {tab === 'rooms' && (
@@ -381,34 +371,19 @@ class MessagePageInner extends React.Component<
                                     )}
                                     {tab === 'invite' && <RoomInviteFromLink />}
                                     {tab === 'organization' && (
-                                        <OrganizationProfilContainer>
-                                            <OrganizationProfile
-                                                organizationId={oid}
-                                                handlePageTitle={
-                                                    this.handlePageTitle
-                                                }
-                                            />
-                                        </OrganizationProfilContainer>
+                                        <OrganizationProfileContainer>
+                                            <OrganizationProfile organizationId={oid} />
+                                        </OrganizationProfileContainer>
                                     )}
                                     {tab === 'user' && (
-                                        <OrganizationProfilContainer>
-                                            <UserProfile
-                                                userId={uid}
-                                                handlePageTitle={
-                                                    this.handlePageTitle
-                                                }
-                                            />
-                                        </OrganizationProfilContainer>
+                                        <OrganizationProfileContainer>
+                                            <UserProfile userId={uid} />
+                                        </OrganizationProfileContainer>
                                     )}
                                     {tab === 'chat' && (
-                                        <OrganizationProfilContainer>
-                                            <RoomProfile
-                                                conversationId={cid}
-                                                handlePageTitle={
-                                                    this.handlePageTitle
-                                                }
-                                            />
-                                        </OrganizationProfilContainer>
+                                        <OrganizationProfileContainer>
+                                            <RoomProfile conversationId={cid} />
+                                        </OrganizationProfileContainer>
                                     )}
                                 </ConversationContainer>
                             </ChatContainer>

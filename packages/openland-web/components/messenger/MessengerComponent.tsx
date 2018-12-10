@@ -58,6 +58,7 @@ import NotificationsOffIcon from './components/icons/ic-notifications-off.svg';
 import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XView } from 'react-mental';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -554,51 +555,23 @@ interface MessengerWrapperProps {
     chatTitle: string;
     chatType: string;
     userName?: string;
-    handlePageTitle?: any;
+    children?: any;
 }
 
-class MessengerWrapper extends React.Component<MessengerWrapperProps> {
-    pageTitle: string | undefined = undefined;
-
-    constructor(props: MessengerWrapperProps) {
-        super(props);
-
-        if (this.props.handlePageTitle) {
-            this.pageTitle =
-                this.props.chatType === 'PrivateConversation'
-                    ? this.props.userName
-                    : this.props.chatTitle;
-            this.props.handlePageTitle(this.pageTitle);
-        }
-    }
-
-    componentWillReceiveProps(newProps: MessengerWrapperProps) {
-        if (newProps.handlePageTitle) {
-            let title =
-                newProps.chatType === 'PrivateConversation'
-                    ? newProps.userName
-                    : newProps.chatTitle;
-
-            if (title !== this.pageTitle) {
-                this.pageTitle = title;
-
-                newProps.handlePageTitle(title);
-            }
-        }
-    }
-
-    render() {
-        return (
+const MessengerWrapper = (props: MessengerWrapperProps) => {
+    return (
+        <>
+            <XDocumentHead title={props.chatType === 'PrivateConversation' ? props.userName : props.chatTitle} />
             <XVertical
                 flexGrow={1}
                 separator={'none'}
                 width="100%"
                 height="100%"
             >
-                {this.props.children}
+                {props.children}
             </XVertical>
-        );
-    }
+        </>
+    );
 }
 
 let HeaderLeftContent = (props: {
@@ -1035,7 +1008,6 @@ let MessengerComponentLoader = withRoom(
                     chatTitle={title}
                     chatType={chatType}
                     userName={privateRoom ? privateRoom.user.name : undefined}
-                    handlePageTitle={(props as any).handlePageTitle}
                 >
                     {placeholder && (
                         <FrowardPlaceholder state={messagesState} />
@@ -1115,13 +1087,11 @@ let MessengerComponentLoader = withRoom(
     ),
 ) as React.ComponentType<{
     variables: { id: string };
-    handlePageTitle?: any;
     state: MessagesStateContextProps;
 }>;
 
 interface MessengerComponentProps {
     id: string;
-    handlePageTitle?: any;
 }
 
 export const MessengerComponent = (props: MessengerComponentProps) => (
@@ -1129,7 +1099,6 @@ export const MessengerComponent = (props: MessengerComponentProps) => (
         {(state: MessagesStateContextProps) => (
             <MessengerComponentLoader
                 variables={{ id: props.id }}
-                handlePageTitle={props.handlePageTitle}
                 state={state}
             />
         )}
