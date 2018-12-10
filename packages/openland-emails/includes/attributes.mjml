@@ -56,8 +56,8 @@
         name="container"
 
         width="680px"
-        padding-left="30px"
-        padding-right="30px" />
+        padding-left="20px"
+        padding-right="20px" />
 
     <!-- Custom styles -->
 
@@ -66,14 +66,14 @@
 
         text-align="left"
         padding-top="30px"
-        padding-bottom="45px" />
+        padding-bottom="46px" />
 
     <mj-class
         name="header-row"
 
         text-align="left"
         padding-top="30px"
-        padding-bottom="45px" />
+        padding-bottom="46px" />
 
     <mj-class
         name="logo"
@@ -85,11 +85,11 @@
     <mj-class
         name="title"
 
-        font-size="29px"
-        line-height="32px"
+        font-size="24px"
+        line-height="30px"
         font-weight="600"
         padding-top="0"
-        padding-bottom="24px"
+        padding-bottom="16px"
         color="#000000" />
 
     <mj-class
@@ -99,25 +99,25 @@
         line-height="24px"
         font-weight="600"
         padding-top="0"
-        padding-bottom="12px"
+        padding-bottom="16px"
         color="#000000" />
 
     <mj-class
         name="text"
 
+        font-size="16px"
+        line-height="24px"
         padding-top="0"
         padding-bottom="12px"
-        font-size="16px"
-        line-height="26px"
         color="#000000" />
 
     <mj-class
         name="text-quote"
 
         padding-top="4px"
-        padding-bottom="16px"
+        padding-bottom="24px"
         font-size="16px"
-        line-height="26px"
+        line-height="24px"
         color="#000000" />
 
     <mj-class
@@ -145,7 +145,7 @@
         line-height="20px"
         font-weight="600"
         inner-padding="10px 20px"
-        padding-top="20px" />
+        padding-top="12px" />
 
     <mj-class
         name="button-small"
@@ -163,19 +163,19 @@
 
         text-align="left"
         padding-top="0"
-        padding-bottom="46px" />
+        padding-bottom="42px" />
 
     <mj-class
         name="footer-divider"
 
-        padding-top="46px"
+        padding-top="44px"
         padding-bottom="17px" />
 
     <mj-class
         name="install-apps"
 
         text-align="left"
-        padding-top="46px"
-        padding-bottom="60px" />
+        padding-top="44px"
+        padding-bottom="20px" />
 
 </mj-attributes>

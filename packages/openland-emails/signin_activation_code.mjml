@@ -1,10 +1,9 @@
 <mjml>
     <mj-head>
-        <mj-title>Activation code for Openland: {{code}}</mj-title>
         <mj-include path="./includes/attributes.mjml" />
-        <mj-preview>
-            To enter Openland, use the following one-time code on your sign-in page.
-        </mj-preview>
+        <mj-breakpoint width="680px" />
+        <mj-title>Activation code for Openland: {{code}}</mj-title>
+        <mj-preview>To enter Openland, use the following one-time code on your sign-in page.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />

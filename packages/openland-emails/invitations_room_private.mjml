@@ -1,10 +1,9 @@
 <mjml>
     <mj-head>
-        <mj-title>Join {{roomName}} room at Openland</mj-title>
         <mj-include path="./includes/attributes.mjml" />
-        <mj-preview>
-            {{firstName}} from {{organizationName}} invites you to {{roomName}} chat room at Openland.
-        </mj-preview>
+        <mj-breakpoint width="680px" />
+        <mj-title>Join {{roomName}} room at Openland</mj-title>
+        <mj-preview>{{firstName}} from {{organizationName}} invites you to {{roomName}} chat room at Openland.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header-user.mjml" />
@@ -17,7 +16,7 @@
                     <strong>{{firstName}}</strong> from {{organizationName}} invites you&nbsp;to <strong>{{roomName}}</strong> chat room at&nbsp;Openland.
                 </mj-text>
                 <mj-text mj-class="text-quote">
-                    <div style="border-left: 3px solid #1790ff; padding-left: 15px;">
+                    <div style="border-left: 3px solid #1790ff; padding-left: 12px;">
                         {{roomDescription}}
                     </div>
                 </mj-text>

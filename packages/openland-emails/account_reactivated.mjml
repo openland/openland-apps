@@ -1,17 +1,16 @@
 <mjml>
     <mj-head>
-        <mj-title>Openland account activated</mj-title>
         <mj-include path="./includes/attributes.mjml" />
-        <mj-preview>
-            Good news! Your account is activated by Openland staff. Now you can use Openland to seek and share advice, discover new opportunities, and collaborate with other organizations.
-        </mj-preview>
+        <mj-breakpoint width="680px" />
+        <mj-title>Openland account activated</mj-title>
+        <mj-preview>Good news! Your account is activated by Openland staff. Now you can use Openland to seek and share advice, discover new opportunities, and collaborate with other organizations.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />
         <mj-section mj-class="wrapper">
             <mj-column mj-class="container">
                 <mj-text mj-class="title">
-                    Welcome to Openland&nbsp;&nbsp;<img style="display: inline-block; vertical-align: top; margin-top: -4px;" width="32" height="32" src="https://cdn.openland.com/shared/email/emojione/1f389.png" />
+                    Welcome to Openland&nbsp;&nbsp;<img style="display: inline-block; vertical-align: top; margin-top: -1px;" width="26" height="26" src="https://cdn.openland.com/shared/email/emojione/1f389.png" />
                 </mj-text>
                 <mj-text mj-class="text">
                     Good news! Your account is&nbsp;activated by&nbsp;Openland staff. Now you can use Openland to&nbsp;seek and share advice, discover new opportunities, and collaborate with other organizations.
