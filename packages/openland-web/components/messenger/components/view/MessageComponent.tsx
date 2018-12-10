@@ -101,7 +101,7 @@ const MessageWrapper = Glamorous(XHorizontal)<{
         opacity: props.compact ? 0 : 1,
     },
     '& .menu-wrapper': {
-        marginTop: props.compact ? 6 : 12,
+        marginTop: props.compact ? 0 : 6,
     },
     '& .menu-wrapper, & .reactions-wrapper .reaction-button': {
         opacity: 0,
@@ -163,6 +163,7 @@ const IconButton = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 6,
     '&:hover svg path:last-child': {
         fill: '#1790ff',
         opacity: 1,
