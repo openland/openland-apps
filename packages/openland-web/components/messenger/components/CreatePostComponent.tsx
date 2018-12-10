@@ -17,6 +17,7 @@ import { withSendPostMessage, withEditPostMessage } from '../../../api/withPostM
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
 import CloseIcon from './icons/ic-close-post.svg';
+import RemoveIcon from './icons/ic-close.svg';
 import PhotoIcon from './icons/ic-photo-2.svg';
 import FileIcon from './icons/ic-file-3.svg';
 import UloadIc from './icons/file-upload.svg';
@@ -740,7 +741,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                         height={134}
                                     />
                                     <CoverDelButton onClick={() => this.fileRemover(cover)}>
-                                        <CloseIcon />
+                                        <RemoveIcon />
                                     </CoverDelButton>
                                 </CoverWrapper>
                             )}
@@ -750,10 +751,10 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 {moreFiles.map(i => (
                                     <FileItem key={'file' + i.uuid} separator={4} alignItems="center">
                                         <FileImage />
-                                        <XHorizontal alignItems="center" separator={3}>
+                                        <XHorizontal alignItems="center" separator={4}>
                                             <div>{i.name} <span>•</span> {niceBytes(Number(i.size))}</div>
                                             <XHorizontal alignItems="center" className="remove" onClick={() => this.fileRemover(i)}>
-                                                <CloseIcon />
+                                                <RemoveIcon />
                                             </XHorizontal>
                                         </XHorizontal>
                                     </FileItem>
