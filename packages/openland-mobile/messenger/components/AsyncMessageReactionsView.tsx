@@ -40,7 +40,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
 
         return (
             <ASFlex flexDirection="row" marginRight={7}>
-                {[...reactions.values()].map((r, i) => (
+                {[...reactions.values()].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => (
                     <ASFlex flexDirection="row" marginTop={5} marginBottom={5}>
                         <ASText fontSize={14} key={i} marginLeft={7}>{r.reaction}</ASText>
                         <ASText fontSize={14} key={i + '-counter'} color={r.my ? 'rgb(23, 144, 255)' : 'rgba(0, 0, 0, 0.5)'}>{r.count}</ASText>
