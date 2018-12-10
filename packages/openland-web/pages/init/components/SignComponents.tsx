@@ -1448,6 +1448,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                         alignItems="center"
                                     >
                                         <OrganizationSelector
+                                            menuStyle={{ maxHeight: 150 }}
                                             invalid={showError}
                                             noArrow
                                             onSelectResetsInput={false}

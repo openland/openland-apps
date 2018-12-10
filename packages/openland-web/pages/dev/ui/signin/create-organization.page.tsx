@@ -13,6 +13,29 @@ const WrapIntoState = CreateWrapIntoState({
     webSignup: { ...signContainerKnob },
 });
 
+const organizationsData = [
+    {
+        label: '123',
+        value: '123',
+    },
+    {
+        label: '345',
+        value: '345',
+    },
+    {
+        label: '678',
+        value: '678',
+    },
+    {
+        label: '901',
+        value: '901',
+    },
+    {
+        label: '222',
+        value: '222',
+    },
+];
+
 export default () => (
     <DevDocsScaffold>
         <WrapIntoState>
@@ -27,7 +50,7 @@ export default () => (
                         >
                             <CreateOrganizationFormInner
                                 organizations={{
-                                    data: [],
+                                    data: organizationsData,
                                     loading: false,
                                 }}
                                 onPrefixChanges={() => {
