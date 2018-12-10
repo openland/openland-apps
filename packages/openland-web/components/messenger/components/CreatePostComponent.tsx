@@ -8,6 +8,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
+import { XMutation } from 'openland-x/XMutation';
 import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from './view/content/MessageUploadComponent';
@@ -29,37 +30,36 @@ const postTexts = {
     },
     "JOB_OPPORTUNITY": {
         header: 'Job opportunity',
-        titlePlaceholder: 'Job title or opportunity',
-        text: `💸Salary range $XXX-XXX
+        titlePlaceholder: 'Job Opportunity Title',
+        text: `💰 Salary range $XX-XXXk
 
-🥇🏆About company
-    • Short description
-    • Company size
-    • Funding, progress to date...
-    • etc
+🚀 About company
+        • Short description
+        • Company size
+        • Funding, progress to date...
+        • etc
 
-🔨🔧🎨Responsibilities
-    • A
-    • B 
-    • C
+🔨 Responsibilities
+        • A
+        • B 
+        • C
 
-🎯💡Qualifications
-    • A
-    • B 
-    • C
+🎓 Qualifications
+        • A
+        • B 
+        • C
 
-🎮🧁 🍩Benefits
-    • A
-    • B 
-    • C
-        `,
+🧁 Benefits
+        • A
+        • B 
+        • C`,
         textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
     },
     "OFFICE_HOURS": {
         header: 'Office hours',
         titlePlaceholder: 'Office hours with XX',
-        text: 
-`🎓 About you / your expertise areas 
+        text:
+            `🎓 About you / your expertise areas 
 🙄 Who can apply 
 💬 Preferred way to connect
 `,
@@ -68,8 +68,8 @@ const postTexts = {
     "REQUEST_FOR_STARTUPS": {
         header: 'Request for startups',
         titlePlaceholder: 'XX — Request for startups',
-        text: 
-`💰 Typical check size
+        text:
+            `💰 Typical check size
 ⏳ Investment process and average decision time
 ✅ Preferred moment to invest / criteria
 🌎 Markets / geographies / keywords
@@ -318,10 +318,56 @@ const DropAreaSubtitle = Glamorous.div({
     color: '#5c6a81',
 });
 
+interface SendPostButtonProps {
+    conversationId: string;
+    children: any;
+    title: string;
+    text: string;
+    files: Set<File> | null;
+    postType: PostMessageType | null | string;
+    handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
+}
+
+const SendPostButton = withSendPostMessage(props => {
+    const { files, title, text } = props as any;
+
+    let attachments: string[] | null = null;
+
+    if (files) {
+        attachments = [...files].map(i => i.uuid);
+    }
+
+    const checkApplySend = (title.trim().length > 0 && text.trim().length > 0);
+
+    return (
+        <XMutation
+            action={async () => {
+                if (checkApplySend) {
+                    await props.sendPost({
+                        variables: {
+                            conversationId: (props as any).conversationId,
+                            title: title,
+                            text: text,
+                            attachments: attachments,
+                            postType: (props as any).postType ? (props as any).postType : PostMessageType.BLANK
+                        }
+                    });
+                }
+            }}
+            onSuccess={() => {
+                if (checkApplySend) {
+                    (props as any).handleHideChat(false, null);
+                }
+            }}
+        >
+            {props.children}
+        </XMutation>
+    );
+}) as React.ComponentType<SendPostButtonProps>;
+
 interface CreatePostComponentProps {
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
     conversationId: string;
-    sendPost: MutationFunc<SendPostMessage, Partial<SendPostMessageVariables>>;
     postType: PostMessageType | null;
 }
 
@@ -342,7 +388,7 @@ interface CreatePostComponentState {
     cover: File | null
 }
 
-export class CreatePostRoot extends React.Component<CreatePostComponentProps, CreatePostComponentState> {
+export class CreatePostComponent extends React.Component<CreatePostComponentProps, CreatePostComponentState> {
     constructor(props: CreatePostComponentProps) {
         super(props);
 
@@ -516,31 +562,6 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
         });
     };
 
-    private sendPost = () => {
-        const { props } = this;
-        const { files, title, text } = this.state;
-
-        let attachments: string[] | null = null;
-
-        if (files) {
-            attachments = [...files].map(i => i.uuid);
-        }
-
-        if (title.trim().length > 0 && text.trim().length > 0) {
-            props.sendPost({
-                variables: {
-                    conversationId: props.conversationId,
-                    title: title,
-                    text: text,
-                    attachments: attachments,
-                    postType: props.postType ? props.postType : PostMessageType.BLANK
-                }
-            });
-    
-            props.handleHideChat(false, null);
-        }
-    }
-
     componentDidMount() {
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
@@ -552,6 +573,7 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
     }
 
     render() {
+        const {props, state} = this;
         let postType = this.props.postType || 'BLANK';
 
         const header = postTexts[postType].header;
@@ -648,23 +670,22 @@ export class CreatePostRoot extends React.Component<CreatePostComponentProps, Cr
                                 <span>Document</span>
                             </AttachmentButton>
                         </XHorizontal>
-                        <XButton
-                            text="Send"
-                            style="primary"
-                            onClick={this.sendPost}
-                        />
+                        <SendPostButton
+                            conversationId={props.conversationId}
+                            postType={postType}
+                            title={state.title}
+                            text={state.text}
+                            files={state.files}
+                            handleHideChat={props.handleHideChat}
+                        >
+                            <XButton
+                                text="Send"
+                                style="primary"
+                            />
+                        </SendPostButton>
                     </XHorizontal>
                 </FooterWrapper>
             </Wrapper>
         );
     }
 }
-
-export const CreatePostComponent = withSendPostMessage(props => (
-    <CreatePostRoot
-        {...props}
-        postType={(props as any).postType}
-        handleHideChat={(props as any).handleHideChat}
-        conversationId={(props as any).conversationId}
-    />
-)) as React.ComponentType<{ handleHideChat: (hide: boolean, postType: PostMessageType | null) => void, conversationId: string, postType: PostMessageType | null }>

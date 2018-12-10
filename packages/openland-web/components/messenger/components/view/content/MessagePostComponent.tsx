@@ -215,7 +215,8 @@ const RespondUserCompany = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.4)'
 });
 
-const ShowMore = Glamorous(XHorizontal)<{active: boolean}>(props => ({
+const ShowMore = Glamorous(XHorizontal)<{ active: boolean }>(props => ({
+    paddingTop: 12,
     cursor: 'pointer',
     fontSize: 13,
     lineHeight: 1.54,
