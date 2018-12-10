@@ -27,7 +27,7 @@ const postTexts = {
         header: 'Quick post',
         titlePlaceholder: 'Title',
         text: '',
-        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+        textPlaceholder: '✍🏼 Write your post here. You can ask for help, share opportunities, and offer services.'
     },
     "JOB_OPPORTUNITY": {
         header: 'Job opportunity',
@@ -142,6 +142,7 @@ const Body = Glamorous.div({
 });
 
 const PostTitle = Glamorous.div({
+    zIndex: 1,
     '& *, & input, & *:focus-within, & *:focus': {
         fontSize: 22,
         fontWeight: 600,
@@ -155,9 +156,15 @@ const PostTitle = Glamorous.div({
     }
 });
 
-const PostText = Glamorous(XVertical)({
+const PostText = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    position: 'relative',
+    alignItems: 'stretch',
     '& textarea': {
         minHeight: '100%',
+        height: '100%',
         flexShrink: 0,
         fontSize: 14,
         border: 'none',
@@ -729,7 +736,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 <PostTitle>
                                     <XInput placeholder={titlePlaceholder} onChange={this.titleChange} value={this.state.title} />
                                 </PostTitle>
-                                <PostText flexGrow={1}>
+                                <PostText>
                                     <XTextArea placeholder={textPlaceholder} value={this.state.text} onChange={this.textChange} />
                                 </PostText>
                             </XVertical>
