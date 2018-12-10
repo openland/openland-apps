@@ -8,6 +8,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
+import { XAvatar, XAvatarStyle } from 'openland-x/XAvatar';
 import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from './view/content/MessageUploadComponent';
@@ -15,8 +16,7 @@ import { niceBytes } from './view/content/MessageFileComponent';
 import { withSendPostMessage, withEditPostMessage } from '../../../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
-import CloseIcon from './icons/ic-close.svg';
-import PostIcon from './icons/ic-attach-post.svg';
+import CloseIcon from './icons/ic-close-post.svg';
 import PhotoIcon from './icons/ic-photo-2.svg';
 import FileIcon from './icons/ic-file-3.svg';
 import UloadIc from './icons/file-upload.svg';
@@ -96,8 +96,11 @@ const Header = Glamorous(XHorizontal)({
     paddingLeft: 20,
     paddingRight: 20,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    '& .post-icon': {
-        width: 15
+    '& .dot': {
+        opacity: 0.3,
+        fontSize: 12,
+        fontWeight: 600,
+        color: '#000'
     }
 });
 
@@ -105,15 +108,24 @@ const CloseWrapper = Glamorous.div({
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    padding: 3,
-    '& svg': {
-        width: 16,
-        height: 16
+    justifyContent: 'center',
+    padding: 8,
+    width: 32,
+    height: 32,
+    borderRadius: 50,
+    '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.05)'
     }
 });
 
-const HeadTitle = Glamorous.div({
-    fontSize: 16,
+const ChatTitle = Glamorous.div({
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#000'
+});
+
+const PostTypeTitle = Glamorous.div({
+    fontSize: 14,
     color: '#000'
 });
 
@@ -428,6 +440,10 @@ interface CreatePostComponentProps {
     conversationId: string;
     postType: PostMessageType | null;
     editData: EditPostProps | null;
+    objectName: string;
+    objectId?: string;
+    cloudImageUuid?: string;
+    avatarStyle: XAvatarStyle;
 }
 
 interface File {
@@ -685,9 +701,19 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
             <Wrapper>
                 <Header justifyContent="center">
                     <XHorizontal alignItems="center" justifyContent="space-between" maxWidth={950} flexGrow={1}>
-                        <XHorizontal alignItems="center" separator={6}>
-                            <PostIcon className="post-icon" />
-                            <HeadTitle>{header}</HeadTitle>
+                        <XHorizontal alignItems="center">
+                            <XAvatar
+                                size="small"
+                                style={props.avatarStyle}
+                                cloudImageUuid={props.cloudImageUuid}
+                                objectName={props.objectName}
+                                objectId={props.objectId}
+                            />
+                            <XHorizontal alignItems="center" separator={3}>
+                                <ChatTitle>{props.objectName}</ChatTitle>
+                                <div className="dot">•</div>
+                                <PostTypeTitle>{props.editData ? 'Post editing' : header}</PostTypeTitle>
+                            </XHorizontal>
                         </XHorizontal>
                         <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
                             <CloseIcon />

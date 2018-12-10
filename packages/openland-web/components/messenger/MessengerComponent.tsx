@@ -219,7 +219,7 @@ class BlockSwitcherComponent extends React.Component<
         refetchVars: { conversationId: string };
     },
     { blocked: boolean }
-> {
+    > {
     constructor(props: any) {
         super(props);
         this.state = { blocked: props.blocked };
@@ -239,15 +239,15 @@ class BlockSwitcherComponent extends React.Component<
                             delay(0).then(() => {
                                 this.props.blocked
                                     ? this.props.unblock({
-                                          variables: {
-                                              userId: this.props.userId,
-                                          },
-                                      })
+                                        variables: {
+                                            userId: this.props.userId,
+                                        },
+                                    })
                                     : this.props.block({
-                                          variables: {
-                                              userId: this.props.userId,
-                                          },
-                                      });
+                                        variables: {
+                                            userId: this.props.userId,
+                                        },
+                                    });
                             });
                         }}
                     />
@@ -266,7 +266,7 @@ class SwitchComponent extends React.Component<
         fieldTitle?: string;
     },
     { val: boolean }
-> {
+    > {
     constructor(props: any) {
         super(props);
         this.state = { val: props.val };
@@ -331,7 +331,7 @@ const NotificationsWrapper = Glamorous(XVertical)({
 class NotificationSettingsComponent extends React.Component<
     { mutation: any; settings: { mute: boolean }; roomId: string },
     { settings: { mute: boolean } }
-> {
+    > {
     constructor(props: any) {
         super(props);
         this.state = { settings: props.settings };
@@ -408,12 +408,12 @@ export const RoomEditComponent = withAlterChat(props => {
                                 ? { photoRef: sanitizeIamgeRef(newPhoto) }
                                 : {}),
                             ...(newSocialImage &&
-                            newSocialImage.uuid !== editSocialImageRef
+                                newSocialImage.uuid !== editSocialImageRef
                                 ? {
-                                      socialImageRef: sanitizeIamgeRef(
-                                          newSocialImage,
-                                      ),
-                                  }
+                                    socialImageRef: sanitizeIamgeRef(
+                                        newSocialImage,
+                                    ),
+                                }
                                 : {}),
                         },
                     },
@@ -536,11 +536,11 @@ const LastSeen = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate
-                        value={props.data.user.lastSeen}
-                        format="humanize_cute"
-                    />
-                )}
+                        <XDate
+                            value={props.data.user.lastSeen}
+                            format="humanize_cute"
+                        />
+                    )}
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -725,16 +725,16 @@ const ForwardHeader = (props: {
                         {!Array.from(props.state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeletMessagesButton
-                                roomId={props.roomId}
-                                messagesIds={Array.from(
-                                    props.state.selectedMessages,
-                                ).map(m => m.id)}
-                                onSuccess={props.state.resetAll}
-                            >
-                                <XButton text="Delete" style="default" />
-                            </DeletMessagesButton>
-                        )}
+                                <DeletMessagesButton
+                                    roomId={props.roomId}
+                                    messagesIds={Array.from(
+                                        props.state.selectedMessages,
+                                    ).map(m => m.id)}
+                                    onSuccess={props.state.resetAll}
+                                >
+                                    <XButton text="Delete" style="default" />
+                                </DeletMessagesButton>
+                            )}
                     </XWithRole>
                     <XButton
                         text="Reply"
@@ -786,8 +786,8 @@ let MessengerComponentLoader = withRoom(
             let title = sharedRoom
                 ? sharedRoom.title
                 : privateRoom
-                ? privateRoom.user.name
-                : '';
+                    ? privateRoom.user.name
+                    : '';
             let titlePath: string | undefined = undefined;
 
             let subtitle = '';
@@ -847,12 +847,12 @@ let MessengerComponentLoader = withRoom(
                                     sharedRoom && sharedRoom.kind === 'INTERNAL'
                                         ? 'organization'
                                         : sharedRoom &&
-                                          sharedRoom.kind === 'GROUP'
-                                        ? 'group'
-                                        : sharedRoom &&
-                                          sharedRoom.kind === 'PUBLIC'
-                                        ? 'room'
-                                        : 'colorus'
+                                            sharedRoom.kind === 'GROUP'
+                                            ? 'group'
+                                            : sharedRoom &&
+                                                sharedRoom.kind === 'PUBLIC'
+                                                ? 'room'
+                                                : 'colorus'
                                 }
                                 cloudImageUuid={
                                     (sharedRoom && sharedRoom.photo) ||
@@ -866,8 +866,8 @@ let MessengerComponentLoader = withRoom(
                                             ? sharedRoom.organization.id
                                             : sharedRoom.id
                                         : privateRoom
-                                        ? privateRoom.user.id
-                                        : undefined
+                                            ? privateRoom.user.id
+                                            : undefined
                                 }
                             />
                             <XVertical
@@ -1048,8 +1048,8 @@ let MessengerComponentLoader = withRoom(
                                 me={props.user!}
                             />
                         ) : (
-                            headerRender()
-                        )}
+                                headerRender()
+                            )}
                     </ChatHeaderWrapper>
                     <TalkBarComponent
                         conversationId={(sharedRoom || privateRoom)!.id}
@@ -1061,6 +1061,32 @@ let MessengerComponentLoader = withRoom(
                         separator={0}
                     >
                         <MessengerRootComponent
+                            objectName={title}
+                            objectId={
+                                sharedRoom
+                                    ? sharedRoom.organization
+                                        ? sharedRoom.organization.id
+                                        : sharedRoom.id
+                                    : privateRoom
+                                        ? privateRoom.user.id
+                                        : undefined
+                            }
+                            cloudImageUuid={
+                                (sharedRoom && sharedRoom.photo) ||
+                                (privateRoom && privateRoom.user.photo) ||
+                                undefined
+                            }
+                            avatarStyle={
+                                sharedRoom && sharedRoom.kind === 'INTERNAL'
+                                    ? 'organization'
+                                    : sharedRoom &&
+                                        sharedRoom.kind === 'GROUP'
+                                        ? 'group'
+                                        : sharedRoom &&
+                                            sharedRoom.kind === 'PUBLIC'
+                                            ? 'room'
+                                            : 'colorus'
+                            }
                             organizationId={
                                 sharedRoom && sharedRoom.organization
                                     ? sharedRoom.organization.id

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
+import { XAvatarStyle } from 'openland-x/XAvatar';
 import {
     MessengerEngine,
     MessengerContext,
@@ -50,6 +51,10 @@ interface MessagesComponentProps {
     messenger: MessengerEngine;
     conversationType?: SharedRoomKind | 'PRIVATE';
     me: UserShort | null;
+    objectName: string;
+    objectId?: string;
+    cloudImageUuid?: string;
+    avatarStyle: XAvatarStyle;
 }
 
 interface MessagesComponentState {
@@ -257,7 +262,7 @@ class MessagesComponent
         });
     }
 
-    editPostHandler = (data: EditPostProps ) => {
+    editPostHandler = (data: EditPostProps) => {
         this.setState({
             hideChat: true,
             postType: data.postTipe,
@@ -286,6 +291,10 @@ class MessagesComponent
                         conversationId={this.props.conversationId}
                         postType={this.state.postType}
                         editData={this.state.postEditData}
+                        objectName={this.props.objectName}
+                        objectId={this.props.objectId}
+                        cloudImageUuid={this.props.cloudImageUuid}
+                        avatarStyle={this.props.avatarStyle}
                     />
                 )}
                 {!this.state.hideChat && (
@@ -345,6 +354,10 @@ interface MessengerRootComponentProps {
     organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
+    objectName: string;
+    objectId?: string;
+    cloudImageUuid?: string;
+    avatarStyle: XAvatarStyle;
 }
 
 const MessagesWithUser = withUserInfo(props => (
@@ -355,12 +368,20 @@ const MessagesWithUser = withUserInfo(props => (
         conversationId={props.conversationId}
         messenger={props.messenger}
         conversationType={props.conversationType}
+        objectName={props.objectName}
+        objectId={props.objectId}
+        cloudImageUuid={props.cloudImageUuid}
+        avatarStyle={props.avatarStyle}
     />
 )) as React.ComponentType<{
     conversationId: string;
     organizationId: string | null;
     messenger: any;
     conversationType: SharedRoomKind | 'PRIVATE';
+    objectName: string;
+    objectId?: string;
+    cloudImageUuid?: string;
+    avatarStyle: XAvatarStyle;
 }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
@@ -376,6 +397,10 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
                     conversationId={props.conversationId}
                     messenger={messenger}
                     conversationType={props.conversationType}
+                    objectName={props.objectName}
+                    objectId={props.objectId}
+                    cloudImageUuid={props.cloudImageUuid}
+                    avatarStyle={props.avatarStyle}
                 />
             )}
         </MessengerContext.Consumer>
