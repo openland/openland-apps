@@ -3,7 +3,7 @@
         <mj-title>You’ve got a new message</mj-title>
         <mj-include path="./includes/attributes.mjml" />
         <mj-preview>
-            You have a message from {{firstName}} {{lastName}}. Visit Openland to see it now.
+            You have a message from {{firstName}} {{lastName}}. Visit Openland to see it now. Visit Openland to see it now.
         </mj-preview>
     </mj-head>
     <mj-body>
@@ -14,9 +14,7 @@
                     You’ve got a new message
                 </mj-text>
                 <mj-text mj-class="text">
-                    You have a&nbsp;message from <strong>{{firstName}} {{lastName}}</strong>.
-                    <br />
-                    Visit Openland to&nbsp;see it&nbsp;now.
+                    You have a&nbsp;message from <strong>{{firstName}} {{lastName}}</strong>. Visit Openland to&nbsp;see it&nbsp;now.
                 </mj-text>
 
                 <mj-button mj-class="button" href="https://app.openland.com/mail">View message</mj-button>
