@@ -5,7 +5,7 @@
                 <div style="padding-bottom: 12px;">
                     <img style="display: block;" width="26" height="26" src="https://cdn.openland.com/shared/email/emojione/1f984.png" />
                 </div>
-                <div style="font-size: 20px; line-height: 26px; font-weight: 600; color: #000000; padding-bottom: 10px;">
+                <div style="font-size: 20px; line-height: 26px; font-weight: 600; color: rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
                     Getting email notifications too often?
                 </div>
                 <div style="font-size: 14px; line-height: 20px; color: #000000; padding-bottom: 20px;">
