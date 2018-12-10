@@ -120,9 +120,9 @@ class ASCounter extends React.PureComponent<{ value: number | string, muted?: bo
         return (
             <ASFlex borderRadius={9} backgroundColor={XPStyles.colors.brand} height={18} minWidth={18} justifyContent="center">
                 <ASFlex justifyContent="center" marginLeft={4} marginRight={4}>
-                    <ASText color="#fff" lineHeight={16} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
+                    <ASText color="#fff" lineHeight={Platform.OS === 'android' ? 17 : 16} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
                 </ASFlex>
-            </ASFlex>
+            </ASFlex >
         );
     }
 }

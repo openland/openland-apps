@@ -8,6 +8,7 @@ import { withApp } from '../../components/withApp';
 import { SDevice } from 'react-native-s/SDevice';
 import { SHeader } from 'react-native-s/SHeader';
 import { style } from 'glamor';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
     container: {

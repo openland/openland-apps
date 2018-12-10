@@ -80,7 +80,7 @@ object LithoTextSpec {
         }
 
         // Fix line height
-        val text = resolveText(spec, reactContext)
+        val text = SpannableString(resolveText(spec, reactContext))
         var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else spec.fontSize * 1.6f
         actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
         text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
