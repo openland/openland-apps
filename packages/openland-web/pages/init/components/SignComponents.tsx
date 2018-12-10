@@ -337,7 +337,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                 />
                 <MainContent>{props.children}</MainContent>
                 <Footer>
-                    {!props.signin && props.pageMode === 'AuthMechanism' && (
+                    {!props.signin && props.pageMode === 'AuthMechanism' ? (
                         <FooterText>
                             By creating an account you are accepting our{' '}
                             <FooterLink href="https://openland.com/terms">
@@ -349,10 +349,11 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                             </FooterLink>
                             .
                         </FooterText>
+                    ) : (
+                        <FooterText>
+                            © {new Date().getFullYear()} Openland
+                        </FooterText>
                     )}
-                    <FooterText>
-                        © {new Date().getFullYear()} Openland
-                    </FooterText>
                 </Footer>
             </LeftContainer>
         </RootContainer>
@@ -1542,8 +1543,12 @@ export class CreateOrganizationFormInner extends React.Component<
                     defaultAction={(data: any) => {
                         defaultAction({
                             name: data.input.name.label,
-                            id: data.input.name.value !== NEW_ORGANIZATION_BUTTON_VALUE ? data.input.name.value : undefined,
-                        })
+                            id:
+                                data.input.name.value !==
+                                NEW_ORGANIZATION_BUTTON_VALUE
+                                    ? data.input.name.value
+                                    : undefined,
+                        });
                     }}
                     defaultData={{
                         input: {
