@@ -17,6 +17,8 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XAvatar } from 'openland-x/XAvatar';
 import { MessageTextComponent } from './MessageTextComponent';
 import { niceBytes } from '../../view/content/MessageFileComponent';
+import { ReactionComponent } from '../MessageReaction';
+import { Reactions } from '../MessageReaction';
 import { withRespondPostMessage } from '../../../../../api/withRespondPostMessage';
 import {
     withSetReaction,
@@ -226,6 +228,12 @@ const ShowMore = Glamorous(XHorizontal)<{ active: boolean }>(props => ({
     }
 }));
 
+const RactionsWrapper = Glamorous(XHorizontal)({
+    '& .reactions-wrapper': {
+        paddingTop: '0 !important'
+    }
+});
+
 interface MessagePostComponentProps {
     messageId: string;
     userId: string;
@@ -256,8 +264,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         let { reactions } = props;
 
         let respondUsers = reactions.filter(i => i.reaction === 'respondPost');
-        let likesUsers = reactions.filter(i => i.reaction === 'like');
-        let meLike = likesUsers.find(i => i.user.id === props.meId);
+        let otherReactions = reactions.filter(i => i.reaction !== 'respondPost');
 
         let meSender = false;
 
@@ -266,7 +273,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         }
 
         return (
-            <XHorizontal justifyContent="flex-end" flexGrow={1} alignSelf="center">
+            <RactionsWrapper justifyContent="flex-end" flexGrow={1} alignSelf="center" alignItems="center">
                 {respondUsers.length > 0 && meSender && (
                     <XPopper
                         placement="top"
@@ -300,52 +307,14 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                         </RespondWrapper>
                     </XPopper>
                 )}
-                {!likesUsers || likesUsers.length === 0 && (
-                    <SetLike messageId={props.messageId}>
-                        <RespondWrapper separator={2} alignItems="center" className="like">
-                            <ReactionIcon />
-                        </RespondWrapper>
-                    </SetLike>
+                {otherReactions.length > 0 && (
+                    <Reactions
+                        messageId={props.messageId}
+                        reactions={otherReactions}
+                        meId={props.meId}
+                    />
                 )}
-                {likesUsers && likesUsers.length > 0 && !meLike && (
-                    <XPopper
-                        placement="bottom"
-                        style="dark"
-                        showOnHover={true}
-                        content={likesUsers.map((i, j) => (
-                            <div key={'post_like' + j}>
-                                {i.user.id === props.meId ? 'You' : i.user.name}
-                            </div>
-                        ))}
-                    >
-                        <SetLike messageId={props.messageId}>
-                            <RespondWrapper separator={2} alignItems="center" className="like">
-                                <ReactionIcon />
-                                <div>{likesUsers.length}</div>
-                            </RespondWrapper>
-                        </SetLike>
-                    </XPopper>
-                )}
-                {likesUsers && likesUsers.length > 0 && meLike && (
-                    <XPopper
-                        placement="bottom"
-                        style="dark"
-                        showOnHover={true}
-                        content={likesUsers.map((i, j) => (
-                            <div key={'post_like' + j}>
-                                {i.user.id === props.meId ? 'You' : i.user.name}
-                            </div>
-                        ))}
-                    >
-                        <UnsetLike messageId={props.messageId}>
-                            <RespondWrapper separator={2} alignItems="center" className="active like">
-                                <ReactionIcon />
-                                <div>{likesUsers.length}</div>
-                            </RespondWrapper>
-                        </UnsetLike>
-                    </XPopper>
-                )}
-            </XHorizontal>
+            </RactionsWrapper>
         );
     }
 

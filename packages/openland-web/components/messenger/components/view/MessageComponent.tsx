@@ -358,7 +358,7 @@ class MessageComponentInner extends React.PureComponent<
                     className="menu-wrapper"
                 >
                     <XHorizontal alignItems="center" separator={8}>
-                        {isNotIntro && !isPost && (
+                        {isNotIntro && (
                             <ReactionComponent messageId={message.id} />
                         )}
                         <IconButton onClick={this.setReplyMessages}>
