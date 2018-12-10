@@ -80,7 +80,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             <ZText linkify={this.props.linkify === true} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined) || (this.props.toggleField)) && (
-                            <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor={XPStyles.colors.brand} thumbTintColor={XPStyles.colors.brand} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
+                            <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor="#ddd" thumbTintColor={XPStyles.colors.brand} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
                         )}
                         {showCheckmark && (
                             <Image source={require('assets/ic-checkmark-cell.png')} style={{ opacity: checkmarkEnabled ? 1 : 0 }} />

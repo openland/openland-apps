@@ -69,6 +69,7 @@ export interface DataSourceMessageItem {
     senderName: string;
     senderPhoto?: string;
     text?: string;
+    title?: string;
     file?: {
         fileName: string,
         fileId?: string,
@@ -103,8 +104,9 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         isOut: src.sender.id === engine.user.id,
         senderId: src.sender.id,
         senderName: src.sender.name,
-        senderPhoto: src.sender.photo ? src.sender.photo : undefined,
-        text: src.message ? src.message : undefined,
+        senderPhoto: src.sender.photo || undefined,
+        text: src.message || undefined,
+        title: src.alphaTitle || undefined,
         file: src.file ? {
             fileName: src.fileMetadata!!.name,
             fileId: src.file,

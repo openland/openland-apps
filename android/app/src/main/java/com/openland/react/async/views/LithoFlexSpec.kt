@@ -49,7 +49,7 @@ object LithoFlexSpec {
         res.justifyContent(justifyContent)
 
         if (spec.touchableKey != null) {
-//            res.clickHandler(LithoFlex.onClick(context))
+            res.clickHandler(LithoFlex.onClick(context))
             res.longClickHandler(LithoFlex.onLongClick(context))
             if (spec.highlightColor != null) {
                 res.background(RippleDrawable(ColorStateList(
