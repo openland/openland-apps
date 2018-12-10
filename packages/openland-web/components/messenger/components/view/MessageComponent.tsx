@@ -361,9 +361,11 @@ class MessageComponentInner extends React.PureComponent<
                         {isNotIntro && (
                             <ReactionComponent messageId={message.id} />
                         )}
-                        <IconButton onClick={this.setReplyMessages}>
-                            <ReplyIcon />
-                        </IconButton>
+                        {!isPost && (
+                            <IconButton onClick={this.setReplyMessages}>
+                                <ReplyIcon />
+                            </IconButton>
+                        )}
                         {out && message.message && (
                             <IconButton onClick={isPost ? this.setEditPostMessage : this.setEditMessage}>
                                 <EditIcon />
