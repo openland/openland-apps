@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../../../config';
-import { MutationFunc } from 'react-apollo';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -95,7 +94,10 @@ const Header = Glamorous(XHorizontal)({
     height: 56,
     paddingLeft: 20,
     paddingRight: 20,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
+    '& .post-icon': {
+        width: 15
+    }
 });
 
 const CloseWrapper = Glamorous.div({
@@ -597,7 +599,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
             <Wrapper>
                 <Header alignItems="center" justifyContent="space-between">
                     <XHorizontal alignItems="center" separator={6}>
-                        <PostIcon />
+                        <PostIcon className="post-icon" />
                         <HeadTitle>{header}</HeadTitle>
                     </XHorizontal>
                     <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
@@ -691,6 +693,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                             <XButton
                                 text="Send"
                                 style="primary"
+                                iconRight="send"
                             />
                         </SendPostButton>
                     </XHorizontal>
