@@ -5,6 +5,7 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import {
+    PageModeT,
     WebSignUpContainer,
     RoomSignupContainer,
     RoomActivationCode,
@@ -239,14 +240,30 @@ class SignInComponent extends React.Component<
             ? RoomActivationCode
             : WebSignUpActivationCode;
 
+        let pageMode: PageModeT = 'AuthMechanism';
+
+        if (this.state.emailSent) {
+            pageMode = 'ActivationCode';
+        } else if (this.state.email && !this.state.emailSent) {
+            pageMode = 'CreateFromEmail';
+        } else if (
+            this.state.fromOutside &&
+            (this.state.emailSending || this.state.googleStarting)
+        ) {
+            pageMode = 'Loading';
+        } else if (!this.state.fromOutside && !this.state.email) {
+            pageMode = 'AuthMechanism';
+        }
+
         return (
             <Container
+                pageMode={pageMode}
                 text={signupText}
                 path={(signin ? '/signup' : '/signin') + redirect}
                 linkText={linkText}
                 headerStyle={signin ? 'signin' : 'signup'}
             >
-                {!this.state.fromOutside && !this.state.email && (
+                {pageMode === 'AuthMechanism' && (
                     <AuthMechanism
                         signin={signin}
                         loginWithGoogle={this.loginWithGoogle}
@@ -254,12 +271,9 @@ class SignInComponent extends React.Component<
                     />
                 )}
 
-                {this.state.fromOutside &&
-                    (this.state.emailSending || this.state.googleStarting) && (
-                        <Loader />
-                    )}
+                {pageMode === 'Loading' && <Loader />}
 
-                {this.state.email && !this.state.emailSent && (
+                {pageMode === 'CreateFromEmail' && (
                     <MyCreateWithEmail
                         signin={signin}
                         emailError={this.state.emailError}
@@ -270,7 +284,7 @@ class SignInComponent extends React.Component<
                     />
                 )}
 
-                {this.state.emailSent && (
+                {pageMode === 'ActivationCode' && (
                     <MyActivationCode
                         emailWasResend={this.state.emailWasResend}
                         resendCodeClick={() => {
