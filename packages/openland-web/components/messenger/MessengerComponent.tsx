@@ -57,6 +57,7 @@ import NotificationsIcon from './components/icons/ic-notifications.svg';
 import NotificationsOffIcon from './components/icons/ic-notifications-off.svg';
 import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
+import { XView } from 'react-mental';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -970,10 +971,12 @@ let MessengerComponentLoader = withRoom(
                             </XWithRole>
                         )}
 
-                        <NotificationSettings
-                            settings={(sharedRoom || privateRoom)!.settings}
-                            roomId={props.data.room!.id}
-                        />
+                        <XView marginRight={-3}>
+                            <NotificationSettings
+                                settings={(sharedRoom || privateRoom)!.settings}
+                                roomId={props.data.room!.id}
+                            />
+                        </XView>
 
                         {sharedRoom && (
                             <XOverflow
