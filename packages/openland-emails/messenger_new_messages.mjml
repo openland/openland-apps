@@ -3,7 +3,7 @@
         <mj-include path="./includes/attributes.mjml" />
         <mj-breakpoint width="680px" />
         <mj-title>You’ve got a new messages</mj-title>
-        <mj-preview>You have messages from ___ LIST OF ROOMS AND USERS AS IN CONTENT ___. Visit Openland to see them now.</mj-preview>
+        <mj-preview>{{text}} Visit Openland to see them now.</mj-preview>
     </mj-head>
     <mj-body>
         <mj-include path="./includes/header.mjml" />
