@@ -1415,7 +1415,10 @@ export class CreateOrganizationFormInner extends React.Component<
             return;
         }
 
-        store.writeValue('fields.input.name', cval);
+        store.writeValue('fields.input.name', {
+            label: src.label,
+            value: cval,
+        });
     };
 
     filterOptions = (_: any, val: any) => {
@@ -1536,11 +1539,15 @@ export class CreateOrganizationFormInner extends React.Component<
                 <MyTitle>{InitTexts.create_organization.title}</MyTitle>
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
-                    defaultAction={defaultAction}
+                    defaultAction={(data: any) => {
+                        defaultAction({
+                            name: data.input.name.label,
+                            id: data.input.name.value !== NEW_ORGANIZATION_BUTTON_VALUE ? data.input.name.value : undefined,
+                        })
+                    }}
                     defaultData={{
                         input: {
                             name: '',
-                            photoRef: null,
                         },
                     }}
                     validate={{
