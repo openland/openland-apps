@@ -14,7 +14,7 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from './view/content/MessageUploadComponent';
 import { niceBytes } from './view/content/MessageFileComponent';
 import { withSendPostMessage } from '../../../api/withSendPostMessage';
-import { SendPostMessage, SendPostMessageVariables, PostMessageType } from 'openland-api/Types';
+import { PostMessageType } from 'openland-api/Types';
 import CloseIcon from './icons/ic-close.svg';
 import PostIcon from './icons/ic-attach-post.svg';
 import PhotoIcon from './icons/ic-photo-2.svg';
@@ -95,9 +95,17 @@ const Header = Glamorous(XHorizontal)({
     height: 56,
     paddingLeft: 20,
     paddingRight: 20,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    '& > svg': {
-        cursor: 'pointer'
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+});
+
+const CloseWrapper = Glamorous.div({
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    padding: 3,
+    '& svg': {
+        width: 16,
+        height: 16
     }
 });
 
@@ -573,7 +581,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
     }
 
     render() {
-        const {props, state} = this;
+        const { props, state } = this;
         let postType = this.props.postType || 'BLANK';
 
         const header = postTexts[postType].header;
@@ -588,11 +596,13 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         return (
             <Wrapper>
                 <Header alignItems="center" justifyContent="space-between">
-                    <XHorizontal>
+                    <XHorizontal alignItems="center" separator={6}>
                         <PostIcon />
                         <HeadTitle>{header}</HeadTitle>
                     </XHorizontal>
-                    <CloseIcon onClick={() => this.props.handleHideChat(false, null)} />
+                    <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
+                        <CloseIcon />
+                    </CloseWrapper>
                 </Header>
                 <Body>
                     <XVertical maxWidth={700} flexGrow={1}>
