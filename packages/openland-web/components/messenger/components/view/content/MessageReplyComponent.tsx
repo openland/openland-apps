@@ -15,7 +15,7 @@ import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 
-const MessageContainer = Glamorous.div({
+const MessageContainer = Glamorous.div<{ compact?: boolean }>(props => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
@@ -24,12 +24,12 @@ const MessageContainer = Glamorous.div({
     paddingTop: 0,
     paddingBottom: 0,
     width: '100%',
-    marginTop: 12,
+    marginTop: props.compact ? 6 : 12,
     borderRadius: 6,
     '& .time': {
         opacity: '1 !important',
     },
-});
+}));
 
 const MessageWrapper = Glamorous(XVertical)({
     width: 'calc(100% - 60px)',
@@ -75,6 +75,7 @@ interface ReplyMessageProps {
     file: string | null;
     fileMetadata: MessageFull_reply_fileMetadata | null;
     startSelected: boolean;
+    compact?: boolean;
 }
 
 export const MessageReplyComponent = (props: ReplyMessageProps) => {
@@ -146,31 +147,33 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
         usrPath = '/mail/u/' + props.sender!!.id;
     }
     return (
-        <MessageContainer>
+        <MessageContainer compact={props.compact}>
             <XVertical separator={4}>
-                <XHorizontal alignSelf="stretch" separator={6}>
-                    <XAvatar
-                        size="small"
-                        style="colorus"
-                        objectName={props.sender!!.name}
-                        objectId={props.sender!!.id}
-                        cloudImageUuid={
-                            props.sender ? props.sender.photo : undefined
-                        }
-                        path={usrPath}
-                    />
-                    <MessageWrapper separator={2} flexGrow={1}>
-                        <XHorizontal separator={5} alignItems="center">
-                            <Name>{props.sender!!.name}</Name>
-                            {props.sender!!.primaryOrganization && (
-                                <Organization path={orgPath}>
-                                    {props.sender!!.primaryOrganization!!.name}
-                                </Organization>
-                            )}
-                        </XHorizontal>
-                        <DateComponent className="time">{date}</DateComponent>
-                    </MessageWrapper>
-                </XHorizontal>
+                {!props.compact && (
+                    <XHorizontal alignSelf="stretch" separator={6}>
+                        <XAvatar
+                            size="small"
+                            style="colorus"
+                            objectName={props.sender!!.name}
+                            objectId={props.sender!!.id}
+                            cloudImageUuid={
+                                props.sender ? props.sender.photo : undefined
+                            }
+                            path={usrPath}
+                        />
+                        <MessageWrapper separator={2} flexGrow={1}>
+                            <XHorizontal separator={5} alignItems="center">
+                                <Name>{props.sender!!.name}</Name>
+                                {props.sender!!.primaryOrganization && (
+                                    <Organization path={orgPath}>
+                                        {props.sender!!.primaryOrganization!!.name}
+                                    </Organization>
+                                )}
+                            </XHorizontal>
+                            <DateComponent className="time">{date}</DateComponent>
+                        </MessageWrapper>
+                    </XHorizontal>
+                )}
                 {content}
             </XVertical>
         </MessageContainer>
