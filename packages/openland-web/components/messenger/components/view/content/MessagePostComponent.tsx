@@ -376,6 +376,10 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
             if ((cover as MessageFull_alphaAttachments).fileId) {
                 moreFiles = props.alphaAttachments.filter(i => i.fileId !== (cover as MessageFull_alphaAttachments).fileId);
             }
+
+            if (!(cover as MessageFull_alphaAttachments).fileId) {
+                moreFiles = props.alphaAttachments;
+            }
         }
 
         let message = props.message;

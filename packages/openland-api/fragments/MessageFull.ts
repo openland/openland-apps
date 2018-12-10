@@ -146,6 +146,7 @@ export const RoomMessageFull = gql`
     alphaType
     alphaTitle
     plainText
+    alphaPostType
     alphaButtons {
       id
       title

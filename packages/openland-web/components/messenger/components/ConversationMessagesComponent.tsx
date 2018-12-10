@@ -12,6 +12,7 @@ import {
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { TypignsComponent, TypingContext } from './TypingsComponent';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
+import { EditPostProps } from './MessengerRootComponent';
 
 const TypingWrapper = Glamorous.div({
     display: 'flex',
@@ -84,11 +85,12 @@ interface ConversationMessagesComponentProps {
     messages: ModelMessage[];
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
+    editPostHandler: (data: EditPostProps) => void;
 }
 
 export class ConversationMessagesComponent extends React.PureComponent<
     ConversationMessagesComponentProps
-> {
+    > {
     messagesList = React.createRef<MessageListComponent>();
 
     scrollToBottom = () => {
@@ -113,6 +115,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
                     conversationId={this.props.conversationId}
+                    editPostHandler={this.props.editPostHandler}
                 />
                 <XLoader loading={this.props.loading} />
                 <TypingComponent chatId={this.props.conversationId} />

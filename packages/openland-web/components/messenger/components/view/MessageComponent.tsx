@@ -34,6 +34,7 @@ import {
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
+import { File, EditPostProps } from '../MessengerRootComponent';
 import ReplyIcon from '../icons/ic-reply1.svg';
 import EditIcon from '../icons/ic-edit.svg';
 
@@ -126,8 +127,8 @@ const MessageWrapper = Glamorous(XHorizontal)<{
             pointerEvents: props.startSelected
                 ? 'none'
                 : props.isEditView
-                ? 'none'
-                : 'auto',
+                    ? 'none'
+                    : 'auto',
         },
     },
 }));
@@ -138,8 +139,8 @@ const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(
             props.isIntro === true
                 ? {}
                 : {
-                      width: 'calc(100% + 20px)',
-                  },
+                    width: 'calc(100% + 20px)',
+                },
     }),
 );
 
@@ -178,6 +179,7 @@ interface MessageComponentProps {
     me?: UserShort | null;
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId: string;
+    editPostHandler: (data: EditPostProps) => void;
 }
 
 interface MessageComponentInnerProps extends MessageComponentProps {
@@ -187,7 +189,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 class MessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-> {
+    > {
     static getDerivedStateFromProps = (
         props: MessageComponentInnerProps,
         state: { isEditView: boolean },
@@ -226,7 +228,7 @@ class MessageComponentInner extends React.PureComponent<
 
     private setEditMessage = (e: any) => {
         let { message, messagesContext } = this.props;
-        if (isServerMessage(this.props.message)) {
+        if (isServerMessage(message)) {
             message = message as MessageFull;
 
             e.stopPropagation();
@@ -234,6 +236,37 @@ class MessageComponentInner extends React.PureComponent<
             messagesContext.setEditMessage(message.id, message.message);
         }
     };
+
+    private setEditPostMessage = (e: any) => {
+        let { message, editPostHandler } = this.props;
+        if (isServerMessage(message)) {
+            message = message as MessageFull;
+
+            let postFiles: Set<File> = new Set();
+            let file: File | null = null;
+
+            message.alphaAttachments.map(i => {
+                if (i.fileMetadata) {
+                    file = {
+                        uuid: i.fileId,
+                        name: i.fileMetadata.name,
+                        size: String(i.fileMetadata.size),
+                        isImage: i.fileMetadata.isImage
+                    };
+
+                    postFiles.add(file);
+                }
+            });
+            let postData: EditPostProps = {
+                title: 'qweqwe',
+                text: 'qweqwe',
+                postTipe: (message as any).alphaPostType,
+                files: postFiles
+            };
+
+            editPostHandler(postData);
+        }
+    }
 
     private setReplyMessages = (e: any) => {
         let { message, messagesContext } = this.props;
@@ -330,7 +363,7 @@ class MessageComponentInner extends React.PureComponent<
                             <ReplyIcon />
                         </IconButton>
                         {out && message.message && (
-                            <IconButton onClick={this.setEditMessage}>
+                            <IconButton onClick={isPost ? this.setEditPostMessage : this.setEditMessage}>
                                 <EditIcon />
                             </IconButton>
                         )}
@@ -534,7 +567,7 @@ class MessageComponentInner extends React.PureComponent<
                                 isMe={
                                     this.props.sender && this.props.me
                                         ? this.props.sender.id ===
-                                          this.props.me.id
+                                        this.props.me.id
                                         : false
                                 }
                             />
@@ -708,13 +741,13 @@ class MessageComponentInner extends React.PureComponent<
                                         startSelected={hideMenu}
                                     />
                                 ) : (
-                                    <UserPopper
-                                        ref={this.userPopperRef}
-                                        user={sender}
-                                        startSelected={hideMenu}
-                                        isMe={isMe}
-                                    />
-                                )}
+                                        <UserPopper
+                                            ref={this.userPopperRef}
+                                            user={sender}
+                                            startSelected={hideMenu}
+                                            isMe={isMe}
+                                        />
+                                    )}
                             </>
                         )}
                         <XVertical

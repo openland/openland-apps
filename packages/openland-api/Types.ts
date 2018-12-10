@@ -1058,6 +1058,7 @@ export interface RoomHistory_messages {
   alphaType: MessageType;
   alphaTitle: string | null;
   plainText: string | null;
+  alphaPostType: PostMessageType | null;
   alphaButtons: (RoomHistory_messages_alphaButtons[] | null)[];
   alphaAttachments: RoomHistory_messages_alphaAttachments[];
   serviceMetadata: RoomHistory_messages_serviceMetadata | null;
@@ -6292,6 +6293,7 @@ export interface RoomMessageFull {
   alphaType: MessageType;
   alphaTitle: string | null;
   plainText: string | null;
+  alphaPostType: PostMessageType | null;
   alphaButtons: (RoomMessageFull_alphaButtons[] | null)[];
   alphaAttachments: RoomMessageFull_alphaAttachments[];
   serviceMetadata: RoomMessageFull_serviceMetadata | null;

@@ -14,6 +14,7 @@ import { MessageUploadComponent } from './view/content/MessageUploadComponent';
 import { niceBytes } from './view/content/MessageFileComponent';
 import { withSendPostMessage } from '../../../api/withSendPostMessage';
 import { PostMessageType } from 'openland-api/Types';
+import { EditPostProps } from './MessengerRootComponent';
 import CloseIcon from './icons/ic-close.svg';
 import PostIcon from './icons/ic-attach-post.svg';
 import PhotoIcon from './icons/ic-photo-2.svg';
@@ -379,6 +380,7 @@ interface CreatePostComponentProps {
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
     conversationId: string;
     postType: PostMessageType | null;
+    editData: EditPostProps | null;
 }
 
 interface File {
@@ -405,9 +407,18 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         let postType = props.postType || 'BLANK';
         const textValue = postTexts[postType].text;
 
+        let title = '';
+        let text = textValue;
+
+        let { editData } = props;
+        if (editData) {
+            title = editData.title;
+            text = editData.text;
+        }
+
         this.state = {
-            title: '',
-            text: textValue,
+            title: title,
+            text: text,
             dragOn: false,
             dragUnder: false,
             uploadProgress: null,
@@ -575,6 +586,11 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
     componentDidMount() {
         window.addEventListener('dragover', this.handleWindowDragover);
         window.addEventListener('drop', this.handleWindowDrop);
+
+        let { editData } = this.props;
+        if (editData && editData.files) {
+            [...editData.files].map(i => this.fileSaver(i));
+        }
     }
 
     componentWillUnmount() {
@@ -613,7 +629,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
                                 <PostTitle>
-                                    <XInput placeholder={titlePlaceholder} onChange={this.titleChange} />
+                                    <XInput placeholder={titlePlaceholder} onChange={this.titleChange} value={this.state.title} />
                                 </PostTitle>
                                 <PostText flexGrow={1}>
                                     <XTextArea placeholder={textPlaceholder} value={this.state.text} onChange={this.textChange} />

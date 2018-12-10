@@ -28,6 +28,20 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../../../api/withChatLeave';
 import { CreatePostComponent } from './CreatePostComponent';
 
+export interface File {
+    uuid: string;
+    name: string;
+    size: string;
+    isImage: boolean;
+}
+
+export interface EditPostProps {
+    title: string;
+    text: string;
+    postTipe: PostMessageType | null;
+    files: Set<File> | null;
+}
+
 interface MessagesComponentProps {
     organizationId: string | null;
     conversationId: string;
@@ -43,6 +57,7 @@ interface MessagesComponentState {
     messages: ModelMessage[];
     hideChat: boolean;
     postType: PostMessageType | null;
+    postEditData: EditPostProps | null;
 }
 
 const DeleteMessageComponent = withDeleteMessage(props => {
@@ -123,7 +138,8 @@ class MessagesComponent
             messages: [],
             loading: true,
             hideChat: false,
-            postType: null
+            postType: null,
+            postEditData: null
         };
     }
 
@@ -235,7 +251,16 @@ class MessagesComponent
     handleHideChat = (show: boolean, postTipe: PostMessageType | null) => {
         this.setState({
             hideChat: show,
-            postType: postTipe
+            postType: postTipe,
+            postEditData: null
+        });
+    }
+
+    editPostHandler = (data: EditPostProps ) => {
+        this.setState({
+            hideChat: true,
+            postType: data.postTipe,
+            postEditData: data
         });
     }
 
@@ -259,6 +284,7 @@ class MessagesComponent
                         handleHideChat={this.handleHideChat}
                         conversationId={this.props.conversationId}
                         postType={this.state.postType}
+                        editData={this.state.postEditData}
                     />
                 )}
                 {!this.state.hideChat && (
@@ -273,6 +299,7 @@ class MessagesComponent
                             conversationId={this.props.conversationId}
                             conversationType={this.props.conversationType}
                             inputShower={this.handleShowIput}
+                            editPostHandler={this.editPostHandler}
                         />
                         {this.state.hideInput === false && (
                             <MessageComposeComponentDraft

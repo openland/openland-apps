@@ -12,6 +12,7 @@ import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
+import { EditPostProps } from '../MessengerRootComponent';
 
 let months = [
     'Jan',
@@ -95,6 +96,7 @@ interface MessageListProps {
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
     conversationId: string;
+    editPostHandler: (data: EditPostProps) => void;
 }
 
 const getScrollView = () => {
@@ -107,7 +109,7 @@ let lastMessageId = '';
 
 export class MessageListComponent extends React.PureComponent<
     MessageListProps
-> {
+    > {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
@@ -238,6 +240,7 @@ export class MessageListComponent extends React.PureComponent<
                         me={this.props.me}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
+                        editPostHandler={this.props.editPostHandler}
                     />,
                 );
             } else {
@@ -255,6 +258,7 @@ export class MessageListComponent extends React.PureComponent<
                         me={this.props.me}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
+                        editPostHandler={this.props.editPostHandler}
                     />,
                 );
             }
