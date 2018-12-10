@@ -104,7 +104,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
     render() {
         return (
             <MessagesContainer>
-                {/* <MessageListComponent
+                <MessageListComponent
                     me={this.props.me}
                     loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
@@ -113,7 +113,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
                     conversationId={this.props.conversationId}
-                /> */}
+                />
                 <XLoader loading={this.props.loading} />
                 <TypingComponent chatId={this.props.conversationId} />
             </MessagesContainer>
