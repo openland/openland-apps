@@ -12,8 +12,13 @@ const SelectAnimationSpin = glamor.keyframes({
     'to': { transform: 'rotate(1turn)' }
 });
 
-const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' }) => ({
+const Styles = ((props: & { large?: boolean, noArrow?: boolean,  attach?: 'left' | 'right' | 'both' }) => ({
     minWidth: 100,
+    ...props.noArrow ? {
+        '&.Select > .Select-control .Select-arrow': {
+            display: 'none'
+        },
+    } : {}, 
     '&.Select': {
         position: 'relative'
     },
@@ -31,6 +36,7 @@ const Styles = ((props: & { large?: boolean, attach?: 'left' | 'right' | 'both' 
         pointerEvents: 'none',
         opacity: .35
     },
+    
     '&.Select.is-disabled > .Select-control': {
         backgroundColor: '#f9f9f9'
     },
@@ -427,6 +433,7 @@ const StyledSelect = Glamorous(Select)(Styles);
 const StyledSelectCreatable = Glamorous(Creatable)(Styles);
 
 export type XSelectBasicProps = ReactSelectProps & {
+    noArrow: boolean;
     dataTestId?: string,
     ref?: any;
     attach?: 'left' | 'right' | 'both';
@@ -541,7 +548,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
             return React.cloneElement(this.props.render, this.props);
         }
 
-        let { placeholder, title, onChange, onFocus, onBlur, ...other } = this.props;
+        let { placeholder, title, onChange, onFocus, onBlur, noArrow, ...other } = this.props;
 
         return (
             <SelectWrapper data-test-id={this.props.dataTestId}>
@@ -550,6 +557,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
                 )}
                 {this.props.creatable && (
                     <StyledSelectCreatable
+                        noArrow={noArrow}
                         onInputChange={this.handleInputChange}
                         onChange={this.handleChange}
                         onFocus={this.handleFocus}
@@ -561,6 +569,7 @@ export class XSelectBasic extends React.PureComponent<XSelectBasicProps, XSelect
                 )}
                 {!this.props.creatable && (
                     <StyledSelect
+                        noArrow={noArrow}
                         onInputChange={this.handleInputChange}
                         onChange={this.handleChange}
                         onFocus={this.handleFocus}

@@ -1415,6 +1415,7 @@ export class CreateOrganizationFormInner extends React.Component<
         return (
             <div>
                 <OrganizationSelector
+                    noArrow
                     onSelectResetsInput={false}
                     onBlurResetsInput={false}
                     filterOptions={this.filterOptions}
