@@ -18,6 +18,22 @@ export default withApp('UI Framework - Select', 'viewer', props => {
                             { value: 'two', label: 'Two' },
                         ]}
                     />
+                    <XTitle>Select Invalid</XTitle>
+                    <XSelect
+                        invalid={true}
+                        options={[
+                            { value: 'one', label: 'One' },
+                            { value: 'two', label: 'Two' },
+                        ]}
+                    />
+                    <XTitle>Select No Arrow</XTitle>
+                    <XSelect
+                        noArrow={true}
+                        options={[
+                            { value: 'one', label: 'One' },
+                            { value: 'two', label: 'Two' },
+                        ]}
+                    />
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

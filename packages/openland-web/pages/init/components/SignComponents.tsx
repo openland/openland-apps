@@ -311,7 +311,14 @@ const MainContent = Glamorous.div({
     },
 });
 
+export type PageModeT =
+    | 'ActivationCode'
+    | 'CreateFromEmail'
+    | 'Loading'
+    | 'AuthMechanism';
+
 interface SignContainerProps extends HeaderProps {
+    pageMode: PageModeT;
     showTerms?: boolean;
     signin?: boolean;
     children?: any;
@@ -328,7 +335,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                 />
                 <MainContent>{props.children}</MainContent>
                 <Footer>
-                    {!props.signin && (
+                    {!props.signin && props.pageMode === 'AuthMechanism' && (
                         <FooterText>
                             By creating an account you are accepting our{' '}
                             <FooterLink href="https://openland.com/terms">
@@ -484,6 +491,7 @@ const RoomSignupHeader = Glamorous.div<{
 ]);
 
 interface RoomSignupContainerProps {
+    pageMode: PageModeT;
     headerStyle: 'signin' | 'signup' | 'profile' | 'organization';
     text?: string;
     path?: string;
@@ -1072,6 +1080,7 @@ export const RoomCreateWithEmail = ({
                     {({ showError }: { showError: boolean }) => (
                         <>
                             <XInput
+                                autofocus
                                 invalid={showError}
                                 dataTestId="email"
                                 field="input.email"
@@ -1146,6 +1155,7 @@ export const WebSignUpCreateWithEmail = ({
                     {({ showError }: { showError: boolean }) => (
                         <>
                             <XInput
+                                autofocus
                                 invalid={showError}
                                 dataTestId="email"
                                 field="input.email"
@@ -1344,6 +1354,15 @@ const NewOrganizationButton = ({
 
 const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
 
+const OrganizationErrorText = Glamorous.div({
+    fontFamily: 'SFProText-Regular',
+    fontSize: '12px',
+    color: '#d75454',
+    marginLeft: '17px',
+    marginTop: '5px',
+    maxWidth: '249px',
+});
+
 export class CreateOrganizationFormInner extends React.Component<
     {
         onPrefixChanges: (prefix: string) => void;
@@ -1414,31 +1433,70 @@ export class CreateOrganizationFormInner extends React.Component<
 
         return (
             <div>
-                <OrganizationSelector
-                    noArrow
-                    onSelectResetsInput={false}
-                    onBlurResetsInput={false}
-                    filterOptions={this.filterOptions}
-                    field="input.name"
-                    dataTestId="organization-name"
-                    title={InitTexts.create_organization.name}
-                    onInputChange={
-                        ((inputValue: any) => {
-                            this.setState(
-                                {
-                                    inputValue,
-                                },
-                                () => {
-                                    this.props.onPrefixChanges(inputValue);
-                                },
-                            );
-                        }) as any
-                    }
-                    onChange={(src: any) => {
-                        this.handleOnChange(src, store);
-                    }}
-                    options={this.getOrganizations()}
-                />
+                <XFormField2 field="input.name">
+                    {({ showError }: { showError: boolean }) => (
+                        <>
+                            <div>
+                                <XHorizontal
+                                    separator="none"
+                                    alignItems="center"
+                                >
+                                    <OrganizationSelector
+                                        invalid={showError}
+                                        noArrow
+                                        onSelectResetsInput={false}
+                                        onBlurResetsInput={false}
+                                        filterOptions={this.filterOptions}
+                                        field="input.name"
+                                        dataTestId="organization-name"
+                                        title={
+                                            InitTexts.create_organization.name
+                                        }
+                                        onInputChange={
+                                            ((inputValue: any) => {
+                                                this.setState(
+                                                    {
+                                                        inputValue,
+                                                    },
+                                                    () => {
+                                                        this.props.onPrefixChanges(
+                                                            inputValue,
+                                                        );
+                                                    },
+                                                );
+                                            }) as any
+                                        }
+                                        onChange={(src: any) => {
+                                            this.handleOnChange(src, store);
+                                        }}
+                                        options={this.getOrganizations()}
+                                    />
+                                    <XPopper
+                                        content={
+                                            <InfoText>
+                                                To register as an individual,
+                                                simply enter your name
+                                            </InfoText>
+                                        }
+                                        showOnHover={true}
+                                        placement="top"
+                                        style="dark"
+                                    >
+                                        <XIconWrapper>
+                                            <IcInfo />
+                                        </XIconWrapper>
+                                    </XPopper>
+                                </XHorizontal>
+                            </div>
+                            {showError && (
+                                <XFormError
+                                    field="input.name"
+                                    fieldErrorComponent={OrganizationErrorText}
+                                />
+                            )}
+                        </>
+                    )}
+                </XFormField2>
             </div>
         );
     };
@@ -1453,7 +1511,11 @@ export class CreateOrganizationFormInner extends React.Component<
                 <MyTitle>{InitTexts.create_organization.title}</MyTitle>
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
-                    defaultAction={defaultAction}
+                    defaultAction={(...args) => {
+                        console.log(args);
+                        console.log('defaultAction');
+                        defaultAction(...args);
+                    }}
                     defaultData={{
                         input: {
                             name: '',
@@ -1478,30 +1540,10 @@ export class CreateOrganizationFormInner extends React.Component<
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
                                 <XVertical alignItems="center" separator="none">
-                                    <XHorizontal
-                                        separator="none"
-                                        alignItems="center"
-                                    >
-                                        <XStoreContext.Consumer>
-                                            {this.renderSelect}
-                                        </XStoreContext.Consumer>
-                                        <XPopper
-                                            content={
-                                                <InfoText>
-                                                    To register as an
-                                                    individual,
-                                                    simply enter your name
-                                                </InfoText>
-                                            }
-                                            showOnHover={true}
-                                            placement="top"
-                                            style="dark"
-                                        >
-                                            <XIconWrapper>
-                                                <IcInfo />
-                                            </XIconWrapper>
-                                        </XPopper>
-                                    </XHorizontal>
+                                    <XStoreContext.Consumer>
+                                        {this.renderSelect}
+                                    </XStoreContext.Consumer>
+
                                     <XView marginTop={50}>
                                         <XFormSubmit
                                             dataTestId="continue-button"

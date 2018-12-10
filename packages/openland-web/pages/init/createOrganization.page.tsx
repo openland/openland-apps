@@ -117,8 +117,8 @@ class CreateOrganizationPrefixHolder extends React.Component<
         return (
             <OrganizationsSelectorOptionsFetcherInnerAny
                 {...{
-                    organizations,
                     ...this.props,
+                    organizations,
                     onPrefixChanges: this.onPrefixChanges,
                 }}
             />
