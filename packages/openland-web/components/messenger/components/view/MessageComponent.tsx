@@ -240,7 +240,7 @@ class MessageComponentInner extends React.PureComponent<
 
     private setEditPostMessage = (e: any) => {
         let { message, editPostHandler } = this.props;
-        if (isServerMessage(message) && editPostHandler) {
+        if (isServerMessage(message) && editPostHandler && message.alphaTitle && message.message) {
             message = message as MessageFull;
 
             let postFiles: Set<File> = new Set();
@@ -259,8 +259,8 @@ class MessageComponentInner extends React.PureComponent<
                 }
             });
             let postData: EditPostProps = {
-                title: 'qweqwe',
-                text: 'qweqwe',
+                title: message.alphaTitle!,
+                text: message.message!,
                 postTipe: (message as any).alphaPostType,
                 files: postFiles,
                 messageId: message.id
