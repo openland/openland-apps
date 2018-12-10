@@ -8,7 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { withOnline } from '../../../../../api/withOnline';
 import { XDate } from 'openland-x/XDate';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 
 const showAnimation = glamor.keyframes({
     '0%': {

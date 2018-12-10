@@ -4,7 +4,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { css } from 'linaria';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 
 const FastButton = css`
     border-radius: 20px;

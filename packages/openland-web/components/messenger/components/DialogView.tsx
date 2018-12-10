@@ -7,7 +7,7 @@ import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
 import ForwardIcon from './icons/ic-reply-2.svg';
 import { XCounter } from 'openland-x/XCounter';
-import { XView, XViewSelectedContext } from 'openland-x/XView';
+import { XView, XViewSelectedContext } from 'react-mental';
 import { XLink2 } from 'openland-x/XLink2';
 import { iconActiveClass, iconClass, documentIcon } from './DialogView.styles';
 

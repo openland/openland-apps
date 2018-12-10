@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from 'openland-web/components/withApp';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { XTitle } from 'openland-x/XTitle';

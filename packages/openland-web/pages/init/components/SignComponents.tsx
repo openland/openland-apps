@@ -4,7 +4,7 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
 import { XSelect } from 'openland-x/XSelect';
 import { InitTexts } from '../_text';

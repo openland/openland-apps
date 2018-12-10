@@ -6,7 +6,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { TalkContext } from './TalkProviderComponent';
 import { TalkWatchComponent } from './TalkWatchComponent';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 
 // class TalkVideo extends React.Component<{ src: MediaStream }> {
 //     ref = React.createRef<HTMLVideoElement>();

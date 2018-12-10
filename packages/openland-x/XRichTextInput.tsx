@@ -11,7 +11,7 @@ import EmojiIcon from './icons/ic-emoji.svg';
 import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',

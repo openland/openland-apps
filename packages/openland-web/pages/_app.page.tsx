@@ -1,3 +1,14 @@
+import * as Mental from 'mental-styles';
+import { css, rehydrate } from 'glamor';
+if (canUseDOM) {
+    rehydrate(JSON.parse((window as any).GLAMOR_IDS));
+}
+Mental.XStyleFactoryRegistry.registerFactory({
+    createStyle: (styles) => {
+        return css(styles).toString()
+    }
+})
+
 import './_app.css';
 import './init';
 import '../globals';
@@ -21,11 +32,6 @@ import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
 import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
-import { rehydrate } from 'glamor';
-
-if (canUseDOM) {
-    rehydrate(JSON.parse((window as any).GLAMOR_IDS));
-}
 
 export default withData(
     class MyApp extends App<{

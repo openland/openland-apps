@@ -44,7 +44,7 @@ import { withCreateChannel } from '../api/withCreateChannel';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { XView } from 'openland-x/XView';
+import { XView } from 'react-mental';
 import {
     SharedRoomKind,
     MyOrganizations_myOrganizations,
