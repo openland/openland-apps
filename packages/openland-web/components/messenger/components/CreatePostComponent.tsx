@@ -597,14 +597,16 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         }
         return (
             <Wrapper>
-                <Header alignItems="center" justifyContent="space-between">
-                    <XHorizontal alignItems="center" separator={6}>
-                        <PostIcon className="post-icon" />
-                        <HeadTitle>{header}</HeadTitle>
+                <Header justifyContent="center">
+                    <XHorizontal alignItems="center" justifyContent="space-between" maxWidth={950} flexGrow={1}>
+                        <XHorizontal alignItems="center" separator={6}>
+                            <PostIcon className="post-icon" />
+                            <HeadTitle>{header}</HeadTitle>
+                        </XHorizontal>
+                        <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
+                            <CloseIcon />
+                        </CloseWrapper>
                     </XHorizontal>
-                    <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
-                        <CloseIcon />
-                    </CloseWrapper>
                 </Header>
                 <Body>
                     <XVertical maxWidth={700} flexGrow={1}>
