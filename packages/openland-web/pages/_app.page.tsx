@@ -1,3 +1,4 @@
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import * as Mental from 'mental-styles';
 import { css, rehydrate } from 'glamor';
 if (canUseDOM) {
@@ -16,7 +17,6 @@ import React from 'react';
 import App, { AppProps, Container } from 'next/app';
 import * as Sentry from '@sentry/browser';
 import { loadConfig } from 'openland-x-config';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { buildConfig } from '../config';
 import { withData } from './root/withData';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
