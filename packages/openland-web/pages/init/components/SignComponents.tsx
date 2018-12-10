@@ -1410,7 +1410,7 @@ export class CreateOrganizationFormInner extends React.Component<
         if (cval === NEW_ORGANIZATION_BUTTON_VALUE) {
             store.writeValue('fields.input.name', {
                 label: this.state.inputValue,
-                value: this.state.inputValue,
+                value: NEW_ORGANIZATION_BUTTON_VALUE,
             });
             return;
         }
@@ -1432,73 +1432,95 @@ export class CreateOrganizationFormInner extends React.Component<
         if (!store) {
             return;
         }
-
+        const selectedNewOrganization =
+            store.readValue('fields.input.name') &&
+            store.readValue('fields.input.name').value ===
+                NEW_ORGANIZATION_BUTTON_VALUE;
         return (
             <div>
-                <XFormField2 field="input.name">
-                    {({ showError }: { showError: boolean }) => (
-                        <>
-                            <div>
-                                <XHorizontal
-                                    separator="none"
-                                    alignItems="center"
-                                >
-                                    <OrganizationSelector
-                                        invalid={showError}
-                                        noArrow
-                                        onSelectResetsInput={false}
-                                        onBlurResetsInput={false}
-                                        filterOptions={this.filterOptions}
-                                        field="input.name"
-                                        dataTestId="organization-name"
-                                        title={
-                                            InitTexts.create_organization.name
-                                        }
-                                        onInputChange={
-                                            ((inputValue: any) => {
-                                                this.setState(
-                                                    {
-                                                        inputValue,
-                                                    },
-                                                    () => {
-                                                        this.props.onPrefixChanges(
-                                                            inputValue,
-                                                        );
-                                                    },
-                                                );
-                                            }) as any
-                                        }
-                                        onChange={(src: any) => {
-                                            this.handleOnChange(src, store);
-                                        }}
-                                        options={this.getOrganizations()}
-                                    />
-                                    <XPopper
-                                        content={
-                                            <InfoText>
-                                                To register as an individual,
-                                                simply enter your name
-                                            </InfoText>
-                                        }
-                                        showOnHover={true}
-                                        placement="top"
-                                        style="dark"
+                <XVertical alignItems="center" separator="none">
+                    <XFormField2 field="input.name">
+                        {({ showError }: { showError: boolean }) => (
+                            <>
+                                <div>
+                                    <XHorizontal
+                                        separator="none"
+                                        alignItems="center"
                                     >
-                                        <XIconWrapper>
-                                            <IcInfo />
-                                        </XIconWrapper>
-                                    </XPopper>
-                                </XHorizontal>
-                            </div>
-                            {showError && (
-                                <XFormError
-                                    field="input.name"
-                                    fieldErrorComponent={OrganizationErrorText}
-                                />
-                            )}
-                        </>
-                    )}
-                </XFormField2>
+                                        <OrganizationSelector
+                                            invalid={showError}
+                                            noArrow
+                                            onSelectResetsInput={false}
+                                            onBlurResetsInput={false}
+                                            filterOptions={this.filterOptions}
+                                            field="input.name"
+                                            dataTestId="organization-name"
+                                            title={
+                                                InitTexts.create_organization
+                                                    .name
+                                            }
+                                            onInputChange={
+                                                ((inputValue: any) => {
+                                                    this.setState(
+                                                        {
+                                                            inputValue,
+                                                        },
+                                                        () => {
+                                                            this.props.onPrefixChanges(
+                                                                inputValue,
+                                                            );
+                                                        },
+                                                    );
+                                                }) as any
+                                            }
+                                            onChange={(src: any) => {
+                                                this.handleOnChange(src, store);
+                                            }}
+                                            options={this.getOrganizations()}
+                                        />
+                                        <XPopper
+                                            content={
+                                                <InfoText>
+                                                    To register as an
+                                                    individual, simply enter
+                                                    your name
+                                                </InfoText>
+                                            }
+                                            showOnHover={true}
+                                            placement="top"
+                                            style="dark"
+                                        >
+                                            <XIconWrapper>
+                                                <IcInfo />
+                                            </XIconWrapper>
+                                        </XPopper>
+                                    </XHorizontal>
+                                </div>
+                                {showError && (
+                                    <XFormError
+                                        field="input.name"
+                                        fieldErrorComponent={
+                                            OrganizationErrorText
+                                        }
+                                    />
+                                )}
+                            </>
+                        )}
+                    </XFormField2>
+                    <XView marginTop={50}>
+                        <XFormSubmit
+                            dataTestId="continue-button"
+                            style="primary"
+                            text={
+                                selectedNewOrganization
+                                    ? InitTexts.create_organization
+                                          .createAndContinue
+                                    : InitTexts.create_organization.continue
+                            }
+                            size="large"
+                        />
+                    </XView>
+                </XVertical>
             </div>
         );
     };
@@ -1537,23 +1559,9 @@ export class CreateOrganizationFormInner extends React.Component<
                         <XFormError width={472} />
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
-                                <XVertical alignItems="center" separator="none">
-                                    <XStoreContext.Consumer>
-                                        {this.renderSelect}
-                                    </XStoreContext.Consumer>
-
-                                    <XView marginTop={50}>
-                                        <XFormSubmit
-                                            dataTestId="continue-button"
-                                            style="primary"
-                                            text={
-                                                InitTexts.create_organization
-                                                    .continue
-                                            }
-                                            size="large"
-                                        />
-                                    </XView>
-                                </XVertical>
+                                <XStoreContext.Consumer>
+                                    {this.renderSelect}
+                                </XStoreContext.Consumer>
                             </ButtonsWrapper>
                         </XFormLoadingContent>
                     </XVertical>

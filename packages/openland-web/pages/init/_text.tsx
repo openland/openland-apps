@@ -82,6 +82,7 @@ export const InitTexts = {
         photo: 'Logo',
         cancel: 'Cancel',
         skip: 'Skip for now',
+        createAndContinue: 'Create and continue',
         continue: 'Continue',
     },
 
