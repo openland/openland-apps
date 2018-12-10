@@ -60,7 +60,7 @@ const postTexts = {
         header: 'Office hours',
         titlePlaceholder: 'Office hours with XX',
         text:
-            `🎓 About you / your expertise areas 
+            `👋 About you / your expertise areas 
 🙄 Who can apply 
 💬 Preferred way to connect
 `,
@@ -141,8 +141,11 @@ const Body = Glamorous.div({
     position: 'relative'
 });
 
-const PostTitle = Glamorous.div({
+const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
     zIndex: 1,
+    '& *': {
+        color: props.invalid ? '#e26363 !important' : undefined
+    },
     '& *, & input, & *:focus-within, & *:focus': {
         fontSize: 22,
         fontWeight: 600,
@@ -154,9 +157,9 @@ const PostTitle = Glamorous.div({
         minHeight: 30,
         display: 'block'
     }
-});
+}));
 
-const PostText = Glamorous.div({
+const PostText = Glamorous.div<{ invalid: boolean }>(props => ({
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -178,8 +181,11 @@ const PostText = Glamorous.div({
             boxShadow: 'none',
             border: 'none'
         }
+    },
+    '& textarea::placeholder': {
+        color: props.invalid ? 'rgb(226, 99, 99)' : undefined
     }
-});
+}));
 
 const FilesWrapper = Glamorous(XVertical)({
     paddingTop: 10,
@@ -358,6 +364,9 @@ interface SendPostButtonProps {
     files: Set<File> | null;
     postType: PostMessageType | null | string;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
+    checkTitleValue: () => void;
+    checkTextValue: () => void;
+    checkValue: () => void;
 }
 
 const SendPostButton = withSendPostMessage(props => {
@@ -369,12 +378,13 @@ const SendPostButton = withSendPostMessage(props => {
         attachments = [...files].map(i => i.uuid);
     }
 
-    const checkApplySend = (title.trim().length > 0 && text.trim().length > 0);
+    const checkTitleSend = title.trim().length > 0;
+    const checkTextSend = text.trim().length > 0;
 
     return (
         <XMutation
             action={async () => {
-                if (checkApplySend) {
+                if (checkTitleSend && checkTextSend) {
                     await props.sendPost({
                         variables: {
                             conversationId: (props as any).conversationId,
@@ -384,11 +394,23 @@ const SendPostButton = withSendPostMessage(props => {
                             postType: (props as any).postType ? (props as any).postType : PostMessageType.BLANK
                         }
                     });
+                } else if (!checkTitleSend && !checkTextSend) {
+                    (props as any).checkValue();
+                } else if (!checkTextSend) {
+                    (props as any).checkTextValue();
+                } else {
+                    (props as any).checkTitleValue();
                 }
             }}
             onSuccess={() => {
-                if (checkApplySend) {
+                if (checkTitleSend && checkTextSend) {
                     (props as any).handleHideChat(false, null);
+                } else if (!checkTitleSend && !checkTextSend) {
+                    (props as any).checkValue();
+                } else if (!checkTextSend) {
+                    (props as any).checkTextValue();
+                } else {
+                    (props as any).checkTitleValue();
                 }
             }}
         >
@@ -405,6 +427,9 @@ interface EditPostButtonProps {
     files: Set<File> | null;
     postType: PostMessageType | null | string;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
+    checkTitleValue: () => void;
+    checkTextValue: () => void;
+    checkValue: () => void;
 }
 
 const EditPostButton = withEditPostMessage(props => {
@@ -416,12 +441,13 @@ const EditPostButton = withEditPostMessage(props => {
         attachments = [...files].map(i => i.uuid);
     }
 
-    const checkApplySend = (title.trim().length > 0 && text.trim().length > 0);
+    const checkTitleSend = title.trim().length > 0;
+    const checkTextSend = text.trim().length > 0;
 
     return (
         <XMutation
             action={async () => {
-                if (checkApplySend) {
+                if (checkTitleSend && checkTextSend) {
                     await props.editPost({
                         variables: {
                             messageId: (props as any).messageId,
@@ -431,11 +457,23 @@ const EditPostButton = withEditPostMessage(props => {
                             postType: (props as any).postType ? (props as any).postType : PostMessageType.BLANK
                         }
                     });
+                } else if (!checkTitleSend && !checkTextSend) {
+                    (props as any).checkValue();
+                } else if (!checkTextSend) {
+                    (props as any).checkTextValue();
+                } else {
+                    (props as any).checkTitleValue();
                 }
             }}
             onSuccess={() => {
-                if (checkApplySend) {
+                if (checkTitleSend && checkTextSend) {
                     (props as any).handleHideChat(false, null);
+                } else if (!checkTitleSend && !checkTextSend) {
+                    (props as any).checkValue();
+                } else if (!checkTextSend) {
+                    (props as any).checkTextValue();
+                } else {
+                    (props as any).checkTitleValue();
                 }
             }}
         >
@@ -469,7 +507,9 @@ interface CreatePostComponentState {
     dragUnder: boolean;
     uploadProgress: number | null;
     files: Set<File> | null;
-    cover: File | null
+    cover: File | null;
+    invalidTitle: boolean;
+    invalidText: boolean;
 }
 
 export class CreatePostComponent extends React.Component<CreatePostComponentProps, CreatePostComponentState> {
@@ -495,19 +535,42 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
             dragUnder: false,
             uploadProgress: null,
             files: null,
-            cover: null
+            cover: null,
+            invalidTitle: false,
+            invalidText: false
         }
+    }
+
+    invalidTitleHandler = () => {
+        this.setState({
+            invalidTitle: true
+        });
+    }
+
+    invalidTextHandler = () => {
+        this.setState({
+            invalidText: true
+        });
+    }
+
+    invalidValue = () => {
+        this.setState({
+            invalidTitle: true,
+            invalidText: true
+        });
     }
 
     private titleChange = (src: string) => {
         this.setState({
-            title: src
+            title: src,
+            invalidTitle: false
         })
     }
 
     private textChange = (src: string) => {
         this.setState({
-            text: src
+            text: src,
+            invalidText: false
         })
     }
 
@@ -733,10 +796,10 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                     <XVertical maxWidth={700} flexGrow={1}>
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
-                                <PostTitle>
+                                <PostTitle invalid={state.invalidTitle}>
                                     <XInput placeholder={titlePlaceholder} onChange={this.titleChange} value={this.state.title} />
                                 </PostTitle>
-                                <PostText>
+                                <PostText invalid={state.invalidText}>
                                     <XTextArea placeholder={textPlaceholder} value={this.state.text} onChange={this.textChange} />
                                 </PostText>
                             </XVertical>
@@ -813,6 +876,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 text={state.text}
                                 files={state.files}
                                 handleHideChat={props.handleHideChat}
+                                checkTitleValue={this.invalidTitleHandler}
+                                checkTextValue={this.invalidTextHandler}
+                                checkValue={this.invalidValue}
                             >
                                 <XButton
                                     text="Send"
@@ -829,6 +895,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 text={state.text}
                                 files={state.files}
                                 handleHideChat={props.handleHideChat}
+                                checkTitleValue={this.invalidTitleHandler}
+                                checkTextValue={this.invalidTextHandler}
+                                checkValue={this.invalidValue}
                             >
                                 <XButton
                                     text="Save changes"
