@@ -35,7 +35,7 @@ class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSen
             <XButton
                 alignSelf="flex-start"
                 icon={this.state.isSended ? 'check' : undefined}
-                text={this.state.isSended ? 'Sended!' : this.props.emailType.toString()}
+                text={this.state.isSended ? 'Sent!' : this.props.emailType.toString()}
                 style={this.state.isSended ? 'success' : 'primary'}
                 action={async () => {
                     await this.props.sendMail({
