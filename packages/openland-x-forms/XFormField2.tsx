@@ -37,7 +37,9 @@ export class XFormField2 extends React.Component<
                     const isTouched = form.touched.indexOf(props.field) !== -1;
 
                     const showError =
-                        isTouched && !isValid && this.state.blurredOnce;
+                        isTouched &&
+                        !isValid &&
+                        (this.state.blurredOnce || form.submited);
 
                     const childrenAny = props.children as any;
                     return (

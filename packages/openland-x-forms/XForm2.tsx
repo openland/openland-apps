@@ -43,12 +43,18 @@ const FormContainer = Glamorous.form({
     flexDirection: 'column',
 });
 
+type XFormControllerState = {
+    loading: boolean;
+    submited: boolean;
+    error?: string;
+};
+
 class XFormController extends React.PureComponent<
     XFormControllerProps & {
         modal?: XModalContextValue;
         autoClose?: boolean | number;
     },
-    { loading: boolean; error?: string }
+    XFormControllerState
 > {
     // Keep local copy since setState is async
     private _isLoading = false;
@@ -56,7 +62,7 @@ class XFormController extends React.PureComponent<
 
     constructor(props: XFormControllerProps) {
         super(props);
-        this.state = { loading: false };
+        this.state = { loading: false, submited: false };
         this.contextValue = {
             store: this.props.store,
             submit: (action?: (data: any) => any) => {
@@ -110,7 +116,10 @@ class XFormController extends React.PureComponent<
         return collectedErrors;
     };
 
-    componentWillReceiveProps(nextProps: XFormControllerProps) {
+    componentWillReceiveProps(
+        nextProps: XFormControllerProps,
+        nextState: XFormControllerState,
+    ) {
         let nextTouched: any[] = [];
         if (
             this.props.store.export().fields &&
@@ -150,6 +159,7 @@ class XFormController extends React.PureComponent<
     }
 
     private submit = async (action?: (data: any) => any) => {
+        this.setState({ submited: true });
         let clientValidationFailed = false;
         if (
             this.props.store.export().fields &&
@@ -233,7 +243,9 @@ class XFormController extends React.PureComponent<
             console.warn(this.state);
         }
         return (
-            <XFormContext.Provider value={this.contextValue}>
+            <XFormContext.Provider
+                value={{ ...this.contextValue, submited: this.state.submited }}
+            >
                 {this.props.defaultLayout !== false && (
                     <FormContainer className={this.props.className}>
                         <XFormLoadingContent>
