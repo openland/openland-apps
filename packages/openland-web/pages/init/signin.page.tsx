@@ -255,8 +255,12 @@ class SignInComponent extends React.Component<
             pageMode = 'AuthMechanism';
         }
 
+        const showTerms =
+            (!signin && pageMode === 'AuthMechanism') || this.state.fromOutside;
+
         return (
             <Container
+                showTerms={showTerms}
                 pageMode={pageMode}
                 text={signupText}
                 path={(signin ? '/signup' : '/signin') + redirect}
@@ -298,7 +302,16 @@ class SignInComponent extends React.Component<
                             });
                         }}
                         emailSendedTo={this.state.emailValue}
-                        backButtonClick={this.loginWithEmail}
+                        backButtonClick={() => {
+                            this.setState(
+                                {
+                                    fromOutside: false,
+                                },
+                                () => {
+                                    this.loginWithEmail();
+                                },
+                            );
+                        }}
                         codeError={this.state.codeError}
                         codeChanged={this.codeChanged}
                         codeSending={this.state.codeSending}

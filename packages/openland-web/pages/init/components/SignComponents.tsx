@@ -337,7 +337,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                 />
                 <MainContent>{props.children}</MainContent>
                 <Footer>
-                    {!props.signin && props.pageMode === 'AuthMechanism' ? (
+                    {props.showTerms ? (
                         <FooterText>
                             By creating an account you are accepting our{' '}
                             <FooterLink href="https://openland.com/terms">
