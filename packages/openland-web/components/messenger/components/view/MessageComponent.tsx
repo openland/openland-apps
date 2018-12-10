@@ -583,7 +583,7 @@ class MessageComponentInner extends React.PureComponent<
                     content.push(
                         <ReplyMessageWrapper key={'reply_message' + message.id}>
                             {message.reply!.sort((a, b) => (a.date - b.date)).map((item, index, array) => {
-                                let isCompact = (index > 0) ? ((array[index - 1].sender === item.sender) ? true : false) : false;
+                                let isCompact = (index > 0) ? ((array[index - 1].sender.id === item.sender.id) ? true : false) : false;
 
                                 return (
                                     <MessageReplyComponent
