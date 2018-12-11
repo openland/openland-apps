@@ -114,10 +114,12 @@ class CreateOrganizationPrefixHolder extends React.Component<
 
     renderOrganizationsSelectorOptionsFetcherInner = (organizations: any) => {
         const OrganizationsSelectorOptionsFetcherInnerAny = OrganizationsSelectorOptionsFetcherInner as any;
+        const roomView = this.props.roomView || Cookie.get('x-openland-invite');
         return (
             <OrganizationsSelectorOptionsFetcherInnerAny
                 {...{
                     ...this.props,
+                    roomView,
                     organizations,
                     onPrefixChanges: this.onPrefixChanges,
                 }}

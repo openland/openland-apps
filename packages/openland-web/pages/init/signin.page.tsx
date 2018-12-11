@@ -275,7 +275,7 @@ class SignInComponent extends React.Component<
 
         const linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
 
-        const roomView = false && this.props.roomView;
+        const roomView = this.props.roomView;
 
         const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
         const AuthMechanism = roomView
@@ -405,10 +405,18 @@ export const SignInPage = (props: any) => {
     const signin = props.router.path.endsWith('signin');
 
     if (props.router.routeQuery.redirect) {
-        Cookie.set(
-            'x-openland-invite',
-            props.router.routeQuery.redirect.slice('/invite/'.length),
-        );
+        if (
+            props.router.routeQuery.redirect.indexOf(
+                '/acceptChannelInvite/',
+            ) !== -1
+        ) {
+            Cookie.set(
+                'x-openland-invite',
+                props.router.routeQuery.redirect.slice(
+                    '/acceptChannelInvite/'.length,
+                ),
+            );
+        }
     }
 
     const fromRoom = Cookie.get('x-openland-invite');
