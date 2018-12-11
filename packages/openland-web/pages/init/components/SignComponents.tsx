@@ -316,15 +316,6 @@ const Header = (props: HeaderProps) => (
     </HeaderStyled>
 );
 
-const MainContent = Glamorous.div({
-    width: 522,
-    margin: 'auto',
-    '@media(max-width: 530px)': {
-        width: '100%',
-        maxWidth: 442,
-    },
-});
-
 export type PageModeT =
     | 'ActivationCode'
     | 'CreateFromEmail'
@@ -341,6 +332,38 @@ interface SignContainerProps extends HeaderProps {
     children?: any;
 }
 
+const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
+    return {
+        width: 522,
+        ...(pageMode === 'CreateProfile'
+            ? { margin: 'auto' }
+            : {
+                  position: 'relative',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  height: '100%',
+              }),
+        '@media(max-width: 530px)': {
+            width: '100%',
+            maxWidth: 442,
+        },
+    };
+});
+
+const MainContentInner = Glamorous.div<{ pageMode: PageModeT }>(
+    ({ pageMode }) => {
+        if (pageMode === 'CreateProfile') {
+            return {};
+        }
+        return {
+            position: 'absolute',
+            top: '35%',
+            left: 0,
+            right: 0,
+        };
+    },
+);
+
 export const WebSignUpContainer = (props: SignContainerProps) => {
     return (
         <RootContainer>
@@ -350,7 +373,11 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                     path={props.path}
                     linkText={props.linkText}
                 />
-                <MainContent>{props.children}</MainContent>
+                <MainContent pageMode={props.pageMode}>
+                    <MainContentInner pageMode={props.pageMode}>
+                        {props.children}
+                    </MainContentInner>
+                </MainContent>
                 <Footer>
                     {props.showTerms ? (
                         <FooterText>
@@ -1635,6 +1662,7 @@ export class CreateOrganizationFormInner extends React.Component<
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={(data: any) => {
+                        debugger;
                         defaultAction({
                             name: data.input.name.label,
                             id:

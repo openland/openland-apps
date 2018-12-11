@@ -618,7 +618,6 @@ export class XSelectBasic extends React.PureComponent<
                 )}
                 {this.props.creatable && (
                     <StyledSelectCreatable
-                        isClearable
                         invalid={invalid}
                         noArrow={noArrow}
                         onInputChange={this.handleInputChange}
@@ -634,7 +633,6 @@ export class XSelectBasic extends React.PureComponent<
                 )}
                 {!this.props.creatable && (
                     <StyledSelect
-                        isClearable
                         invalid={invalid}
                         noArrow={noArrow}
                         onInputChange={this.handleInputChange}
