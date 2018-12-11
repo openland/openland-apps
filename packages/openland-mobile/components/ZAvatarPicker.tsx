@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Image, TouchableOpacity, ActivityIndicator, Alert, Text } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
@@ -120,7 +120,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
         return this.props.render ? <this.props.render url={valueUrl} file={this.state.file} loading={this.state.loading} showPicker={this.handlePicker} /> : (
             <TouchableOpacity onPress={this.handlePicker}>
                 <View width={size} height={size} borderRadius={size / 2}>
-                    {!this.state.file && valueUrl && <XPAvatar src={valueUrl} size={size} />}
+                    {valueUrl && <XPAvatar src={valueUrl} size={size} />}
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2, borderWidth: 1, borderColor: '#eff0f2' }}>
                         {!this.state.loading && <Image style={{ tintColor: valueUrl ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
                         {this.state.loading && <ActivityIndicator color="#fff" />}

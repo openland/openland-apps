@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput, Alert } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -76,9 +76,6 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
 
     render() {
         let v = this.props.page;
-        if (v.config.headerHidden) {
-            return null;
-        }
         console.warn('fooo', this.props.manager.parent, this.props.page.page.startIndex);
         let title = <Text style={[styles.title, { color: this.props.style.textColor }]}>{this.props.page.config.title}</Text>;
         title = (v.config.titleView && v.config.titleView()) || title;

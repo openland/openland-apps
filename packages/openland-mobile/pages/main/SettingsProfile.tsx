@@ -85,7 +85,7 @@ class SettingsProfileComponent extends React.Component<PageProps, { loaded: bool
                                 >
                                     <ZListItemBase height={96} separator={false}>
                                         <View paddingHorizontal={16} marginTop={15}>
-                                            <ZAvatarPicker field="input.photoRef" />
+                                            <ZAvatarPicker field="input.photoRef" showLoaderOnUpload={true} />
                                         </View>
                                         <View flexDirection="column" flexGrow={1} flexBasis={0} marginTop={15}>
                                             <ZTextInput placeholder="First name" field="input.firstName" height={44} style={{ fontSize: 16 }} />
@@ -99,7 +99,7 @@ class SettingsProfileComponent extends React.Component<PageProps, { loaded: bool
                                         <ListItemEdit title="Phone" field="input.phone" placehodler="123-456-7890" />
                                         <ListItemEdit title="Email" field="input.email" placehodler="your@email.com" />
                                         <ListItemEdit title="Website" field="input.website" placehodler="yoursite.com" />
-                                        <ListItemEdit title="Linkedin" field="input.alphaLinkedin" placehodler="linkedin.com/in/you"/>
+                                        <ListItemEdit title="Linkedin" field="input.alphaLinkedin" placehodler="linkedin.com/in/you" />
                                     </ZListItemGroup>
                                 </ZForm>
                             )}

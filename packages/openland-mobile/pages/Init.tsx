@@ -18,6 +18,7 @@ import { PageProps } from '../components/PageProps';
 import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { prepareBottomSafeArea } from 'react-native-s/SDevice';
+import { EmailCode } from './auth/EmailAuth';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -98,7 +99,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 </YApolloProvider>
             );
         } else if (this.state.state === 'initial') {
-            return <Root routing={SRouting.create(Routes, 'Login')} padLayout={false}/>;
+            return <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />;
         } else if (this.state.state === 'signup') {
             return (
                 <YApolloProvider client={getClient()}>
