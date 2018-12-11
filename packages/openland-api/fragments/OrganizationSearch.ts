@@ -9,14 +9,14 @@ export const OrganizationSearch = gql`
         isMine
         about
         featured: alphaFeatured
-        members: alphaOrganizationMembers{
-            user{
+        members: alphaOrganizationMembers {
+            user {
                id
                name
                picture
             }
         }
-        channels: alphaCreatedChannels{
+        channels: alphaCreatedChannels {
             id
             hidden
         }

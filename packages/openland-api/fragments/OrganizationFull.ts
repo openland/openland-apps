@@ -19,21 +19,21 @@ export const OrganizationFull = gql`
         facebook
         linkedin
         
-        members: alphaOrganizationMembers{
+        members: alphaOrganizationMembers {
             role
-            user{
+            user {
                 ...UserFull
             }
         }
 
-        requests: alphaOrganizationMemberRequests{
+        requests: alphaOrganizationMemberRequests {
             role
-            user{
+            user {
                 ...UserFull
             }
         }
 
-        rooms: betaPublicRooms{
+        rooms: betaPublicRooms {
             ...RoomShort
         }
     }

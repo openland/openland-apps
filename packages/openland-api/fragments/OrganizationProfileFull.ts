@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+
 export const OrganizationProfileFull = gql`
     fragment OrganizationProfileFull on OrganizationProfile {
         id
@@ -20,6 +21,5 @@ export const OrganizationProfileFull = gql`
         linkedin
         
         featured: alphaFeatured
-
     }
 `;

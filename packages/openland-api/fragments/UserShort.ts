@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { OrganizationShort } from './OrganizationShort';
+
 export const UserShort = gql`
     fragment UserShort on User {
         id

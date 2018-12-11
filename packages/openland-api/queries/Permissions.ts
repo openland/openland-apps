@@ -55,7 +55,7 @@ export const SuperAccountQuery = gql`
             }
             orgId
             createdAt
-            createdBy{
+            createdBy {
                 name
             }
             published: alphaPublished

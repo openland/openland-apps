@@ -6,9 +6,15 @@ import { UserFull } from 'openland-api/fragments/UserFull';
 
 export const AccountQuery = gql`
     query Account {
-        me: me { ...UserShort }
-        sessionState: sessionState { ...SessionStateFull }
-        myPermissions { roles }
+        me: me {
+            ...UserShort
+        }
+        sessionState: sessionState {
+            ...SessionStateFull
+        }
+        myPermissions {
+            roles
+        }
     }
     ${UserShort}
     ${SessionStateFull}
@@ -16,7 +22,9 @@ export const AccountQuery = gql`
 
 export const AccountSettingsQuery = gql`
     query AccountSettings {
-        me: me { ...UserShort }
+        me: me {
+            ...UserShort
+        }
         organizations: myOrganizations {
             ...OrganizationShort
         }
@@ -43,7 +51,7 @@ export const AccountInviteInfoQuery = gql`
             title
             photo
             joined
-            creator{
+            creator {
                 ...UserShort
             }
             forEmail
@@ -56,12 +64,12 @@ export const AccountInviteInfoQuery = gql`
 export const AccountAppInviteInfoQuery = gql`
     query AccountAppInviteInfo($inviteKey: String!) {
         invite: alphaInviteInfo(key: $inviteKey) {
-            creator{
+            creator {
                 ...UserShort
             }
         }
         appInvite: appInviteInfo(key: $inviteKey) {
-            inviter{
+            inviter {
                 ...UserShort
             }
         }
@@ -130,12 +138,12 @@ export const ProfilePrefillQuery = gql`
 `;
 
 export const CreateUserProfileAndOrganizationMutation = gql`
- mutation CreateUserProfileAndOrganization($user: ProfileInput!, $organization: CreateOrganizationInput!) {
-        alphaCreateUserProfileAndOrganization(user: $user, organization: $organization){
-            user{
+    mutation CreateUserProfileAndOrganization($user: ProfileInput!, $organization: CreateOrganizationInput!) {
+        alphaCreateUserProfileAndOrganization(user: $user, organization: $organization) {
+            user {
                 ...UserFull
             }
-            organization{
+            organization {
                 id
                 name
             }

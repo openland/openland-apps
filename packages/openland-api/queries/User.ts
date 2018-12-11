@@ -41,14 +41,14 @@ export const UserQuery = gql`
                 photos
                 photo
                 membersCount
-                organization{
+                organization {
                     ...OrganizationShort
                 }
             }
         }
-        conversation: alphaChat(conversationId: $userId){
+        conversation: alphaChat(conversationId: $userId) {
             id
-            settings{
+            settings {
                 id
                 mobileNotifications
                 mute

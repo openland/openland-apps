@@ -10,37 +10,37 @@ export const ConversationShort = gql`
         topMessage {
             ...MessageFull
         }
-        settings{
+        settings {
             id
             mobileNotifications
             mute
         }
         ... on GroupConversation {
-                photo
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
+            photo
+            photoRef {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
                 }
+            }
         }
         ... on ChannelConversation {
-                featured
-                hidden
-                photo
-                myStatus
-                photoRef{
-                    uuid
-                    crop{
-                        x
-                        y
-                        w
-                        h
-                    }
+            featured
+            hidden
+            photo
+            myStatus
+            photoRef {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
                 }
+            }
         }
     }
 `;

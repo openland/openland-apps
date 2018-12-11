@@ -23,12 +23,12 @@ export const ProfileQuery = gql`
             location
             role: alphaRole
             linkedin: alphaLinkedin
-            primaryOrganization{
+            primaryOrganization {
                 id
                 name
             }
             joinedAt: alphaJoinedAt
-            invitedBy: alphaInvitedBy{
+            invitedBy: alphaInvitedBy {
                 name
             }
         }
@@ -59,7 +59,7 @@ export const ProfileUpdateMutation = gql`
             linkedin: alphaLinkedin
             primaryOrganizationId: alphaPrimaryOrganizationId
             joinedAt: alphaJoinedAt
-            invitedBy: alphaInvitedBy{
+            invitedBy: alphaInvitedBy {
                 name
             }
         }

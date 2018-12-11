@@ -39,7 +39,7 @@ export const DialogsQuery = gql`
 
 export const RoomQuery = gql`
     query Room($id: ID!) {
-        room(id: $id){
+        room(id: $id) {
             ... RoomFull
         }
     }
@@ -50,7 +50,7 @@ export const RoomQuery = gql`
 
 export const RoomSuperQuery = gql`
     query RoomSuper($id: ID!) {
-        roomSuper(id: $id){
+        roomSuper(id: $id) {
             id
             featured
             listed
@@ -195,7 +195,7 @@ export const CancelTypingMutation = gql`
 
 export const RoomAddMemberMutation = gql`
     mutation RoomAddMember($roomId: ID!, $userId: ID!) {
-        betaRoomInvite(roomId: $roomId, invites: [{userId: $userId, role: MEMBER}]){
+        betaRoomInvite(roomId: $roomId, invites: [{userId: $userId, role: MEMBER}]) {
            ...RoomFull
         }
     }
@@ -206,7 +206,7 @@ export const RoomAddMemberMutation = gql`
 
 export const RoomDeclineJoinReuestMutation = gql`
     mutation RoomDeclineJoinReuest($roomId: ID!, $userId: ID!) {
-        betaRoomDeclineJoinRequest(roomId: $roomId, userId: $userId){
+        betaRoomDeclineJoinRequest(roomId: $roomId, userId: $userId) {
            ...RoomFull
         }
     }
@@ -217,7 +217,7 @@ export const RoomDeclineJoinReuestMutation = gql`
 
 export const RoomAddMembersMutation = gql`
     mutation RoomAddMembers($roomId: ID!, $invites: [RoomInviteInput!]!) {
-        betaRoomInvite(roomId: $roomId, invites: $invites){
+        betaRoomInvite(roomId: $roomId, invites: $invites) {
            ...RoomFull
         }
     }
@@ -228,7 +228,7 @@ export const RoomAddMembersMutation = gql`
 
 export const RoomKickMutation = gql`
     mutation RoomKick($roomId: ID!, $userId: ID!) {
-        betaRoomKick(roomId: $roomId, userId: $userId){
+        betaRoomKick(roomId: $roomId, userId: $userId) {
            ...RoomFull
         }
     }
@@ -239,7 +239,7 @@ export const RoomKickMutation = gql`
 
 export const RoomLeaveMutation = gql`
     mutation RoomLeave($roomId: ID!) {
-        betaRoomLeave(roomId: $roomId){
+        betaRoomLeave(roomId: $roomId) {
            ...RoomFull
         }
     }
@@ -286,7 +286,7 @@ export const RoomSearchQuery = gql`
 
 export const RoomAlterFeaturedMutation = gql`
     mutation RoomAlterFeatured($roomId: ID!, $featured: Boolean!) {
-        betaRoomAlterFeatured(roomId: $roomId, featured: $featured){
+        betaRoomAlterFeatured(roomId: $roomId, featured: $featured) {
             id
             listed
             featured
@@ -296,7 +296,7 @@ export const RoomAlterFeaturedMutation = gql`
 
 export const RoomAlterHiddenMutation = gql`
      mutation RoomAlterHidden($roomId: ID!, $listed: Boolean!) {
-        betaRoomAlterListed(roomId: $roomId, listed: $listed){
+        betaRoomAlterListed(roomId: $roomId, listed: $listed) {
             id
             listed
             featured
@@ -305,13 +305,13 @@ export const RoomAlterHiddenMutation = gql`
 `;
 
 export const RoomMembersQuery = gql`
-    query RoomMembers($roomId: ID!){
-        members: roomMembers(roomId: $roomId){
-           user{
+    query RoomMembers($roomId: ID!) {
+        members: roomMembers(roomId: $roomId) {
+            user {
                ...UserShort
-           }
-           role
-           membership
+            }
+            role
+            membership
         }
     }
     ${UserShort}
@@ -328,8 +328,8 @@ export const RoomSettingsUpdateMutation = gql`
 
 export const RoomJoinMutation = gql`
     mutation RoomJoin($roomId: ID!) {
-        join: betaRoomJoin(roomId: $roomId){
-           ...RoomFull
+        join: betaRoomJoin(roomId: $roomId) {
+            ...RoomFull
         }
     }
     ${UserShort}
@@ -345,7 +345,7 @@ export const RoomSendEmailInviteMutation = gql`
 
 export const RoomJoinInviteLinkMutation = gql`
     mutation RoomJoinInviteLink($invite: String!) {
-        join: betaRoomInviteLinkJoin(invite: $invite){
+        join: betaRoomInviteLinkJoin(invite: $invite) {
            ...RoomFull
         }
     }
@@ -368,8 +368,8 @@ export const RoomInviteLinkQuery = gql`
 
 export const RoomInviteInfoQuery = gql`
     query RoomInviteInfo($invite: String!) {
-        invite: betaRoomInviteInfo(invite: $invite){
-            room{
+        invite: betaRoomInviteInfo(invite: $invite) {
+            room {
                 ... on SharedRoom {
                     id
                     kind
@@ -386,9 +386,9 @@ export const RoomInviteInfoQuery = gql`
                         role
                         membership
                     }
-        }
+                }
             }
-            invitedByUser{
+            invitedByUser {
                 ...UserShort
             }
         }
@@ -400,7 +400,7 @@ export const RoomInviteInfoQuery = gql`
 
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
-        betaRoomUpdate(roomId: $roomId, input: $input){
+        betaRoomUpdate(roomId: $roomId, input: $input) {
             ...RoomFull
         }
     }

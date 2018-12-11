@@ -104,8 +104,8 @@ export const OrganizationInviteMembersMutation = gql`
 `;
 
 export const OrganizationPublicInviteQuery = gql`
-    query OrganizationPublicInvite($organizationId: ID){
-        publicInvite: alphaOrganizationInviteLink(organizationId: $organizationId){
+    query OrganizationPublicInvite($organizationId: ID) {
+        publicInvite: alphaOrganizationInviteLink(organizationId: $organizationId) {
             id
             key
             ttl
@@ -114,8 +114,8 @@ export const OrganizationPublicInviteQuery = gql`
 `;
 
 export const OrganizationCreatePublicInviteMutation = gql`
-    mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID){
-        alphaOrganizationRefreshInviteLink(expirationDays: $expirationDays, organizationId: $organizationId){
+    mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID) {
+        alphaOrganizationRefreshInviteLink(expirationDays: $expirationDays, organizationId: $organizationId) {
             id
             key
             ttl
@@ -131,7 +131,7 @@ export const OrganizationActivateByInviteMutation = gql`
 
 export const OrganizationAlterPublishedMutation = gql`
     mutation OrganizationAlterPublished($organizationId: ID!, $published: Boolean!) {
-        alphaAlterPublished(id: $organizationId, published: $published){
+        alphaAlterPublished(id: $organizationId, published: $published) {
             ...OrganizationSearch
         }
     }
@@ -139,8 +139,8 @@ export const OrganizationAlterPublishedMutation = gql`
 `;
 
 export const OrganizationByPrefixQuery = gql`
-    query OrganizationByPrefix($query: String!){
-        organizationByPrefix: alphaOrganizationByPrefix(query: $query){
+    query OrganizationByPrefix($query: String!) {
+        organizationByPrefix: alphaOrganizationByPrefix(query: $query) {
             ...OrganizationSearch
         }
     }
