@@ -7,7 +7,6 @@ import { withUserInfo } from '../../components/UserInfo';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
 import { delayForewer } from 'openland-y-utils/timer';
-import { sanitizeIamgeRef } from '../../utils/sanitizer';
 import {
     WebSignUpContainer,
     RoomSignupContainer,
@@ -26,11 +25,13 @@ const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
                 data:
                     !props.data || !props.data.items
                         ? []
-                        : props.data.items.edges.map(
-                              ({ node: { id, name } }: any) => {
+                        : props.data.items.edges
+                              .filter(({ node }: any) => {
+                                  return node.status === 'activated';
+                              })
+                              .map(({ node: { id, name } }: any) => {
                                   return { value: id, label: name };
-                              },
-                          ),
+                              }),
                 loading: false,
             })}
         </>
