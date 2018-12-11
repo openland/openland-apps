@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import * as Cookie from 'js-cookie';
 import { withAppBase } from '../../components/withAppBase';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -20,7 +21,6 @@ import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
-import * as Cookie from 'js-cookie';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { withAppInviteInfo } from '../../api/withAppInvite';
 
@@ -61,6 +61,13 @@ const checkIfIsSignInInvite = (router: any) => {
         router.query.redirect &&
         router.query.redirect.split('/')[1] === 'invite'
     );
+};
+
+const checkIfIsSignIn = (router: any) => {
+    if (checkIfIsSignInInvite(router)) {
+        return false;
+    }
+    return router.path.endsWith('signin');
 };
 
 class SignInComponent extends React.Component<
@@ -256,7 +263,7 @@ class SignInComponent extends React.Component<
     };
 
     render() {
-        const signin = this.props.router.path.endsWith('signin');
+        const signin = checkIfIsSignIn(this.props.router);
         let redirect = this.props.router.query.redirect
             ? '?redirect=' +
               encodeURIComponent(this.props.router.query.redirect)

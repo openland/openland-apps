@@ -174,7 +174,7 @@ const SignInInviteTitle = Glamorous.div({
     letterSpacing: 0.8,
     color: '#121e2b',
     paddingTop: 24,
-    paddingBottom: 9,
+    paddingBottom: 26,
 });
 
 const Title = Glamorous.div({
@@ -693,16 +693,11 @@ export const InviteInfoInner = ({
                 }}
             >
                 <p>
-                    Openland is a professional messenger, built for productivity
-                    and speed.
+                    Openland is a professional messenger designed to support{' '}
+                    <br /> all communication needs of a modern business
                 </p>
-                <p>
-                    Here you can seek and share advice, discover new
-                    opportunities,
-                </p>
-                <p>and collaborate with other organizations.</p>
             </SubTitle>
-            <ButtonsWrapper marginTop={52} width={280}>
+            <ButtonsWrapper marginTop={37} width={280}>
                 <GoogleButton
                     rounded
                     onClick={loginWithGoogle}
