@@ -86,7 +86,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                         }
                                         }
                                     </YMutation>
-                                    {!!resp.data.user.channels && <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Channels" description={resp.data.user.channels.length.toString()} path={'OrgChannels'} pathParams={{ channels: resp.data.user.channels, title: resp.data.user.name + '`s channels' }} />}
+                                    {/* {!!resp.data.user.channels && <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Channels" description={resp.data.user.channels.length.toString()} path={'OrgChannels'} pathParams={{ channels: resp.data.user.channels, title: resp.data.user.name + '`s channels' }} />} */}
 
                                 </ZListItemGroup>
                             </SScrollView>

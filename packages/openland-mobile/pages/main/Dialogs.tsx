@@ -6,7 +6,7 @@ import { MobileMessengerContext, DialogItemViewAsync } from '../../messenger/Mob
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZQuery } from '../../components/ZQuery';
 import { SRouterContext } from 'react-native-s/SRouterContext';
@@ -91,7 +91,7 @@ class DialogsComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Messages" />
-                <SHeaderButton title="New" icon={require('assets/ic-new.png')} onPress={() => this.props.router.push('ComposeInitial')} />
+                <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => this.props.router.push('ComposeInitial')} />
                 {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
                 <SSearchControler key={this.props.router.key + new Date().getTime()} searchRender={(props) => (<DialogsSearch query={props.query} />)}>
                     <MobileMessengerContext.Consumer>

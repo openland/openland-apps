@@ -8,7 +8,7 @@ export class ActionButtonAndroid extends React.PureComponent<{ title: string, ic
                 <TouchableOpacity onPress={this.props.onPress}>
                     <View style={{ height: 32, borderRadius: 16, backgroundColor: '#fff', paddingHorizontal: 12, justifyContent: 'center' }}>
                         {!this.props.icon && <Text style={{ color: this.props.tintColor || '#49288f', lineHeight: 32, fontSize: 14, fontWeight: '500', textAlignVertical: 'center' }} >{this.props.title.toUpperCase()}</Text>}
-                        {this.props.icon && <Image source={this.props.icon} style={{ width: 22, height: 22, tintColor: this.props.tintColor || '#4747ec' }} resizeMode="stretch" />}
+                        {this.props.icon && <Image source={this.props.icon} style={{ width: 24, height: 24, tintColor: this.props.tintColor || '#4747ec' }} resizeMode="stretch" />}
                     </View>
                 </TouchableOpacity>
             </View>
