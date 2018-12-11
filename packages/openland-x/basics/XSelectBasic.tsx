@@ -248,6 +248,7 @@ const Styles = (props: {
         height: 22,
         textAlign: 'center',
         verticalAlign: 'middle',
+        zIndex: 100,
         width: 17,
     },
     '& .Select-clear-zone:hover': {
@@ -617,6 +618,7 @@ export class XSelectBasic extends React.PureComponent<
                 )}
                 {this.props.creatable && (
                     <StyledSelectCreatable
+                        isClearable
                         invalid={invalid}
                         noArrow={noArrow}
                         onInputChange={this.handleInputChange}
@@ -632,6 +634,7 @@ export class XSelectBasic extends React.PureComponent<
                 )}
                 {!this.props.creatable && (
                     <StyledSelect
+                        isClearable
                         invalid={invalid}
                         noArrow={noArrow}
                         onInputChange={this.handleInputChange}

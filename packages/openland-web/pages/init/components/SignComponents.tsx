@@ -1497,7 +1497,11 @@ export class CreateOrganizationFormInner extends React.Component<
         }
 
         if (!src) {
-            return;
+            store.writeValue('fields.input.name', {
+                label: '',
+                value: cval,
+            });
+            return 
         }
         store.writeValue('fields.input.name', {
             label: src.label,
