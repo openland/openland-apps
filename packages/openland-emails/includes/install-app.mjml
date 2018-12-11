@@ -3,7 +3,7 @@
         <mj-text>
             <div style="border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 10px; padding-top: 16px; padding-right: 20px; padding-bottom: 2px; padding-left: 20px;">
                 <div style="padding-bottom: 12px;">
-                    <img style="display: block;" width="26" height="26" src="https://cdn.openland.com/shared/email/emojione/1f984.png" />
+                    <img style="display: block;" width="26" height="26" src="https://cdn.openland.com/shared/email/emojione/2728.png" />
                 </div>
                 <div style="font-size: 20px; line-height: 26px; font-weight: 600; color: rgba(0, 0, 0, 0.6); padding-bottom: 10px;">
                     Getting email notifications too often?
@@ -16,7 +16,7 @@
                         <img src="https://cdn.openland.com/shared/email/appstore@2x.png" width="99" height="32" />
                     </a>
                     <a href="https://oplnd.com/android_beta" style="display: inline-block; vertical-align: top; margin-top: 1px; margin-right: 18px; margin-bottom: 18px;">
-                        <img src="https://cdn.openland.com/shared/email/googleplay@2x.png" width="99" height="32" />
+                        <img src="https://cdn.openland.com/shared/email/googleplay-2@2x.png" width="108" height="32" />
                     </a>
                     <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; margin-bottom: 18px; border-radius: 5px; color: #000000; border: 1px solid rgba(0, 0, 0, 0.17); padding: 9px 12px; font-size: 12px; line-height: 14px; text-decoration: none;">Email settings</a>
                 </div>
