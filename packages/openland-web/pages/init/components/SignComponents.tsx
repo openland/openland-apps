@@ -177,16 +177,18 @@ const SignInInviteTitle = Glamorous.div({
     paddingBottom: 26,
 });
 
-const Title = Glamorous.div({
-    textAlign: 'center',
-    opacity: 0.9,
-    fontSize: 26,
-    fontWeight: 600,
-    lineHeight: '31px',
-    letterSpacing: 0.8,
-    color: '#121e2b',
-    paddingTop: 0,
-    paddingBottom: 9,
+const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
+    return {
+        textAlign: 'center',
+        opacity: 0.9,
+        fontSize: 26,
+        fontWeight: 600,
+        lineHeight: '31px',
+        letterSpacing: 0.8,
+        color: '#121e2b',
+        paddingTop: roomView ? 64 : 0,
+        paddingBottom: 9,
+    };
 });
 
 // WebSignUpContainer start
@@ -785,7 +787,7 @@ export const RoomAuthMechanism = ({
 
     return (
         <div>
-            <Title>{title}</Title>
+            <Title roomView={true}>{title}</Title>
             <RoomText>{subTitle}</RoomText>
             <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
                 <GoogleButton
@@ -831,7 +833,7 @@ export const WebSignUpAuthMechanism = ({
 
     return (
         <div>
-            <Title>{title}</Title>
+            <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
                 <GoogleButton
@@ -926,7 +928,7 @@ export const WebSignUpActivationCode = ({
             }}
             defaultLayout={false}
         >
-            <Title>{InitTexts.auth.enterActivationCode}</Title>
+            <Title roomView={false}>{InitTexts.auth.enterActivationCode}</Title>
             {emailSendedTo && (
                 <SubTitle>
                     We just sent it to <strong>{emailSendedTo}</strong>
@@ -1034,7 +1036,7 @@ export const RoomActivationCode = ({
             }}
             defaultLayout={false}
         >
-            <Title>{InitTexts.auth.enterActivationCode}</Title>
+            <Title roomView={true}>{InitTexts.auth.enterActivationCode}</Title>
             {emailSendedTo && (
                 <SubTitle>
                     We just sent it to <strong>{emailSendedTo}</strong>
@@ -1152,7 +1154,7 @@ export const RoomCreateWithEmail = ({
             }}
             defaultLayout={false}
         >
-            <Title>
+            <Title roomView={true}>
                 {signin
                     ? InitTexts.auth.signinRoomSignUpEmail
                     : InitTexts.auth.signupRoomSignUpEmail}
@@ -1227,7 +1229,7 @@ export const WebSignUpCreateWithEmail = ({
             }}
             defaultLayout={false}
         >
-            <Title>
+            <Title roomView={false}>
                 {signin
                     ? InitTexts.auth.signinEmail
                     : InitTexts.auth.signupEmail}
@@ -1293,7 +1295,9 @@ export const CreateProfileFormInner = (props: {
 
     return (
         <div>
-            <MyTitle>{InitTexts.create_profile.title}</MyTitle>
+            <MyTitle roomView={roomView}>
+                {InitTexts.create_profile.title}
+            </MyTitle>
             <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280} marginBottom={80}>
                 <XForm
@@ -1501,7 +1505,7 @@ export class CreateOrganizationFormInner extends React.Component<
                 label: '',
                 value: cval,
             });
-            return 
+            return;
         }
         store.writeValue('fields.input.name', {
             label: src.label,
@@ -1625,7 +1629,9 @@ export class CreateOrganizationFormInner extends React.Component<
 
         return (
             <div>
-                <MyTitle>{InitTexts.create_organization.title}</MyTitle>
+                <MyTitle roomView={roomView}>
+                    {InitTexts.create_organization.title}
+                </MyTitle>
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={(data: any) => {
