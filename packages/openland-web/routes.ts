@@ -11,8 +11,8 @@ routes.add('/signup', '/init/signin');
 routes.add('/signup/', '/init/signin');
 routes.add('/signin', '/init/signin');
 routes.add('/signin/', '/init/signin');
-routes.add('/signin/invite', '/init/signinvite');
-routes.add('/signin/invite/', '/init/signinvite');
+routes.add('/signin/invite', '/init/signin');
+routes.add('/signin/invite/', '/init/signin');
 routes.add('/signin/channel', '/init/signChannelInvite');
 routes.add('/signin/channel/', '/init/signChannelInvite');
 routes.add('/signin/joinChannel/:inviteKey', '/init/signChannelInvite');
@@ -246,6 +246,7 @@ routes.add('/ui/lists/', '/dev/ui/lists');
 routes.add('/ui/mentions', '/dev/ui/mentions');
 routes.add('/ui/mentions/', '/dev/ui/mentions');
 
+routes.add('/ui/signin/signin-invite', '/dev/ui/signin/signin-invite');
 routes.add('/ui/signin/accept-invitation', '/dev/ui/signin/accept-invitation');
 routes.add('/ui/signin/auth-mechanism', '/dev/ui/signin/auth-mechanism');
 routes.add('/ui/signin/create-with-email', '/dev/ui/signin/create-with-email');

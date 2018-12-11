@@ -89,6 +89,9 @@ export function DevDocsScaffold(props: {
                             </Sidebar.Item>
                             <Sidebar.Item path="/ui/lists">Lists</Sidebar.Item>
                             <Sidebar.Item>Sign Up Components</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/signin/signin-invite">
+                                Signin Invite
+                            </Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/signin/accept-invitation">
                                 Accept Invitation
                             </Sidebar.Subitem>

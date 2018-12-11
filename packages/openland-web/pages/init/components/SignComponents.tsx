@@ -165,6 +165,18 @@ const ImgButton = (props: ButtonProps) => {
     );
 };
 
+const SignInInviteTitle = Glamorous.div({
+    textAlign: 'center',
+    opacity: 0.9,
+    fontSize: 32,
+    fontWeight: 600,
+    lineHeight: '31px',
+    letterSpacing: 0.8,
+    color: '#121e2b',
+    paddingTop: 24,
+    paddingBottom: 9,
+});
+
 const Title = Glamorous.div({
     textAlign: 'center',
     opacity: 0.9,
@@ -317,7 +329,8 @@ export type PageModeT =
     | 'Loading'
     | 'AuthMechanism'
     | 'CreateOrganization'
-    | 'CreateProfile';
+    | 'CreateProfile'
+    | 'SignInInvite';
 
 interface SignContainerProps extends HeaderProps {
     pageMode: PageModeT;
@@ -529,8 +542,6 @@ export class RoomSignupContainer extends React.Component<
     }
 }
 // RoomSignup end
-// AuthMechanism start
-
 const SeparatorStyle = Glamorous.div<{
     marginTop?: number;
     marginBottom?: number;
@@ -573,54 +584,6 @@ const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
         <div>or</div>
     </SeparatorStyle>
 );
-
-const XIconWrapper = Glamorous.span({
-    fontSize: 20,
-    marginLeft: 11,
-
-    '& svg': {
-        marginBottom: -3,
-    },
-
-    '&:hover': {
-        cursor: 'pointer',
-        '& svg': {
-            '& > g > path:last-child': {
-                fill: '#1790ff',
-                opacity: 1,
-            },
-        },
-    },
-});
-
-const RoomText = Glamorous.div({
-    textAlign: 'center',
-    opacity: 0.7,
-    fontSize: 16,
-    lineHeight: '19px',
-    letterSpacing: -0.15,
-    color: '#121e2b',
-});
-
-const RoomTerms = Glamorous.div({
-    textAlign: 'center',
-    marginTop: -6,
-    paddingBottom: 26,
-    color: 'rgba(18, 30, 43, 0.35)',
-    fontSize: 13,
-    fontWeight: 500,
-    lineHeight: '19px',
-    letterSpacing: -0.35,
-
-    '& a': {
-        borderBottom: '1px solid rgba(18, 30, 43, 0.15)',
-        transition: '.3s all ease',
-        '&:hover': {
-            borderBottomColor: 'rgba(18, 30, 43, 0.3)',
-            color: 'rgba(18, 30, 43, 0.7)',
-        },
-    },
-});
 
 const GoogleButton = (props: {
     onClick: any;
@@ -683,6 +646,128 @@ const EmailButton = (props: {
         </ImgButton>
     );
 };
+
+import { XAvatar } from 'openland-x/XAvatar';
+import { XText } from 'openland-x/XText';
+
+// InviteInfoInner start
+export const InviteInfoInner = ({
+    inviter,
+    signPath,
+    loginWithGoogle,
+    loginWithEmail,
+    signin,
+}: {
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+    signPath: string;
+    signin: boolean;
+    inviter: { photo: string | null; name: string; id: string };
+}) => {
+    const googleButtonText = signin
+        ? InitTexts.auth.signinGoogle
+        : InitTexts.auth.signupGoogle;
+    const emailText = signin
+        ? InitTexts.auth.signinEmail
+        : InitTexts.auth.signupEmail;
+
+    return (
+        <div>
+            <XVertical alignItems="center">
+                <XHorizontal alignItems="center">
+                    <XAvatar
+                        size={'small'}
+                        cloudImageUuid={inviter.photo || undefined}
+                        objectName={inviter.name}
+                        objectId={inviter.id}
+                    />
+                    <XText letterSpacing={-0.2} fontSize={16} color="#61707e">
+                        {inviter.name + ' invites you to join'}
+                    </XText>
+                </XHorizontal>
+            </XVertical>
+            <SignInInviteTitle>Welcome to Openland</SignInInviteTitle>
+            <SubTitle
+                style={{
+                    width: 535,
+                }}
+            >
+                <p>
+                    Openland is a professional messenger, built for productivity
+                    and speed.
+                </p>
+                <p>
+                    Here you can seek and share advice, discover new
+                    opportunities,
+                </p>
+                <p>and collaborate with other organizations.</p>
+            </SubTitle>
+            <ButtonsWrapper marginTop={52} width={280}>
+                <GoogleButton
+                    rounded
+                    onClick={loginWithGoogle}
+                    text={googleButtonText}
+                />
+                <Separator />
+                <EmailButton
+                    rounded
+                    onClick={loginWithEmail}
+                    text={emailText}
+                />
+            </ButtonsWrapper>
+        </div>
+    );
+};
+// InviteInfoInner end
+// AuthMechanism start
+
+const XIconWrapper = Glamorous.span({
+    fontSize: 20,
+    marginLeft: 11,
+
+    '& svg': {
+        marginBottom: -3,
+    },
+
+    '&:hover': {
+        cursor: 'pointer',
+        '& svg': {
+            '& > g > path:last-child': {
+                fill: '#1790ff',
+                opacity: 1,
+            },
+        },
+    },
+});
+
+const RoomText = Glamorous.div({
+    textAlign: 'center',
+    opacity: 0.7,
+    fontSize: 16,
+    lineHeight: '19px',
+    letterSpacing: -0.15,
+    color: '#121e2b',
+});
+
+const RoomTerms = Glamorous.div({
+    textAlign: 'center',
+    marginTop: -6,
+    paddingBottom: 26,
+    color: 'rgba(18, 30, 43, 0.35)',
+    fontSize: 13,
+    fontWeight: 500,
+    lineHeight: '19px',
+    letterSpacing: -0.35,
+
+    '& a': {
+        borderBottom: '1px solid rgba(18, 30, 43, 0.15)',
+        transition: '.3s all ease',
+        '&:hover': {
+            borderBottomColor: 'rgba(18, 30, 43, 0.3)',
+            color: 'rgba(18, 30, 43, 0.7)',
+        },
+    },
+});
 
 type AuthMechanism = {
     signin: boolean;

@@ -14,6 +14,7 @@ import {
     RoomCreateWithEmail,
     WebSignUpCreateWithEmail,
     WebSignUpActivationCode,
+    InviteInfoInner,
 } from './components/SignComponents';
 import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
@@ -21,11 +22,46 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import * as Cookie from 'js-cookie';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
+import { withAppInviteInfo } from '../../api/withAppInvite';
 
 const RoomLoader = Glamorous.div({
     height: 150,
     position: 'relative',
 });
+
+const InviteInfo = withAppInviteInfo((props: any) => {
+    let signPath =
+        '/signup?redirect=' + encodeURIComponent((props as any).redirect);
+    let inviter =
+        (props.data.invite && props.data.invite.creator) ||
+        (props.data.appInvite && props.data.appInvite.inviter);
+
+    if (!inviter) {
+        return <XLoader loading={true} />;
+    }
+    return (
+        <InviteInfoInner
+            signin={props.signin}
+            inviter={inviter}
+            signPath={signPath}
+            loginWithGoogle={props.loginWithGoogle}
+            loginWithEmail={props.loginWithEmail}
+        />
+    );
+}) as React.ComponentType<{
+    variables: { inviteKey: string };
+    signin: boolean;
+    loginWithGoogle: Function;
+    loginWithEmail: Function;
+}>;
+
+const checkIfIsSignInInvite = (router: any) => {
+    return (
+        router.query &&
+        router.query.redirect &&
+        router.query.redirect.split('/')[1] === 'invite'
+    );
+};
 
 class SignInComponent extends React.Component<
     { redirect?: string | null; roomView?: boolean } & XWithRouter,
@@ -41,6 +77,7 @@ class SignInComponent extends React.Component<
         codeValue: string;
         codeSending: boolean;
         codeError: string;
+        signInInvite: boolean;
     }
 > {
     fireGoogle = async () => {
@@ -90,6 +127,7 @@ class SignInComponent extends React.Component<
             codeSending: false,
             codeError: '',
             fromOutside: false,
+            signInInvite: false,
         };
         if (props.router.query.email) {
             let noValue = props.router.query.email === 'true';
@@ -117,11 +155,19 @@ class SignInComponent extends React.Component<
         } else {
             this.state = state;
         }
+
+        if (checkIfIsSignInInvite(props.router)) {
+            this.state = {
+                ...this.state,
+                signInInvite: true,
+                fromOutside: true,
+            };
+        }
     }
 
     loginWithGoogle = (e: React.SyntheticEvent<any>) => {
         e.preventDefault();
-        this.setState({ googleStarting: true });
+        this.setState({ googleStarting: true, signInInvite: false });
         this.fireGoogle();
     };
 
@@ -139,6 +185,7 @@ class SignInComponent extends React.Component<
             codeValue: '',
             codeSending: false,
             codeError: '',
+            signInInvite: false,
         });
     };
 
@@ -157,6 +204,7 @@ class SignInComponent extends React.Component<
             codeSending: false,
             codeError: '',
             fromOutside: false,
+            signInInvite: false,
         });
     };
 
@@ -176,6 +224,7 @@ class SignInComponent extends React.Component<
             emailSending: true,
             emailError: '',
             emailSent: false,
+            signInInvite: false,
         });
         this.fireEmail();
     };
@@ -195,6 +244,7 @@ class SignInComponent extends React.Component<
                 console.warn(error);
                 if (error) {
                     this.setState({
+                        signInInvite: false,
                         codeSending: false,
                         codeError: error.description,
                     });
@@ -218,13 +268,13 @@ class SignInComponent extends React.Component<
 
         const linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
 
-        const Container = this.props.roomView
-            ? RoomSignupContainer
-            : WebSignUpContainer;
-        const AuthMechanism = this.props.roomView
+        const roomView = false && this.props.roomView;
+
+        const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
+        const AuthMechanism = roomView
             ? RoomAuthMechanism
             : WebSignUpAuthMechanism;
-        const Loader = this.props.roomView
+        const Loader = roomView
             ? () => (
                   <RoomLoader>
                       <XLoader loading={true} />
@@ -232,17 +282,19 @@ class SignInComponent extends React.Component<
               )
             : () => <XLoader loading={!this.state.emailSent} />;
 
-        const MyCreateWithEmail = this.props.roomView
+        const MyCreateWithEmail = roomView
             ? RoomCreateWithEmail
             : WebSignUpCreateWithEmail;
 
-        const MyActivationCode = this.props.roomView
+        const MyActivationCode = roomView
             ? RoomActivationCode
             : WebSignUpActivationCode;
 
         let pageMode: PageModeT = 'AuthMechanism';
 
-        if (this.state.emailSent) {
+        if (this.state.signInInvite) {
+            pageMode = 'SignInInvite';
+        } else if (this.state.emailSent) {
             pageMode = 'ActivationCode';
         } else if (this.state.email && !this.state.emailSent) {
             pageMode = 'CreateFromEmail';
@@ -267,6 +319,18 @@ class SignInComponent extends React.Component<
                 linkText={linkText}
                 headerStyle={signin ? 'signin' : 'signup'}
             >
+                {pageMode === 'SignInInvite' && (
+                    <InviteInfo
+                        variables={{
+                            inviteKey: this.props.router.query.redirect.split(
+                                '/',
+                            )[2],
+                        }}
+                        signin={signin}
+                        loginWithGoogle={this.loginWithGoogle}
+                        loginWithEmail={this.loginWithEmail}
+                    />
+                )}
                 {pageMode === 'AuthMechanism' && (
                     <AuthMechanism
                         signin={signin}
@@ -341,18 +405,31 @@ export const SignInPage = (props: any) => {
     }
 
     const fromRoom = Cookie.get('x-openland-invite');
+    const isSignInInvite = checkIfIsSignInInvite(props.router);
+
+    let title;
+    if (isSignInInvite) {
+        title = InitTexts.invite.pageTitle;
+    } else {
+        title = signin
+            ? InitTexts.auth.signinPageTitle
+            : InitTexts.auth.signupPageTitle;
+    }
+
+    let event;
+    if (isSignInInvite) {
+        event = 'Invite';
+    } else {
+        event = signin ? 'View Signin' : 'View Signup';
+    }
 
     return (
         <AuthRouter>
             <XDocumentHead
-                title={
-                    signin
-                        ? InitTexts.auth.signinPageTitle
-                        : InitTexts.auth.signupPageTitle
-                }
+                title={title}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <XTrack event={signin ? 'View Signin' : 'View Signup'}>
+            <XTrack event={event}>
                 {canUseDOM && (
                     <SignInComponent
                         redirect={redirect}
