@@ -6,10 +6,9 @@ import { XFlexStyles, applyFlex } from './basics/Flex';
 import { XIcon } from './XIcon';
 import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
-import { XRoleContext } from 'openland-x-permissions/XRoleContext';
 
 export type XButtonSize = 'large' | 'default' | 'small' | 'tiny';
-export type XButtonStyle = 'default' | 'primary' | 'success' | 'danger' | 'ghost' | 'electric' | 'flat' | 'light' | 'link' | 'link-danger';
+export type XButtonStyle = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'ghost' | 'electric' | 'flat' | 'light' | 'link' | 'link-danger';
 export type XButtonTooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface XButtonStyleProps extends XFlexStyles {
@@ -229,6 +228,22 @@ let colorStyles = styleResolver({
             color: '#ffffff'
         }
     },
+    'warning': {
+        backgroundColor: '#ffab00',
+        color: '#ffffff',
+        border: 'solid 1px transparent',
+        '&:hover': {
+            backgroundColor: '#e59900',
+            color: '#ffffff'
+        },
+        '&:active': {
+            backgroundColor: '#cc8800',
+            color: '#ffffff'
+        },
+        '&:focus': {
+            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        }
+    },
     'danger': {
         backgroundColor: '#d75454',
         color: '#ffffff',
@@ -360,6 +375,12 @@ let colorDisabledStyles = styleResolver({
     },
     'success': {
     },
+    'warning': {
+        opacity: 0.5,
+        backgroundColor: '#ffab00 !important',
+        color: '#ffffff !important',
+        border: 'solid 1px transparent !important',
+    },
     'danger': {
         backgroundColor: '#e28787 !important',
         color: 'rgba(255, 255, 255, 0.7) !important',
@@ -403,6 +424,11 @@ let colorPressedStyles = styleResolver({
         color: '#ffffff !important'
     },
     'success': {
+    },
+    'warning': {
+        backgroundColor: '#cc8800 !important',
+        border: 'solid 1px transparent !important',
+        color: '#ffffff !important'
     },
     'danger': {
         backgroundColor: '#c54f4f !important',
@@ -466,6 +492,9 @@ let loaderStyles = styleResolver({
         color: '#ffffff'
     },
     'success': {
+        color: '#ffffff'
+    },
+    'warning': {
         color: '#ffffff'
     },
     'danger': {
