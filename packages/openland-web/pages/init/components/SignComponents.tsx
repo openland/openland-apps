@@ -185,7 +185,7 @@ const Title = Glamorous.div({
     lineHeight: '31px',
     letterSpacing: 0.8,
     color: '#121e2b',
-    paddingTop: 64,
+    paddingTop: 0,
     paddingBottom: 9,
 });
 
@@ -1496,6 +1496,9 @@ export class CreateOrganizationFormInner extends React.Component<
             return;
         }
 
+        if (!src) {
+            return;
+        }
         store.writeValue('fields.input.name', {
             label: src.label,
             value: cval,
