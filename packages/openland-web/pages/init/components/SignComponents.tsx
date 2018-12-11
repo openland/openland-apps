@@ -1662,7 +1662,6 @@ export class CreateOrganizationFormInner extends React.Component<
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={(data: any) => {
-                        debugger;
                         defaultAction({
                             name: data.input.name.label,
                             id:
