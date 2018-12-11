@@ -261,7 +261,6 @@ class XCheckboxStored extends React.PureComponent<XCheckboxProps & { store: XSto
         if (valueStoreKey || field) {
             value = store.readValue(valueStoreKey || ('fields.' + field));
         }
-        console.warn(this.props.trueValue !== undefined ? this.props.trueValue === value : value === 'true');
         return <XCheckboxBasic {...other} checked={this.props.trueValue !== undefined ? this.props.trueValue === value : value === 'true'} onChange={this.handleChange} />;
     }
 }
