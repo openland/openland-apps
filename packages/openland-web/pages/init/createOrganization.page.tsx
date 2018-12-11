@@ -135,6 +135,7 @@ class CreateOrganizationPrefixHolder extends React.Component<
             <Container pageMode="CreateOrganization">
                 <OrganizationsSelectorOptionsFetcher
                     variables={{
+                        all: true,
                         prefix: this.state.organizationPrefix,
                         sort: JSON.stringify([
                             { featured: { order: 'desc' } },
