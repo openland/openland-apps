@@ -54,7 +54,7 @@ const GroupText = Glamorous.div({
     lineHeight: '20px',
     marginTop: -3,
     marginBottom: 16,
-    opacity: 0.5,
+    opacity: 0.9,
 
     '&:last-child': {
         marginBottom: 0
@@ -67,8 +67,9 @@ const GroupText = Glamorous.div({
 
 const GroupTitle = (props: { children?: any }) => (
     <XView
-        fontSize={16}
+        fontSize={14}
         lineHeight="20px"
+        fontWeight={600}
         marginBottom={12}
     >
         {props.children}
