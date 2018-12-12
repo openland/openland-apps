@@ -570,6 +570,7 @@ export class XSelectBasic extends React.PureComponent<
         <XView
             marginTop={2}
             marginBottom={-2}
+            paddingBottom={2}
         >
             <XView
                 fontSize={14}
