@@ -17,7 +17,7 @@ export const Navigation = (props: { title: string; children?: any }) => (
                 <Sidebar title="Settings">
                     <Sidebar.Item path="/settings/profile" arrow={true}>Profile</Sidebar.Item>
                     <Sidebar.Item path="/settings/notifications" arrow={true}>Notifications</Sidebar.Item>
-                    <Sidebar.Item path="/settings/invites" arrow={true}>Invites</Sidebar.Item>
+                    {/* <Sidebar.Item path="/settings/invites" arrow={true}>Invites</Sidebar.Item> */}
                     <Sidebar.Item path="/settings/dev" arrow={true}>Developer keys</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>

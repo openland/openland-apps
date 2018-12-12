@@ -25,8 +25,8 @@ import NotificationsFirefoxIcon from './icons/ic-notifications-firefox-2.svg';
 const Container = (props: { children?: any }) => (
     <XView
         paddingTop={16}
-        paddingLeft={24}
-        paddingRight={24}
+        paddingLeft={30}
+        paddingRight={30}
     >
         {props.children}
     </XView>

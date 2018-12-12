@@ -47,8 +47,8 @@ const SidebarItemWrapper = Glamorous(XLink)<SidebarItemProps>(props => ({
     fontSize: 14,
     lineHeight: '20px',
     color: '#000000',
-    paddingLeft: 24,
-    paddingRight: props.arrow ? 15 : 24,
+    paddingLeft: 16,
+    paddingRight: props.arrow ? 15 : 16,
     '&:hover': {
         color: '#000000',
         backgroundColor: '#f9f9f9',

@@ -23,6 +23,8 @@ import { DateFormater } from 'openland-x/XDate';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
     flexGrow: 1,
 });
 

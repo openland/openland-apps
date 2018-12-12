@@ -69,13 +69,13 @@ const SidebarItemWrapper = Glamorous(XLink)({
     alignItems: 'center',
     justifyContent: 'space-between',
     color: '#000000 !important',
-    padding: '12px 15px 12px 44px',
+    padding: '12px 15px 12px 46px',
     position: 'relative',
 
     '& .icon-wrapper': {
         position: 'absolute',
         top: 0,
-        left: 14,
+        left: 16,
         bottom: 0,
         width: 20,
         display: 'flex',
