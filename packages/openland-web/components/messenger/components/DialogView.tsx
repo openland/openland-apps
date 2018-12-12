@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { emojify } from 'react-emojione';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x/XDate';
@@ -76,13 +75,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                 message = (
                     <span>
                         {sender}
-                        {emojify(dialog.message, {
-                            style: {
-                                height: 13,
-                                backgroundImage:
-                                    'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                            },
-                        })}
+                        {dialog.messageEmojified}
                     </span>
                 );
             } else if (dialog.date) {

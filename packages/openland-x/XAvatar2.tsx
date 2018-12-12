@@ -26,7 +26,7 @@ export const XAvatar2 = React.memo<XAvatar2Props>((props) => {
             let ph = extractPlaceholder(props.title);
             let phIndex = Math.abs(doSimpleHash(props.id)) % PlaceholderColor.length;
             contents = (
-                <XView width={40} alignItems="center" justifyContent="center" height={40} borderRadius={20} backgroundImage={PlaceholderColor[phIndex]} color="white" fontSize={16} overflow="hidden">
+                <XView width={40} height={40} alignItems="center" justifyContent="center" borderRadius={20} backgroundImage={PlaceholderColor[phIndex]} color="white" fontSize={16} overflow="hidden">
                     {ph}
                 </XView>
             );
