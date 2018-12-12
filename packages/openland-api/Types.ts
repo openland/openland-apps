@@ -473,6 +473,7 @@ export interface Dialogs_dialogs_items {
   title: string;
   photo: string;
   unreadCount: number;
+  isMuted: boolean;
   topMessage: Dialogs_dialogs_items_topMessage | null;
   betaTopMessage: Dialogs_dialogs_items_betaTopMessage | null;
 }
@@ -7140,6 +7141,7 @@ export interface RoomUpdateInput {
   photoRef?: ImageRefInput | null;
   description?: string | null;
   socialImageRef?: ImageRefInput | null;
+  kind?: SharedRoomKind | null;
 }
 
 export interface RoomUserNotificaionSettingsInput {

@@ -5868,6 +5868,38 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "isMuted",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "haveMention",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -11292,6 +11324,47 @@
                   "ofType": {
                     "kind": "ENUM",
                     "name": "DebugEmailType",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "debugCreateTestUser",
+            "description": "",
+            "args": [
+              {
+                "name": "key",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "name",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -17383,6 +17456,16 @@
               "ofType": null
             },
             "defaultValue": null
+          },
+          {
+            "name": "kind",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "SharedRoomKind",
+              "ofType": null
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -17992,6 +18075,11 @@
             "kind": "OBJECT",
             "name": "ConversationMessageDeleted",
             "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "ConversationDialogUpdate",
+            "ofType": null
           }
         ]
       },
@@ -18052,7 +18140,7 @@
       {
         "kind": "OBJECT",
         "name": "ConversationMessageDeleted",
-        "description": "",
+        "description": "Sent when haveMention changed or isMuted changed",
         "fields": [
           {
             "name": "message",
@@ -18064,6 +18152,33 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "ConversationMessage",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ConversationDialogUpdate",
+        "description": "",
+        "fields": [
+          {
+            "name": "dialog",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Dialog",
                 "ofType": null
               }
             },

@@ -18,6 +18,7 @@ export const DialogsQuery = gql`
                 title
                 photo
                 unreadCount
+                isMuted
                 topMessage {
                     ...MessageLightShort
                 }
