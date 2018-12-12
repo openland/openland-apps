@@ -20,6 +20,7 @@ import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
+import { PromptBuilder } from '../components/Prompt';
 
 interface ASAvatarProps {
     size: number;
@@ -261,47 +262,50 @@ export class MobileMessenger {
             builder.action('Copy', () => {
                 Clipboard.setString(message.text!!);
             });
-            builder.action('Edit', () => {
-                AlertIOS.prompt(
-                    'Edit message',
-                    undefined,
-                    async (text) => {
-                        startLoader();
-                        try {
-                            await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
-                        } catch (e) {
-                            Alert.alert(e.message);
-                        }
-                        stopLoader();
-                    },
-                    undefined,
-                    message.text);
+            if (message.senderId === this.engine.user.id) {
+                builder.action('Edit', () => {
+                    new PromptBuilder()
+                        .title('Edit message')
+                        .value(message.text!)
+                        .callback(async (text) => {
+                            startLoader();
+                            try {
+                                await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
+                            } catch (e) {
+                                Alert.alert(e.message);
+                            }
+                            stopLoader();
+                        })
+                        .show();
+                });
+            }
+        }
+        if (message.senderId === this.engine.user.id) {
+            builder.action('Delete', async () => {
+                try {
+                    Alert.alert(
+                        'Delete message',
+                        'Are you sure you want to delete this message?',
+                        [
+                            { text: 'Cancel', style: 'cancel' },
+                            {
+                                text: 'Delete', style: 'destructive', onPress: async () => {
+                                    startLoader();
+                                    try {
+                                        await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
+                                    } catch (e) {
+                                        Alert.alert(e.message);
+                                    }
+                                    stopLoader();
+                                }
+                            },
+                        ]
+                    );
+                } catch (e) {
+                    Alert.alert(e.message);
+                }
             });
         }
-        builder.action('Delete', async () => {
-            try {
-                Alert.alert(
-                    'Delete message',
-                    'Are you sure you want to delete this message?',
-                    [
-                        { text: 'Cancel', style: 'cancel' },
-                        {
-                            text: 'Delete', style: 'destructive', onPress: async () => {
-                                startLoader();
-                                try {
-                                    await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
-                                } catch (e) {
-                                    Alert.alert(e.message);
-                                }
-                                stopLoader();
-                            }
-                        },
-                    ]
-                );
-            } catch (e) {
-                Alert.alert(e.message);
-            }
-        });
 
         if (message.id) {
             (message.reactions || []).reduce((res: string[], r) => res.indexOf(r.reaction) > -1 ? res : [r.reaction, ...res], ['❤️']).filter(r => r !== 'respondPost').map(r => {

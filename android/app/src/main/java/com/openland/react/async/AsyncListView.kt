@@ -1,6 +1,8 @@
 package com.openland.react.async
 
+import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.widget.FrameLayout
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
@@ -68,6 +70,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .loading(!this.state.competed)
                         .dataViewKey(this.dataViewKey!!))
                 .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
+                .itemAnimator(null)
                 .build()
         lithoView.setComponentAsync(recycler)
     }

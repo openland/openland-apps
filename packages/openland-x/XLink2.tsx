@@ -11,7 +11,7 @@ export type XLink2Props = NavigableParentProps<XViewProps>;
 export const XLink2 = makeNavigable<XViewProps>(
     class XLink2Inner extends React.Component<
         XViewProps & NavigableChildProps
-    > {
+        > {
         render() {
             let props = this.props;
             return (
@@ -21,9 +21,7 @@ export const XLink2 = makeNavigable<XViewProps>(
                     selected={!!props.active}
                     {...props}
                 >
-                    <XViewSelectedContext.Provider value={!!props.active}>
-                        {props.children}
-                    </XViewSelectedContext.Provider>
+                    {props.children}
                 </XView>
             );
         }
