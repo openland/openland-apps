@@ -32,8 +32,18 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
         this.setState({ loading: true });
         await this.props.form.submit(this.props.action);
         if (this.props.succesText) {
-            this.setState({ loading: false, success: !this.props.form.store.readValue('form.error') });
-            delay(2000).then(() => this.setState({ success: false }));
+            this.setState({
+                loading: false,
+                success: !this.props.form.store.readValue('form.error')
+            });
+
+            delay(2000).then(() => {
+                this.setState({ success: false });
+
+                if (this.props.onSuccessAnimationEnd) {
+                    this.props.onSuccessAnimationEnd();
+                }
+            });
         } else {
             this.setState({ loading: false });
         }
@@ -62,6 +72,7 @@ export interface XFormSubmitProps extends XButtonStyleProps {
     keyDownSubmit?: boolean;
     succesText?: string;
     dataTestId?: string; 
+    onSuccessAnimationEnd?: () => any;
 }
 
 export function XFormSubmit(props: XFormSubmitProps) {
