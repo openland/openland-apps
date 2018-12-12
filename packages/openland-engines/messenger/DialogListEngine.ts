@@ -1,5 +1,11 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { Dialogs_dialogs_items, Dialogs_dialogs_items_topMessage, Room_room_SharedRoom, Room_room_PrivateRoom, RoomFull } from 'openland-api/Types';
+import {
+    Dialogs_dialogs_items,
+    Dialogs_dialogs_items_topMessage,
+    Room_room_SharedRoom,
+    Room_room_PrivateRoom,
+    RoomFull,
+} from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
@@ -23,7 +29,9 @@ export interface DialogDataSourceItem {
     fileMeta?: { isImage?: boolean };
 }
 
-export function formatMessage(message: Dialogs_dialogs_items_topMessage | any): string {
+export function formatMessage(
+    message: Dialogs_dialogs_items_topMessage | any,
+): string {
     if (message.__typename === 'Message') {
         return message.text || '';
     }
@@ -48,33 +56,41 @@ export function formatMessage(message: Dialogs_dialogs_items_topMessage | any): 
     }
 }
 
-export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => ({
-    key: c.cid,
-    flexibleId: c.fid,
-    kind: c.kind,
-    title: c.title,
-    photo: c.photo,
-    unread: c.unreadCount,
-    isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
-    sender: c.topMessage ? (c.topMessage!!.sender.id === uid ? 'You' : c.topMessage!!.sender.name) : undefined,
-    message: formatMessage(c.betaTopMessage),
-    messageId: c.topMessage ? c.topMessage.id : undefined,
-    date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
-    fileMeta: c.betaTopMessage ? c.betaTopMessage.fileMetadata || undefined : undefined,
-    online: undefined,
-});
+export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => {
+    return {
+        key: c.cid,
+        flexibleId: c.fid,
+        kind: c.kind,
+        title: c.title,
+        photo: c.photo,
+        unread: c.unreadCount,
+        isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
+        sender: c.topMessage
+            ? c.topMessage!!.sender.id === uid
+                ? 'You'
+                : c.topMessage!!.sender.name
+            : undefined,
+        message: formatMessage(c.betaTopMessage),
+        messageId: c.topMessage ? c.topMessage.id : undefined,
+        date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
+        fileMeta: c.betaTopMessage
+            ? c.betaTopMessage.fileMetadata || undefined
+            : undefined,
+        online: undefined,
+    };
+};
 
-export const extractDialogFRomRoom = (c: RoomFull, uid: string) => ({
-    key: c.id,
-    flexibleId: c.id,
-    kind: c.__typename === 'SharedRoom' ? c.kind : 'PRIVATE',
-    title: c.__typename === 'SharedRoom' ? c.title : c.user.name,
-    photo: c.__typename === 'SharedRoom' ? c.photo : c.user.photo,
-    unread: 0,
-} as DialogDataSourceItem);
+export const extractDialogFRomRoom = (c: RoomFull, uid: string) =>
+    ({
+        key: c.id,
+        flexibleId: c.id,
+        kind: c.__typename === 'SharedRoom' ? c.kind : 'PRIVATE',
+        title: c.__typename === 'SharedRoom' ? c.title : c.user.name,
+        photo: c.__typename === 'SharedRoom' ? c.photo : c.user.photo,
+        unread: 0,
+    } as DialogDataSourceItem);
 
 export class DialogListEngine {
-
     readonly engine: MessengerEngine;
     private dialogs: Dialogs_dialogs_items[] = [];
     readonly dataSource: DataSource<DialogDataSourceItem>;
@@ -97,7 +113,7 @@ export class DialogListEngine {
             if (res && res.online !== online) {
                 this.dataSource.updateItem({
                     ...res,
-                    online: online
+                    online: online,
                 });
             }
         });
@@ -107,7 +123,9 @@ export class DialogListEngine {
             if (res && res.typing !== typing) {
                 this.dataSource.updateItem({
                     ...res,
-                    typing: typing && (res.kind === 'PRIVATE' ? 'typing...' : typing)
+                    typing:
+                        typing &&
+                        (res.kind === 'PRIVATE' ? 'typing...' : typing),
                 });
             }
         });
@@ -123,14 +141,16 @@ export class DialogListEngine {
     //
 
     handleInitialDialogs = (dialogs: any[], next: string) => {
-
         this.dialogs = dialogs;
 
         this.dialogListCallback(this.dialogs.map(i => i.cid));
 
         // Improve conversation resolving
         for (let c of this.dialogs) {
-            ConversationRepository.improveRoomResolving(this.engine.client, c.cid);
+            ConversationRepository.improveRoomResolving(
+                this.engine.client,
+                c.cid,
+            );
         }
 
         // Update data source
@@ -141,29 +161,33 @@ export class DialogListEngine {
                 }
                 return extractDialog(c, this.engine.user.id);
             }),
-            next === null);
+            next === null,
+        );
 
         // Start engine
         this.loading = false;
         this.next = next;
-    }
+    };
 
-    handleUserRead = (conversationId: string, unread: number, visible: boolean) => {
-
+    handleUserRead = (
+        conversationId: string,
+        unread: number,
+        visible: boolean,
+    ) => {
         // Write counter to datasource
         let res = this.dataSource.getItem(conversationId);
         if (res) {
             this.dataSource.updateItem({
                 ...res,
-                unread: unread
+                unread: unread,
             });
         }
-    }
+    };
 
     handleDialogDeleted = async (event: any) => {
         const cid = event.cid as string;
         this.dataSource.removeItem(cid);
-    }
+    };
 
     handleMessageUpdated = async (event: any) => {
         const conversationId = event.cid as string;
@@ -177,7 +201,7 @@ export class DialogListEngine {
                 });
             }
         }
-    }
+    };
 
     handleNewMessage = async (event: any, visible: boolean) => {
         console.log(event);
@@ -191,7 +215,10 @@ export class DialogListEngine {
         if (res) {
             this.dataSource.updateItem({
                 ...res,
-                unread: (!visible || res.unread > unreadCount) ? unreadCount : res.unread,
+                unread:
+                    !visible || res.unread > unreadCount
+                        ? unreadCount
+                        : res.unread,
                 isOut: isOut,
                 sender: sender,
                 messageId: event.message.id,
@@ -201,14 +228,26 @@ export class DialogListEngine {
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
-            if (event.message.serviceMetadata && event.message.serviceMetadata.__typename === 'KickServiceMetadata') {
+            if (
+                event.message.serviceMetadata &&
+                event.message.serviceMetadata.__typename ===
+                    'KickServiceMetadata'
+            ) {
                 return;
             }
 
-            let info = await this.engine.client.query(RoomQuery, { id: conversationId });
+            let info = await this.engine.client.query(RoomQuery, {
+                id: conversationId,
+            });
 
-            let sharedRoom = info.data.room!.__typename === 'SharedRoom' ? info.data.room as Room_room_SharedRoom : null;
-            let privateRoom = info.data.room!.__typename === 'PrivateRoom' ? info.data.room as Room_room_PrivateRoom : null;
+            let sharedRoom =
+                info.data.room!.__typename === 'SharedRoom'
+                    ? (info.data.room as Room_room_SharedRoom)
+                    : null;
+            let privateRoom =
+                info.data.room!.__typename === 'PrivateRoom'
+                    ? (info.data.room as Room_room_PrivateRoom)
+                    : null;
             let room = (sharedRoom || privateRoom)!;
 
             this.dataSource.addItem(
@@ -216,8 +255,17 @@ export class DialogListEngine {
                     key: conversationId,
                     flexibleId: room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
-                    title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
-                    photo: (sharedRoom ? sharedRoom.photo : privateRoom ? privateRoom.user.photo : undefined) || undefined,
+                    title: sharedRoom
+                        ? sharedRoom.title
+                        : privateRoom
+                        ? privateRoom.user.name
+                        : '',
+                    photo:
+                        (sharedRoom
+                            ? sharedRoom.photo
+                            : privateRoom
+                            ? privateRoom.user.photo
+                            : undefined) || undefined,
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,
@@ -227,9 +275,10 @@ export class DialogListEngine {
                     fileMeta: event.message.fileMetadata,
                     online: privateRoom ? privateRoom.user.online : false,
                 },
-                0);
+                0,
+            );
         }
-    }
+    };
 
     loadNext = async () => {
         if (!this.loading && this.next !== null) {
@@ -237,14 +286,16 @@ export class DialogListEngine {
             let start = Date.now();
             let res: any = await backoff(async () => {
                 try {
-                    return (await backoff(async () => {
+                    return await backoff(async () => {
                         return await this.engine.client.client.query({
                             query: DialogsQuery.document,
                             variables: {
-                                ...this.next !== undefined ? { after: this.next } : {}
-                            }
+                                ...(this.next !== undefined
+                                    ? { after: this.next }
+                                    : {}),
+                            },
                         });
-                    }));
+                    });
                 } catch (e) {
                     console.warn(e);
                     throw e;
@@ -257,10 +308,12 @@ export class DialogListEngine {
             this.dialogListCallback(this.dialogs.map(i => i.cid));
 
             // Write to datasource
-            let converted = res.data.dialogs.items.map((c: any) => extractDialog(c, this.engine.user.id));
+            let converted = res.data.dialogs.items.map((c: any) =>
+                extractDialog(c, this.engine.user.id),
+            );
             this.dataSource.loadedMore(converted, !this.next);
 
             this.loading = false;
         }
-    }
+    };
 }
