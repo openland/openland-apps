@@ -546,7 +546,7 @@ export class XSelectBasic extends React.PureComponent<
                 fontSize={14}
                 lineHeight="16px"
                 opacity={0.9}
-                marginBottom={4}
+                marginBottom={2}
                 overflow="hidden"
                 whiteSpace="nowrap"
                 textOverflow="ellipsis"
@@ -554,7 +554,7 @@ export class XSelectBasic extends React.PureComponent<
                 {option.label}
             </Glamorous.Div>
             <Glamorous.Div
-                fontSize={13}
+                fontSize={14}
                 lineHeight="20px"
                 opacity={0.5}
                 overflow="hidden"
@@ -575,12 +575,12 @@ export class XSelectBasic extends React.PureComponent<
                 fontSize={14}
                 lineHeight="16px"
                 opacity={0.9}
-                marginBottom={4}
+                marginBottom={2}
             >
                 {option.label}
             </XView>
             <XView
-                fontSize={13}
+                fontSize={14}
                 lineHeight="20px"
                 opacity={0.5}
             >

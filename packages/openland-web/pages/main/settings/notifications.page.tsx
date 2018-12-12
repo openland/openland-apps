@@ -37,7 +37,7 @@ const Header = (props: { children?: any }) => (
         fontSize={22}
         lineHeight="24px"
         opacity={0.9}
-        marginBottom={31}
+        marginBottom={25}
     >
         {props.children}
     </XView>
@@ -50,7 +50,7 @@ const Group = (props: { children?: any }) => (
 );
 
 const GroupText = Glamorous.div({
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: '20px',
     marginTop: -3,
     marginBottom: 16,
@@ -67,7 +67,7 @@ const GroupText = Glamorous.div({
 
 const GroupTitle = (props: { children?: any }) => (
     <XView
-        fontSize={14}
+        fontSize={16}
         lineHeight="20px"
         fontWeight={600}
         marginBottom={12}
