@@ -446,7 +446,7 @@ let UserProfile = withUserInfo<{ onClick?: any }>(props => (
 //
 
 const MenuView = Glamorous(XScrollView)({
-    width: 278,
+    width: 344,
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#ffffff',
@@ -456,7 +456,7 @@ const MenuView = Glamorous(XScrollView)({
             overflowX: 'hidden',
         },
     },
-    borderRight: '1px solid rgba(216, 218, 229, 0.7)',
+    borderRight: '1px solid #ececec',
 });
 
 //
@@ -809,7 +809,7 @@ export class Scaffold extends React.PureComponent {
                 flexBasis={0}
                 flexShrink={1}
                 minWidth={0}
-                marginLeft={menu !== undefined ? 342 : 64}
+                marginLeft={menu !== undefined ? 408 : 64}
             >
                 {content}
             </XView>
