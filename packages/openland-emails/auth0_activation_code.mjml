@@ -21,16 +21,8 @@
                 <mj-text mj-class="text">
                     Don&rsquo;t share this activation code with anyone. If&nbsp;you didn&rsquo;t request&nbsp;it, simply ignore this email.
                 </mj-text>
-                <mj-divider mj-class="text-divider"></mj-divider>
-                <mj-text mj-class="title-small">
-                    Magic button
-                </mj-text>
-                <mj-text mj-class="text">
-                    You can also enter Openland using the one-time entrance button below.
-                </mj-text>
-                <mj-button mj-class="button-small" href="{{link}}">Enter the app</mj-button>
             </mj-column>
         </mj-section>
-        <mj-include path="./includes/footer-registered.mjml" />
+        <mj-include path="./includes/footer.mjml" />
     </mj-body>
 </mjml>
