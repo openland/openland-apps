@@ -84,6 +84,26 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                         })}
                     </span>
                 );
+            } else if (dialog.date) {
+                message = (
+                    <span>
+                        {sender}
+                        <XViewSelectedContext.Consumer>
+                            {active => (
+                                <ForwardIcon
+                                    className={
+                                        (active
+                                            ? iconActiveClass
+                                            : iconClass) +
+                                        ' ' +
+                                        documentIcon
+                                    }
+                                />
+                            )}
+                        </XViewSelectedContext.Consumer>
+                        Forward
+                    </span>
+                )
             }
         }
         return (
