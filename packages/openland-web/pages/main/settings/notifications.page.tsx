@@ -131,7 +131,7 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
         if (state !== this.state.notificationsState) {
             this.setState({
                 notificationsState: state
-            })
+            });
         }
     }
 
@@ -147,15 +147,15 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
             let isOpera = /Opera\/\d./i.test(navigator.userAgent) || /OPR\/\d./i.test(navigator.userAgent);
             let isChrome = !isOpera && /Chrome\/\d./i.test(navigator.userAgent);
             let isSafari = !isChrome && !isOpera && /Safari\/\d./i.test(navigator.userAgent);
-    
+
             let isBrowserWithoutNotifications = isInternetExplorer || isEdge || isSafari || isOpera;
 
             let { notificationsState } = this.state;
-    
+
             return (
                 <Group>
                     <GroupTitle>Desktop notifications</GroupTitle>
-    
+
                     {notificationsState === 'granted' && (
                         <GroupText>
                             Notifications are turned on in this browser.
@@ -163,7 +163,7 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                             You can always change it in your browser preferences.
                         </GroupText>
                     )}
-    
+
                     {notificationsState !== 'granted' && isBrowserWithoutNotifications && (
                         <GroupText>
                             Notifications are turned off in this browser.
@@ -171,7 +171,7 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                             You can always change it in your browser preferences.
                         </GroupText>
                     )}
-    
+
                     {notificationsState !== 'granted' && !isBrowserWithoutNotifications && (
                         <>
                             <GroupText>
@@ -243,7 +243,7 @@ const MobileApp = Glamorous.a<{ system: 'ios' | 'android'}>(props => ({
     opacity: 0.5,
 
     '&:hover': {
-        opacity: 1
+        opacity: 0.8
     },
 
     '&:first-child': {

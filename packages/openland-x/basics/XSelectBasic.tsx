@@ -146,7 +146,7 @@ const Styles = (props: {
         left: 0,
         lineHeight: 'normal',
         paddingLeft: 16,
-        paddingRight: 10,
+        paddingRight: props.noArrow ? 10 : 30,
         position: 'absolute',
         right: 0,
         top: 0,
@@ -541,21 +541,27 @@ export class XSelectBasic extends React.PureComponent<
 
     valueWithSubtitleRender: any = (option: any) => (
         <XView marginTop={2}>
-            <XView
+            <Glamorous.Div
                 fontSize={14}
                 lineHeight="16px"
                 opacity={0.9}
                 marginBottom={4}
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
             >
                 {option.label}
-            </XView>
-            <XView
+            </Glamorous.Div>
+            <Glamorous.Div
                 fontSize={12}
                 lineHeight="20px"
                 opacity={0.4}
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
             >
                 {option.subtitle}
-            </XView>
+            </Glamorous.Div>
         </XView>
     );
 

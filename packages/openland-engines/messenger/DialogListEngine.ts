@@ -32,6 +32,9 @@ export interface DialogDataSourceItem {
 export function formatMessage(
     message: Dialogs_dialogs_items_topMessage | any,
 ): string {
+    if (!message) {
+        return '';
+    }
     if (message.__typename === 'Message') {
         return message.text || '';
     }

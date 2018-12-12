@@ -1,4 +1,4 @@
-export type AppNotifcationsState = 'granted' | 'denied' | 'default' | 'unsupported';
+export type AppNotifcationsState = 'granted' | 'denied' | 'default' | 'temporary_denied' | 'unsupported';
 
 export interface AppNotificationsApi {
     state: AppNotifcationsState;
