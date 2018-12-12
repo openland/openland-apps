@@ -10,6 +10,7 @@ import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XLink2 } from 'openland-x/XLink2';
 import { iconActiveClass, iconClass, documentIcon } from './DialogView.styles';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 interface DialogViewProps {
     item: DialogDataSourceItem;
@@ -123,12 +124,10 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                 selectedHoverBackgroundColor="#4596e1"
                 linkSelectable={true}
             >
-                <XAvatar
-                    style="user"
-                    objectName={dialog.title}
-                    objectId={dialog.flexibleId}
-                    online={dialog.online}
-                    cloudImageUuid={dialog.photo}
+                <XAvatar2
+                    title={dialog.title}
+                    id={dialog.flexibleId}
+                    src={dialog.photo}
                 />
                 <XView
                     flexDirection="column"

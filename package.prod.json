@@ -113,7 +113,7 @@
         "react-router-dom": "^4.2.2",
         "react-select": "^1.2.1",
         "react-test-renderer": "^16.4.1",
-        "react-mental": "1.2.7",
+        "react-mental": "1.2.8",
         "rn-fetch-blob": "^0.10.12",
         "simplebar": "^2.6.1",
         "subscriptions-transport-ws": "^0.9.11",
