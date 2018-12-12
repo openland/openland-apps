@@ -67,10 +67,15 @@ let GLOBAL_SUBSCRIPTION = gql`
             cid
             title
         }
+        ... on DialogMuteUpdated {
+            cid
+            isMuted
+        }
         ... on DialogDeleted {
             cid
             globalUnread
         }
+       
     }
     ${MessageShort}
     ${UserTiny}
@@ -240,6 +245,8 @@ export class GlobalStateEngine {
 
             // Dialogs List
             this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
+        } else if (event.__typename === 'DialogMuteUpdated') {
+            this.engine.dialogList.handleIsMuted(event.cid, event.isMuted);
         } else if (event.__typename === 'DialogMessageDeleted') {
             let visible = this.visibleConversations.has(event.conversationId);
 

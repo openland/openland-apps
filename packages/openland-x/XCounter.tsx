@@ -1,53 +1,87 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 
-const XCounterStyled = Glamorous.div<{ color?: string, bgColor?: string, borderColor?: string }>((props) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 15,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 2,
-    paddingRight: 2,
-    lineHeight: '13px',
-    borderRadius: 5,
-    backgroundColor: props.bgColor || '#1790ff',
-    border: '2px solid ' + (props.borderColor ? props.borderColor : 'white'),
-    fontSize: 10,
-    fontWeight: 600,
-    color: props.color || '#ffffff'
-}));
+type XCounter = {
+    big?: boolean;
+    grey?: boolean;
+    color?: string;
+    bgColor?: string;
+    borderColor?: string;
+    count: number;
+};
 
-const XCounterBig = Glamorous(XCounterStyled)<{ color?: string, bgColor?: string }>((props) => ({
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    minWidth: 18,
-    height: 18,
-    borderRadius: 9,
-    fontSize: 12,
-    fontWeight: 600,
-    border: 'none',
-    textAlign: 'center',
-    backgroundColor: props.bgColor || '#1790ff',
-    lineHeight: '10px',
-    ...props.color ? {
-        color: props.color
-    } : {}
+const XCounterStyled = Glamorous.div<XCounter>(
+    ({ grey, big, color, bgColor, borderColor }) => {
+        const shared = {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 600,
+            color: color || '#ffffff',
+            ...(grey
+                ? {
+                      backgroundColor: '#000000',
+                      opacity: 0.2,
+                  }
+                : {
+                      backgroundColor: bgColor || '#1790ff',
+                  }),
+        };
 
-}));
-
-export const XCounter = (props: { count: number, color?: string, bgColor?: string, borderColor?: string, big?: boolean }) => (
-    !props.big ?
-        (
-            <XCounterStyled className="counter" color={props.color} bgColor={props.bgColor} borderColor={props.borderColor}>
-                <span>{props.count}</span>
-            </XCounterStyled>
-        ) :
-        (
-            <XCounterBig className="counter" color={props.color} bgColor={props.bgColor} borderColor={props.borderColor}>
-                <span>{props.count}</span>
-            </XCounterBig>
-        )
+        if (big) {
+            return {
+                ...shared,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                minWidth: 18,
+                height: 18,
+                borderRadius: 9,
+                fontSize: 12,
+                border: 'none',
+                textAlign: 'center',
+                lineHeight: '10px',
+            };
+        }
+        return {
+            ...shared,
+            height: 15,
+            paddingTop: 0,
+            paddingBottom: 0,
+            paddingLeft: 2,
+            paddingRight: 2,
+            lineHeight: '13px',
+            borderRadius: 5,
+            border: '2px solid ' + (borderColor ? borderColor : 'white'),
+            fontSize: 10,
+            color: color || '#ffffff',
+        };
+    },
 );
+
+const XCounterBig = Glamorous(XCounterStyled)<{
+    color?: string;
+    bgColor?: string;
+}>(props => ({}));
+
+export const XCounter = ({
+    color,
+    bgColor,
+    borderColor,
+    count,
+    big,
+    grey,
+}: XCounter) => {
+    return (
+        <XCounterStyled
+            grey={grey}
+            big={big}
+            className="counter"
+            color={color}
+            bgColor={bgColor}
+            borderColor={borderColor}
+        >
+            <span>{count}</span>
+        </XCounterStyled>
+    );
+};

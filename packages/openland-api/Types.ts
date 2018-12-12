@@ -474,6 +474,7 @@ export interface Dialogs_dialogs_items {
   photo: string;
   unreadCount: number;
   isMuted: boolean;
+  haveMention: boolean;
   topMessage: Dialogs_dialogs_items_topMessage | null;
   betaTopMessage: Dialogs_dialogs_items_betaTopMessage | null;
 }

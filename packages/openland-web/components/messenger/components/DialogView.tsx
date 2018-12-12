@@ -25,7 +25,9 @@ class DialogViewInner extends React.Component<DialogViewProps> {
     render() {
         let props = this.props;
         let dialog = props.item;
-        let isPrivate = props.item.kind === 'PRIVATE';
+        let isMuted = dialog.isMuted;
+        let haveMention = dialog.haveMention;
+        let isPrivate = dialog.kind === 'PRIVATE';
         return (
             <XLink2
                 ref={props.handleRef}
@@ -216,9 +218,18 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                             )}
                         </XView>
                         {dialog.unread > 0 && (
-                            <XView paddingLeft={12} alignSelf="center">
-                                <XCounter big={true} count={dialog.unread} />
-                            </XView>
+                            <>
+                                {haveMention && (
+                                    <XView alignSelf="center">@</XView>
+                                )}
+                                <XView paddingLeft={12} alignSelf="center">
+                                    <XCounter
+                                        grey={isMuted}
+                                        big={true}
+                                        count={dialog.unread}
+                                    />
+                                </XView>
+                            </>
                         )}
                     </XView>
                 </XView>

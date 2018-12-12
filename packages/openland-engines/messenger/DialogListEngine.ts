@@ -10,7 +10,6 @@ import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
-
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
@@ -20,7 +19,8 @@ export interface DialogDataSourceItem {
     unread: number;
     online?: boolean;
     typing?: string;
-
+    isMuted?: boolean;
+    haveMention?: boolean;
     messageId?: string;
     date?: number;
     message?: string;
@@ -56,31 +56,47 @@ export function formatMessage(
     }
 }
 
-export const extractDialog = (c: Dialogs_dialogs_items, uid: string) => {
+export const extractDialog = (
+    {
+        cid,
+        fid,
+        kind,
+        title,
+        photo,
+        unreadCount,
+        topMessage,
+        betaTopMessage,
+        isMuted,
+        haveMention,
+    }: Dialogs_dialogs_items,
+    uid: string,
+): DialogDataSourceItem => {
     return {
-        key: c.cid,
-        flexibleId: c.fid,
-        kind: c.kind,
-        title: c.title,
-        photo: c.photo,
-        unread: c.unreadCount,
-        isOut: c.topMessage ? c.topMessage!!.sender.id === uid : undefined,
-        sender: c.topMessage
-            ? c.topMessage!!.sender.id === uid
-                ? 'You'
-                : c.topMessage!!.sender.name
-            : undefined,
-        message: formatMessage(c.betaTopMessage),
-        messageId: c.topMessage ? c.topMessage.id : undefined,
-        date: c.topMessage ? parseInt(c.topMessage!!.date, 10) : undefined,
-        fileMeta: c.betaTopMessage
-            ? c.betaTopMessage.fileMetadata || undefined
-            : undefined,
         online: undefined,
+        haveMention,
+        isMuted,
+        kind,
+        title,
+        photo,
+        key: cid,
+        flexibleId: fid,
+        unread: unreadCount,
+        message: formatMessage(betaTopMessage),
+        fileMeta: betaTopMessage
+            ? betaTopMessage.fileMetadata || undefined
+            : undefined,
+        isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
+        sender: topMessage
+            ? topMessage!!.sender.id === uid
+                ? 'You'
+                : topMessage!!.sender.name
+            : undefined,
+        messageId: topMessage ? topMessage.id : undefined,
+        date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
     };
 };
 
-export const extractDialogFRomRoom = (c: RoomFull, uid: string) =>
+export const extractDialogFromRoom = (c: RoomFull, uid: string) =>
     ({
         key: c.id,
         flexibleId: c.id,
@@ -184,6 +200,19 @@ export class DialogListEngine {
         }
     };
 
+    handleIsMuted = (
+        conversationId: string,
+        isMuted: boolean,
+    ) => {
+        let res = this.dataSource.getItem(conversationId);
+        if (res) {
+            this.dataSource.updateItem({
+                ...res,
+                isMuted,
+            });
+        }
+    };
+
     handleDialogDeleted = async (event: any) => {
         const cid = event.cid as string;
         this.dataSource.removeItem(cid);
@@ -204,7 +233,6 @@ export class DialogListEngine {
     };
 
     handleNewMessage = async (event: any, visible: boolean) => {
-        console.log(event);
         const conversationId = event.cid as string;
         const unreadCount = event.unread as number;
 
@@ -215,6 +243,7 @@ export class DialogListEngine {
         if (res) {
             this.dataSource.updateItem({
                 ...res,
+                haveMention: event.message.haveMention,
                 unread:
                     !visible || res.unread > unreadCount
                         ? unreadCount
@@ -249,10 +278,12 @@ export class DialogListEngine {
                     ? (info.data.room as Room_room_PrivateRoom)
                     : null;
             let room = (sharedRoom || privateRoom)!;
-
+            
             this.dataSource.addItem(
                 {
                     key: conversationId,
+                    isMuted: !!room.settings.mute,
+                    haveMention: event.message.haveMention,
                     flexibleId: room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
                     title: sharedRoom
