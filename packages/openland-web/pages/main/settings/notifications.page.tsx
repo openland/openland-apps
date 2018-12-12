@@ -52,7 +52,7 @@ const Group = (props: { children?: any }) => (
 const GroupText = Glamorous.div({
     fontSize: 13,
     lineHeight: '20px',
-    marginTop: -15,
+    marginTop: -3,
     marginBottom: 16,
     opacity: 0.5,
 
@@ -69,7 +69,7 @@ const GroupTitle = (props: { children?: any }) => (
     <XView
         fontSize={16}
         lineHeight="20px"
-        marginBottom={23}
+        marginBottom={12}
     >
         {props.children}
     </XView>
@@ -239,13 +239,14 @@ const MobileApp = Glamorous.a<{ system: 'ios' | 'android'}>(props => ({
     backgroundSize: '100% 100%',
     backgroundImage: props.system === 'ios' ? 'url(/static/X/settings/appstore@2x.png)' : 'url(/static/X/settings/googleplay@2x.png)',
     opacity: 0.5,
+    marginRight: 18,
 
     '&:hover': {
         opacity: 0.8
     },
 
-    '&:first-child': {
-        marginRight: 12
+    '&:last-child': {
+        marginRight: 0
     }
 }));
 
