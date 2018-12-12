@@ -21,6 +21,7 @@ import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
+import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
@@ -72,7 +73,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new ReactNativePushNotificationPackage(),
                     new VectorIconsPackage(),
                     new A0Auth0Package(),
-                    new RNSPackage()
+                    new RNSPackage(),
+                    new ReactNativeDialogsPackage()
             );
         }
 

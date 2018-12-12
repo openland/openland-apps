@@ -208,6 +208,7 @@ dependencies {
     compile project(':react-native-push-notification')
     compile project(':react-native-vector-icons')
     compile project(':react-native-auth0')
+    compile project(':react-native-dialogs')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     compile 'com.facebook.react:react-native:+'

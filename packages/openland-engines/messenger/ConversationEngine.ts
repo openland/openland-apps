@@ -535,7 +535,8 @@ export class ConversationEngine implements MessageSendHandler {
             this.onMessagesUpdated();
 
             // Remove from datasource
-            let id = this.localMessagesMap.get(event.messageId) || event.messageId;
+            let id = this.localMessagesMap.get(event.message.id) || event.message.id;
+            console.warn('boom', id);
             if (this.dataSource.hasItem(id)) {
                 this.dataSource.removeItem(id);
             }

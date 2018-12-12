@@ -1,4 +1,5 @@
 import { Platform, ActionSheetIOS } from 'react-native';
+import DialogAndroid from 'react-native-dialogs';
 
 export class ActionSheetBuilder {
     private _title?: string;
@@ -28,8 +29,15 @@ export class ActionSheetBuilder {
                         this._actions[index].callback();
                     }
                 });
-        } else {
-            // TODO: Implement
+        } else if (Platform.OS === 'android') {
+            DialogAndroid.showPicker(null, null, {
+                positiveText: null,
+                items: this._actions.map((a, i) => ({ label: a.name, id: i + '' }))
+            } as any).then(async args => {
+                if (args.selectedItem) {
+                    await this._actions[Number.parseInt(args.selectedItem.id, 10)].callback();
+                }
+            });
         }
     }
 }

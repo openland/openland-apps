@@ -33,3 +33,8 @@ declare module 'react-native-root-view-background' {
 declare module 'react-tree-walker' {
     export default function (element: any, visitor: (element: any, instance: any) => any): any
 }
+
+declare module 'react-native-dialogs' {
+    export function showPicker(title: string | null, msessage: string | null, options?: { items?: { label: string, id: string }[] }): Promise<{ selectedItem: { label: string, id: string } }>
+}
+

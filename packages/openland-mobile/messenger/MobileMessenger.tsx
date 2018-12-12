@@ -262,22 +262,20 @@ export class MobileMessenger {
                 Clipboard.setString(message.text!!);
             });
             builder.action('Edit', () => {
-                if (Platform.OS === 'ios') {
-                    AlertIOS.prompt(
-                        'Edit message',
-                        undefined,
-                        async (text) => {
-                            startLoader();
-                            try {
-                                await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
-                            } catch (e) {
-                                Alert.alert(e.message);
-                            }
-                            stopLoader();
-                        },
-                        undefined,
-                        message.text);
-                }
+                AlertIOS.prompt(
+                    'Edit message',
+                    undefined,
+                    async (text) => {
+                        startLoader();
+                        try {
+                            await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
+                        } catch (e) {
+                            Alert.alert(e.message);
+                        }
+                        stopLoader();
+                    },
+                    undefined,
+                    message.text);
             });
         }
         builder.action('Delete', async () => {
@@ -306,7 +304,7 @@ export class MobileMessenger {
         });
 
         if (message.id) {
-            (message.reactions || []).reduce((res: string[], r) => res.indexOf(r.reaction) > -1 ? res : [r.reaction, ...res], ['❤️']).map(r => {
+            (message.reactions || []).reduce((res: string[], r) => res.indexOf(r.reaction) > -1 ? res : [r.reaction, ...res], ['❤️']).filter(r => r !== 'respondPost').map(r => {
                 builder.action(r, async () => {
                     startLoader();
                     try {
