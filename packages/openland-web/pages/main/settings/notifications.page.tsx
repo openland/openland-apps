@@ -8,195 +8,449 @@ import { XForm } from 'openland-x-forms/XForm2';
 import { Navigation } from './_navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { XContent } from 'openland-x-layout/XContent';
-import { XCheckbox } from 'openland-x/XCheckbox';
+import { XView } from 'react-mental';
+import { XButton } from 'openland-x/XButton';
+import { XSelect } from 'openland-x/XSelect';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { NotificationMessages, Settings_settings, SettingsUpdate, SettingsUpdateVariables } from 'openland-api/Types';
+import { MutationFunc } from 'react-apollo';
+import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
+import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
+import { XModal, XModalFooter } from 'openland-x-modal/XModal';
+import CloseIcon from './icons/ic-close.svg';
+import LockIcon from './icons/ic-lock-settings.svg';
+import NotificationsIcon from './icons/ic-notifications.svg';
+import NotificationsFirefoxIcon from './icons/ic-notifications-firefox-2.svg';
 
-const Content = Glamorous(XContent)({
-    paddingTop: 20,
-});
+const Container = (props: { children?: any }) => (
+    <XView
+        paddingTop={16}
+        paddingLeft={24}
+        paddingRight={24}
+    >
+        {props.children}
+    </XView>
+);
 
-const HeadTitle = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: -0.2,
-    color: '#1f3449',
-});
+const Header = (props: { children?: any }) => (
+    <XView
+        fontSize={22}
+        lineHeight="24px"
+        opacity={0.9}
+        marginBottom={31}
+    >
+        {props.children}
+    </XView>
+);
 
-const GroupTitle = Glamorous.div({
-    opacity: 0.9,
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.57,
-    letterSpacing: -0.2,
-    color: '#121e2b',
-});
+const Group = (props: { children?: any }) => (
+    <XView maxWidth={570}>
+        {props.children}
+    </XView>
+);
 
 const GroupText = Glamorous.div({
-    opacity: 0.5,
     fontSize: 13,
-    fontWeight: 500,
-    lineHeight: 1.54,
-    letterSpacing: -0.2,
-    color: '#121e2b',
+    lineHeight: '20px',
+    marginTop: -15,
+    marginBottom: 16,
+    opacity: 0.5,
+
+    '&:last-child': {
+        marginBottom: 0
+    },
+
+    '> strong': {
+        fontWeight: 600
+    }
 });
 
-const CheckboxWrapper = Glamorous(XVertical)({
-    padding: 16,
-    borderRadius: 10,
-    border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    alignSelf: 'flex-start',
+const GroupTitle = (props: { children?: any }) => (
+    <XView
+        fontSize={16}
+        lineHeight="20px"
+        marginBottom={23}
+    >
+        {props.children}
+    </XView>
+);
+
+const GroupSubTitle = (props: { children?: any }) => (
+    <XView
+        fontSize={14}
+        lineHeight="16px"
+        paddingTop={4}
+        marginBottom={12}
+    >
+        {props.children}
+    </XView>
+);
+
+const Instruction = Glamorous.div({
+    paddingTop: 4,
+    paddingBottom: 40
 });
 
-export default withApp(
-    'Notifications',
-    'viewer',
-    withSettings(
-        withQueryLoader(props => {
+const InstructionItem = Glamorous.div({
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.9)',
+    lineHeight: '20px',
+    marginBottom: 20,
+
+    '&:last-child': {
+        marginBottom: 0
+    },
+
+    '& svg': {
+        display: 'inline-block',
+        verticalAlign: 'top',
+        opacity: 0.7
+    },
+
+    '& strong': {
+        fontWeight: 600
+    }
+});
+
+class BrowserNotifications extends React.Component<{}, { notificationsState: AppNotifcationsState }> {
+    constructor (props: {}) {
+        super(props);
+
+        this.state = {
+            notificationsState: AppNotifications.state
+        }
+
+        AppNotifications.watch(this.handleNotificationsState);
+    }
+
+    componentWillUnmount () {
+        AppNotifications.unwatch(this.handleNotificationsState);
+    }
+
+    handleNotificationsState = (state: AppNotifcationsState) => {
+        if (state !== this.state.notificationsState) {
+            this.setState({
+                notificationsState: state
+            })
+        }
+    }
+
+    handleEnableClick = () => {
+        AppNotifications.requestPermission();
+    }
+
+    render () {
+        if (canUseDOM) {
+            let isInternetExplorer = /MSIE\/\d./i.test(navigator.userAgent);
+            let isEdge = /Edge\/\d./i.test(navigator.userAgent);
+            let isFirefox = /Firefox\/\d./i.test(navigator.userAgent);
+            let isOpera = /Opera\/\d./i.test(navigator.userAgent) || /OPR\/\d./i.test(navigator.userAgent);
+            let isChrome = !isOpera && /Chrome\/\d./i.test(navigator.userAgent);
+            let isSafari = !isChrome && !isOpera && /Safari\/\d./i.test(navigator.userAgent);
+    
+            let isBrowserWithoutNotifications = isInternetExplorer || isEdge || isSafari || isOpera;
+
+            let { notificationsState } = this.state;
+    
             return (
-                <Navigation title="Notifications settings">
-                    <Content>
-                        <XVertical separator={12} maxWidth={480}>
-                            <HeadTitle>Notifications</HeadTitle>
+                <Group>
+                    <GroupTitle>Desktop notifications</GroupTitle>
+    
+                    {notificationsState === 'granted' && (
+                        <GroupText>
+                            Notifications are turned on in this browser.
+                            <br />
+                            You can always change it in your browser preferences.
+                        </GroupText>
+                    )}
+    
+                    {notificationsState !== 'granted' && isBrowserWithoutNotifications && (
+                        <GroupText>
+                            Notifications are turned off in this browser.
+                            <br />
+                            You can always change it in your browser preferences.
+                        </GroupText>
+                    )}
+    
+                    {notificationsState !== 'granted' && !isBrowserWithoutNotifications && (
+                        <>
+                            <GroupText>
+                                Notifications are disabled for this browser.
+                            </GroupText>
 
-                            <XForm
-                                defaultData={{
-                                    input: {
-                                        emailFrequency:
-                                            props.data.settings.emailFrequency,
-                                        desktopNotifications:
-                                            props.data.settings
-                                                .desktopNotifications,
-                                        mobileNotifications:
-                                            props.data.settings
-                                                .mobileNotifications,
-                                    },
-                                }}
-                                defaultAction={async data => {
-                                    await props.update({ variables: data });
-                                }}
-                                defaultLayout={false}
-                            >
-                                <XFormError onlyGeneralErrors={true} />
-                                <XVertical separator={16}>
-                                    <XVertical separator={6}>
-                                        <XVertical separator={1}>
-                                            <GroupTitle>
-                                                Desktop notifications
-                                            </GroupTitle>
-                                            <GroupText>
-                                                Notify me about...
-                                            </GroupText>
-                                        </XVertical>
-                                        <CheckboxWrapper>
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="All new messages"
-                                                trueValue="ALL"
-                                                field="input.desktopNotifications"
-                                            />
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Direct messages"
-                                                trueValue="DIRECT"
-                                                field="input.desktopNotifications"
-                                            />
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Nothing"
-                                                trueValue="NONE"
-                                                field="input.desktopNotifications"
-                                            />
-                                        </CheckboxWrapper>
-                                    </XVertical>
-                                    <XVertical separator={6}>
-                                        <XVertical separator={1}>
-                                            <GroupTitle>
-                                                Mobile push notifications
-                                            </GroupTitle>
-                                            <GroupText>
-                                                Notify me about...
-                                            </GroupText>
-                                        </XVertical>
-                                        <CheckboxWrapper>
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="All new messages"
-                                                trueValue="ALL"
-                                                field="input.mobileNotifications"
-                                            />
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Direct messages"
-                                                trueValue="DIRECT"
-                                                field="input.mobileNotifications"
-                                            />
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Nothing"
-                                                trueValue="NONE"
-                                                field="input.mobileNotifications"
-                                            />
-                                        </CheckboxWrapper>
-                                    </XVertical>
-                                    <XVertical separator={6}>
-                                        <XVertical separator={1}>
-                                            <GroupTitle>
-                                                Email notifications
-                                            </GroupTitle>
-                                            <GroupText>
-                                                When you’re busy or not online,
-                                                Openland can send you email
-                                                notifications about new
-                                                messages. We will use{' '}
-                                                <strong>
-                                                    {
-                                                        props.data.settings
-                                                            .primaryEmail
-                                                    }
-                                                </strong>{' '}
-                                                for notifications.
-                                            </GroupText>
-                                        </XVertical>
-                                        <CheckboxWrapper>
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Notify every 15 minutes"
-                                                trueValue="MIN_15"
-                                                field="input.emailFrequency"
-                                            />
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Notify maximum once per hour"
-                                                trueValue="HOUR_1"
-                                                field="input.emailFrequency"
-                                            />
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Notify maximum once per day"
-                                                trueValue="HOUR_24"
-                                                field="input.emailFrequency"
-                                            />
-                                            {/* <XCheckbox rounded={true} label="Notify maximum once per week" trueValue="WEEK_1" field="input.emailFrequency" /> */}
-                                            <XCheckbox
-                                                rounded={true}
-                                                label="Never notify me"
-                                                trueValue="NEVER"
-                                                field="input.emailFrequency"
-                                            />
-                                        </CheckboxWrapper>
-                                    </XVertical>
+                            {notificationsState === 'default' && (
+                                <XButton
+                                    alignSelf="flex-start"
+                                    style="warning"
+                                    size="small"
+                                    text="Enable"
+                                    onClick={this.handleEnableClick}
+                                />
+                            )}
+
+                            {notificationsState !== 'default' && (
+                                <XModal
+                                    title="Turn on browser notifications for Openland"
+                                    useTopCloser={true}
+                                    target={(
+                                        <XButton
+                                            alignSelf="flex-start"
+                                            style="warning"
+                                            size="small"
+                                            text="Enable"
+                                        />
+                                    )}
+                                    footer={(
+                                        <XModalFooter>
+                                            <XButton text="Got it" style="primary" autoClose={true} />
+                                        </XModalFooter>
+                                    )}
+                                >
+                                    {isChrome && (
+                                        <Instruction>
+                                            <InstructionItem>1. Click <LockIcon /> in your browser's address bar.</InstructionItem>
+                                            <InstructionItem>2. Locate <NotificationsIcon /> <strong>Notifications</strong> and select "Allow".</InstructionItem>
+                                        </Instruction>
+                                    )}
+                                    {isFirefox && (
+                                        <Instruction>
+                                            <InstructionItem>1. Click <LockIcon /> in your browser's address bar.</InstructionItem>
+                                            <InstructionItem>2. Locate <NotificationsFirefoxIcon /> <strong>Receive notifications</strong> and select <CloseIcon /> next to «Blocked».</InstructionItem>
+                                        </Instruction>
+                                    )}
+                                </XModal>
+                            )}
+                        </>
+                    )}
+                </Group>
+            );
+        } else {
+            return (
+                <Group>
+                    <GroupTitle>Desktop notifications</GroupTitle>
+                </Group>
+            );
+        }
+    }
+};
+
+const MobileApp = Glamorous.a<{ system: 'ios' | 'android'}>(props => ({
+    width: 103,
+    height: props.system === 'ios' ? 33 : 34,
+    background: 'center center no-repeat',
+    backgroundSize: '100% 100%',
+    backgroundImage: props.system === 'ios' ? 'url(/static/X/settings/appstore@2x.png)' : 'url(/static/X/settings/googleplay@2x.png)',
+    opacity: 0.5,
+
+    '&:hover': {
+        opacity: 1
+    },
+
+    '&:first-child': {
+        marginRight: 12
+    }
+}));
+
+const MobileApps = () => (
+    <Group>
+        <GroupTitle>Mobile apps</GroupTitle>
+        <GroupText>Install Openland mobile app to receive new messages on the go.</GroupText>
+
+        <XView flexDirection="row">
+            <MobileApp system="ios" href="https://oplnd.com/ios" target="_blank" />
+            <MobileApp system="android" href="https://oplnd.com/android_beta" target="_blank" />
+        </XView>
+    </Group>
+);
+
+interface NotificationsSettingsPageProps {
+    settings: Settings_settings;
+    update: MutationFunc<SettingsUpdate, Partial<SettingsUpdateVariables>>;
+}
+
+interface NotificationsSettingsPageState {
+    isNotificationSelectChanged: boolean;
+    isEmailSelectChanged: boolean;
+}
+
+class NotificationsSettingsPageInner extends React.Component<NotificationsSettingsPageProps, NotificationsSettingsPageState> {
+    constructor(props: NotificationsSettingsPageProps) {
+        super(props);
+
+        this.state = {
+            isNotificationSelectChanged: false,
+            isEmailSelectChanged: false
+        }
+    }
+
+    handleNotificationSelectChange = () => {
+        this.setState({
+            isNotificationSelectChanged: true
+        });
+    }
+
+    handleEmailSelectChange = () => {
+        this.setState({
+            isEmailSelectChanged: true
+        });
+    }
+
+    handleNotificationSelectSaved = () => {
+        this.setState({
+            isNotificationSelectChanged: false
+        });
+    }
+
+    handleEmailSelectSaved = () => {
+        this.setState({
+            isEmailSelectChanged: false
+        });
+    }
+
+    render () {
+        let notificationParams = this.props.settings.desktopNotifications;
+
+        if (notificationParams === NotificationMessages.NONE) {
+            notificationParams = NotificationMessages.DIRECT;
+        }
+
+        return (
+            <Navigation title="Notifications settings">
+                <Container>
+                    <Header>Notifications</Header>
+                    <XVertical separator={15}>
+                        <XForm
+                            defaultData={{
+                                input: {
+                                    notifications: notificationParams,
+                                }
+                            }}
+                            defaultAction={async data => {
+                                await this.props.update({
+                                    variables: {
+                                        input: {
+                                            desktopNotifications: data.input.notifications,
+                                            mobileNotifications: data.input.notifications,
+                                        }
+                                    }
+                                });
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XFormError onlyGeneralErrors={true} />
+                            <XVertical separator={8}>
+                                <Group>
+                                    <GroupTitle>Notify me about</GroupTitle>
+                                    <XView maxWidth={440}>
+                                        <XSelect
+                                            field="input.notifications"
+                                            searchable={false}
+                                            clearable={false}
+                                            withSubtitle={true}
+                                            onChange={this.handleNotificationSelectChange}
+                                            options={[
+                                                {
+                                                    value: 'ALL',
+                                                    label: 'All new messages',
+                                                    subtitle: 'You’ll be notified for every new message',
+                                                },
+                                                {
+                                                    value: 'DIRECT',
+                                                    label: 'Direct messages and mentions',
+                                                    subtitle: 'You’ll be only notified for messages directly involving you',
+                                                }
+                                            ]}
+                                        />
+                                    </XView>
+                                </Group>
+
+                                {this.state.isNotificationSelectChanged && (
                                     <XFormSubmit
                                         succesText="Saved!"
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"
+                                        onSuccessAnimationEnd={this.handleNotificationSelectSaved}
                                     />
-                                </XVertical>
-                            </XForm>
-                        </XVertical>
-                    </Content>
-                </Navigation>
-            );
-        }),
-    ),
-);
+                                )}
+                            </XVertical>
+                        </XForm>
+
+                        <XForm
+                            defaultData={{
+                                input: {
+                                    emailFrequency: this.props.settings.emailFrequency,
+                                }
+                            }}
+                            defaultAction={async data => {
+                                await this.props.update({
+                                    variables: {
+                                        input: {
+                                            emailFrequency: data.input.emailFrequency,
+                                        }
+                                    }
+                                });
+                            }}
+                            defaultLayout={false}
+                        >
+                            <XFormError onlyGeneralErrors={true} />
+                            <XVertical separator={8}>
+                                <Group>
+                                    <GroupTitle>Email notifications</GroupTitle>
+                                    <GroupText>
+                                        When you’re not online, Openland can send you email notifications for new direct messages and mentions of your name.
+                                        Notifications are sent to <strong>{this.props.settings.primaryEmail}.</strong>
+                                    </GroupText>
+                                    <GroupSubTitle>You can email me</GroupSubTitle>
+                                    <XView maxWidth={440}>
+                                        <XSelect
+                                            field="input.emailFrequency"
+                                            searchable={false}
+                                            clearable={false}
+                                            onChange={this.handleEmailSelectChange}
+                                            options={[
+                                                {
+                                                    value: 'MIN_15',
+                                                    label: 'At most once every 15 minutes',
+                                                },
+                                                {
+                                                    value: 'HOUR_1',
+                                                    label: 'At most once per hour',
+                                                },
+                                                {
+                                                    value: 'HOUR_24',
+                                                    label: 'At most once per day',
+                                                },
+                                                {
+                                                    value: 'NEVER',
+                                                    label: 'Never',
+                                                }
+                                            ]}
+                                        />
+                                    </XView>
+                                </Group>
+
+                                {this.state.isEmailSelectChanged && (
+                                    <XFormSubmit
+                                        succesText="Saved!"
+                                        text="Save changes"
+                                        style="primary"
+                                        alignSelf="flex-start"
+                                        onSuccessAnimationEnd={this.handleEmailSelectSaved}
+                                    />
+                                )}
+                            </XVertical>
+                        </XForm>
+
+                        <BrowserNotifications />
+                        <MobileApps />
+                    </XVertical>
+                </Container>
+            </Navigation>
+        );
+    }
+}
+
+export default withApp('Notifications', 'viewer', withSettings(withQueryLoader(props => (
+    <NotificationsSettingsPageInner settings={props.data.settings} update={props.update} />
+))));
