@@ -57,7 +57,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
 
     requestPermission() {
         if (canUseDOM) {
-            if (this.state === 'default') {
+            if (this.state === 'default' || this.state === 'temporary_denied') {
                 Notification.requestPermission((permission) => {
                     let changed = false;
                     if (permission === 'granted') {
@@ -73,6 +73,9 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                     } else {
                         if (this.state !== 'default') {
                             this.state = 'default';
+                            changed = true;
+                        } else {
+                            this.state = 'temporary_denied';
                             changed = true;
                         }
                     }
