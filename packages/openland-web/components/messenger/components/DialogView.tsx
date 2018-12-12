@@ -26,8 +26,69 @@ class DialogViewInner extends React.Component<DialogViewProps> {
         let props = this.props;
         let dialog = props.item;
         let isPrivate = props.item.kind === 'PRIVATE';
+        let sender = dialog.isOut ? 'You: ' : (isPrivate ? '' : (dialog.sender ? dialog.sender + ': ' : ''));
+        let message: any = undefined;
+        if (dialog.typing) {
+            message = dialog.typing;
+        } else {
+            if (dialog.fileMeta) {
+                if (dialog.fileMeta.isImage) {
+                    message = (
+                        <span>
+                            {sender}
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <PhotoIcon
+                                        className={
+                                            active
+                                                ? iconActiveClass
+                                                : iconClass
+                                        }
+                                    />
+                                )}
+                            </XViewSelectedContext.Consumer>
+                            Image
+                        </span>
+                    );
+                } else {
+                    message = (
+                        <span>
+                            {sender}
+                            <XViewSelectedContext.Consumer>
+                                {active => (
+                                    <FileIcon
+                                        className={
+                                            (active
+                                                ? iconActiveClass
+                                                : iconClass) +
+                                            ' ' +
+                                            documentIcon
+                                        }
+                                    />
+                                )}
+                            </XViewSelectedContext.Consumer>
+                            Document
+                        </span>
+                    );
+                }
+            } else if (dialog.message) {
+                message = (
+                    <span>
+                        {sender}
+                        {emojify(dialog.message, {
+                            style: {
+                                height: 13,
+                                backgroundImage:
+                                    'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                            },
+                        })}
+                    </span>
+                );
+            }
+        }
         return (
-            <XLink2
+            <XView
+                as="a"
                 ref={props.handleRef}
                 path={'/mail/' + dialog.key}
                 height={72}
@@ -40,19 +101,10 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                 hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
                 selectedBackgroundColor="#4596e1"
                 selectedHoverBackgroundColor="#4596e1"
+                linkSelectable={true}
             >
                 <XAvatar
-                    style={
-                        dialog.kind === 'INTERNAL'
-                            ? 'organization'
-                            : dialog.kind === 'GROUP'
-                            ? 'group'
-                            : dialog.kind === 'PUBLIC'
-                            ? 'room'
-                            : dialog.kind === 'PRIVATE'
-                            ? 'user'
-                            : undefined
-                    }
+                    style="user"
                     objectName={dialog.title}
                     objectId={dialog.flexibleId}
                     online={dialog.online}
@@ -125,95 +177,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                             lineHeight="17px"
                             overflow="hidden"
                         >
-                            {dialog.typing || (
-                                <>
-                                    {!!dialog.message && !dialog.fileMeta && (
-                                        <span>
-                                            {dialog.isOut
-                                                ? 'You:'
-                                                : isPrivate
-                                                ? null
-                                                : dialog.sender + ':'}{' '}
-                                            {emojify(dialog.message, {
-                                                style: {
-                                                    height: 13,
-                                                    backgroundImage:
-                                                        'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                                                },
-                                            })}
-                                        </span>
-                                    )}
-                                    {!dialog.message && !dialog.fileMeta && (
-                                        <span>
-                                            {dialog.isOut
-                                                ? 'You:'
-                                                : isPrivate
-                                                ? null
-                                                : dialog.sender + ':'}{' '}
-                                            <XViewSelectedContext.Consumer>
-                                                {active => (
-                                                    <ForwardIcon
-                                                        className={
-                                                            (active
-                                                                ? iconActiveClass
-                                                                : iconClass) +
-                                                            ' ' +
-                                                            documentIcon
-                                                        }
-                                                    />
-                                                )}
-                                            </XViewSelectedContext.Consumer>
-                                            Forward
-                                        </span>
-                                    )}
-                                    {dialog.fileMeta &&
-                                        dialog.fileMeta.isImage && (
-                                            <span>
-                                                {dialog.isOut
-                                                    ? 'You:'
-                                                    : isPrivate
-                                                    ? null
-                                                    : dialog.sender + ':'}{' '}
-                                                <XViewSelectedContext.Consumer>
-                                                    {active => (
-                                                        <PhotoIcon
-                                                            className={
-                                                                active
-                                                                    ? iconActiveClass
-                                                                    : iconClass
-                                                            }
-                                                        />
-                                                    )}
-                                                </XViewSelectedContext.Consumer>
-                                                Image
-                                            </span>
-                                        )}
-                                    {dialog.fileMeta &&
-                                        !dialog.fileMeta.isImage && (
-                                            <span>
-                                                {dialog.isOut
-                                                    ? 'You:'
-                                                    : isPrivate
-                                                    ? null
-                                                    : dialog.sender + ':'}{' '}
-                                                <XViewSelectedContext.Consumer>
-                                                    {active => (
-                                                        <FileIcon
-                                                            className={
-                                                                (active
-                                                                    ? iconActiveClass
-                                                                    : iconClass) +
-                                                                ' ' +
-                                                                documentIcon
-                                                            }
-                                                        />
-                                                    )}
-                                                </XViewSelectedContext.Consumer>
-                                                Document
-                                            </span>
-                                        )}
-                                </>
-                            )}
+                            {message}
                         </XView>
                         {dialog.unread > 0 && (
                             <XView paddingLeft={12} alignSelf="center">
@@ -222,7 +186,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                         )}
                     </XView>
                 </XView>
-            </XLink2>
+            </XView>
         );
     }
 }
@@ -249,12 +213,12 @@ const DialogViewCompactInner = (props: DialogViewProps) => {
                     dialog.kind === 'INTERNAL'
                         ? 'organization'
                         : dialog.kind === 'GROUP'
-                        ? 'group'
-                        : dialog.kind === 'PUBLIC'
-                        ? 'room'
-                        : dialog.kind === 'PRIVATE'
-                        ? 'user'
-                        : undefined
+                            ? 'group'
+                            : dialog.kind === 'PUBLIC'
+                                ? 'room'
+                                : dialog.kind === 'PRIVATE'
+                                    ? 'user'
+                                    : undefined
                 }
                 objectName={dialog.title}
                 objectId={dialog.flexibleId}
@@ -320,7 +284,7 @@ export class DialogView extends React.PureComponent<DialogViewProps> {
         return this.props.compact ? (
             <DialogViewCompactInner {...this.props} />
         ) : (
-            <DialogViewInner {...this.props} />
-        );
+                <DialogViewInner {...this.props} />
+            );
     }
 }

@@ -6,6 +6,7 @@ import { RouterProps } from 'next/router';
 import { XRouterContext } from './XRouterContext';
 import { XRouting } from './XRouting';
 import { XRoutingContext } from './XRoutingContext';
+import { XViewRouterContext, XViewRouter, XViewRouteContext } from 'react-mental';
 
 interface NextRoutes {
     Router: {
@@ -22,6 +23,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
 
     private xRouterState: XRouter;
     private xRouting: XRouting;
+    private xViewRouter: XViewRouter;
 
     constructor(props: { routes: NextRoutes, hostName: string, protocol: string }, context: any) {
         super(props, context);
@@ -34,6 +36,14 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
             replaceQuery: this.replaceQuery,
             replaceQueryParams: this.replaceQueryParams,
             resolveLink: this.resolveLink
+        }
+        this.xViewRouter = {
+            navigate: (to) => {
+                if (typeof to === 'string') {
+                    this.props.routes.Router.pushRoute(to)
+                        .then(this.scrollToTop);
+                }
+            }
         }
     }
 
@@ -131,11 +141,15 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
 
     render() {
         return (
-            <XRouterContext.Provider value={this.xRouterState}>
-                <XRoutingContext.Provider value={this.xRouting}>
-                    {this.props.children}
-                </XRoutingContext.Provider>
-            </XRouterContext.Provider>
+            <XViewRouterContext.Provider value={this.xViewRouter}>
+                <XRouterContext.Provider value={this.xRouterState}>
+                    <XRoutingContext.Provider value={this.xRouting}>
+                        <XViewRouteContext.Provider value={this.xRouterState}>
+                            {this.props.children}
+                        </XViewRouteContext.Provider>
+                    </XRoutingContext.Provider>
+                </XRouterContext.Provider>
+            </XViewRouterContext.Provider>
         );
     }
 }

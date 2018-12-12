@@ -117,7 +117,7 @@
         "react-localstorage-hoc": "^0.0.2",
         "react-lorem-component": "^0.13.0",
         "react-lottie": "^1.1.0",
-        "react-mental": "1.2.0",
+        "react-mental": "1.2.7",
         "react-modal": "^3.2.1",
         "react-native-auth0": "^1.3.0",
         "react-native-blur": "^3.2.2",
