@@ -541,12 +541,13 @@ export class XSelectBasic extends React.PureComponent<
     };
 
     valueWithSubtitleRender: any = (option: any) => (
-        <XView marginTop={2}>
+        <XView marginTop={1}>
             <Glamorous.Div
                 fontSize={14}
-                lineHeight="16px"
+                lineHeight="18px"
+                fontWeight={600}
                 opacity={0.9}
-                marginBottom={2}
+                marginBottom={3}
                 overflow="hidden"
                 whiteSpace="nowrap"
                 textOverflow="ellipsis"
@@ -568,15 +569,15 @@ export class XSelectBasic extends React.PureComponent<
 
     optionWithSubtitleHelpRender: any = (option: any) => (
         <XView
-            marginTop={2}
-            marginBottom={-2}
-            paddingBottom={2}
+            marginTop={1}
+            marginBottom={-1}
         >
             <XView
                 fontSize={14}
-                lineHeight="16px"
+                lineHeight="18px"
+                fontWeight={600}
                 opacity={0.9}
-                marginBottom={2}
+                marginBottom={3}
             >
                 {option.label}
             </XView>
