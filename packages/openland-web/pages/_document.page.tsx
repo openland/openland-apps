@@ -30,9 +30,9 @@ export default class OpenlandDocument extends Document {
     constructor(props: DocumentProps) {
         super(props);
         const { __NEXT_DATA__, ids } = props;
-        // if (ids) {
-        //     __NEXT_DATA__.ids = this.props.ids;
-        // }
+        if (ids) {
+            __NEXT_DATA__.ids = this.props.ids;
+        }
     }
 
     render() {
@@ -143,12 +143,10 @@ export default class OpenlandDocument extends Document {
                     />
                     <link rel="stylesheet" href="/static/css/draft.css" />
                     <link rel="stylesheet" href="/static/css/draft-emoji.css" />
-                    <link
-                        rel="stylesheet"
-                        href="/static/css/draft-mentions.css"
-                    />
+                    <link rel="stylesheet" href="/static/css/draft-mentions.css" />
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
                     <link rel="stylesheet" href="/static/css/SFTextPro.css" />
+                    <link rel="stylesheet" href="/static/css/x.css" />
                     <style
                         dangerouslySetInnerHTML={{ __html: this.props.glamCss }}
                     />

@@ -1716,6 +1716,13 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
 
+"@types/mkdirp@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-0.5.2.tgz#503aacfe5cc2703d5484326b1b27efa67a339c1f"
+  integrity sha512-U5icWpv7YnZYGsN4/cmh3WD2onMY0aJIiTE6+51TwJCttdHvtCYmkBNOobHlXwrJRL0nkH9jH4kD+1FAdMN4Tg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/moment-timezone@^0.5.6":
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/@types/moment-timezone/-/moment-timezone-0.5.9.tgz#1a34ef6ba2e4578b9ca399ed5eec57525ad1d4a7"
@@ -3394,18 +3401,21 @@ babel-plugin-transform-flow-strip-types@^6.8.0:
     babel-plugin-syntax-flow "^6.18.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-mental@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.0.7.tgz#d749fc84e3f9e609fb9b6b46fd9a3b352c2b6608"
-  integrity sha512-a7b1nIIjZn/jfGoXkY7Dd3N7rJH88aytPSsNUtDHQsfjAtnW2nNGegVIfKsQoqh1ONQpxvXOC2sBUdr+eLOBeg==
+babel-plugin-transform-mental@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.2.0.tgz#474b9a1ffc30adb1193033829f1ed09923b1b164"
+  integrity sha512-NMxxEa70H2i8Lq1j4uMUxT6fuQHy/UnKeDcYAcYRztBuVGnL6jHZB+79NvCrbKnDAf9z40vFo/hkEtCe9AHVmw==
   dependencies:
     "@babel/generator" "^7.2.0"
     "@babel/traverse" "^7.1.6"
     "@babel/types" "^7.2.0"
     "@types/babel__generator" "^7.0.1"
     "@types/babel__traverse" "^7.0.3"
+    "@types/mkdirp" "^0.5.2"
     "@types/uuid" "^3.4.4"
-    mental-styles "^1.0.7"
+    glamor "^2.20.40"
+    mental-styles "^1.2.0"
+    mkdirp "^0.5.1"
     uuid "^3.3.2"
 
 babel-plugin-transform-object-rest-spread@^6.8.0:
@@ -8980,10 +8990,10 @@ memory-fs@^0.4.0, memory-fs@^0.4.1, memory-fs@~0.4.1:
     errno "^0.1.3"
     readable-stream "^2.0.1"
 
-mental-styles@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.0.7.tgz#1c10c15a976a6f9a2d6eb82e5de9ff58bacb870b"
-  integrity sha512-ilDY29ZI8S5zSD1P2fWy+FjlKaq9tX372jZAc8QEGJCH/3ygiPL2IRRlV9Wqh4nDfJkQwgWHVdwilxSl1YkMLw==
+mental-styles@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.2.0.tgz#bb4ef26b55173bf004db7134cdb7cd3f302961d0"
+  integrity sha512-OB02Tp4wZU9Vl5eLvVIadViXGvzQFfoL0H+s75OsphJJG97vlA2iz1qKVIROS1HMc04lplVKYe5LPwtVMcVBvA==
 
 merge-descriptors@1.0.1:
   version "1.0.1"
@@ -10942,7 +10952,17 @@ react-diff@^0.0.7:
   dependencies:
     diff "^1.2.0"
 
-react-dom@^16.4.0, react-dom@^16.4.1:
+react-dom@16.7.0-alpha.2:
+  version "16.7.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0-alpha.2.tgz#16632880ed43676315991d8b412cce6975a30282"
+  integrity sha512-o0mMw8jBlwHjGZEy/vvKd/6giAX0+skREMOTs3/QHmgi+yAhUClp4My4Z9lsKy3SXV+03uPdm1l/QM7NTcGuMw==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.12.0-alpha.2"
+
+react-dom@^16.4.0:
   version "16.6.3"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.6.3.tgz#8fa7ba6883c85211b8da2d0efeffc9d3825cccc0"
   dependencies:
@@ -11038,12 +11058,13 @@ react-lottie@^1.1.0:
     babel-runtime "^6.26.0"
     lottie-web "^5.1.3"
 
-react-mental@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.0.7.tgz#dc456e3771442111ee75af235ca767b32eb13832"
-  integrity sha512-vdhF52jymRk78IbHs7Ht0nB9gR0YTeQ8OkigV7IkSD/gmu/7XnPK7gTCz0t8ywdmlj60ud84tDK3V/GOdY9/6Q==
+react-mental@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.2.0.tgz#ac62e2cc48bac831dc42b7c04d6d6c10821add2e"
+  integrity sha512-LvrRPbnNqldo8MGtGcHInIIZ1RTVPIdTby3d5ZH3YCv75dxAy/tvbumCpbYNV+j4NCxv2VQdteTATDhKyntVNQ==
   dependencies:
-    mental-styles "^1.0.7"
+    babel-plugin-transform-mental "^1.2.0"
+    mental-styles "^1.2.0"
 
 react-modal@^3.2.1:
   version "3.6.1"
@@ -11093,6 +11114,11 @@ react-native-code-push@^5.4.0:
 react-native-device-info@^0.22.0:
   version "0.22.6"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.6.tgz#32a674b0484d31214fdcfbbb0e677621e83ba69d"
+
+react-native-dialogs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-dialogs/-/react-native-dialogs-1.0.2.tgz#d16d68cecbd57f74904fb2d58fd846622d5fec9a"
+  integrity sha512-3hH6s67RD6w9MVttqWARnto3wnmSgnwPCzsk4aVaQbFjtgVZQecn+oP+jqj01G6OvxAtuG7aSe62fYGs5xileA==
 
 react-native-extra-dimensions-android@^0.21.0:
   version "0.21.0"
@@ -11451,14 +11477,15 @@ react-with-styles@^3.1.0:
     prop-types "^15.6.1"
     react-with-direction "^1.3.0"
 
-react@16.5.0:
-  version "16.5.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.5.0.tgz#f2c1e754bf9751a549d9c6d9aca41905beb56575"
+react@16.7.0-alpha.2:
+  version "16.7.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0-alpha.2.tgz#924f2ae843a46ea82d104a8def7a599fbf2c78ce"
+  integrity sha512-Xh1CC8KkqIojhC+LFXd21jxlVtzoVYdGnQAi/I2+dxbmos9ghbx5TQf9/nDxc4WxaFfUQJkya0w1k6rMeyIaxQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    schedule "^0.3.0"
+    scheduler "^0.12.0-alpha.2"
 
 react@^16.4.0:
   version "16.6.3"
@@ -12134,6 +12161,14 @@ schedule@^0.3.0:
 scheduler@^0.11.2:
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.11.2.tgz#a8db5399d06eba5abac51b705b7151d2319d33d3"
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.12.0-alpha.2:
+  version "0.12.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.12.0-alpha.3.tgz#59afcaba1cb79e3e8bee91de94eb8f42c9152c2b"
+  integrity sha512-KADuBlOWSrT/DCt/oA+NgsNamRCsfz7wj+leaeGjGHipNClsqhjOPogKkJgem6WLAv/QzxW8bE7zlGc9OxiYSQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

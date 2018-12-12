@@ -4,6 +4,9 @@
     "repository": "https://github.com/openland/openland-apps.git",
     "author": "Steve Korshakov <steve@openland.com>",
     "license": "MIT",
+    "scripts":{
+        "postinstall": "patch-package"
+    },
     "dependencies": {
         "@babel/core": "7.0.0-beta.47",
         "@mapbox/geo-viewport": "^0.2.2",
@@ -27,7 +30,6 @@
         "babel-plugin-inline-import": "^3.0.0",
         "babel-plugin-module-resolver": "^3.1.1",
         "babel-plugin-react-native-web": "^0.8.9",
-        "babel-plugin-transform-mental": "^1.0.7",
         "chart.js": "^2.7.1",
         "classnames": "^2.2.5",
         "compression": "^1.7.1",
@@ -70,14 +72,14 @@
         "prop-types": "^15.6.0",
         "query-string": "^5.0.1",
         "rc-slider": "^8.6.0",
-        "react": "16.5.0",
+        "react": "16.7.0-alpha.2",
         "react-apollo": "2.1.8",
         "react-burger-menu": "^2.2.3",
         "react-chartjs-2": "^2.6.4",
         "react-custom-scrollbars": "^4.2.1",
         "react-dates": "^16.3.6",
         "react-diff": "^0.0.7",
-        "react-dom": "^16.4.1",
+        "react-dom": "16.7.0-alpha.2",
         "react-emojione": "^5.0.0",
         "react-form": "^2.14.1",
         "react-ga": "^2.3.5",
@@ -111,7 +113,7 @@
         "react-router-dom": "^4.2.2",
         "react-select": "^1.2.1",
         "react-test-renderer": "^16.4.1",
-        "react-mental": "^1.0.7",
+        "react-mental": "1.2.0",
         "rn-fetch-blob": "^0.10.12",
         "simplebar": "^2.6.1",
         "subscriptions-transport-ws": "^0.9.11",
@@ -126,7 +128,6 @@
         "emoji-mart": "^2.8.1",
         "draft-js-mention-plugin": "^3.1.3",
         "webrtc-adapter": "^6.4.6",
-        "howler": "^2.0.15",
-        "mental-styles": "^1.0.7"
+        "howler": "^2.0.15"
     }
 }

@@ -1,10 +1,10 @@
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import * as Mental from 'mental-styles';
+import { XStyleFactoryRegistry } from 'react-mental';
 import { css, rehydrate } from 'glamor';
 if (canUseDOM) {
     rehydrate(JSON.parse((window as any).GLAMOR_IDS));
 }
-Mental.XStyleFactoryRegistry.registerFactory({
+XStyleFactoryRegistry.registerFactory({
     createStyle: (styles) => {
         return css(styles).toString()
     }

@@ -1,10 +1,11 @@
 FROM node:10.14.0-alpine
 
-RUN apk add --no-cache tini
+RUN apk add --no-cache tini git
 ENTRYPOINT ["/sbin/tini", "--"]
 
 WORKDIR /app
 ADD package.prod.json /app/package.json
+ADD patches/next+7.0.2.patch /app/patches/next+7.0.2.patch
 RUN yarn install
 COPY dist/ /app/
 
