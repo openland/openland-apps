@@ -8,6 +8,7 @@ import Select, {
     ReactCreatableSelectProps,
     Creatable,
 } from 'react-select';
+import { XView } from 'react-mental';
 
 const SelectAnimationFadeIn = glamor.keyframes({
     '0%': { opacity: 0 },
@@ -23,24 +24,21 @@ const Styles = (props: {
     noArrow?: boolean;
     invalid?: boolean;
     attach?: 'left' | 'right' | 'both';
+    withSubtitle?: boolean;
 }) => ({
     minWidth: 100,
-    ...(props.invalid
-        ? {
-              '&.Select > .Select-control': {
-                  border: '1px solid #e26363',
-              },
-          }
-        : {}),
-    ...(props.noArrow
-        ? {
-              '&.Select > .Select-control .Select-arrow': {
-                  display: 'none',
-              },
-          }
-        : {}),
+    ...(props.invalid ? {
+            '&.Select > .Select-control': {
+                border: '1px solid #e26363',
+            },
+        } : {}),
+    ...(props.noArrow ? {
+            '&.Select > .Select-control .Select-arrow': {
+                display: 'none',
+            },
+        } : {}),
     '&.Select': {
-        position: 'relative',
+        position: 'relative'
     },
     '&.Select input::-webkit-contacts-auto-fill-button, &.Select input::-webkit-credentials-auto-fill-button': {
         display: 'none !important',
@@ -64,11 +62,7 @@ const Styles = (props: {
         boxShadow: 'none',
     },
     '&.Select.is-open > .Select-control': {
-        borderBottomRightRadius: 0,
-        borderBottomLeftRadius: 0,
         background: '#fff',
-        borderColor: 'rgb(116, 188, 255) rgb(116, 188, 255) rgb(116, 188, 255)',
-        // boxShadow: '0 0 0 2px rgba(143, 124, 246, 0.2)'
     },
     '&.Select.is-open > .Select-control .Select-arrow': {
         top: -2,
@@ -79,9 +73,6 @@ const Styles = (props: {
         cursor: 'text',
     },
     '&.Select.is-focused > .Select-control': {
-        background: '#fff',
-    },
-    '&.Select.is-focused:not(.is-open) > .Select-control': {
         borderColor: 'rgb(116, 188, 255)',
         boxShadow: 'rgba(23, 144, 255, 0.2) 0px 0px 0px 2px',
         background: '#fff',
@@ -91,11 +82,10 @@ const Styles = (props: {
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label': {
         fontSize: props.large === true ? 15 : 14,
-        color: '#334562',
+        color: '#000000',
         fontWeight: 400,
         display: 'block',
         marginTop: 0,
-        // verticalAlign: 'middle'
     },
     '&.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value a.Select-value-label, &.Select.has-value.Select--single > .Select-control .Select-value a.Select-value-label': {
         cursor: 'pointer',
@@ -121,7 +111,6 @@ const Styles = (props: {
     },
     '& .Select-control': {
         backgroundColor: '#fff',
-        // borderColor: '#d9d9d9 #ccc #b3b3b3',
         borderTopLeftRadius:
             props.attach === 'both' || props.attach === 'left' ? 0 : 10,
         borderBottomLeftRadius:
@@ -136,7 +125,7 @@ const Styles = (props: {
         display: 'table',
         borderSpacing: 0,
         borderCollapse: 'separate',
-        height: props.large === true ? 48 : 40,
+        height: props.withSubtitle ? 62 : props.large === true ? 48 : 40,
         outline: 'none',
         overflow: 'hidden',
         position: 'relative',
@@ -152,12 +141,9 @@ const Styles = (props: {
     },
     '&.Select--single > .Select-control .Select-value, .Select-placeholder': {
         bottom: 0,
-        // color: 'rgba(51, 69, 98, 0.25)',
         color: 'rgb(157, 157, 157)',
         fontSize: props.large === true ? 15 : 14,
-        // color: '#C1CAD2',
         left: 0,
-        // lineHeight: '30px',
         lineHeight: 'normal',
         paddingLeft: 16,
         paddingRight: 10,
@@ -168,24 +154,17 @@ const Styles = (props: {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        // fontWeight: 500,
     },
     '&.Select--single > .Select-control .Select-value': {
-        // paddingTop: 'calc(5% - 10px)'
         marginTop: props.large === true ? 11 : 10,
     },
     '& .Select-placeholder': {
-        // paddingTop: 'calc(5% - 8px)'
         marginTop: props.large === true ? 13 : 9,
     },
     '& .Select-input': {
         height: props.large === true ? 32 : 30,
         paddingLeft: 16,
         paddingRight: 16,
-        // verticalAlign: 'middle',
-
-        // display: 'flex !important',
-        // alignItems: 'center'
     },
     '& .Select-input > input': {
         width: '100%',
@@ -195,12 +174,8 @@ const Styles = (props: {
         cursor: 'default',
         display: 'inline-block',
         fontFamily: 'inherit',
-        // fontSize: 'inherit',
         margin: 0,
         outline: 'none',
-        // height: '100%',
-        // lineHeight: '17px',
-        // padding: '8px 0 12px',
         WebkitAppearance: 'none',
         fontSize: props.large === true ? 15 : 14,
         fontWeight: 400,
@@ -255,7 +230,6 @@ const Styles = (props: {
         color: '#d0021b',
     },
     '& .Select-clear': {
-        // display: 'inline-block',
         display: 'table-cell',
         fontSize: '20px',
     },
@@ -297,7 +271,6 @@ const Styles = (props: {
         paddingTop: 5,
     },
     '&.Select--multi .Select-multi-value-wrapper .Select-placeholder': {
-        // paddingTop: 'calc(5% - 10px)'
         marginTop: props.large === true ? 14 : 8,
     },
     '&.Select .Select-aria-only': {
@@ -311,14 +284,12 @@ const Styles = (props: {
         float: 'left',
     },
     '& .Select-menu-outer': {
-        borderBottomRightRadius: 10,
-        borderBottomLeftRadius: 10,
+        borderRadius: 10,
         backgroundColor: '#fff',
-        border: '1px solid rgb(116, 188, 255)',
-        borderTopColor: '#e6e6e6',
-        boxShadow: '0 1px 0 rgba(0, 0, 0, .06)',
+        border: '1px solid rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 4px 12px -1px rgba(0, 0, 0, 0.06)',
         boxSizing: 'border-box',
-        marginTop: -1,
+        marginTop: 8,
         maxHeight: 200,
         position: 'absolute',
         top: '100%',
@@ -330,36 +301,31 @@ const Styles = (props: {
     '& .Select-menu': {
         maxHeight: 198,
         overflowY: 'auto',
+        paddingTop: 8,
+        paddingBottom: 8
     },
     '& .Select-option': {
         boxSizing: 'border-box',
         backgroundColor: '#fff',
-        color: '#666',
+        color: '#000000',
         cursor: 'pointer',
         display: 'block',
         padding: '8px 16px',
-
-        // height: 36,
         lineHeight: '20px',
         fontSize: 14,
-        fontWeight: 500,
     },
     '& .Select-option:last-child': {
         borderBottomRightRadius: 4,
         borderBottomLeftRadius: 4,
     },
     '& .Select-option.is-selected': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
-        color: '#1790ff !important',
+        backgroundColor: '#F9F9F9 !important',
+        color: '#000000 !important',
     },
     '& .Select-option.is-focused': {
         backgroundColor: '#F9F9F9 !important',
-        color: '#1790ff !important',
+        color: '#000000 !important',
     },
-    // '& .Select-option.is-focused': {
-    //     backgroundColor: '#ebf5ff',
-    //     color: '#333'
-    // },
     '& .Select-option.is-disabled': {
         color: '#ccc',
         cursor: 'default',
@@ -391,12 +357,10 @@ const Styles = (props: {
         display: props.large === true ? 'inline-flex' : 'inline-block',
         flexDirection: props.large === true ? 'row-reverse' : undefined,
         fontSize: props.large === true ? 14 : '.9em',
-        fontWeight: props.large === true ? 500 : undefined,
         letterSpacing: props.large === true ? -0.2 : undefined,
         lineHeight: 1.4,
         height: props.large === true ? 32 : undefined,
         marginLeft: 7,
-        // marginTop: 6,
         marginBottom: 6,
         verticalAlign: 'top',
     },
@@ -456,18 +420,43 @@ const Styles = (props: {
     },
 });
 
-const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<
-    ReactAsyncSelectProps
->;
+const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<ReactAsyncSelectProps>;
+const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<ReactSelectProps & { invalid?: boolean; noArrow?: boolean; withSubtitle?: boolean }>;
+const StyledSelectCreatable = Glamorous(Creatable)(Styles) as React.ComponentType<ReactCreatableSelectProps & { invalid?: boolean; noArrow?: boolean }>;
 
-const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<
-    ReactSelectProps & { invalid?: boolean; noArrow?: boolean }
->;
-const StyledSelectCreatable = Glamorous(Creatable)(
-    Styles,
-) as React.ComponentType<
-    ReactCreatableSelectProps & { invalid?: boolean; noArrow?: boolean }
->;
+const SelectWrapper = Glamorous.div({
+    position: 'relative',
+});
+
+const Title = Glamorous.div<{ inside?: boolean }>(props =>
+    props.inside ? {
+        top: 1,
+        left: 17,
+        height: 38,
+        fontSize: 14,
+        lineHeight: '38px',
+        position: 'absolute',
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.4)',
+        zIndex: 2,
+        pointerEvents: 'none',
+    } : {
+        top: -10,
+        left: 13,
+        height: 20,
+        fontSize: 12,
+        lineHeight: '20px',
+        position: 'absolute',
+        paddingLeft: 3,
+        paddingRight: 3,
+        backgroundColor: 'white',
+        color: 'rgba(0, 0, 0, 0.4)',
+        zIndex: 2,
+        pointerEvents: 'none',
+    },
+);
 
 export type XSelectBasicProps = ReactSelectProps & {
     invalid?: boolean;
@@ -479,47 +468,12 @@ export type XSelectBasicProps = ReactSelectProps & {
     render?: any;
     large?: boolean;
     title?: string;
+    withSubtitle?: boolean;
 };
 
 export type XSelectAsyncBasicProps = ReactAsyncSelectProps & {
     attach?: 'left' | 'right' | 'both';
 };
-
-const SelectWrapper = Glamorous.div({
-    position: 'relative',
-});
-
-const Title = Glamorous.div<{ inside?: boolean }>(props =>
-    props.inside
-        ? {
-              top: 1,
-              left: 17,
-              height: 38,
-              fontSize: 14,
-              lineHeight: '38px',
-              position: 'absolute',
-              paddingLeft: 0,
-              paddingRight: 0,
-              backgroundColor: 'white',
-              color: 'rgba(0, 0, 0, 0.4)',
-              zIndex: 2,
-              pointerEvents: 'none',
-          }
-        : {
-              top: -10,
-              left: 13,
-              height: 20,
-              fontSize: 12,
-              lineHeight: '20px',
-              position: 'absolute',
-              paddingLeft: 3,
-              paddingRight: 3,
-              backgroundColor: 'white',
-              color: 'rgba(0, 0, 0, 0.4)',
-              zIndex: 2,
-              pointerEvents: 'none',
-          },
-);
 
 interface XSelectBasicState {
     hasValue?: boolean;
@@ -585,6 +539,49 @@ export class XSelectBasic extends React.PureComponent<
         }
     };
 
+    valueWithSubtitleRender: any = (option: any) => (
+        <XView marginTop={2}>
+            <XView
+                fontSize={14}
+                lineHeight="16px"
+                opacity={0.9}
+                marginBottom={4}
+            >
+                {option.label}
+            </XView>
+            <XView
+                fontSize={12}
+                lineHeight="20px"
+                opacity={0.4}
+            >
+                {option.subtitle}
+            </XView>
+        </XView>
+    );
+
+    optionWithSubtitleHelpRender: any = (option: any) => (
+        <XView
+            marginTop={2}
+            marginBottom={-2}
+        >
+            <XView
+                fontSize={14}
+                lineHeight="16px"
+                opacity={0.9}
+                marginBottom={4}
+            >
+                {option.label}
+            </XView>
+            <XView
+                fontSize={12}
+                lineHeight="20px"
+                opacity={0.4}
+            >
+                {option.subtitle}
+            </XView>
+        </XView>
+    );
+
     render() {
         if (this.props.render) {
             return React.cloneElement(this.props.render, this.props);
@@ -631,7 +628,7 @@ export class XSelectBasic extends React.PureComponent<
                         {...other}
                     />
                 )}
-                {!this.props.creatable && (
+                {!this.props.creatable && !this.props.withSubtitle && (
                     <StyledSelect
                         invalid={invalid}
                         noArrow={noArrow}
@@ -640,6 +637,21 @@ export class XSelectBasic extends React.PureComponent<
                         onFocus={this.handleFocus}
                         onBlur={this.handleBlur}
                         placeholder={title ? '' : placeholder}
+                        {...other}
+                    />
+                )}
+                {!this.props.creatable && this.props.withSubtitle && (
+                    <StyledSelect
+                        invalid={invalid}
+                        noArrow={noArrow}
+                        onInputChange={this.handleInputChange}
+                        onChange={this.handleChange}
+                        onFocus={this.handleFocus}
+                        onBlur={this.handleBlur}
+                        placeholder={title ? '' : placeholder}
+                        optionRenderer={this.optionWithSubtitleHelpRender}
+                        valueRenderer={this.valueWithSubtitleRender}
+                        withSubtitle={this.props.withSubtitle}
                         {...other}
                     />
                 )}

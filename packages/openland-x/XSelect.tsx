@@ -35,10 +35,14 @@ class XSelectStored extends React.PureComponent<
             this.props.valueStoreKey || 'fields.' + this.props.field,
             cval,
         );
+
+        if (this.props.onChange) {
+            this.props.onChange(src);
+        }
     };
 
     render() {
-        let { valueStoreKey, store, field, ...other } = this.props;
+        let { valueStoreKey, store, field, onChange, ...other } = this.props;
         let value: any = this.props.value;
         if (valueStoreKey || field) {
             value = store.readValue(valueStoreKey || 'fields.' + field);
