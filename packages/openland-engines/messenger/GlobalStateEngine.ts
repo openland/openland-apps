@@ -68,9 +68,13 @@ let GLOBAL_SUBSCRIPTION = gql`
             cid
             title
         }
-        ... on DialogMuteUpdated {
+        ... on DialogMuteChanged {
             cid
-            isMuted
+            mute
+        }
+        ... on DialogMentionedChanged {
+            cid
+            haveMention
         }
         ... on DialogPhotoUpdated {
             cid
@@ -131,6 +135,7 @@ export class GlobalStateEngine {
             });
         })).data;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
+        
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
@@ -251,8 +256,6 @@ export class GlobalStateEngine {
 
             // Dialogs List
             this.engine.dialogList.handleUserRead(event.cid, event.unread, visible);
-        } else if (event.__typename === 'DialogMuteUpdated') {
-            this.engine.dialogList.handleIsMuted(event.cid, event.isMuted);
         } else if (event.__typename === 'DialogMessageDeleted') {
             let visible = this.visibleConversations.has(event.conversationId);
 
@@ -267,6 +270,14 @@ export class GlobalStateEngine {
             console.warn('new title ', event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
             this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
+        } else if (event.__typename === 'DialogMuteChanged') {
+            console.warn('new mute ', event);
+            this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
+            console.log(event.cid);
+            this.engine.getConversation(event.cid).handleMuteUpdated(event.mute)
+        } else if (event.__typename === 'DialogMentionedChanged') {
+            console.warn('new haveMention ', event);
+            this.engine.dialogList.handleHaveMentionUpdated(event.cid, event.haveMention);
         } else if (event.__typename === 'DialogPhotoUpdated') {
             console.warn('new photo ', event);
             this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);

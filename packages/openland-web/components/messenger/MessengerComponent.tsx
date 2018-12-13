@@ -333,13 +333,8 @@ class NotificationSettingsComponent extends React.Component<
     { mutation: any; settings: { mute: boolean }; roomId: string },
     { settings: { mute: boolean } }
     > {
-    constructor(props: any) {
-        super(props);
-        this.state = { settings: props.settings };
-    }
-
     handleClick = () => {
-        let value = !this.state.settings.mute;
+        let value = !this.props.settings.mute;
 
         this.props.mutation({
             variables: {
@@ -349,19 +344,12 @@ class NotificationSettingsComponent extends React.Component<
                 roomId: this.props.roomId,
             },
         });
-
-        this.setState({
-            settings: {
-                ...this.state.settings,
-                mute: value,
-            },
-        });
     }
 
     render() {
         return (
             <NotificationsWrapper onClick={this.handleClick}>
-                {this.state.settings.mute ? <NotificationsOffIcon /> : <NotificationsIcon />}
+                {this.props.settings.mute ? <NotificationsOffIcon /> : <NotificationsIcon />}
             </NotificationsWrapper>
         );
     }

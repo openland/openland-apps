@@ -305,7 +305,6 @@ const OnlineDot = Glamorous.div<{ format?: XAvatarSize }>(props => ({
 class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting }> {
     render() {
         let props = this.props;
-        console.log(props);
 
         let avatarWrapperProps = {
             avatarSize: props.size,

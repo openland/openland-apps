@@ -447,6 +447,24 @@ export class ConversationEngine implements MessageSendHandler {
         // }
     }
 
+    handleMuteUpdated = async (mute: boolean) => {
+        let info = await this.engine.client.client.readQuery(
+            {
+                query: RoomQuery.document,
+                variables: {
+                    id: this.conversationId,
+                }
+            }
+        );
+        (info as any).room.mute = mute;
+        this.engine.client.client.writeQuery({
+            query: RoomQuery.document,
+            variables: { roomId: this.conversationId },
+            data: info
+        });
+        console.warn(info);
+    }
+
     handleTitleUpdated = async (title: string) => {
         let info = await this.engine.client.client.readQuery(
             {
@@ -457,11 +475,6 @@ export class ConversationEngine implements MessageSendHandler {
             }
         );
         (info as any).room.title = title;
-        this.engine.client.client.writeQuery({
-            query: RoomQuery.document,
-            variables: { roomId: this.conversationId },
-            data: info
-        });
         this.engine.client.client.writeQuery({
             query: RoomQuery.document,
             variables: { roomId: this.conversationId },

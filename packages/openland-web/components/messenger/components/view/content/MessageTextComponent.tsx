@@ -97,7 +97,7 @@ export const JoinedUserPopperRow = ({
     );
 };
 
-const JoinedUsersPopper = ({
+export const JoinedUsersPopper = ({
     items,
     onItemMessageClick,
 }: {
@@ -486,7 +486,7 @@ export class MessageTextComponent extends React.PureComponent<
                 );
             } else {
                 let text = v.text!!;
-                console.log('this.props', this.props);
+            
                 if (
                     (this.props.mentions && this.props.mentions.length !== 0) ||
                     (this.props.alphaMentions &&

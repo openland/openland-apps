@@ -480,7 +480,7 @@ class MessageComponentInner extends React.PureComponent<
                         <MessageTextComponent
                             message={message.message}
                             mentions={message.mentions}
-                            alphaMentions={message.alphaMentions}
+                            alphaMentions={(message as any).alphaMentions }
                             key={'text'}
                             isService={message.isService}
                             isEdited={edited}

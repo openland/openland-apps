@@ -267,6 +267,26 @@ export class DialogListEngine {
         }
     }
 
+    handleMuteUpdated = (cid: string, mute: boolean) => {
+        let existing = this.dataSource.getItem(cid);
+        if (existing) {
+            this.dataSource.updateItem({
+                ...existing,
+                isMuted: mute
+            });
+        }
+    }
+
+    handleHaveMentionUpdated = (cid: string, haveMention: boolean) => {
+        let existing = this.dataSource.getItem(cid);
+        if (existing) {
+            this.dataSource.updateItem({
+                ...existing,
+                haveMention: haveMention
+            });
+        }
+    }
+
     handlePhotoUpdated = (cid: string, photo: string) => {
         let existing = this.dataSource.getItem(cid);
         if (existing) {
@@ -289,7 +309,6 @@ export class DialogListEngine {
             let msg = formatMessage(event.message);
             this.dataSource.updateItem({
                 ...res,
-                haveMention: event.message.haveMention,
                 unread:
                     !visible || res.unread > unreadCount
                         ? unreadCount
