@@ -741,10 +741,10 @@ class MessageComponentInner extends React.PureComponent<
                     separator={0}
                     className="message-container"
                     flexGrow={1}
-                    maxWidth="calc(100% - 125px)"
+                    maxWidth={!message.isService ? "calc(100% - 125px)" : '100%'}
                 >
                     <XHorizontal alignSelf="stretch">
-                        {sender && (
+                        {!message.isService && sender && (
                             <>
                                 {conversationType === 'PRIVATE' ? (
                                     <UserAvatar
@@ -764,9 +764,9 @@ class MessageComponentInner extends React.PureComponent<
                         <XVertical
                             separator={2}
                             flexGrow={1}
-                            maxWidth="calc(100% - 52px)"
+                            maxWidth={!message.isService ? "calc(100% - 52px)" : "calc(100% - 25px)"}
                         >
-                            <XHorizontal justifyContent="space-between">
+                             {!message.isService && <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal
                                         separator={4}
@@ -802,13 +802,13 @@ class MessageComponentInner extends React.PureComponent<
                                         {date}
                                     </DateComponent>
                                 </XHorizontal>
-                            </XHorizontal>
+                            </XHorizontal>}
                             {content}
                             {!isPost && this.reactionsRender()}
                         </XVertical>
                     </XHorizontal>
                 </XVertical>
-                {this.menuRender()}
+                {!message.isService && this.menuRender()}
             </MessageWrapper>
         );
     }

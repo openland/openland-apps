@@ -1,6 +1,7 @@
 import { MessageFull, MessageFull_mentions } from 'openland-api/Types';
 
 export interface PendingMessage {
+    isService?: false,
     date: string;
     key: string;
     progress: number;
