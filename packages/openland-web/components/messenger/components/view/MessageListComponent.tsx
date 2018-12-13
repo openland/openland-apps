@@ -220,14 +220,18 @@ export class MessageListComponent extends React.PureComponent<
             currentCollapsed = 0;
             return false;
         };
-        for (let m of this.props.messages) {
+
+        for (let i = 0; i < this.props.messages.length; i++) {
+            const prevMessage = i === 0 ? null : this.props.messages[i - 1];
+            const isPrevMessageService = prevMessage && prevMessage.isService;
+            const m = this.props.messages[i];
             let date = parseInt(m.date, 10);
             appendDateIfNeeded(date);
             if (isServerMessage(m)) {
                 messages.push(
                     <MessageComponent
                         key={'message-' + m.id}
-                        compact={shouldCompact(m.sender.id, date)}
+                        compact={shouldCompact(m.sender.id, date) && !isPrevMessageService}
                         sender={m.sender as any}
                         message={m}
                         conversation={this.props.conversation}
