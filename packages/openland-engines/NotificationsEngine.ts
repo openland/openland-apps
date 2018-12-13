@@ -7,9 +7,12 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 
 export class NotificationsEngine {
     readonly engine: MessengerEngine;
+    private blinkingAlreadyStarted: boolean;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
+
+        this.blinkingAlreadyStarted = false;
     }
 
     handleGlobalCounterChanged = (counter: number) => {
@@ -17,7 +20,9 @@ export class NotificationsEngine {
     }
 
     private blinkDocumentTitle = () => {
-        if (!document.hasFocus()) {
+        if (!document.hasFocus() && !this.blinkingAlreadyStarted) {
+            this.blinkingAlreadyStarted = true;
+
             let prevTitle = document.title;
 
             let isBlinkedTitle = false;
@@ -34,6 +39,8 @@ export class NotificationsEngine {
                     document.title = (isBlinkedTitle) ? 'New message · Openland' : originalTitle;
                 } else {
                     document.title = originalTitle;
+
+                    this.blinkingAlreadyStarted = false;
 
                     clearInterval(interval);
                 }
