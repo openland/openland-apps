@@ -1,81 +1,62 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
 
 type XCounterProps = {
     big?: boolean;
     grey?: boolean;
-    color?: string;
-    bgColor?: string;
-    borderColor?: string;
+    count: number;
 };
 
-const XCounterStyled = Glamorous.div<XCounterProps>(
-    ({ grey, big, color, bgColor, borderColor }) => {
-        const shared = {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 600,
-            color: color || '#ffffff',
-            ...(grey
-                ? {
-                      backgroundColor: '#000000',
-                      opacity: 0.2,
-                  }
-                : {
-                      backgroundColor: bgColor || '#1790ff',
-                  }),
-        };
+const XCounterBig = (props: XCounterProps) => (
+    <XView
+        alignItems="center"
+        justifyContent="center"
+        fontWeight="600"
+        color="#ffffff"
+        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#1790ff'}
 
-        if (big) {
-            return {
-                ...shared,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                minWidth: 18,
-                height: 18,
-                borderRadius: 9,
-                fontSize: 12,
-                border: 'none',
-                textAlign: 'center',
-                lineHeight: '10px',
-            };
-        }
-        return {
-            ...shared,
-            height: 15,
-            paddingTop: 0,
-            paddingBottom: 0,
-            paddingLeft: 2,
-            paddingRight: 2,
-            lineHeight: '13px',
-            borderRadius: 5,
-            border: '2px solid ' + (borderColor ? borderColor : 'white'),
-            fontSize: 10,
-            color: color || '#ffffff',
-        };
-    },
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        minWidth={18}
+        height={18}
+        borderRadius={9}
+        fontSize={12}
+        lineHeight="10px"
+        paddingLeft={5}
+        paddingRight={5}
+    >
+        {props.count}
+    </XView>
 );
 
-export const XCounter = ({
-    color,
-    bgColor,
-    borderColor,
-    count,
-    big,
-    grey,
-}: XCounterProps & { count: number }) => {
-    return (
-        <XCounterStyled
-            grey={grey}
-            big={big}
-            className="counter"
-            color={color}
-            bgColor={bgColor}
-            borderColor={borderColor}
-        >
-            <span>{count}</span>
-        </XCounterStyled>
-    );
+const XCounterSmall = (props: XCounterProps) => (
+    <XView
+        alignItems="center"
+        justifyContent="center"
+        fontWeight="600"
+        color="#ffffff"
+        backgroundColor={props.grey ? 'rgba(0, 0, 0, 0.2)' : '#1790ff'}
+
+        whiteSpace="nowrap"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        minWidth={11}
+        height={11}
+        borderRadius={6}
+        fontSize={10}
+        lineHeight="13px"
+        paddingLeft={2}
+        paddingRight={2}
+    >
+        {props.count}
+    </XView>
+);
+
+export const XCounter = (props: XCounterProps) => {
+    if (props.big) {
+        return <XCounterBig {...props} />;
+    } else {
+        return <XCounterSmall {...props} />;
+    }
 };

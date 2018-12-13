@@ -16,8 +16,32 @@ export class NotificationsEngine {
         AppBadge.setBadge(counter);
     }
 
-    handleIncomingMessage = async (cid: string, msg: any) => {
+    private blinkDocumentTitle = () => {
+        if (!document.hasFocus()) {
+            let prevTitle = document.title;
 
+            let isBlinkedTitle = false;
+            let interval = setInterval(() => {
+                isBlinkedTitle = !isBlinkedTitle;
+
+                let originalTitle = prevTitle;
+
+                if (typeof (document as any).realTitle === 'string') {
+                    originalTitle = (document as any).realTitle;
+                }
+
+                if (!document.hasFocus()) {
+                    document.title = (isBlinkedTitle) ? 'New message · Openland' : originalTitle;
+                } else {
+                    document.title = originalTitle;
+
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+    }
+
+    handleIncomingMessage = async (cid: string, msg: any) => {
         let settings = this.engine.client.client.readQuery<SettingsQueryType>({
             query: SettingsQuery.document
         })!!.settings;
@@ -54,6 +78,8 @@ export class NotificationsEngine {
                     id: doSimpleHash(cid).toString(),
                 });
             }
+
+            this.blinkDocumentTitle();
         }
     }
 }

@@ -7,6 +7,7 @@ export interface XAvatar2Props {
     title: string;
     id: string;
     src?: string | null;
+    online?: boolean;
 }
 
 const PlaceholderColor = [
@@ -65,9 +66,27 @@ export const XAvatar2 = React.memo<XAvatar2Props>(props => {
         }
     }
 
+    let online: any = undefined;
+    if (props.online) {
+        online = (
+            <XView
+                position="absolute"
+                bottom={2}
+                right={2}
+                width={10}
+                height={10}
+                borderRadius={5}
+                borderWidth={1}
+                borderColor="#fff"
+                backgroundColor="#5eb2ff"
+            />
+        )
+    }
+
     return (
         <XView width={40} height={40} borderRadius={20}>
             {contents}
+            {online}
         </XView>
     );
 });

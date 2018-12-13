@@ -2692,125 +2692,14 @@ export interface RoomInviteInfoVariables {
 // GraphQL mutation operation: RoomUpdate
 // ====================================================
 
-export interface RoomUpdate_betaRoomUpdate_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomUpdate_betaRoomUpdate_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomUpdate_betaRoomUpdate_PrivateRoom_user_primaryOrganization | null;
-}
-
-export interface RoomUpdate_betaRoomUpdate_PrivateRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  mute: boolean | null;
-}
-
 export interface RoomUpdate_betaRoomUpdate_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: RoomUpdate_betaRoomUpdate_PrivateRoom_user;
-  settings: RoomUpdate_betaRoomUpdate_PrivateRoom_settings;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_members_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_members_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomUpdate_betaRoomUpdate_SharedRoom_members_user_primaryOrganization | null;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_members {
-  __typename: "RoomMember";
-  role: RoomMemberRole;
-  membership: SharedRoomMembershipStatus;
-  user: RoomUpdate_betaRoomUpdate_SharedRoom_members_user;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_requests_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_requests_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  primaryOrganization: RoomUpdate_betaRoomUpdate_SharedRoom_requests_user_primaryOrganization | null;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_requests {
-  __typename: "RoomMember";
-  user: RoomUpdate_betaRoomUpdate_SharedRoom_requests_user;
-}
-
-export interface RoomUpdate_betaRoomUpdate_SharedRoom_settings {
-  __typename: "RoomUserNotificaionSettings";
-  id: string;
-  mute: boolean | null;
 }
 
 export interface RoomUpdate_betaRoomUpdate_SharedRoom {
   __typename: "SharedRoom";
   id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  socialImage: string | null;
-  description: string | null;
-  organization: RoomUpdate_betaRoomUpdate_SharedRoom_organization | null;
-  membership: SharedRoomMembershipStatus;
-  role: RoomMemberRole;
-  membersCount: number | null;
-  members: RoomUpdate_betaRoomUpdate_SharedRoom_members[];
-  requests: RoomUpdate_betaRoomUpdate_SharedRoom_requests[] | null;
-  settings: RoomUpdate_betaRoomUpdate_SharedRoom_settings;
 }
 
 export type RoomUpdate_betaRoomUpdate = RoomUpdate_betaRoomUpdate_PrivateRoom | RoomUpdate_betaRoomUpdate_SharedRoom;

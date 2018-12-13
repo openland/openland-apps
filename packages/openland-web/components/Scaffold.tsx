@@ -115,39 +115,10 @@ const NavigatorItem = Glamorous(XLink)({
     '.is-active': {
         color: '#b4b8bd',
         backgroundColor: 'rgba(0, 0, 0, 0.04)!important',
-        '& > .reports .hover': {
-            display: 'block',
-        },
-        '& > .reports .no-hover': {
-            display: 'none',
-        },
     },
     '&:hover': {
         color: '#b4b8bd',
         backgroundColor: 'rgba(0, 0, 0, 0.04)',
-        '& > .reports .hover': {
-            display: 'block',
-        },
-        '& > .reports .no-hover': {
-            display: 'none',
-        },
-    },
-    '& > .reports': {
-        width: 28,
-        height: 28,
-        display: 'flex',
-        justifyContent: 'center',
-        '& .hover': {
-            display: 'none',
-        },
-        '& .no-hover': {
-            display: 'block',
-        },
-    },
-    '& > .counter': {
-        position: 'absolute',
-        right: 14,
-        top: 12,
     },
     '&:not(.is-active) > .counter': {
         borderColor: '#f6f6f6',
@@ -630,30 +601,6 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
-export const RoomButton = withNotificationCounter(props => {
-    return (
-        <XPopper
-            placement="right"
-            showOnHoverContent={false}
-            showOnHover={true}
-            groupId="scaffold_tooltip"
-            style="dark"
-            padding={-2}
-            content={<strong>{TextAppBar.items.room}</strong>}
-        >
-            <NavigatorItem path="/channel" activateForSubpaths={true}>
-                <RoomIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <XCounter
-                        borderColor="#f5f7f9"
-                        count={props.data.counter.unreadCount}
-                    />
-                )}
-            </NavigatorItem>
-        </XPopper>
-    );
-});
-
 export const MessengerButton = withNotificationCounter(props => {
     return (
         <XPopper
@@ -668,10 +615,16 @@ export const MessengerButton = withNotificationCounter(props => {
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <MessagesIcon />
                 {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <XCounter
+                    <XView
+                        position="absolute"
+                        right={14}
+                        top={12}
+                        borderWidth={2}
                         borderColor="#ececec"
-                        count={props.data.counter.unreadCount}
-                    />
+                        borderRadius={8}
+                    >
+                        <XCounter count={props.data.counter.unreadCount} />
+                    </XView>
                 )}
             </NavigatorItem>
         </XPopper>

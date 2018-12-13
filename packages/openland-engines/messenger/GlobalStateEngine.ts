@@ -72,6 +72,10 @@ let GLOBAL_SUBSCRIPTION = gql`
             cid
             isMuted
         }
+        ... on DialogPhotoUpdated {
+            cid
+            photo
+        }
         ... on DialogDeleted {
             cid
             globalUnread
@@ -258,7 +262,15 @@ export class GlobalStateEngine {
             // Notifications
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
-            // TODO: Update dialog list
+            this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id);
+        } else if (event.__typename === 'DialogTitleUpdated') {
+            console.warn('new title ', event);
+            this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
+            this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
+        } else if (event.__typename === 'DialogPhotoUpdated') {
+            console.warn('new photo ', event);
+            this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
+            this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo)
         } else if (event.__typename === 'DialogMessageUpdated') {
             // Dialogs List
             console.log(event);

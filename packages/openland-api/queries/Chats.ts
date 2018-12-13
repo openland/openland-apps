@@ -402,8 +402,13 @@ export const RoomInviteInfoQuery = gql`
 
 export const RoomUpdateMutation = gql`
     mutation RoomUpdate($roomId: ID!, $input: RoomUpdateInput!) {
-        betaRoomUpdate(roomId: $roomId, input: $input) {
-            ...RoomFull
+        betaRoomUpdate(roomId: $roomId, input: $input){
+            ... on PrivateRoom {
+                id
+            }
+            ... on SharedRoom {
+                id
+            }
         }
     }
     ${RoomFull}
