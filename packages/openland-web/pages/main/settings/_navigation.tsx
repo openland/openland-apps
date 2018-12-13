@@ -15,18 +15,10 @@ export const Navigation = (props: { title: string; children?: any }) => (
         <Scaffold>
             <Scaffold.Menu>
                 <Sidebar title="Settings">
-                    <Sidebar.Item path="/settings/profile">
-                        Profile
-                    </Sidebar.Item>
-                    <Sidebar.Item path="/settings/notifications">
-                        Notifications
-                    </Sidebar.Item>
-                    <Sidebar.Item path="/settings/invites">
-                        Invites
-                    </Sidebar.Item>
-                    <Sidebar.Item path="/settings/dev">
-                        Developer keys
-                    </Sidebar.Item>
+                    <Sidebar.Item path="/settings/profile" arrow={true}>Profile</Sidebar.Item>
+                    <Sidebar.Item path="/settings/notifications" arrow={true}>Notifications</Sidebar.Item>
+                    {/* <Sidebar.Item path="/settings/invites" arrow={true}>Invites</Sidebar.Item> */}
+                    <Sidebar.Item path="/settings/dev" arrow={true}>Developer keys</Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false}>

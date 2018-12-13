@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     fill: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#ebebeb',
     } as ViewStyle,
     absoluteFill: {
         position: 'absolute',
@@ -551,7 +550,7 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
         );
 
         // Content offset for device
-        let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top + 1;
+        let contentInset = SDevice.navigationBarHeight + SDevice.statusBarHeight + SDevice.safeArea.top;
 
         return (
             <View style={[styles.fill, this.props.style.isOpaque && { paddingTop: contentInset }]} {...(Platform.OS === 'ios' ? this.panResponder.panHandlers : {})}>

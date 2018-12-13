@@ -146,7 +146,7 @@ const Styles = (props: {
         left: 0,
         lineHeight: 'normal',
         paddingLeft: 16,
-        paddingRight: 10,
+        paddingRight: props.noArrow ? 16 : 42,
         position: 'absolute',
         right: 0,
         top: 0,
@@ -242,8 +242,9 @@ const Styles = (props: {
         position: 'relative',
         textAlign: 'center',
         verticalAlign: 'middle',
-        width: 25,
-        paddingRight: 5,
+        width: 10,
+        right: 16,
+        paddingRight: '0 !important',
     },
     '&.Select--rtl .Select-arrow-zone': {
         paddingRight: 0,
@@ -540,42 +541,50 @@ export class XSelectBasic extends React.PureComponent<
     };
 
     valueWithSubtitleRender: any = (option: any) => (
-        <XView marginTop={2}>
-            <XView
+        <XView marginTop={1}>
+            <Glamorous.Div
                 fontSize={14}
-                lineHeight="16px"
+                lineHeight="18px"
+                fontWeight={600}
                 opacity={0.9}
-                marginBottom={4}
+                marginBottom={3}
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
             >
                 {option.label}
-            </XView>
-            <XView
-                fontSize={12}
+            </Glamorous.Div>
+            <Glamorous.Div
+                fontSize={14}
                 lineHeight="20px"
-                opacity={0.4}
+                opacity={0.5}
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
             >
                 {option.subtitle}
-            </XView>
+            </Glamorous.Div>
         </XView>
     );
 
     optionWithSubtitleHelpRender: any = (option: any) => (
         <XView
-            marginTop={2}
-            marginBottom={-2}
+            marginTop={1}
+            marginBottom={-1}
         >
             <XView
                 fontSize={14}
-                lineHeight="16px"
+                lineHeight="18px"
+                fontWeight={600}
                 opacity={0.9}
-                marginBottom={4}
+                marginBottom={3}
             >
                 {option.label}
             </XView>
             <XView
-                fontSize={12}
+                fontSize={14}
                 lineHeight="20px"
-                opacity={0.4}
+                opacity={0.5}
             >
                 {option.subtitle}
             </XView>

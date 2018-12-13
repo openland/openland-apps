@@ -10,6 +10,8 @@ import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
+import { emojify } from 'react-emojione';
+
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
@@ -24,6 +26,7 @@ export interface DialogDataSourceItem {
     messageId?: string;
     date?: number;
     message?: string;
+    messageEmojified?: any;
     sender?: string;
     isOut?: boolean;
     fileMeta?: { isImage?: boolean };
@@ -32,6 +35,9 @@ export interface DialogDataSourceItem {
 export function formatMessage(
     message: Dialogs_dialogs_items_topMessage | any,
 ): string {
+    if (!message) {
+        return '';
+    }
     if (message.__typename === 'Message') {
         return message.text || '';
     }
@@ -71,6 +77,7 @@ export const extractDialog = (
     }: Dialogs_dialogs_items,
     uid: string,
 ): DialogDataSourceItem => {
+    let msg = formatMessage(betaTopMessage);
     return {
         online: undefined,
         haveMention,
@@ -81,7 +88,7 @@ export const extractDialog = (
         key: cid,
         flexibleId: fid,
         unread: unreadCount,
-        message: formatMessage(betaTopMessage),
+        message: msg,
         fileMeta: betaTopMessage
             ? betaTopMessage.fileMetadata || undefined
             : undefined,
@@ -93,6 +100,15 @@ export const extractDialog = (
             : undefined,
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
+        messageEmojified: msg
+            ? emojify(msg, {
+                  style: {
+                      height: 13,
+                      backgroundImage:
+                          'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                  },
+              })
+            : undefined,
     };
 };
 
@@ -200,10 +216,7 @@ export class DialogListEngine {
         }
     };
 
-    handleIsMuted = (
-        conversationId: string,
-        isMuted: boolean,
-    ) => {
+    handleIsMuted = (conversationId: string, isMuted: boolean) => {
         let res = this.dataSource.getItem(conversationId);
         if (res) {
             this.dataSource.updateItem({
@@ -241,6 +254,7 @@ export class DialogListEngine {
         let isOut = event.message.sender.id === this.engine.user.id;
         let sender = isOut ? 'You' : event.message.sender.name;
         if (res) {
+            let msg = formatMessage(event.message);
             this.dataSource.updateItem({
                 ...res,
                 haveMention: event.message.haveMention,
@@ -251,7 +265,16 @@ export class DialogListEngine {
                 isOut: isOut,
                 sender: sender,
                 messageId: event.message.id,
-                message: formatMessage(event.message),
+                message: msg,
+                messageEmojified: msg
+                    ? emojify(msg, {
+                          style: {
+                              height: 13,
+                              backgroundImage:
+                                  'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                          },
+                      })
+                    : undefined,
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
             });
@@ -278,7 +301,9 @@ export class DialogListEngine {
                     ? (info.data.room as Room_room_PrivateRoom)
                     : null;
             let room = (sharedRoom || privateRoom)!;
-            
+
+            let msg = formatMessage(event.message);
+
             this.dataSource.addItem(
                 {
                     key: conversationId,
@@ -301,7 +326,16 @@ export class DialogListEngine {
                     isOut: isOut,
                     sender: sender,
                     messageId: event.message.id,
-                    message: formatMessage(event.message),
+                    message: msg,
+                    messageEmojified: msg
+                        ? emojify(msg, {
+                              style: {
+                                  height: 13,
+                                  backgroundImage:
+                                      'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+                              },
+                          })
+                        : undefined,
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,
                     online: privateRoom ? privateRoom.user.online : false,

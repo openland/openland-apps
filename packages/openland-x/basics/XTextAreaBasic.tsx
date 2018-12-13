@@ -34,6 +34,7 @@ let sizeStyles = styleResolver({
 
 const TextAreaStyled = Glamorous.textarea <TextAreaStyledProps & XFlexStyles> ([
     (props: TextAreaStyledProps) => ({
+        display: 'block',
         width: '100%',
         minHeight: props.maxheight ? props.maxheight : 100,
         background: props.disabled ? '#f8f8f8' : '#ffffff',

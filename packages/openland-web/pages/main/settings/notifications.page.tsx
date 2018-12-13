@@ -25,8 +25,8 @@ import NotificationsFirefoxIcon from './icons/ic-notifications-firefox-2.svg';
 const Container = (props: { children?: any }) => (
     <XView
         paddingTop={16}
-        paddingLeft={24}
-        paddingRight={24}
+        paddingLeft={30}
+        paddingRight={30}
     >
         {props.children}
     </XView>
@@ -37,7 +37,7 @@ const Header = (props: { children?: any }) => (
         fontSize={22}
         lineHeight="24px"
         opacity={0.9}
-        marginBottom={31}
+        marginBottom={25}
     >
         {props.children}
     </XView>
@@ -50,11 +50,11 @@ const Group = (props: { children?: any }) => (
 );
 
 const GroupText = Glamorous.div({
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: '20px',
-    marginTop: -15,
+    marginTop: -3,
     marginBottom: 16,
-    opacity: 0.5,
+    opacity: 0.9,
 
     '&:last-child': {
         marginBottom: 0
@@ -69,7 +69,8 @@ const GroupTitle = (props: { children?: any }) => (
     <XView
         fontSize={16}
         lineHeight="20px"
-        marginBottom={23}
+        fontWeight={600}
+        marginBottom={12}
     >
         {props.children}
     </XView>
@@ -141,14 +142,12 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
 
     render () {
         if (canUseDOM) {
-            let isInternetExplorer = /MSIE\/\d./i.test(navigator.userAgent);
-            let isEdge = /Edge\/\d./i.test(navigator.userAgent);
             let isFirefox = /Firefox\/\d./i.test(navigator.userAgent);
             let isOpera = /Opera\/\d./i.test(navigator.userAgent) || /OPR\/\d./i.test(navigator.userAgent);
             let isChrome = !isOpera && /Chrome\/\d./i.test(navigator.userAgent);
-            let isSafari = !isChrome && !isOpera && /Safari\/\d./i.test(navigator.userAgent);
+            let isSafari = !isChrome && /Safari\/\d./i.test(navigator.userAgent);
 
-            let isBrowserWithoutNotifications = isInternetExplorer || isEdge || isSafari || isOpera;
+            let SupportedBrowsers = isChrome || isFirefox;
 
             let { notificationsState } = this.state;
 
@@ -164,7 +163,7 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                         </GroupText>
                     )}
 
-                    {notificationsState !== 'granted' && isBrowserWithoutNotifications && (
+                    {notificationsState !== 'granted' && !SupportedBrowsers && (
                         <GroupText>
                             Notifications are turned off in this browser.
                             <br />
@@ -172,7 +171,7 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                         </GroupText>
                     )}
 
-                    {notificationsState !== 'granted' && !isBrowserWithoutNotifications && (
+                    {notificationsState !== 'granted' && SupportedBrowsers && (
                         <>
                             <GroupText>
                                 Notifications are disabled for this browser.
@@ -241,13 +240,14 @@ const MobileApp = Glamorous.a<{ system: 'ios' | 'android'}>(props => ({
     backgroundSize: '100% 100%',
     backgroundImage: props.system === 'ios' ? 'url(/static/X/settings/appstore@2x.png)' : 'url(/static/X/settings/googleplay@2x.png)',
     opacity: 0.5,
+    marginRight: 18,
 
     '&:hover': {
         opacity: 0.8
     },
 
-    '&:first-child': {
-        marginRight: 12
+    '&:last-child': {
+        marginRight: 0
     }
 }));
 

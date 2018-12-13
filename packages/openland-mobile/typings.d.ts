@@ -35,6 +35,7 @@ declare module 'react-tree-walker' {
 }
 
 declare module 'react-native-dialogs' {
-    export function showPicker(title: string | null, msessage: string | null, options?: { items?: { label: string, id: string }[] }): Promise<{ selectedItem: { label: string, id: string } }>
+    export function showPicker(title?: string | null, msessage?: string | null, options?: { items?: { label: string, id: string }[] }): Promise<{ selectedItem: { label: string, id: string } }>
+    export function prompt(title?: string | null, content?: string | null, options?: { content?: string | null }): Promise<{ action: string, text: string }>
 }
 

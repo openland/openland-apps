@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XLink } from 'openland-x/XLink';
-import XStyles from 'openland-x/XStyles';
+import { XLink, XLinkProps } from 'openland-x/XLink';
+import RightIcon from './icons/ic-arrow-rignt.svg';
 
 interface SidebarContainerProps {
     width?: number;
@@ -22,58 +22,76 @@ const SidebarContainer = Glamorous.div<SidebarContainerProps>(props => ({
 const SidebarHeader = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    paddingLeft: XStyles.paddings.large,
-    paddingRight: XStyles.paddings.large,
-    paddingTop: XStyles.paddings.large,
-    paddingBottom: XStyles.paddings.xlarge,
     flexShrink: 0,
+    paddingTop: 16,
+    paddingLeft: 16,
+    paddingBottom: 21,
+    paddingRight: 16,
 
-    fontSize: 18,
-    fontWeight: 500,
-    lineHeight: 1.33,
-    letterSpacing: -0.3,
-    color: '#334562',
-    // ...XStyles.text.h600
+    fontSize: 22,
+    fontWeight: 400,
+    lineHeight: '24px',
+    color: 'rgba(0, 0, 0, 0.9)',
 });
 
-export const SidebarItem = Glamorous(XLink)({
+interface SidebarItemProps extends XLinkProps {
+    arrow?: boolean;
+    children?: any;
+}
+
+const SidebarItemWrapper = Glamorous(XLink)<SidebarItemProps>(props => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 40,
+    height: 44,
     fontSize: 14,
-    fontWeight: 600,
-    lineHeight: 1.14,
-    letterSpacing: -0.2,
-    color: '#334562',
+    lineHeight: '20px',
+    color: '#000000',
     paddingLeft: 16,
-    paddingRight: 16,
+    paddingRight: props.arrow ? 15 : 16,
     '&:hover': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#000000',
+        backgroundColor: '#f9f9f9',
     },
     '&.is-active': {
-        color: '#1790ff',
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#000000',
+        backgroundColor: '#f9f9f9',
+        cursor: 'default',
     },
-});
+    '& .arrow path:last-child': {
+        opacity: 0.2,
+        fill: '#000000',
+    },
+}));
+
+export const SidebarItem = (props: SidebarItemProps) => {
+    let { children, ...others } = props;
+
+    return (
+        <SidebarItemWrapper {...others}>
+            {children}
+            {props.arrow && <RightIcon className="arrow" />}
+        </SidebarItemWrapper>
+    );
+};
 
 export const SidebarSubItem = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
     height: 40,
     fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.14,
-    letterSpacing: -0.2,
-    color: '#5c6a81',
+    lineHeight: '20px',
+    color: '#000000',
     paddingLeft: 36,
-    paddingRight: 16,
+    paddingRight: 24,
     '&:hover': {
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#000000',
+        backgroundColor: '#f9f9f9',
     },
     '&.is-active': {
-        color: '#1790ff',
-        backgroundColor: 'rgba(23, 144, 255, 0.05)',
+        color: '#000000',
+        backgroundColor: '#f9f9f9',
+        cursor: 'default',
     },
 });
 
