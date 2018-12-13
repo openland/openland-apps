@@ -303,9 +303,13 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 
         let mentionsFinal = mentions || [];
         if (alphaMentions) {
-            mentionsFinal = alphaMentions.map(({ user }: any) => {
-                return user;
-            });
+            mentionsFinal = alphaMentions
+                .filter(({ __typename }: any) => {
+                    return __typename === 'UserMention';
+                })
+                .map(({ user }: any) => {
+                    return user;
+                });
         }
 
         if (isService) {
@@ -486,7 +490,7 @@ export class MessageTextComponent extends React.PureComponent<
                 );
             } else {
                 let text = v.text!!;
-            
+
                 if (
                     (this.props.mentions && this.props.mentions.length !== 0) ||
                     (this.props.alphaMentions &&
