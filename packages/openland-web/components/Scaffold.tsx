@@ -619,11 +619,11 @@ export const MessengerButton = withNotificationCounter(props => {
                         position="absolute"
                         right={14}
                         top={12}
+                        borderWidth={2}
+                        borderColor="#ececec"
+                        borderRadius={6}
                     >
-                        <XCounter
-                            borderColor="#ececec"
-                            count={props.data.counter.unreadCount}
-                        />
+                        <XCounter count={props.data.counter.unreadCount} />
                     </XView>
                 )}
             </NavigatorItem>

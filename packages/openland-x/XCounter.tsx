@@ -4,7 +4,6 @@ import { XView } from 'react-mental';
 type XCounterProps = {
     big?: boolean;
     grey?: boolean;
-    borderColor?: string;
     count: number;
 };
 
@@ -26,9 +25,6 @@ const XCounterBig = (props: XCounterProps) => (
         lineHeight="10px"
         paddingLeft={5}
         paddingRight={5}
-
-        borderWidth={props.borderColor ? 2 : undefined}
-        borderColor={props.borderColor}
     >
         {props.count}
     </XView>
@@ -45,15 +41,13 @@ const XCounterSmall = (props: XCounterProps) => (
         whiteSpace="nowrap"
         overflow="hidden"
         textOverflow="ellipsis"
-        height={15}
-        borderRadius={5}
+        minWidth={11}
+        height={11}
+        borderRadius={6}
         fontSize={10}
         lineHeight="13px"
         paddingLeft={2}
         paddingRight={2}
-
-        borderWidth={2}
-        borderColor={props.borderColor || '#ffffff'}
     >
         {props.count}
     </XView>
