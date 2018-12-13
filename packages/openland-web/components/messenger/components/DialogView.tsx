@@ -5,6 +5,7 @@ import { XDate } from 'openland-x/XDate';
 import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
 import ForwardIcon from './icons/ic-reply-2.svg';
+import MentionIcon from './icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XLink2 } from 'openland-x/XLink2';
@@ -199,7 +200,9 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                         {dialog.unread > 0 && (
                             <>
                                 {haveMention && (
-                                    <XView alignSelf="center">@</XView>
+                                    <XView alignSelf="center" paddingLeft={12} marginRight={-6}>
+                                        <MentionIcon />
+                                    </XView>
                                 )}
                                 <XView paddingLeft={12} alignSelf="center">
                                     <XCounter
