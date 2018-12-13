@@ -456,7 +456,7 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             }
         );
-        (info as any).room.mute = mute;
+        (info as any).room.settings.mute = mute;
         this.engine.client.client.writeQuery({
             query: RoomQuery.document,
             variables: { roomId: this.conversationId },
