@@ -102,6 +102,9 @@ export const XDocumentHead = withRouter<{ title?: string | string[], titleWithou
             img = 'https://ucarecdn.com/' + props.imgCloud;
         }
 
+        // It is necessary for BlinkTitleOnNewMessage when the page real title changes during blinking.
+        (document as any).realTitle = title;
+
         return (
             <Head>
                 <title key="page_title">{title}</title>
