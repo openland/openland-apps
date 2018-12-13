@@ -61,8 +61,7 @@ export const JoinedUserPopperRow = ({
     title,
     subtitle,
     userInfo: { photo, name, id },
-    onMessageClick,
-}: JoinedUserPopperRowProps & { onMessageClick: Function }) => {
+}: JoinedUserPopperRowProps) => {
     return (
         <XView
             cursor="pointer"
@@ -89,9 +88,8 @@ export const JoinedUserPopperRow = ({
                 text="Message"
                 style="primary"
                 size="tiny"
-                onClick={() => {
-                    onMessageClick(id);
-                }}
+                path={'/mail/' + id}
+                
             />
         </XView>
     );
@@ -99,23 +97,17 @@ export const JoinedUserPopperRow = ({
 
 export const JoinedUsersPopper = ({
     items,
-    onItemMessageClick,
 }: {
     items: JoinedUserPopperRowProps[];
-    onItemMessageClick: (id: string) => void;
 }) => {
     return (
-        <div>
+        <>
             {items.map((item, key) => {
                 return (
-                    <JoinedUserPopperRow
-                        {...item}
-                        onMessageClick={onItemMessageClick}
-                        key={key}
-                    />
+                    <JoinedUserPopperRow {...item} key={key}/>
                 );
             })}
-        </div>
+        </>
     );
 };
 
