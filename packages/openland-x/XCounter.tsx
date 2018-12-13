@@ -40,6 +40,10 @@ const XCounterStyled = Glamorous.div<XCounterProps>(
                 border: 'none',
                 textAlign: 'center',
                 lineHeight: '10px',
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 5,
+                paddingRight: 5,
             };
         }
         return {
