@@ -27,18 +27,22 @@ const Styles = (props: {
     withSubtitle?: boolean;
 }) => ({
     minWidth: 100,
-    ...(props.invalid ? {
-            '&.Select > .Select-control': {
-                border: '1px solid #e26363',
-            },
-        } : {}),
-    ...(props.noArrow ? {
-            '&.Select > .Select-control .Select-arrow': {
-                display: 'none',
-            },
-        } : {}),
+    ...(props.invalid
+        ? {
+              '&.Select > .Select-control': {
+                  border: '1px solid #e26363',
+              },
+          }
+        : {}),
+    ...(props.noArrow
+        ? {
+              '&.Select > .Select-control .Select-arrow': {
+                  display: 'none',
+              },
+          }
+        : {}),
     '&.Select': {
-        position: 'relative'
+        position: 'relative',
     },
     '&.Select input::-webkit-contacts-auto-fill-button, &.Select input::-webkit-credentials-auto-fill-button': {
         display: 'none !important',
@@ -178,7 +182,7 @@ const Styles = (props: {
         outline: 'none',
         WebkitAppearance: 'none',
         fontSize: props.large === true ? 15 : 14,
-        fontWeight: 400,
+        fontWeight: '400',
         alignSelf: 'center',
         verticalAlign: 'middle',
         marginTop: props.large === true ? 8 : 4,
@@ -303,7 +307,7 @@ const Styles = (props: {
         maxHeight: 198,
         overflowY: 'auto',
         paddingTop: 8,
-        paddingBottom: 8
+        paddingBottom: 8,
     },
     '& .Select-option': {
         boxSizing: 'border-box',
@@ -421,42 +425,56 @@ const Styles = (props: {
     },
 });
 
-const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<ReactAsyncSelectProps>;
-const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<ReactSelectProps & { invalid?: boolean; noArrow?: boolean; withSubtitle?: boolean }>;
-const StyledSelectCreatable = Glamorous(Creatable)(Styles) as React.ComponentType<ReactCreatableSelectProps & { invalid?: boolean; noArrow?: boolean }>;
+const StyledAsync = Glamorous(Async)(Styles) as React.ComponentType<
+    ReactAsyncSelectProps
+>;
+const StyledSelect = Glamorous(Select)(Styles) as React.ComponentType<
+    ReactSelectProps & {
+        invalid?: boolean;
+        noArrow?: boolean;
+        withSubtitle?: boolean;
+    }
+>;
+const StyledSelectCreatable = Glamorous(Creatable)(
+    Styles,
+) as React.ComponentType<
+    ReactCreatableSelectProps & { invalid?: boolean; noArrow?: boolean }
+>;
 
 const SelectWrapper = Glamorous.div({
     position: 'relative',
 });
 
 const Title = Glamorous.div<{ inside?: boolean }>(props =>
-    props.inside ? {
-        top: 1,
-        left: 17,
-        height: 38,
-        fontSize: 14,
-        lineHeight: '38px',
-        position: 'absolute',
-        paddingLeft: 0,
-        paddingRight: 0,
-        backgroundColor: 'white',
-        color: 'rgba(0, 0, 0, 0.4)',
-        zIndex: 2,
-        pointerEvents: 'none',
-    } : {
-        top: -10,
-        left: 13,
-        height: 20,
-        fontSize: 12,
-        lineHeight: '20px',
-        position: 'absolute',
-        paddingLeft: 3,
-        paddingRight: 3,
-        backgroundColor: 'white',
-        color: 'rgba(0, 0, 0, 0.4)',
-        zIndex: 2,
-        pointerEvents: 'none',
-    },
+    props.inside
+        ? {
+              top: 1,
+              left: 17,
+              height: 38,
+              fontSize: 14,
+              lineHeight: '38px',
+              position: 'absolute',
+              paddingLeft: 0,
+              paddingRight: 0,
+              backgroundColor: 'white',
+              color: 'rgba(0, 0, 0, 0.4)',
+              zIndex: 2,
+              pointerEvents: 'none',
+          }
+        : {
+              top: -10,
+              left: 13,
+              height: 20,
+              fontSize: 12,
+              lineHeight: '20px',
+              position: 'absolute',
+              paddingLeft: 3,
+              paddingRight: 3,
+              backgroundColor: 'white',
+              color: 'rgba(0, 0, 0, 0.4)',
+              zIndex: 2,
+              pointerEvents: 'none',
+          },
 );
 
 export type XSelectBasicProps = ReactSelectProps & {
@@ -568,24 +586,17 @@ export class XSelectBasic extends React.PureComponent<
     );
 
     optionWithSubtitleHelpRender: any = (option: any) => (
-        <XView
-            marginTop={1}
-            marginBottom={-1}
-        >
+        <XView marginTop={1} marginBottom={-1}>
             <XView
                 fontSize={14}
                 lineHeight="18px"
-                fontWeight={600}
+                fontWeight={'600'}
                 opacity={0.9}
                 marginBottom={3}
             >
                 {option.label}
             </XView>
-            <XView
-                fontSize={14}
-                lineHeight="20px"
-                opacity={0.5}
-            >
+            <XView fontSize={14} lineHeight="20px" opacity={0.5}>
                 {option.subtitle}
             </XView>
         </XView>

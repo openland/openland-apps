@@ -12,7 +12,12 @@ import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { NotificationMessages, Settings_settings, SettingsUpdate, SettingsUpdateVariables } from 'openland-api/Types';
+import {
+    NotificationMessages,
+    Settings_settings,
+    SettingsUpdate,
+    SettingsUpdateVariables,
+} from 'openland-api/Types';
 import { MutationFunc } from 'react-apollo';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
@@ -23,30 +28,19 @@ import NotificationsIcon from './icons/ic-notifications.svg';
 import NotificationsFirefoxIcon from './icons/ic-notifications-firefox-2.svg';
 
 const Container = (props: { children?: any }) => (
-    <XView
-        paddingTop={16}
-        paddingLeft={30}
-        paddingRight={30}
-    >
+    <XView paddingTop={16} paddingLeft={30} paddingRight={30}>
         {props.children}
     </XView>
 );
 
 const Header = (props: { children?: any }) => (
-    <XView
-        fontSize={22}
-        lineHeight="24px"
-        opacity={0.9}
-        marginBottom={25}
-    >
+    <XView fontSize={22} lineHeight="24px" opacity={0.9} marginBottom={25}>
         {props.children}
     </XView>
 );
 
 const Group = (props: { children?: any }) => (
-    <XView maxWidth={570}>
-        {props.children}
-    </XView>
+    <XView maxWidth={570}>{props.children}</XView>
 );
 
 const GroupText = Glamorous.div({
@@ -57,39 +51,29 @@ const GroupText = Glamorous.div({
     opacity: 0.9,
 
     '&:last-child': {
-        marginBottom: 0
+        marginBottom: 0,
     },
 
     '> strong': {
-        fontWeight: 600
-    }
+        fontWeight: 600,
+    },
 });
 
 const GroupTitle = (props: { children?: any }) => (
-    <XView
-        fontSize={16}
-        lineHeight="20px"
-        fontWeight={600}
-        marginBottom={12}
-    >
+    <XView fontSize={16} lineHeight="20px" fontWeight={'600'} marginBottom={12}>
         {props.children}
     </XView>
 );
 
 const GroupSubTitle = (props: { children?: any }) => (
-    <XView
-        fontSize={14}
-        lineHeight="16px"
-        paddingTop={4}
-        marginBottom={12}
-    >
+    <XView fontSize={14} lineHeight="16px" paddingTop={4} marginBottom={12}>
         {props.children}
     </XView>
 );
 
 const Instruction = Glamorous.div({
     paddingTop: 4,
-    paddingBottom: 40
+    paddingBottom: 40,
 });
 
 const InstructionItem = Glamorous.div({
@@ -99,53 +83,59 @@ const InstructionItem = Glamorous.div({
     marginBottom: 20,
 
     '&:last-child': {
-        marginBottom: 0
+        marginBottom: 0,
     },
 
     '& svg': {
         display: 'inline-block',
         verticalAlign: 'top',
-        opacity: 0.7
+        opacity: 0.7,
     },
 
     '& strong': {
-        fontWeight: 600
-    }
+        fontWeight: 600,
+    },
 });
 
-class BrowserNotifications extends React.Component<{}, { notificationsState: AppNotifcationsState }> {
-    constructor (props: {}) {
+class BrowserNotifications extends React.Component<
+    {},
+    { notificationsState: AppNotifcationsState }
+> {
+    constructor(props: {}) {
         super(props);
 
         this.state = {
-            notificationsState: AppNotifications.state
-        }
+            notificationsState: AppNotifications.state,
+        };
 
         AppNotifications.watch(this.handleNotificationsState);
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         AppNotifications.unwatch(this.handleNotificationsState);
     }
 
     handleNotificationsState = (state: AppNotifcationsState) => {
         if (state !== this.state.notificationsState) {
             this.setState({
-                notificationsState: state
+                notificationsState: state,
             });
         }
-    }
+    };
 
     handleEnableClick = () => {
         AppNotifications.requestPermission();
-    }
+    };
 
-    render () {
+    render() {
         if (canUseDOM) {
             let isFirefox = /Firefox\/\d./i.test(navigator.userAgent);
-            let isOpera = /Opera\/\d./i.test(navigator.userAgent) || /OPR\/\d./i.test(navigator.userAgent);
+            let isOpera =
+                /Opera\/\d./i.test(navigator.userAgent) ||
+                /OPR\/\d./i.test(navigator.userAgent);
             let isChrome = !isOpera && /Chrome\/\d./i.test(navigator.userAgent);
-            let isSafari = !isChrome && /Safari\/\d./i.test(navigator.userAgent);
+            let isSafari =
+                !isChrome && /Safari\/\d./i.test(navigator.userAgent);
 
             let SupportedBrowsers = isChrome || isFirefox;
 
@@ -159,7 +149,8 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                         <GroupText>
                             Notifications are turned on in this browser.
                             <br />
-                            You can always change it in your browser preferences.
+                            You can always change it in your browser
+                            preferences.
                         </GroupText>
                     )}
 
@@ -167,7 +158,8 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                         <GroupText>
                             Notifications are turned off in this browser.
                             <br />
-                            You can always change it in your browser preferences.
+                            You can always change it in your browser
+                            preferences.
                         </GroupText>
                     )}
 
@@ -191,30 +183,52 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
                                 <XModal
                                     title="Turn on browser notifications for Openland"
                                     useTopCloser={true}
-                                    target={(
+                                    target={
                                         <XButton
                                             alignSelf="flex-start"
                                             style="warning"
                                             size="small"
                                             text="Enable"
                                         />
-                                    )}
-                                    footer={(
+                                    }
+                                    footer={
                                         <XModalFooter>
-                                            <XButton text="Got it" style="primary" autoClose={true} />
+                                            <XButton
+                                                text="Got it"
+                                                style="primary"
+                                                autoClose={true}
+                                            />
                                         </XModalFooter>
-                                    )}
+                                    }
                                 >
                                     {isChrome && (
                                         <Instruction>
-                                            <InstructionItem>1. Click <LockIcon /> in your browser's address bar.</InstructionItem>
-                                            <InstructionItem>2. Locate <NotificationsIcon /> <strong>Notifications</strong> and select "Allow".</InstructionItem>
+                                            <InstructionItem>
+                                                1. Click <LockIcon /> in your
+                                                browser's address bar.
+                                            </InstructionItem>
+                                            <InstructionItem>
+                                                2. Locate <NotificationsIcon />{' '}
+                                                <strong>Notifications</strong>{' '}
+                                                and select "Allow".
+                                            </InstructionItem>
                                         </Instruction>
                                     )}
                                     {isFirefox && (
                                         <Instruction>
-                                            <InstructionItem>1. Click <LockIcon /> in your browser's address bar.</InstructionItem>
-                                            <InstructionItem>2. Locate <NotificationsFirefoxIcon /> <strong>Receive notifications</strong> and select <CloseIcon /> next to «Blocked».</InstructionItem>
+                                            <InstructionItem>
+                                                1. Click <LockIcon /> in your
+                                                browser's address bar.
+                                            </InstructionItem>
+                                            <InstructionItem>
+                                                2. Locate{' '}
+                                                <NotificationsFirefoxIcon />{' '}
+                                                <strong>
+                                                    Receive notifications
+                                                </strong>{' '}
+                                                and select <CloseIcon /> next to
+                                                «Blocked».
+                                            </InstructionItem>
                                         </Instruction>
                                     )}
                                 </XModal>
@@ -231,34 +245,47 @@ class BrowserNotifications extends React.Component<{}, { notificationsState: App
             );
         }
     }
-};
+}
 
-const MobileApp = Glamorous.a<{ system: 'ios' | 'android'}>(props => ({
+const MobileApp = Glamorous.a<{ system: 'ios' | 'android' }>(props => ({
     width: 103,
     height: props.system === 'ios' ? 33 : 34,
     background: 'center center no-repeat',
     backgroundSize: '100% 100%',
-    backgroundImage: props.system === 'ios' ? 'url(/static/X/settings/appstore@2x.png)' : 'url(/static/X/settings/googleplay@2x.png)',
+    backgroundImage:
+        props.system === 'ios'
+            ? 'url(/static/X/settings/appstore@2x.png)'
+            : 'url(/static/X/settings/googleplay@2x.png)',
     opacity: 0.5,
     marginRight: 18,
 
     '&:hover': {
-        opacity: 0.8
+        opacity: 0.8,
     },
 
     '&:last-child': {
-        marginRight: 0
-    }
+        marginRight: 0,
+    },
 }));
 
 const MobileApps = () => (
     <Group>
         <GroupTitle>Mobile apps</GroupTitle>
-        <GroupText>Install Openland mobile app to receive new messages on the go.</GroupText>
+        <GroupText>
+            Install Openland mobile app to receive new messages on the go.
+        </GroupText>
 
         <XView flexDirection="row">
-            <MobileApp system="ios" href="https://oplnd.com/ios" target="_blank" />
-            <MobileApp system="android" href="https://oplnd.com/android_beta" target="_blank" />
+            <MobileApp
+                system="ios"
+                href="https://oplnd.com/ios"
+                target="_blank"
+            />
+            <MobileApp
+                system="android"
+                href="https://oplnd.com/android_beta"
+                target="_blank"
+            />
         </XView>
     </Group>
 );
@@ -273,41 +300,44 @@ interface NotificationsSettingsPageState {
     isEmailSelectChanged: boolean;
 }
 
-class NotificationsSettingsPageInner extends React.Component<NotificationsSettingsPageProps, NotificationsSettingsPageState> {
+class NotificationsSettingsPageInner extends React.Component<
+    NotificationsSettingsPageProps,
+    NotificationsSettingsPageState
+> {
     constructor(props: NotificationsSettingsPageProps) {
         super(props);
 
         this.state = {
             isNotificationSelectChanged: false,
-            isEmailSelectChanged: false
-        }
+            isEmailSelectChanged: false,
+        };
     }
 
     handleNotificationSelectChange = () => {
         this.setState({
-            isNotificationSelectChanged: true
+            isNotificationSelectChanged: true,
         });
-    }
+    };
 
     handleEmailSelectChange = () => {
         this.setState({
-            isEmailSelectChanged: true
+            isEmailSelectChanged: true,
         });
-    }
+    };
 
     handleNotificationSelectSaved = () => {
         this.setState({
-            isNotificationSelectChanged: false
+            isNotificationSelectChanged: false,
         });
-    }
+    };
 
     handleEmailSelectSaved = () => {
         this.setState({
-            isEmailSelectChanged: false
+            isEmailSelectChanged: false,
         });
-    }
+    };
 
-    render () {
+    render() {
         let notificationParams = this.props.settings.desktopNotifications;
 
         if (notificationParams === NotificationMessages.NONE) {
@@ -323,16 +353,18 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
                             defaultData={{
                                 input: {
                                     notifications: notificationParams,
-                                }
+                                },
                             }}
                             defaultAction={async data => {
                                 await this.props.update({
                                     variables: {
                                         input: {
-                                            desktopNotifications: data.input.notifications,
-                                            mobileNotifications: data.input.notifications,
-                                        }
-                                    }
+                                            desktopNotifications:
+                                                data.input.notifications,
+                                            mobileNotifications:
+                                                data.input.notifications,
+                                        },
+                                    },
                                 });
                             }}
                             defaultLayout={false}
@@ -347,18 +379,24 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
                                             searchable={false}
                                             clearable={false}
                                             withSubtitle={true}
-                                            onChange={this.handleNotificationSelectChange}
+                                            onChange={
+                                                this
+                                                    .handleNotificationSelectChange
+                                            }
                                             options={[
                                                 {
                                                     value: 'ALL',
                                                     label: 'All new messages',
-                                                    subtitle: 'You’ll be notified for every new message',
+                                                    subtitle:
+                                                        'You’ll be notified for every new message',
                                                 },
                                                 {
                                                     value: 'DIRECT',
-                                                    label: 'Direct messages and mentions',
-                                                    subtitle: 'You’ll be only notified for messages directly involving you',
-                                                }
+                                                    label:
+                                                        'Direct messages and mentions',
+                                                    subtitle:
+                                                        'You’ll be only notified for messages directly involving you',
+                                                },
                                             ]}
                                         />
                                     </XView>
@@ -370,7 +408,9 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"
-                                        onSuccessAnimationEnd={this.handleNotificationSelectSaved}
+                                        onSuccessAnimationEnd={
+                                            this.handleNotificationSelectSaved
+                                        }
                                     />
                                 )}
                             </XVertical>
@@ -379,16 +419,18 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
                         <XForm
                             defaultData={{
                                 input: {
-                                    emailFrequency: this.props.settings.emailFrequency,
-                                }
+                                    emailFrequency: this.props.settings
+                                        .emailFrequency,
+                                },
                             }}
                             defaultAction={async data => {
                                 await this.props.update({
                                     variables: {
                                         input: {
-                                            emailFrequency: data.input.emailFrequency,
-                                        }
-                                    }
+                                            emailFrequency:
+                                                data.input.emailFrequency,
+                                        },
+                                    },
                                 });
                             }}
                             defaultLayout={false}
@@ -398,33 +440,45 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
                                 <Group>
                                     <GroupTitle>Email notifications</GroupTitle>
                                     <GroupText>
-                                        When you’re not online, Openland can send you email notifications for new direct messages and mentions of your name.
-                                        Notifications are sent to <strong>{this.props.settings.primaryEmail}.</strong>
+                                        When you’re not online, Openland can
+                                        send you email notifications for new
+                                        direct messages and mentions of your
+                                        name. Notifications are sent to{' '}
+                                        <strong>
+                                            {this.props.settings.primaryEmail}.
+                                        </strong>
                                     </GroupText>
-                                    <GroupSubTitle>You can email me</GroupSubTitle>
+                                    <GroupSubTitle>
+                                        You can email me
+                                    </GroupSubTitle>
                                     <XView maxWidth={440}>
                                         <XSelect
                                             field="input.emailFrequency"
                                             searchable={false}
                                             clearable={false}
-                                            onChange={this.handleEmailSelectChange}
+                                            onChange={
+                                                this.handleEmailSelectChange
+                                            }
                                             options={[
                                                 {
                                                     value: 'MIN_15',
-                                                    label: 'At most once every 15 minutes',
+                                                    label:
+                                                        'At most once every 15 minutes',
                                                 },
                                                 {
                                                     value: 'HOUR_1',
-                                                    label: 'At most once per hour',
+                                                    label:
+                                                        'At most once per hour',
                                                 },
                                                 {
                                                     value: 'HOUR_24',
-                                                    label: 'At most once per day',
+                                                    label:
+                                                        'At most once per day',
                                                 },
                                                 {
                                                     value: 'NEVER',
                                                     label: 'Never',
-                                                }
+                                                },
                                             ]}
                                         />
                                     </XView>
@@ -436,7 +490,9 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"
-                                        onSuccessAnimationEnd={this.handleEmailSelectSaved}
+                                        onSuccessAnimationEnd={
+                                            this.handleEmailSelectSaved
+                                        }
                                     />
                                 )}
                             </XVertical>
@@ -451,6 +507,15 @@ class NotificationsSettingsPageInner extends React.Component<NotificationsSettin
     }
 }
 
-export default withApp('Notifications', 'viewer', withSettings(withQueryLoader(props => (
-    <NotificationsSettingsPageInner settings={props.data.settings} update={props.update} />
-))));
+export default withApp(
+    'Notifications',
+    'viewer',
+    withSettings(
+        withQueryLoader(props => (
+            <NotificationsSettingsPageInner
+                settings={props.data.settings}
+                update={props.update}
+            />
+        )),
+    ),
+);

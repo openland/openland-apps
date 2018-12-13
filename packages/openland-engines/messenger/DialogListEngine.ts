@@ -112,7 +112,7 @@ export const extractDialog = (
     };
 };
 
-export const extractDialogFromRoom = (c: RoomFull, uid: string) =>
+export const extractDialogFRomRoom = (c: RoomFull, uid: string) =>
     ({
         key: c.id,
         flexibleId: c.id,

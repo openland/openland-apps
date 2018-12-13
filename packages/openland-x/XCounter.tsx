@@ -1,16 +1,15 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 
-type XCounter = {
+type XCounterProps = {
     big?: boolean;
     grey?: boolean;
     color?: string;
     bgColor?: string;
     borderColor?: string;
-    count: number;
 };
 
-const XCounterStyled = Glamorous.div<XCounter>(
+const XCounterStyled = Glamorous.div<XCounterProps>(
     ({ grey, big, color, bgColor, borderColor }) => {
         const shared = {
             display: 'flex',
@@ -59,11 +58,6 @@ const XCounterStyled = Glamorous.div<XCounter>(
     },
 );
 
-const XCounterBig = Glamorous(XCounterStyled)<{
-    color?: string;
-    bgColor?: string;
-}>(props => ({}));
-
 export const XCounter = ({
     color,
     bgColor,
@@ -71,7 +65,7 @@ export const XCounter = ({
     count,
     big,
     grey,
-}: XCounter) => {
+}: XCounterProps & { count: number }) => {
     return (
         <XCounterStyled
             grey={grey}
