@@ -995,9 +995,26 @@ export interface RoomHistory_messages_mentions {
   primaryOrganization: RoomHistory_messages_mentions_primaryOrganization | null;
 }
 
+export interface RoomHistory_messages_alphaMentions_UserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomHistory_messages_alphaMentions_UserMention_user {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomHistory_messages_alphaMentions_UserMention_user_primaryOrganization | null;
 }
 
 export interface RoomHistory_messages_alphaMentions_UserMention {
@@ -6257,9 +6274,26 @@ export interface RoomMessageFull_mentions {
   primaryOrganization: RoomMessageFull_mentions_primaryOrganization | null;
 }
 
+export interface RoomMessageFull_alphaMentions_UserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomMessageFull_alphaMentions_UserMention_user {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: RoomMessageFull_alphaMentions_UserMention_user_primaryOrganization | null;
 }
 
 export interface RoomMessageFull_alphaMentions_UserMention {

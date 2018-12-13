@@ -15,7 +15,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'react-mental';
 import { XPopper } from 'openland-x/XPopper';
 export interface MessageTextComponentProps {
-    alphaMentions: any;
+    alphaMentions?: any;
     mentions: MessageFull_mentions[] | null;
     message: string;
     isService: boolean;
@@ -295,7 +295,7 @@ const OthersPopper = (props: any) => {
 class MessageWithMentionsTextComponent extends React.PureComponent<{
     alphaMentions: any;
     text: string;
-    mentions: MessageFull_mentions[];
+    mentions: MessageFull_mentions[] | null;
     isService: boolean;
 }> {
     render() {
