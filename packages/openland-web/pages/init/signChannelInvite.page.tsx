@@ -41,7 +41,6 @@ const HeaderLogo = Glamorous.div({
 });
 
 export const InviteInfoInner = (props: any) => {
-    console.log(JSON.stringify(props.data));
     return (
         <>
             <XDocumentHead

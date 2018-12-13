@@ -29,6 +29,7 @@ const CHAT_SUBSCRIPTION = gql`
                 ...ConversationUpdateFragment
             }
         }
+       
     }
   }
   fragment ConversationUpdateFragment on ConversationUpdate {
@@ -47,6 +48,13 @@ const CHAT_SUBSCRIPTION = gql`
             id
         }
     }
+    ... on ConversationDialogUpdate {
+        dialog {
+            haveMention,
+            mute
+        }
+    }
+   
   }
   ${MessageFull}
   ${UserShort}
@@ -471,6 +479,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     private updateHandler = async (event: any) => {
+        console.log('ConversationEngine', event)
         if (event.__typename === 'ConversationMessageReceived') {
             // Handle message
             console.info('Received new message');
@@ -568,6 +577,11 @@ export class ConversationEngine implements MessageSendHandler {
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
             conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
             this.dataSource.updateItem(conv);
+        } else if (event.__typename === 'ConversationDialogUpdate') {
+            console.log('ConversationDialogUpdate')
+            // this.dataSource.updateItem({
+            //     haveMention: event.message,
+            // });
         } else {
             console.warn('Received unknown message');
         }

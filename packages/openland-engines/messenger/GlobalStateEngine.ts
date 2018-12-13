@@ -36,6 +36,7 @@ let GLOBAL_SUBSCRIPTION = gql`
             unread
             globalUnread
             message {
+                mentions
                 ...MessageShort
             }
         }
@@ -218,6 +219,7 @@ export class GlobalStateEngine {
     }
 
     private handleGlobalEvent = async (event: any) => {
+        console.log('handleGlobalEvent', event);
         if (event.__typename === 'DialogMessageReceived') {
             let visible = this.visibleConversations.has(event.cid);
 
