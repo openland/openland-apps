@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { Navigation } from './_navigation';
 import { XForm } from 'openland-x-forms/XForm2';
-import { XInput, XInputGroup } from 'openland-x/XInput';
+import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XContent } from 'openland-x-layout/XContent';

@@ -10,13 +10,114 @@ import {
     MentionComponentInner,
     removeEmojiFromText,
 } from 'openland-x/XRichTextInput';
-
+import { XButton } from 'openland-x/XButton';
+import { XAvatar } from 'openland-x/XAvatar';
+import { XView } from 'react-mental';
+import { XPopper } from 'openland-x/XPopper';
 export interface MessageTextComponentProps {
+    alphaMentions: any;
     mentions: MessageFull_mentions[] | null;
     message: string;
     isService: boolean;
     isEdited: boolean;
 }
+
+const Title = Glamorous.span({
+    fontFamily: 'SFProText-Semibold',
+    fontSize: 12,
+    fontWeight: 600,
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: 1.67,
+    letterSpacing: 'normal',
+    color: '#000',
+});
+
+const SubTitle = Glamorous.span({
+    opacity: 0.4,
+    fontFamily: 'SFProText-Semibold',
+    fontSize: 12,
+    fontWeight: 600,
+    fontStyle: 'normal',
+    fontStretch: 'normal',
+    lineHeight: '1.5',
+    letterSpacing: 'normal',
+    color: '#000',
+});
+
+const XButtonStyled = Glamorous(XButton)({
+    borderRadius: 20,
+    width: 68,
+    height: 22,
+});
+
+type JoinedUserPopperRowProps = {
+    title: string;
+    subtitle: string;
+    userInfo: { photo: string; name: string; id: string };
+};
+
+export const JoinedUserPopperRow = ({
+    title,
+    subtitle,
+    userInfo: { photo, name, id },
+    onMessageClick,
+}: JoinedUserPopperRowProps & { onMessageClick: Function }) => {
+    return (
+        <XView
+            cursor="pointer"
+            flexDirection="row"
+            alignItems="center"
+            hoverBackgroundColor="#f9f9f9"
+            width={393}
+            height={36}
+        >
+            <XAvatar
+                // cloudImageUuid={photo || undefined}
+                objectName={title}
+                objectId={id}
+                size="m-small"
+            />
+            <XView marginLeft={12} flexDirection="column">
+                <Title>{title}</Title>
+            </XView>
+            <XView marginLeft={9} flexDirection="column">
+                <SubTitle>{subtitle}</SubTitle>
+            </XView>
+            <XView flexGrow={1} />
+            <XButtonStyled
+                text="Message"
+                style="primary"
+                size="tiny"
+                onClick={() => {
+                    onMessageClick(id);
+                }}
+            />
+        </XView>
+    );
+};
+
+const JoinedUsersPopper = ({
+    items,
+    onItemMessageClick,
+}: {
+    items: JoinedUserPopperRowProps[];
+    onItemMessageClick: (id: string) => void;
+}) => {
+    return (
+        <div>
+            {items.map((item, key) => {
+                return (
+                    <JoinedUserPopperRow
+                        {...item}
+                        onMessageClick={onItemMessageClick}
+                        key={key}
+                    />
+                );
+            })}
+        </div>
+    );
+};
 
 const TextWrapper = Glamorous.span<{ isService: boolean; big: boolean }>(
     props => ({
@@ -94,86 +195,180 @@ const getMentionString = (str: string) => {
     return `@${removeEmojiFromText(str)}`;
 };
 
-class MessageWithMentionsTextComponent extends React.PureComponent<{
-    text: string;
-    mentions: MessageFull_mentions[];
-}> {
-    checkIsYou = (mentionName: string) => {
-        const res = this.props.mentions.find(
-            ({ name }: any) => name === mentionName,
+const getSplittedTextArray = ({ text, mentions }: any) => {
+    let splittedTextArray: any = [text];
+    let mentionMatchesMap: any = {};
+    mentions.forEach(({ name }: any) => {
+        // splitting message
+        const arr: any = [];
+        splittedTextArray.forEach((item: any) => {
+            item.split(getMentionString(name)).forEach((splitted: any) =>
+                arr.push(splitted),
+            );
+        });
+
+        splittedTextArray = arr;
+
+        // matching mentions
+        const result = indexes(text, removeEmojiFromText(name));
+        result.forEach(index => {
+            mentionMatchesMap[index] = removeEmojiFromText(name);
+        });
+    });
+
+    const mentionMatchesArray: any = [];
+
+    Object.keys(mentionMatchesMap)
+        .sort((a: any, b: any) => a - b)
+        .forEach(key => {
+            mentionMatchesArray.push(mentionMatchesMap[key]);
+        });
+
+    const splittedArray: any = [];
+    mentions.forEach(({ name }: any) => {
+        splittedArray.push(text.split(getMentionString(name)));
+    });
+
+    const getMentionByName = (name: string) => {
+        const mention = mentions.find(
+            (item: any) => removeEmojiFromText(item.name) === name,
         );
-        return res ? res.isYou : false;
+        if (!mention) {
+            throw Error('no mention was found');
+        }
+        return mention;
     };
 
-    render() {
-        const { text, mentions } = this.props;
+    return splittedTextArray.map((textItem: any, key: any) => {
+        console.log('textItem', textItem);
+        const mention = mentionMatchesArray[key]
+            ? getMentionByName(mentionMatchesArray[key])
+            : null;
 
-        let splittedTextArray: any = [text];
-        let mentionMatchesMap: any = {};
-        mentions.forEach(({ name }: any) => {
-            // splitting message
-            const arr: any = [];
-            splittedTextArray.forEach((item: any) => {
-                item.split(getMentionString(name)).forEach((splitted: any) =>
-                    arr.push(splitted),
-                );
-            });
-
-            splittedTextArray = arr;
-
-            // matching mentions
-            const result = indexes(text, removeEmojiFromText(name));
-            result.forEach(index => {
-                mentionMatchesMap[index] = removeEmojiFromText(name);
-            });
-        });
-
-        const mentionMatchesArray: any = [];
-
-        Object.keys(mentionMatchesMap)
-            .sort((a: any, b: any) => a - b)
-            .forEach(key => {
-                mentionMatchesArray.push(mentionMatchesMap[key]);
-            });
-
-        const splittedArray: any = [];
-        mentions.forEach(({ name }: any) => {
-            splittedArray.push(text.split(getMentionString(name)));
-        });
-
-        const getMentionByName = (name: string) => {
-            const mention = mentions.find(
-                (item: any) => removeEmojiFromText(item.name) === name,
+        if (mention && mention.component) {
+            const Component = mention.component;
+            return (
+                <span key={key}>
+                    {textItem}
+                    <Component {...mention.props} />
+                </span>
             );
-            if (!mention) {
-                throw Error('no mention was found');
-            }
-            return mention;
-        };
+        }
+
+        let mentionElement = mention && (
+            <MentionComponentInner
+                isYou={mention.isYou}
+                user={mention}
+                hasPopper
+            >
+                {mentionMatchesArray[key]}
+            </MentionComponentInner>
+        );
 
         return (
-            <>
-                {splittedTextArray.map((textItem: any, key: any) => {
-                    const mention = mentionMatchesArray[key]
-                        ? getMentionByName(mentionMatchesArray[key])
-                        : null;
-                    return (
-                        <span key={key}>
-                            {textItem}
-                            {mention && (
-                                <MentionComponentInner
-                                    isYou={mention.isYou}
-                                    user={mention}
-                                    hasPopper
-                                >
-                                    {mentionMatchesArray[key]}
-                                </MentionComponentInner>
-                            )}
-                        </span>
-                    );
-                })}
-            </>
+            <span key={key}>
+                {textItem}
+                {mentionElement}
+            </span>
         );
+    });
+};
+
+const OthersPopper = (props: any) => {
+    return (
+        <XPopper
+            content={<JoinedUsersPopper {...props} />}
+            showOnHover={true}
+            placement="top"
+        >
+            <span
+                style={{
+                    cursor: 'pointer',
+                    color: '#1790ff',
+                }}
+            >
+                {props.children}
+            </span>
+        </XPopper>
+    );
+};
+class MessageWithMentionsTextComponent extends React.PureComponent<{
+    alphaMentions: any;
+    text: string;
+    mentions: MessageFull_mentions[];
+    isService: boolean;
+}> {
+    render() {
+        const { text, mentions, alphaMentions, isService } = this.props;
+
+        let mentionsFinal = mentions || [];
+        if (alphaMentions) {
+            mentionsFinal = alphaMentions.map(({ user }: any) => {
+                return user;
+            });
+        }
+
+        if (isService) {
+            let serviceMessageType;
+            if (
+                text.indexOf('joined the room along with') !== -1 &&
+                text.indexOf('others') !== -1
+            ) {
+                serviceMessageType = 'join_many';
+            }
+
+            if (serviceMessageType === 'join_many') {
+                const [firstMention, ...otherMentions] = mentionsFinal;
+
+                const onItemMessageClick = (id: number) => {
+                    console.log(id);
+                    console.log('onItemMessageClick');
+                };
+
+                const items = otherMentions.map(
+                    ({ name, primaryOrganization, photo, id }: any) => {
+                        return {
+                            title: name,
+                            subtitle: primaryOrganization.name,
+                            userInfo: {
+                                photo,
+                                name,
+                                id,
+                            },
+                        };
+                    },
+                );
+
+                mentionsFinal = [
+                    firstMention,
+                    {
+                        name: `${otherMentions.length} others`,
+                        component: OthersPopper,
+                        props: {
+                            onItemMessageClick,
+                            items,
+                            children: `${otherMentions.length} others`,
+                        },
+                    } as any,
+                ];
+
+                const finalText = text.replace(
+                    `${otherMentions.length} others`,
+                    `@${otherMentions.length} others`,
+                );
+
+                return (
+                    <>
+                        {getSplittedTextArray({
+                            text: finalText,
+                            mentions: mentionsFinal,
+                        })}
+                    </>
+                );
+            }
+        }
+
+        return <>{getSplittedTextArray({ text, mentions: mentionsFinal })}</>;
     }
 }
 
@@ -291,13 +486,19 @@ export class MessageTextComponent extends React.PureComponent<
                 );
             } else {
                 let text = v.text!!;
-
-                if (this.props.mentions && this.props.mentions.length !== 0) {
+                console.log('this.props', this.props);
+                if (
+                    (this.props.mentions && this.props.mentions.length !== 0) ||
+                    (this.props.alphaMentions &&
+                        this.props.alphaMentions.length !== 0)
+                ) {
                     return (
                         <MessageWithMentionsTextComponent
                             key={'text-' + i}
                             text={text}
                             mentions={this.props.mentions}
+                            alphaMentions={this.props.alphaMentions}
+                            isService={this.props.isService}
                         />
                     );
                 }

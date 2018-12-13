@@ -195,12 +195,14 @@ const MentionComponentInnerText = Glamorous.span(
         if (isYou) {
             return {
                 ...paddings,
+                cursor: 'pointer',
                 backgroundColor: '#fff6e5',
                 color: '#1790ff',
             };
         }
         return {
             ...paddings,
+            cursor: 'pointer',
             color: '#1790ff',
         };
     },

@@ -995,6 +995,28 @@ export interface RoomHistory_messages_mentions {
   primaryOrganization: RoomHistory_messages_mentions_primaryOrganization | null;
 }
 
+export interface RoomHistory_messages_alphaMentions_UserMention_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomHistory_messages_alphaMentions_UserMention {
+  __typename: "UserMention";
+  user: RoomHistory_messages_alphaMentions_UserMention_user;
+}
+
+export interface RoomHistory_messages_alphaMentions_SharedRoomMention_sharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+}
+
+export interface RoomHistory_messages_alphaMentions_SharedRoomMention {
+  __typename: "SharedRoomMention";
+  sharedRoom: RoomHistory_messages_alphaMentions_SharedRoomMention_sharedRoom;
+}
+
+export type RoomHistory_messages_alphaMentions = RoomHistory_messages_alphaMentions_UserMention | RoomHistory_messages_alphaMentions_SharedRoomMention;
+
 export interface RoomHistory_messages_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -1093,6 +1115,7 @@ export interface RoomHistory_messages {
   reply: RoomHistory_messages_reply[] | null;
   reactions: RoomHistory_messages_reactions[];
   mentions: RoomHistory_messages_mentions[] | null;
+  alphaMentions: RoomHistory_messages_alphaMentions[] | null;
   urlAugmentation: RoomHistory_messages_urlAugmentation | null;
 }
 
@@ -6234,6 +6257,28 @@ export interface RoomMessageFull_mentions {
   primaryOrganization: RoomMessageFull_mentions_primaryOrganization | null;
 }
 
+export interface RoomMessageFull_alphaMentions_UserMention_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomMessageFull_alphaMentions_UserMention {
+  __typename: "UserMention";
+  user: RoomMessageFull_alphaMentions_UserMention_user;
+}
+
+export interface RoomMessageFull_alphaMentions_SharedRoomMention_sharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+}
+
+export interface RoomMessageFull_alphaMentions_SharedRoomMention {
+  __typename: "SharedRoomMention";
+  sharedRoom: RoomMessageFull_alphaMentions_SharedRoomMention_sharedRoom;
+}
+
+export type RoomMessageFull_alphaMentions = RoomMessageFull_alphaMentions_UserMention | RoomMessageFull_alphaMentions_SharedRoomMention;
+
 export interface RoomMessageFull_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -6332,6 +6377,7 @@ export interface RoomMessageFull {
   reply: RoomMessageFull_reply[] | null;
   reactions: RoomMessageFull_reactions[];
   mentions: RoomMessageFull_mentions[] | null;
+  alphaMentions: RoomMessageFull_alphaMentions[] | null;
   urlAugmentation: RoomMessageFull_urlAugmentation | null;
 }
 

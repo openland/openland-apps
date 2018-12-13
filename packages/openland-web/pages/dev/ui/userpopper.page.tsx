@@ -6,44 +6,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XButton } from 'openland-x/XButton';
 import { XTitle } from 'openland-x/XTitle';
 import { XPopper } from 'openland-x/XPopper';
-import { XAvatar } from 'openland-x/XAvatar';
-import { XView } from 'react-mental';
-import Glamorous from 'glamorous';
-
-const Title = Glamorous.span({
-    fontFamily: 'SFProText-Semibold',
-    fontSize: 12,
-    fontWeight: 600,
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: 1.67,
-    letterSpacing: 'normal',
-    color: '#000',
-});
-
-const SubTitle = Glamorous.span({
-    opacity: 0.4,
-    fontFamily: 'SFProText-Semibold',
-    fontSize: 12,
-    fontWeight: 600,
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: '1.5',
-    letterSpacing: 'normal',
-    color: '#000',
-});
-
-const XButtonStyled = Glamorous(XButton)({
-    borderRadius: 20,
-    width: 68,
-    height: 22,
-});
-
-type JoinedUserPopperRowProps = {
-    title: string;
-    subtitle: string;
-    userInfo: { photo: string; name: string; id: string };
-};
+import { JoinedUsersPopper } from '../../../components/messenger/components/view/content/MessageTextComponent';
 
 const userInfoExample = {
     id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
@@ -56,68 +19,6 @@ const joinedUserPopperRowExample = {
     title: 'Sarah Massey',
     subtitle: 'Altpoint Capital',
     userInfo: userInfoExample,
-};
-
-const JoinedUserPopperRow = ({
-    title,
-    subtitle,
-    userInfo: { photo, name, id },
-    onMessageClick,
-}: JoinedUserPopperRowProps & { onMessageClick: Function }) => {
-    return (
-        <XView
-            cursor="pointer"
-            flexDirection="row"
-            alignItems="center"
-            hoverBackgroundColor="#f9f9f9"
-            width={393}
-            height={36}
-        >
-            <XAvatar
-                cloudImageUuid={photo}
-                objectName={name}
-                objectId={id}
-                size="m-small"
-            />
-            <XView marginLeft={12} flexDirection="column">
-                <Title>{title}</Title>
-            </XView>
-            <XView marginLeft={9} flexDirection="column">
-                <SubTitle>{subtitle}</SubTitle>
-            </XView>
-            <XView flexGrow={1} />
-            <XButtonStyled
-                text="Message"
-                style="primary"
-                size="tiny"
-                onClick={() => {
-                    onMessageClick(id);
-                }}
-            />
-        </XView>
-    );
-};
-
-const JoinedUsersPopper = ({
-    items,
-    onItemMessageClick,
-}: {
-    items: JoinedUserPopperRowProps[];
-    onItemMessageClick: (id: string) => void;
-}) => {
-    return (
-        <div>
-            {items.map((item, key) => {
-                return (
-                    <JoinedUserPopperRow
-                        {...item}
-                        onMessageClick={onItemMessageClick}
-                        key={key}
-                    />
-                );
-            })}
-        </div>
-    );
 };
 
 export default withApp('UI Framework - Popper', 'viewer', props => {

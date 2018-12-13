@@ -154,14 +154,14 @@ export const RoomMessageFull = gql`
     }
     alphaAttachments {
      	fileId
-      fileMetadata {
-        name
-        size
-        isImage
-        imageWidth
-        imageHeight
-        imageFormat
-      }
+        fileMetadata {
+            name
+            size
+            isImage
+            imageWidth
+            imageHeight
+            imageFormat
+        }
     }
     serviceMetadata{
         ...on KickServiceMetadata{
@@ -218,6 +218,18 @@ export const RoomMessageFull = gql`
     }
     mentions: mentions {
         ...UserShort
+    }
+    alphaMentions: alphaMentions {
+        ...on UserMention{
+            user {
+                ...UserShort
+            }
+        }
+        ...on SharedRoomMention{
+            sharedRoom {
+                id
+            }
+        }
     }
     urlAugmentation{
         type

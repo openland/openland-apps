@@ -211,6 +211,8 @@ routes.add('/ui/popper', '/dev/ui/popper');
 routes.add('/ui/popper/', '/dev/ui/popper');
 routes.add('/ui/userpopper', '/dev/ui/userpopper');
 routes.add('/ui/userpopper/', '/dev/ui/userpopper');
+routes.add('/ui/serviceMessages', '/dev/ui/serviceMessages');
+routes.add('/ui/serviceMessages/', '/dev/ui/serviceMessages');
 routes.add('/ui/avatar', '/dev/ui/avatar');
 routes.add('/ui/avatar/', '/dev/ui/avatar');
 routes.add('/ui/links', '/dev/ui/links');
