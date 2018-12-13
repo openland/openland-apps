@@ -29,7 +29,7 @@ export const MessageFull = gql`
             }
         }
         serviceMetadata {
-            ...on KickServiceMetadata {
+            ... on KickServiceMetadata {
                 user {
                     id
                 }
@@ -120,7 +120,7 @@ export const MessageFull = gql`
                 }
             }
             user: extra {
-                ...on User {
+                ... on User {
                     id
                     name
                     photo
@@ -135,65 +135,44 @@ export const MessageFull = gql`
 `;
 
 export const RoomMessageFull = gql`
- fragment RoomMessageFull on RoomMessage {
-    id
-    date
-    message
-    edited
-    file
-    repeatKey
-    isService
-    alphaType
-    alphaTitle
-    plainText
-    alphaPostType
-    alphaButtons {
-      id
-      title
-      style
-    }
-    alphaAttachments {
-     	fileId
-        fileMetadata {
-            name
-            size
-            isImage
-            imageWidth
-            imageHeight
-            imageFormat
-        }
-    }
-    serviceMetadata{
-        ...on KickServiceMetadata{
-            user {
-                id
-            }
-            kickedBy{
-                 id
-            }
-        }
-    }
-    fileMetadata {
-        name
-        mimeType
-        isImage
-        imageWidth
-        imageHeight
-        imageFormat
-        size
-    }
-    sender {
-        ...UserShort
-    }
-    reply: replyMessages {
-        sender {
-            ...UserShort
-        }
+    fragment RoomMessageFull on RoomMessage {
         id
         date
         message
         edited
         file
+        repeatKey
+        isService
+        alphaType
+        alphaTitle
+        plainText
+        alphaPostType
+        alphaButtons {
+            id
+            title
+            style
+        }
+        alphaAttachments {
+            fileId
+            fileMetadata {
+                name
+                size
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+            }
+        }
+        serviceMetadata {
+            ... on KickServiceMetadata {
+                user {
+                    id
+                }
+                kickedBy {
+                    id
+                }
+            }
+        }
         fileMetadata {
             name
             mimeType
@@ -203,80 +182,102 @@ export const RoomMessageFull = gql`
             imageFormat
             size
         }
-    }
-    reactions: reactions {
-        user {
-            id
-            name
-            photo
-            primaryOrganization {
-                name
-                id
-            }
+        sender {
+            ...UserShort
         }
-        reaction
-    }
-    mentions: mentions {
-        ...UserShort
-    }
-    alphaMentions: alphaMentions {
-        ...on UserMention{
-            user {
+        reply: replyMessages {
+            sender {
                 ...UserShort
             }
-        }
-        ...on SharedRoomMention{
-            sharedRoom {
-                id
+            id
+            date
+            message
+            edited
+            file
+            fileMetadata {
+                name
+                mimeType
+                isImage
+                imageWidth
+                imageHeight
+                imageFormat
+                size
             }
         }
-    }
-    urlAugmentation{
-        type
-        url
-        title
-        date
-        subtitle
-        description
-        hostname
-        imageURL
-        imageInfo {
-            imageWidth
-            imageHeight
-        }
-        iconRef {
-            uuid
-            crop {
-                x
-                y
-                w
-                h
-            }
-        }
-        iconInfo {
-            imageWidth
-            imageHeight
-        }
-        photo {
-            uuid
-            crop{
-                x
-                y
-                w
-                h
-            }
-        }
-        user: extra {
-            ...on User {
+        reactions: reactions {
+            user {
                 id
                 name
                 photo
                 primaryOrganization {
+                    name
+                    id
+                }
+            }
+            reaction
+        }
+        mentions: mentions {
+            ...UserShort
+        }
+        alphaMentions: alphaMentions {
+            ... on UserMention {
+                user {
+                    ...UserShort
+                }
+            }
+            ... on SharedRoomMention {
+                sharedRoom {
+                    id
+                    title
+                }
+            }
+        }
+        urlAugmentation {
+            type
+            url
+            title
+            date
+            subtitle
+            description
+            hostname
+            imageURL
+            imageInfo {
+                imageWidth
+                imageHeight
+            }
+            iconRef {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+            iconInfo {
+                imageWidth
+                imageHeight
+            }
+            photo {
+                uuid
+                crop {
+                    x
+                    y
+                    w
+                    h
+                }
+            }
+            user: extra {
+                ... on User {
                     id
                     name
+                    photo
+                    primaryOrganization {
+                        id
+                        name
+                    }
                 }
             }
         }
     }
- }
 `;

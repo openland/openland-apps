@@ -240,7 +240,6 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
     };
 
     return splittedTextArray.map((textItem: any, key: any) => {
-        console.log('textItem', textItem);
         const mention = mentionMatchesArray[key]
             ? getMentionByName(mentionMatchesArray[key])
             : null;
@@ -292,6 +291,19 @@ const OthersPopper = (props: any) => {
         </XPopper>
     );
 };
+
+const LinkToRoom = ({ children, roomId }: any) => {
+    return (
+        <XLink
+            className="link"
+            path={`/mail/${roomId}`}
+            onClick={(e: any) => e.stopPropagation()}
+        >
+            {children}
+        </XLink>
+    );
+};
+
 class MessageWithMentionsTextComponent extends React.PureComponent<{
     alphaMentions: any;
     text: string;
@@ -305,10 +317,24 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
         if (alphaMentions) {
             mentionsFinal = alphaMentions
                 .filter(({ __typename }: any) => {
-                    return __typename === 'UserMention';
+                    return (
+                        __typename === 'UserMention' ||
+                        __typename === 'SharedRoomMention'
+                    );
                 })
-                .map(({ user }: any) => {
-                    return user;
+                .map((item: any) => {
+                    if (item.__typename === 'UserMention') {
+                        return item.user;
+                    } else if (item.__typename === 'SharedRoomMention') {
+                        return {
+                            name: item.sharedRoom.title,
+                            component: LinkToRoom,
+                            props: {
+                                roomId: item.sharedRoom.id,
+                                children: item.sharedRoom.title,
+                            },
+                        };
+                    }
                 });
         }
 
