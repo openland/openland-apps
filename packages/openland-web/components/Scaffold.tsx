@@ -621,7 +621,7 @@ export const MessengerButton = withNotificationCounter(props => {
                         top={12}
                         borderWidth={2}
                         borderColor="#ececec"
-                        borderRadius={6}
+                        borderRadius={8}
                     >
                         <XCounter count={props.data.counter.unreadCount} />
                     </XView>
