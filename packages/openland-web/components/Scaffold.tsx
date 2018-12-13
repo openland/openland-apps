@@ -144,11 +144,6 @@ const NavigatorItem = Glamorous(XLink)({
             display: 'block',
         },
     },
-    '& > .counter': {
-        position: 'absolute',
-        right: 14,
-        top: 12,
-    },
     '&:not(.is-active) > .counter': {
         borderColor: '#f6f6f6',
     },
@@ -630,30 +625,6 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
     }
 }
 
-export const RoomButton = withNotificationCounter(props => {
-    return (
-        <XPopper
-            placement="right"
-            showOnHoverContent={false}
-            showOnHover={true}
-            groupId="scaffold_tooltip"
-            style="dark"
-            padding={-2}
-            content={<strong>{TextAppBar.items.room}</strong>}
-        >
-            <NavigatorItem path="/channel" activateForSubpaths={true}>
-                <RoomIcon />
-                {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <XCounter
-                        borderColor="#f5f7f9"
-                        count={props.data.counter.unreadCount}
-                    />
-                )}
-            </NavigatorItem>
-        </XPopper>
-    );
-});
-
 export const MessengerButton = withNotificationCounter(props => {
     return (
         <XPopper
@@ -668,10 +639,16 @@ export const MessengerButton = withNotificationCounter(props => {
             <NavigatorItem path="/mail" activateForSubpaths={true}>
                 <MessagesIcon />
                 {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <XCounter
-                        borderColor="#ececec"
-                        count={props.data.counter.unreadCount}
-                    />
+                    <XView
+                        position="absolute"
+                        right={14}
+                        top={12}
+                    >
+                        <XCounter
+                            borderColor="#ececec"
+                            count={props.data.counter.unreadCount}
+                        />
+                    </XView>
                 )}
             </NavigatorItem>
         </XPopper>
