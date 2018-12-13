@@ -125,6 +125,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                     title={dialog.title}
                     id={dialog.flexibleId}
                     src={dialog.photo}
+                    online={dialog.online}
                 />
                 <XView
                     flexDirection="column"
