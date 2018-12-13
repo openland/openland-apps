@@ -115,34 +115,10 @@ const NavigatorItem = Glamorous(XLink)({
     '.is-active': {
         color: '#b4b8bd',
         backgroundColor: 'rgba(0, 0, 0, 0.04)!important',
-        '& > .reports .hover': {
-            display: 'block',
-        },
-        '& > .reports .no-hover': {
-            display: 'none',
-        },
     },
     '&:hover': {
         color: '#b4b8bd',
         backgroundColor: 'rgba(0, 0, 0, 0.04)',
-        '& > .reports .hover': {
-            display: 'block',
-        },
-        '& > .reports .no-hover': {
-            display: 'none',
-        },
-    },
-    '& > .reports': {
-        width: 28,
-        height: 28,
-        display: 'flex',
-        justifyContent: 'center',
-        '& .hover': {
-            display: 'none',
-        },
-        '& .no-hover': {
-            display: 'block',
-        },
     },
     '&:not(.is-active) > .counter': {
         borderColor: '#f6f6f6',
