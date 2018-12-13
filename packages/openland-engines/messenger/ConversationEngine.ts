@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, RoomHistoryQuery, AccountQuery } from 'openland-api';
+import { RoomReadMutation, RoomHistoryQuery, AccountQuery, RoomQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
@@ -445,6 +445,46 @@ export class ConversationEngine implements MessageSendHandler {
         // if (this.watcher) {
         //     this.watcher!!.destroy();
         // }
+    }
+
+    handleTitleUpdated = async (title: string) => {
+        let info = await this.engine.client.client.readQuery(
+            {
+                query: RoomQuery.document,
+                variables: {
+                    id: this.conversationId,
+                }
+            }
+        );
+        (info as any).room.title = title;
+        this.engine.client.client.writeQuery({
+            query: RoomQuery.document,
+            variables: { roomId: this.conversationId },
+            data: info
+        });
+        this.engine.client.client.writeQuery({
+            query: RoomQuery.document,
+            variables: { roomId: this.conversationId },
+            data: info
+        });
+        console.warn(info);
+    }
+
+    handlePhotoUpdated = async (photo: string) => {
+        let info = await this.engine.client.client.readQuery(
+            {
+                query: RoomQuery.document,
+                variables: {
+                    id: this.conversationId,
+                }
+            }
+        );
+        (info as any).room.photo = photo;
+        this.engine.client.client.writeQuery({
+            query: RoomQuery.document,
+            variables: { roomId: this.conversationId },
+            data: info
+        });
     }
 
     private onMessagesUpdated = () => {

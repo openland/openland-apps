@@ -245,6 +245,38 @@ export class DialogListEngine {
         }
     };
 
+    handleMessageDeleted = (cid: string, mid: string) => {
+        let existing = this.dataSource.getItem(cid);
+        if (existing && existing.messageId === mid) {
+            this.dataSource.updateItem({
+                ...existing,
+                message: undefined,
+                fileMeta: undefined,
+                date: undefined,
+            });
+        }
+    }
+
+    handleTitleUpdated = (cid: string, title: string) => {
+        let existing = this.dataSource.getItem(cid);
+        if (existing) {
+            this.dataSource.updateItem({
+                ...existing,
+                title: title
+            });
+        }
+    }
+
+    handlePhotoUpdated = (cid: string, photo: string) => {
+        let existing = this.dataSource.getItem(cid);
+        if (existing) {
+            this.dataSource.updateItem({
+                ...existing,
+                photo: photo
+            });
+        }
+    }
+
     handleNewMessage = async (event: any, visible: boolean) => {
         const conversationId = event.cid as string;
         const unreadCount = event.unread as number;
