@@ -13,7 +13,7 @@ import ReactionIcon from '../icons/ic-reactions.svg';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 6px',
-    borderRadius: 18
+    borderRadius: 18,
 });
 
 const ReactionButton = Glamorous.div<{
@@ -119,7 +119,7 @@ class ReactionComponentInner extends React.PureComponent<{
 
     handleClick = () => {
         this.handleSetReaction('❤️');
-    }
+    };
 
     render() {
         return (
@@ -132,11 +132,8 @@ class ReactionComponentInner extends React.PureComponent<{
                 }
                 showOnHover={true}
                 placement="top"
-                animation={null}
                 contentContainer={<CustomPickerDiv />}
                 marginBottom={6}
-                animationOut="fade"
-                animationDurationOut={2000}
             >
                 <ReactionButton
                     className="reaction-button"
