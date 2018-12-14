@@ -159,16 +159,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                             textOverflow="ellipsis"
                         >
                             <XView flexDirection="row" alignItems="center">
-                                <span
-                                    style={{
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                        whiteSpace: 'nowrap',
-                                        width: 'calc(100% - 25px)',
-                                    }}
-                                >
-                                    {dialog.title}
-                                </span>
+                                {dialog.title}
                                 {isMuted && (
                                     <XView marginLeft={5}>
                                         <MutedChats />
@@ -186,8 +177,6 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                                 fontWeight="600"
                                 lineHeight="18px"
                                 whiteSpace="nowrap"
-                                alignItems="flex-end"
-                                width={45}
                             >
                                 <XDate
                                     value={dialog.date.toString()}
