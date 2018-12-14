@@ -19,9 +19,36 @@ interface DialogViewProps {
     onSelect?: () => void;
 }
 
-class DialogViewInner extends React.Component<DialogViewProps> {
-    shouldComponentUpdate(nextProps: DialogViewProps) {
-        return nextProps.item !== this.props.item;
+type DialogViewState = { hover: boolean };
+
+class DialogViewInner extends React.Component<
+    DialogViewProps,
+    DialogViewState
+> {
+    constructor(props: DialogViewProps) {
+        super(props);
+        this.state = {
+            hover: false,
+        };
+    }
+    onMouseEnterHandle = () => {
+        this.setState({
+            hover: true,
+        });
+    };
+    onMouseLeaveHandle = () => {
+        this.setState({
+            hover: false,
+        });
+    };
+    shouldComponentUpdate(
+        nextProps: DialogViewProps,
+        nextState: DialogViewState,
+    ) {
+        return (
+            nextProps.item !== this.props.item ||
+            nextState.hover !== this.state.hover
+        );
     }
     render() {
         let props = this.props;
@@ -106,8 +133,11 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                 );
             }
         }
+
         return (
             <XView
+                onMouseEnter={this.onMouseEnterHandle}
+                onMouseLeave={this.onMouseLeaveHandle}
                 as="a"
                 ref={props.handleRef}
                 path={'/mail/' + dialog.key}
@@ -123,12 +153,20 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                 selectedHoverBackgroundColor="#4596e1"
                 linkSelectable={true}
             >
-                <XAvatar2
-                    title={dialog.title}
-                    id={dialog.flexibleId}
-                    src={dialog.photo}
-                    online={dialog.online}
-                />
+                <XViewSelectedContext.Consumer>
+                    {active => {
+                        return (
+                            <XAvatar2
+                                selected={active}
+                                hovered={this.state.hover}
+                                title={dialog.title}
+                                id={dialog.flexibleId}
+                                src={dialog.photo}
+                                online={dialog.online}
+                            />
+                        );
+                    }}
+                </XViewSelectedContext.Consumer>
                 <XView
                     flexDirection="column"
                     flexGrow={1}
@@ -201,7 +239,11 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                         {dialog.unread > 0 && (
                             <>
                                 {haveMention && (
-                                    <XView alignSelf="center" paddingLeft={12} marginRight={-6}>
+                                    <XView
+                                        alignSelf="center"
+                                        paddingLeft={12}
+                                        marginRight={-6}
+                                    >
                                         <MentionIcon />
                                     </XView>
                                 )}
