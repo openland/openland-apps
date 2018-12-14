@@ -306,7 +306,6 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     render() {
         const { text, mentions, alphaMentions, isService } = this.props;
 
-        debugger;
         let mentionsFinal = mentions || [];
         if (alphaMentions) {
             mentionsFinal = alphaMentions
