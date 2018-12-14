@@ -134,7 +134,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                     onSuccess={() => AppUpdateTracker.restartApp()}
                 >
 
-                    <Text style={styles.hint}>Please enter 5-digit activation code that was sent to your email</Text>
+                    <Text style={styles.hint}>Enter your activation code that was just sent to {email}</Text>
                     <ZTextInput
                         field="code"
                         style={signupStyles.input}
