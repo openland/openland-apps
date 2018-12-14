@@ -70,13 +70,13 @@ export const XAvatar2 = React.memo<XAvatar2Props>(props => {
         online = (
             <XView
                 position="absolute"
-                bottom={2}
-                right={2}
+                bottom={1}
+                right={1}
                 width={8}
                 height={8}
                 borderRadius={4}
                 borderWidth={1}
-                borderColor={'#f2f2f2'}
+                borderColor={'#fff'}
                 backgroundColor={'#5eb2ff'}
             />
         );
