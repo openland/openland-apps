@@ -321,8 +321,8 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         let message = props.message;
         let moreButton = false;
 
-        if (message.length >= 300) {
-            message = this.state.showMore ? message.substring(0, 300) + '...' : message;
+        if (message.length >= 500) {
+            message = this.state.showMore ? message.substring(0, 500) + '...' : message;
             moreButton = true;
         }
 
