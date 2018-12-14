@@ -21,14 +21,9 @@ const joinedUserPopperRowExample = {
     userInfo: userInfoExample,
 };
 
-export default withApp('UI Framework - Popper', 'viewer', props => {
-    const onItemMessageClick = (str: string) => {
-        console.log(str);
-    };
-
+export default withApp('UI Framework - Popper', 'viewer', () => {
     const joinedUsersPopperElem = (
         <JoinedUsersPopper
-            onItemMessageClick={onItemMessageClick}
             items={[
                 joinedUserPopperRowExample,
                 joinedUserPopperRowExample,
