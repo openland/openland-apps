@@ -41,8 +41,8 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         return (
             <ZKeyboardAwareBar>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                  
-                    <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress}>
                                 <View width={48} height={50} alignItems="center" justifyContent="center">
