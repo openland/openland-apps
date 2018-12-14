@@ -135,7 +135,7 @@ export class GlobalStateEngine {
             });
         })).data;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
-        
+
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
@@ -302,6 +302,21 @@ export class GlobalStateEngine {
         }
     }
 
+    // looks like thmth is broken in apollo query with react alpha - Query not updated  after writeQuery
+    // temp solution - use listener
+    private counterListeners: ((count: number, visible: boolean) => void)[] = [];
+    subcribeCounter = (listener: (count: number, visible: boolean) => void) => {
+        this.counterListeners.push(listener);
+        return () => {
+            let index = this.counterListeners.indexOf(listener);
+            if (index < 0) {
+                console.warn('Double unsubscribe detected!');
+            } else {
+                this.counterListeners.splice(index, 1);
+            }
+        };
+    }
+
     private writeGlobalCounter = (counter: number, visible: boolean) => {
 
         //
@@ -323,6 +338,10 @@ export class GlobalStateEngine {
                 query: GlobalCounterQuery.document,
                 data: existing
             });
+        }
+
+        for (let l of this.counterListeners) {
+            l(counter, visible);
         }
     }
 }

@@ -10,13 +10,27 @@ import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild
 import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Channels } from './Channels';
+import { getMessenger } from '../../utils/messenger';
 
-export class Home extends React.PureComponent<PageProps, { tab: number }> {
+export class Home extends React.PureComponent<PageProps, { tab: number, counter?: { counter: number, visible: boolean } }> {
+    unsubscribe?: () => void;
     constructor(props: PageProps) {
         super(props);
         this.state = {
             tab: 2
         };
+    }
+
+    componentDidMount() {
+        this.unsubscribe = getMessenger().engine.global.subcribeCounter((c, v) => {
+            this.setState({ counter: { visible: v, counter: c } });
+        })
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
     handleTabChange = (index: number) => {
@@ -70,7 +84,7 @@ export class Home extends React.PureComponent<PageProps, { tab: number }> {
                                     title="Messages"
                                     icon={require('assets/ic-messages-ios.png')}
                                     selected={this.state.tab === 2}
-                                    counter={resp.data!!.counter.unreadCount}
+                                    counter={this.state && this.state.counter ? this.state.counter.counter : resp.data!!.counter.unreadCount}
                                     onPress={() => this.handleTabChange(2)}
                                 />
                                 <AppBarBottomItem
