@@ -197,6 +197,7 @@ export class UserPopper extends React.PureComponent<
                 <Wrapper>
                     <XHorizontal>
                         <XAvatar
+                            online={false}
                             size="l-medium"
                             style="user"
                             objectName={user.name}
