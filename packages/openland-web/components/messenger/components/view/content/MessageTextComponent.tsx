@@ -306,84 +306,90 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     render() {
         const { text, mentions, alphaMentions, isService } = this.props;
 
-        let mentionsFinal = mentions || [];
-        if (alphaMentions) {
-            mentionsFinal = alphaMentions
-                .filter(({ __typename }: any) => {
-                    return (
-                        __typename === 'UserMention' ||
-                        __typename === 'SharedRoomMention'
-                    );
-                })
-                .map((item: any) => {
-                    if (item.__typename === 'UserMention') {
-                        return item.user;
-                    } else if (item.__typename === 'SharedRoomMention') {
-                        return {
-                            name: item.sharedRoom.title,
-                            component: LinkToRoom,
-                            props: {
-                                roomId: item.sharedRoom.id,
-                                children: item.sharedRoom.title,
-                            },
-                        };
-                    }
-                });
-        }
-
-        if (isService) {
-            let serviceMessageType;
-            if (
-                text.indexOf('joined') !== -1 &&
-                text.indexOf('along with') !== -1 &&
-                text.indexOf('others') !== -1
-            ) {
-                serviceMessageType = 'join_many';
+        try {
+            let mentionsFinal = mentions || [];
+            if (alphaMentions) {
+                mentionsFinal = alphaMentions
+                    .filter(({ __typename }: any) => {
+                        return (
+                            __typename === 'UserMention' ||
+                            __typename === 'SharedRoomMention'
+                        );
+                    })
+                    .map((item: any) => {
+                        if (item.__typename === 'UserMention') {
+                            return item.user;
+                        } else if (item.__typename === 'SharedRoomMention') {
+                            return {
+                                name: item.sharedRoom.title,
+                                component: LinkToRoom,
+                                props: {
+                                    roomId: item.sharedRoom.id,
+                                    children: item.sharedRoom.title,
+                                },
+                            };
+                        }
+                    });
             }
 
-            if (serviceMessageType === 'join_many') {
-                const [firstMention, ...otherMentions] = mentionsFinal;
+            if (isService) {
+                let serviceMessageType;
+                if (
+                    text.indexOf('joined') !== -1 &&
+                    text.indexOf('along with') !== -1 &&
+                    text.indexOf('others') !== -1
+                ) {
+                    serviceMessageType = 'join_many';
+                }
 
-                const items = otherMentions.map(
-                    ({ name, primaryOrganization, photo, id }: any) => {
-                        return {
-                            title: name,
-                            subtitle: primaryOrganization.name,
-                            photo,
-                            id,
-                        };
-                    },
-                );
+                if (serviceMessageType === 'join_many') {
+                    const [firstMention, ...otherMentions] = mentionsFinal;
 
-                mentionsFinal = [
-                    firstMention,
-                    {
-                        name: `${otherMentions.length} others`,
-                        component: OthersPopper,
-                        props: {
-                            items,
-                            children: `${otherMentions.length} others`,
+                    const items = otherMentions.map(
+                        ({ name, primaryOrganization, photo, id }: any) => {
+                            return {
+                                title: name,
+                                subtitle: primaryOrganization.name,
+                                photo,
+                                id,
+                            };
                         },
-                    } as any,
-                ];
+                    );
 
-                const finalText = text.replace(
-                    `${otherMentions.length} others`,
-                    `@${otherMentions.length} others`,
-                );
+                    mentionsFinal = [
+                        firstMention,
+                        {
+                            name: `${otherMentions.length} others`,
+                            component: OthersPopper,
+                            props: {
+                                items,
+                                children: `${otherMentions.length} others`,
+                            },
+                        } as any,
+                    ];
 
-                return (
-                    <>
-                        {getSplittedTextArray({
-                            text: finalText,
-                            mentions: mentionsFinal,
-                        })}
-                    </>
-                );
+                    const finalText = text.replace(
+                        `${otherMentions.length} others`,
+                        `@${otherMentions.length} others`,
+                    );
+
+                    return (
+                        <>
+                            {getSplittedTextArray({
+                                text: finalText,
+                                mentions: mentionsFinal,
+                            })}
+                        </>
+                    );
+                }
             }
-        }
 
-        return <>{getSplittedTextArray({ text, mentions: mentionsFinal })}</>;
+            return (
+                <>{getSplittedTextArray({ text, mentions: mentionsFinal })}</>
+            );
+        } catch (err) {
+            return <span>{text}</span>;
+        }
     }
 }
 
