@@ -250,6 +250,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                 <RespondUserContent justifyContent="space-between" alignItems="center">
                                     <XHorizontal separator={6} alignItems="center">
                                         <RespondUserAvatar
+                                            style="user"
                                             cloudImageUuid={i.user.photo}
                                             objectId={i.user.id}
                                             objectName={i.user.name}

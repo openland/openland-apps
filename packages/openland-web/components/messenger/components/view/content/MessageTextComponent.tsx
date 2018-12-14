@@ -78,6 +78,7 @@ export const JoinedUserPopperRow = ({
             path={'/mail/u/' + id}
         >
             <XAvatar
+                style="user"
                 cloudImageUuid={photo === null ? undefined : photo}
                 objectName={title}
                 objectId={id}
