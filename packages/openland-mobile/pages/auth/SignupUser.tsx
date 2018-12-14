@@ -80,7 +80,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                             }}
                         >
                             <View alignSelf="center" marginTop={30} marginBottom={10}>
-                                <ZAvatarPicker field="input.photoRef" />
+                                <ZAvatarPicker field="input.photoRef" showLoaderOnUpload={true} />
                             </View>
                             <ZTextInput
                                 field="input.firstName"
