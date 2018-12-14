@@ -306,6 +306,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     render() {
         const { text, mentions, alphaMentions, isService } = this.props;
 
+        debugger;
         let mentionsFinal = mentions || [];
         if (alphaMentions) {
             mentionsFinal = alphaMentions
@@ -334,7 +335,8 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
         if (isService) {
             let serviceMessageType;
             if (
-                text.indexOf('joined the room along with') !== -1 &&
+                text.indexOf('joined') !== -1 &&
+                text.indexOf('along with') !== -1 &&
                 text.indexOf('others') !== -1
             ) {
                 serviceMessageType = 'join_many';
