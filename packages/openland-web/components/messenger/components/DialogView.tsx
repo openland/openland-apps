@@ -19,36 +19,9 @@ interface DialogViewProps {
     onSelect?: () => void;
 }
 
-type DialogViewState = { hover: boolean };
-
-class DialogViewInner extends React.Component<
-    DialogViewProps,
-    DialogViewState
-> {
-    constructor(props: DialogViewProps) {
-        super(props);
-        this.state = {
-            hover: false,
-        };
-    }
-    onMouseEnterHandle = () => {
-        this.setState({
-            hover: true,
-        });
-    };
-    onMouseLeaveHandle = () => {
-        this.setState({
-            hover: false,
-        });
-    };
-    shouldComponentUpdate(
-        nextProps: DialogViewProps,
-        nextState: DialogViewState,
-    ) {
-        return (
-            nextProps.item !== this.props.item ||
-            nextState.hover !== this.state.hover
-        );
+class DialogViewInner extends React.Component<DialogViewProps> {
+    shouldComponentUpdate(nextProps: DialogViewProps) {
+        return nextProps.item !== this.props.item;
     }
 
     render() {
@@ -137,8 +110,6 @@ class DialogViewInner extends React.Component<
 
         return (
             <XView
-                onMouseEnter={this.onMouseEnterHandle}
-                onMouseLeave={this.onMouseLeaveHandle}
                 as="a"
                 ref={props.handleRef}
                 path={'/mail/' + dialog.key}
@@ -155,7 +126,6 @@ class DialogViewInner extends React.Component<
                 linkSelectable={true}
             >
                 <XAvatar2
-                    hovered={this.state.hover}
                     title={dialog.title}
                     id={dialog.flexibleId}
                     src={dialog.photo}
