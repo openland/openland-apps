@@ -50,6 +50,7 @@ class DialogViewInner extends React.Component<
             nextState.hover !== this.state.hover
         );
     }
+
     render() {
         let props = this.props;
         let dialog = props.item;
@@ -153,20 +154,13 @@ class DialogViewInner extends React.Component<
                 selectedHoverBackgroundColor="#4596e1"
                 linkSelectable={true}
             >
-                <XViewSelectedContext.Consumer>
-                    {active => {
-                        return (
-                            <XAvatar2
-                                selected={active}
-                                hovered={this.state.hover}
-                                title={dialog.title}
-                                id={dialog.flexibleId}
-                                src={dialog.photo}
-                                online={dialog.online}
-                            />
-                        );
-                    }}
-                </XViewSelectedContext.Consumer>
+                <XAvatar2
+                    hovered={this.state.hover}
+                    title={dialog.title}
+                    id={dialog.flexibleId}
+                    src={dialog.photo}
+                    online={dialog.online}
+                />
                 <XView
                     flexDirection="column"
                     flexGrow={1}

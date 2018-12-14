@@ -3,7 +3,6 @@ import { XView } from 'react-mental';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 export interface XAvatar2Props {
-    selected: boolean;
     hovered: boolean;
     title: string;
     id: string;
@@ -72,12 +71,12 @@ export const XAvatar2 = React.memo<XAvatar2Props>(props => {
         online = (
             <XView
                 position="absolute"
-                bottom={1}
-                right={0}
-                width={10}
-                height={10}
-                borderRadius={5}
-                borderWidth={props.selected ? 1 : 2}
+                bottom={2}
+                right={2}
+                width={8}
+                height={8}
+                borderRadius={4}
+                borderWidth={1}
                 borderColor={props.hovered ? '#f2f2f2' : '#fff'}
                 backgroundColor={'#5eb2ff'}
             />
