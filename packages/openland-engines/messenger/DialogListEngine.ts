@@ -21,6 +21,7 @@ export interface DialogDataSourceItem {
     unread: number;
     online?: boolean;
     typing?: string;
+    isService?: string;
     isMuted?: boolean;
     haveMention?: boolean;
     messageId?: string;
@@ -309,6 +310,7 @@ export class DialogListEngine {
             let msg = formatMessage(event.message);
             this.dataSource.updateItem({
                 ...res,
+                isService: event.message.isService,
                 unread:
                     !visible || res.unread > unreadCount
                         ? unreadCount
@@ -358,6 +360,7 @@ export class DialogListEngine {
             this.dataSource.addItem(
                 {
                     key: conversationId,
+                    isService: event.message.isService,
                     isMuted: !!room.settings.mute,
                     haveMention: event.message.haveMention,
                     flexibleId: room.id,

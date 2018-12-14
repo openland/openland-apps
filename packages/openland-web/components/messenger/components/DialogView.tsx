@@ -27,6 +27,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
         let props = this.props;
         let dialog = props.item;
         let isMuted = dialog.isMuted;
+        let isService = dialog.isService;
         let haveMention = dialog.haveMention;
         let isPrivate = props.item.kind === 'PRIVATE';
         let sender = dialog.isOut
@@ -81,7 +82,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
             } else if (dialog.message) {
                 message = (
                     <span>
-                        {sender}
+                        {!isService && sender}
                         {dialog.messageEmojified}
                     </span>
                 );
