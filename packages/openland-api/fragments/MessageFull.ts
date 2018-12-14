@@ -84,6 +84,19 @@ export const MessageFull = gql`
         mentions: mentions {
             ...UserShort
         }
+        alphaMentions: alphaMentions {
+            ... on UserMention {
+                user {
+                    ...UserShort
+                }
+            }
+            ... on SharedRoomMention {
+                sharedRoom {
+                    id
+                    title
+                }
+            }
+        }
         urlAugmentation {
             type
             url

@@ -72,7 +72,7 @@ export const JoinedUserPopperRow = ({
             height={36}
         >
             <XAvatar
-                // cloudImageUuid={photo || undefined}
+                cloudImageUuid={photo || undefined}
                 objectName={title}
                 objectId={id}
                 size="m-small"
@@ -343,11 +343,6 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             if (serviceMessageType === 'join_many') {
                 const [firstMention, ...otherMentions] = mentionsFinal;
 
-                const onItemMessageClick = (id: number) => {
-                    console.log(id);
-                    console.log('onItemMessageClick');
-                };
-
                 const items = otherMentions.map(
                     ({ name, primaryOrganization, photo, id }: any) => {
                         return {
@@ -368,7 +363,6 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
                         name: `${otherMentions.length} others`,
                         component: OthersPopper,
                         props: {
-                            onItemMessageClick,
                             items,
                             children: `${otherMentions.length} others`,
                         },

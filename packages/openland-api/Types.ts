@@ -1025,6 +1025,7 @@ export interface RoomHistory_messages_alphaMentions_UserMention {
 export interface RoomHistory_messages_alphaMentions_SharedRoomMention_sharedRoom {
   __typename: "SharedRoom";
   id: string;
+  title: string;
 }
 
 export interface RoomHistory_messages_alphaMentions_SharedRoomMention {
@@ -5002,6 +5003,46 @@ export interface ConversationShort_AnonymousConversation_topMessage_mentions {
   primaryOrganization: ConversationShort_AnonymousConversation_topMessage_mentions_primaryOrganization | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization | null;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention {
+  __typename: "UserMention";
+  user: ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention_user;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention {
+  __typename: "SharedRoomMention";
+  sharedRoom: ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom;
+}
+
+export type ConversationShort_AnonymousConversation_topMessage_alphaMentions = ConversationShort_AnonymousConversation_topMessage_alphaMentions_UserMention | ConversationShort_AnonymousConversation_topMessage_alphaMentions_SharedRoomMention;
+
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -5099,6 +5140,7 @@ export interface ConversationShort_AnonymousConversation_topMessage {
   reply: ConversationShort_AnonymousConversation_topMessage_reply[] | null;
   reactions: ConversationShort_AnonymousConversation_topMessage_reactions[];
   mentions: ConversationShort_AnonymousConversation_topMessage_mentions[] | null;
+  alphaMentions: ConversationShort_AnonymousConversation_topMessage_alphaMentions[] | null;
   urlAugmentation: ConversationShort_AnonymousConversation_topMessage_urlAugmentation | null;
 }
 
@@ -5284,6 +5326,46 @@ export interface ConversationShort_GroupConversation_topMessage_mentions {
   primaryOrganization: ConversationShort_GroupConversation_topMessage_mentions_primaryOrganization | null;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention {
+  __typename: "UserMention";
+  user: ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention_user;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention {
+  __typename: "SharedRoomMention";
+  sharedRoom: ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom;
+}
+
+export type ConversationShort_GroupConversation_topMessage_alphaMentions = ConversationShort_GroupConversation_topMessage_alphaMentions_UserMention | ConversationShort_GroupConversation_topMessage_alphaMentions_SharedRoomMention;
+
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -5381,6 +5463,7 @@ export interface ConversationShort_GroupConversation_topMessage {
   reply: ConversationShort_GroupConversation_topMessage_reply[] | null;
   reactions: ConversationShort_GroupConversation_topMessage_reactions[];
   mentions: ConversationShort_GroupConversation_topMessage_mentions[] | null;
+  alphaMentions: ConversationShort_GroupConversation_topMessage_alphaMentions[] | null;
   urlAugmentation: ConversationShort_GroupConversation_topMessage_urlAugmentation | null;
 }
 
@@ -5582,6 +5665,46 @@ export interface ConversationShort_ChannelConversation_topMessage_mentions {
   primaryOrganization: ConversationShort_ChannelConversation_topMessage_mentions_primaryOrganization | null;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user_primaryOrganization | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention {
+  __typename: "UserMention";
+  user: ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention_user;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention {
+  __typename: "SharedRoomMention";
+  sharedRoom: ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention_sharedRoom;
+}
+
+export type ConversationShort_ChannelConversation_topMessage_alphaMentions = ConversationShort_ChannelConversation_topMessage_alphaMentions_UserMention | ConversationShort_ChannelConversation_topMessage_alphaMentions_SharedRoomMention;
+
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -5679,6 +5802,7 @@ export interface ConversationShort_ChannelConversation_topMessage {
   reply: ConversationShort_ChannelConversation_topMessage_reply[] | null;
   reactions: ConversationShort_ChannelConversation_topMessage_reactions[];
   mentions: ConversationShort_ChannelConversation_topMessage_mentions[] | null;
+  alphaMentions: ConversationShort_ChannelConversation_topMessage_alphaMentions[] | null;
   urlAugmentation: ConversationShort_ChannelConversation_topMessage_urlAugmentation | null;
 }
 
@@ -5892,6 +6016,46 @@ export interface MessageFull_mentions {
   primaryOrganization: MessageFull_mentions_primaryOrganization | null;
 }
 
+export interface MessageFull_alphaMentions_UserMention_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageFull_alphaMentions_UserMention_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  primaryOrganization: MessageFull_alphaMentions_UserMention_user_primaryOrganization | null;
+}
+
+export interface MessageFull_alphaMentions_UserMention {
+  __typename: "UserMention";
+  user: MessageFull_alphaMentions_UserMention_user;
+}
+
+export interface MessageFull_alphaMentions_SharedRoomMention_sharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  title: string;
+}
+
+export interface MessageFull_alphaMentions_SharedRoomMention {
+  __typename: "SharedRoomMention";
+  sharedRoom: MessageFull_alphaMentions_SharedRoomMention_sharedRoom;
+}
+
+export type MessageFull_alphaMentions = MessageFull_alphaMentions_UserMention | MessageFull_alphaMentions_SharedRoomMention;
+
 export interface MessageFull_urlAugmentation_imageInfo {
   __typename: "FileMetadata";
   imageWidth: number | null;
@@ -5989,6 +6153,7 @@ export interface MessageFull {
   reply: MessageFull_reply[] | null;
   reactions: MessageFull_reactions[];
   mentions: MessageFull_mentions[] | null;
+  alphaMentions: MessageFull_alphaMentions[] | null;
   urlAugmentation: MessageFull_urlAugmentation | null;
 }
 
@@ -6193,6 +6358,7 @@ export interface RoomMessageFull_alphaMentions_UserMention {
 export interface RoomMessageFull_alphaMentions_SharedRoomMention_sharedRoom {
   __typename: "SharedRoom";
   id: string;
+  title: string;
 }
 
 export interface RoomMessageFull_alphaMentions_SharedRoomMention {
