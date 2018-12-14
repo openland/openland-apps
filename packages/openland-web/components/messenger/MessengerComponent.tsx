@@ -724,6 +724,9 @@ const ForwardHeader = (props: {
 let MessengerComponentLoader = withRoom(
     withQueryLoader(
         withUserInfo(props => {
+            if (!props.data) {
+                return <div/>
+            }
             let sharedRoom: Room_room_SharedRoom | null =
                 props.data.room!.__typename === 'SharedRoom'
                     ? (props.data.room as any)

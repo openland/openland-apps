@@ -54,7 +54,7 @@ const DateDivider = Glamorous.div({
     top: 8,
     zIndex: 1,
     marginTop: 24,
-    marginBottom: 12,
+    marginBottom: 0,
     '& > div': {
         display: 'flex',
         justifyContent: 'center',
@@ -66,11 +66,9 @@ const DateDivider = Glamorous.div({
         paddingTop: 2,
         paddingBottom: 2,
         '& > span': {
-            fontSize: 12,
-            fontWeight: 500,
-            color: '#334562',
-            opacity: 0.5,
-            letterSpacing: -0.2,
+            fontSize: 13,
+            fontWeight: 400,
+            color: '#99A2B0',
         },
     },
 });
