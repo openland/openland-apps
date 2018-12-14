@@ -836,9 +836,7 @@ class MessageComposeComponentInner extends React.PureComponent<
             this.setState({
                 message: '',
                 floatingMessage: '',
-                forwardMessageReply: `Forward ${
-                    messagesContext.forwardMessagesId.size
-                    } messages`,
+                forwardMessageReply: `Forward ${messagesContext.forwardMessagesId.size} ` + (messagesContext.forwardMessagesId.size === 1 ? 'message' : 'messages'),
                 forwardMessageId: messagesContext.forwardMessagesId,
                 forwardMessageSender: 'Forward',
             });
@@ -886,9 +884,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                     ...newState,
                     message: '',
                     floatingMessage: '',
-                    forwardMessageReply: `Forward ${
-                        forwardMessagesId.size
-                        } messages`,
+                    forwardMessageReply: `Forward ${forwardMessagesId.size} ` + (forwardMessagesId.size === 1 ? 'message' : 'messages'),
                     forwardMessageId: forwardMessagesId,
                     forwardMessageSender: 'Forward',
                 };
@@ -913,9 +909,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                     ...newState,
                     message: '',
                     floatingMessage: '',
-                    forwardMessageReply: `Reply ${
-                        replyMessagesId.size
-                        } messages`,
+                    forwardMessageReply: `Reply ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages'),
                     forwardMessageId: replyMessagesId,
                     forwardMessageSender: 'Reply',
                 };

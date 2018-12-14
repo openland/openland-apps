@@ -144,7 +144,7 @@ const FrowardPlaceholder = (props: { state: MessagesStateContextProps }) => {
                     <InfoTextBold>Forwarding messages</InfoTextBold>
                     <InfoText>
                         Select a chat in the left column to forward{' '}
-                        <span>{msgLength} messages</span>
+                        <span>{msgLength} {msgLength === 1 ? 'message' : 'messages'}</span>
                     </InfoText>
                 </XVertical>
             </ImageWrapper>
