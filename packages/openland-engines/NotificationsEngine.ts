@@ -35,9 +35,22 @@ export class NotificationsEngine {
                     originalTitle = (document as any).realTitle;
                 }
 
-                if (!document.hasFocus()) {
+                if (!document.hasFocus() && localStorage.getItem('blinkingStarted') !== 'stoped') {
+                    localStorage.setItem('blinkingStarted', 'started');
+
                     document.title = (isBlinkedTitle) ? 'New message · Openland' : originalTitle;
                 } else {
+                    localStorage.setItem('blinkingStarted', 'stoped');
+
+                    if (localStorage.getItem('blinkingStopStarted') !== 'true') {
+                        localStorage.setItem('blinkingStopStarted', 'true');
+
+                        setTimeout(() => {
+                            localStorage.setItem('blinkingStarted', 'cleared');
+                            localStorage.setItem('blinkingStopStarted', 'false');
+                        }, 2000);
+                    }
+
                     document.title = originalTitle;
 
                     this.blinkingAlreadyStarted = false;
