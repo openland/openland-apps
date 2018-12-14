@@ -4,7 +4,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from '../components/icons/ic-photo.svg';
 import FileIcon from '../components/icons/ic-file-2.svg';
-import MutedChats from './icons/ic-muted-chats.svg';
 import ForwardIcon from './icons/ic-reply-2.svg';
 import MentionIcon from './icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
@@ -158,14 +157,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                             whiteSpace="nowrap"
                             textOverflow="ellipsis"
                         >
-                            <XView flexDirection="row" alignItems="center">
-                                {dialog.title}
-                                {isMuted && (
-                                    <XView marginLeft={5}>
-                                        <MutedChats />
-                                    </XView>
-                                )}
-                            </XView>
+                            {dialog.title}
                         </XView>
                         {dialog.date && (
                             <XView
@@ -209,11 +201,7 @@ class DialogViewInner extends React.Component<DialogViewProps> {
                         {dialog.unread > 0 && (
                             <>
                                 {haveMention && (
-                                    <XView
-                                        alignSelf="center"
-                                        paddingLeft={12}
-                                        marginRight={-6}
-                                    >
+                                    <XView alignSelf="center" paddingLeft={12} marginRight={-6}>
                                         <MentionIcon />
                                     </XView>
                                 )}
