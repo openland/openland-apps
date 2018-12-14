@@ -14,6 +14,7 @@ import { XButton } from 'openland-x/XButton';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'react-mental';
 import { XPopper } from 'openland-x/XPopper';
+import { XPopperContent } from 'openland-x/popper/XPopperContent';
 export interface MessageTextComponentProps {
     alphaMentions?: any;
     mentions: MessageFull_mentions[] | null;
@@ -54,13 +55,15 @@ const XButtonStyled = Glamorous(XButton)({
 type JoinedUserPopperRowProps = {
     title: string;
     subtitle: string;
-    userInfo: { photo: string; name: string; id: string };
+    photo: string;
+    id: string;
 };
 
 export const JoinedUserPopperRow = ({
     title,
     subtitle,
-    userInfo: { photo, name, id },
+    photo,
+    id,
 }: JoinedUserPopperRowProps) => {
     return (
         <XView
@@ -68,11 +71,14 @@ export const JoinedUserPopperRow = ({
             flexDirection="row"
             alignItems="center"
             hoverBackgroundColor="#f9f9f9"
+            paddingLeft={16}
+            paddingRight={16}
             width={393}
             height={36}
+            path={'/mail/u/' + id}
         >
             <XAvatar
-                cloudImageUuid={photo || undefined}
+                cloudImageUuid={photo === null ? undefined : photo}
                 objectName={title}
                 objectId={id}
                 size="m-small"
@@ -89,25 +95,8 @@ export const JoinedUserPopperRow = ({
                 style="primary"
                 size="tiny"
                 path={'/mail/' + id}
-                
             />
         </XView>
-    );
-};
-
-export const JoinedUsersPopper = ({
-    items,
-}: {
-    items: JoinedUserPopperRowProps[];
-}) => {
-    return (
-        <>
-            {items.map((item, key) => {
-                return (
-                    <JoinedUserPopperRow {...item} key={key}/>
-                );
-            })}
-        </>
     );
 };
 
@@ -117,7 +106,7 @@ const TextWrapper = Glamorous.span<{ isService: boolean; big: boolean }>(
         whiteSpace: 'pre-wrap',
         wordWrap: 'break-word',
         maxWidth: '100%',
-        fontSize: props.isService ? 13 : (props.big ? 36 : 14),
+        fontSize: props.isService ? 13 : props.big ? 36 : 14,
         minHeight: props.big ? 44 : undefined,
         lineHeight: props.big ? '40px' : '22px',
         letterSpacing: props.big ? -0.5 : 0,
@@ -266,10 +255,20 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
     });
 };
 
-const OthersPopper = (props: any) => {
+const XPopperContentStyled = Glamorous(XPopperContent)({
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 0,
+    paddingRight: 0,
+});
+
+export const OthersPopper = (props: any) => {
     return (
         <XPopper
-            content={<JoinedUsersPopper {...props} />}
+            contentContainer={<XPopperContentStyled />}
+            content={props.items.map((item: any, key: any) => {
+                return <JoinedUserPopperRow {...item} key={key} />;
+            })}
             showOnHover={true}
             placement="top"
         >
@@ -348,11 +347,8 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
                         return {
                             title: name,
                             subtitle: primaryOrganization.name,
-                            userInfo: {
-                                photo,
-                                name,
-                                id,
-                            },
+                            photo,
+                            id,
                         };
                     },
                 );
