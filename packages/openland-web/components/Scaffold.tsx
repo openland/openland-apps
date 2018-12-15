@@ -51,15 +51,18 @@ import {
     UserShort_primaryOrganization,
 } from 'openland-api/Types';
 
-const NavigationContainer = Glamorous.div({
-    minHeight: '100%',
-    flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    paddingTop: 11,
-    paddingBottom: 14,
-});
+const NavigationContainer = (props: { children?: any }) => (
+    <XView
+        minHeight="100%"
+        flexGrow={1}
+        alignItems="center"
+        flexDirection="column"
+        paddingTop={11}
+        paddingBottom={14}
+    >
+        {props.children}
+    </XView>
+);
 
 const NavigationScroller = Glamorous(XScrollView)({
     minHeight: '100%',
@@ -84,28 +87,43 @@ const Logo = Glamorous.div({
     backgroundSize: 'contain',
 });
 
-const NavigationDivider = Glamorous.div<{ top?: number; bottom?: number }>(
-    props => ({
-        width: 38,
-        height: 1,
-        marginTop: typeof props.top !== undefined ? props.top : 3,
-        marginBottom: typeof props.bottom !== undefined ? props.bottom : 3,
-        alignSelf: 'center',
-        backgroundColor: 'rgba(220, 222, 228, 0.6)',
-        flexShrink: 0,
-    }),
-);
+const NavigationDivider = (props: { position: "top" | "bottom" }) => {
+    if (props.position === 'top') {
+        return (
+            <XView
+                width={38}
+                height={1}
+                marginTop={0}
+                marginBottom={16}
+                alignSelf="center"
+                backgroundColor="rgba(220, 222, 228, 0.6)"
+                flexShrink={0}
+            />
+        );
+    } else {
+        return (
+            <XView
+                width={38}
+                height={1}
+                marginTop={10}
+                marginBottom={10}
+                alignSelf="center"
+                backgroundColor="rgba(220, 222, 228, 0.6)"
+                flexShrink={0}
+            />
+        );
+    }
+}
 
 interface NavigatorItemProps {
     path?: string;
     onClick?: React.MouseEventHandler<any>;
-
-    children: any;
+    children?: any;
 }
 
 class NavigatorItem extends React.Component<NavigatorItemProps> {
     // It uses class instead stateless function by reason:
-    // XPopper. Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.null
+    // XPopper. Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.
 
     render () {
         return (
@@ -149,14 +167,17 @@ const CounterWrapper = (props: { count: number }) => (
     </XView>
 )
 
-const BottomNavigation = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignSelf: 'stretch',
-    flexGrow: 1,
-    flexShrink: 0,
-});
+const BottomNavigation = (props: { children?: any}) => (
+    <XView
+        flexDirection="column"
+        justifyContent="flex-end"
+        alignSelf="stretch"
+        flexGrow={1}
+        flexShrink={0}
+    >
+        {props.children}
+    </XView>
+)
 
 const ProfileTitleContainer = Glamorous(XHorizontal)({
     padding: '8px 18px 7px',
@@ -788,7 +809,7 @@ export class Scaffold extends React.PureComponent {
                             <Logo />
                         </XLink>
 
-                        <NavigationDivider top={0} bottom={16} />
+                        <NavigationDivider position="top" />
 
                         <MessengerButton />
 
@@ -833,7 +854,7 @@ export class Scaffold extends React.PureComponent {
                             >
                                 <AdminMenu />
                             </XWithRole>
-                            <NavigationDivider top={10} bottom={10} />
+                            <NavigationDivider position="bottom" />
                             <NavigatorItem>
                                 <UserProfile />
                             </NavigatorItem>
