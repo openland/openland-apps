@@ -28,11 +28,11 @@ import {
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
-import AddIcon from './icons/add-2.svg';
-import MessagesIcon from './icons/messages-3.svg';
-import RoomIcon from './icons/channel-1.svg';
-import DevToolsIcon from './icons/devtools-2.svg';
-import DirecoryIcon from './icons/directory-2.svg';
+import AddIcon from './icons/add-3.svg';
+import MessagesIcon from './icons/messages-4.svg';
+import RoomIcon from './icons/channel-2.svg';
+import DevToolsIcon from './icons/devtools-3.svg';
+import DirecoryIcon from './icons/directory-3.svg';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
@@ -96,37 +96,58 @@ const NavigationDivider = Glamorous.div<{ top?: number; bottom?: number }>(
     }),
 );
 
-const NavigatorItem = Glamorous(XLink)({
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 55,
-    flexShrink: 0,
-    cursor: 'pointer',
-    color: '#b4b8bd',
+interface NavigatorItemProps {
+    path?: string;
+    onClick?: React.MouseEventHandler<any>;
 
-    '& > svg *': {
-        fill: '#b4b8bd',
-    },
+    children: any;
+}
 
-    '.is-active': {
-        color: '#b4b8bd',
-        backgroundColor: 'rgba(0, 0, 0, 0.04)!important',
-    },
-    '&:hover': {
-        color: '#b4b8bd',
-        backgroundColor: 'rgba(0, 0, 0, 0.04)',
-    },
-    '&:not(.is-active) > .counter': {
-        borderColor: '#f6f6f6',
-    },
-    '&:hover > .counter': {
-        borderColor: '#ececec',
-    },
-});
+class NavigatorItem extends React.Component<NavigatorItemProps> {
+    // It uses class instead stateless function by reason:
+    // XPopper. Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.null
+
+    render () {
+        return (
+            <XView
+                position="relative"
+                flexDirection="column"
+                alignSelf="stretch"
+                alignItems="center"
+                justifyContent="center"
+                height={55}
+                flexShrink={0}
+                cursor="pointer"
+                color="#b4b8bd"
+        
+                selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
+                hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+        
+                linkSelectable={this.props.path ? true : undefined}
+                linkStrict={this.props.path ? true : undefined}
+                path={this.props.path}
+                onClick={this.props.onClick}
+            >
+                {this.props.children}
+            </XView>
+        );
+    }
+}
+
+const CounterWrapper = (props: { count: number }) => (
+    <XView
+        position="absolute"
+        right={14}
+        top={12}
+        borderWidth={2}
+        borderColor="#f6f6f6"
+        borderRadius={8}
+
+        selectedBorderColor="#ececec"
+    >
+        <XCounter count={props.count} />
+    </XView>
+)
 
 const BottomNavigation = Glamorous.div({
     display: 'flex',
@@ -612,19 +633,11 @@ export const MessengerButton = withNotificationCounter(props => {
             groupId="scaffold_tooltip"
             content={<strong>{TextAppBar.items.mail}</strong>}
         >
-            <NavigatorItem path="/mail" activateForSubpaths={true}>
+            <NavigatorItem path="/mail">
                 <MessagesIcon />
+
                 {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <XView
-                        position="absolute"
-                        right={14}
-                        top={12}
-                        borderWidth={2}
-                        borderColor="#ececec"
-                        borderRadius={8}
-                    >
-                        <XCounter count={props.data.counter.unreadCount} />
-                    </XView>
+                    <CounterWrapper count={props.data.counter.unreadCount} />
                 )}
             </NavigatorItem>
         </XPopper>
@@ -790,10 +803,7 @@ export class Scaffold extends React.PureComponent {
                                 <strong>{TextAppBar.items.directory}</strong>
                             }
                         >
-                            <NavigatorItem
-                                path="/directory"
-                                activateForSubpaths={true}
-                            >
+                            <NavigatorItem path="/directory">
                                 <DirecoryIcon />
                             </NavigatorItem>
                         </XPopper>
@@ -810,10 +820,7 @@ export class Scaffold extends React.PureComponent {
                                     <strong>{TextAppBar.items.feed}</strong>
                                 }
                             >
-                                <NavigatorItem
-                                    path="/feed"
-                                    activateForSubpaths={true}
-                                >
+                                <NavigatorItem path="/feed">
                                     <RoomIcon />
                                 </NavigatorItem>
                             </XPopper>

@@ -3211,9 +3211,10 @@ babel-plugin-transform-es2015-modules-commonjs@^6.26.2:
     babel-template "^6.26.0"
     babel-types "^6.26.0"
 
-babel-plugin-transform-mental@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.3.4.tgz#2c15e1988ffc29c3b20fcfb054e33f52cfadd445"
+babel-plugin-transform-mental@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.3.5.tgz#132e3f5402245454f26a79a68594d4a23b19126e"
+  integrity sha512-rLMI/Kl9YkRbCla6GDxC/+ZsP1ZPQ89g7O2tf6aZbQPz2t0E4DVP+4DXDUpyspPRLKWWc1xwWGNb8PIy2Pj4bw==
   dependencies:
     "@babel/generator" "^7.2.0"
     "@babel/traverse" "^7.1.6"
@@ -3223,7 +3224,7 @@ babel-plugin-transform-mental@^1.3.4:
     "@types/mkdirp" "^0.5.2"
     "@types/uuid" "^3.4.4"
     glamor "^2.20.40"
-    mental-styles "^1.3.4"
+    mental-styles "^1.3.5"
     mkdirp "^0.5.1"
     uuid "^3.3.2"
 
@@ -8794,9 +8795,10 @@ memory-fs@^0.4.0, memory-fs@^0.4.1, memory-fs@~0.4.1:
     errno "^0.1.3"
     readable-stream "^2.0.1"
 
-mental-styles@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.3.4.tgz#50d7a1f2ede1184e2da0a69b5d031d4e7d543cc5"
+mental-styles@^1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.3.5.tgz#392f57b8a2f1104aaf6425fb251fb672007ea51f"
+  integrity sha512-mOrtAFrEJhkhCFZj/FiUtg0kNSJwPH13HMG0hLZdmwDWfrthrxx+hrrT0233LXMqcilgdiqjn0ik8h898bWm8g==
 
 merge-descriptors@1.0.1:
   version "1.0.1"
@@ -10862,12 +10864,13 @@ react-lottie@^1.1.0:
     babel-runtime "^6.26.0"
     lottie-web "^5.1.3"
 
-react-mental@1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.3.4.tgz#76fac79c25b49263aa4b8f355ab6d2d6e0795103"
+react-mental@1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.3.5.tgz#7e74466b49868ceb2c07073bfb326ef992d379b5"
+  integrity sha512-aBr3wBmG5VQ3+YzvK1CxmM9jM244QIjskk399h5cqr+X+/6UnoVH8D4HiUtnD2//OADTB4d7MZAp53BKlKkFtA==
   dependencies:
-    babel-plugin-transform-mental "^1.3.4"
-    mental-styles "^1.3.4"
+    babel-plugin-transform-mental "^1.3.5"
+    mental-styles "^1.3.5"
 
 react-modal@^3.2.1:
   version "3.6.1"
