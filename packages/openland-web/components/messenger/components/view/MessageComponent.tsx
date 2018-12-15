@@ -674,7 +674,7 @@ class MessageComponentInner extends React.PureComponent<
                     compact={compact}
                     selecting={hideMenu}
                     sender={this.props.sender!}
-                    date={date}
+                    date={this.props.message.date}
                     renderMenu={this.menuRender}
                     onSelected={this.selectMessage}
                     selected={isSelect}
