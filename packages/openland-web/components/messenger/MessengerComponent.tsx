@@ -6,10 +6,8 @@ import { withRoom } from '../../api/withRoom';
 import { withQueryLoader } from '../withQueryLoader';
 import { MessengerRootComponent } from './components/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
-import { XAvatar } from 'openland-x/XAvatar';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import {
-    XMenuTitle,
     XMenuItemWrapper,
     XMenuItem,
     XMenuItemSeparator,
@@ -18,7 +16,6 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
-import { XLink } from 'openland-x/XLink';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
@@ -59,6 +56,7 @@ import { TalkContext } from 'openland-web/pages/main/mail/components/conference/
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -804,34 +802,21 @@ let MessengerComponentLoader = withRoom(
                             flexBasis={0}
                             flexGrow={1}
                         >
-                            <XAvatar
-                                path={headerPath}
-                                size="small"
-                                style={
-                                    sharedRoom && sharedRoom.kind === 'INTERNAL'
-                                        ? 'organization'
-                                        : sharedRoom &&
-                                            sharedRoom.kind === 'GROUP'
-                                            ? 'group'
-                                            : sharedRoom &&
-                                                sharedRoom.kind === 'PUBLIC'
-                                                ? 'room'
-                                                : 'colorus'
-                                }
-                                cloudImageUuid={
+                            <XAvatar2
+                                size={36}
+                                src={
                                     (sharedRoom && sharedRoom.photo) ||
-                                    (privateRoom && privateRoom.user.photo) ||
-                                    undefined
+                                    (privateRoom && privateRoom.user.photo)
                                 }
-                                objectName={title}
-                                objectId={
+                                title={title}
+                                id={
                                     sharedRoom
                                         ? sharedRoom.organization
                                             ? sharedRoom.organization.id
                                             : sharedRoom.id
                                         : privateRoom
                                             ? privateRoom.user.id
-                                            : undefined
+                                            : ''
                                 }
                             />
                             <XVertical
