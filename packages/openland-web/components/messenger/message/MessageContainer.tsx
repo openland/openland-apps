@@ -63,6 +63,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
                     id={props.sender.id}
                     title={props.sender.name}
                     src={props.sender.photo}
+                    size={36}
                 />
             </XView>
         );

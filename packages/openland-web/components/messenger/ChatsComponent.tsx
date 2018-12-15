@@ -23,7 +23,7 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
-import { DialogView } from './components/DialogView';
+import { DialogView } from './dialog/DialogView';
 import {
     MessagesStateContext,
     MessagesStateContextProps,

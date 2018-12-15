@@ -1,24 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { SharedRoomKind } from 'openland-api/Types';
-
-const EmptyRoot = Glamorous.div({
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: -100,
-});
-
-const EmptyContent = Glamorous.div({
-    zIndex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexShrink: 0,
-});
+import { XView } from 'react-mental';
 
 const Image = Glamorous.div<{ isRoom: boolean }>(props => ({
     width: props.isRoom ? 434 : 391,
@@ -31,39 +14,29 @@ const Image = Glamorous.div<{ isRoom: boolean }>(props => ({
     backgroundPosition: 'center',
 }));
 
-const ImageWrapper = Glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 64,
-    alignSelf: 'center',
-});
-
-const Text = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 400,
-    lineHeight: '24px',
-    letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.4)',
-    maxWidth: 430,
-    textAlign: 'center',
-    marginTop: 8,
-});
+const Text = (props: { children: any }) => {
+    return (
+        <XView fontSize={16} fontWeight="400" lineHeight="24px" color="rgba(0, 0, 0, 0.4)" maxWidth={430} alignItems="center" justifyContent="center" marginTop={8}>
+            {props.children}
+        </XView>
+    )
+}
 
 export const EmptyBlock = (props: {
     conversationType?: SharedRoomKind | 'PRIVATE';
     onClick?: (show: boolean) => void;
 }) => (
-    <EmptyRoot>
-        <EmptyContent>
-            <ImageWrapper>
-                <Image isRoom={props.conversationType === 'PUBLIC'} />
-            </ImageWrapper>
-            {props.conversationType === 'PUBLIC' && (
-                <Text>The discussion hasn’t started yet</Text>
-            )}
-            {props.conversationType !== 'PUBLIC' && (
-                <Text>No messages yet</Text>
-            )}
-        </EmptyContent>
-    </EmptyRoot>
-);
+        <XView position="relative" alignItems="center" justifyContent="center" marginTop={-100}>
+            <XView zIndex={1} justifyContent="center" alignItems="center">
+                <XView alignItems="center" justifyContent="center" marginTop={64}>
+                    <Image isRoom={props.conversationType === 'PUBLIC'} />
+                </XView>
+                {props.conversationType === 'PUBLIC' && (
+                    <Text>The discussion hasn’t started yet</Text>
+                )}
+                {props.conversationType !== 'PUBLIC' && (
+                    <Text>No messages yet</Text>
+                )}
+            </XView>
+        </XView>
+    );

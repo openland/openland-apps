@@ -6,6 +6,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import { XLink } from 'openland-x/XLink';
 import ModalCloseIcon from '../../icons/ic-modal-close.svg';
 import DownloadButtonIcon from '../../icons/ic_file_download.svg';
+import { XView } from 'react-mental';
 
 export const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -43,10 +44,6 @@ export const ModalBody = Glamorous.div({
     '&:hover > .download-button': {
         opacity: 1,
     },
-});
-
-const ImgWrapper = Glamorous(XLink)({
-    alignSelf: 'flex-start',
 });
 
 export const ModalPic = Glamorous(XCloudImage)({
@@ -130,14 +127,14 @@ export class MessageImageComponent extends React.PureComponent<
                         </ModalBody>
                     }
                 />
-                <ImgWrapper onClick={this.handleOpen}>
+                <XView onClick={this.handleOpen} cursor="pointer">
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
                     />
-                </ImgWrapper>
+                </XView>
             </>
         );
     }
