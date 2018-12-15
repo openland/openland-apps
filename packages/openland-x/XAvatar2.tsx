@@ -51,7 +51,7 @@ export const XAvatar2 = React.memo<XAvatar2Props>(props => {
             opsRetina +=
                 '-/format/jpeg/-/scale_crop/' +
                 (40 * 2 + 'x' + 40 * 2) +
-                '/center/-/quality/lighter/-/progressive/yes/';
+                '/center/-/quality/lighter/-/progressive/yes/ 2x';
             contents = (
                 <XView
                     as="img"

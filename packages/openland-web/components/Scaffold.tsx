@@ -74,17 +74,28 @@ const NavigationScroller = Glamorous(XScrollView)({
     flexShrink: 0,
 });
 
-const Logo = Glamorous.div({
-    height: 38,
-    width: 38,
-    marginTop: 0,
-    marginBottom: 11,
-    alignSelf: 'center',
-    flexShrink: 0,
-    backgroundImage: "url('/static/X/logo-4.png')",
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-});
+const Logo = () => (
+    <XView
+        as="a"
+        path="/"
+
+        marginTop={0}
+        marginBottom={11}
+        alignSelf="center"
+        flexShrink={0}
+        width={38}
+        height={38}
+        overflow="hidden"
+    >
+        <XView
+            as="img"
+            width={38}
+            height={38}
+            src="/static/X/logo-5.png"
+            srcSet="/static/X/logo-5@2x.png 2x"
+        />
+    </XView>
+);
 
 const NavigationDivider = (props: { position: "top" | "bottom" }) => {
     if (props.position === 'top') {
@@ -198,7 +209,7 @@ const TitleContainer = (props: TitleContainerProps) => (
         flexDirection="row"
 
         hoverBackgroundColor="rgba(23, 144, 255, 0.05)"
-        // hoverColor="#1790ff"
+        hoverColor="#1790ff"
 
         path={props.path}
     >
@@ -773,9 +784,7 @@ export class Scaffold extends React.PureComponent {
             <XView flexDirection="row" height="100%" position="fixed">
                 <NavigationScroller>
                     <NavigationContainer>
-                        <XLink path="/">
-                            <Logo />
-                        </XLink>
+                        <Logo />
 
                         <NavigationDivider position="top" />
 
