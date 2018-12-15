@@ -37,6 +37,7 @@ import { XDate } from 'openland-x/XDate';
 import { File, EditPostProps } from '../MessengerRootComponent';
 import ReplyIcon from '../icons/ic-reply1.svg';
 import EditIcon from '../icons/ic-edit.svg';
+import { MessageContainer } from '../../message/MessageContainer';
 
 const Name = Glamorous.div({
     fontSize: 14,
@@ -480,7 +481,7 @@ class MessageComponentInner extends React.PureComponent<
                         <MessageTextComponent
                             message={message.message}
                             mentions={message.mentions}
-                            alphaMentions={(message as any).alphaMentions }
+                            alphaMentions={(message as any).alphaMentions}
                             key={'text'}
                             isService={message.isService}
                             isEdited={edited}
@@ -667,6 +668,23 @@ class MessageComponentInner extends React.PureComponent<
             );
         }
 
+        if (!message.isService) {
+            return (
+                <MessageContainer
+                    compact={compact}
+                    selecting={hideMenu}
+                    sender={this.props.sender!}
+                    date={date}
+                    renderMenu={this.menuRender}
+                    onSelected={this.selectMessage}
+                    selected={isSelect}
+                >
+                    {content}
+                    {!isPost && this.reactionsRender()}
+                </MessageContainer>
+            )
+        }
+
         if (compact) {
             return (
                 <MessageWrapper
@@ -766,7 +784,7 @@ class MessageComponentInner extends React.PureComponent<
                             flexGrow={1}
                             maxWidth={!message.isService ? "calc(100% - 52px)" : "calc(100% - 25px)"}
                         >
-                             {!message.isService && <XHorizontal justifyContent="space-between">
+                            {!message.isService && <XHorizontal justifyContent="space-between">
                                 <XHorizontal separator={4}>
                                     <XHorizontal
                                         separator={4}
