@@ -138,6 +138,7 @@ class NavigatorItem extends React.Component<NavigatorItemProps> {
     render () {
         return (
             <XView
+                as="a"
                 position="relative"
                 flexDirection="column"
                 alignSelf="stretch"
