@@ -20,7 +20,6 @@ const Post = (props: {
             padding={16}
             marginTop={8}
             marginBottom={8}
-            level="1"
             alignItems="stretch"
             backgroundColor={props.kind === 'anonymous' ? '#abe3c5' : undefined}
         >
