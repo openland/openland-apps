@@ -9,10 +9,8 @@ import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
-import { makeNavigable } from 'openland-x/Navigable';
 import {
     XMenuItem,
     XMenuVertical,
@@ -50,6 +48,7 @@ import {
     MyOrganizations_myOrganizations,
     UserShort_primaryOrganization,
 } from 'openland-api/Types';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const NavigationContainer = (props: { children?: any }) => (
     <XView
@@ -179,59 +178,62 @@ const BottomNavigation = (props: { children?: any}) => (
     </XView>
 )
 
-const ProfileTitleContainer = Glamorous(XHorizontal)({
-    padding: '8px 18px 7px',
-    ':hover': {
-        background: 'rgba(23, 144, 255, 0.05)',
-        '& > div': {
-            '& > a': {
-                color: '#1790ff',
-                opacity: 1,
-            },
-        },
-    },
-});
+interface TitleContainerProps {
+    id: string;
+    src: string | null;
+    title: string;
+    subtitle: string;
+    path: string;
+}
 
-const ProfileTitle = Glamorous.div({
-    fontSize: 15,
-    fontWeight: 600,
-    lineHeight: '20px',
-    letterSpacing: 0,
-    color: '#000000',
-    marginLeft: 14,
-    maxWidth: 164,
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-});
+const TitleContainer = (props: TitleContainerProps) => (
+    <XView
+        as="a"
+        marginBottom={4}
+        paddingTop={8}
+        paddingRight={18}
+        paddingBottom={7}
+        paddingLeft={18}
+        color="rgba(0, 0, 0, 0.5)"
+        flexDirection="row"
 
-const ProfileSubTitle = Glamorous(XLink)({
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: '20px',
-    letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.5)',
-    marginLeft: 14,
-    marginTop: 1,
-});
+        hoverBackgroundColor="rgba(23, 144, 255, 0.05)"
+        // hoverColor="#1790ff"
 
-const TitleContainer = makeNavigable(props => {
-    return (
-        <a
-            href={props.href}
-            onClick={props.onClick}
-            style={{ marginBottom: 4 }}
-        >
-            <ProfileTitleContainer separator="none">
-                {props.children}
-            </ProfileTitleContainer>
-        </a>
-    );
-});
+        path={props.path}
+    >
+        <XAvatar2
+            title={props.title}
+            id={props.id}
+            src={props.src}
+        />
+        <XView paddingLeft={14}>
+            <XView
+                fontSize={15}
+                fontWeight="600"
+                lineHeight="20px"
+                color="#000000"
+                maxWidth={164}
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                overflow="hidden"
+            >
+                {props.title}
+            </XView>
+            <XView
+                fontSize={14}
+                lineHeight="20px"
+                marginTop={1}
+            >
+                {props.subtitle}
+            </XView>
+        </XView>
+    </XView>
+);
 
 interface UserPopperProps {
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
     picture: string | null;
     primaryOrganization?: UserShort_primaryOrganization;
     organizations?: MyOrganizations_myOrganizations[];
@@ -298,26 +300,12 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                     <XModalContext.Provider value={{ close: this.closer }}>
                         <XVertical separator="none">
                             <TitleContainer
+                                id={this.props.id}
+                                src={this.props.picture}
+                                title={this.props.name}
+                                subtitle={TextGlobal.editProfile}
                                 path="/settings/profile"
-                                autoClose={true}
-                            >
-                                <XAvatar
-                                    cloudImageUuid={
-                                        this.props.picture || undefined
-                                    }
-                                    style="colorus"
-                                    objectName={this.props.name}
-                                    objectId={this.props.id}
-                                />
-                                <XVertical separator="none">
-                                    <ProfileTitle>
-                                        {this.props.name}
-                                    </ProfileTitle>
-                                    <ProfileSubTitle>
-                                        {TextGlobal.editProfile}
-                                    </ProfileSubTitle>
-                                </XVertical>
-                            </TitleContainer>
+                            />
                             <XMenuItem path="/settings/profile">
                                 {TextGlobal.settings}
                             </XMenuItem>
@@ -340,32 +328,12 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                         marginBottom={8}
                                     />
                                     <TitleContainer
-                                        path={
-                                            '/directory/o/' +
-                                            primaryOrganization.id
-                                        }
-                                        autoClose={true}
-                                    >
-                                        <XAvatar
-                                            cloudImageUuid={
-                                                primaryOrganization.photo ||
-                                                undefined
-                                            }
-                                            style="organization"
-                                            objectName={
-                                                primaryOrganization.name
-                                            }
-                                            objectId={primaryOrganization.id}
-                                        />
-                                        <XVertical separator="none">
-                                            <ProfileTitle>
-                                                {primaryOrganization.name}
-                                            </ProfileTitle>
-                                            <ProfileSubTitle>
-                                                Primary organization
-                                            </ProfileSubTitle>
-                                        </XVertical>
-                                    </TitleContainer>
+                                        id={primaryOrganization.id}
+                                        src={primaryOrganization.photo}
+                                        title={primaryOrganization.name}
+                                        subtitle="Primary organization"
+                                        path={'/directory/o/' + primaryOrganization.id}
+                                    />
 
                                     {organizations && organizations.length > 1 && (
                                         <XPopper
@@ -420,13 +388,13 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                     </XModalContext.Provider>
                 }
             >
-                <XAvatar
-                    cloudImageUuid={this.props.picture || undefined}
-                    onClick={this.switch}
-                    style="colorus"
-                    objectName={this.props.name}
-                    objectId={this.props.id}
-                />
+                <div onClick={this.switch}>
+                    <XAvatar2
+                        src={this.props.picture}
+                        title={this.props.name}
+                        id={this.props.id}
+                    />
+                </div>
             </XPopper>
         );
     }
