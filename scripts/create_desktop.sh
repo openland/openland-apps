@@ -1,0 +1,1 @@
+nativefier --name "Openland" --internal-urls ".*" https://app.openland.com
