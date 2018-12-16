@@ -6,9 +6,6 @@ import {
     MessengerEngine,
     MessengerContext,
 } from 'openland-engines/MessengerEngine';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import gql from '../../../../node_modules/graphql-tag';
-import { Observable } from '../../../../node_modules/subscriptions-transport-ws';
 
 let cachedMessenger: MessengerEngine | null = null;
 

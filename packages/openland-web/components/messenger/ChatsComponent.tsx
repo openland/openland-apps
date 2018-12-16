@@ -28,6 +28,9 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from './components/MessagesStateContext';
+import { XViewRouterContext } from 'react-mental';
+import { XRouting } from 'openland-x-routing/XRouting';
+import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 
 let SelectContext = React.createContext({ select: -1 });
 
@@ -200,10 +203,11 @@ const LoadingWrapper = Glamorous.div({
     height: 60,
 });
 
-interface ChatsComponentInnerProps extends XWithRouter {
+interface ChatsComponentInnerProps {
     emptyState: boolean;
     messenger: MessengerEngine;
     state: MessagesStateContextProps;
+    routing: XRouting;
 }
 
 interface ChatsComponentInnerState {
@@ -331,32 +335,32 @@ class ChatsComponentInner extends React.PureComponent<
             }
         }
 
-        if (e.altKey && !e.ctrlKey) {
-            if (stayChecker) {
-                return;
-            }
+        // if (e.altKey && !e.ctrlKey) {
+        //     if (stayChecker) {
+        //         return;
+        //     }
 
-            let index = this.items.findIndex(
-                d => d.key === this.props.router.routeQuery.conversationId,
-            );
-            switch (e.code) {
-                case 'ArrowUp':
-                    index--;
-                    break;
-                case 'ArrowDown':
-                    index++;
-                    break;
-                default: {
-                    return;
-                }
-            }
-            index = Math.max(0, index);
-            index = Math.min(this.items.length - 1, index);
+        //     let index = this.items.findIndex(
+        //         d => d.key === this.props.router.routeQuery.conversationId,
+        //     );
+        //     switch (e.code) {
+        //         case 'ArrowUp':
+        //             index--;
+        //             break;
+        //         case 'ArrowDown':
+        //             index++;
+        //             break;
+        //         default: {
+        //             return;
+        //         }
+        //     }
+        //     index = Math.max(0, index);
+        //     index = Math.min(this.items.length - 1, index);
 
-            if (this.items[index]) {
-                this.props.router.push('/mail/' + this.items[index].key);
-            }
-        }
+        //     if (this.items[index]) {
+        //         this.props.routing.push('/mail/' + this.items[index].key);
+        //     }
+        // }
 
         if (e.altKey && e.ctrlKey) {
             if (stayChecker) {
@@ -364,7 +368,7 @@ class ChatsComponentInner extends React.PureComponent<
             }
 
             if (e.code === 'KeyN') {
-                this.props.router.push('/mail/new');
+                this.props.routing.push('/mail/new');
             }
         }
 
@@ -373,7 +377,7 @@ class ChatsComponentInner extends React.PureComponent<
                 return;
             }
 
-            this.props.router.replace('/mail');
+            this.props.routing.replace('/mail');
         }
 
         if (!allowShortKeys) {
@@ -514,33 +518,19 @@ class ChatsComponentInner extends React.PureComponent<
     }
 }
 
-const ChatsComponentWrapper = withRouter(props => {
-    return (
-        <MessagesStateContext.Consumer>
-            {(state: MessagesStateContextProps) => (
-                <ChatsComponentInner
-                    emptyState={(props as any).emptyState}
-                    router={props.router}
-                    messenger={(props as any).messenger}
-                    state={state}
-                />
-            )}
-        </MessagesStateContext.Consumer>
-    );
-}) as React.ComponentType<{ emptyState: boolean; messenger: MessengerEngine }>;
-
-export const ChatsComponent = (props: { emptyState: boolean }) => {
+export const ChatsComponent = React.memo((props: { emptyState: boolean }) => {
     if (!canUseDOM) {
         return null;
     }
+    let messenger = React.useContext(MessengerContext);
+    let messagesState = React.useContext(MessagesStateContext);
+    let routing = React.useContext(XRoutingContext);
     return (
-        <MessengerContext.Consumer>
-            {messenger => (
-                <ChatsComponentWrapper
-                    emptyState={props.emptyState}
-                    messenger={messenger}
-                />
-            )}
-        </MessengerContext.Consumer>
+        <ChatsComponentInner
+            emptyState={props.emptyState}
+            routing={routing!}
+            messenger={messenger}
+            state={messagesState}
+        />
     );
-};
+});
