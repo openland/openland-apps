@@ -1,55 +1,55 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { css } from 'linaria';
 
-const ChatContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    width: '100%',
-    paddingLeft: 16,
-    paddingRight: 16,
-    overflow: 'hidden',
-});
+const styleContainer = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    padding-left: 16;
+    padding-right: 16;
+    overflow: hidden;
+`;
 
-const MessagesContainerInner = Glamorous.div({
-    display: 'flex',
-    flexGrow: 1,
-    flexBasis: '100%',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignSelf: 'center',
-    position: 'relative',
-    maxHeight: '100%',
-    height: '100%',
-    width: '100%',
-    maxWidth: '100%',
-    overflow: 'hidden',
-    '& > div:first-child': {
-        width: '100%',
-        maxWidth: '100%',
-        flexBasis: '100%',
-        height: '100%',
-        maxHeight: '100%',
-        flexGrow: 1,
-        '& > .simplebar-track.horizontal': {
-            display: 'none',
+const styleInner = css`
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-self: center;
+    position: relative;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    & > div:first-child: {
+        width: 100%;
+        max-width: 100%;
+        flex-basis: 100%;
+        height: 100%;
+        max-height: 100%;
+        flex-grow: 1;
+        & > .simplebar-track.horizontal: {
+            display: none;
         },
-        '& > .simplebar-scroll-content > .simplebar-content': {
-            overflowX: 'unset !important',
-            overflowY: 'unset !important',
-            width: '100%',
-            justifyContent: 'flex-end',
-            willChange: 'transform',
+        & > .simplebar-scroll-content > .simplebar-content: {
+            overflow-x: unset !important;
+            overflow-y: unset !important;
+            width: 100%;
+            justify-content: flex-end;
+            will-change: transform;
         },
-    },
-});
+    }
+`;
 
 export const MessagesContainer = (props: { children?: any }) => {
     return (
-        <ChatContainer>
-            <MessagesContainerInner className="messages-wrapper">
+        <div className={styleContainer}>
+            <div className={'messages-wrapper ' + styleInner}>
                 {props.children}
-            </MessagesContainerInner>
-        </ChatContainer>
+            </div>
+        </div>
     );
 };

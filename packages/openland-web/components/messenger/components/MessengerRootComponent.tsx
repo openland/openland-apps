@@ -389,20 +389,17 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     if (!canUseDOM) {
         return <Placeholder variables={{ roomId: props.conversationId }} />;
     }
+    let messenger = React.useContext(MessengerContext);
     return (
-        <MessengerContext.Consumer>
-            {messenger => (
-                <MessagesWithUser
-                    organizationId={props.organizationId}
-                    conversationId={props.conversationId}
-                    messenger={messenger}
-                    conversationType={props.conversationType}
-                    objectName={props.objectName}
-                    objectId={props.objectId}
-                    cloudImageUuid={props.cloudImageUuid}
-                    avatarStyle={props.avatarStyle}
-                />
-            )}
-        </MessengerContext.Consumer>
+        <MessagesWithUser
+            organizationId={props.organizationId}
+            conversationId={props.conversationId}
+            messenger={messenger}
+            conversationType={props.conversationType}
+            objectName={props.objectName}
+            objectId={props.objectId}
+            cloudImageUuid={props.cloudImageUuid}
+            avatarStyle={props.avatarStyle}
+        />
     );
 };

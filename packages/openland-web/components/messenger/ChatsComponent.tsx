@@ -41,7 +41,7 @@ interface ConversationComponentProps {
 
 class ConversationComponent extends React.PureComponent<
     ConversationComponentProps
-> {
+    > {
     refComponent: any;
 
     componentWillUnmount() {
@@ -160,14 +160,14 @@ const SearchChats = withChatSearchText(
                     ))}
                 </>
             ) : (
-                <NoResultWrapper separator={10} alignItems="center">
-                    <Image />
-                    <PlaceholderEmpty>No results</PlaceholderEmpty>
-                </NoResultWrapper>
-            )
+                    <NoResultWrapper separator={10} alignItems="center">
+                        <Image />
+                        <PlaceholderEmpty>No results</PlaceholderEmpty>
+                    </NoResultWrapper>
+                )
         ) : (
-            <PlaceholderLoader color="#334562" />
-        );
+                <PlaceholderLoader color="#334562" />
+            );
     }),
 ) as React.ComponentType<{
     variables: { query: string };
@@ -243,7 +243,7 @@ const InviteWrapper = Glamorous(XLink)({
 class ChatsComponentInner extends React.PureComponent<
     ChatsComponentInnerProps,
     ChatsComponentInnerState
-> {
+    > {
     readonly dialogListEngine: DialogListEngine;
     items: DialogDataSourceItem[] = [];
     searchCount = 0;
@@ -434,9 +434,9 @@ class ChatsComponentInner extends React.PureComponent<
         });
     };
 
-    renderConversationComponent = (props: any) => (
+    renderConversationComponent = (items: any, completed: boolean) => (
         <>
-            {props.items.map((i: any, j: any) => {
+            {items.map((i: any, j: any) => {
                 return (
                     <SelectContext.Consumer key={i.key}>
                         {select => {
@@ -453,7 +453,7 @@ class ChatsComponentInner extends React.PureComponent<
                     </SelectContext.Consumer>
                 );
             })}
-            {!props.completed && (
+            {!completed && (
                 <LoadingWrapper>
                     <XButton alignSelf="center" style="flat" loading={true} />
                 </LoadingWrapper>

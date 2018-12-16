@@ -7,7 +7,7 @@ import {
 
 export interface DataSourceRenderProps<T extends DataSourceItem> {
     dataSource: DataSource<T>;
-    render: (props: { items: T[]; completed: boolean }) => any;
+    render: (items: T[], completed: boolean) => any;
     onChange?: (items: T[]) => void;
 }
 
@@ -82,11 +82,6 @@ export class DataSourceRender<T extends DataSourceItem>
     }
 
     render() {
-        return (
-            <this.props.render
-                completed={this.state.completed}
-                items={this.state.items}
-            />
-        );
+        return this.props.render(this.state.items, this.state.completed);
     }
 }
