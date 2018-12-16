@@ -15,6 +15,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'react-mental';
 import { XPopper } from 'openland-x/XPopper';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
+import { css } from 'linaria';
 export interface MessageTextComponentProps {
     alphaMentions?: any;
     mentions: MessageFull_mentions[] | null;
@@ -24,7 +25,6 @@ export interface MessageTextComponentProps {
 }
 
 const Title = Glamorous.span({
-    fontFamily: 'SFProText-Semibold',
     fontSize: 12,
     fontWeight: 600,
     fontStyle: 'normal',
@@ -36,7 +36,6 @@ const Title = Glamorous.span({
 
 const SubTitle = Glamorous.span({
     opacity: 0.4,
-    fontFamily: 'SFProText-Semibold',
     fontSize: 12,
     fontWeight: 600,
     fontStyle: 'normal',
@@ -101,38 +100,53 @@ export const JoinedUserPopperRow = ({
     );
 };
 
-const TextWrapper = Glamorous.span<{ isService: boolean; big: boolean }>(
-    props => ({
-        display: 'inline',
-        whiteSpace: 'pre-wrap',
-        wordWrap: 'break-word',
-        maxWidth: '100%',
-        fontSize: props.isService ? 13 : props.big ? 36 : 14,
-        minHeight: props.big ? 44 : undefined,
-        lineHeight: props.big ? '40px' : '22px',
-        letterSpacing: props.big ? -0.5 : 0,
-        fontWeight: props.big ? 600 : 400,
-        textAlign: props.isService ? 'center' : undefined,
-        color: props.isService ? '#99A2B0' : 'rgba(0, 0, 0, 0.8)',
-        '& .link': {
-            color: '#1790ff',
-            '&:hover': {
-                color: '#1790ff',
-                textDecoration: 'underline',
-            },
-        },
-    }),
-);
+const TextStyle = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 14;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+`;
 
-const EditLabel = Glamorous.span({
-    display: 'inline-block',
-    verticalAlign: 'baseline',
-    color: 'rgba(0, 0, 0, 0.4)',
-    fontSize: 13,
-    fontWeight: 400,
-    lineHeight: '22px',
-    paddingLeft: 6,
-});
+const TextLargeStyle = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 36;
+    min-height: 44;
+    line-height: 40px;
+    letter-spacing: -0.5;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+`;
+
+const TextServiceStyle = css`
+    display: inline;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 13;
+    line-height: 22px;
+    letter-spacing: 0;
+    font-weight: 400;
+    text-align: center;
+    color: #99A2B0;
+`;
+
+const styleEditLabel = css`
+    display: inline-block;
+    vertical-align: baseline;
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 13;
+    font-weight: 400;
+    line-height: 22px;
+    padding-left: 6;
+`;
 
 let emoji = (text: string, height: number) =>
     emojify(text, {
@@ -395,7 +409,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 
 export class MessageTextComponent extends React.PureComponent<
     MessageTextComponentProps
-> {
+    > {
     private preprocessed: Span[];
     big = false;
     insane = false;
@@ -540,14 +554,14 @@ export class MessageTextComponent extends React.PureComponent<
                         style={
                             this.insane
                                 ? {
-                                      background:
-                                          'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
-                                      backgroundClip: 'text, border',
-                                      ...({
-                                          WebkitBackgroundClip: 'text',
-                                      } as any),
-                                      color: 'transparent',
-                                  }
+                                    background:
+                                        'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
+                                    backgroundClip: 'text, border',
+                                    ...({
+                                        WebkitBackgroundClip: 'text',
+                                    } as any),
+                                    color: 'transparent',
+                                }
                                 : {}
                         }
                         key={'text-' + i}
@@ -558,14 +572,14 @@ export class MessageTextComponent extends React.PureComponent<
             }
         });
 
+        let wrapperClassName =  this.props.isService ? TextServiceStyle
+        : ((this.big || this.insane || this.mouthpiece) ? TextLargeStyle
+            : TextStyle);
         return (
-            <TextWrapper
-                big={this.big || this.insane || this.mouthpiece}
-                isService={this.props.isService}
-            >
+            <span className={wrapperClassName}>
                 {parts}
-                {this.props.isEdited && <EditLabel>(Edited)</EditLabel>}
-            </TextWrapper>
+                {this.props.isEdited && <span className={styleEditLabel}>(Edited)</span>}
+            </span>
         );
     }
 }
