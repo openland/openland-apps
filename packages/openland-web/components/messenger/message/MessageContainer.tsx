@@ -27,7 +27,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
     let onMouseEnter = React.useMemo(() => () => onHover(true), [onHover]);
     let onMouseLeave = React.useMemo(() => () => onHover(false), [onHover]);
     let popupRef = React.useRef(null);
-    let popup = <XPopper2 ref={popupRef}>Test</XPopper2>
+    let popup = <XPopper2 ref={popupRef} placement="top">Test</XPopper2>
 
     // Selector Icon
     let selector = (
