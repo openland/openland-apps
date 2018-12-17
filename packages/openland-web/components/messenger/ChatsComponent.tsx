@@ -28,9 +28,10 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from './components/MessagesStateContext';
-import { XViewRouterContext } from 'react-mental';
+import { XViewRouterContext, XView } from 'react-mental';
 import { XRouting } from 'openland-x-routing/XRouting';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
+import { XListView } from '../XListView';
 
 let SelectContext = React.createContext({ select: -1 });
 
@@ -438,6 +439,23 @@ class ChatsComponentInner extends React.PureComponent<
         });
     };
 
+    renderDialogItem = (item: DialogDataSourceItem) => (
+        <ConversationComponent
+            onSelect={this.onSelect}
+            conversation={item}
+            selectedItem={false}
+            allowSelection={this.state.allowShortKeys}
+        />
+    )
+
+    renderLoading = () => {
+        return (
+            <LoadingWrapper>
+                <XButton alignSelf="center" style="flat" loading={true} />
+            </LoadingWrapper>
+        );
+    }
+
     renderConversationComponent = (items: any, completed: boolean) => (
         <>
             {items.map((i: any, j: any) => {
@@ -480,31 +498,34 @@ class ChatsComponentInner extends React.PureComponent<
                     onFocus={this.inputFocusHandler}
                 />
                 <SelectContext.Provider value={{ select: this.state.select }}>
-                    <XScrollView2
+                    {/* <XScrollView2
                         flexGrow={1}
                         flexBasis={0}
                         onScroll={this.handleScroll}
-                    >
-                        {search && (
-                            <SearchChats
-                                variables={{ query: this.state.query!! }}
-                                onSelect={this.onSelect}
-                                itemsCount={this.itemsCount}
-                                allowSelection={this.state.allowShortKeys}
+                    > */}
+                    {search && (
+                        <SearchChats
+                            variables={{ query: this.state.query!! }}
+                            onSelect={this.onSelect}
+                            itemsCount={this.itemsCount}
+                            allowSelection={this.state.allowShortKeys}
+                        />
+                    )}
+                    {!search && (
+                        <XView
+                            flexGrow={1}
+                            flexBasis={0}
+                            minHeight={0}
+                        >
+                            <XListView
+                                dataSource={this.props.messenger.dialogList.dataSource}
+                                itemHeight={72}
+                                loadingHeight={60}
+                                renderItem={this.renderDialogItem}
+                                renderLoading={this.renderLoading}
                             />
-                        )}
-                        {!search && (
-                            <DataSourceRender
-                                onChange={items => {
-                                    this.items = items;
-                                }}
-                                dataSource={
-                                    this.props.messenger.dialogList.dataSource
-                                }
-                                render={this.renderConversationComponent}
-                            />
-                        )}
-                    </XScrollView2>
+                        </XView>
+                    )}
                 </SelectContext.Provider>
 
                 <InviteWrapper
