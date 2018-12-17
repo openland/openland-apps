@@ -5,6 +5,7 @@ import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XPopper2 } from 'openland-web/components/XPopper2';
+import { usePopperClick } from 'openland-web/components/usePopperClick';
 
 export interface MessageContainerProps {
 
@@ -28,6 +29,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
     let onMouseLeave = React.useMemo(() => () => onHover(false), [onHover]);
     let popupRef = React.useRef(null);
     let popup = <XPopper2 ref={popupRef} placement="top">Test</XPopper2>
+    let popupClick = usePopperClick(popupRef);
 
     // Selector Icon
     let selector = (
@@ -57,7 +59,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
         );
     } else {
         preambula = (
-            <XView width={55} alignSelf="flex-start">
+            <XView width={55} alignSelf="flex-start" onClick={popupClick}>
                 <XAvatar2
                     id={props.sender.id}
                     title={props.sender.name}
@@ -74,7 +76,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
         content = (
             <XView flexDirection="column" flexGrow={1} flexShrink={1} flexBasis={0} minWidth={0} alignItems="stretch">
                 <XView flexDirection="row">
-                    <XView fontSize={14} fontWeight="600" color="rgba(0, 0, 0, 0.8)" onClick={(src) => (popupRef.current as any).show(src.target)}>{props.sender.name}</XView>
+                    <XView fontSize={14} fontWeight="600" color="rgba(0, 0, 0, 0.8)" onClick={popupClick}>{props.sender.name}</XView>
                     {props.sender.primaryOrganization && (
                         <XView fontSize={12} fontWeight="600" color="rgba(0, 0, 0, 0.4)" paddingLeft={8}>
                             {props.sender.primaryOrganization.name}

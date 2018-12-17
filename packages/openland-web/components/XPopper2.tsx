@@ -96,11 +96,11 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
                     // computeStyle: {
                     //     gpuAcceleration: false
                     // },
-                    // preventOverflow: {
-                    //     order: 99,
-                    //     boundariesElement: 'viewport',
-                    //     padding: 10
-                    // },
+                    preventOverflow: {
+                        order: 99,
+                        boundariesElement: 'viewport',
+                        padding: 16
+                    },
                 },
                 onCreate: (data: Popper.Data) => {
                     if (arrowNode) {
