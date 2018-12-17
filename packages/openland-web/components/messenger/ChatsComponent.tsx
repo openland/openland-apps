@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { XWithRouter, withRouter } from 'openland-x-routing/withRouter';
 import {
     DialogListEngine,
     DialogDataSourceItem,
@@ -19,8 +18,6 @@ import { XText } from 'openland-x/XText';
 import { XLoadingCircular } from 'openland-x/XLoadingCircular';
 import SearchIcon from '../icons/ic-search-small.svg';
 import { withUserInfo } from '../UserInfo';
-import { XScrollView2 } from 'openland-x/XScrollView2';
-import { DataSourceRender } from './components/DataSourceRender';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
 import { DialogView } from './dialog/DialogView';
@@ -28,7 +25,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from './components/MessagesStateContext';
-import { XViewRouterContext, XView } from 'react-mental';
+import { XView } from 'react-mental';
 import { XRouting } from 'openland-x-routing/XRouting';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { XListView } from '../XListView';
@@ -486,7 +483,7 @@ class ChatsComponentInner extends React.PureComponent<
     render() {
         let search = this.state.query && this.state.query.length > 0;
         return (
-            <XVertical separator={'none'} flexGrow={1} flexBasis={0}>
+            <XView flexGrow={1} flexBasis={0}>
                 <Search
                     value={this.state.query}
                     onChange={this.onInput}
@@ -534,7 +531,7 @@ class ChatsComponentInner extends React.PureComponent<
                     <InviteIcon />
                     <span>Invite people</span>
                 </InviteWrapper>
-            </XVertical>
+            </XView>
         );
     }
 }
