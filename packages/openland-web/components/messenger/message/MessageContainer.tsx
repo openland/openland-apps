@@ -4,7 +4,7 @@ import { MessageSelector } from './MessageSelector';
 import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { usePopper } from 'openland-web/components/usePopper';
+import { XPopper2 } from 'openland-web/components/XPopper2';
 
 export interface MessageContainerProps {
 
@@ -26,9 +26,8 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
     let [hover, onHover] = React.useState(false);
     let onMouseEnter = React.useMemo(() => () => onHover(true), [onHover]);
     let onMouseLeave = React.useMemo(() => () => onHover(false), [onHover]);
-    let [popupProps, popupRender] = usePopper('Test', { placement: 'top' });
-    // let popupProps = {};
-    // let popupRender = null;
+    let popupRef = React.useRef(null);
+    let popup = <XPopper2 ref={popupRef}>Test</XPopper2>
 
     // Selector Icon
     let selector = (
@@ -75,7 +74,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
         content = (
             <XView flexDirection="column" flexGrow={1} flexShrink={1} flexBasis={0} minWidth={0} alignItems="stretch">
                 <XView flexDirection="row">
-                    <XView fontSize={14} fontWeight="600" color="rgba(0, 0, 0, 0.8)" {...popupProps}>{props.sender.name}</XView>
+                    <XView fontSize={14} fontWeight="600" color="rgba(0, 0, 0, 0.8)" onClick={(src) => (popupRef.current as any).show(src.target)}>{props.sender.name}</XView>
                     {props.sender.primaryOrganization && (
                         <XView fontSize={12} fontWeight="600" color="rgba(0, 0, 0, 0.4)" paddingLeft={8}>
                             {props.sender.primaryOrganization.name}
@@ -116,7 +115,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
                 paddingLeft={20}
                 paddingRight={20}
             >
-                {popupRender}
+                {popup}
                 {selector}
                 {preambula}
                 {content}
@@ -134,7 +133,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
                 paddingLeft={20}
                 paddingRight={20}
             >
-                {popupRender}
+                {popup}
                 {selector}
                 {preambula}
                 {content}
