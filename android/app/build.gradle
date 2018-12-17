@@ -120,7 +120,7 @@ android {
         targetSdkVersion 26
         versionCode appVersionCode
         versionName "1.1."+appVersionCode
-        println("##teamcity[buildNumber 1.1.$appVersionCode]")
+        println("##teamcity[buildNumber '1.1.$appVersionCode']")
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
