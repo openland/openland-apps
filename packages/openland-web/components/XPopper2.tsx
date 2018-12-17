@@ -80,6 +80,7 @@ export interface XPoperRef {
 }
 
 export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopper2Props, ref) => {
+    let [index, setIndex] = React.useState<number>(0);
     let [node, setNode] = React.useState<HTMLElement | undefined>(undefined);
     let [internalNode, setInternalNode] = React.useState<HTMLElement | undefined>(undefined);
     let [arrowNode, setArrowNode] = React.useState<HTMLElement | undefined>(undefined);
@@ -151,8 +152,10 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
     React.useImperativeMethods(ref, () => ({
         show: (element: HTMLElement) => {
             setNode(element);
+            setIndex(index + 1);
         },
         hide: () => {
+            setIndex(index + 1);
             setInternalNode(undefined);
             setArrowNode(undefined);
             setNode(undefined);
@@ -162,7 +165,7 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
     // Render
     if (node) {
         let popup = (
-            <div ref={popupRef}>
+            <div key={'pop-' + index} ref={popupRef}>
                 <div className={'popper ' + (props.className ? props.className : contentStyle)}>
                     {props.children}
                 </div>
