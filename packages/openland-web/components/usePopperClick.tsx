@@ -17,5 +17,5 @@ export function usePopperClick(popper: React.RefObject<XPoperRef>) {
         }
     }, []);
 
-    return onClick;
+    return { onClick };
 }
