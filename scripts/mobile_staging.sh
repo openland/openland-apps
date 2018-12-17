@@ -1,0 +1,1 @@
+/usr/libexec/PlistBuddy -c 'Set :CodePushDeploymentKey TNsklumnHNeMxRjz3VClHfhoIdqZH1kRWpV47' ./ios/openland/Info.plist 
