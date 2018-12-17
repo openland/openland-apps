@@ -105,7 +105,7 @@ const TextStyle = css`
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    font-size: 14;
+    font-size: 14px;
     line-height: 22px;
     letter-spacing: 0;
     font-weight: 400;
@@ -117,11 +117,11 @@ const TextLargeStyle = css`
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    font-size: 36;
-    min-height: 44;
+    font-size: 36px;
+    min-height: 44px;
     line-height: 40px;
     letter-spacing: -0.5;
-    font-weight: 400;
+    font-weight: 600;
     color: rgba(0, 0, 0, 0.8);
 `;
 
@@ -130,7 +130,7 @@ const TextServiceStyle = css`
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    font-size: 13;
+    font-size: 13px;
     line-height: 22px;
     letter-spacing: 0;
     font-weight: 400;
@@ -142,10 +142,10 @@ const styleEditLabel = css`
     display: inline-block;
     vertical-align: baseline;
     color: rgba(0, 0, 0, 0.4);
-    font-size: 13;
+    font-size: 13px;
     font-weight: 400;
     line-height: 22px;
-    padding-left: 6;
+    padding-left: 6px;
 `;
 
 let emoji = (text: string, height: number) =>
