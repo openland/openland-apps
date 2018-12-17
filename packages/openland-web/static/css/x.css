@@ -4,4 +4,5 @@
     flex-grow: 0;
     flex-shrink: 0;
     flex-direction: column;
+    border-style: solid;
 }
