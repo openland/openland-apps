@@ -118,9 +118,6 @@ android {
         applicationId "com.openland.app"
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode appVersionCode
-        versionName "1.1."+appVersionCode
-        println("##teamcity[buildNumber '1.1.$appVersionCode']")
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -153,6 +150,21 @@ android {
             }
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            
+            versionCode appVersionCode
+            versionName "1.1."+appVersionCode
+            println("##teamcity[buildNumber '1.1.$appVersionCode']")
+        }
+        staging {
+            if(project.hasProperty("RELEASE_STORE_FILE")) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+            versionCode appVersionCode
+            versionName "1.1."+appVersionCode+'-dev'
+            println("##teamcity[buildNumber '1.1.$appVersionCode-dev']")
         }
         debug {
             applicationIdSuffix ".debug"
