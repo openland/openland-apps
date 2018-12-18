@@ -24,7 +24,7 @@ public class MainActivity extends ReactActivity {
 
         // Starting App Center
         AppCenter.start(getApplication(),
-                "5a587893-2dae-4dd5-b737-118dfb623b8d",
+                "310cf1a8-0d5f-4a92-8308-60c7d8c24f94",
                 Distribute.class,
                 Analytics.class,
                 Crashes.class);
