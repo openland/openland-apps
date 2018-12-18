@@ -177,6 +177,11 @@ android {
             versionName "1.1."+appVersionCode+"-dev"
             println("##teamcity[buildNumber '1.1.$appVersionCode-dev']")
         }
+        production {
+            versionCode appVersionCode
+            versionName "1.1."+appVersionCode
+            println("##teamcity[buildNumber '1.1.$appVersionCode']")
+        }
     }
 }
 
