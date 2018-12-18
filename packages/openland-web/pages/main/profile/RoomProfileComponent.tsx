@@ -54,6 +54,7 @@ import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -87,13 +88,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
                 <HeaderAvatar>
-                    <XAvatar
-                        cloudImageUuid={chat.photo || undefined}
-                        size="l-medium"
-                        style="organization"
-                        objectName={chat.title}
-                        objectId={chat.id}
-                    />
+                    <XAvatar2 src={chat.photo} size={58} title={chat.title} id={chat.id} />
                 </HeaderAvatar>
                 <HeaderInfo flexGrow={1} separator={3.5}>
                     <HeaderTitle>{chat.title}</HeaderTitle>
@@ -380,7 +375,7 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
             <OrganizationInfoWrapper>
                 <BackButton />
                 <Header chat={chat} />
-                <XScrollView2 height="calc(100% - 136px)">
+                <XScrollView2 height="calc(100% - 137px)">
                     <About chat={chat} />
                     <MembersProvider
                         kind={chat.kind}
