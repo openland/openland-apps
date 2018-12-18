@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { layoutMedia } from './utils/MediaLayout';
+import { layoutMedia } from '../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XModal } from 'openland-x-modal/XModal';
 import { XLink } from 'openland-x/XLink';

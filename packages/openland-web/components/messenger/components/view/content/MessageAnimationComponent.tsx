@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { layoutMedia } from './utils/MediaLayout';
+import { layoutMedia } from '../../../utils/MediaLayout';
 
 export const MessageAnimationComponent = (props: {
     file: string;

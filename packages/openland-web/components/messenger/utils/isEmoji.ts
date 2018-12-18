@@ -1,4 +1,4 @@
-import emojiData from '../data/emoji-data';
+import emojiData from './data/emoji-data';
 
 const asciiToUnicodeCache = new Map();
 

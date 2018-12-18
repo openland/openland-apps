@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { preprocessText, Span } from './utils/TextProcessor';
-import { XLinkExternal } from 'openland-x/XLinkExternal';
+import { preprocessText, Span } from '../../../utils/TextProcessor';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
@@ -15,7 +14,9 @@ import { XView } from 'react-mental';
 import { XPopper } from 'openland-x/XPopper';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { css } from 'linaria';
-import { isEmoji } from './utils/isEmoji';
+import { isEmoji } from '../../../utils/isEmoji';
+import { isInternalLink } from 'openland-web/components/messenger/utils/isInternalLink';
+import { makeInternalLinkRelative } from 'openland-web/components/messenger/utils/makeInternalLinkRelative';
 
 export interface MessageTextComponentProps {
     alphaMentions?: any;
@@ -149,6 +150,13 @@ const styleEditLabel = css`
     padding-left: 6px;
 `;
 
+const styleInsane = css`
+    background: url(/static/insane.gif);
+    background-clip: text, border;
+    -webkit-background-clip: text;
+    color: transparent;
+`
+
 let emoji = (text: string, height: number) =>
     emojify(text, {
         style: {
@@ -157,25 +165,6 @@ let emoji = (text: string, height: number) =>
                 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
         },
     });
-
-export let makeInternalLinkRelative = (url: string) => {
-    let rel = url
-        .replace('http://app.openland.com/', '/')
-        .replace('https://app.openland.com/', '/')
-        .replace('//app.openland.com/', '/')
-        .replace('http://next.openland.com/', '/')
-        .replace('https://next.openland.com/', '/')
-        .replace('//next.openland.com/', '/');
-
-    return rel;
-};
-
-export let isInternalLink = (url: string) => {
-    return (
-        url.includes('//app.openland.com/') ||
-        url.includes('//next.openland.com/')
-    );
-};
 
 function indexes(source: string, find: string) {
     let result = [];
@@ -409,15 +398,20 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 export const MessageTextComponent = React.memo<MessageTextComponentProps>((props) => {
 
     // Preprocessing
-    const preprocessed = React.useMemo(() => preprocessText(props.message), [props.message]);
-    const messageText = props.message;
+    var messageText = props.message;
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
     const isSingleEmoji = React.useMemo(() => isEmoji(messageText), [props.message]);
-    const isBig = isSingleEmoji || messageText.length <= 302 &&
+    const isBig = isSingleEmoji || isInsane || isMouthpiece || messageText.length <= 302 &&
         messageText.startsWith(':') &&
         messageText.endsWith(':');
     const isTextSticker = !isSingleEmoji && isBig;
+    if (isInsane || isMouthpiece) {
+        messageText = messageText.replace(/🌈/g, '').replace(/📣/g, '');
+    } else if (isTextSticker) {
+        messageText = messageText.slice(1, messageText.length - 1);
+    }
+    const preprocessed = React.useMemo(() => preprocessText(messageText), [messageText]);
 
     // Rendering
     let parts = preprocessed.map((v, i) => {
@@ -439,25 +433,26 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>((props
                 }
 
                 return (
-                    <XLink
-                        className="link"
+                    <XView
+                        as="a"
                         key={'link-' + i}
                         path={path}
                         onClick={(e: any) => e.stopPropagation()}
                     >
                         {url}
-                    </XLink>
+                    </XView>
                 );
             }
 
             return (
-                <XLinkExternal
-                    className="link"
+                <XView
+                    as="a"
                     key={'link-' + i}
                     href={v.link!!}
-                    content={v.text!!}
-                    showIcon={false}
-                />
+                    target="_blank"
+                >
+                    {v.text}
+                </XView>
             );
         } else {
             let text = v.text!!;
@@ -478,33 +473,10 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>((props
                 );
             }
 
-            if (isTextSticker) {
-                text = text.slice(1, text.length - 1);
-            }
-
-            if (isInsane || isMouthpiece) {
-                text = text.replace(/🌈/g, '').replace(/📣/g, '');
-            }
-
-            let smileSize = isBig || isInsane || isMouthpiece ? 44 : 18;
+            let smileSize = isBig ? 44 : 18;
 
             return (
-                <span
-                    style={
-                        isInsane
-                            ? {
-                                background:
-                                    'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
-                                backgroundClip: 'text, border',
-                                ...({
-                                    WebkitBackgroundClip: 'text',
-                                } as any),
-                                color: 'transparent',
-                            }
-                            : {}
-                    }
-                    key={'text-' + i}
-                >
+                <span className={isInsane ? styleInsane : undefined} key={'text-' + i}>
                     {emoji(text, smileSize)}
                 </span>
             );
@@ -514,7 +486,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>((props
     let wrapperClassName =
         props.isService
             ? TextServiceStyle
-            : (isBig || isInsane || isMouthpiece)
+            : isBig
                 ? TextLargeStyle
                 : TextStyle;
     return (
