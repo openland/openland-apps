@@ -68,7 +68,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new CodePush("MNEpl1rmOgWXcaHhd-zq-Q_8nkFLB1jDiuuVQ", getApplicationContext(), BuildConfig.DEBUG),
+                    new CodePush("pwOAhR07wuxVFVhCvI4X8186_rrpHyrvdnSxE", getApplicationContext(), BuildConfig.DEBUG),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
                     new VectorIconsPackage(),
