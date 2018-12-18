@@ -685,63 +685,6 @@ class MessageComponentInner extends React.PureComponent<
             )
         }
 
-        if (compact) {
-            return (
-                <MessageWrapper
-                    compact={true}
-                    isEditView={this.state.isEditView}
-                    separator={6}
-                    alignItems="center"
-                    startSelected={hideMenu}
-                >
-                    <Check
-                        select={isSelect}
-                        className="check-icon"
-                        onClick={this.selectMessage}
-                    />
-                    <XHorizontal
-                        separator={0}
-                        className="message-container"
-                        flexGrow={1}
-                        maxWidth="calc(100% - 125px)"
-                    >
-                        <DateComponent small={true} className="time">
-                            {date}
-                        </DateComponent>
-                        <XHorizontal
-                            justifyContent="space-between"
-                            flexGrow={1}
-                            maxWidth="calc(100% - 55px)"
-                        >
-                            <MessageCompactContent
-                                separator={0}
-                                flexGrow={1}
-                                isIntro={isIntro}
-                                maxWidth="100%"
-                            >
-                                {content}
-                                {!isPost && this.reactionsRender()}
-                            </MessageCompactContent>
-                        </XHorizontal>
-                    </XHorizontal>
-                    {this.menuRender()}
-                </MessageWrapper>
-            );
-        }
-
-        let { sender, conversationType, me } = this.props;
-        let isMe: boolean = false;
-        let orgPath: string | undefined = undefined;
-
-        if (isServerMessage(message)) {
-            sender = sender as UserShort;
-            if (sender.primaryOrganization && !hideMenu) {
-                orgPath =
-                    '/mail/o/' + this.props.sender!!.primaryOrganization!!.id;
-            }
-            isMe = me ? sender.id === me.id : false;
-        }
-
         return (
             <MessageWrapper
                 compact={false}
@@ -762,71 +705,15 @@ class MessageComponentInner extends React.PureComponent<
                     maxWidth={!message.isService ? "calc(100% - 125px)" : '100%'}
                 >
                     <XHorizontal alignSelf="stretch">
-                        {!message.isService && sender && (
-                            <>
-                                {conversationType === 'PRIVATE' ? (
-                                    <UserAvatar
-                                        user={sender}
-                                        startSelected={hideMenu}
-                                    />
-                                ) : (
-                                        <UserPopper
-                                            ref={this.userPopperRef}
-                                            user={sender}
-                                            startSelected={hideMenu}
-                                            isMe={isMe}
-                                        />
-                                    )}
-                            </>
-                        )}
                         <XVertical
                             separator={2}
                             flexGrow={1}
                             maxWidth={!message.isService ? "calc(100% - 52px)" : "calc(100% - 25px)"}
                         >
-                            {!message.isService && <XHorizontal justifyContent="space-between">
-                                <XHorizontal separator={4}>
-                                    <XHorizontal
-                                        separator={4}
-                                        alignItems="center"
-                                    >
-                                        {sender && (
-                                            <>
-                                                <div
-                                                    onMouseEnter={
-                                                        this.showUserPopper
-                                                    }
-                                                    onMouseLeave={
-                                                        this.hideUserPopper
-                                                    }
-                                                >
-                                                    <Name>{sender.name}</Name>
-                                                </div>
-                                                {sender.primaryOrganization && (
-                                                    <Organization
-                                                        path={orgPath}
-                                                    >
-                                                        {
-                                                            sender
-                                                                .primaryOrganization
-                                                                .name
-                                                        }
-                                                    </Organization>
-                                                )}
-                                            </>
-                                        )}
-                                    </XHorizontal>
-                                    <DateComponent className="time">
-                                        {date}
-                                    </DateComponent>
-                                </XHorizontal>
-                            </XHorizontal>}
                             {content}
-                            {!isPost && this.reactionsRender()}
                         </XVertical>
                     </XHorizontal>
                 </XVertical>
-                {!message.isService && this.menuRender()}
             </MessageWrapper>
         );
     }
