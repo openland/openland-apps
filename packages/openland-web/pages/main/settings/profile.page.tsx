@@ -21,7 +21,7 @@ import { DateFormater } from 'openland-x/XDate';
 import { XView } from 'react-mental';
 
 const Content = (props: { children?: any }) => (
-    <XView paddingTop={20} paddingLeft={30} paddingRight={30} flexGrow={1} flexDirection="column">
+    <XView paddingTop={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
         {props.children}
     </XView>
 );
