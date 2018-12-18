@@ -709,19 +709,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
     visibility: auto;
   }
 }
-.css-x338bw,
-[data-css-x338bw] {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: column;
+.css-h8iwlx,
+[data-css-h8iwlx] {
   padding-left: 24px;
+}
+.css-10o9fv1,
+[data-css-10o9fv1] {
   padding-right: 24px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
 }
 .css-1rxdtn0,
 [data-css-1rxdtn0] {
@@ -784,21 +778,16 @@ exports[`MessageTextComponent should render correctly 1`] = `
 
 .css-0,
 [data-css-0] {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: column;
   padding-left: 24px;
-  padding-right: 24px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
 }
 
 .css-1,
 [data-css-1] {
+  padding-right: 24px;
+}
+
+.css-2,
+[data-css-2] {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -814,24 +803,24 @@ exports[`MessageTextComponent should render correctly 1`] = `
   -webkit-align-items: stretch;
 }
 
-.css-1> *,
-[data-css-1]> * {
+.css-2> *,
+[data-css-2]> * {
   margin-top: 8px;
   margin-bottom: 8px;
 }
 
-.css-1>:first-child,
-[data-css-1]>:first-child {
+.css-2>:first-child,
+[data-css-2]>:first-child {
   margin-top: 0px;
 }
 
-.css-1>:last-child,
-[data-css-1]>:last-child {
+.css-2>:last-child,
+[data-css-2]>:last-child {
   margin-bottom: 0px;
 }
 
-.css-2,
-[data-css-2] {
+.css-3,
+[data-css-3] {
   height: 40px;
   color: #99a2b0;
   padding: 10px 16px;
@@ -841,35 +830,35 @@ exports[`MessageTextComponent should render correctly 1`] = `
   font-weight: 700;
 }
 
-.css-3,
-[data-css-3] {
-  cursor: pointer;
-  background-color: #fff6e5;
-  color: #1790ff;
-}
-
 .css-4,
 [data-css-4] {
   cursor: pointer;
+  background-color: #fff6e5;
   color: #1790ff;
 }
 
 .css-5,
 [data-css-5] {
   cursor: pointer;
+  color: #1790ff;
 }
 
 .css-6,
 [data-css-6] {
+  cursor: pointer;
+}
+
+.css-7,
+[data-css-7] {
   color: #1790ff;
 }
 
 <div>
   <div
-    className="css-0"
+    className="x css-0 css-1"
   >
     <div
-      className="css-1"
+      className="css-2"
     >
       <span
         className={
@@ -1103,7 +1092,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
         </a>
       </span>
       <div
-        className="css-2"
+        className="css-3"
       >
         1. Joines
       </div>
@@ -1132,7 +1121,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1167,7 +1156,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1202,7 +1191,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-4"
+              className="css-5"
             >
               qwerty asdfgh
             </span>
@@ -1211,7 +1200,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
         <span>
            joined the room along with 
           <div
-            className="x css-5 css-6"
+            className="x css-6 css-7"
           >
             2 others
           </div>
@@ -1221,7 +1210,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
         </span>
       </span>
       <div
-        className="css-2"
+        className="css-3"
       >
         2. Service Messages
       </div>
@@ -1250,7 +1239,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1263,7 +1252,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-4"
+              className="css-5"
             >
               qwerty asdfgh
             </span>
@@ -1316,7 +1305,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1329,7 +1318,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-4"
+              className="css-5"
             >
               qwerty asdfgh
             </span>
@@ -1360,7 +1349,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-4"
+              className="css-5"
             >
               qwerty asdfgh
             </span>
@@ -1373,7 +1362,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1408,7 +1397,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1421,7 +1410,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-4"
+              className="css-5"
             >
               qwerty asdfgh
             </span>
@@ -1452,7 +1441,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1487,7 +1476,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-3"
+              className="css-4"
             >
               Sergey Lapin
             </span>
@@ -1500,7 +1489,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
             onMouseLeave={[Function]}
           >
             <span
-              className="css-4"
+              className="css-5"
             >
               qwerty asdfgh
             </span>
