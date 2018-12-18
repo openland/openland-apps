@@ -2,7 +2,6 @@ import * as React from 'react';
 import { withAlterChat } from '../../../api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
