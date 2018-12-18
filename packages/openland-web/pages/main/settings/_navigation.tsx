@@ -1,13 +1,8 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { Sidebar } from '../../../components/Sidebar';
-
-const Content = Glamorous.div({
-    display: 'flex',
-    flexShrink: 0,
-});
 
 export const Navigation = (props: { title: string; children?: any }) => (
     <>
@@ -21,14 +16,13 @@ export const Navigation = (props: { title: string; children?: any }) => (
                     <Sidebar.Item path="/settings/notifications" arrow={true}>
                         Notifications
                     </Sidebar.Item>
-                    {/* <Sidebar.Item path="/settings/invites" arrow={true}>Invites</Sidebar.Item> */}
                     <Sidebar.Item path="/settings/dev" arrow={true}>
                         Developer keys
                     </Sidebar.Item>
                 </Sidebar>
             </Scaffold.Menu>
             <Scaffold.Content padding={false}>
-                <Content>{props.children}</Content>
+                <XView flexShrink={0}>{props.children}</XView>
             </Scaffold.Content>
         </Scaffold>
     </>
