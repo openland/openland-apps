@@ -29,12 +29,7 @@ const config = {
         config.module.noParse = [/(mapbox-gl)\.js$/, /(jquery)\.js$/];
 
         // Typescript
-        const {
-            dir,
-            defaultLoaders,
-            dev,
-            isServer
-        } = options;
+        const { dir, defaultLoaders, dev, isServer } = options;
 
         // Ask babel to handle typescript files
         // Modules are not loading by default since root folder is out of scope
@@ -215,40 +210,36 @@ const config = {
         // Add moment to commons
         if (!isServer) {
             if (config.optimization.splitChunks.cacheGroups) {
-
-                config.optimization.splitChunks.cacheGroups.uploadcare = {
-                        test: /\/node_modules\/uploadcare/,
-                        name: "vendor",
-                        chunks: "all",
-                    },
-
-                    config.optimization.splitChunks.cacheGroups.moment = {
+                (config.optimization.splitChunks.cacheGroups.uploadcare = {
+                    test: /\/node_modules\/uploadcare/,
+                    name: 'vendor',
+                    chunks: 'all',
+                }),
+                    (config.optimization.splitChunks.cacheGroups.moment = {
                         test: /\/node_modules\/moment/,
-                        name: "vendor",
-                        chunks: "all",
-                    },
-                    config.optimization.splitChunks.cacheGroups.momenttx = {
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.momenttx = {
                         test: /\/node_modules\/moment-timezones/,
-                        name: "vendor",
-                        chunks: "all",
-                    },
-
-                    config.optimization.splitChunks.cacheGroups.emoji1 = {
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.emoji1 = {
                         test: /\/node_modules\/emojione/,
-                        name: "vendor",
-                        chunks: "all",
-                    },
-                    config.optimization.splitChunks.cacheGroups.emoji1react = {
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.emoji1react = {
                         test: /\/node_modules\/react-emojione/,
-                        name: "vendor",
-                        chunks: "all",
-                    },
-
-                    config.optimization.splitChunks.cacheGroups.draft = {
+                        name: 'vendor',
+                        chunks: 'all',
+                    }),
+                    (config.optimization.splitChunks.cacheGroups.draft = {
                         test: /\/node_modules\/draft-js/,
-                        name: "vendor",
-                        chunks: "all",
-                    }
+                        name: 'vendor',
+                        chunks: 'all',
+                    });
             }
         }
 

@@ -39,9 +39,7 @@ const Header = (props: { children?: any }) => (
     </XView>
 );
 
-const Group = (props: { children?: any }) => (
-    <XView maxWidth={570}>{props.children}</XView>
-);
+const Group = (props: { children?: any }) => <XView maxWidth={570}>{props.children}</XView>;
 
 const GroupText = Glamorous.div({
     fontSize: 14,
@@ -131,11 +129,9 @@ class BrowserNotifications extends React.Component<
         if (canUseDOM) {
             let isFirefox = /Firefox\/\d./i.test(navigator.userAgent);
             let isOpera =
-                /Opera\/\d./i.test(navigator.userAgent) ||
-                /OPR\/\d./i.test(navigator.userAgent);
+                /Opera\/\d./i.test(navigator.userAgent) || /OPR\/\d./i.test(navigator.userAgent);
             let isChrome = !isOpera && /Chrome\/\d./i.test(navigator.userAgent);
-            let isSafari =
-                !isChrome && /Safari\/\d./i.test(navigator.userAgent);
+            let isSafari = !isChrome && /Safari\/\d./i.test(navigator.userAgent);
 
             let SupportedBrowsers = isChrome || isFirefox;
 
@@ -149,92 +145,86 @@ class BrowserNotifications extends React.Component<
                         <GroupText>
                             Notifications are turned on in this browser.
                             <br />
-                            You can always change it in your browser
-                            preferences.
+                            You can always change it in your browser preferences.
                         </GroupText>
                     )}
 
-                    {notificationsState !== 'granted' && !SupportedBrowsers && (
-                        <GroupText>
-                            Notifications are turned off in this browser.
-                            <br />
-                            You can always change it in your browser
-                            preferences.
-                        </GroupText>
-                    )}
-
-                    {notificationsState !== 'granted' && SupportedBrowsers && (
-                        <>
+                    {notificationsState !== 'granted' &&
+                        !SupportedBrowsers && (
                             <GroupText>
-                                Notifications are disabled for this browser.
+                                Notifications are turned off in this browser.
+                                <br />
+                                You can always change it in your browser preferences.
                             </GroupText>
+                        )}
 
-                            {notificationsState === 'default' && (
-                                <XButton
-                                    alignSelf="flex-start"
-                                    style="warning"
-                                    size="small"
-                                    text="Enable"
-                                    onClick={this.handleEnableClick}
-                                />
-                            )}
+                    {notificationsState !== 'granted' &&
+                        SupportedBrowsers && (
+                            <>
+                                <GroupText>Notifications are disabled for this browser.</GroupText>
 
-                            {notificationsState !== 'default' && (
-                                <XModal
-                                    title="Turn on browser notifications for Openland"
-                                    useTopCloser={true}
-                                    target={
-                                        <XButton
-                                            alignSelf="flex-start"
-                                            style="warning"
-                                            size="small"
-                                            text="Enable"
-                                        />
-                                    }
-                                    footer={
-                                        <XModalFooter>
+                                {notificationsState === 'default' && (
+                                    <XButton
+                                        alignSelf="flex-start"
+                                        style="warning"
+                                        size="small"
+                                        text="Enable"
+                                        onClick={this.handleEnableClick}
+                                    />
+                                )}
+
+                                {notificationsState !== 'default' && (
+                                    <XModal
+                                        title="Turn on browser notifications for Openland"
+                                        useTopCloser={true}
+                                        target={
                                             <XButton
-                                                text="Got it"
-                                                style="primary"
-                                                autoClose={true}
+                                                alignSelf="flex-start"
+                                                style="warning"
+                                                size="small"
+                                                text="Enable"
                                             />
-                                        </XModalFooter>
-                                    }
-                                >
-                                    {isChrome && (
-                                        <Instruction>
-                                            <InstructionItem>
-                                                1. Click <LockIcon /> in your
-                                                browser's address bar.
-                                            </InstructionItem>
-                                            <InstructionItem>
-                                                2. Locate <NotificationsIcon />{' '}
-                                                <strong>Notifications</strong>{' '}
-                                                and select "Allow".
-                                            </InstructionItem>
-                                        </Instruction>
-                                    )}
-                                    {isFirefox && (
-                                        <Instruction>
-                                            <InstructionItem>
-                                                1. Click <LockIcon /> in your
-                                                browser's address bar.
-                                            </InstructionItem>
-                                            <InstructionItem>
-                                                2. Locate{' '}
-                                                <NotificationsFirefoxIcon />{' '}
-                                                <strong>
-                                                    Receive notifications
-                                                </strong>{' '}
-                                                and select <CloseIcon /> next to
-                                                «Blocked».
-                                            </InstructionItem>
-                                        </Instruction>
-                                    )}
-                                </XModal>
-                            )}
-                        </>
-                    )}
+                                        }
+                                        footer={
+                                            <XModalFooter>
+                                                <XButton
+                                                    text="Got it"
+                                                    style="primary"
+                                                    autoClose={true}
+                                                />
+                                            </XModalFooter>
+                                        }
+                                    >
+                                        {isChrome && (
+                                            <Instruction>
+                                                <InstructionItem>
+                                                    1. Click <LockIcon /> in your browser's address
+                                                    bar.
+                                                </InstructionItem>
+                                                <InstructionItem>
+                                                    2. Locate <NotificationsIcon />{' '}
+                                                    <strong>Notifications</strong> and select
+                                                    "Allow".
+                                                </InstructionItem>
+                                            </Instruction>
+                                        )}
+                                        {isFirefox && (
+                                            <Instruction>
+                                                <InstructionItem>
+                                                    1. Click <LockIcon /> in your browser's address
+                                                    bar.
+                                                </InstructionItem>
+                                                <InstructionItem>
+                                                    2. Locate <NotificationsFirefoxIcon />{' '}
+                                                    <strong>Receive notifications</strong> and
+                                                    select <CloseIcon /> next to «Blocked».
+                                                </InstructionItem>
+                                            </Instruction>
+                                        )}
+                                    </XModal>
+                                )}
+                            </>
+                        )}
                 </Group>
             );
         } else {
@@ -271,21 +261,11 @@ const MobileApp = Glamorous.a<{ system: 'ios' | 'android' }>(props => ({
 const MobileApps = () => (
     <Group>
         <GroupTitle>Mobile apps</GroupTitle>
-        <GroupText>
-            Install Openland mobile app to receive new messages on the go.
-        </GroupText>
+        <GroupText>Install Openland mobile app to receive new messages on the go.</GroupText>
 
         <XView flexDirection="row">
-            <MobileApp
-                system="ios"
-                href="https://oplnd.com/ios"
-                target="_blank"
-            />
-            <MobileApp
-                system="android"
-                href="https://oplnd.com/android_beta"
-                target="_blank"
-            />
+            <MobileApp system="ios" href="https://oplnd.com/ios" target="_blank" />
+            <MobileApp system="android" href="https://oplnd.com/android_beta" target="_blank" />
         </XView>
     </Group>
 );
@@ -359,10 +339,8 @@ class NotificationsSettingsPageInner extends React.Component<
                                 await this.props.update({
                                     variables: {
                                         input: {
-                                            desktopNotifications:
-                                                data.input.notifications,
-                                            mobileNotifications:
-                                                data.input.notifications,
+                                            desktopNotifications: data.input.notifications,
+                                            mobileNotifications: data.input.notifications,
                                         },
                                     },
                                 });
@@ -379,10 +357,7 @@ class NotificationsSettingsPageInner extends React.Component<
                                             searchable={false}
                                             clearable={false}
                                             withSubtitle={true}
-                                            onChange={
-                                                this
-                                                    .handleNotificationSelectChange
-                                            }
+                                            onChange={this.handleNotificationSelectChange}
                                             options={[
                                                 {
                                                     value: 'ALL',
@@ -392,8 +367,7 @@ class NotificationsSettingsPageInner extends React.Component<
                                                 },
                                                 {
                                                     value: 'DIRECT',
-                                                    label:
-                                                        'Direct messages and mentions',
+                                                    label: 'Direct messages and mentions',
                                                     subtitle:
                                                         'You’ll be only notified for messages directly involving you',
                                                 },
@@ -408,9 +382,7 @@ class NotificationsSettingsPageInner extends React.Component<
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"
-                                        onSuccessAnimationEnd={
-                                            this.handleNotificationSelectSaved
-                                        }
+                                        onSuccessAnimationEnd={this.handleNotificationSelectSaved}
                                     />
                                 )}
                             </XVertical>
@@ -419,16 +391,14 @@ class NotificationsSettingsPageInner extends React.Component<
                         <XForm
                             defaultData={{
                                 input: {
-                                    emailFrequency: this.props.settings
-                                        .emailFrequency,
+                                    emailFrequency: this.props.settings.emailFrequency,
                                 },
                             }}
                             defaultAction={async data => {
                                 await this.props.update({
                                     variables: {
                                         input: {
-                                            emailFrequency:
-                                                data.input.emailFrequency,
+                                            emailFrequency: data.input.emailFrequency,
                                         },
                                     },
                                 });
@@ -440,40 +410,30 @@ class NotificationsSettingsPageInner extends React.Component<
                                 <Group>
                                     <GroupTitle>Email notifications</GroupTitle>
                                     <GroupText>
-                                        When you’re not online, Openland can
-                                        send you email notifications for new
-                                        direct messages and mentions of your
+                                        When you’re not online, Openland can send you email
+                                        notifications for new direct messages and mentions of your
                                         name. Notifications are sent to{' '}
-                                        <strong>
-                                            {this.props.settings.primaryEmail}.
-                                        </strong>
+                                        <strong>{this.props.settings.primaryEmail}.</strong>
                                     </GroupText>
-                                    <GroupSubTitle>
-                                        You can email me
-                                    </GroupSubTitle>
+                                    <GroupSubTitle>You can email me</GroupSubTitle>
                                     <XView maxWidth={440}>
                                         <XSelect
                                             field="input.emailFrequency"
                                             searchable={false}
                                             clearable={false}
-                                            onChange={
-                                                this.handleEmailSelectChange
-                                            }
+                                            onChange={this.handleEmailSelectChange}
                                             options={[
                                                 {
                                                     value: 'MIN_15',
-                                                    label:
-                                                        'At most once every 15 minutes',
+                                                    label: 'At most once every 15 minutes',
                                                 },
                                                 {
                                                     value: 'HOUR_1',
-                                                    label:
-                                                        'At most once per hour',
+                                                    label: 'At most once per hour',
                                                 },
                                                 {
                                                     value: 'HOUR_24',
-                                                    label:
-                                                        'At most once per day',
+                                                    label: 'At most once per day',
                                                 },
                                                 {
                                                     value: 'NEVER',
@@ -490,9 +450,7 @@ class NotificationsSettingsPageInner extends React.Component<
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"
-                                        onSuccessAnimationEnd={
-                                            this.handleEmailSelectSaved
-                                        }
+                                        onSuccessAnimationEnd={this.handleEmailSelectSaved}
                                     />
                                 )}
                             </XVertical>
@@ -512,10 +470,7 @@ export default withApp(
     'viewer',
     withSettings(
         withQueryLoader(props => (
-            <NotificationsSettingsPageInner
-                settings={props.data.settings}
-                update={props.update}
-            />
+            <NotificationsSettingsPageInner settings={props.data.settings} update={props.update} />
         )),
     ),
 );

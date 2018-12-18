@@ -100,9 +100,7 @@ class InviteComponent extends React.PureComponent<
                     <Page
                         shadow={this.initialPage}
                         css={{
-                            visibility: this.state.visible1
-                                ? 'visible'
-                                : 'hidden',
+                            visibility: this.state.visible1 ? 'visible' : 'hidden',
                         }}
                     >
                         <XSGroup>
@@ -121,9 +119,7 @@ class InviteComponent extends React.PureComponent<
                     <Page
                         shadow={this.secondPage}
                         css={{
-                            visibility: this.state.visible2
-                                ? 'visible'
-                                : 'hidden',
+                            visibility: this.state.visible2 ? 'visible' : 'hidden',
                         }}
                     >
                         <XButton text="back" onClick={this.handleBack} />

@@ -27,12 +27,12 @@ export const DialogViewCompact = (props: DialogViewProps) => {
                     dialog.kind === 'INTERNAL'
                         ? 'organization'
                         : dialog.kind === 'GROUP'
-                        ? 'group'
-                        : dialog.kind === 'PUBLIC'
-                        ? 'room'
-                        : dialog.kind === 'PRIVATE'
-                        ? 'user'
-                        : undefined
+                            ? 'group'
+                            : dialog.kind === 'PUBLIC'
+                                ? 'room'
+                                : dialog.kind === 'PRIVATE'
+                                    ? 'user'
+                                    : undefined
                 }
                 objectName={dialog.title}
                 objectId={dialog.flexibleId}
@@ -81,10 +81,7 @@ export const DialogViewCompact = (props: DialogViewProps) => {
                             lineHeight="18px"
                             whiteSpace="nowrap"
                         >
-                            <XDate
-                                value={dialog.date.toString()}
-                                format="datetime_short"
-                            />
+                            <XDate value={dialog.date.toString()} format="datetime_short" />
                         </XView>
                     )}
                 </XView>

@@ -23,12 +23,7 @@ export const AvailabilityMap = [
     { value: 'near_future', label: 'near future' },
 ];
 
-export type LandUse =
-    | 'residential'
-    | 'commercial'
-    | 'public'
-    | 'mixed_use'
-    | 'industrial';
+export type LandUse = 'residential' | 'commercial' | 'public' | 'mixed_use' | 'industrial';
 
 export const LandUseMap = [
     { value: 'residential', label: 'residential' },

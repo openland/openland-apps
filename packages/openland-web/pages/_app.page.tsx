@@ -5,10 +5,10 @@ if (canUseDOM) {
     rehydrate(JSON.parse((window as any).GLAMOR_IDS));
 }
 XStyleFactoryRegistry.registerFactory({
-    createStyle: (styles) => {
-        return css(styles).toString()
-    }
-})
+    createStyle: styles => {
+        return css(styles).toString();
+    },
+});
 
 import './_app.css';
 import './init';
@@ -23,10 +23,7 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { RootErrorBoundary } from './root/RootErrorBoundary';
 import moment from 'moment-timezone';
-import {
-    getClientStorage,
-    SharedStorage,
-} from 'openland-x-utils/SharedStorage';
+import { getClientStorage, SharedStorage } from 'openland-x-utils/SharedStorage';
 import { trackPage } from 'openland-x-analytics';
 import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
 import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
@@ -87,11 +84,7 @@ export default withData(
             const { Component, pageProps } = this.props;
             return (
                 <Container>
-                    <XStorageProvider
-                        storage={
-                            canUseDOM ? getClientStorage() : this.props.storage
-                        }
-                    >
+                    <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
                         <XRouterProvider
                             routes={Routes}
                             hostName={this.props.host}

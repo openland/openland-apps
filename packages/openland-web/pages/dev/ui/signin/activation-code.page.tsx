@@ -21,22 +21,12 @@ export default () => (
                 if (branch === 'room') {
                     const { headerStyle, ...other } = branchProps;
                     return (
-                        <RoomSignupContainer
-                            headerStyle={headerStyle}
-                            pageMode="ActivationCode"
-                        >
+                        <RoomSignupContainer headerStyle={headerStyle} pageMode="ActivationCode">
                             <RoomActivationCode {...other} />
                         </RoomSignupContainer>
                     );
                 } else {
-                    const {
-                        headerStyle,
-                        signin,
-                        text,
-                        path,
-                        linkText,
-                        ...other
-                    } = branchProps;
+                    const { headerStyle, signin, text, path, linkText, ...other } = branchProps;
 
                     return (
                         <WebSignUpContainer

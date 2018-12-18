@@ -100,20 +100,21 @@ export const OrganizationProfileContainer = Glamorous.div({
     flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo(props =>
-    props.data && props.data.invite ? (
-        props.data.invite.room.membership === 'MEMBER' ? (
-            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+export const RoomInviteFromLink = withChannelInviteInfo(
+    props =>
+        props.data && props.data.invite ? (
+            props.data.invite.room.membership === 'MEMBER' ? (
+                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+            ) : (
+                <RoomsInviteComponent
+                    inviteLink={props.router.routeQuery.invite}
+                    room={props.data.invite.room as any}
+                    invite={props.data.invite}
+                />
+            )
         ) : (
-            <RoomsInviteComponent
-                inviteLink={props.router.routeQuery.invite}
-                room={props.data.invite.room as any}
-                invite={props.data.invite}
-            />
-        )
-    ) : (
-        <XLoader loading={true} />
-    ),
+            <XLoader loading={true} />
+        ),
 );
 
 export const AddButton = Glamorous(XButton)({
@@ -149,14 +150,9 @@ class ChatListContainerWrapper extends React.PureComponent<{
     }
 }
 
-interface MessagePageInnerState extends MessagesStateContextProps {
-    
-}
+interface MessagePageInnerState extends MessagesStateContextProps {}
 
-class MessagePageInner extends React.Component<
-    { router: XRouter },
-    MessagePageInnerState
-> {
+class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageInnerState> {
     constructor(props: { router: XRouter }) {
         super(props);
 
@@ -296,7 +292,8 @@ class MessagePageInner extends React.Component<
             | 'organization'
             | 'user'
             | 'conference'
-            | 'chat' = 'empty';
+            | 'chat' =
+            'empty';
 
         if (isCompose) {
             tab = 'compose';
@@ -345,9 +342,7 @@ class MessagePageInner extends React.Component<
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MessagesStateContext.Provider value={this.state}>
                             <ChatContainer>
-                                <ChatListContainerWrapper
-                                    emptyState={tab === 'empty'}
-                                />
+                                <ChatListContainerWrapper emptyState={tab === 'empty'} />
 
                                 <ConversationContainer>
                                     {tab === 'compose' && (
@@ -355,20 +350,13 @@ class MessagePageInner extends React.Component<
                                             <ComposeComponent />
                                         </MessengerContainer>
                                     )}
-                                    {tab === 'empty' && (
-                                        <MessengerEmptyComponent />
-                                    )}
+                                    {tab === 'empty' && <MessengerEmptyComponent />}
                                     {tab === 'conversation' && (
                                         <MessengerComponent
-                                            id={
-                                                props.router.routeQuery
-                                                    .conversationId
-                                            }
+                                            id={props.router.routeQuery.conversationId}
                                         />
                                     )}
-                                    {tab === 'rooms' && (
-                                        <RoomsExploreComponent />
-                                    )}
+                                    {tab === 'rooms' && <RoomsExploreComponent />}
                                     {tab === 'invite' && <RoomInviteFromLink />}
                                     {tab === 'organization' && (
                                         <OrganizationProfileContainer>

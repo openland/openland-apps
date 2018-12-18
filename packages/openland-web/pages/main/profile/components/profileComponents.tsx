@@ -18,24 +18,18 @@ interface XHorizontalStyledProps {
     maxwidth?: string | number;
 }
 
-export const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>(
-    props => ({
-        borderRight: props.borderRight
-            ? '1px solid rgba(220, 222, 228, 0.45)'
-            : undefined,
-        borderBottom: props.borderBottom
-            ? '1px solid rgba(220, 222, 228, 0.45)'
-            : undefined,
-        padding: props.padding,
-        paddingLeft: props.paddingLeft,
-        paddingRight: props.paddingRight,
-        paddingTop: props.paddingTop,
-        paddingBottom: props.paddingBottom,
-        marginTop: props.marginTop,
-        marginBottom: props.marginBottom,
-        maxWidth: props.maxwidth,
-    }),
-);
+export const XHorizontalStyled = Glamorous(XHorizontal)<XHorizontalStyledProps>(props => ({
+    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    padding: props.padding,
+    paddingLeft: props.paddingLeft,
+    paddingRight: props.paddingRight,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
+    maxWidth: props.maxwidth,
+}));
 
 interface XVerticalStyledProps {
     borderRight?: boolean;
@@ -51,25 +45,19 @@ interface XVerticalStyledProps {
     maxHeight?: number;
 }
 
-export const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>(
-    props => ({
-        borderRight: props.borderRight
-            ? '1px solid rgba(220, 222, 228, 0.45)'
-            : undefined,
-        borderBottom: props.borderBottom
-            ? '1px solid rgba(220, 222, 228, 0.45)'
-            : undefined,
-        padding: props.padding,
-        paddingLeft: props.paddingLeft,
-        paddingRight: props.paddingRight,
-        paddingTop: props.paddingTop,
-        paddingBottom: props.paddingBottom,
-        marginTop: props.marginTop,
-        marginBottom: props.marginBottom,
-        overflowY: props.scrollable ? 'scroll' : undefined,
-        maxHeight: props.maxHeight,
-    }),
-);
+export const XVerticalStyled = Glamorous(XVertical)<XVerticalStyledProps>(props => ({
+    borderRight: props.borderRight ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    borderBottom: props.borderBottom ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    padding: props.padding,
+    paddingLeft: props.paddingLeft,
+    paddingRight: props.paddingRight,
+    paddingTop: props.paddingTop,
+    paddingBottom: props.paddingBottom,
+    marginTop: props.marginTop,
+    marginBottom: props.marginBottom,
+    overflowY: props.scrollable ? 'scroll' : undefined,
+    maxHeight: props.maxHeight,
+}));
 
 interface TitleProps {
     opacity?: number;
@@ -106,26 +94,12 @@ export const Text = Glamorous.div<TextProps>(props => ({
     display: 'flex',
     alignItems: 'center',
     fontSize: props.small ? 14 : 15,
-    lineHeight:
-        props.lineHeight !== undefined
-            ? props.lineHeight
-            : props.small
-                ? 1.43
-                : 1.33,
+    lineHeight: props.lineHeight !== undefined ? props.lineHeight : props.small ? 1.43 : 1.33,
     color: '#334562',
     opacity: props.opacity,
-    fontWeight:
-        props.fontWeight !== undefined
-            ? props.fontWeight
-            : props.bold
-                ? 500
-                : undefined,
+    fontWeight: props.fontWeight !== undefined ? props.fontWeight : props.bold ? 500 : undefined,
     letterSpacing:
-        props.letterSpacing !== undefined
-            ? props.letterSpacing
-            : props.bold
-                ? -0.3
-                : undefined,
+        props.letterSpacing !== undefined ? props.letterSpacing : props.bold ? -0.3 : undefined,
     textTransform: props.upperCase ? 'capitalize' : undefined,
     marginBottom: props.marginBottom,
     marginTop: props.marginTop,
@@ -235,14 +209,12 @@ export const OpportunitiesMainWrapper = Glamorous.div({
     },
 });
 
-export const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>(
-    props => ({
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        marginBottom: props.marginBottom,
-    }),
-);
+export const OpportunitiesWrapper = Glamorous.div<{ marginBottom?: number }>(props => ({
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: props.marginBottom,
+}));
 
 interface OpportunitiesTextWrapperProps {
     width?: number;
@@ -252,9 +224,7 @@ interface OpportunitiesTextWrapperProps {
     paddingRight?: number;
 }
 
-export const OpportunitiesTextWrapper = Glamorous.div<
-    OpportunitiesTextWrapperProps
->(props => ({
+export const OpportunitiesTextWrapper = Glamorous.div<OpportunitiesTextWrapperProps>(props => ({
     width: props.width ? props.width : 226,
     height: '100%',
     flexShrink: 0,
@@ -264,8 +234,7 @@ export const OpportunitiesTextWrapper = Glamorous.div<
     paddingLeft: props.paddingLeft,
     paddingRight: props.paddingRight,
     paddingTop: props.paddingTop !== undefined ? props.paddingTop : 10,
-    paddingBottom:
-        props.paddingBottom !== undefined ? props.paddingBottom : undefined,
+    paddingBottom: props.paddingBottom !== undefined ? props.paddingBottom : undefined,
     '@media (max-width: 950px)': {
         '&.main-tags-text': {
             paddingTop: '16px !important',
@@ -288,12 +257,8 @@ export const OpportunitiesValueWrapper = Glamorous.div<{
     flexWrap: 'wrap',
     flexGrow: 1,
     padding: '0 25px',
-    borderLeft: props.bordered
-        ? '1px solid rgba(220, 222, 228, 0.45)'
-        : undefined,
-    paddingTop: props.paddingTop
-        ? `${props.paddingTop}px !important`
-        : undefined,
+    borderLeft: props.bordered ? '1px solid rgba(220, 222, 228, 0.45)' : undefined,
+    paddingTop: props.paddingTop ? `${props.paddingTop}px !important` : undefined,
     '@media (max-width: 950px)': {
         '&.main-tags-value': {
             width: '100%',
@@ -370,10 +335,7 @@ export const TagRowCard = (props: TagRowProps) => (
         >
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
-        <OpportunitiesValueWrapper
-            bordered={props.bordered}
-            paddingTop={props.valuePaddingTop}
-        >
+        <OpportunitiesValueWrapper bordered={props.bordered} paddingTop={props.valuePaddingTop}>
             {props.isTextStyle && <Text lineHeight={1.53}>{props.text}</Text>}
             {props.isTagStyle && <Tag>{props.text}</Tag>}
             {props.children}
@@ -383,11 +345,7 @@ export const TagRowCard = (props: TagRowProps) => (
 
 export const TagRowMapCard = (props: TagRowMapProps) => (
     <OpportunitiesWrapper>
-        <OpportunitiesTextWrapper
-            width={150}
-            paddingLeft={props.paddingLeft}
-            paddingTop={10}
-        >
+        <OpportunitiesTextWrapper width={150} paddingLeft={props.paddingLeft} paddingTop={10}>
             <Text bold={true}>{props.title}</Text>
         </OpportunitiesTextWrapper>
         <OpportunitiesValueWrapper bordered={props.bordered}>

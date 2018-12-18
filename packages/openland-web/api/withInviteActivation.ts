@@ -1,8 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import {
-    OrganizationActivateByInviteMutation,
-    AccountInviteInfoQuery,
-} from 'openland-api';
+import { OrganizationActivateByInviteMutation, AccountInviteInfoQuery } from 'openland-api';
 import { graphqlCompose2 } from 'openland-x-graphql/graphqlCompose';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { AccountAppInviteInfoQuery } from 'openland-api/AccountAppInviteInfoQuery';

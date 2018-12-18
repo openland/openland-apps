@@ -40,10 +40,7 @@ const OrganizationCards = withExploreOrganizations(props => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <XOrganizationCard
-                            key={'_org_card_' + i.node.id}
-                            organization={i.node}
-                        />
+                        <XOrganizationCard key={'_org_card_' + i.node.id} organization={i.node} />
                     ))}
                     <PagePagination
                         pageInfo={props.data.items.pageInfo}
@@ -51,9 +48,7 @@ const OrganizationCards = withExploreOrganizations(props => {
                     />
                 </XContentWrapper>
             )}
-            {noData && (
-                <EmptySearchBlock text="No organization matches your search" />
-            )}
+            {noData && <EmptySearchBlock text="No organization matches your search" />}
         </>
     );
 }) as React.ComponentType<OrganizationCardsProps>;
@@ -162,12 +157,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     title="All organizations"
                                                     right={
                                                         <SortPicker
-                                                            sort={
-                                                                this.state.sort
-                                                            }
-                                                            onPick={
-                                                                this.changeSort
-                                                            }
+                                                            sort={this.state.sort}
+                                                            onPick={this.changeSort}
                                                         />
                                                     }
                                                     paddingBottom={12}
@@ -180,26 +171,16 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                         counter={orgCount}
                                                         right={
                                                             <SortPicker
-                                                                sort={
-                                                                    this.state
-                                                                        .sort
-                                                                }
-                                                                onPick={
-                                                                    this
-                                                                        .changeSort
-                                                                }
+                                                                sort={this.state.sort}
+                                                                onPick={this.changeSort}
                                                             />
                                                         }
                                                         paddingBottom={12}
                                                     />
                                                 )}
                                             <Organizations
-                                                featuredFirst={
-                                                    this.state.sort.featured
-                                                }
-                                                orderBy={
-                                                    this.state.sort.orderBy
-                                                }
+                                                featuredFirst={this.state.sort.featured}
+                                                orderBy={this.state.sort.orderBy}
                                                 query={query}
                                                 tagsCount={this.tagsCount}
                                             />
@@ -207,10 +188,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                     </XVertical>
                                 )}
                                 {oid && (
-                                    <OrganizationProfile
-                                        organizationId={oid}
-                                        onDirectory={true}
-                                    />
+                                    <OrganizationProfile organizationId={oid} onDirectory={true} />
                                 )}
                             </Container>
                         </RootWrapper>

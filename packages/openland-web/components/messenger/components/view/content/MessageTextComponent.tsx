@@ -4,10 +4,7 @@ import { preprocessText, Span } from '../../../utils/TextProcessor';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
-import {
-    MentionComponentInner,
-    removeEmojiFromText,
-} from 'openland-x/XRichTextInput';
+import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
 import { XButton } from 'openland-x/XButton';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'react-mental';
@@ -60,12 +57,7 @@ type JoinedUserPopperRowProps = {
     id: string;
 };
 
-export const JoinedUserPopperRow = ({
-    title,
-    subtitle,
-    photo,
-    id,
-}: JoinedUserPopperRowProps) => {
+export const JoinedUserPopperRow = ({ title, subtitle, photo, id }: JoinedUserPopperRowProps) => {
     return (
         <XView
             cursor="pointer"
@@ -92,12 +84,7 @@ export const JoinedUserPopperRow = ({
                 <SubTitle>{subtitle}</SubTitle>
             </XView>
             <XView flexGrow={1} />
-            <XButtonStyled
-                text="Message"
-                style="primary"
-                size="tiny"
-                path={'/mail/' + id}
-            />
+            <XButtonStyled text="Message" style="primary" size="tiny" path={'/mail/' + id} />
         </XView>
     );
 };
@@ -137,7 +124,7 @@ const TextServiceStyle = css`
     letter-spacing: 0;
     font-weight: 400;
     text-align: center;
-    color: #99A2B0;
+    color: #99a2b0;
 `;
 
 const styleEditLabel = css`
@@ -155,14 +142,13 @@ const styleInsane = css`
     background-clip: text, border;
     -webkit-background-clip: text;
     color: transparent;
-`
+`;
 
 let emoji = (text: string, height: number) =>
     emojify(text, {
         style: {
             height: height,
-            backgroundImage:
-                'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
+            backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
         },
     });
 
@@ -187,9 +173,7 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
         // splitting message
         const arr: any = [];
         splittedTextArray.forEach((item: any) => {
-            item.split(getMentionString(name)).forEach((splitted: any) =>
-                arr.push(splitted),
-            );
+            item.split(getMentionString(name)).forEach((splitted: any) => arr.push(splitted));
         });
 
         splittedTextArray = arr;
@@ -215,9 +199,7 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
     });
 
     const getMentionByName = (name: string) => {
-        const mention = mentions.find(
-            (item: any) => removeEmojiFromText(item.name) === name,
-        );
+        const mention = mentions.find((item: any) => removeEmojiFromText(item.name) === name);
         if (!mention) {
             throw Error('no mention was found');
         }
@@ -240,11 +222,7 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
         }
 
         let mentionElement = mention && (
-            <MentionComponentInner
-                isYou={mention.isYou}
-                user={mention}
-                hasPopper
-            >
+            <MentionComponentInner isYou={mention.isYou} user={mention} hasPopper>
                 {mentionMatchesArray[key]}
             </MentionComponentInner>
         );
@@ -289,11 +267,7 @@ export const OthersPopper = (props: any) => {
 
 const LinkToRoom = ({ children, roomId }: any) => {
     return (
-        <XLink
-            className="link"
-            path={`/mail/${roomId}`}
-            onClick={(e: any) => e.stopPropagation()}
-        >
+        <XLink className="link" path={`/mail/${roomId}`} onClick={(e: any) => e.stopPropagation()}>
             {children}
         </XLink>
     );
@@ -313,10 +287,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
             if (alphaMentions) {
                 mentionsFinal = alphaMentions
                     .filter(({ __typename }: any) => {
-                        return (
-                            __typename === 'UserMention' ||
-                            __typename === 'SharedRoomMention'
-                        );
+                        return __typename === 'UserMention' || __typename === 'SharedRoomMention';
                     })
                     .map((item: any) => {
                         if (item.__typename === 'UserMention') {
@@ -386,25 +357,24 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
                 }
             }
 
-            return (
-                <>{getSplittedTextArray({ text, mentions: mentionsFinal })}</>
-            );
+            return <>{getSplittedTextArray({ text, mentions: mentionsFinal })}</>;
         } catch (err) {
             return <span>{text}</span>;
         }
     }
 }
 
-export const MessageTextComponent = React.memo<MessageTextComponentProps>((props) => {
-
+export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
     // Preprocessing
     var messageText = props.message;
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
     const isSingleEmoji = React.useMemo(() => isEmoji(messageText), [props.message]);
-    const isBig = isSingleEmoji || isInsane || isMouthpiece || messageText.length <= 302 &&
-        messageText.startsWith(':') &&
-        messageText.endsWith(':');
+    const isBig =
+        isSingleEmoji ||
+        isInsane ||
+        isMouthpiece ||
+        (messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':'));
     const isTextSticker = !isSingleEmoji && isBig;
     if (isInsane || isMouthpiece) {
         messageText = messageText.replace(/🌈/g, '').replace(/📣/g, '');
@@ -445,12 +415,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>((props
             }
 
             return (
-                <XView
-                    as="a"
-                    key={'link-' + i}
-                    href={v.link!!}
-                    target="_blank"
-                >
+                <XView as="a" key={'link-' + i} href={v.link!!} target="_blank">
                     {v.text}
                 </XView>
             );
@@ -459,8 +424,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>((props
 
             if (
                 (props.mentions && props.mentions.length !== 0) ||
-                (props.alphaMentions &&
-                    props.alphaMentions.length !== 0)
+                (props.alphaMentions && props.alphaMentions.length !== 0)
             ) {
                 return (
                     <MessageWithMentionsTextComponent
@@ -483,12 +447,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>((props
         }
     });
 
-    let wrapperClassName =
-        props.isService
-            ? TextServiceStyle
-            : isBig
-                ? TextLargeStyle
-                : TextStyle;
+    let wrapperClassName = props.isService ? TextServiceStyle : isBig ? TextLargeStyle : TextStyle;
     return (
         <span className={wrapperClassName}>
             {parts}

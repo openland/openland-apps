@@ -93,23 +93,16 @@ export default withApp(
                                         <XForm
                                             defaultData={{
                                                 input: {
-                                                    firstName: props.data
-                                                        .profile!!.firstName,
-                                                    lastName: props.data
-                                                        .profile!!.lastName,
+                                                    firstName: props.data.profile!!.firstName,
+                                                    lastName: props.data.profile!!.lastName,
                                                     primaryOrganizationId:
-                                                        props.data.profile!!
-                                                            .primaryOrganization &&
-                                                        props.data.profile!!
-                                                            .primaryOrganization!!
+                                                        props.data.profile!!.primaryOrganization &&
+                                                        props.data.profile!!.primaryOrganization!!
                                                             .id,
-                                                    role: props.data.profile!!
-                                                        .role,
-                                                    about: props.data.profile!!
-                                                        .about,
+                                                    role: props.data.profile!!.role,
+                                                    about: props.data.profile!!.about,
                                                     photoRef: sanitizeIamgeRef(
-                                                        props.data.profile!!
-                                                            .photoRef,
+                                                        props.data.profile!!.photoRef,
                                                     ),
                                                 },
                                             }}
@@ -117,23 +110,14 @@ export default withApp(
                                                 await props.updateProfile({
                                                     variables: {
                                                         input: {
-                                                            firstName:
-                                                                data.input
-                                                                    .firstName,
-                                                            lastName:
-                                                                data.input
-                                                                    .lastName,
+                                                            firstName: data.input.firstName,
+                                                            lastName: data.input.lastName,
                                                             alphaPrimaryOrganizationId:
-                                                                data.input
-                                                                    .primaryOrganizationId,
-                                                            alphaRole:
-                                                                data.input.role,
-                                                            about:
-                                                                data.input
-                                                                    .about,
+                                                                data.input.primaryOrganizationId,
+                                                            alphaRole: data.input.role,
+                                                            about: data.input.about,
                                                             photoRef: sanitizeIamgeRef(
-                                                                data.input
-                                                                    .photoRef,
+                                                                data.input.photoRef,
                                                             ),
                                                         },
                                                     },
@@ -141,19 +125,12 @@ export default withApp(
                                             }}
                                             defaultLayout={false}
                                         >
-                                            <XVertical
-                                                separator={12}
-                                                maxWidth={660}
-                                            >
+                                            <XVertical separator={12} maxWidth={660}>
                                                 <HeadTitle>Profile</HeadTitle>
-                                                <XFormError
-                                                    onlyGeneralErrors={true}
-                                                />
+                                                <XFormError onlyGeneralErrors={true} />
                                                 <XVertical separator={12}>
                                                     <XFormLoadingContent>
-                                                        <XHorizontal
-                                                            separator={13}
-                                                        >
+                                                        <XHorizontal separator={13}>
                                                             <XVertical
                                                                 flexGrow={1}
                                                                 width={480}
@@ -172,28 +149,17 @@ export default withApp(
                                                                 <XSelect
                                                                     title="Primary organization"
                                                                     field="input.primaryOrganizationId"
-                                                                    searchable={
-                                                                        false
-                                                                    }
-                                                                    clearable={
-                                                                        false
-                                                                    }
+                                                                    searchable={false}
+                                                                    clearable={false}
                                                                     options={(
                                                                         (orgsData.data &&
-                                                                            orgsData
-                                                                                .data
+                                                                            orgsData.data
                                                                                 .myOrganizations) ||
                                                                         []
-                                                                    ).map(
-                                                                        (
-                                                                            org: any,
-                                                                        ) => ({
-                                                                            value:
-                                                                                org.id,
-                                                                            label:
-                                                                                org.name,
-                                                                        }),
-                                                                    )}
+                                                                    ).map((org: any) => ({
+                                                                        value: org.id,
+                                                                        label: org.name,
+                                                                    }))}
                                                                 />
                                                                 <TextAreaWrapper>
                                                                     <TextAreaTitle>
@@ -201,9 +167,7 @@ export default withApp(
                                                                     </TextAreaTitle>
                                                                     <XTextArea
                                                                         valueStoreKey="fields.input.about"
-                                                                        resize={
-                                                                            false
-                                                                        }
+                                                                        resize={false}
                                                                     />
                                                                 </TextAreaWrapper>
                                                             </XVertical>
@@ -222,14 +186,10 @@ export default withApp(
                                         <XForm
                                             defaultData={{
                                                 input: {
-                                                    phone: props.data.profile!!
-                                                        .phone,
-                                                    email: props.data.profile!!
-                                                        .email,
-                                                    website: props.data
-                                                        .profile!!.website,
-                                                    linkedin: props.data
-                                                        .profile!!.linkedin,
+                                                    phone: props.data.profile!!.phone,
+                                                    email: props.data.profile!!.email,
+                                                    website: props.data.profile!!.website,
+                                                    linkedin: props.data.profile!!.linkedin,
                                                     // locations: props.data.profile!!.locations
                                                 },
                                             }}
@@ -237,18 +197,10 @@ export default withApp(
                                                 await props.updateProfile({
                                                     variables: {
                                                         input: {
-                                                            phone:
-                                                                data.input
-                                                                    .phone,
-                                                            email:
-                                                                data.input
-                                                                    .email,
-                                                            website:
-                                                                data.input
-                                                                    .website,
-                                                            alphaLinkedin:
-                                                                data.input
-                                                                    .linkedin,
+                                                            phone: data.input.phone,
+                                                            email: data.input.email,
+                                                            website: data.input.website,
+                                                            alphaLinkedin: data.input.linkedin,
                                                             // alphaLocations: data.input.locations
                                                         },
                                                     },
@@ -258,17 +210,10 @@ export default withApp(
                                         >
                                             <XVertical separator={12}>
                                                 <HeadTitle>Contacts</HeadTitle>
-                                                <XFormError
-                                                    onlyGeneralErrors={true}
-                                                />
-                                                <XVertical
-                                                    width={480}
-                                                    separator={12}
-                                                >
+                                                <XFormError onlyGeneralErrors={true} />
+                                                <XVertical width={480} separator={12}>
                                                     <XFormLoadingContent>
-                                                        <XVertical
-                                                            separator={10}
-                                                        >
+                                                        <XVertical separator={10}>
                                                             <XInput
                                                                 field="input.phone"
                                                                 size="large"
@@ -314,9 +259,7 @@ export default withApp(
                                                         Joined{' '}
                                                         <span className="bold">
                                                             {DateFormater(
-                                                                props.data
-                                                                    .profile
-                                                                    .joinedAt,
+                                                                props.data.profile.joinedAt,
                                                             )}
                                                         </span>
                                                     </span>
@@ -324,18 +267,14 @@ export default withApp(
                                             )}
                                         {props.data.profile && (
                                             <CardText>
-                                                {!props.data.profile
-                                                    .invitedBy && (
+                                                {!props.data.profile.invitedBy && (
                                                     <span>Self-registered</span>
                                                 )}
-                                                {props.data.profile
-                                                    .invitedBy && (
+                                                {props.data.profile.invitedBy && (
                                                     <span>
                                                         Invited by{' '}
                                                         <span className="bold person">
-                                                            {props.data.profile
-                                                                .invitedBy
-                                                                .name ||
+                                                            {props.data.profile.invitedBy.name ||
                                                                 'First name Last name'}
                                                         </span>
                                                     </span>

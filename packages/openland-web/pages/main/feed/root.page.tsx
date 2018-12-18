@@ -41,11 +41,7 @@ export default withApp('Home', 'viewer', props => {
             <XDocumentHead title="Feed" />
             <Scaffold>
                 <Scaffold.Content padding={false} bottomOffset={false}>
-                    <XView
-                        flexDirection="row"
-                        alignItems="stretch"
-                        justifyContent="center"
-                    >
+                    <XView flexDirection="row" alignItems="stretch" justifyContent="center">
                         <XView
                             flexDirection="column"
                             width={200}

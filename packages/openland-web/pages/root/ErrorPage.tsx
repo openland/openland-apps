@@ -102,11 +102,7 @@ export class ErrorPage extends React.Component<{
         return (
             <>
                 <XDocumentHead
-                    title={
-                        this.props.statusCode === 404
-                            ? ['Not found']
-                            : ['Something went wrong']
-                    }
+                    title={this.props.statusCode === 404 ? ['Not found'] : ['Something went wrong']}
                 />
                 <XTrack event="View 404">
                     <Root>
@@ -119,14 +115,11 @@ export class ErrorPage extends React.Component<{
                                 <Title>
                                     {this.props.statusCode === 404
                                         ? 'Not found'
-                                        : this.props.message ||
-                                          'Something went wrong'}
+                                        : this.props.message || 'Something went wrong'}
                                 </Title>
                                 <Description>
                                     Return home or contact our team at{' '}
-                                    <a href="mailto:hello@openland.com">
-                                        hello@openland.com
-                                    </a>
+                                    <a href="mailto:hello@openland.com">hello@openland.com</a>
                                 </Description>
                                 <ButtonsWrapper separator={12}>
                                     <Button
@@ -140,9 +133,7 @@ export class ErrorPage extends React.Component<{
                                 </ButtonsWrapper>
                             </Inner>
                         </Box>
-                        <Copyrights>
-                            © Openland {new Date().getFullYear()}
-                        </Copyrights>
+                        <Copyrights>© Openland {new Date().getFullYear()}</Copyrights>
                     </Root>
                 </XTrack>
             </>

@@ -20,9 +20,7 @@ export interface TalkMediaStreamComponentProps {
     onStreamClosed: (peerId: string) => void;
 }
 
-export class TalkMediaStreamComponent extends React.Component<
-    TalkMediaStreamComponentProps
-    > {
+export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamComponentProps> {
     container = React.createRef<HTMLDivElement>();
     started = false;
     answerHandled = false;
@@ -35,20 +33,15 @@ export class TalkMediaStreamComponent extends React.Component<
     audio: HTMLAudioElement[] = [];
 
     componentDidMount() {
-        console.log(
-            'Connection mounted: ' +
-            this.props.id +
-            ': ' +
-            this.props.connection.state,
-        );
+        console.log('Connection mounted: ' + this.props.id + ': ' + this.props.connection.state);
         this.started = true;
         this.peerConnection = new RTCPeerConnection({
-            iceServers: this.props.conference.iceServers.map((v) => ({
+            iceServers: this.props.conference.iceServers.map(v => ({
                 urls: v.urls,
                 credential: v.credential ? v.credential : undefined,
-                username: v.username ? v.username : undefined
+                username: v.username ? v.username : undefined,
             })),
-            iceTransportPolicy: 'relay'
+            iceTransportPolicy: 'relay',
         });
         this.peerConnection.onicecandidate = ev => {
             backoff(async () => {
@@ -58,15 +51,12 @@ export class TalkMediaStreamComponent extends React.Component<
 
                 if (ev.candidate) {
                     console.log('ICE:' + JSON.stringify(ev.candidate));
-                    await this.props.apollo.mutate(
-                        ConferenceCandidateMutation,
-                        {
-                            id: this.props.id,
-                            peerId: this.props.peerId,
-                            ownPeerId: this.props.ownPeerId,
-                            candidate: JSON.stringify(ev.candidate),
-                        },
-                    );
+                    await this.props.apollo.mutate(ConferenceCandidateMutation, {
+                        id: this.props.id,
+                        peerId: this.props.peerId,
+                        ownPeerId: this.props.ownPeerId,
+                        candidate: JSON.stringify(ev.candidate),
+                    });
                 }
             });
         };
@@ -88,12 +78,7 @@ export class TalkMediaStreamComponent extends React.Component<
         this.handleState();
     }
     componentDidUpdate() {
-        console.log(
-            'Connection updated: ' +
-            this.props.id +
-            ': ' +
-            this.props.connection.state,
-        );
+        console.log('Connection updated: ' + this.props.id + ': ' + this.props.connection.state);
         this.handleState();
     }
     componentWillUnmount() {
@@ -188,9 +173,7 @@ export class TalkMediaStreamComponent extends React.Component<
                                 return;
                             }
                             console.log('INCOMING ICE:' + ice);
-                            await this.peerConnection.addIceCandidate(
-                                JSON.parse(ice),
-                            );
+                            await this.peerConnection.addIceCandidate(JSON.parse(ice));
                         });
                     }
                 }

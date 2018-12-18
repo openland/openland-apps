@@ -59,7 +59,7 @@ async function start() {
             changeOrigin: true,
             target: endpoint,
             ws: true,
-            pathRewrite: function (path: string) {
+            pathRewrite: function(path: string) {
                 return '/api';
             },
         }),
@@ -73,7 +73,7 @@ async function start() {
         proxy({
             changeOrigin: true,
             target: endpoint,
-            pathRewrite: function (path: string) {
+            pathRewrite: function(path: string) {
                 return '/v2/auth';
             },
         }),
@@ -101,12 +101,8 @@ async function start() {
     //
     // Favicon support endpoint
     //
-    server.get('/favicon.ico', (req, res) =>
-        res.sendFile(__dirname + '/static/favicon.ico'),
-    );
-    server.get('/worker.js', (req, res) =>
-        res.sendFile(__dirname + '/worker.js'),
-    );
+    server.get('/favicon.ico', (req, res) => res.sendFile(__dirname + '/static/favicon.ico'));
+    server.get('/worker.js', (req, res) => res.sendFile(__dirname + '/worker.js'));
     server.get('/browserconfig.xml', (req, res) =>
         res.sendFile(__dirname + '/static/browserconfig.xml'),
     );
@@ -140,11 +136,11 @@ async function start() {
 }
 
 // Hack for handling Ctrl-C
-process.on('SIGINT', function () {
+process.on('SIGINT', function() {
     console.warn('Exiting: received SIGINT');
     process.exit();
 });
-process.on('SIGTERM', function () {
+process.on('SIGTERM', function() {
     console.warn('Exiting: received SIGTERM');
     process.exit();
 });

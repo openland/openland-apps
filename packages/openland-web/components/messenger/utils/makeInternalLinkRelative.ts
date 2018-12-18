@@ -1,4 +1,3 @@
-
 export let makeInternalLinkRelative = (url: string) => {
     let rel = url
         .replace('http://app.openland.com/', '/')

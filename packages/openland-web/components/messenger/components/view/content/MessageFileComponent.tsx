@@ -101,9 +101,7 @@ export const MessageFileComponent = (props: MessageFileComponentProps) => (
             >
                 <FileImage />
                 <FileText>
-                    <Title className="title">
-                        {props.fileName ? props.fileName!! : 'file'}
-                    </Title>
+                    <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
                     <Size className="size">{niceBytes(props.fileSize)}</Size>
                 </FileText>
                 {props.clearButton && (
@@ -117,9 +115,7 @@ export const MessageFileComponent = (props: MessageFileComponentProps) => (
             <FileButton enabled={false}>
                 <FileImage />
                 <FileText>
-                    <Title className="title">
-                        {props.fileName ? props.fileName!! : 'file'}
-                    </Title>
+                    <Title className="title">{props.fileName ? props.fileName!! : 'file'}</Title>
                     <Size className="size">{niceBytes(props.fileSize)}</Size>
                 </FileText>
                 {props.clearButton && (

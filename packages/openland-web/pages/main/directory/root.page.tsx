@@ -27,14 +27,10 @@ class RootComponent extends React.Component<XWithRouter> {
                 <Container>
                     {tab === 'rooms' && <RoomsExploreComponent />}
                     {tab === 'invite' && (
-                        <MessengerComponent
-                            id={router.routeQuery.conversationId}
-                        />
+                        <MessengerComponent id={router.routeQuery.conversationId} />
                     )}
                     {tab === 'profile' && (
-                        <RoomProfile
-                            conversationId={router.routeQuery.conversationId}
-                        />
+                        <RoomProfile conversationId={router.routeQuery.conversationId} />
                     )}
                 </Container>
             </RootWrapper>

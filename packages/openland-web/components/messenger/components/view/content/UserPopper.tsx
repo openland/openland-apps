@@ -100,10 +100,7 @@ const Status = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate
-                        value={props.data.user.lastSeen}
-                        format="humanize_cute"
-                    />
+                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
                 )}
             </StatusWrapper>
         );
@@ -190,9 +187,7 @@ export class UserPopper extends React.PureComponent<
                 </XView>
             );
         } else {
-            const organizationName = user.primaryOrganization
-                ? user.primaryOrganization.name
-                : '';
+            const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
             content = (
                 <Wrapper>
                     <XHorizontal>
@@ -235,10 +230,7 @@ export class UserPopper extends React.PureComponent<
                 nodeSelector={this.getXPopperTargetNode}
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
                 content={
-                    <div
-                        onMouseEnter={this.showPopper}
-                        onMouseLeave={this.hidePopper}
-                    >
+                    <div onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
                         {content}
                     </div>
                 }
@@ -246,17 +238,11 @@ export class UserPopper extends React.PureComponent<
                 placement="top-start"
                 marginLeft={-2}
             >
-                <span
-                    onMouseEnter={this.showPopper}
-                    onMouseLeave={this.hidePopper}
-                >
+                <span onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
                     {children ? (
                         children
                     ) : (
-                        <UserAvatar
-                            user={user}
-                            startSelected={props.startSelected}
-                        />
+                        <UserAvatar user={user} startSelected={props.startSelected} />
                     )}
                 </span>
             </XPopper>

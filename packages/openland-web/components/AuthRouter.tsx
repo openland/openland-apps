@@ -44,8 +44,7 @@ export const AuthRouter = withUserInfo(props => {
     if (
         !handled &&
         !props.isLoggedIn &&
-        (redirectPath.startsWith('/join/') ||
-            redirectPath.startsWith('/invite/'))
+        (redirectPath.startsWith('/join/') || redirectPath.startsWith('/invite/'))
     ) {
         handled = true;
         return <XPageRedirect path={'/signin/invite' + redirect} />;
@@ -105,11 +104,7 @@ export const AuthRouter = withUserInfo(props => {
     }
 
     // Bypass Next steps for invite
-    if (
-        !handled &&
-        !props.isCompleted &&
-        props.router.path.startsWith('/invite/')
-    ) {
+    if (!handled && !props.isCompleted && props.router.path.startsWith('/invite/')) {
         handled = true;
     }
 

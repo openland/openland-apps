@@ -106,29 +106,24 @@ export class WelcomePopup extends React.Component<{}, { isOpen: boolean }> {
             >
                 <WelcomeModalWrapper>
                     <WelcomePopupContent>
-                        <WelcomePopupTitle>
-                            Welcome to Openland!{' '}
-                        </WelcomePopupTitle>
+                        <WelcomePopupTitle>Welcome to Openland! </WelcomePopupTitle>
                         <WelcomeModalRowsWrapper>
                             <WelcomeModalRow>
                                 <img src="/static/X/ic-home.svg" />
                                 <WelcomeModalText>
-                                    Fill out your profile to attract inbound
-                                    opportunities
+                                    Fill out your profile to attract inbound opportunities
                                 </WelcomeModalText>
                             </WelcomeModalRow>
                             <WelcomeModalRow>
                                 <img src="/static/X/ic-organization-big.svg" />
                                 <WelcomeModalText>
-                                    Explore organizations directory and start
-                                    conversations
+                                    Explore organizations directory and start conversations
                                 </WelcomeModalText>
                             </WelcomeModalRow>
                             <WelcomeModalRow>
                                 <img src="/static/X/ic-messenges.svg" />
                                 <WelcomeModalText>
-                                    Chat with Openland Support to get help for
-                                    your research
+                                    Chat with Openland Support to get help for your research
                                 </WelcomeModalText>
                             </WelcomeModalRow>
                         </WelcomeModalRowsWrapper>

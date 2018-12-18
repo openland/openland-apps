@@ -9,7 +9,6 @@ import { usePopperClick } from 'openland-web/components/usePopperClick';
 import { usePopperHover } from 'openland-web/components/usePopperHover';
 
 export interface MessageContainerProps {
-
     compact: boolean;
     sender: UserShort;
     date: number;
@@ -23,20 +22,25 @@ export interface MessageContainerProps {
     selected: boolean;
 }
 
-export const MessageContainer = React.memo<MessageContainerProps>((props) => {
-
+export const MessageContainer = React.memo<MessageContainerProps>(props => {
     let [hover, onHover] = React.useState(false);
     let onMouseEnter = React.useMemo(() => () => onHover(true), [onHover]);
     let onMouseLeave = React.useMemo(() => () => onHover(false), [onHover]);
     let popupRef = React.useRef(null);
-    let popup = <XPopper2 ref={popupRef} placement="top">Test</XPopper2>
+    let popup = (
+        <XPopper2 ref={popupRef} placement="top">
+            Test
+        </XPopper2>
+    );
     // let popupClick = usePopperClick(popupRef);
     let popupHover = usePopperHover(popupRef);
 
     // Selector Icon
     let selector = (
         <XView marginRight={22} width={18} height={22} alignSelf="flex-start">
-            {(hover || props.selecting) && <MessageSelector selected={props.selected} onClick={props.onSelected} />}
+            {(hover || props.selecting) && (
+                <MessageSelector selected={props.selected} onClick={props.onSelected} />
+            )}
         </XView>
     );
 
@@ -76,21 +80,43 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
     let content: any;
     if (!props.compact) {
         content = (
-            <XView flexDirection="column" flexGrow={1} flexShrink={1} flexBasis={0} minWidth={0} alignItems="stretch">
+            <XView
+                flexDirection="column"
+                flexGrow={1}
+                flexShrink={1}
+                flexBasis={0}
+                minWidth={0}
+                alignItems="stretch"
+            >
                 <XView flexDirection="row">
-                    <XView fontSize={14} fontWeight="600" color="rgba(0, 0, 0, 0.8)" {...popupHover}>{props.sender.name}</XView>
+                    <XView
+                        fontSize={14}
+                        fontWeight="600"
+                        color="rgba(0, 0, 0, 0.8)"
+                        {...popupHover}
+                    >
+                        {props.sender.name}
+                    </XView>
                     {props.sender.primaryOrganization && (
-                        <XView fontSize={12} fontWeight="600" color="rgba(0, 0, 0, 0.4)" paddingLeft={8}>
+                        <XView
+                            fontSize={12}
+                            fontWeight="600"
+                            color="rgba(0, 0, 0, 0.4)"
+                            paddingLeft={8}
+                        >
                             {props.sender.primaryOrganization.name}
                         </XView>
                     )}
-                    <XView paddingLeft={8} fontSize={12} color="rgba(0, 0, 0, 0.4)" fontWeight="600">
+                    <XView
+                        paddingLeft={8}
+                        fontSize={12}
+                        color="rgba(0, 0, 0, 0.4)"
+                        fontWeight="600"
+                    >
                         <XDate value={props.date.toString()} format="time" />
                     </XView>
                 </XView>
-                <XView flexDirection="column">
-                    {props.children}
-                </XView>
+                <XView flexDirection="column">{props.children}</XView>
             </XView>
         );
     } else {
@@ -102,11 +128,7 @@ export const MessageContainer = React.memo<MessageContainerProps>((props) => {
     }
 
     // Actions
-    let actions = (
-        <XView width={83}>
-            {hover && props.renderMenu()}
-        </XView>
-    )
+    let actions = <XView width={83}>{hover && props.renderMenu()}</XView>;
 
     // Result
     if (props.compact) {

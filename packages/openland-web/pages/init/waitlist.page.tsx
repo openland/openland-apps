@@ -65,9 +65,7 @@ export default withAppBase('Waitlist', props => {
                         <InfoText>{InitTexts.waitlist.content}</InfoText>
                         <MailText>
                             <QuestionsSpan>Questions?</QuestionsSpan>
-                            <HelloA href="mailto:hello@openland.com">
-                                hello@openland.com
-                            </HelloA>
+                            <HelloA href="mailto:hello@openland.com">hello@openland.com</HelloA>
                         </MailText>
 
                         <XButton

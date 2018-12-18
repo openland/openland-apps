@@ -93,21 +93,14 @@ const ChannelText = Glamorous.div({
 const ChannelsList = (props: ChannelsProps) => (
     <ChannelsWrapper>
         {props.channels.map(i => (
-            <ChannelRow
-                key={i.id}
-                alignItems="center"
-                justifyContent="space-between"
-                flexGrow={1}
-            >
+            <ChannelRow key={i.id} alignItems="center" justifyContent="space-between" flexGrow={1}>
                 <XVertical separator={1}>
                     <ChannelName>{i.name}</ChannelName>
                     <ChannelText>
                         {i.members} members • {i.listings} listings
                     </ChannelText>
                 </XVertical>
-                {i.member === true && (
-                    <XButton text="member" style="ghost" className="member" />
-                )}
+                {i.member === true && <XButton text="member" style="ghost" className="member" />}
                 {!i.member && (
                     <XButton
                         text={i.invited ? 'Pending' : 'Reques invite'}
@@ -148,9 +141,7 @@ class BrowseChannelsModalRaw extends React.Component<
         let val = (e.target as any).value as string;
 
         channels = channels.filter(
-            channel =>
-                channel.name.toLowerCase().indexOf(val.toLocaleLowerCase()) !==
-                -1,
+            channel => channel.name.toLowerCase().indexOf(val.toLocaleLowerCase()) !== -1,
         );
 
         this.setState({
@@ -189,9 +180,5 @@ class BrowseChannelsModalRaw extends React.Component<
 }
 
 export const BrowseChannelsModal = (props: XModalProps) => (
-    <BrowseChannelsModalRaw
-        {...props}
-        channels={dataReturner()}
-        scrollableContent={true}
-    />
+    <BrowseChannelsModalRaw {...props} channels={dataReturner()} scrollableContent={true} />
 );

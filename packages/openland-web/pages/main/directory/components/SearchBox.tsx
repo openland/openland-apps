@@ -62,16 +62,8 @@ export class SearchBox extends React.Component<SearchBoxProps> {
         return (
             <SearchWrapper>
                 <XContentWrapper>
-                    <SearchInner
-                        justifyContent="space-between"
-                        alignItems="center"
-                        flexShrink={0}
-                    >
-                        <XHorizontal
-                            separator={0}
-                            alignItems="center"
-                            flexGrow={1}
-                        >
+                    <SearchInner justifyContent="space-between" alignItems="center" flexShrink={0}>
+                        <XHorizontal separator={0} alignItems="center" flexGrow={1}>
                             <SearchIcon className="search-icon" />
                             <SearchInput
                                 value={this.props.value}

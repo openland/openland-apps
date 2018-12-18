@@ -33,9 +33,7 @@ export default withAppBase(
                                     <XButton
                                         text={InitTexts.join.goButton}
                                         onClick={() =>
-                                            switchOrganization(
-                                                props.data.invite!!.orgId,
-                                            )
+                                            switchOrganization(props.data.invite!!.orgId)
                                         }
                                         style="primary"
                                     />
@@ -45,9 +43,7 @@ export default withAppBase(
                                         text={InitTexts.join.joinButton}
                                         action={async () => {
                                             await props.doJoin({});
-                                            switchOrganization(
-                                                props.data.invite!!.orgId,
-                                            );
+                                            switchOrganization(props.data.invite!!.orgId);
                                         }}
                                         style="primary"
                                     />
@@ -57,9 +53,7 @@ export default withAppBase(
                         )}
                         {!props.data.invite && (
                             <MessagePageContent title="Join">
-                                <InfoText>
-                                    {InitTexts.join.unableToFindInvite}
-                                </InfoText>
+                                <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
                             </MessagePageContent>
                         )}
                     </MessagePage>

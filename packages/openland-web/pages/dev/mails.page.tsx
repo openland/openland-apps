@@ -13,24 +13,24 @@ interface DebugMailButtonProps {
     emailType: DebugEmailType;
 }
 
-class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSended: boolean; }> {
+class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSended: boolean }> {
     state = {
-        isSended: false
-    }
+        isSended: false,
+    };
 
     handleSended = () => {
         this.setState({
-            isSended: true
-        })
+            isSended: true,
+        });
 
         setTimeout(() => {
             this.setState({
-                isSended: false
-            })
+                isSended: false,
+            });
         }, 3000);
-    }
+    };
 
-    render () {
+    render() {
         return (
             <XButton
                 alignSelf="flex-start"
@@ -40,9 +40,9 @@ class DebugMailButtonInner extends React.Component<DebugMailButtonProps, { isSen
                 action={async () => {
                     await this.props.sendMail({
                         variables: {
-                            type: this.props.emailType
-                        }
-                    })
+                            type: this.props.emailType,
+                        },
+                    });
                 }}
                 onSuccess={this.handleSended}
             />
@@ -54,30 +54,26 @@ const DebugMailButton = withDebugMails(props => (
     <DebugMailButtonInner {...props as any} />
 )) as React.ComponentType<DebugMailButtonProps>;
 
-export default withApp(
-    'Super Debug',
-    ['super-admin', 'software-developer'],
-    props => (
-        <DevToolsScaffold title="Mails">
-            <XHeader text="Mails" />
-            <XContent>
-                <XVertical>
-                    <DebugMailButton emailType={DebugEmailType.WELCOME} />
-                    <DebugMailButton emailType={DebugEmailType.ACCOUNT_ACTIVATED} />
-                    <DebugMailButton emailType={DebugEmailType.ACCOUNT_DEACTIVATED} />
-                    <DebugMailButton emailType={DebugEmailType.MEMBER_REMOVED} />
-                    <DebugMailButton emailType={DebugEmailType.MEMBERSHIP_LEVEL_CHANGED} />
-                    <DebugMailButton emailType={DebugEmailType.INVITE} />
-                    <DebugMailButton emailType={DebugEmailType.MEMBER_JOINED} />
-                    <DebugMailButton emailType={DebugEmailType.SIGNUP_CODE} />
-                    <DebugMailButton emailType={DebugEmailType.SIGIN_CODE} />
-                    <DebugMailButton emailType={DebugEmailType.UNREAD_MESSAGE} />
-                    <DebugMailButton emailType={DebugEmailType.UNREAD_MESSAGES} />
-                    <DebugMailButton emailType={DebugEmailType.PUBLIC_ROOM_INVITE} />
-                    <DebugMailButton emailType={DebugEmailType.PRIVATE_ROOM_INVITE} />
-                    <DebugMailButton emailType={DebugEmailType.ROOM_INVITE_ACCEPTED} />
-                </XVertical>
-            </XContent>
-        </DevToolsScaffold>
-    ),
-);
+export default withApp('Super Debug', ['super-admin', 'software-developer'], props => (
+    <DevToolsScaffold title="Mails">
+        <XHeader text="Mails" />
+        <XContent>
+            <XVertical>
+                <DebugMailButton emailType={DebugEmailType.WELCOME} />
+                <DebugMailButton emailType={DebugEmailType.ACCOUNT_ACTIVATED} />
+                <DebugMailButton emailType={DebugEmailType.ACCOUNT_DEACTIVATED} />
+                <DebugMailButton emailType={DebugEmailType.MEMBER_REMOVED} />
+                <DebugMailButton emailType={DebugEmailType.MEMBERSHIP_LEVEL_CHANGED} />
+                <DebugMailButton emailType={DebugEmailType.INVITE} />
+                <DebugMailButton emailType={DebugEmailType.MEMBER_JOINED} />
+                <DebugMailButton emailType={DebugEmailType.SIGNUP_CODE} />
+                <DebugMailButton emailType={DebugEmailType.SIGIN_CODE} />
+                <DebugMailButton emailType={DebugEmailType.UNREAD_MESSAGE} />
+                <DebugMailButton emailType={DebugEmailType.UNREAD_MESSAGES} />
+                <DebugMailButton emailType={DebugEmailType.PUBLIC_ROOM_INVITE} />
+                <DebugMailButton emailType={DebugEmailType.PRIVATE_ROOM_INVITE} />
+                <DebugMailButton emailType={DebugEmailType.ROOM_INVITE_ACCEPTED} />
+            </XVertical>
+        </XContent>
+    </DevToolsScaffold>
+));

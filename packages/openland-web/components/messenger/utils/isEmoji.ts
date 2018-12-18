@@ -3,10 +3,7 @@ import emojiData from './data/emoji-data';
 const asciiToUnicodeCache = new Map();
 
 function isUnicodeEmoji(src: string) {
-    for (const [
-        regExp,
-        unicode,
-    ] of emojiData.asciiToUnicode.entries()) {
+    for (const [regExp, unicode] of emojiData.asciiToUnicode.entries()) {
         if (src.replace(regExp, unicode) === unicode) {
             asciiToUnicodeCache.set(src, unicode);
             return true;

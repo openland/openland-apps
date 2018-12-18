@@ -8,18 +8,19 @@ const contentStyle = css`
     border-radius: 10px;
     background-color: #fff;
     padding: 10px;
-    box-shadow: 0 0 0 1px rgba(136, 152, 170, .1), 0 15px 35px 0 rgba(49, 49, 93, .1), 0 5px 15px 0 rgba(0, 0, 0, .08);
-`
+    box-shadow: 0 0 0 1px rgba(136, 152, 170, 0.1), 0 15px 35px 0 rgba(49, 49, 93, 0.1),
+        0 5px 15px 0 rgba(0, 0, 0, 0.08);
+`;
 
 const arrowStyle = css`
     position: absolute;
     border-style: solid;
-    &[x-placement^="top"] {
+    &[x-placement^='top'] {
         border-width: 5px 5px 0 5px;
-        border-color: rgba(0, 0, 0, .04) transparent transparent transparent;
+        border-color: rgba(0, 0, 0, 0.04) transparent transparent transparent;
         bottom: -6px;
     }
-    &[x-placement^="top"] > * {
+    &[x-placement^='top'] > * {
         border-style: solid;
         position: absolute;
         border-width: 5px 5px 0 5px;
@@ -27,12 +28,12 @@ const arrowStyle = css`
         top: -6px;
         left: -5px;
     }
-    &[x-placement^="bottom"] {
+    &[x-placement^='bottom'] {
         border-width: 0 5px 5px 5px;
-        border-color: transparent transparent rgba(0, 0, 0, .06) transparent;
+        border-color: transparent transparent rgba(0, 0, 0, 0.06) transparent;
         top: -6px;
     }
-    &[x-placement^="bottom"] > * {
+    &[x-placement^='bottom'] > * {
         border-style: solid;
         position: absolute;
         border-width: 0 5px 5px 5px;
@@ -40,25 +41,25 @@ const arrowStyle = css`
         bottom: -6px;
         left: -5px;
     }
-    &[x-placement^="right"] {
+    &[x-placement^='right'] {
         border-width: 6px 6px 6px 0;
-        border-color: transparent rgba(0, 0, 0, .04) transparent transparent;
+        border-color: transparent rgba(0, 0, 0, 0.04) transparent transparent;
         left: -6px;
     }
-    &[x-placement^="right"] > * {
+    &[x-placement^='right'] > * {
         border-tyle: solid;
         position: absolute;
         border-width: 5px 5px 5px 0px;
         border-color: transparent #fff transparent transparent;
         top: -5px;
-        right: -6px
-    }
-    &[x-placement^="left"] {
-        border-width: 5px 0 5px 5px;
-        border-color: transparent transparent transparent rgba(0, 0, 0, .04);
         right: -6px;
     }
-    &[x-placement^="left"] > * {
+    &[x-placement^='left'] {
+        border-width: 5px 0 5px 5px;
+        border-color: transparent transparent transparent rgba(0, 0, 0, 0.04);
+        right: -6px;
+    }
+    &[x-placement^='left'] > * {
         border-style: solid;
         position: absolute;
         border-width: 5px 0 5px 5px;
@@ -86,56 +87,59 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
     let [arrowNode, setArrowNode] = React.useState<HTMLElement | undefined>(undefined);
 
     // Create popper if needed
-    React.useLayoutEffect(() => {
-        if (node && internalNode && arrowNode) {
-            let popper = new Popper(node, internalNode, {
-                modifiers: {
-                    arrow: {
-                        enabled: true,
-                        element: arrowNode,
+    React.useLayoutEffect(
+        () => {
+            if (node && internalNode && arrowNode) {
+                let popper = new Popper(node, internalNode, {
+                    modifiers: {
+                        arrow: {
+                            enabled: true,
+                            element: arrowNode,
+                        },
+                        // computeStyle: {
+                        //     gpuAcceleration: false
+                        // },
+                        preventOverflow: {
+                            order: 99,
+                            boundariesElement: 'viewport',
+                            padding: 16,
+                        },
                     },
-                    // computeStyle: {
-                    //     gpuAcceleration: false
-                    // },
-                    preventOverflow: {
-                        order: 99,
-                        boundariesElement: 'viewport',
-                        padding: 16
+                    onCreate: (data: Popper.Data) => {
+                        if (arrowNode) {
+                            arrowNode.setAttribute('x-placement', data.placement);
+                        }
+                        if (internalNode) {
+                            internalNode.setAttribute('x-placement', data.placement);
+                        }
+                        if (node) {
+                            node.setAttribute('x-placement', data.placement);
+                        }
                     },
-                },
-                onCreate: (data: Popper.Data) => {
-                    if (arrowNode) {
-                        arrowNode.setAttribute('x-placement', data.placement);
-                    }
-                    if (internalNode) {
-                        internalNode.setAttribute('x-placement', data.placement);
-                    }
-                    if (node) {
-                        node.setAttribute('x-placement', data.placement);
-                    }
-                },
-                onUpdate: (data: Popper.Data) => {
-                    if (arrowNode) {
-                        arrowNode.setAttribute('x-placement', data.placement);
-                    }
-                    if (internalNode) {
-                        internalNode.setAttribute('x-placement', data.placement);
-                    }
-                    if (node) {
-                        node.setAttribute('x-placement', data.placement);
-                    }
-                },
-                placement: props.placement ? props.placement : 'auto',
-            });
-            return () => {
-                popper.destroy();
+                    onUpdate: (data: Popper.Data) => {
+                        if (arrowNode) {
+                            arrowNode.setAttribute('x-placement', data.placement);
+                        }
+                        if (internalNode) {
+                            internalNode.setAttribute('x-placement', data.placement);
+                        }
+                        if (node) {
+                            node.setAttribute('x-placement', data.placement);
+                        }
+                    },
+                    placement: props.placement ? props.placement : 'auto',
+                });
+                return () => {
+                    popper.destroy();
+                };
+            } else {
+                return () => {
+                    // nothing to do
+                };
             }
-        } else {
-            return () => {
-                // nothing to do
-            };
-        }
-    }, [node, internalNode, arrowNode, props.placement]);
+        },
+        [node, internalNode, arrowNode, props.placement],
+    );
 
     let popupRef = React.useCallback((src: HTMLElement | null) => {
         if (src) {
@@ -159,7 +163,7 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
             setInternalNode(undefined);
             setArrowNode(undefined);
             setNode(undefined);
-        }
+        },
     }));
 
     // Render
@@ -169,7 +173,9 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
                 <div className={'popper ' + (props.className ? props.className : contentStyle)}>
                     {props.children}
                 </div>
-                <div className={arrowStyle} ref={popupArrowRef} style={{ width: 12, height: 6 }}><div /></div>
+                <div className={arrowStyle} ref={popupArrowRef} style={{ width: 12, height: 6 }}>
+                    <div />
+                </div>
             </div>
         );
         return ReactDOM.createPortal(popup, document.body);

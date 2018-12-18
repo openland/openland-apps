@@ -74,22 +74,17 @@ export const InviteInfoInner = (props: any) => {
                                     invite={props.data.invite}
                                     signup={
                                         '/signup?redirect=' +
-                                        encodeURIComponent(
-                                            (props as any).redirect,
-                                        )
+                                        encodeURIComponent((props as any).redirect)
                                     }
                                 />
                             )}
-                            {!props.data.invite && !props.loading && (
-                                <MessagePageContent title="Join">
-                                    <InfoText>
-                                        {InitTexts.join.unableToFindInvite}
-                                    </InfoText>
-                                </MessagePageContent>
-                            )}
-                            {!props.data.invite && props.loading && (
-                                <XLoader loading={true} />
-                            )}
+                            {!props.data.invite &&
+                                !props.loading && (
+                                    <MessagePageContent title="Join">
+                                        <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                    </MessagePageContent>
+                                )}
+                            {!props.data.invite && props.loading && <XLoader loading={true} />}
                         </Content>
                     </Root>
                 </XTrack>
@@ -98,9 +93,7 @@ export const InviteInfoInner = (props: any) => {
     );
 };
 
-export const InviteInfo = withChannelInviteInfo(
-    InviteInfoInner,
-) as React.ComponentType<{
+export const InviteInfo = withChannelInviteInfo(InviteInfoInner) as React.ComponentType<{
     variables: { invite: string };
     redirect: string;
     instantRedirect?: string;

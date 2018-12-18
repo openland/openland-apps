@@ -86,10 +86,7 @@ class DeclineButton extends React.Component<{
 const Accept = withRoomAddMembers(props => {
     return (
         <XMutation mutation={props.addMember}>
-            <XButton
-                style={(props as any).isHovered ? 'primary' : 'default'}
-                text="Accept"
-            />
+            <XButton style={(props as any).isHovered ? 'primary' : 'default'} text="Accept" />
         </XMutation>
     );
 }) as React.ComponentType<{
@@ -136,9 +133,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
                                         roomId: this.props.roomId,
                                     }}
                                     isHovered={
-                                        this.state.isHoveredDecline
-                                            ? false
-                                            : this.state.isHovered
+                                        this.state.isHoveredDecline ? false : this.state.isHovered
                                     }
                                 />
                                 <div
@@ -176,9 +171,7 @@ class MemberItem extends React.Component<MemberItemProps, MemberItemState> {
                                             value: user.id,
                                         }}
                                     >
-                                        {(user.isYou
-                                            ? 'Leave the '
-                                            : 'Remove from ') +
+                                        {(user.isYou ? 'Leave the ' : 'Remove from ') +
                                             this.props.removeFrom}
                                     </XMenuItem>
                                 }
@@ -206,12 +199,7 @@ export const RemoveMemberModal = withConversationKick(props => {
                 text: 'Remove',
                 style: 'danger',
             }}
-            title={
-                'Remove ' +
-                member.user.name +
-                ' from ' +
-                (props as any).roomTitle
-            }
+            title={'Remove ' + member.user.name + ' from ' + (props as any).roomTitle}
             targetQuery="remove"
             defaultAction={async data => {
                 await props.kick({
@@ -223,8 +211,8 @@ export const RemoveMemberModal = withConversationKick(props => {
             }}
         >
             <XText>
-                Are you sure you want to remove {member.user.firstName}? They
-                will no longer be able to participate in the discussion.
+                Are you sure you want to remove {member.user.firstName}? They will no longer be able
+                to participate in the discussion.
             </XText>
         </XModalForm>
     );
@@ -245,13 +233,9 @@ interface ChannelMembersComponentInnerProps {
     removeFrom: string;
 }
 
-export class RoomMembersComponent extends React.Component<
-    ChannelMembersComponentInnerProps
-> {
+export class RoomMembersComponent extends React.Component<ChannelMembersComponentInnerProps> {
     render() {
-        let requests = this.props.members.filter(
-            m => m.membership === 'REQUESTED',
-        );
+        let requests = this.props.members.filter(m => m.membership === 'REQUESTED');
         let members = this.props.members.filter(m => m.membership === 'MEMBER');
 
         return (
@@ -266,10 +250,7 @@ export class RoomMembersComponent extends React.Component<
                 )}
                 {requests.length > 0 && (
                     <XWithRole role="admin" orgPermission={this.props.orgId}>
-                        <XSubHeader
-                            title="Requests"
-                            counter={requests.length}
-                        />
+                        <XSubHeader title="Requests" counter={requests.length} />
                         <XContentWrapper>
                             {requests.map(m => (
                                 <MemberItem

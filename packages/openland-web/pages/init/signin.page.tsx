@@ -30,8 +30,7 @@ const RoomLoader = Glamorous.div({
 });
 
 const InviteInfo = withAppInviteInfo((props: any) => {
-    let signPath =
-        '/signup?redirect=' + encodeURIComponent((props as any).redirect);
+    let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
     let inviter =
         (props.data.invite && props.data.invite.creator) ||
         (props.data.appInvite && props.data.appInvite.inviter);
@@ -57,9 +56,7 @@ const InviteInfo = withAppInviteInfo((props: any) => {
 
 const checkIfIsSignInInvite = (router: any) => {
     return (
-        router.query &&
-        router.query.redirect &&
-        router.query.redirect.split('/')[1] === 'invite'
+        router.query && router.query.redirect && router.query.redirect.split('/')[1] === 'invite'
     );
 };
 
@@ -265,22 +262,17 @@ class SignInComponent extends React.Component<
     render() {
         const signin = checkIfIsSignIn(this.props.router);
         let redirect = this.props.router.query.redirect
-            ? '?redirect=' +
-              encodeURIComponent(this.props.router.query.redirect)
+            ? '?redirect=' + encodeURIComponent(this.props.router.query.redirect)
             : '';
 
-        const signupText = signin
-            ? InitTexts.auth.signupHint
-            : InitTexts.auth.signinHint;
+        const signupText = signin ? InitTexts.auth.signupHint : InitTexts.auth.signinHint;
 
         const linkText = signin ? InitTexts.auth.signup : InitTexts.auth.signin;
 
         const roomView = this.props.roomView;
 
         const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
-        const AuthMechanism = roomView
-            ? RoomAuthMechanism
-            : WebSignUpAuthMechanism;
+        const AuthMechanism = roomView ? RoomAuthMechanism : WebSignUpAuthMechanism;
         const Loader = roomView
             ? () => (
                   <RoomLoader>
@@ -289,13 +281,9 @@ class SignInComponent extends React.Component<
               )
             : () => <XLoader loading={!this.state.emailSent} />;
 
-        const MyCreateWithEmail = roomView
-            ? RoomCreateWithEmail
-            : WebSignUpCreateWithEmail;
+        const MyCreateWithEmail = roomView ? RoomCreateWithEmail : WebSignUpCreateWithEmail;
 
-        const MyActivationCode = roomView
-            ? RoomActivationCode
-            : WebSignUpActivationCode;
+        const MyActivationCode = roomView ? RoomActivationCode : WebSignUpActivationCode;
 
         let pageMode: PageModeT = 'AuthMechanism';
 
@@ -314,8 +302,7 @@ class SignInComponent extends React.Component<
             pageMode = 'AuthMechanism';
         }
 
-        const showTerms =
-            (!signin && pageMode === 'AuthMechanism') || this.state.fromOutside;
+        const showTerms = (!signin && pageMode === 'AuthMechanism') || this.state.fromOutside;
 
         return (
             <Container
@@ -329,9 +316,7 @@ class SignInComponent extends React.Component<
                 {pageMode === 'SignInInvite' && (
                     <InviteInfo
                         variables={{
-                            inviteKey: this.props.router.query.redirect.split(
-                                '/',
-                            )[2],
+                            inviteKey: this.props.router.query.redirect.split('/')[2],
                         }}
                         signin={signin}
                         loginWithGoogle={this.loginWithGoogle}
@@ -405,16 +390,10 @@ export const SignInPage = (props: any) => {
     const signin = props.router.path.endsWith('signin');
 
     if (props.router.routeQuery.redirect) {
-        if (
-            props.router.routeQuery.redirect.indexOf(
-                '/acceptChannelInvite/',
-            ) !== -1
-        ) {
+        if (props.router.routeQuery.redirect.indexOf('/acceptChannelInvite/') !== -1) {
             Cookie.set(
                 'x-openland-invite',
-                props.router.routeQuery.redirect.slice(
-                    '/acceptChannelInvite/'.length,
-                ),
+                props.router.routeQuery.redirect.slice('/acceptChannelInvite/'.length),
             );
         }
     }
@@ -426,9 +405,7 @@ export const SignInPage = (props: any) => {
     if (isSignInInvite) {
         title = InitTexts.invite.pageTitle;
     } else {
-        title = signin
-            ? InitTexts.auth.signinPageTitle
-            : InitTexts.auth.signupPageTitle;
+        title = signin ? InitTexts.auth.signinPageTitle : InitTexts.auth.signupPageTitle;
     }
 
     let event;
@@ -440,10 +417,7 @@ export const SignInPage = (props: any) => {
 
     return (
         <AuthRouter>
-            <XDocumentHead
-                title={title}
-                titleSocial={InitTexts.socialPageTitle}
-            />
+            <XDocumentHead title={title} titleSocial={InitTexts.socialPageTitle} />
             <XTrack event={event}>
                 {canUseDOM && (
                     <SignInComponent

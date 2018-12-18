@@ -10,12 +10,8 @@ export const withPublicInvite = graphqlCompose2(
     graphqlRouted(OrganizationPublicInviteQuery, {
         params: ['organizationId'],
     }),
-    graphqlMutation(
-        OrganizationCreatePublicInviteMutation,
-        'createPublicInvite',
-        {
-            refetchQueries: [OrganizationPublicInviteQuery],
-            params: ['organizationId'],
-        },
-    ),
+    graphqlMutation(OrganizationCreatePublicInviteMutation, 'createPublicInvite', {
+        refetchQueries: [OrganizationPublicInviteQuery],
+        params: ['organizationId'],
+    }),
 );

@@ -17,11 +17,7 @@ import { XIcon } from 'openland-x/XIcon';
 import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
-import {
-    AboutPlaceholder,
-    SocialPlaceholder,
-    WebsitePlaceholder,
-} from './placeholders';
+import { AboutPlaceholder, SocialPlaceholder, WebsitePlaceholder } from './placeholders';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -124,26 +120,24 @@ export const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13,
 });
 
-const EditButtonWrapper = Glamorous(XButton)<XButtonProps & { big?: boolean }>(
-    props => ({
-        fontSize: props.big ? 14 : 13,
-        display: 'inline-block!important',
-        background: 'none!important',
-        border: 'none!important',
-        fontWeight: 400,
-        color: 'rgba(0, 0, 0, 0.5)',
+const EditButtonWrapper = Glamorous(XButton)<XButtonProps & { big?: boolean }>(props => ({
+    fontSize: props.big ? 14 : 13,
+    display: 'inline-block!important',
+    background: 'none!important',
+    border: 'none!important',
+    fontWeight: 400,
+    color: 'rgba(0, 0, 0, 0.5)',
 
-        '& > div': {
-            paddingLeft: '0!important',
-            paddingRight: '0!important',
-        },
+    '& > div': {
+        paddingLeft: '0!important',
+        paddingRight: '0!important',
+    },
 
-        '& .icon.material': {
-            marginLeft: -4,
-            marginRight: props.big ? 3 : 4,
-        },
-    }),
-);
+    '& .icon.material': {
+        marginLeft: -4,
+        marginRight: props.big ? 3 : 4,
+    },
+}));
 
 export const EditButton = (props: XButtonProps & { big?: boolean }) => {
     let { style, icon, ...other } = props;
@@ -183,10 +177,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                                                 value: user.id,
                                             }}
                                         >
-                                            {
-                                                TextProfiles.Organization
-                                                    .members.revokeAdminStatus
-                                            }
+                                            {TextProfiles.Organization.members.revokeAdminStatus}
                                         </XMenuItem>
                                     )}
                                     {!isAdmin && (
@@ -196,10 +187,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                                                 value: user.id,
                                             }}
                                         >
-                                            {
-                                                TextProfiles.Organization
-                                                    .members.makeAdmin
-                                            }
+                                            {TextProfiles.Organization.members.makeAdmin}
                                         </XMenuItem>
                                     )}
                                     {!isAdmin && (
@@ -211,8 +199,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                                             }}
                                         >
                                             {
-                                                TextProfiles.Organization
-                                                    .members
+                                                TextProfiles.Organization.members
                                                     .removeFromOrganization
                                             }
                                         </XMenuItem>
@@ -225,10 +212,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                                                 value: user.id,
                                             }}
                                         >
-                                            {
-                                                TextProfiles.Organization
-                                                    .members.edit
-                                            }
+                                            {TextProfiles.Organization.members.edit}
                                         </XMenuItem>
                                     </XWithRole>
                                 </>
@@ -268,10 +252,7 @@ interface MemberRequestCardState {
     status: 'request' | 'accepted' | 'declined';
 }
 
-class MemberRequestCard extends React.Component<
-    MemberRequestCardProps,
-    MemberRequestCardState
-> {
+class MemberRequestCard extends React.Component<MemberRequestCardProps, MemberRequestCardState> {
     constructor(props: MemberRequestCardProps) {
         super(props);
 
@@ -314,25 +295,14 @@ class MemberRequestCard extends React.Component<
                                     text="Accept"
                                     onClick={this.acceptRequest}
                                 />
-                                <XButton
-                                    text="Decline"
-                                    onClick={this.declineRequest}
-                                />
+                                <XButton text="Decline" onClick={this.declineRequest} />
                             </>
                         )}
                         {this.state.status === 'accepted' && (
-                            <XButton
-                                style="success"
-                                text="Accepted"
-                                icon="check"
-                            />
+                            <XButton style="success" text="Accepted" icon="check" />
                         )}
                         {this.state.status === 'declined' && (
-                            <XButton
-                                style="ghost"
-                                text="Declined"
-                                enabled={false}
-                            />
+                            <XButton style="ghost" text="Declined" enabled={false} />
                         )}
                     </>
                 }
@@ -343,9 +313,7 @@ class MemberRequestCard extends React.Component<
 
 const UpdateUserProfileModal = withUserProfileUpdate(props => {
     let uid = props.router.query.editUser;
-    let member = (props as any).members.filter(
-        (m: any) => m.user && m.user.id === uid,
-    )[0];
+    let member = (props as any).members.filter((m: any) => m.user && m.user.id === uid)[0];
     if (!member) {
         return null;
     }
@@ -394,8 +362,7 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
 export const PermissionsModal = withOrganizationMemberChangeRole(
     withRouter(props => {
         let member = (props as any).members.filter(
-            (m: any) =>
-                (m.user && m.user.id === props.router.query.changeRole) || '',
+            (m: any) => (m.user && m.user.id === props.router.query.changeRole) || '',
         )[0];
         if (!member) {
             return null;
@@ -439,15 +406,10 @@ export const PermissionsModal = withOrganizationMemberChangeRole(
                     />
                     <XStoreContext.Consumer>
                         {store => {
-                            let role = store
-                                ? store.readValue('fields.role')
-                                : '';
+                            let role = store ? store.readValue('fields.role') : '';
                             return (
                                 <XText>
-                                    {
-                                        TextProfiles.Organization.members
-                                            .changeRole.hints[role]
-                                    }
+                                    {TextProfiles.Organization.members.changeRole.hints[role]}
                                 </XText>
                             );
                         }}
@@ -562,47 +524,27 @@ const Header = (props: { organization: Organization_organization }) => {
                     {!organization.website && (
                         <XWithRole role="admin" orgPermission={organization.id}>
                             <HeaderAddWebsite>
-                                <WebsitePlaceholder
-                                    target={<EditButton text="Add website" />}
-                                />
+                                <WebsitePlaceholder target={<EditButton text="Add website" />} />
                             </HeaderAddWebsite>
                         </XWithRole>
                     )}
                 </HeaderInfo>
                 <HeaderTools separator={8}>
                     {organization.linkedin && (
-                        <XSocialButton
-                            value={organization.linkedin}
-                            style="linkedin"
-                        />
+                        <XSocialButton value={organization.linkedin} style="linkedin" />
                     )}
                     {organization.twitter && (
-                        <XSocialButton
-                            value={organization.twitter}
-                            style="twitter"
-                        />
+                        <XSocialButton value={organization.twitter} style="twitter" />
                     )}
                     {organization.facebook && (
-                        <XSocialButton
-                            value={organization.facebook}
-                            style="facebook"
-                        />
+                        <XSocialButton value={organization.facebook} style="facebook" />
                     )}
 
-                    {!(
-                        organization.linkedin ||
-                        organization.twitter ||
-                        organization.facebook
-                    ) && (
+                    {!(organization.linkedin || organization.twitter || organization.facebook) && (
                         <XWithRole role="admin" orgPermission={organization.id}>
                             <SocialPlaceholder
                                 target={
-                                    <EditButton
-                                        text={
-                                            TextProfiles.Organization
-                                                .addSocialLinks
-                                        }
-                                    />
+                                    <EditButton text={TextProfiles.Organization.addSocialLinks} />
                                 }
                             />
                         </XWithRole>
@@ -616,10 +558,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                 content={
                                     <>
                                         <XMenuItem
-                                            path={
-                                                '/settings/organization/' +
-                                                organization.id
-                                            }
+                                            path={'/settings/organization/' + organization.id}
                                         >
                                             {TextProfiles.Organization.edit}
                                         </XMenuItem>
@@ -635,20 +574,10 @@ const Header = (props: { organization: Organization_organization }) => {
                             flat={true}
                             content={
                                 <>
-                                    <XMenuItem
-                                        path={
-                                            '/settings/organization/' +
-                                            organization.id
-                                        }
-                                    >
+                                    <XMenuItem path={'/settings/organization/' + organization.id}>
                                         {TextProfiles.Organization.edit}
                                     </XMenuItem>
-                                    <XMenuItem
-                                        path={
-                                            '/super/orgs/' +
-                                            organization.superAccountId
-                                        }
-                                    >
+                                    <XMenuItem path={'/super/orgs/' + organization.superAccountId}>
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
                                 </>
@@ -668,10 +597,7 @@ const About = (props: { organization: Organization_organization }) => {
         <>
             {organization.about && (
                 <Section separator={0}>
-                    <XSubHeader
-                        title={TextProfiles.Organization.aboutTitle}
-                        paddingBottom={0}
-                    />
+                    <XSubHeader title={TextProfiles.Organization.aboutTitle} paddingBottom={0} />
                     <SectionContent>{organization.about}</SectionContent>
                 </Section>
             )}
@@ -688,10 +614,7 @@ const About = (props: { organization: Organization_organization }) => {
                                 <AboutPlaceholder
                                     target={
                                         <EditButton
-                                            text={
-                                                TextProfiles.Organization
-                                                    .addAbout
-                                            }
+                                            text={TextProfiles.Organization.addAbout}
                                             big={true}
                                         />
                                     }
@@ -726,9 +649,7 @@ const Members = (props: MembersProps) => {
             <>
                 {withHeader && (
                     <XSubHeader
-                        title={TextProfiles.Organization.membersTitle(
-                            organization.isCommunity,
-                        )}
+                        title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
                         counter={joinedMembers.length}
                         paddingBottom={0}
                         marginBottom={-3}
@@ -750,11 +671,7 @@ const Members = (props: MembersProps) => {
                     )}
                     <XMoreCards>
                         {joinedMembers.map((member, i) => (
-                            <MemberJoinedCard
-                                key={i}
-                                member={member}
-                                organization={organization}
-                            />
+                            <MemberJoinedCard key={i} member={member} organization={organization} />
                         ))}
                     </XMoreCards>
                 </SectionContent>
@@ -799,8 +716,7 @@ const Members = (props: MembersProps) => {
                         </>
                     )}
 
-                {(!organization.isMine ||
-                    (organization.isMine && requestMembers.length <= 0)) &&
+                {(!organization.isMine || (organization.isMine && requestMembers.length <= 0)) &&
                     joinedMembersBox(true)}
 
                 <RemoveJoinedModal
@@ -868,19 +784,13 @@ const Rooms = (props: { organization: Organization_organization }) => {
                         />
                         <SectionContent>
                             {organization.isMine && (
-                                <XWithRole
-                                    role="admin"
-                                    orgPermission={organization.id}
-                                >
+                                <XWithRole role="admin" orgPermission={organization.id}>
                                     <XCreateCard
                                         query={{
                                             field: 'createRoom',
                                             value: 'true',
                                         }}
-                                        text={
-                                            TextProfiles.Organization
-                                                .createPrivateRoom
-                                        }
+                                        text={TextProfiles.Organization.createPrivateRoom}
                                     />
                                 </XWithRole>
                             )}
@@ -917,16 +827,13 @@ const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
                 <Header organization={organization} />
                 <XScrollView2 height="calc(100% - 136px)">
                     <About organization={organization} />
-                    <Members
-                        organization={organization}
-                        router={props.router}
-                    />
+                    <Members organization={organization} router={props.router} />
                     <Rooms organization={organization} />
                 </XScrollView2>
             </OrganizationInfoWrapper>
         </>
     );
-}
+};
 
 const OrganizationProvider = withOrganization(
     withRouter(
@@ -946,10 +853,7 @@ const OrganizationProvider = withOrganization(
     onDirectory?: boolean;
 }>;
 
-export const OrganizationProfile = (props: {
-    organizationId: string;
-    onDirectory?: boolean;
-}) => {
+export const OrganizationProfile = (props: { organizationId: string; onDirectory?: boolean }) => {
     return (
         <OrganizationProvider
             variables={{ organizationId: props.organizationId }}

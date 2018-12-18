@@ -60,9 +60,7 @@ export class ZoneData {
             for (let metricName of Object.keys(zone)) {
                 let metric = metrics.metrics[metricName];
                 if (metric) {
-                    this.addValue(
-                        new ZoneMetricValue(zone[metricName], metric),
-                    );
+                    this.addValue(new ZoneMetricValue(zone[metricName], metric));
                 }
             }
         }
@@ -79,18 +77,12 @@ export class ZoneData {
             this.maximumFARNarrow = value.value;
         }
 
-        if (
-            value.meta.name === 'Density Factor' &&
-            typeof value.value === 'number'
-        ) {
+        if (value.meta.name === 'Density Factor' && typeof value.value === 'number') {
             this.densityFactor = value.value;
         }
     }
 
-    pick(
-        metricsToPick: ZoneMetricValueGroup[],
-        showEmpty?: boolean,
-    ): ZoneMetricValueGroup[] {
+    pick(metricsToPick: ZoneMetricValueGroup[], showEmpty?: boolean): ZoneMetricValueGroup[] {
         let res: ZoneMetricValueGroup[] = [];
         for (let group of metricsToPick) {
             let addGroup = false;
@@ -128,10 +120,7 @@ export class ZoneData {
               densityFactor: number;
           }
         | undefined {
-        if (
-            this.maximumFARNarrow === undefined ||
-            this.densityFactor === undefined
-        ) {
+        if (this.maximumFARNarrow === undefined || this.densityFactor === undefined) {
             return undefined;
         }
 
@@ -177,10 +166,7 @@ export function unitCapacity(
     for (let z of exectZoneData(zones)) {
         let uc = z.unitCapacity(parcelArea);
 
-        if (
-            res === undefined ||
-            (uc !== undefined && uc.unitCapacity > res.unitCapacity)
-        ) {
+        if (res === undefined || (uc !== undefined && uc.unitCapacity > res.unitCapacity)) {
             res = uc;
         }
     }

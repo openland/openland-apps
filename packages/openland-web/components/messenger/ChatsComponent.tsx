@@ -5,10 +5,7 @@ import {
     DialogListEngine,
     DialogDataSourceItem,
 } from 'openland-engines/messenger/DialogListEngine';
-import {
-    MessengerEngine,
-    MessengerContext,
-} from 'openland-engines/MessengerEngine';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XInput } from 'openland-x/XInput';
@@ -21,10 +18,7 @@ import { withUserInfo } from '../UserInfo';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from './components/icons/ic-invite-plus.svg';
 import { DialogView } from './dialog/DialogView';
-import {
-    MessagesStateContext,
-    MessagesStateContextProps,
-} from './components/MessagesStateContext';
+import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
 import { XView } from 'react-mental';
 import { XRouting } from 'openland-x-routing/XRouting';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
@@ -41,9 +35,7 @@ interface ConversationComponentProps {
     compact?: boolean;
 }
 
-class ConversationComponent extends React.PureComponent<
-    ConversationComponentProps
-    > {
+class ConversationComponent extends React.PureComponent<ConversationComponentProps> {
     refComponent: any;
 
     componentWillUnmount() {
@@ -124,10 +116,7 @@ const Image = Glamorous.div({
 
 const SearchChats = withChatSearchText(
     withUserInfo(props => {
-        let items = (props.data && props.data.items
-            ? props.data.items
-            : []
-        ).reduce(
+        let items = (props.data && props.data.items ? props.data.items : []).reduce(
             (p, x) => {
                 if (!p.find(c => c.id === x.id)) {
                     p.push(x);
@@ -159,9 +148,7 @@ const SearchChats = withChatSearchText(
                                             unread: 0,
                                         }}
                                         selectedItem={select.select === j}
-                                        allowSelection={
-                                            (props as any).allowSelection
-                                        }
+                                        allowSelection={(props as any).allowSelection}
                                         compact={true}
                                     />
                                 );
@@ -170,14 +157,14 @@ const SearchChats = withChatSearchText(
                     ))}
                 </>
             ) : (
-                    <NoResultWrapper separator={10} alignItems="center">
-                        <Image />
-                        <PlaceholderEmpty>No results</PlaceholderEmpty>
-                    </NoResultWrapper>
-                )
+                <NoResultWrapper separator={10} alignItems="center">
+                    <Image />
+                    <PlaceholderEmpty>No results</PlaceholderEmpty>
+                </NoResultWrapper>
+            )
         ) : (
-                <PlaceholderLoader color="#334562" />
-            );
+            <PlaceholderLoader color="#334562" />
+        );
     }),
 ) as React.ComponentType<{
     variables: { query: string };
@@ -254,7 +241,7 @@ const InviteWrapper = Glamorous(XLink)({
 class ChatsComponentInner extends React.PureComponent<
     ChatsComponentInnerProps,
     ChatsComponentInnerState
-    > {
+> {
     readonly dialogListEngine: DialogListEngine;
     items: DialogDataSourceItem[] = [];
     searchCount = 0;
@@ -309,9 +296,7 @@ class ChatsComponentInner extends React.PureComponent<
     mouseHandler = (e: any) => {
         if (!this.props.emptyState) {
             this.setState({
-                allowShortKeys: ReactDOM.findDOMNode(this.inputRef)!.contains(
-                    e.target,
-                ),
+                allowShortKeys: ReactDOM.findDOMNode(this.inputRef)!.contains(e.target),
             });
         }
     };
@@ -391,10 +376,7 @@ class ChatsComponentInner extends React.PureComponent<
             return;
         }
 
-        if (
-            allowShortKeys &&
-            (e.code === 'ArrowUp' || e.code === 'ArrowDown')
-        ) {
+        if (allowShortKeys && (e.code === 'ArrowUp' || e.code === 'ArrowDown')) {
             let dy = 0;
 
             if (e.code === 'ArrowUp') {
@@ -452,7 +434,7 @@ class ChatsComponentInner extends React.PureComponent<
             selectedItem={false}
             allowSelection={this.state.allowShortKeys}
         />
-    )
+    );
 
     renderLoading = () => {
         return (
@@ -460,7 +442,7 @@ class ChatsComponentInner extends React.PureComponent<
                 <XButton alignSelf="center" style="flat" loading={true} />
             </LoadingWrapper>
         );
-    }
+    };
 
     renderConversationComponent = (items: any, completed: boolean) => (
         <>
@@ -518,11 +500,7 @@ class ChatsComponentInner extends React.PureComponent<
                         />
                     )}
                     {!search && (
-                        <XView
-                            flexGrow={1}
-                            flexBasis={0}
-                            minHeight={0}
-                        >
+                        <XView flexGrow={1} flexBasis={0} minHeight={0}>
                             <XListView
                                 dataSource={this.props.messenger.dialogList.dataSource}
                                 itemHeight={72}
@@ -534,9 +512,7 @@ class ChatsComponentInner extends React.PureComponent<
                     )}
                 </SelectContext.Provider>
 
-                <InviteWrapper
-                    query={{ field: 'invite_global', value: 'true' }}
-                >
+                <InviteWrapper query={{ field: 'invite_global', value: 'true' }}>
                     <InviteIcon />
                     <span>Invite people</span>
                 </InviteWrapper>

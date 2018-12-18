@@ -31,44 +31,37 @@ const EntryWrapper = Glamorous(XVertical)({
     },
 });
 
-export const EntryItem = Glamorous.div<{ selected: boolean; hover?: boolean }>(
-    props => ({
-        display: 'flex',
-        alignItems: 'center',
-        height: 40,
-        flexShrink: 0,
-        paddingLeft: 16,
-        paddingRight: 16,
-        fontSize: 14,
-        fontWeight: 400,
-        lineHeight: '20px',
-        color: 'rgba(0, 0, 0, 0.8)',
-        letterSpacing: 0,
-        backgroundColor: props.selected ? '#f6f6f6' : undefined,
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        cursor: 'pointer',
-        ':hover': {
-            ...(props.hover
-                ? {
-                      backgroundColor: '#f6f6f6',
-                  }
-                : {}),
-        },
-    }),
-);
+export const EntryItem = Glamorous.div<{ selected: boolean; hover?: boolean }>(props => ({
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
+    flexShrink: 0,
+    paddingLeft: 16,
+    paddingRight: 16,
+    fontSize: 14,
+    fontWeight: 400,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.8)',
+    letterSpacing: 0,
+    backgroundColor: props.selected ? '#f6f6f6' : undefined,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    cursor: 'pointer',
+    ':hover': {
+        ...(props.hover
+            ? {
+                  backgroundColor: '#f6f6f6',
+              }
+            : {}),
+    },
+}));
 
-const filterOptions = (
-    options: { label: string; value: string }[],
-    q: string,
-) => {
+const filterOptions = (options: { label: string; value: string }[], q: string) => {
     return options.filter(
         e =>
             [...e.label.split(' '), e.label].filter(
-                s =>
-                    q.length === 0 ||
-                    s.toLowerCase().startsWith(q.toLowerCase()),
+                s => q.length === 0 || s.toLowerCase().startsWith(q.toLowerCase()),
             ).length > 0,
     );
 };
@@ -106,18 +99,10 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                 let c = container as Element;
                 let t = target as Element;
                 let targetY =
-                    c.scrollTop +
-                    t.getBoundingClientRect().top -
-                    c.getBoundingClientRect().top;
-                if (
-                    t.getBoundingClientRect().top <
-                    c.getBoundingClientRect().top
-                ) {
+                    c.scrollTop + t.getBoundingClientRect().top - c.getBoundingClientRect().top;
+                if (t.getBoundingClientRect().top < c.getBoundingClientRect().top) {
                     c.scrollTo(0, targetY);
-                } else if (
-                    t.getBoundingClientRect().bottom >
-                    c.getBoundingClientRect().bottom
-                ) {
+                } else if (t.getBoundingClientRect().bottom > c.getBoundingClientRect().bottom) {
                     c.scrollTo(
                         0,
                         targetY -
@@ -132,9 +117,7 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
     render() {
         return (
             <EntryWrapper separator="none" flexGrow={1}>
-                {this.props.title && (
-                    <EntryTitle>{this.props.title}</EntryTitle>
-                )}
+                {this.props.title && <EntryTitle>{this.props.title}</EntryTitle>}
                 <EntryScrollable
                     innerRef={this.captureContainerRef}
                     separator="none"
@@ -142,24 +125,17 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                     maxHeight={243}
                     flexGrow={1}
                 >
-                    {filterOptions(
-                        this.props.options,
-                        this.props.query || '',
-                    ).map((e, i) => (
+                    {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
                         <div
                             key={e.value}
                             onMouseEnter={() =>
-                                this.props.onHover
-                                    ? this.props.onHover(i)
-                                    : false
+                                this.props.onHover ? this.props.onHover(i) : false
                             }
                         >
                             <EntryItem
                                 hover={!this.props.onHover}
                                 innerRef={
-                                    i === this.props.selected
-                                        ? this.captureTargetRef
-                                        : undefined
+                                    i === this.props.selected ? this.captureTargetRef : undefined
                                 }
                                 selected={i === this.props.selected}
                                 onClick={() =>
@@ -222,10 +198,7 @@ interface MultiplePickerState {
     scrollToSelected?: boolean;
 }
 
-export class MultiplePicker extends React.Component<
-    MultoplePickerProps,
-    MultiplePickerState
-> {
+export class MultiplePicker extends React.Component<MultoplePickerProps, MultiplePickerState> {
     constructor(props: MultoplePickerProps) {
         super(props);
         let fOptions = [];
@@ -302,9 +275,7 @@ export class MultiplePicker extends React.Component<
 
         x = Math.min(this.state.filteredOptions.length - 1, Math.max(0, x));
         y = Math.min(
-            this.state.filteredOptions[x]
-                ? this.state.filteredOptions[x].values.length - 1
-                : 0,
+            this.state.filteredOptions[x] ? this.state.filteredOptions[x].values.length - 1 : 0,
             Math.max(0, y),
         );
 
@@ -326,17 +297,11 @@ export class MultiplePicker extends React.Component<
         return (
             <>
                 {this.state.empty && (
-                    <HelpText>
-                        {'Press Enter to add "' +
-                            this.props.query +
-                            '" location'}
-                    </HelpText>
+                    <HelpText>{'Press Enter to add "' + this.props.query + '" location'}</HelpText>
                 )}
                 {!this.state.empty && (
                     <XVertical separator={9} width="100%">
-                        {this.props.title && (
-                            <PickerTitle>{this.props.title}</PickerTitle>
-                        )}
+                        {this.props.title && <PickerTitle>{this.props.title}</PickerTitle>}
                         {this.props.options.length === 1 && (
                             <EntriesComponent
                                 scrollToTarget={this.state.scrollToSelected}
@@ -368,16 +333,12 @@ export class MultiplePicker extends React.Component<
                                 {this.props.options
                                     .filter(
                                         o =>
-                                            filterOptions(
-                                                o.values,
-                                                this.props.query || '',
-                                            ).length > 0,
+                                            filterOptions(o.values, this.props.query || '').length >
+                                            0,
                                     )
                                     .map((o, i) => (
                                         <EntriesComponent
-                                            scrollToTarget={
-                                                this.state.scrollToSelected
-                                            }
+                                            scrollToTarget={this.state.scrollToSelected}
                                             onHover={index =>
                                                 this.setState({
                                                     selected: [i, index],

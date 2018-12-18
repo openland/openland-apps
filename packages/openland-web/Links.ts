@@ -3,9 +3,7 @@ export const Links = {
         return {
             insights: `/${areaId}/`,
             projects: (year?: string) =>
-                year
-                    ? `/${areaId}/projects?year=${year}`
-                    : `/${areaId}/projects`,
+                year ? `/${areaId}/projects?year=${year}` : `/${areaId}/projects`,
             permits: `/${areaId}/permits`,
             permit: (permitId: string) => ({
                 view: `/${areaId}/permits/${permitId}`,

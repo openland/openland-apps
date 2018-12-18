@@ -20,14 +20,8 @@ class ControlledModal extends React.Component<{}, { show: boolean }> {
     render() {
         return (
             <>
-                <XButton
-                    text="Show Modal"
-                    onClick={() => this.setState({ show: true })}
-                />
-                <XModal
-                    isOpen={this.state.show}
-                    onClosed={() => this.setState({ show: false })}
-                >
+                <XButton text="Show Modal" onClick={() => this.setState({ show: true })} />
+                <XModal isOpen={this.state.show} onClosed={() => this.setState({ show: false })}>
                     Hey!
                 </XModal>
             </>
@@ -53,16 +47,10 @@ export default withApp('UI Framework - Modals', 'viewer', props => {
                     <XTitle>Controlled</XTitle>
                     <ControlledModal />
                     <XTitle>Routed</XTitle>
-                    <XButton
-                        query={{ field: 'modal', value: 'true' }}
-                        text="Show Modal"
-                    />
+                    <XButton query={{ field: 'modal', value: 'true' }} text="Show Modal" />
                     <XModal targetQuery="modal">Hey!</XModal>
                     <XTitle>With Title</XTitle>
-                    <XModal
-                        title="Modal Dialog"
-                        target={<XButton text="Show Modal" />}
-                    >
+                    <XModal title="Modal Dialog" target={<XButton text="Show Modal" />}>
                         <Lorem count={2} />
                     </XModal>
                     <XTitle>Sizes</XTitle>

@@ -7,9 +7,7 @@ import { XContent } from 'openland-x-layout/XContent';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTitle } from 'openland-x/XTitle';
 import { MentionEntry } from 'openland-x/XRichTextInput';
-import createMentionPlugin, {
-    defaultSuggestionsFilter,
-} from 'draft-js-mention-plugin';
+import createMentionPlugin, { defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import { EditorState } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 
@@ -18,8 +16,7 @@ const mentionsData = [
         name: 'Matthew Russell',
         link: 'https://twitter.com/mrussell247',
         title: 'Altpoint Capital',
-        avatar:
-            'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
+        avatar: 'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
     },
     {
         name: 'Julian Krispel-Samsel',
@@ -37,8 +34,7 @@ const mentionsData = [
         name: 'Max Stoiber',
         link: 'https://twitter.com/mxstbr',
         title: 'Knotel',
-        avatar:
-            'https://pbs.twimg.com/profile_images/763033229993574400/6frGyDyA_400x400.jpg',
+        avatar: 'https://pbs.twimg.com/profile_images/763033229993574400/6frGyDyA_400x400.jpg',
     },
     {
         name: 'Nik Graf',
@@ -50,8 +46,7 @@ const mentionsData = [
         name: 'Pascal Brandt',
         link: 'https://twitter.com/psbrandt',
         title: 'Colliers International',
-        avatar:
-            'https://pbs.twimg.com/profile_images/688487813025640448/E6O6I011_400x400.png',
+        avatar: 'https://pbs.twimg.com/profile_images/688487813025640448/E6O6I011_400x400.png',
     },
 ];
 
@@ -110,14 +105,11 @@ const plugins = [mentionPlugin];
 const theme = {
     mention: 'draftJsMentionPlugin__mention__29BEd',
     mentionSuggestions: 'draftJsMentionPlugin__mentionSuggestions__2DWjA',
-    mentionSuggestionsEntry:
-        'draftJsMentionPlugin__mentionSuggestionsEntry__3mSwm',
+    mentionSuggestionsEntry: 'draftJsMentionPlugin__mentionSuggestionsEntry__3mSwm',
     mentionSuggestionsEntryFocused:
         'draftJsMentionPlugin__mentionSuggestionsEntryFocused__3LcTd draftJsMentionPlugin__mentionSuggestionsEntry__3mSwm',
-    mentionSuggestionsEntryText:
-        'draftJsMentionPlugin__mentionSuggestionsEntryText__3Jobq',
-    mentionSuggestionsEntryAvatar:
-        'draftJsMentionPlugin__mentionSuggestionsEntryAvatar__1xgA9',
+    mentionSuggestionsEntryText: 'draftJsMentionPlugin__mentionSuggestionsEntryText__3Jobq',
+    mentionSuggestionsEntryAvatar: 'draftJsMentionPlugin__mentionSuggestionsEntryAvatar__1xgA9',
 };
 
 export default withApp('UI Framework - Mentions', 'viewer', props => {

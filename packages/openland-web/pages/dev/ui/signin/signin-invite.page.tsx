@@ -13,14 +13,7 @@ export default () => (
     <DevDocsScaffold>
         <WrapIntoState>
             {({ branch, ...branchProps }: any) => {
-                const {
-                    headerStyle,
-                    signin,
-                    text,
-                    path,
-                    linkText,
-                    ...other
-                } = branchProps;
+                const { headerStyle, signin, text, path, linkText, ...other } = branchProps;
                 return (
                     <WebSignUpContainer
                         pageMode="AuthMechanism"

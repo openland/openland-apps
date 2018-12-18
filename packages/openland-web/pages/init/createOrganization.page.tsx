@@ -57,13 +57,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     }
 
     render() {
-        const {
-            organizations,
-            roomView,
-            onPrefixChanges,
-            createOrganization,
-            router,
-        } = this.props;
+        const { organizations, roomView, onPrefixChanges, createOrganization, router } = this.props;
 
         const fetchedOrPrevOrganizations = organizations.loading
             ? this.state.lastLoadedOrganizations
@@ -83,10 +77,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
                             },
                         },
                     });
-                    switchOrganization(
-                        res.data.createOrganization.id,
-                        router.query.redirect,
-                    );
+                    switchOrganization(res.data.createOrganization.id, router.query.redirect);
                     await delayForewer();
                 }}
             />

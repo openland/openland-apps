@@ -22,55 +22,41 @@ interface DottedMenuButtonStyleProps {
     flat?: boolean;
 }
 
-const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
-    props => ({
-        width: 32,
-        height: 32,
-        display: 'flex',
-        flexDirection: props.horizontal ? 'row' : 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-        cursor: 'pointer',
-        borderRadius: 5,
-        backgroundColor: props.flat
-            ? 'transparent'
-            : props.active
-                ? '#654bfa'
-                : 'transparent',
-        border: props.flat ? 'none' : 'solid 1px transparent',
-        transition: 'background-color .2s',
-        '&:hover': {
-            border: props.flat
-                ? 'none'
-                : props.active
-                    ? 'solid 1px transparent'
-                    : 'solid 1px #dcdee4',
+const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(props => ({
+    width: 32,
+    height: 32,
+    display: 'flex',
+    flexDirection: props.horizontal ? 'row' : 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    cursor: 'pointer',
+    borderRadius: 5,
+    backgroundColor: props.flat ? 'transparent' : props.active ? '#654bfa' : 'transparent',
+    border: props.flat ? 'none' : 'solid 1px transparent',
+    transition: 'background-color .2s',
+    '&:hover': {
+        border: props.flat ? 'none' : props.active ? 'solid 1px transparent' : 'solid 1px #dcdee4',
 
-            '& > div': {
-                backgroundColor: props.flat ? '#1790ff' : undefined,
-            },
-        },
         '& > div': {
-            backgroundColor:
-                props.flat && props.active
-                    ? '#1790ff'
-                    : props.active
-                        ? '#fff'
-                        : 'rgba(0, 0, 0, 0.2)',
-            width: 4,
-            height: 4,
-            borderRadius: 100,
-            marginBottom: props.horizontal ? undefined : 2,
-            marginRight: props.horizontal ? 2 : undefined,
-            '&:last-child': {
-                marginBottom: props.horizontal ? undefined : 0,
-                marginRight: props.horizontal ? 0 : undefined,
-            },
+            backgroundColor: props.flat ? '#1790ff' : undefined,
         },
-        zIndex: props.active ? 11 : undefined,
-    }),
-);
+    },
+    '& > div': {
+        backgroundColor:
+            props.flat && props.active ? '#1790ff' : props.active ? '#fff' : 'rgba(0, 0, 0, 0.2)',
+        width: 4,
+        height: 4,
+        borderRadius: 100,
+        marginBottom: props.horizontal ? undefined : 2,
+        marginRight: props.horizontal ? 2 : undefined,
+        '&:last-child': {
+            marginBottom: props.horizontal ? undefined : 0,
+            marginRight: props.horizontal ? 0 : undefined,
+        },
+    },
+    zIndex: props.active ? 11 : undefined,
+}));
 
 const NotificationButton = Glamorous.div<{ active: boolean }>(props => ({
     width: 32,
@@ -111,10 +97,7 @@ interface XOverflowProps {
     onClickTarget?: any;
 }
 
-export class XOverflow extends React.PureComponent<
-    XOverflowProps,
-    { show: boolean }
-> {
+export class XOverflow extends React.PureComponent<XOverflowProps, { show: boolean }> {
     refComp?: Element;
 
     constructor(props: XOverflowProps) {
@@ -152,10 +135,7 @@ export class XOverflow extends React.PureComponent<
 
         let targetElement: any;
 
-        let show =
-            typeof this.props.show === 'undefined'
-                ? this.state.show
-                : this.props.show;
+        let show = typeof this.props.show === 'undefined' ? this.state.show : this.props.show;
 
         if (target !== undefined) {
             targetElement = React.cloneElement(target as any, {

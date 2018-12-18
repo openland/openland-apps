@@ -29,7 +29,7 @@ export class TalkProviderComponent extends React.Component<
         muted: boolean;
         streams?: { [key: string]: MediaStream };
     }
-    > {
+> {
     private session?: TalkSession;
 
     constructor(props: TalkProviderComponentProps) {
@@ -42,12 +42,7 @@ export class TalkProviderComponent extends React.Component<
             this.session.close();
         }
         let sessionId = UUID();
-        this.session = new TalkSession(
-            sessionId,
-            cid,
-            this.props.client,
-            this.handleStateChange,
-        );
+        this.session = new TalkSession(sessionId, cid, this.props.client, this.handleStateChange);
         this.setState({ cid, sessionId });
     };
 
@@ -55,10 +50,7 @@ export class TalkProviderComponent extends React.Component<
         this.setState({ peerId, convId });
     };
 
-    private handleStreamsUpdated = (
-        peerId: string,
-        streams: { [key: string]: MediaStream },
-    ) => {
+    private handleStreamsUpdated = (peerId: string, streams: { [key: string]: MediaStream }) => {
         if (this.state.peerId === peerId) {
             this.setState({ streams });
         }

@@ -32,10 +32,7 @@ const UploadTitle = Glamorous.div({
     zIndex: 1,
 });
 
-export const MessageUploadComponent = (props: {
-    title?: string;
-    progress: number;
-}) => (
+export const MessageUploadComponent = (props: { title?: string; progress: number }) => (
     <UploadWrapper>
         <UploadProgress progress={props.progress} />
         <UploadTitle>{props.title}</UploadTitle>

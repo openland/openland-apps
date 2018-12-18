@@ -101,9 +101,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                     );
                 } else if (i - l !== 1) {
                     rangeWithDots.push(
-                        <PaginationDotted key={'_dotted_' + i / 0.33}>
-                            ...
-                        </PaginationDotted>,
+                        <PaginationDotted key={'_dotted_' + i / 0.33}>...</PaginationDotted>,
                     );
                 }
             }
@@ -113,9 +111,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                     key={'pag2_' + i + right}
                     current={i === currentPage}
                     path={
-                        (this.props.currentRoute
-                            ? this.props.currentRoute
-                            : '/directory') +
+                        (this.props.currentRoute ? this.props.currentRoute : '/directory') +
                         '?page=' +
                         i.toString() +
                         '#'
@@ -136,17 +132,11 @@ export class PagePagination extends React.Component<PagePaginationProps> {
             return null;
         }
         return (
-            <PaginationWrapper
-                justifyContent="flex-end"
-                alignSelf="center"
-                separator={4}
-            >
+            <PaginationWrapper justifyContent="flex-end" alignSelf="center" separator={4}>
                 <PaginationButton
                     onClick={this.props.onPageChange}
                     className="arrow left"
-                    path={
-                        '/directory?page=' + (currentPage - 1).toString() + '#'
-                    }
+                    path={'/directory?page=' + (currentPage - 1).toString() + '#'}
                     disable={currentPage === 1}
                 >
                     <XIcon icon="keyboard_arrow_left" />
@@ -155,9 +145,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                 <PaginationButton
                     onClick={this.props.onPageChange}
                     className="arrow right"
-                    path={
-                        '/directory?page=' + (currentPage + 1).toString() + '#'
-                    }
+                    path={'/directory?page=' + (currentPage + 1).toString() + '#'}
                     disable={hasNextPage === false}
                 >
                     <XIcon icon="keyboard_arrow_right" />

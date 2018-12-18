@@ -41,7 +41,7 @@ export interface DialogViewProps {
     onSelect?: () => void;
 }
 
-export const DialogView = React.memo<DialogViewProps>((props) => {
+export const DialogView = React.memo<DialogViewProps>(props => {
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;
@@ -65,11 +65,7 @@ export const DialogView = React.memo<DialogViewProps>((props) => {
                         {sender}
                         <XViewSelectedContext.Consumer>
                             {active => (
-                                <PhotoIcon
-                                    className={
-                                        active ? iconActiveClass : iconClass
-                                    }
-                                />
+                                <PhotoIcon className={active ? iconActiveClass : iconClass} />
                             )}
                         </XViewSelectedContext.Consumer>
                         Image
@@ -83,11 +79,7 @@ export const DialogView = React.memo<DialogViewProps>((props) => {
                             {active => (
                                 <FileIcon
                                     className={
-                                        (active
-                                            ? iconActiveClass
-                                            : iconClass) +
-                                        ' ' +
-                                        documentIcon
+                                        (active ? iconActiveClass : iconClass) + ' ' + documentIcon
                                     }
                                 />
                             )}
@@ -111,9 +103,7 @@ export const DialogView = React.memo<DialogViewProps>((props) => {
                         {active => (
                             <ForwardIcon
                                 className={
-                                    (active ? iconActiveClass : iconClass) +
-                                    ' ' +
-                                    documentIcon
+                                    (active ? iconActiveClass : iconClass) + ' ' + documentIcon
                                 }
                             />
                         )}
@@ -188,10 +178,7 @@ export const DialogView = React.memo<DialogViewProps>((props) => {
                             lineHeight="18px"
                             whiteSpace="nowrap"
                         >
-                            <XDate
-                                value={dialog.date.toString()}
-                                format="datetime_short"
-                            />
+                            <XDate value={dialog.date.toString()} format="datetime_short" />
                         </XView>
                     )}
                 </XView>
@@ -219,20 +206,12 @@ export const DialogView = React.memo<DialogViewProps>((props) => {
                     {dialog.unread > 0 && (
                         <>
                             {haveMention && (
-                                <XView
-                                    alignSelf="center"
-                                    paddingLeft={12}
-                                    marginRight={-6}
-                                >
+                                <XView alignSelf="center" paddingLeft={12} marginRight={-6}>
                                     <MentionIcon />
                                 </XView>
                             )}
                             <XView paddingLeft={12} alignSelf="center">
-                                <XCounter
-                                    grey={isMuted}
-                                    big={true}
-                                    count={dialog.unread}
-                                />
+                                <XCounter grey={isMuted} big={true} count={dialog.unread} />
                             </XView>
                         </>
                     )}

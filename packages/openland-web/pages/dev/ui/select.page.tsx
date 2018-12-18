@@ -51,8 +51,18 @@ export default withApp('UI Framework - Select', 'viewer', props => {
                         <XSelect
                             field="select4"
                             options={[
-                                { value: 'one', label: 'One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One ', subtitle: 'OneOne One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One  subtitle' },
-                                { value: 'two', label: 'Two', subtitle: 'Two subtitle' },
+                                {
+                                    value: 'one',
+                                    label:
+                                        'One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One ',
+                                    subtitle:
+                                        'OneOne One One One One One One One One One One One One One One One One One One One One One One One One One One One One One One  subtitle',
+                                },
+                                {
+                                    value: 'two',
+                                    label: 'Two',
+                                    subtitle: 'Two subtitle',
+                                },
                             ]}
                             withSubtitle={true}
                             searchable={false}

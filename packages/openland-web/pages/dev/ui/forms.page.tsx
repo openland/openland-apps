@@ -38,10 +38,7 @@ export default withApp('UI Framework - Loaders', 'viewer', props => {
                             ]}
                         />
                         <XFormSubmit text="Do!" />
-                        <XFormSubmit
-                            text="Do Alt!"
-                            action={async data => await delay(5000)}
-                        />
+                        <XFormSubmit text="Do Alt!" action={async data => await delay(5000)} />
                     </XForm>
                 </XVertical>
             </XContent>

@@ -56,14 +56,8 @@ routes.add('/settings/invites', '/main/settings/globalInvites');
 routes.add('/settings/invites/', '/main/settings/globalInvites/');
 routes.add('/settings/dev', '/main/settings/developer');
 routes.add('/settings/dev/', '/main/settings/developer');
-routes.add(
-    '/settings/organization/:organizationId',
-    '/main/settings/organization',
-);
-routes.add(
-    '/settings/organization/:organizationId/',
-    '/main/settings/organization',
-);
+routes.add('/settings/organization/:organizationId', '/main/settings/organization');
+routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
 
 //
 // Home
@@ -124,14 +118,8 @@ routes.add('/o/:organizationId/listings/all/', '/main/profile/organization');
 
 routes.add('/marketplace', '/main/marketplace/main');
 routes.add('/marketplace/', '/main/marketplace/main');
-routes.add(
-    '/marketplace/organization/:organizationId',
-    '/main/marketplace/organization',
-);
-routes.add(
-    '/marketplace/organization/:organizationId/',
-    '/main/marketplace/organization',
-);
+routes.add('/marketplace/organization/:organizationId', '/main/marketplace/organization');
+routes.add('/marketplace/organization/:organizationId/', '/main/marketplace/organization');
 
 //
 // Mail
@@ -256,10 +244,7 @@ routes.add('/ui/signin/auth-mechanism', '/dev/ui/signin/auth-mechanism');
 routes.add('/ui/signin/create-with-email', '/dev/ui/signin/create-with-email');
 routes.add('/ui/signin/activation-code', '/dev/ui/signin/activation-code');
 routes.add('/ui/signin/create-profile', '/dev/ui/signin/create-profile');
-routes.add(
-    '/ui/signin/create-organization',
-    '/dev/ui/signin/create-organization',
-);
+routes.add('/ui/signin/create-organization', '/dev/ui/signin/create-organization');
 
 //
 // Dev Tools

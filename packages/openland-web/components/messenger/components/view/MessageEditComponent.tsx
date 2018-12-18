@@ -44,9 +44,7 @@ export type XTextInputProps =
           kind: 'controlled';
       } & XRichTextInputProps;
 
-class XRichTextInputStored extends React.PureComponent<
-    XTextInputProps & { store: XStoreState }
-> {
+class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
     onChangeHandler = (value: string) => {
         if (this.props.kind === 'controlled') {
             if (this.props.onChange) {

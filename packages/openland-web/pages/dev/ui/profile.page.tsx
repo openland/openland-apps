@@ -3,16 +3,12 @@ import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { OrganizationProfile } from '../../main/profile/OrganizationProfileComponent';
 
-export default withApp(
-    'UI Framework - Profile (Organization)',
-    'viewer',
-    props => {
-        return (
-            <DevDocsScaffold>
-                <div style={{ height: '100vh', overflow: 'hidden' }}>
-                    <OrganizationProfile organizationId="61gk9KRrl9ComJkvYnvdcddr4o" />
-                </div>
-            </DevDocsScaffold>
-        );
-    },
-);
+export default withApp('UI Framework - Profile (Organization)', 'viewer', props => {
+    return (
+        <DevDocsScaffold>
+            <div style={{ height: '100vh', overflow: 'hidden' }}>
+                <OrganizationProfile organizationId="61gk9KRrl9ComJkvYnvdcddr4o" />
+            </div>
+        </DevDocsScaffold>
+    );
+});

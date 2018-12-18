@@ -3,10 +3,7 @@ import { SetTypingMutation } from 'openland-api';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { XAvatarStyle } from 'openland-x/XAvatar';
-import {
-    MessengerEngine,
-    MessengerContext,
-} from 'openland-engines/MessengerEngine';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
     ConversationStateHandler,
@@ -78,10 +75,7 @@ const DeleteMessageComponent = withDeleteMessage(props => {
             }}
             submitProps={{ succesText: 'Deleted!', style: 'danger' }}
         >
-            <XText>
-                Are you sure you want to delete this message? This cannot be
-                undone.
-            </XText>
+            <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
         </XModalForm>
     );
 });
@@ -98,10 +92,7 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
             }}
             submitProps={{ succesText: 'Deleted!', style: 'danger' }}
         >
-            <XText>
-                Are you sure you want to delete this url preview? This cannot be
-                undone.
-            </XText>
+            <XText>Are you sure you want to delete this url preview? This cannot be undone.</XText>
         </XModalForm>
     );
 });
@@ -119,15 +110,14 @@ export const LeaveChatComponent = withChatLeave(props => {
             submitProps={{ succesText: 'Done!', style: 'danger' }}
         >
             <XText>
-                Are you sure you want to leave? You will need to request access
-                to join it again in the future.
+                Are you sure you want to leave? You will need to request access to join it again in
+                the future.
             </XText>
         </XModalForm>
     );
 });
 
-class MessagesComponent
-    extends React.Component<MessagesComponentProps, MessagesComponentState>
+class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState>
     implements ConversationStateHandler {
     messagesList = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
@@ -145,7 +135,7 @@ class MessagesComponent
             loading: true,
             hideChat: false,
             postType: null,
-            postEditData: null
+            postEditData: null,
         };
     }
 
@@ -171,12 +161,8 @@ class MessagesComponent
             this.unmounter2();
         }
 
-        this.conversation = props.messenger.getConversation(
-            props.conversationId,
-        );
-        this.unmounter = this.conversation.engine.mountConversation(
-            props.conversationId,
-        );
+        this.conversation = props.messenger.getConversation(props.conversationId);
+        this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
         this.unmounter2 = this.conversation.subscribe(this);
 
         if (!this.conversation) {
@@ -208,7 +194,7 @@ class MessagesComponent
 
         if (this.props.conversationId !== props.conversationId) {
             this.setState({
-                hideChat: false
+                hideChat: false,
             });
         }
     }
@@ -258,17 +244,17 @@ class MessagesComponent
         this.setState({
             hideChat: show,
             postType: postTipe,
-            postEditData: null
+            postEditData: null,
         });
-    }
+    };
 
     editPostHandler = (data: EditPostProps) => {
         this.setState({
             hideChat: true,
             postType: data.postTipe,
-            postEditData: data
+            postEditData: data,
         });
-    }
+    };
 
     getMessages = () => {
         return this.state.messages;

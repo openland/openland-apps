@@ -70,10 +70,7 @@ const FooterLink = Glamorous(XLink)({
     color: '#334562',
 });
 
-export function MessagePage(props: {
-    children?: any;
-    hideLegalText?: boolean;
-}) {
+export function MessagePage(props: { children?: any; hideLegalText?: boolean }) {
     return (
         <ErrorDiv>
             <Logo />
@@ -82,14 +79,9 @@ export function MessagePage(props: {
                 {props.hideLegalText === true ? null : (
                     <FooterText>
                         By creating an account you are accepting our{' '}
-                        <FooterLink href="https://openland.com/terms">
-                            Terms of Service
-                        </FooterLink>{' '}
+                        <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink>{' '}
                         and{' '}
-                        <FooterLink href="https://openland.com/privacy">
-                            Privacy Policy
-                        </FooterLink>
-                        .
+                        <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.
                     </FooterText>
                 )}
                 <FooterText>© {new Date().getFullYear()} Openland</FooterText>

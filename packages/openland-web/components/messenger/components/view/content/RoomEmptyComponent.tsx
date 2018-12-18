@@ -36,12 +36,7 @@ const EmptyText = Glamorous.div({
 });
 
 export const EmptyComponent = () => (
-    <EmptyWrapper
-        separator={10}
-        alignItems="center"
-        justifyContent="center"
-        flexGrow={1}
-    >
+    <EmptyWrapper separator={10} alignItems="center" justifyContent="center" flexGrow={1}>
         <EmptyContent>
             <Image />
             <EmptyText>No room matches your search</EmptyText>

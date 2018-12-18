@@ -1,8 +1,4 @@
-import {
-    UploadingFile,
-    FileMetadata,
-    UploadStatus,
-} from 'openland-engines/messenger/types';
+import { UploadingFile, FileMetadata, UploadStatus } from 'openland-engines/messenger/types';
 
 export class UplaodCareUploading implements UploadingFile {
     private file: UploadCare.File;
@@ -46,11 +42,7 @@ export class UplaodCareUploading implements UploadingFile {
         return this.infoPromise;
     }
 
-    watch(
-        handler: (
-            state: { status: UploadStatus; progress?: number; uuid?: string },
-        ) => void,
-    ) {
+    watch(handler: (state: { status: UploadStatus; progress?: number; uuid?: string }) => void) {
         this.file.fail(v => {
             handler({ status: UploadStatus.FAILED });
         });

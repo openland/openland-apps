@@ -10,9 +10,7 @@ const TableTag = Glamorous.div<{ green?: boolean }>(props => ({
     height: 32,
     borderRadius: 4,
     backgroundColor:
-        props.green === true
-            ? 'rgba(192, 235, 196, 0.45)'
-            : 'rgba(232, 233, 236, 0.45)',
+        props.green === true ? 'rgba(192, 235, 196, 0.45)' : 'rgba(232, 233, 236, 0.45)',
     color: props.green === true ? '#4e8653' : 'rgba(51, 69, 98, 0.51)',
     fontSize: 15,
     fontWeight: 500,
@@ -108,32 +106,20 @@ export const InvitesHistory = withInvitesHistory(props => {
                                 {invite.acceptedBy && (
                                     <XAvatar
                                         size="medium"
-                                        cloudImageUuid={
-                                            invite.acceptedBy.picture ||
-                                            undefined
-                                        }
+                                        cloudImageUuid={invite.acceptedBy.picture || undefined}
                                         style="colorus"
                                         objectName={invite.acceptedBy.name}
                                         objectId={invite.acceptedBy.id}
                                     />
                                 )}
                                 {!invite.acceptedBy && (
-                                    <XAvatar
-                                        size="medium"
-                                        cloudImageUuid={undefined}
-                                    />
+                                    <XAvatar size="medium" cloudImageUuid={undefined} />
                                 )}
-                                <XVertical
-                                    separator={1}
-                                    justifyContent="center"
-                                >
+                                <XVertical separator={1} justifyContent="center">
                                     <Title>
-                                        {invite.acceptedBy !== null &&
-                                            invite.acceptedBy.name}
+                                        {invite.acceptedBy !== null && invite.acceptedBy.name}
                                     </Title>
-                                    {invite.forEmail && (
-                                        <Text>{invite.forEmail}</Text>
-                                    )}
+                                    {invite.forEmail && <Text>{invite.forEmail}</Text>}
                                 </XVertical>
                             </XHorizontal>
                         </XTable.Cell>

@@ -12,18 +12,17 @@ export default withApp('UI Framework - Popper', 'viewer', props => {
                 <XVertical>
                     <XTitle>Plain Service Message</XTitle>
                     <XVertical>
-                        Now you can coordinate the time or jump straight to
-                        questions!
+                        Now you can coordinate the time or jump straight to questions!
                     </XVertical>
                     <XTitle>Post Message Respond</XTitle>
                     <XVertical>
-                        🙌 Gleb Putintsev — Sergey Lapin is responding to your
-                        post “Office hours with XX” in Founders.
+                        🙌 Gleb Putintsev — Sergey Lapin is responding to your post “Office hours
+                        with XX” in Founders.
                     </XVertical>
                     <XTitle>Post Message Respond</XTitle>
                     <XVertical>
-                        🙌 Gleb Putintsev — Sergey Lapin is responding to your
-                        post “Office hours with XX” in Founders.
+                        🙌 Gleb Putintsev — Sergey Lapin is responding to your post “Office hours
+                        with XX” in Founders.
                     </XVertical>
                     <XTitle>Simple mention Join</XTitle>
                     <XVertical>
@@ -32,8 +31,7 @@ export default withApp('UI Framework - Popper', 'viewer', props => {
                     </XVertical>
                     <XTitle>Composed Join</XTitle>
                     <XVertical>
-                        <span>John Smith</span> joined the room along with{' '}
-                        <span>5 others</span>
+                        <span>John Smith</span> joined the room along with <span>5 others</span>
                     </XVertical>
                 </XVertical>
             </XContent>

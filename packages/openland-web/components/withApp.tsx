@@ -16,10 +16,7 @@ export function withApp(
         withRouter(props => {
             return (
                 <AuthRouter>
-                    <XTrack
-                        event={'View ' + name}
-                        params={props.router.routeQuery}
-                    >
+                    <XTrack event={'View ' + name} params={props.router.routeQuery}>
                         <XWithRole role={role}>
                             <WrappedComponent />
                         </XWithRole>

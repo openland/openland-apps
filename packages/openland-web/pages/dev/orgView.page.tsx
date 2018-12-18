@@ -22,11 +22,7 @@ import { withOrganizationPublishedAlterSuper } from '../../api/withOrganizationP
 import { XOverflow } from '../../components/Incubator/XOverflow';
 
 const ActivateButton = withSuperAccountActivate(props => (
-    <XButton
-        style="primary"
-        action={() => props.activate({})}
-        text="Activate"
-    />
+    <XButton style="primary" action={() => props.activate({})} text="Activate" />
 ));
 const SuspendButton = withSuperAccountSuspend(props => (
     <XButton style="danger" action={() => props.suspend({})} text="Suspend" />
@@ -166,33 +162,22 @@ export default withApp(
                 <DevToolsScaffold title={props.data.superAccount.title}>
                     <XHeader
                         text={props.data.superAccount.title}
-                        description={
-                            'Current State: ' + props.data.superAccount.state
-                        }
+                        description={'Current State: ' + props.data.superAccount.state}
                     >
                         <Edit orgTitle={props.data.superAccount.title} />
                         <AddMemberForm />
                         <RemoveMemberForm />
-                        {props.data.superAccount.state !== 'ACTIVATED' && (
-                            <ActivateButton />
-                        )}
-                        {props.data.superAccount.state === 'ACTIVATED' && (
-                            <SuspendButton />
-                        )}
-                        {props.data.superAccount.state === 'ACTIVATED' && (
-                            <PendButton />
-                        )}
+                        {props.data.superAccount.state !== 'ACTIVATED' && <ActivateButton />}
+                        {props.data.superAccount.state === 'ACTIVATED' && <SuspendButton />}
+                        {props.data.superAccount.state === 'ACTIVATED' && <PendButton />}
                         <XOverflow
                             placement="bottom-end"
                             content={
                                 <AlterOrgPublishedButton
                                     orgId={props.data.superAccount.orgId}
-                                    published={
-                                        props.data.superAccount.published
-                                    }
+                                    published={props.data.superAccount.published}
                                     refetchVars={{
-                                        published:
-                                            props.data.superAccount.published,
+                                        published: props.data.superAccount.published,
                                     }}
                                 />
                             }
@@ -200,9 +185,7 @@ export default withApp(
                     </XHeader>
                     <XHeader
                         text="Members"
-                        description={
-                            props.data.superAccount.members.length + ' total'
-                        }
+                        description={props.data.superAccount.members.length + ' total'}
                     />
                     <XTable>
                         <XTable.Header>
@@ -220,9 +203,7 @@ export default withApp(
                     </XTable>
                     <XHeader
                         text="Features"
-                        description={
-                            props.data.superAccount.features.length + ' total'
-                        }
+                        description={props.data.superAccount.features.length + ' total'}
                     >
                         <AddFeature />
                         <RemoveFeature />

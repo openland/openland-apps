@@ -37,10 +37,9 @@ export class TalkSession {
                 })).data.conference.id;
             }
             if (this.state === 'connecting') {
-                this.peerId = (await this.client.mutate(
-                    ConferenceJoinMutation,
-                    { id: this.convId },
-                )).data!.conferenceJoin.peerId as string;
+                this.peerId = (await this.client.mutate(ConferenceJoinMutation, {
+                    id: this.convId,
+                })).data!.conferenceJoin.peerId as string;
                 if (!this.destroyed) {
                     this.state = 'online';
                     this.callback(this.peerId!, this.convId!);

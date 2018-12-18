@@ -1,15 +1,7 @@
 /* tslint:disable */
 const EMOJI_DATA = [
-    [
-        '1f468-200d-2764-fe0f-200d-1f48b-200d-1f468',
-        [':kiss_mm:', ':couplekiss_mm:'],
-        '👨‍❤️‍💋‍👨',
-    ],
-    [
-        '1f469-200d-2764-fe0f-200d-1f48b-200d-1f469',
-        [':kiss_ww:', ':couplekiss_ww:'],
-        '👩‍❤️‍💋‍👩',
-    ],
+    ['1f468-200d-2764-fe0f-200d-1f48b-200d-1f468', [':kiss_mm:', ':couplekiss_mm:'], '👨‍❤️‍💋‍👨'],
+    ['1f469-200d-2764-fe0f-200d-1f48b-200d-1f469', [':kiss_ww:', ':couplekiss_ww:'], '👩‍❤️‍💋‍👩'],
     ['1f469-200d-2764-fe0f-200d-1f48b-200d-1f468', [':kiss_woman_man:'], '👩‍❤️‍💋‍👨'],
     ['1f3f4-e0067-e0062-e0077-e006c-e0073-e007f', [':wales:'], '🏴󠁧󠁢󠁷󠁬󠁳󠁿'],
     ['1f3f4-e0067-e0062-e0073-e0063-e0074-e007f', [':scotland:'], '🏴󠁧󠁢󠁳󠁣󠁴󠁿'],
@@ -23,21 +15,9 @@ const EMOJI_DATA = [
     ['1f468-200d-1f469-200d-1f467-200d-1f466', [':family_mwgb:'], '👨‍👩‍👧‍👦'],
     ['1f468-200d-1f468-200d-1f467-200d-1f467', [':family_mmgg:'], '👨‍👨‍👧‍👧'],
     ['1f468-200d-1f468-200d-1f466-200d-1f466', [':family_mmbb:'], '👨‍👨‍👦‍👦'],
-    [
-        '1f469-200d-2764-fe0f-200d-1f469',
-        [':couple_ww:', ':couple_with_heart_ww:'],
-        '👩‍❤️‍👩',
-    ],
-    [
-        '1f468-200d-2764-fe0f-200d-1f468',
-        [':couple_mm:', ':couple_with_heart_mm:'],
-        '👨‍❤️‍👨',
-    ],
-    [
-        '1f469-200d-2764-fe0f-200d-1f468',
-        [':couple_with_heart_woman_man:'],
-        '👩‍❤️‍👨',
-    ],
+    ['1f469-200d-2764-fe0f-200d-1f469', [':couple_ww:', ':couple_with_heart_ww:'], '👩‍❤️‍👩'],
+    ['1f468-200d-2764-fe0f-200d-1f468', [':couple_mm:', ':couple_with_heart_mm:'], '👨‍❤️‍👨'],
+    ['1f469-200d-2764-fe0f-200d-1f468', [':couple_with_heart_woman_man:'], '👩‍❤️‍👨'],
     ['1f468-200d-1f466-200d-1f466', [':family_man_boy_boy:'], '👨‍👦‍👦'],
     ['1f469-200d-1f467-200d-1f467', [':family_woman_girl_girl:'], '👩‍👧‍👧'],
     ['1f468-200d-1f467-200d-1f466', [':family_man_girl_boy:'], '👨‍👧‍👦'],
@@ -428,31 +408,11 @@ const EMOJI_DATA = [
     ['1f486-1f3fd-200d-2642-fe0f', [':man_getting_face_massage_tone3:'], '💆🏽‍♂️'],
     ['1f486-1f3fe-200d-2642-fe0f', [':man_getting_face_massage_tone4:'], '💆🏾‍♂️'],
     ['1f486-1f3ff-200d-2642-fe0f', [':man_getting_face_massage_tone5:'], '💆🏿‍♂️'],
-    [
-        '1f486-1f3ff-200d-2640-fe0f',
-        [':woman_getting_face_massage_tone5:'],
-        '💆🏿‍♀️',
-    ],
-    [
-        '1f486-1f3fe-200d-2640-fe0f',
-        [':woman_getting_face_massage_tone4:'],
-        '💆🏾‍♀️',
-    ],
-    [
-        '1f486-1f3fd-200d-2640-fe0f',
-        [':woman_getting_face_massage_tone3:'],
-        '💆🏽‍♀️',
-    ],
-    [
-        '1f486-1f3fc-200d-2640-fe0f',
-        [':woman_getting_face_massage_tone2:'],
-        '💆🏼‍♀️',
-    ],
-    [
-        '1f486-1f3fb-200d-2640-fe0f',
-        [':woman_getting_face_massage_tone1:'],
-        '💆🏻‍♀️',
-    ],
+    ['1f486-1f3ff-200d-2640-fe0f', [':woman_getting_face_massage_tone5:'], '💆🏿‍♀️'],
+    ['1f486-1f3fe-200d-2640-fe0f', [':woman_getting_face_massage_tone4:'], '💆🏾‍♀️'],
+    ['1f486-1f3fd-200d-2640-fe0f', [':woman_getting_face_massage_tone3:'], '💆🏽‍♀️'],
+    ['1f486-1f3fc-200d-2640-fe0f', [':woman_getting_face_massage_tone2:'], '💆🏼‍♀️'],
+    ['1f486-1f3fb-200d-2640-fe0f', [':woman_getting_face_massage_tone1:'], '💆🏻‍♀️'],
     ['1f6b6-1f3fb-200d-2640-fe0f', [':woman_walking_tone1:'], '🚶🏻‍♀️'],
     ['1f6b6-1f3fc-200d-2640-fe0f', [':woman_walking_tone2:'], '🚶🏼‍♀️'],
     ['1f6b6-1f3fd-200d-2640-fe0f', [':woman_walking_tone3:'], '🚶🏽‍♀️'],
@@ -1500,11 +1460,7 @@ const EMOJI_DATA = [
     ['26f9-1f3fd', [':person_bouncing_ball_tone3:'], '⛹🏽'],
     ['26f9-1f3fc', [':person_bouncing_ball_tone2:'], '⛹🏼'],
     ['26f9-1f3fb', [':person_bouncing_ball_tone1:'], '⛹🏻'],
-    [
-        '1f3cb-fe0f',
-        [':person_lifting_weights:', ':lifter:', ':weight_lifter:'],
-        '🏋️',
-    ],
+    ['1f3cb-fe0f', [':person_lifting_weights:', ':lifter:', ':weight_lifter:'], '🏋️'],
     ['1f37d-fe0f', [':fork_knife_plate:', ':fork_and_knife_with_plate:'], '🍽️'],
     ['270a-1f3fb', [':fist_tone1:'], '✊🏻'],
     ['270a-1f3fc', [':fist_tone2:'], '✊🏼'],
@@ -1526,11 +1482,7 @@ const EMOJI_DATA = [
     ['270b-1f3fd', [':raised_hand_tone3:'], '✋🏽'],
     ['270b-1f3fe', [':raised_hand_tone4:'], '✋🏾'],
     ['270b-1f3ff', [':raised_hand_tone5:'], '✋🏿'],
-    [
-        '1f590-fe0f',
-        [':hand_splayed:', ':raised_hand_with_fingers_splayed:'],
-        '🖐️',
-    ],
+    ['1f590-fe0f', [':hand_splayed:', ':raised_hand_with_fingers_splayed:'], '🖐️'],
     ['270d-1f3fb', [':writing_hand_tone1:'], '✍🏻'],
     ['270d-1f3fc', [':writing_hand_tone2:'], '✍🏼'],
     ['270d-1f3fd', [':writing_hand_tone3:'], '✍🏽'],
@@ -1587,18 +1539,10 @@ const EMOJI_DATA = [
     ['1f328-fe0f', [':cloud_snow:', ':cloud_with_snow:'], '🌨️'],
     ['1f329-fe0f', [':cloud_lightning:', ':cloud_with_lightning:'], '🌩️'],
     ['1f327-fe0f', [':cloud_rain:', ':cloud_with_rain:'], '🌧️'],
-    [
-        '1f326-fe0f',
-        [':white_sun_rain_cloud:', ':white_sun_behind_cloud_with_rain:'],
-        '🌦️',
-    ],
+    ['1f326-fe0f', [':white_sun_rain_cloud:', ':white_sun_behind_cloud_with_rain:'], '🌦️'],
     ['1f325-fe0f', [':white_sun_cloud:', ':white_sun_behind_cloud:'], '🌥️'],
     ['1f6e1-fe0f', [':shield:'], '🛡️'],
-    [
-        '1f324-fe0f',
-        [':white_sun_small_cloud:', ':white_sun_with_small_cloud:'],
-        '🌤️',
-    ],
+    ['1f324-fe0f', [':white_sun_small_cloud:', ':white_sun_with_small_cloud:'], '🌤️'],
     ['1f5e1-fe0f', [':dagger:', ':dagger_knife:'], '🗡️'],
     ['1f6e0-fe0f', [':tools:', ':hammer_and_wrench:'], '🛠️'],
     ['1f6e2-fe0f', [':oil:', ':oil_drum:'], '🛢️'],
@@ -1641,11 +1585,7 @@ const EMOJI_DATA = [
     ['00ae-fe0f', [':registered:'], '®️'],
     ['00a9-fe0f', [':copyright:'], '©️'],
     ['21a9-fe0f', [':leftwards_arrow_with_hook:'], '↩️'],
-    [
-        '26f9-fe0f',
-        [':person_bouncing_ball:', ':basketball_player:', ':person_with_ball:'],
-        '⛹️',
-    ],
+    ['26f9-fe0f', [':person_bouncing_ball:', ':basketball_player:', ':person_with_ball:'], '⛹️'],
     ['21aa-fe0f', [':arrow_right_hook:'], '↪️'],
     ['2b07-fe0f', [':arrow_down:'], '⬇️'],
     ['2b06-fe0f', [':arrow_up:'], '⬆️'],
@@ -1674,11 +1614,7 @@ const EMOJI_DATA = [
     ['2747-fe0f', [':sparkle:'], '❇️'],
     ['269b-fe0f', [':atom:', ':atom_symbol:'], '⚛️'],
     ['262f-fe0f', [':yin_yang:'], '☯️'],
-    [
-        '2763-fe0f',
-        [':heart_exclamation:', ':heavy_heart_exclamation_mark_ornament:'],
-        '❣️',
-    ],
+    ['2763-fe0f', [':heart_exclamation:', ':heavy_heart_exclamation_mark_ornament:'], '❣️'],
     ['262a-fe0f', [':star_and_crescent:'], '☪️'],
     ['271d-fe0f', [':cross:', ':latin_cross:'], '✝️'],
     ['262e-fe0f', [':peace:', ':peace_symbol:'], '☮️'],
@@ -2445,19 +2381,11 @@ const EMOJI_DATA = [
     ['1f356', [':meat_on_bone:'], '🍖'],
     ['1f355', [':pizza:'], '🍕'],
     ['1f32d', [':hotdog:', ':hot_dog:'], '🌭'],
-    [
-        '1f595',
-        [':middle_finger:', ':reversed_hand_with_middle_finger_extended:'],
-        '🖕',
-    ],
+    ['1f595', [':middle_finger:', ':reversed_hand_with_middle_finger_extended:'], '🖕'],
     ['1f4aa', [':muscle:'], '💪'],
     ['1f919', [':call_me:', ':call_me_hand:'], '🤙'],
     ['1f44b', [':wave:'], '👋'],
-    [
-        '1f596',
-        [':vulcan:', ':raised_hand_with_part_between_middle_and_ring_fingers:'],
-        '🖖',
-    ],
+    ['1f596', [':vulcan:', ':raised_hand_with_part_between_middle_and_ring_fingers:'], '🖖'],
     ['1f354', [':hamburger:'], '🍔'],
     ['1f91a', [':raised_back_of_hand:', ':back_of_hand:'], '🤚'],
     ['1f35f', [':fries:'], '🍟'],
@@ -2484,11 +2412,7 @@ const EMOJI_DATA = [
     ['1f359', [':rice_ball:'], '🍙'],
     ['1f35a', [':rice:'], '🍚'],
     ['1f358', [':rice_cracker:'], '🍘'],
-    [
-        '1f91e',
-        [':fingers_crossed:', ':hand_with_index_and_middle_finger_crossed:'],
-        '🤞',
-    ],
+    ['1f91e', [':fingers_crossed:', ':hand_with_index_and_middle_finger_crossed:'], '🤞'],
     ['1f91c', [':right_facing_fist:', ':right_fist:'], '🤜'],
     ['1f91b', [':left_facing_fist:', ':left_fist:'], '🤛'],
     ['1f362', [':oden:'], '🍢'],
@@ -2817,9 +2741,7 @@ const asciiToUnicode = new Map();
 const shortToUnicode = new Map();
 const unicodeToShort = new Map();
 
-ASCII_DATA.map(([ascii, unicode]) =>
-    asciiToUnicode.set(RegExp(ascii), unicode),
-);
+ASCII_DATA.map(([ascii, unicode]) => asciiToUnicode.set(RegExp(ascii), unicode));
 
 EMOJI_DATA.map(([codepoint, shortnames, unicode]) => {
     if (typeof shortnames === 'string') {

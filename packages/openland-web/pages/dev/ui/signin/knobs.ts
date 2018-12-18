@@ -58,8 +58,7 @@ export const createWithEmail = {
     },
     emailChanged: {
         type: 'callback',
-        value: ({ value, context }: any) =>
-            context.setState({ emailValue: value }),
+        value: ({ value, context }: any) => context.setState({ emailValue: value }),
     },
     loginEmailStart: {
         type: 'callback',
@@ -86,8 +85,7 @@ export const activationCodeKnob = {
     },
     codeChanged: {
         type: 'callback',
-        value: ({ value, context }: any) =>
-            context.setState({ codeValue: value }),
+        value: ({ value, context }: any) => context.setState({ codeValue: value }),
     },
     loginCodeStart: {
         type: 'callback',

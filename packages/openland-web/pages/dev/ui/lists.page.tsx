@@ -113,25 +113,14 @@ const SampleInfiniteData = [
 ];
 
 function itemRenderer(index: number) {
-    return (
-        <div style={{ borderBottom: '1px solid black' }}>
-            {SampleData[index]}
-        </div>
-    );
+    return <div style={{ borderBottom: '1px solid black' }}>{SampleData[index]}</div>;
 }
 
 function itemInfiniteRenderer(index: number) {
-    return (
-        <div style={{ borderBottom: '1px solid black' }}>
-            {SampleInfiniteData[index]}
-        </div>
-    );
+    return <div style={{ borderBottom: '1px solid black' }}>{SampleInfiniteData[index]}</div>;
 }
 
-function loadNextPage(
-    info: { startIndex: number; stopIndex: number },
-    onLoad: any,
-) {
+function loadNextPage(info: { startIndex: number; stopIndex: number }, onLoad: any) {
     for (let i = info.startIndex; i <= info.startIndex + 50; i++) {
         SampleInfiniteData.push('Loaded row #' + i);
     }
@@ -146,10 +135,7 @@ export default withApp('UI Framework - Lists', 'viewer', props => {
                 <XVertical>
                     <XTitle>Simple</XTitle>
                     <XHorizontal height={300}>
-                        <XList
-                            rowCount={SampleData.length}
-                            itemRenderer={itemRenderer}
-                        />
+                        <XList rowCount={SampleData.length} itemRenderer={itemRenderer} />
                     </XHorizontal>
                     <XTitle>Infinite scroll</XTitle>
                     <XHorizontal height={300}>

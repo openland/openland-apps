@@ -41,15 +41,11 @@ export default withAppBase(
                     <MessagePage>
                         {props.data.invite ||
                             (props.data.appInvite && (
-                                <AcceptInviteComponent
-                                    mutation={props.activate}
-                                />
+                                <AcceptInviteComponent mutation={props.activate} />
                             ))}
                         {!(props.data.invite || props.data.appInvite) && (
                             <MessagePageContent title="Invite">
-                                <InfoText>
-                                    {InitTexts.invite.unableToFindInvite}
-                                </InfoText>
+                                <InfoText>{InitTexts.invite.unableToFindInvite}</InfoText>
                             </MessagePageContent>
                         )}
                     </MessagePage>

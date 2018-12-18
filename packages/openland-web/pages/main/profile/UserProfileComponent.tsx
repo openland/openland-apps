@@ -88,29 +88,18 @@ const UserStatus = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                    <XDate
-                        value={props.data.user.lastSeen}
-                        format="humanize_cute"
-                    />
+                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
                 )}
             </StatusWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
-        return (
-            <StatusWrapper online={true}>
-                {TextProfiles.User.status.online}
-            </StatusWrapper>
-        );
+        return <StatusWrapper online={true}>{TextProfiles.User.status.online}</StatusWrapper>;
     } else {
         return null;
     }
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
-const AvatarModal = (props: {
-    photo?: string;
-    userName?: string;
-    userId?: string;
-}) => {
+const AvatarModal = (props: { photo?: string; userName?: string; userId?: string }) => {
     return (
         <XModal
             useTopCloser={true}
@@ -122,12 +111,7 @@ const AvatarModal = (props: {
                     <ModalCloser autoClose={true} className="closer">
                         <ModalCloseIcon />
                     </ModalCloser>
-                    <ModalPic
-                        srcCloud={props.photo}
-                        resize={'fill'}
-                        width={512}
-                        height={512}
-                    />
+                    <ModalPic srcCloud={props.photo} resize={'fill'} width={512} height={512} />
                 </ModalBody>
             }
             target={
@@ -151,11 +135,7 @@ const Header = (props: { user: User_user }) => {
             <XContentWrapper withFlex={true}>
                 <HeaderAvatar>
                     {user.photo && (
-                        <AvatarModal
-                            photo={user.photo}
-                            userName={user.name}
-                            userId={user.id}
-                        />
+                        <AvatarModal photo={user.photo} userName={user.name} userId={user.id} />
                     )}
                     {!user.photo && (
                         <XAvatar
@@ -171,12 +151,7 @@ const Header = (props: { user: User_user }) => {
                     <XHorizontal separator={4}>
                         <HeaderTitle>{user.name}</HeaderTitle>
                         {user.primaryOrganization && (
-                            <HeaderOrg
-                                path={
-                                    '/directory/o/' +
-                                    user.primaryOrganization.id
-                                }
-                            >
+                            <HeaderOrg path={'/directory/o/' + user.primaryOrganization.id}>
                                 {user.primaryOrganization.name}
                             </HeaderOrg>
                         )}
@@ -191,12 +166,8 @@ const Header = (props: { user: User_user }) => {
                             placeholder={extractHostname(user.website)}
                         />
                     )}
-                    {user.linkedin && (
-                        <XSocialButton value={user.linkedin} style="linkedin" />
-                    )}
-                    {user.phone && (
-                        <XSocialButton value={user.phone} style="phone" />
-                    )}
+                    {user.linkedin && <XSocialButton value={user.linkedin} style="linkedin" />}
+                    {user.phone && <XSocialButton value={user.phone} style="phone" />}
                     {user.isYou && (
                         <XOverflow
                             placement="bottom-end"
@@ -230,10 +201,7 @@ const About = (props: { user: User_user }) => {
         <>
             {user.about && (
                 <Section separator={0}>
-                    <XSubHeader
-                        title={TextProfiles.User.aboutTitle}
-                        paddingBottom={0}
-                    />
+                    <XSubHeader title={TextProfiles.User.aboutTitle} paddingBottom={0} />
                     <SectionContent>{user.about}</SectionContent>
                 </Section>
             )}
@@ -260,7 +228,7 @@ const UserProfileInner = (props: UserProfileInnerProps) => {
             </XScrollView2>
         </>
     );
-}
+};
 
 const UserProvider = withUser(
     withRouter(
@@ -280,12 +248,6 @@ const UserProvider = withUser(
     onDirectory?: boolean;
 }>;
 
-export const UserProfile = (props: {
-    userId: string;
-    onDirectory?: boolean;
-}) => (
-    <UserProvider
-        variables={{ userId: props.userId }}
-        onDirectory={props.onDirectory}
-    />
+export const UserProfile = (props: { userId: string; onDirectory?: boolean }) => (
+    <UserProvider variables={{ userId: props.userId }} onDirectory={props.onDirectory} />
 );

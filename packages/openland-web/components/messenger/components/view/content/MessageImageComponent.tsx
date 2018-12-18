@@ -107,9 +107,7 @@ export class MessageImageComponent extends React.PureComponent<
                                 <ModalCloseIcon />
                             </ModalCloser>
                             <ModalPic
-                                srcCloud={
-                                    'https://ucarecdn.com/' + props.file + '/'
-                                }
+                                srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                                 resize={'fill'}
                                 width={dimensions2.width}
                                 height={dimensions2.height}
@@ -117,9 +115,7 @@ export class MessageImageComponent extends React.PureComponent<
                             <ImgDownload
                                 className="download-button"
                                 href={
-                                    'https://ucarecdn.com/' +
-                                    props.file +
-                                    '/-/preview/-/inline/no/'
+                                    'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'
                                 }
                             >
                                 <DownloadButtonIcon />

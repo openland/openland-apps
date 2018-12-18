@@ -17,9 +17,7 @@ let config = buildConfig();
 export default class OpenlandDocument extends Document {
     static async getInitialProps(props: NextDocumentContext) {
         const page = props.renderPage();
-        const styles = renderStaticOptimized(
-            () => page.html || page.errorHtml || '',
-        );
+        const styles = renderStaticOptimized(() => page.html || page.errorHtml || '');
         return {
             ...page,
             glamCss: styles.css,
@@ -46,10 +44,7 @@ export default class OpenlandDocument extends Document {
                     <meta name="format-detection" content="telephone=no" />
                     <meta name="theme-color" content="#6400FF" />
                     <meta name="application-name" content="Openland" />
-                    <meta
-                        name="apple-mobile-web-app-title"
-                        content="Openland"
-                    />
+                    <meta name="apple-mobile-web-app-title" content="Openland" />
 
                     {/* ORDER IS IMPORTANT! */}
                     <link
@@ -121,10 +116,7 @@ export default class OpenlandDocument extends Document {
                         sizes="16x16"
                         href="/static/img/favicon/favicon-16x16.png"
                     />
-                    <link
-                        rel="manifest"
-                        href="/static/img/favicon/manifest.json"
-                    />
+                    <link rel="manifest" href="/static/img/favicon/manifest.json" />
                     <meta name="msapplication-TileColor" content="#ffffff" />
                     <meta
                         name="msapplication-TileImage"
@@ -147,22 +139,15 @@ export default class OpenlandDocument extends Document {
                     <link rel="stylesheet" href="/static/css/emoji-mart.css" />
                     <link rel="stylesheet" href="/static/css/SFTextPro.css" />
                     <link rel="stylesheet" href="/static/css/x.css" />
-                    <style
-                        dangerouslySetInnerHTML={{ __html: this.props.glamCss }}
-                    />
+                    <style dangerouslySetInnerHTML={{ __html: this.props.glamCss }} />
 
                     {/* Config */}
                     <script
                         dangerouslySetInnerHTML={{
-                            __html:
-                                "window.GLAMOR_IDS='" +
-                                JSON.stringify(this.props.ids) +
-                                "'",
+                            __html: "window.GLAMOR_IDS='" + JSON.stringify(this.props.ids) + "'",
                         }}
                     />
-                    <script
-                        dangerouslySetInnerHTML={{ __html: saveConfig(config) }}
-                    />
+                    <script dangerouslySetInnerHTML={{ __html: saveConfig(config) }} />
                 </Head>
                 <body>
                     <Main />

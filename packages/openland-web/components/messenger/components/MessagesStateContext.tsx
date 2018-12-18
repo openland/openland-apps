@@ -25,9 +25,7 @@ export interface MessagesStateContextProps {
     resetAll: () => void;
 }
 
-export const MessagesStateContext = React.createContext<
-    MessagesStateContextProps
->({
+export const MessagesStateContext = React.createContext<MessagesStateContextProps>({
     editMessageId: null,
     editMessage: null,
     replyMessagesId: null,

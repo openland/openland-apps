@@ -9,10 +9,7 @@ export interface TalkMediaComponentProps {
     sessionId: string;
     peerId: string;
     muted: boolean;
-    onStreamsUpdated: (
-        peerId: string,
-        streams: { [key: string]: MediaStream },
-    ) => void;
+    onStreamsUpdated: (peerId: string, streams: { [key: string]: MediaStream }) => void;
 }
 
 export interface TalkMediaComponentState {
@@ -22,7 +19,7 @@ export interface TalkMediaComponentState {
 export class TalkMediaComponent extends React.Component<
     TalkMediaComponentProps,
     TalkMediaComponentState
-    > {
+> {
     private _mounted = true;
     private streams: { [key: string]: MediaStream } = {};
 
@@ -50,8 +47,8 @@ export class TalkMediaComponent extends React.Component<
             .getUserMedia({
                 audio: {
                     noiseSuppression: true,
-                    autoGainControl: false
-                } as any
+                    autoGainControl: false,
+                } as any,
             })
             .then(stream => {
                 setTimeout(() => {
@@ -103,14 +100,9 @@ export class TalkMediaComponent extends React.Component<
         return this.state.mediaStream ? (
             <YApolloContext.Consumer>
                 {apollo => (
-                    <YQuery
-                        query={ConferenceQuery}
-                        variables={{ id: this.props.id }}
-                    >
+                    <YQuery query={ConferenceQuery} variables={{ id: this.props.id }}>
                         {data => {
-                            let connections = data.data!.conference.peers.filter(
-                                v => v.connection,
-                            );
+                            let connections = data.data!.conference.peers.filter(v => v.connection);
                             if (connections.length === 0) {
                                 return null;
                             }

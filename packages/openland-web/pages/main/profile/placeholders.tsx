@@ -30,21 +30,14 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
                     },
                 });
             }}
-            target={
-                (props as any).target || (
-                    <XButton text="About" iconRight="add" />
-                )
-            }
+            target={(props as any).target || <XButton text="About" iconRight="add" />}
             title={TextOrganizationProfile.placeholderAboutModalAboutTitle}
             useTopCloser={true}
         >
             <XVertical>
                 <XFormLoadingContent>
                     <XFormField field="fields.input.about">
-                        <XTextArea
-                            valueStoreKey="fields.input.about"
-                            placeholder="Description"
-                        />
+                        <XTextArea valueStoreKey="fields.input.about" placeholder="Description" />
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
@@ -78,37 +71,27 @@ export const SocialPlaceholder = withMyOrganizationProfile(props => {
                     },
                 });
             }}
-            target={
-                (props as any).target || (
-                    <XButton text="Add social links" iconRight="add" />
-                )
-            }
+            target={(props as any).target || <XButton text="Add social links" iconRight="add" />}
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
                     <XFormField field="input.linkedin">
                         <XInput
-                            placeholder={
-                                TextOrganizationProfile.placeholderSocialModalLinkedIn
-                            }
+                            placeholder={TextOrganizationProfile.placeholderSocialModalLinkedIn}
                             field="input.linkedin"
                             size="large"
                         />
                     </XFormField>
                     <XFormField field="input.twitter">
                         <XInput
-                            placeholder={
-                                TextOrganizationProfile.placeholderSocialModalTwitter
-                            }
+                            placeholder={TextOrganizationProfile.placeholderSocialModalTwitter}
                             field="input.twitter"
                             size="large"
                         />
                     </XFormField>
                     <XFormField field="input.facebook">
                         <XInput
-                            placeholder={
-                                TextOrganizationProfile.placeholderSocialModalFacebook
-                            }
+                            placeholder={TextOrganizationProfile.placeholderSocialModalFacebook}
                             field="input.facebook"
                             size="large"
                         />
@@ -141,19 +124,13 @@ export const WebsitePlaceholder = withMyOrganizationProfile(props => {
                     },
                 });
             }}
-            target={
-                (props as any).target || (
-                    <XButton text="Add website" iconRight="add" />
-                )
-            }
+            target={(props as any).target || <XButton text="Add website" iconRight="add" />}
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
                     <XFormField field="input.website">
                         <XInput
-                            placeholder={
-                                TextOrganizationProfile.placeholderSocialModalWeb
-                            }
+                            placeholder={TextOrganizationProfile.placeholderSocialModalWeb}
                             field="input.website"
                             size="large"
                         />

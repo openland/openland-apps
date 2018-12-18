@@ -19,19 +19,11 @@ export const MessageAnimationComponent = (props: {
             playsInline={true}
         >
             <source
-                src={
-                    'https://ucarecdn.com/' +
-                    props.file +
-                    '/gif2video/-/format/webm/image.gif'
-                }
+                src={'https://ucarecdn.com/' + props.file + '/gif2video/-/format/webm/image.gif'}
                 type="video/webm"
             />
             <source
-                src={
-                    'https://ucarecdn.com/' +
-                    props.file +
-                    '/gif2video/-/format/mp4/image.gif'
-                }
+                src={'https://ucarecdn.com/' + props.file + '/gif2video/-/format/mp4/image.gif'}
                 type="video/mp4"
             />
         </video>

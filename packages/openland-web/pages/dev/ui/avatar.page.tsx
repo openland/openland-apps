@@ -8,11 +8,12 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XTitle } from 'openland-x/XTitle';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 
-const EXAMPLE = "https://theblueraft.files.wordpress.com/2010/08/aang.jpg";
+const EXAMPLE = 'https://theblueraft.files.wordpress.com/2010/08/aang.jpg';
 
-const EXAMPLE_SRC = "https://ucarecdn.com/31ebe787-70bc-478b-9dc2-f46319165c69/-/crop/269x269/100,0/";
-const EXAMPLE_TITLE = "John Doe";
-const EXAMPLE_ID = "ID";
+const EXAMPLE_SRC =
+    'https://ucarecdn.com/31ebe787-70bc-478b-9dc2-f46319165c69/-/crop/269x269/100,0/';
+const EXAMPLE_TITLE = 'John Doe';
+const EXAMPLE_ID = 'ID';
 
 export default withApp('UI Framework - Avatar', 'viewer', props => {
     return (
@@ -24,37 +25,78 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                         <XHorizontal>
                             <XVertical separator="none" alignItems="center">
                                 <div>74</div>
-                                <XAvatar2 size={74} online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={74}
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>58</div>
-                                <XAvatar2 size={58} online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={58}
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>default (40)</div>
-                                <XAvatar2 online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>36</div>
-                                <XAvatar2 size={36} online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={36}
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>32</div>
-                                <XAvatar2 size={32} online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={32}
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>28</div>
-                                <XAvatar2 size={28} online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={28}
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>24</div>
-                                <XAvatar2 size={24} online={true} src={EXAMPLE_SRC} title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={24}
+                                    online={true}
+                                    src={EXAMPLE_SRC}
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
                         </XHorizontal>
                     </XVertical>
@@ -63,37 +105,78 @@ export default withApp('UI Framework - Avatar', 'viewer', props => {
                         <XHorizontal>
                             <XVertical separator="none" alignItems="center">
                                 <div>74</div>
-                                <XAvatar2 size={74} online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={74}
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>58</div>
-                                <XAvatar2 size={58} online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={58}
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>default (40)</div>
-                                <XAvatar2 online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>36</div>
-                                <XAvatar2 size={36} online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={36}
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>32</div>
-                                <XAvatar2 size={32} online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={32}
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>28</div>
-                                <XAvatar2 size={28} online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={28}
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
 
                             <XVertical separator="none" alignItems="center">
                                 <div>24</div>
-                                <XAvatar2 size={24} online={true} src="ph://" title={EXAMPLE_TITLE} id={EXAMPLE_ID} />
+                                <XAvatar2
+                                    size={24}
+                                    online={true}
+                                    src="ph://"
+                                    title={EXAMPLE_TITLE}
+                                    id={EXAMPLE_ID}
+                                />
                             </XVertical>
                         </XHorizontal>
                     </XVertical>

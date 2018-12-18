@@ -19,12 +19,7 @@ class ErrorButton extends React.Component<{}, { error: boolean }> {
         if (this.state.error) {
             throw new Error('Test Crash!');
         }
-        return (
-            <XButton
-                text="Crash!11"
-                onClick={() => this.setState({ error: true })}
-            />
-        );
+        return <XButton text="Crash!11" onClick={() => this.setState({ error: true })} />;
     }
 }
 

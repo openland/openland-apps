@@ -4,7 +4,7 @@ import { XPoperRef } from './XPopper2';
 export function usePopperHover(ref: React.RefObject<XPoperRef>) {
     let visible = React.useRef<HTMLElement | null>(null);
     const onMouseEnter = React.useCallback((event: React.SyntheticEvent<React.MouseEvent<any>>) => {
-        let element = event.currentTarget as any as HTMLElement;
+        let element = (event.currentTarget as any) as HTMLElement;
         if (!visible.current || visible.current !== element) {
             if (ref.current) {
                 visible.current = element;
@@ -15,7 +15,7 @@ export function usePopperHover(ref: React.RefObject<XPoperRef>) {
     }, []);
 
     const onMouseLeave = React.useCallback((event: React.SyntheticEvent<React.MouseEvent<any>>) => {
-        let element = event.currentTarget as any as HTMLElement;
+        let element = (event.currentTarget as any) as HTMLElement;
         if (visible.current === element) {
             if (ref.current) {
                 visible.current = null;
@@ -26,6 +26,6 @@ export function usePopperHover(ref: React.RefObject<XPoperRef>) {
 
     return {
         onMouseEnter,
-        onMouseLeave
-    }
+        onMouseLeave,
+    };
 }

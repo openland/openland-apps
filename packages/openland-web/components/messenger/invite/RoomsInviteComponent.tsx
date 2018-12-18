@@ -266,9 +266,7 @@ interface RoomsInviteComponentProps {
     noLogin?: boolean;
 }
 
-export class RoomsInviteComponent extends React.Component<
-    RoomsInviteComponentProps
-> {
+export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
     render() {
         let room = this.props.room;
         return (
@@ -276,11 +274,7 @@ export class RoomsInviteComponent extends React.Component<
                 <MainContent>
                     {!this.props.noLogin && (
                         <XHorizontal justifyContent="flex-end">
-                            <Close
-                                onClick={() =>
-                                    canUseDOM ? window.history.back() : null
-                                }
-                            >
+                            <Close onClick={() => (canUseDOM ? window.history.back() : null)}>
                                 <CloseIcon />
                             </Close>
                         </XHorizontal>
@@ -288,20 +282,12 @@ export class RoomsInviteComponent extends React.Component<
                     {this.props.invite && this.props.invite.invitedByUser ? (
                         <UserInfoWrapper separator={6} justifyContent="center">
                             <UserAvatar
-                                cloudImageUuid={
-                                    this.props.invite.invitedByUser.photo ||
-                                    undefined
-                                }
+                                cloudImageUuid={this.props.invite.invitedByUser.photo || undefined}
                                 style="colorus"
-                                objectName={
-                                    this.props.invite.invitedByUser.name
-                                }
+                                objectName={this.props.invite.invitedByUser.name}
                                 objectId={this.props.invite.invitedByUser.id}
                             />
-                            <Text>
-                                {this.props.invite.invitedByUser.name} has
-                                invited you
-                            </Text>
+                            <Text>{this.props.invite.invitedByUser.name} has invited you</Text>
                         </UserInfoWrapper>
                     ) : (
                         <div style={{ height: 50 }} />
@@ -320,8 +306,7 @@ export class RoomsInviteComponent extends React.Component<
                                     <ProfileIcon />
                                     <span>
                                         {room.membersCount}{' '}
-                                        {room.membersCount &&
-                                        room.membersCount > 1
+                                        {room.membersCount && room.membersCount > 1
                                             ? 'members'
                                             : 'member'}
                                     </span>
@@ -329,8 +314,7 @@ export class RoomsInviteComponent extends React.Component<
                             </div>
                         </InfoCardHeader>
                         <InfoCardBody>
-                            {room.description ||
-                                TextRoom.descriptionPlaceholder}
+                            {room.description || TextRoom.descriptionPlaceholder}
                         </InfoCardBody>
                     </InfoCardWrapper>
                     {!this.props.signup && (

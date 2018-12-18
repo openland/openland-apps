@@ -4,10 +4,7 @@ import { emojify } from 'react-emojione';
 import { MessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
-import {
-    withSetReaction,
-    withUnsetReaction,
-} from '../../../../api/withSetReaction';
+import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import ReactionIcon from '../icons/ic-reactions.svg';
 
@@ -125,10 +122,7 @@ class ReactionComponentInner extends React.PureComponent<{
         return (
             <XPopper
                 content={
-                    <ReactionPicker
-                        onRef={this.onInner}
-                        setReaction={this.handleSetReaction}
-                    />
+                    <ReactionPicker onRef={this.onInner} setReaction={this.handleSetReaction} />
                 }
                 showOnHover={true}
                 placement="top"
@@ -201,10 +195,7 @@ class SingleReaction extends React.PureComponent<{
     };
     render() {
         return (
-            <ReactionItem
-                isMy={this.props.isMy}
-                onClick={this.handleChangeReaction}
-            >
+            <ReactionItem isMy={this.props.isMy} onClick={this.handleChangeReaction}>
                 {this.props.children}
             </ReactionItem>
         );
@@ -248,11 +239,7 @@ interface ReactionsInnerProps {
 }
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
-    usersLabelRender = (
-        usersList: string[],
-        foundMyReaction: boolean,
-        key?: string,
-    ) => {
+    usersLabelRender = (usersList: string[], foundMyReaction: boolean, key?: string) => {
         let uniqueUsersList = usersList.filter(
             (item: string, pos: number) => usersList.indexOf(item) === pos,
         );
@@ -270,23 +257,16 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             }
 
             if (uniqueUsersList.length === 3) {
-                usersLabel +=
-                    ', ' + uniqueUsersList[1] + ' and ' + uniqueUsersList[2];
+                usersLabel += ', ' + uniqueUsersList[1] + ' and ' + uniqueUsersList[2];
             }
 
             if (uniqueUsersList.length > 3) {
                 usersLabel +=
-                    ', ' +
-                    uniqueUsersList[1] +
-                    ' and ' +
-                    (uniqueUsersList.length - 2) +
-                    ' more';
+                    ', ' + uniqueUsersList[1] + ' and ' + (uniqueUsersList.length - 2) + ' more';
             }
         }
 
-        return usersLabel.length > 0 ? (
-            <UsersLabel key={key}>{usersLabel}</UsersLabel>
-        ) : null;
+        return usersLabel.length > 0 ? <UsersLabel key={key}>{usersLabel}</UsersLabel> : null;
     };
 
     reactionsRender = () => {
@@ -379,11 +359,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
         }
 
         components.push(
-            this.usersLabelRender(
-                usersList,
-                foundMyReaction,
-                'reactions' + this.props.messageId,
-            ),
+            this.usersLabelRender(usersList, foundMyReaction, 'reactions' + this.props.messageId),
         );
 
         return components;

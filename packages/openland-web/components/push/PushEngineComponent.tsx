@@ -21,12 +21,7 @@ export const PushEngineComponent = (props: { enable: boolean }) => {
         return (
             <YApolloContext.Consumer>
                 {client => {
-                    return (
-                        <PushEngineComponentMounted
-                            enabled={props.enable}
-                            client={client!!}
-                        />
-                    );
+                    return <PushEngineComponentMounted enabled={props.enable} client={client!!} />;
                 }}
             </YApolloContext.Consumer>
         );

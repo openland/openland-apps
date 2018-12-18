@@ -95,9 +95,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                         popper={true}
                         placeholder="Whom do you want to introduce?"
                         rounded={true}
-                        onInputChange={data =>
-                            (props as any).onChangeInput(data)
-                        }
+                        onInputChange={data => (props as any).onChangeInput(data)}
                         helpText="Wait..."
                     />
                 }
@@ -115,9 +113,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                         label: i.node.name,
                         value: i.node.id,
                         photo: i.node.photo,
-                        org: i.node.primaryOrganization
-                            ? i.node.primaryOrganization.name
-                            : null,
+                        org: i.node.primaryOrganization ? i.node.primaryOrganization.name : null,
                     })) || []
                 }
                 render={
@@ -125,9 +121,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                         multi={false}
                         placeholder="Whom do you want to introduce?"
                         rounded={true}
-                        onInputChange={data =>
-                            (props as any).onChangeInput(data)
-                        }
+                        onInputChange={data => (props as any).onChangeInput(data)}
                     />
                 }
             />
@@ -340,9 +334,7 @@ class PostIntroModalRaw extends React.PureComponent<
                                     field="input.file"
                                     store={store}
                                     handleFileUpload={this.handleFileUpload}
-                                    handleFileUploading={
-                                        this.handleFileUploading
-                                    }
+                                    handleFileUploading={this.handleFileUploading}
                                 />
                             );
                         }}
@@ -396,14 +388,10 @@ class PostIntroModalRaw extends React.PureComponent<
                         this.state.fileUploading && (
                             <MessageUploadComponent
                                 key={'file'}
-                                progress={Math.round(
-                                    (this.state.progress || 0) * 100,
-                                )}
+                                progress={Math.round((this.state.progress || 0) * 100)}
                                 title={
                                     'Uploading (' +
-                                    Math.round(
-                                        (this.state.progress || 0) * 100,
-                                    ) +
+                                    Math.round((this.state.progress || 0) * 100) +
                                     '%)'
                                 }
                             />
@@ -470,8 +458,5 @@ const MutationProvider = withIntro(props => (
 )) as React.ComponentType<PostIntroModalProps>;
 
 export const PostIntroModal = withIntro(props => (
-    <MutationProvider
-        {...props}
-        conversationId={(props as any).conversationId}
-    />
+    <MutationProvider {...props} conversationId={(props as any).conversationId} />
 )) as React.ComponentType<PostIntroModalProps>;

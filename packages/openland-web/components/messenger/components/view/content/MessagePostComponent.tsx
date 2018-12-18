@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import {
     MessageFull_alphaAttachments,
     MessageFull_alphaButtons,
-    MessageFull_reactions
+    MessageFull_reactions,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -25,14 +25,14 @@ import MoreIcon from '../../icons/ic-arrow-down-blue.svg';
 
 const Wrapper = Glamorous(XVertical)({
     paddingTop: 4,
-    paddingBottom: 4
+    paddingBottom: 4,
 });
 
 const Root = Glamorous(XVertical)({
     border: '1px solid #ececec',
     borderRadius: 10,
     overflow: 'hidden',
-    position: 'relative'
+    position: 'relative',
 });
 
 const Container = Glamorous(XVertical)({
@@ -45,7 +45,7 @@ const Container = Glamorous(XVertical)({
 const PostTitle = Glamorous.div({
     fontSize: 18,
     fontWeight: 600,
-    color: 'rgba(0, 0, 0, 0.8)'
+    color: 'rgba(0, 0, 0, 0.8)',
 });
 
 const FilesWrapper = Glamorous(XVertical)({
@@ -53,7 +53,7 @@ const FilesWrapper = Glamorous(XVertical)({
     paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    borderTop: '1px solid #ececec'
+    borderTop: '1px solid #ececec',
 });
 
 const FileItem = Glamorous(XLink)({
@@ -64,14 +64,14 @@ const FileItem = Glamorous(XLink)({
     color: '#000',
     '&:hover': {
         '& .icon': {
-            opacity: 0.5
+            opacity: 0.5,
         },
         opacity: 1,
-        color: '#1790ff'
+        color: '#1790ff',
     },
     '& span': {
-        opacity: 0.6
-    }
+        opacity: 0.6,
+    },
 });
 
 const FileImage = Glamorous.div({
@@ -91,8 +91,8 @@ const CoverWrapper = Glamorous.div({
     width: 134,
     height: 134,
     '& > img': {
-        display: 'block'
-    }
+        display: 'block',
+    },
 });
 
 const RespondWrapper = Glamorous(XHorizontal)({
@@ -108,21 +108,21 @@ const RespondWrapper = Glamorous(XHorizontal)({
     },
     '&:hover.like svg > path': {
         fill: '#d75454',
-        opacity: 1
+        opacity: 1,
     },
     '& > div': {
         opacity: 0.3,
         fontSize: 13,
         lineHeight: 1.2,
-        color: '#000'
+        color: '#000',
     },
     '&.active > div': {
-        opacity: 0.8
+        opacity: 0.8,
     },
     '&.active svg > path': {
         fill: '#d75454',
-        opacity: 1
-    }
+        opacity: 1,
+    },
 });
 
 const RespondPost = withRespondPostMessage(props => (
@@ -132,13 +132,11 @@ const RespondPost = withRespondPostMessage(props => (
                 variables: {
                     messageId: (props as any).messageId,
                     buttonId: (props as any).buttonId,
-                    reaction: 'respondPost'
-                }
+                    reaction: 'respondPost',
+                },
             });
         }}
-        onSuccess={() =>
-            props.router.replace('/mail/' + (props as any).userId)
-        }
+        onSuccess={() => props.router.replace('/mail/' + (props as any).userId)}
     >
         {props.children}
     </XMutation>
@@ -150,13 +148,13 @@ const RespondPost = withRespondPostMessage(props => (
 }>;
 
 const RespondUserWrapper = Glamorous(XMenuItem)({
-    height: 36
+    height: 36,
 });
 
 const RespondUserContent = Glamorous(XHorizontal)({
     '& > a': {
-        height: 22
-    }
+        height: 22,
+    },
 });
 
 const RespondUserAvatar = Glamorous(XAvatar)({
@@ -164,22 +162,22 @@ const RespondUserAvatar = Glamorous(XAvatar)({
     height: 24,
     '& img': {
         width: '24px !important',
-        height: '24px !important'
-    }
+        height: '24px !important',
+    },
 });
 
 const RespondUserName = Glamorous.div({
     fontSize: 12,
     fontWeight: 600,
     lineHeight: 1.67,
-    color: '#000'
+    color: '#000',
 });
 
 const RespondUserCompany = Glamorous.div({
     fontSize: 12,
     fontWeight: 600,
     lineHeight: 1.67,
-    color: 'rgba(0, 0, 0, 0.4)'
+    color: 'rgba(0, 0, 0, 0.4)',
 });
 
 const ShowMore = Glamorous(XHorizontal)<{ active: boolean }>(props => ({
@@ -189,14 +187,14 @@ const ShowMore = Glamorous(XHorizontal)<{ active: boolean }>(props => ({
     lineHeight: 1.54,
     color: '#1790ff',
     '& svg': {
-        transform: `rotate(${props.active ? '0' : '180deg'})`
-    }
+        transform: `rotate(${props.active ? '0' : '180deg'})`,
+    },
 }));
 
 const RactionsWrapper = Glamorous(XHorizontal)({
     '& .reactions-wrapper': {
-        paddingTop: '0 !important'
-    }
+        paddingTop: '0 !important',
+    },
 });
 
 interface MessagePostComponentProps {
@@ -214,16 +212,15 @@ interface MessagePostComponentProps {
 }
 
 export class MessagePostComponent extends React.PureComponent<MessagePostComponentProps> {
-
     state = {
-        showMore: true
+        showMore: true,
     };
 
     private handleTextTrim = () => {
         this.setState({
-            showMore: !this.state.showMore
+            showMore: !this.state.showMore,
         });
-    }
+    };
 
     private respondRender = () => {
         let { props } = this;
@@ -239,41 +236,63 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         }
 
         return (
-            <RactionsWrapper justifyContent="flex-end" flexGrow={1} alignSelf="center" alignItems="center">
-                {respondUsers.length > 0 && meSender && (
-                    <XPopper
-                        placement="top"
-                        showOnHover={true}
-                        contentContainer={<XMenuVertical />}
-                        content={respondUsers.map((i, j) => (
-                            <RespondUserWrapper key={'post_respond' + j} style="gray" path={'/mail/u/' + i.user.id}>
-                                <RespondUserContent justifyContent="space-between" alignItems="center">
-                                    <XHorizontal separator={6} alignItems="center">
-                                        <RespondUserAvatar
-                                            style="user"
-                                            cloudImageUuid={i.user.photo}
-                                            objectId={i.user.id}
-                                            objectName={i.user.name}
-                                            size="m-small"
-                                        />
-                                        <XHorizontal separator={5} alignItems="center">
-                                            <RespondUserName>{i.user.name}</RespondUserName>
-                                            {i.user.primaryOrganization && (
-                                                <RespondUserCompany>{i.user.primaryOrganization.name}</RespondUserCompany>
-                                            )}
+            <RactionsWrapper
+                justifyContent="flex-end"
+                flexGrow={1}
+                alignSelf="center"
+                alignItems="center"
+            >
+                {respondUsers.length > 0 &&
+                    meSender && (
+                        <XPopper
+                            placement="top"
+                            showOnHover={true}
+                            contentContainer={<XMenuVertical />}
+                            content={respondUsers.map((i, j) => (
+                                <RespondUserWrapper
+                                    key={'post_respond' + j}
+                                    style="gray"
+                                    path={'/mail/u/' + i.user.id}
+                                >
+                                    <RespondUserContent
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <XHorizontal separator={6} alignItems="center">
+                                            <RespondUserAvatar
+                                                style="user"
+                                                cloudImageUuid={i.user.photo}
+                                                objectId={i.user.id}
+                                                objectName={i.user.name}
+                                                size="m-small"
+                                            />
+                                            <XHorizontal separator={5} alignItems="center">
+                                                <RespondUserName>{i.user.name}</RespondUserName>
+                                                {i.user.primaryOrganization && (
+                                                    <RespondUserCompany>
+                                                        {i.user.primaryOrganization.name}
+                                                    </RespondUserCompany>
+                                                )}
+                                            </XHorizontal>
                                         </XHorizontal>
-                                    </XHorizontal>
-                                    {i.user.id !== props.meId && <XButton style="primary" text="Message" size="tiny" path={'/mail/' + i.user.id} />}
-                                </RespondUserContent>
-                            </RespondUserWrapper>
-                        ))}
-                    >
-                        <RespondWrapper separator={2} alignItems="center">
-                            <ReplyIcon />
-                            <div>{respondUsers.length}</div>
-                        </RespondWrapper>
-                    </XPopper>
-                )}
+                                        {i.user.id !== props.meId && (
+                                            <XButton
+                                                style="primary"
+                                                text="Message"
+                                                size="tiny"
+                                                path={'/mail/' + i.user.id}
+                                            />
+                                        )}
+                                    </RespondUserContent>
+                                </RespondUserWrapper>
+                            ))}
+                        >
+                            <RespondWrapper separator={2} alignItems="center">
+                                <ReplyIcon />
+                                <div>{respondUsers.length}</div>
+                            </RespondWrapper>
+                        </XPopper>
+                    )}
                 {otherReactions.length > 0 && (
                     <Reactions
                         messageId={props.messageId}
@@ -283,12 +302,14 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                 )}
             </RactionsWrapper>
         );
-    }
+    };
 
     render() {
         let { props } = this;
         let { reactions } = props;
-        let meRespond: any[] | boolean = reactions.filter(i => ((i.reaction === 'respondPost') && (i.user.id === props.meId)));
+        let meRespond: any[] | boolean = reactions.filter(
+            i => i.reaction === 'respondPost' && i.user.id === props.meId,
+        );
         let meSender = false;
 
         if (props.userId === props.meId) {
@@ -296,9 +317,9 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         }
 
         if (meRespond.length === 0) {
-            meRespond = false
+            meRespond = false;
         } else if (meRespond.length !== 0) {
-            meRespond = true
+            meRespond = true;
         }
 
         let cover: MessageFull_alphaAttachments[] | MessageFull_alphaAttachments | null = null;
@@ -307,10 +328,12 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
         if (props.alphaAttachments.length > 0) {
             cover = props.alphaAttachments.filter(i => i.fileMetadata && i.fileMetadata.isImage);
             if (cover[0]) {
-                cover = cover[0]
+                cover = cover[0];
             }
             if ((cover as MessageFull_alphaAttachments).fileId) {
-                moreFiles = props.alphaAttachments.filter(i => i.fileId !== (cover as MessageFull_alphaAttachments).fileId);
+                moreFiles = props.alphaAttachments.filter(
+                    i => i.fileId !== (cover as MessageFull_alphaAttachments).fileId,
+                );
             }
 
             if (!(cover as MessageFull_alphaAttachments).fileId) {
@@ -331,7 +354,15 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                 <Root separator={0}>
                     <Container>
                         <XHorizontal justifyContent="space-between" separator={9}>
-                            <XVertical separator={3} flexGrow={1} maxWidth={cover && (cover as MessageFull_alphaAttachments).fileId ? 'calc(100% - 152px)' : '100%'}>
+                            <XVertical
+                                separator={3}
+                                flexGrow={1}
+                                maxWidth={
+                                    cover && (cover as MessageFull_alphaAttachments).fileId
+                                        ? 'calc(100% - 152px)'
+                                        : '100%'
+                                }
+                            >
                                 <PostTitle>{props.alphaTitle}</PostTitle>
                                 <MessageTextComponent
                                     message={message}
@@ -352,56 +383,93 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                     </ShowMore>
                                 )}
                             </XVertical>
-                            {cover && (cover as MessageFull_alphaAttachments).fileId && (
-                                <CoverWrapper>
-                                    <XCloudImage
-                                        srcCloud={'https://ucarecdn.com/' + (cover as MessageFull_alphaAttachments).fileId + '/'}
-                                        resize={'fill'}
-                                        width={134}
-                                        height={134}
-                                    />
-                                </CoverWrapper>
-                            )}
+                            {cover &&
+                                (cover as MessageFull_alphaAttachments).fileId && (
+                                    <CoverWrapper>
+                                        <XCloudImage
+                                            srcCloud={
+                                                'https://ucarecdn.com/' +
+                                                (cover as MessageFull_alphaAttachments).fileId +
+                                                '/'
+                                            }
+                                            resize={'fill'}
+                                            width={134}
+                                            height={134}
+                                        />
+                                    </CoverWrapper>
+                                )}
                         </XHorizontal>
                     </Container>
-                    {moreFiles && moreFiles.length > 0 && (
-                        <FilesWrapper separator={3}>
-                            {moreFiles.map(i => i.fileMetadata && (
-                                <FileItem key={'file' + i.fileId} href={'https://ucarecdn.com/' + i.fileId + '/' + (i.fileMetadata.name ? i.fileMetadata.name!! : '')}>
-                                    <XHorizontal separator={4} alignItems="center">
-                                        <FileImage className="icon" />
-                                        <XHorizontal alignItems="center" separator={2}>
-                                            <div>{i.fileMetadata.name} <span>•</span> {niceBytes(Number(i.fileMetadata.size))}</div>
-                                        </XHorizontal>
-                                    </XHorizontal>
-                                </FileItem>
-                            ))}
-                        </FilesWrapper>
-                    )}
+                    {moreFiles &&
+                        moreFiles.length > 0 && (
+                            <FilesWrapper separator={3}>
+                                {moreFiles.map(
+                                    i =>
+                                        i.fileMetadata && (
+                                            <FileItem
+                                                key={'file' + i.fileId}
+                                                href={
+                                                    'https://ucarecdn.com/' +
+                                                    i.fileId +
+                                                    '/' +
+                                                    (i.fileMetadata.name
+                                                        ? i.fileMetadata.name!!
+                                                        : '')
+                                                }
+                                            >
+                                                <XHorizontal separator={4} alignItems="center">
+                                                    <FileImage className="icon" />
+                                                    <XHorizontal alignItems="center" separator={2}>
+                                                        <div>
+                                                            {i.fileMetadata.name} <span>•</span>{' '}
+                                                            {niceBytes(Number(i.fileMetadata.size))}
+                                                        </div>
+                                                    </XHorizontal>
+                                                </XHorizontal>
+                                            </FileItem>
+                                        ),
+                                )}
+                            </FilesWrapper>
+                        )}
                 </Root>
                 <XHorizontal justifyContent="space-between">
                     {!props.privateConversation && (
                         <>
                             {!meSender && (
                                 <>
-                                    {!meRespond && props.alphaButtons.map((i, j) => i && (
-                                        <XHorizontal key={'post_buttons_group' + j} alignItems="center" separator={6}>
-                                            {i.map(k => (
-                                                <XHorizontal key={'post_button' + k.id} alignSelf="flex-start">
-                                                    <RespondPost
-                                                        messageId={props.messageId}
-                                                        buttonId={k.id}
-                                                        userId={props.userId}
+                                    {!meRespond &&
+                                        props.alphaButtons.map(
+                                            (i, j) =>
+                                                i && (
+                                                    <XHorizontal
+                                                        key={'post_buttons_group' + j}
+                                                        alignItems="center"
+                                                        separator={6}
                                                     >
-                                                        <XButton
-                                                            text={k.title}
-                                                            style={k.style === 'DEFAULT' ? 'primary' : 'light'}
-                                                        />
-                                                    </RespondPost>
-                                                </XHorizontal>
-                                            ))}
-                                        </XHorizontal>
-                                    ))}
+                                                        {i.map(k => (
+                                                            <XHorizontal
+                                                                key={'post_button' + k.id}
+                                                                alignSelf="flex-start"
+                                                            >
+                                                                <RespondPost
+                                                                    messageId={props.messageId}
+                                                                    buttonId={k.id}
+                                                                    userId={props.userId}
+                                                                >
+                                                                    <XButton
+                                                                        text={k.title}
+                                                                        style={
+                                                                            k.style === 'DEFAULT'
+                                                                                ? 'primary'
+                                                                                : 'light'
+                                                                        }
+                                                                    />
+                                                                </RespondPost>
+                                                            </XHorizontal>
+                                                        ))}
+                                                    </XHorizontal>
+                                                ),
+                                        )}
                                     {meRespond && (
                                         <XHorizontal alignItems="center" alignSelf="flex-start">
                                             <XButton

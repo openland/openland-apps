@@ -28,65 +28,29 @@ export function DevDocsScaffold(props: {
                     <Scaffold.Menu>
                         <Sidebar title="X Framework">
                             <Sidebar.Item path="/ui">Buttons</Sidebar.Item>
-                            <Sidebar.Item path="/ui/inputs">
-                                Inputs
-                            </Sidebar.Item>
+                            <Sidebar.Item path="/ui/inputs">Inputs</Sidebar.Item>
                             <Sidebar.Item path="/ui/map">Maps</Sidebar.Item>
-                            <Sidebar.Item path="/ui/bullets">
-                                Bullets
-                            </Sidebar.Item>
+                            <Sidebar.Item path="/ui/bullets">Bullets</Sidebar.Item>
                             <Sidebar.Item path="/ui/tabs">Tabs</Sidebar.Item>
-                            <Sidebar.Item path="/ui/switchers">
-                                Switchers
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/sliders">
-                                Sliders
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/tables">
-                                Tables
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/properties">
-                                Properties
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/animations">
-                                Animations
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/radios">
-                                Radio Buttons
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/checkbox">
-                                Checkboxes
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/select">
-                                Select
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/modals">
-                                Modals
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/popper">
-                                Popper
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/userpopper">
-                                User Popper
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/serviceMessages">
-                                Service Messages
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/avatar">
-                                Avatar
-                            </Sidebar.Item>
+                            <Sidebar.Item path="/ui/switchers">Switchers</Sidebar.Item>
+                            <Sidebar.Item path="/ui/sliders">Sliders</Sidebar.Item>
+                            <Sidebar.Item path="/ui/tables">Tables</Sidebar.Item>
+                            <Sidebar.Item path="/ui/properties">Properties</Sidebar.Item>
+                            <Sidebar.Item path="/ui/animations">Animations</Sidebar.Item>
+                            <Sidebar.Item path="/ui/radios">Radio Buttons</Sidebar.Item>
+                            <Sidebar.Item path="/ui/checkbox">Checkboxes</Sidebar.Item>
+                            <Sidebar.Item path="/ui/select">Select</Sidebar.Item>
+                            <Sidebar.Item path="/ui/modals">Modals</Sidebar.Item>
+                            <Sidebar.Item path="/ui/popper">Popper</Sidebar.Item>
+                            <Sidebar.Item path="/ui/userpopper">User Popper</Sidebar.Item>
+                            <Sidebar.Item path="/ui/serviceMessages">Service Messages</Sidebar.Item>
+                            <Sidebar.Item path="/ui/avatar">Avatar</Sidebar.Item>
                             <Sidebar.Item path="/ui/files">Files</Sidebar.Item>
-                            <Sidebar.Item path="/ui/loaders">
-                                Loaders
-                            </Sidebar.Item>
+                            <Sidebar.Item path="/ui/loaders">Loaders</Sidebar.Item>
                             <Sidebar.Item path="/ui/forms">Forms</Sidebar.Item>
                             <Sidebar.Item path="/ui/tags">Tags</Sidebar.Item>
-                            <Sidebar.Item path="/ui/menu-items">
-                                Menu items
-                            </Sidebar.Item>
-                            <Sidebar.Item path="/ui/profile">
-                                Profile (Organization)
-                            </Sidebar.Item>
+                            <Sidebar.Item path="/ui/menu-items">Menu items</Sidebar.Item>
+                            <Sidebar.Item path="/ui/profile">Profile (Organization)</Sidebar.Item>
                             <Sidebar.Item path="/ui/userprofile">
                                 Profile (User - Visitor)
                             </Sidebar.Item>
@@ -116,50 +80,27 @@ export function DevDocsScaffold(props: {
                             <Sidebar.Subitem path="/ui/signin/create-organization">
                                 CreateOrganization
                             </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/waitlist-test/">
-                                WaitList
-                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/waitlist-test/">WaitList</Sidebar.Subitem>
 
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
-                            <Sidebar.Subitem path="/ui/links">
-                                Links
-                            </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/typography">
-                                Typography
-                            </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/grid">
-                                Grid
-                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/links">Links</Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/grid">Grid</Sidebar.Subitem>
                             <Sidebar.Item>Layout</Sidebar.Item>
-                            <Sidebar.Subitem path="/ui/linear">
-                                Linear
-                            </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/scroll">
-                                Scroll
-                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/linear">Linear</Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/scroll">Scroll</Sidebar.Subitem>
                             <Sidebar.Item>Tools</Sidebar.Item>
-                            <Sidebar.Subitem path="/ui/tasks">
-                                Tasks
-                            </Sidebar.Subitem>
-                            <Sidebar.Subitem path="/ui/store">
-                                Store
-                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/tasks">Tasks</Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/store">Store</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/subscriptions">
                                 Subscriptions
                             </Sidebar.Subitem>
-                            <Sidebar.Item path="/ui/mentions">
-                                Mentions
-                            </Sidebar.Item>
+                            <Sidebar.Item path="/ui/mentions">Mentions</Sidebar.Item>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}
-                <Scaffold.Content
-                    padding={false}
-                    bottomOffset={props.bottomOffset}
-                >
-                    {props.title !== undefined && (
-                        <XHeader text={props.title} />
-                    )}
+                <Scaffold.Content padding={false} bottomOffset={props.bottomOffset}>
+                    {props.title !== undefined && <XHeader text={props.title} />}
                     {props.children}
                 </Scaffold.Content>
             </Scaffold>

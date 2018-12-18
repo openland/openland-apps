@@ -135,8 +135,7 @@ const ImageWrapper = Glamorous.div({
     },
 });
 
-interface MessageUrlAugmentationComponentProps
-    extends MessageFull_urlAugmentation {
+interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentation {
     messageId: string;
     isMe: boolean;
 }
@@ -147,9 +146,7 @@ export class MessageUrlAugmentationComponent extends React.Component<
     private preprocessed: Span[];
     constructor(props: MessageUrlAugmentationComponentProps) {
         super(props);
-        this.preprocessed = props.description
-            ? preprocessText(props.description)
-            : [];
+        this.preprocessed = props.description ? preprocessText(props.description) : [];
     }
     render() {
         let { hostname, title, photo, imageInfo } = this.props;
@@ -169,26 +166,14 @@ export class MessageUrlAugmentationComponent extends React.Component<
                 );
             } else {
                 return (
-                    <span key={'text-' + i}>
-                        {emojify(v.text!!, { style: { height: 18 } })}
-                    </span>
+                    <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>
                 );
             }
         });
 
         let dimensions = undefined;
-        if (
-            photo &&
-            imageInfo &&
-            imageInfo.imageWidth &&
-            imageInfo.imageHeight
-        ) {
-            dimensions = layoutMediaReverse(
-                imageInfo.imageWidth,
-                imageInfo.imageHeight,
-                94,
-                94,
-            );
+        if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
+            dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
         }
 
         let href: string | undefined = this.props.url;
@@ -200,21 +185,13 @@ export class MessageUrlAugmentationComponent extends React.Component<
         }
 
         return (
-            <Container
-                href={href}
-                path={path}
-                onClick={(e: any) => e.stopPropagation()}
-            >
+            <Container href={href} path={path} onClick={(e: any) => e.stopPropagation()}>
                 <ContentWrapper>
                     {hostname && (
                         <Hostname>
                             {this.props.iconRef && (
                                 <Favicon
-                                    src={
-                                        'https://ucarecdn.com/' +
-                                        this.props.iconRef.uuid +
-                                        '/'
-                                    }
+                                    src={'https://ucarecdn.com/' + this.props.iconRef.uuid + '/'}
                                 />
                             )}
                             {!this.props.iconRef && <WebsiteIcon />}
@@ -228,9 +205,7 @@ export class MessageUrlAugmentationComponent extends React.Component<
                     dimensions && (
                         <ImageWrapper>
                             <XCloudImage
-                                srcCloud={
-                                    'https://ucarecdn.com/' + photo.uuid + '/'
-                                }
+                                srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
                                 resize="fill"
                                 width={dimensions.width}
                                 height={dimensions.height}

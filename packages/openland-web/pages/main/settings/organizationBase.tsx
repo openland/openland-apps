@@ -81,27 +81,18 @@ const AdminTools = withSuperAccountActions(props => {
                 defaultData={{
                     input: {
                         activated: props.data && props.data.superAccount.state,
-                        published: (props as any).published
-                            ? 'published'
-                            : 'unpublished',
-                        editorial: (props as any).editorial
-                            ? 'editorial'
-                            : 'noneditorial',
-                        featured: (props as any).featured
-                            ? 'featured'
-                            : 'nonfeatured',
+                        published: (props as any).published ? 'published' : 'unpublished',
+                        editorial: (props as any).editorial ? 'editorial' : 'noneditorial',
+                        featured: (props as any).featured ? 'featured' : 'nonfeatured',
                     },
                 }}
                 defaultAction={async data => {
                     await (props as any).updateOrganizatonMutations({
                         variables: {
                             input: {
-                                alphaPublished:
-                                    data.input.published === 'published',
-                                alphaEditorial:
-                                    data.input.editorial === 'editorial',
-                                alphaFeatured:
-                                    data.input.featured === 'featured',
+                                alphaPublished: data.input.published === 'published',
+                                alphaEditorial: data.input.editorial === 'editorial',
+                                alphaFeatured: data.input.featured === 'featured',
                             },
                         },
                     });
@@ -187,28 +178,21 @@ export const OrganizationSettigs = ((props: any) => {
                                 input: {
                                     name: props.data.organizationProfile.name,
                                     about: props.data.organizationProfile.about,
-                                    photo:
-                                        props.data.organizationProfile.photoRef,
+                                    photo: props.data.organizationProfile.photoRef,
                                     photoRef: sanitizeIamgeRef(
                                         props.data.organizationProfile.photoRef,
                                     ),
-                                    published: props.data.organizationProfile
-                                        .published
+                                    published: props.data.organizationProfile.published
                                         ? 'published'
                                         : 'unpublished',
-                                    editorial: props.data.organizationProfile
-                                        .editorial
+                                    editorial: props.data.organizationProfile.editorial
                                         ? 'editorial'
                                         : 'noneditorial',
 
-                                    website:
-                                        props.data.organizationProfile.website,
-                                    twitter:
-                                        props.data.organizationProfile.twitter,
-                                    facebook:
-                                        props.data.organizationProfile.facebook,
-                                    linkedin:
-                                        props.data.organizationProfile.linkedin,
+                                    website: props.data.organizationProfile.website,
+                                    twitter: props.data.organizationProfile.twitter,
+                                    facebook: props.data.organizationProfile.facebook,
+                                    linkedin: props.data.organizationProfile.linkedin,
                                 },
                             }}
                             defaultAction={async data => {
@@ -218,12 +202,8 @@ export const OrganizationSettigs = ((props: any) => {
                                             name: data.input.name,
                                             about: data.input.about,
                                             photoRef: data.input.photoRef,
-                                            alphaPublished:
-                                                data.input.published ===
-                                                'published',
-                                            alphaEditorial:
-                                                data.input.editorial ===
-                                                'editorial',
+                                            alphaPublished: data.input.published === 'published',
+                                            alphaEditorial: data.input.editorial === 'editorial',
                                             website: data.input.website,
                                             twitter: data.input.twitter,
                                             facebook: data.input.facebook,
@@ -292,30 +272,16 @@ export const OrganizationSettigs = ((props: any) => {
                     <XWithRole role={['super-admin', 'editor']}>
                         <XVertical separator={36}>
                             <XVertical separator={12}>
-                                <CategoryTitle id="super-admin">
-                                    Super admin
-                                </CategoryTitle>
+                                <CategoryTitle id="super-admin">Super admin</CategoryTitle>
                                 <AdminTools
                                     variables={{
-                                        accountId: props.data
-                                            .organizationProfile!!.id,
+                                        accountId: props.data.organizationProfile!!.id,
                                         viaOrgId: true,
                                     }}
-                                    updateOrganizatonMutations={
-                                        props.updateOrganizaton
-                                    }
-                                    published={
-                                        props.data.organizationProfile!!
-                                            .published
-                                    }
-                                    editorial={
-                                        props.data.organizationProfile!!
-                                            .editorial
-                                    }
-                                    featured={
-                                        props.data.organizationProfile!!
-                                            .featured
-                                    }
+                                    updateOrganizatonMutations={props.updateOrganizaton}
+                                    published={props.data.organizationProfile!!.published}
+                                    editorial={props.data.organizationProfile!!.editorial}
+                                    featured={props.data.organizationProfile!!.featured}
                                 />
                             </XVertical>
                         </XVertical>

@@ -125,15 +125,13 @@ const ChatAvatarWrapper = Glamorous.div<{
     backgroundColor: '#ECEEF3',
 }));
 
-const ChatMainLine = Glamorous.div<{ small: boolean; width: number }>(
-    props => ({
-        width: props.width,
-        height: props.small ? 15 : 16,
-        opacity: 0.3,
-        borderRadius: 5,
-        backgroundColor: '#707ea0',
-    }),
-);
+const ChatMainLine = Glamorous.div<{ small: boolean; width: number }>(props => ({
+    width: props.width,
+    height: props.small ? 15 : 16,
+    opacity: 0.3,
+    borderRadius: 5,
+    backgroundColor: '#707ea0',
+}));
 
 const ChatSubLine = Glamorous.div<{ small: boolean; width: number }>(props => ({
     width: props.width,
@@ -160,8 +158,7 @@ const Shadow = Glamorous.div({
     width: '100%',
     height: '100%',
     opacity: 0.6,
-    backgroundImage:
-        'linear-gradient(to bottom, rgba(249, 250, 251, 0), #F9F9F9)',
+    backgroundImage: 'linear-gradient(to bottom, rgba(249, 250, 251, 0), #F9F9F9)',
 });
 
 export const Sidebar = () => {
@@ -180,10 +177,7 @@ export const Sidebar = () => {
                     <RoomIcon />
                 </ChatAvatarWrapper>
                 <XVertical separator={4}>
-                    <ChatMainLine
-                        width={RoomsLineWidth[i].main}
-                        small={false}
-                    />
+                    <ChatMainLine width={RoomsLineWidth[i].main} small={false} />
                     <ChatSubLine width={RoomsLineWidth[i].sub} small={true} />
                 </XVertical>
             </XHorizontal>,
@@ -212,14 +206,8 @@ export const Sidebar = () => {
                         <ListingIcon />
                     </ChatAvatarWrapper>
                     <XVertical separator={5}>
-                        <ChatMainLine
-                            width={ChatsLineWidth[i].main}
-                            small={false}
-                        />
-                        <ChatSubLine
-                            width={ChatsLineWidth[i].sub}
-                            small={false}
-                        />
+                        <ChatMainLine width={ChatsLineWidth[i].main} small={false} />
+                        <ChatSubLine width={ChatsLineWidth[i].sub} small={false} />
                     </XVertical>
                 </XHorizontal>
                 <ChatSmWrapper separator={4}>

@@ -65,18 +65,20 @@ const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data && props.data.roomSuper && (
-                <RoomSetFeatured
-                    val={props.data.roomSuper!.featured}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
-            {props.data && props.data.roomSuper && (
-                <RoomSetHidden
-                    val={props.data.roomSuper!.listed}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetFeatured
+                        val={props.data.roomSuper!.featured}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetHidden
+                        val={props.data.roomSuper!.listed}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -99,9 +101,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                 <HeaderInfo flexGrow={1} separator={3.5}>
                     <HeaderTitle>{chat.title}</HeaderTitle>
                     <XHorizontal separator={3.5}>
-                        <HeaderMembers>
-                            {chat.membersCount} members
-                        </HeaderMembers>
+                        <HeaderMembers>{chat.membersCount} members</HeaderMembers>
                         {/* {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>} */}
                     </XHorizontal>
                 </HeaderInfo>
@@ -109,11 +109,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                     <XButton
                         text={meMember ? 'View' : 'Request invite'}
                         style="primary"
-                        path={
-                            meMember
-                                ? '/mail/' + chat.id
-                                : '/directory/r/' + chat.id
-                        }
+                        path={meMember ? '/mail/' + chat.id : '/directory/r/' + chat.id}
                     />
                     {meMember && (
                         <>
@@ -124,10 +120,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                     <>
                                         <XWithRole
                                             role="super-admin"
-                                            or={
-                                                chat.role === 'OWNER' ||
-                                                chat.role === 'ADMIN'
-                                            }
+                                            or={chat.role === 'OWNER' || chat.role === 'ADMIN'}
                                         >
                                             <XMenuItem
                                                 query={{
@@ -150,10 +143,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                         </XMenuItem>
                                         <XWithRole role="super-admin">
                                             <XMenuItemSeparator />
-                                            <AdminTools
-                                                id={chat.id}
-                                                variables={{ id: chat.id }}
-                                            />
+                                            <AdminTools id={chat.id} variables={{ id: chat.id }} />
                                         </XWithRole>
                                     </>
                                 }
@@ -233,56 +223,40 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description && meAdmin && (
-                <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
-                    <SectionContent>
-                        <AboutPlaceholder
-                            roomId={chat.id}
-                            description={chat.description}
-                            target={
-                                <EditButton text="Add a short description" />
-                            }
-                        />
-                    </SectionContent>
-                </Section>
-            )}
+            {!chat.description &&
+                meAdmin && (
+                    <Section separator={0}>
+                        <XSubHeader title="About" paddingBottom={0} />
+                        <SectionContent>
+                            <AboutPlaceholder
+                                roomId={chat.id}
+                                description={chat.description}
+                                target={<EditButton text="Add a short description" />}
+                            />
+                        </SectionContent>
+                    </Section>
+                )}
         </>
     );
 };
 
-const MemberCard = (props: {
-    member: RoomFull_SharedRoom_members;
-    meOwner: boolean;
-}) => {
+const MemberCard = (props: { member: RoomFull_SharedRoom_members; meOwner: boolean }) => {
     let overflowMenu = (
         <XOverflow
             placement="bottom-end"
             flat={true}
             content={
-                <XMenuItem
-                    style="danger"
-                    query={{ field: 'remove', value: props.member.user.id }}
-                >
+                <XMenuItem style="danger" query={{ field: 'remove', value: props.member.user.id }}>
                     Remove from group
                 </XMenuItem>
             }
         />
     );
-    return (
-        <XUserCard
-            user={props.member.user}
-            customMenu={props.meOwner ? overflowMenu : null}
-        />
-    );
+    return <XUserCard user={props.member.user} customMenu={props.meOwner ? overflowMenu : null} />;
 };
 
 const RequestCard = withRoomMembersMgmt(
-    (props: {
-        member: RoomFull_SharedRoom_requests;
-        meOwner: boolean;
-        roomId: string;
-    }) => {
+    (props: { member: RoomFull_SharedRoom_requests; meOwner: boolean; roomId: string }) => {
         return (
             <XUserCard
                 user={props.member.user}
@@ -326,34 +300,30 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
     let members = props.members;
     if (members && members.length > 0) {
         let tab: 'requests' | 'members' =
-            props.router.query.requests === '1' &&
-            (props.requests || []).length > 0
+            props.router.query.requests === '1' && (props.requests || []).length > 0
                 ? 'requests'
                 : 'members';
         return (
             <Section separator={0}>
-                {props.meOwner && (props.requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item
-                            query={{ field: 'requests' }}
-                            counter={props.members.length}
-                        >
-                            Members
-                        </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={props.requests!.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    </XSwitcher>
-                )}
+                {props.meOwner &&
+                    (props.requests || []).length > 0 && (
+                        <XSwitcher style="button">
+                            <XSwitcher.Item
+                                query={{ field: 'requests' }}
+                                counter={props.members.length}
+                            >
+                                Members
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'requests', value: '1' }}
+                                counter={props.requests!.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        </XSwitcher>
+                    )}
                 {((props.requests || []).length === 0 || !props.meOwner) && (
-                    <XSubHeader
-                        title={'Members'}
-                        counter={members.length}
-                        paddingBottom={0}
-                    />
+                    <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
 
                 <SectionContent>
@@ -366,11 +336,7 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                             />
 
                             {members.map((member, i) => (
-                                <MemberCard
-                                    key={i}
-                                    member={member}
-                                    meOwner={props.meOwner}
-                                />
+                                <MemberCard key={i} member={member} meOwner={props.meOwner} />
                             ))}
                         </>
                     )}
@@ -434,7 +400,7 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
             </OrganizationInfoWrapper>
         </>
     );
-}
+};
 
 const RoomGroupProfileProvider = withRoom(
     withRouter(props => {
@@ -456,10 +422,7 @@ const RoomGroupProfileProvider = withRoom(
     conversationId: string;
 }>;
 
-export const RoomProfile = (props: {
-    conversationId: string;
-    onDirectory?: boolean;
-}) => (
+export const RoomProfile = (props: { conversationId: string; onDirectory?: boolean }) => (
     <RoomGroupProfileProvider
         variables={{ id: props.conversationId }}
         onDirectory={props.onDirectory}

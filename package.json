@@ -255,7 +255,7 @@
         "**/@babel/core": "7.0.0"
     },
     "scripts": {
-        "format-web": "prettier --write \"./packages/openland-web/**/*.tsx\" \"./packages/openland-web/**/*.ts\" \"./packages/openland-web/**/*.js\" \"./*.json\"",
+        "format-web": "prettier --write \"./packages/openland-web/**/*.tsx\" \"./packages/openland-web/**/*.ts\" \"./packages/openland-web/**/*.js\"",
         "dev": "BABEL_ENV=default API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
         "prod:start": "BABEL_ENV=default NODE_ENV=production API_WS_ENDPOINT=\"wss://api.openland.com/api\" API_ENDPOINT=\"https://api.openland.com\" nodemon ./packages/openland-web/server.ts",
         "prod": "yarn bundle && yarn prod:start",

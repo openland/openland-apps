@@ -39,10 +39,7 @@ const CommunitiesCards = withExploreCommunities(props => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <XCommunityCard
-                            key={'_org_card_' + i.node.id}
-                            community={i.node}
-                        />
+                        <XCommunityCard key={'_org_card_' + i.node.id} community={i.node} />
                     ))}
                     <PagePagination
                         pageInfo={props.data.items.pageInfo}
@@ -50,9 +47,7 @@ const CommunitiesCards = withExploreCommunities(props => {
                     />
                 </XContentWrapper>
             )}
-            {noData && (
-                <EmptySearchBlock text="No community matches your search" />
-            )}
+            {noData && <EmptySearchBlock text="No community matches your search" />}
         </>
     );
 }) as React.ComponentType<CommunitiesCardsProps>;
@@ -164,12 +159,8 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     title="All communities"
                                                     right={
                                                         <SortPicker
-                                                            sort={
-                                                                this.state.sort
-                                                            }
-                                                            onPick={
-                                                                this.changeSort
-                                                            }
+                                                            sort={this.state.sort}
+                                                            onPick={this.changeSort}
                                                         />
                                                     }
                                                 />
@@ -181,36 +172,23 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                         counter={orgCount}
                                                         right={
                                                             <SortPicker
-                                                                sort={
-                                                                    this.state
-                                                                        .sort
-                                                                }
-                                                                onPick={
-                                                                    this
-                                                                        .changeSort
-                                                                }
+                                                                sort={this.state.sort}
+                                                                onPick={this.changeSort}
                                                             />
                                                         }
                                                     />
                                                 )}
                                             <Communities
-                                                featuredFirst={
-                                                    this.state.sort.featured
-                                                }
+                                                featuredFirst={this.state.sort.featured}
                                                 query={this.state.query}
-                                                orderBy={
-                                                    this.state.sort.orderBy
-                                                }
+                                                orderBy={this.state.sort.orderBy}
                                                 tagsCount={this.tagsCount}
                                             />
                                         </Results>
                                     </XVertical>
                                 )}
                                 {oid && (
-                                    <OrganizationProfile
-                                        organizationId={oid}
-                                        onDirectory={true}
-                                    />
+                                    <OrganizationProfile organizationId={oid} onDirectory={true} />
                                 )}
                             </Container>
                         </RootWrapper>

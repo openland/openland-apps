@@ -8,18 +8,9 @@ import {
     RoomEditMessageMutation,
 } from 'openland-api';
 
-export const withReplyMessage = graphqlMutation(
-    ReplyMessageMutation,
-    'replyMessage',
-);
-export const withEditMessage = graphqlMutation(
-    RoomEditMessageMutation,
-    'editMessage',
-);
-export const withSaveDraftMessage = graphqlMutation(
-    SaveDraftMessageMutation,
-    'saveDraft',
-);
+export const withReplyMessage = graphqlMutation(ReplyMessageMutation, 'replyMessage');
+export const withEditMessage = graphqlMutation(RoomEditMessageMutation, 'editMessage');
+export const withSaveDraftMessage = graphqlMutation(SaveDraftMessageMutation, 'saveDraft');
 export const withGetDraftMessage = graphqlRouted(GetDraftMessageQuery, {
     fetchPolicy: 'network-only',
 });

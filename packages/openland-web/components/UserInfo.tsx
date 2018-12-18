@@ -44,9 +44,7 @@ export class UserInfoProvider
 
     getChildContext() {
         let hasUser = this.props.user !== null && this.props.user !== undefined;
-        let hasAccount =
-            this.props.organization !== null &&
-            this.props.organization !== undefined;
+        let hasAccount = this.props.organization !== null && this.props.organization !== undefined;
         // Where to put this?
         if (this.props.user) {
             trackProfile(
@@ -61,8 +59,7 @@ export class UserInfoProvider
             user: hasUser ? this.props.user : null,
             organization: hasAccount ? this.props.organization : null,
             isLoggedIn: this.props.sessionState.isLoggedIn,
-            isProfileCreated:
-                this.props.sessionState.isProfileCreated && hasUser,
+            isProfileCreated: this.props.sessionState.isProfileCreated && hasUser,
             isAccountExists: this.props.sessionState.isAccountExists,
             isAccountPicked: this.props.sessionState.isAccountPicked,
             isActivated: this.props.sessionState.isAccountActivated && hasUser,
@@ -103,8 +100,7 @@ class UserInfoReceiver extends React.Component<{
 
     render() {
         var user = this.context.user as Types.UserShort | null;
-        var organization = this.context
-            .organization as Types.OrganizationShort | null;
+        var organization = this.context.organization as Types.OrganizationShort | null;
         var isLoggedIn = this.context.isLoggedIn as boolean;
         var isActivated = this.context.isActivated as boolean;
         var isProfileCreated = this.context.isProfileCreated as boolean;
@@ -131,9 +127,7 @@ class UserInfoReceiver extends React.Component<{
 }
 
 export function withUserInfo<P>(
-    WrappedComponent: React.ComponentType<
-        P & UserInfoComponentProps & XWithRouter
-    >,
+    WrappedComponent: React.ComponentType<P & UserInfoComponentProps & XWithRouter>,
 ): React.ComponentType<P> {
     return withRouter<P>(props => {
         return <UserInfoReceiver render={WrappedComponent} {...props} />;

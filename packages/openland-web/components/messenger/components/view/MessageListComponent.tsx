@@ -4,30 +4,14 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from './MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import {
-    ModelMessage,
-    isServerMessage,
-} from 'openland-engines/messenger/types';
+import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../MessengerRootComponent';
 
-let months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-];
+let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 function dateFormat(date: number) {
     let now = new Date();
@@ -104,9 +88,7 @@ const getScrollView = () => {
 
 let lastMessageId = '';
 
-export class MessageListComponent extends React.PureComponent<
-    MessageListProps
-    > {
+export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
@@ -157,8 +139,7 @@ export class MessageListComponent extends React.PureComponent<
     isEmpty = () => {
         return (
             this.props.conversation.historyFullyLoaded &&
-            this.props.messages.filter(m => m.message && !(m as any).isService)
-                .length < 1
+            this.props.messages.filter(m => m.message && !(m as any).isService).length < 1
         );
     };
 
@@ -232,12 +213,7 @@ export class MessageListComponent extends React.PureComponent<
                         sender={m.sender as any}
                         message={m}
                         conversation={this.props.conversation}
-                        out={
-                            !!(
-                                this.props.me &&
-                                this.props.me.id === m.sender.id
-                            )
-                        }
+                        out={!!(this.props.me && this.props.me.id === m.sender.id)}
                         me={this.props.me}
                         conversationType={this.props.conversationType}
                         conversationId={this.props.conversationId}
@@ -248,10 +224,7 @@ export class MessageListComponent extends React.PureComponent<
                 messages.push(
                     <MessageComponent
                         key={'pending-' + m.key}
-                        compact={shouldCompact(
-                            this.props.conversation.engine.user.id,
-                            date,
-                        )}
+                        compact={shouldCompact(this.props.conversation.engine.user.id, date)}
                         sender={this.props.conversation.engine.user}
                         message={m}
                         conversation={this.props.conversation}
@@ -265,9 +238,7 @@ export class MessageListComponent extends React.PureComponent<
             }
         }
 
-        let serverMessages = this.props.messages.filter(m =>
-            isServerMessage(m),
-        );
+        let serverMessages = this.props.messages.filter(m => isServerMessage(m));
         let lastMessage = serverMessages[0];
 
         lastMessageId = '';
@@ -305,9 +276,7 @@ export class MessageListComponent extends React.PureComponent<
                         onResize={this.resizeHandler}
                     >
                         <XScrollViewReversed ref={this.scroller}>
-                            <MessagesWrapper empty={this.isEmpty()}>
-                                {messages}
-                            </MessagesWrapper>
+                            <MessagesWrapper empty={this.isEmpty()}>{messages}</MessagesWrapper>
                         </XScrollViewReversed>
                     </XResizeDetector>
                 )}

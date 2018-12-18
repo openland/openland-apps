@@ -11,18 +11,11 @@ import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
-import {
-    XMenuItem,
-    XMenuVertical,
-    XMenuItemSeparator,
-} from 'openland-x/XMenuItem';
+import { XMenuItem, XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
-import {
-    InvitesToOrganizationModal,
-    InvitesGlobalModal,
-} from '../pages/main/settings/invites';
+import { InvitesToOrganizationModal, InvitesGlobalModal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
@@ -78,7 +71,6 @@ const Logo = () => (
     <XView
         as="a"
         path="/"
-
         marginTop={0}
         marginBottom={11}
         alignSelf="center"
@@ -97,7 +89,7 @@ const Logo = () => (
     </XView>
 );
 
-const NavigationDivider = (props: { position: "top" | "bottom" }) => {
+const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
     if (props.position === 'top') {
         return (
             <XView
@@ -123,7 +115,7 @@ const NavigationDivider = (props: { position: "top" | "bottom" }) => {
             />
         );
     }
-}
+};
 
 interface NavigatorItemProps {
     path?: string;
@@ -135,7 +127,7 @@ class NavigatorItem extends React.Component<NavigatorItemProps> {
     // It uses class instead stateless function by reason:
     // XPopper. Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.
 
-    render () {
+    render() {
         return (
             <XView
                 as="a"
@@ -148,10 +140,8 @@ class NavigatorItem extends React.Component<NavigatorItemProps> {
                 flexShrink={0}
                 cursor="pointer"
                 color="#b4b8bd"
-        
                 selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
                 hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
-        
                 linkSelectable={this.props.path ? true : undefined}
                 linkStrict={this.props.path ? true : undefined}
                 path={this.props.path}
@@ -171,14 +161,13 @@ const CounterWrapper = (props: { count: number }) => (
         borderWidth={2}
         borderColor="#f6f6f6"
         borderRadius={8}
-
         selectedBorderColor="#ececec"
     >
         <XCounter count={props.count} />
     </XView>
-)
+);
 
-const BottomNavigation = (props: { children?: any}) => (
+const BottomNavigation = (props: { children?: any }) => (
     <XView
         flexDirection="column"
         justifyContent="flex-end"
@@ -188,7 +177,7 @@ const BottomNavigation = (props: { children?: any}) => (
     >
         {props.children}
     </XView>
-)
+);
 
 interface TitleContainerProps {
     id: string;
@@ -208,17 +197,11 @@ const TitleContainer = (props: TitleContainerProps) => (
         paddingLeft={18}
         color="rgba(0, 0, 0, 0.5)"
         flexDirection="row"
-
         hoverBackgroundColor="rgba(23, 144, 255, 0.05)"
         hoverColor="#1790ff"
-
         path={props.path}
     >
-        <XAvatar2
-            title={props.title}
-            id={props.id}
-            src={props.src}
-        />
+        <XAvatar2 title={props.title} id={props.id} src={props.src} />
         <XView paddingLeft={14}>
             <XView
                 fontSize={15}
@@ -232,11 +215,7 @@ const TitleContainer = (props: TitleContainerProps) => (
             >
                 {props.title}
             </XView>
-            <XView
-                fontSize={14}
-                lineHeight="20px"
-                marginTop={1}
-            >
+            <XView fontSize={14} lineHeight="20px" marginTop={1}>
                 {props.subtitle}
             </XView>
         </XView>
@@ -318,9 +297,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 subtitle={TextGlobal.editProfile}
                                 path="/settings/profile"
                             />
-                            <XMenuItem path="/settings/profile">
-                                {TextGlobal.settings}
-                            </XMenuItem>
+                            <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem
                                 query={{
                                     field: 'invite_global',
@@ -329,16 +306,11 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                             >
                                 {TextGlobal.joinOpenland}
                             </XMenuItem>
-                            <XMenuItem path="/auth/logout">
-                                {TextGlobal.signOut}
-                            </XMenuItem>
+                            <XMenuItem path="/auth/logout">{TextGlobal.signOut}</XMenuItem>
 
                             {primaryOrganization && (
                                 <>
-                                    <XMenuItemSeparator
-                                        marginTop={12}
-                                        marginBottom={8}
-                                    />
+                                    <XMenuItemSeparator marginTop={12} marginBottom={8} />
                                     <TitleContainer
                                         id={primaryOrganization.id}
                                         src={primaryOrganization.photo}
@@ -347,53 +319,50 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                         path={'/directory/o/' + primaryOrganization.id}
                                     />
 
-                                    {organizations && organizations.length > 1 && (
-                                        <XPopper
-                                            placement="right"
-                                            contentContainer={<XMenuVertical />}
-                                            showOnHover={true}
-                                            padding={25}
-                                            marginLeft={8}
-                                            marginBottom={5}
-                                            arrow={null}
-                                            content={
-                                                <OutherOrgWrapepr
-                                                    separator="none"
-                                                    ref={this.onInner}
-                                                    maxHeight="90vh"
-                                                >
-                                                    {organizations
-                                                        .sort((a, b) =>
-                                                            a.name.localeCompare(
-                                                                b.name,
-                                                            ),
-                                                        )
-                                                        .map((org, index) =>
-                                                            index >= 0 ? (
-                                                                <XMenuItem
-                                                                    path={
-                                                                        (org.isCommunity
-                                                                            ? '/directory/c/'
-                                                                            : '/directory/o/') +
-                                                                        org.id
-                                                                    }
-                                                                    key={
-                                                                        'other-' +
-                                                                        org.id
-                                                                    }
-                                                                >
-                                                                    {org.name}
-                                                                </XMenuItem>
-                                                            ) : null,
-                                                        )}
-                                                </OutherOrgWrapepr>
-                                            }
-                                        >
-                                            <XMenuItem iconRight="x-right">
-                                                Other organizations
-                                            </XMenuItem>
-                                        </XPopper>
-                                    )}
+                                    {organizations &&
+                                        organizations.length > 1 && (
+                                            <XPopper
+                                                placement="right"
+                                                contentContainer={<XMenuVertical />}
+                                                showOnHover={true}
+                                                padding={25}
+                                                marginLeft={8}
+                                                marginBottom={5}
+                                                arrow={null}
+                                                content={
+                                                    <OutherOrgWrapepr
+                                                        separator="none"
+                                                        ref={this.onInner}
+                                                        maxHeight="90vh"
+                                                    >
+                                                        {organizations
+                                                            .sort((a, b) =>
+                                                                a.name.localeCompare(b.name),
+                                                            )
+                                                            .map(
+                                                                (org, index) =>
+                                                                    index >= 0 ? (
+                                                                        <XMenuItem
+                                                                            path={
+                                                                                (org.isCommunity
+                                                                                    ? '/directory/c/'
+                                                                                    : '/directory/o/') +
+                                                                                org.id
+                                                                            }
+                                                                            key={'other-' + org.id}
+                                                                        >
+                                                                            {org.name}
+                                                                        </XMenuItem>
+                                                                    ) : null,
+                                                            )}
+                                                    </OutherOrgWrapepr>
+                                                }
+                                            >
+                                                <XMenuItem iconRight="x-right">
+                                                    Other organizations
+                                                </XMenuItem>
+                                            </XPopper>
+                                        )}
                                 </>
                             )}
                         </XVertical>
@@ -401,11 +370,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                 }
             >
                 <div onClick={this.switch}>
-                    <XAvatar2
-                        src={this.props.picture}
-                        title={this.props.name}
-                        id={this.props.id}
-                    />
+                    <XAvatar2 src={this.props.picture} title={this.props.name} id={this.props.id} />
                 </div>
             </XPopper>
         );
@@ -532,9 +497,7 @@ class AddMenu extends React.Component<{}, { show?: boolean }> {
         let AddListingContent = withUserInfo(props => {
             return (
                 <>
-                    <XMenuItem
-                        query={{ field: 'createOrganization', value: 'true' }}
-                    >
+                    <XMenuItem query={{ field: 'createOrganization', value: 'true' }}>
                         {TextGlobal.addOrganization}
                     </XMenuItem>
                     <XMenuItem
@@ -594,12 +557,8 @@ class AdminMenu extends React.Component<{}, { show?: boolean }> {
                     <XMenuItem href="https://logs.openland.io/app/kibana#/dashboard/3ca91120-f946-11e8-aa74-4b89079261c0?_g=(filters%3A!(('%24state'%3A(store%3AglobalState)%2Cmeta%3A(alias%3A'test%20acccs%20(hl)'%2Cdisabled%3A!f%2Cindex%3Ab3bf80a0-db87-11e8-9410-7338f67f9eca%2Ckey%3Abody.uid%2Cnegate%3A!t%2Cparams%3A!('4'%2C'101'%2C'21'%2C'1002'%2C'31'%2C'40')%2Ctype%3Aphrases%2Cvalue%3A'4%2C%20101%2C%2021%2C%201%2C002%2C%2031%2C%2040')%2Cquery%3A(bool%3A(minimum_should_match%3A1%2Cshould%3A!((match_phrase%3A(body.uid%3A'4'))%2C(match_phrase%3A(body.uid%3A'101'))%2C(match_phrase%3A(body.uid%3A'21'))%2C(match_phrase%3A(body.uid%3A'1002'))%2C(match_phrase%3A(body.uid%3A'31'))%2C(match_phrase%3A(body.uid%3A'40'))))))%2C('%24state'%3A(store%3AglobalState)%2Cmeta%3A(alias%3A'test%20accs%20(msgs)'%2Cdisabled%3A!f%2Cindex%3Ac91953d0-f6f9-11e8-aa74-4b89079261c0%2Ckey%3Auid%2Cnegate%3A!t%2Cparams%3A!('5'%2C'101'%2C'21'%2C'1002'%2C'31'%2C'40')%2Ctype%3Aphrases%2Cvalue%3A'5%2C%20101%2C%2021%2C%201%2C002%2C%2031%2C%2040')%2Cquery%3A(bool%3A(minimum_should_match%3A1%2Cshould%3A!((match_phrase%3A(uid%3A'5'))%2C(match_phrase%3A(uid%3A'101'))%2C(match_phrase%3A(uid%3A'21'))%2C(match_phrase%3A(uid%3A'1002'))%2C(match_phrase%3A(uid%3A'31'))%2C(match_phrase%3A(uid%3A'40')))))))%2CrefreshInterval%3A(display%3AOff%2Cpause%3A!f%2Cvalue%3A0)%2Ctime%3A(from%3Anow-30d%2Cmode%3Aquick%2Cto%3Anow))">
                         {TextAppBar.items.stats}
                     </XMenuItem>
-                    <XMenuItem path="/super">
-                        {TextAppBar.items.adminMenu}
-                    </XMenuItem>
-                    <XMenuItem path="/ui">
-                        {TextAppBar.items.xFramework}
-                    </XMenuItem>
+                    <XMenuItem path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
+                    <XMenuItem path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
                 </>
             );
         });
@@ -637,9 +596,10 @@ export const MessengerButton = withNotificationCounter(props => {
             <NavigatorItem path="/mail">
                 <MessagesIcon />
 
-                {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <CounterWrapper count={props.data.counter.unreadCount} />
-                )}
+                {props.data.counter &&
+                    props.data.counter.unreadCount > 0 && (
+                        <CounterWrapper count={props.data.counter.unreadCount} />
+                    )}
             </NavigatorItem>
         </XPopper>
     );
@@ -798,9 +758,7 @@ export class Scaffold extends React.PureComponent {
                             style="dark"
                             padding={-2}
                             groupId="scaffold_tooltip"
-                            content={
-                                <strong>{TextAppBar.items.directory}</strong>
-                            }
+                            content={<strong>{TextAppBar.items.directory}</strong>}
                         >
                             <NavigatorItem path="/directory">
                                 <DirecoryIcon />
@@ -815,9 +773,7 @@ export class Scaffold extends React.PureComponent {
                                 style="dark"
                                 padding={-2}
                                 groupId="scaffold_tooltip"
-                                content={
-                                    <strong>{TextAppBar.items.feed}</strong>
-                                }
+                                content={<strong>{TextAppBar.items.feed}</strong>}
                             >
                                 <NavigatorItem path="/feed">
                                     <RoomIcon />
@@ -827,9 +783,7 @@ export class Scaffold extends React.PureComponent {
 
                         <BottomNavigation>
                             <AddMenu />
-                            <XWithRole
-                                role={['super-admin', 'software-developer']}
-                            >
+                            <XWithRole role={['super-admin', 'software-developer']}>
                                 <AdminMenu />
                             </XWithRole>
                             <NavigationDivider position="bottom" />
@@ -844,12 +798,7 @@ export class Scaffold extends React.PureComponent {
         );
 
         return (
-            <XView
-                flexDirection="row"
-                minWidth={800}
-                flexGrow={1}
-                flexBasis={0}
-            >
+            <XView flexDirection="row" minWidth={800} flexGrow={1} flexBasis={0}>
                 {contentView}
                 {menuView}
 

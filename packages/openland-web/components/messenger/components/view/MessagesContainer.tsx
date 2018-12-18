@@ -47,9 +47,7 @@ const styleInner = css`
 export const MessagesContainer = (props: { children?: any }) => {
     return (
         <div className={styleContainer}>
-            <div className={'messages-wrapper ' + styleInner}>
-                {props.children}
-            </div>
+            <div className={'messages-wrapper ' + styleInner}>{props.children}</div>
         </div>
     );
 };

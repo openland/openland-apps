@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 
-export const MessageSelector = React.memo<{ selected: boolean, onClick: () => void }>((props) => {
+export const MessageSelector = React.memo<{
+    selected: boolean;
+    onClick: () => void;
+}>(props => {
     if (props.selected) {
         return (
             <XView
@@ -21,7 +24,7 @@ export const MessageSelector = React.memo<{ selected: boolean, onClick: () => vo
                     backgroundImage="url('/static/img/icons/check-form.svg')"
                 />
             </XView>
-        )
+        );
     } else {
         return (
             <XView

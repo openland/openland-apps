@@ -121,10 +121,7 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = (props: SidebarItemProps) => (
-    <SidebarItemWrapper
-        path={props.path}
-        className={props.active ? 'is-active' : ''}
-    >
+    <SidebarItemWrapper path={props.path} className={props.active ? 'is-active' : ''}>
         <div className="icon-wrapper">
             {props.icon === 'rooms' && <RoomIcon />}
             {props.icon === 'people' && <PeopleIcon />}
@@ -224,11 +221,7 @@ export const Sidebar = (props: { active?: string }) => (
             <NewButton />
         </SidebarHeader>
         <XVertical separator={0}>
-            <SidebarItem
-                path="/directory"
-                icon="rooms"
-                active={props.active === 'rooms'}
-            />
+            <SidebarItem path="/directory" icon="rooms" active={props.active === 'rooms'} />
             <SidebarItem
                 path="/directory/people"
                 icon="people"

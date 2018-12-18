@@ -17,25 +17,13 @@ export default withApp('UI Framework - Checkboxes', 'viewer', props => {
                         <XCheckbox label="Default" />
                         <XCheckbox label="Checked" checked={true} />
                         <XCheckbox label="Disabled" disabled={true} />
-                        <XCheckbox
-                            label="Disabled checked"
-                            disabled={true}
-                            checked={true}
-                        />
+                        <XCheckbox label="Disabled checked" disabled={true} checked={true} />
                     </XHorizontal>
                     <XTitle>Rounded</XTitle>
                     <XHorizontal>
                         <XCheckbox rounded={true} label="Default" />
-                        <XCheckbox
-                            rounded={true}
-                            label="Checked"
-                            checked={true}
-                        />
-                        <XCheckbox
-                            rounded={true}
-                            label="Disabled"
-                            disabled={true}
-                        />
+                        <XCheckbox rounded={true} label="Checked" checked={true} />
+                        <XCheckbox rounded={true} label="Disabled" disabled={true} />
                         <XCheckbox
                             rounded={true}
                             label="Disabled checked"
@@ -46,25 +34,13 @@ export default withApp('UI Framework - Checkboxes', 'viewer', props => {
                     <XTitle>Loading</XTitle>
                     <XHorizontal>
                         <XCheckbox label="Default" loading={true} />
-                        <XCheckbox
-                            rounded={true}
-                            label="Default"
-                            loading={true}
-                        />
+                        <XCheckbox rounded={true} label="Default" loading={true} />
                     </XHorizontal>
                     <XTitle>Switchers</XTitle>
                     <XHorizontal>
                         <XCheckbox label="Default" switcher={true} />
-                        <XCheckbox
-                            label="Checked"
-                            switcher={true}
-                            checked={true}
-                        />
-                        <XCheckbox
-                            label="Disabled"
-                            switcher={true}
-                            disabled={true}
-                        />
+                        <XCheckbox label="Checked" switcher={true} checked={true} />
+                        <XCheckbox label="Disabled" switcher={true} disabled={true} />
                         <XCheckbox
                             label="Disabled checked"
                             switcher={true}

@@ -39,10 +39,7 @@ const CommunitiesCards = withExplorePeople(props => {
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
                     {props.data.items.edges.map((i, j) => (
-                        <XUserCard
-                            key={'_org_card_' + i.node.id}
-                            user={i.node}
-                        />
+                        <XUserCard key={'_org_card_' + i.node.id} user={i.node} />
                     ))}
                     <PagePagination
                         pageInfo={props.data.items.pageInfo}
@@ -50,9 +47,7 @@ const CommunitiesCards = withExplorePeople(props => {
                     />
                 </XContentWrapper>
             )}
-            {noData && (
-                <EmptySearchBlock text="No people matches your search" />
-            )}
+            {noData && <EmptySearchBlock text="No people matches your search" />}
         </>
     );
 }) as React.ComponentType<CommunitiesCardsProps>;
@@ -160,15 +155,9 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     title="All people"
                                                     right={
                                                         <SortPicker
-                                                            sort={
-                                                                this.state.sort
-                                                            }
-                                                            onPick={
-                                                                this.changeSort
-                                                            }
-                                                            withoutFeatured={
-                                                                true
-                                                            }
+                                                            sort={this.state.sort}
+                                                            onPick={this.changeSort}
+                                                            withoutFeatured={true}
                                                         />
                                                     }
                                                 />
@@ -180,40 +169,23 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                         counter={orgCount}
                                                         right={
                                                             <SortPicker
-                                                                sort={
-                                                                    this.state
-                                                                        .sort
-                                                                }
-                                                                onPick={
-                                                                    this
-                                                                        .changeSort
-                                                                }
-                                                                withoutFeatured={
-                                                                    true
-                                                                }
+                                                                sort={this.state.sort}
+                                                                onPick={this.changeSort}
+                                                                withoutFeatured={true}
                                                             />
                                                         }
                                                     />
                                                 )}
                                             <Communities
-                                                featuredFirst={
-                                                    this.state.sort.featured
-                                                }
+                                                featuredFirst={this.state.sort.featured}
                                                 searchText={this.state.query}
-                                                orderBy={
-                                                    this.state.sort.orderBy
-                                                }
+                                                orderBy={this.state.sort.orderBy}
                                                 tagsCount={this.tagsCount}
                                             />
                                         </Results>
                                     </XVertical>
                                 )}
-                                {uid && (
-                                    <UserProfile
-                                        userId={uid}
-                                        onDirectory={true}
-                                    />
-                                )}
+                                {uid && <UserProfile userId={uid} onDirectory={true} />}
                             </Container>
                         </RootWrapper>
                     </Scaffold.Content>

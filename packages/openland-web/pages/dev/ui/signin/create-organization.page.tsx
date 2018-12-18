@@ -64,14 +64,7 @@ export default () => (
                         </RoomSignupContainer>
                     );
                 } else {
-                    const {
-                        headerStyle,
-                        signin,
-                        text,
-                        path,
-                        linkText,
-                        ...other
-                    } = branchProps;
+                    const { headerStyle, signin, text, path, linkText, ...other } = branchProps;
 
                     return (
                         <WebSignUpContainer

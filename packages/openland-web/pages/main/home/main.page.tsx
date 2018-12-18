@@ -61,21 +61,15 @@ export default withApp(
                         <Container>
                             <ContainerInner>
                                 <XVertical>
-                                    <ContainerTitle>
-                                        Welcome to Openland!
-                                    </ContainerTitle>
+                                    <ContainerTitle>Welcome to Openland!</ContainerTitle>
                                     <HyperButton path="/settings/profile">
                                         Complete Your Profile
                                     </HyperButton>
                                     <HyperButton path="/settings/invites">
                                         Invite partners
                                     </HyperButton>
-                                    <HyperButton>
-                                        Publish Opportunity
-                                    </HyperButton>
-                                    <HyperButton>
-                                        Find Opportunities
-                                    </HyperButton>
+                                    <HyperButton>Publish Opportunity</HyperButton>
+                                    <HyperButton>Find Opportunities</HyperButton>
                                 </XVertical>
                             </ContainerInner>
                         </Container>

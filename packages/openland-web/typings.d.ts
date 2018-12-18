@@ -61,10 +61,7 @@ declare module 'mixpanel-browser' {
 }
 
 declare module 'isomorphic-unfetch' {
-    export default function(
-        input: RequestInfo,
-        init?: RequestInit,
-    ): Promise<Response>;
+    export default function(input: RequestInfo, init?: RequestInit): Promise<Response>;
 }
 
 declare module 'deck.gl' {
@@ -162,9 +159,7 @@ declare module 'glamor/server' {
     }
 
     export function renderStatic(fn: () => string): ServerResult;
-    export function renderStaticOptimized(
-        fn: () => string | undefined,
-    ): ServerResult;
+    export function renderStaticOptimized(fn: () => string | undefined): ServerResult;
 }
 
 declare module 'emotion-server' {
@@ -186,9 +181,7 @@ declare module 'markdown' {
 }
 
 declare module 'react-localstorage-hoc' {
-    const ReturnType: (
-        a: React.ComponentClass<any>,
-    ) => React.ComponentClass<any>;
+    const ReturnType: (a: React.ComponentClass<any>) => React.ComponentClass<any>;
     export default ReturnType;
 }
 
@@ -364,9 +357,7 @@ declare module '@mapbox/mapbox-gl-geocoder' {
         listens(type: string): boolean;
 
         onAdd(map: any): any;
-        setProximity(
-            location: { latitude: number; longitude: number } | null,
-        ): void;
+        setProximity(location: { latitude: number; longitude: number } | null): void;
     }
     export = Geocoder;
 }
@@ -564,10 +555,7 @@ declare module 'draft-js-mention-plugin' {
         online?: boolean;
     };
     function createMentionPlugin(config?: object): any;
-    export function defaultSuggestionsFilter(
-        src: string,
-        arr: object[],
-    ): Array<MentionT>;
+    export function defaultSuggestionsFilter(src: string, arr: object[]): Array<MentionT>;
     export default createMentionPlugin;
 }
 
@@ -597,8 +585,5 @@ declare module 'react-native-extra-dimensions-android' {
 }
 
 declare module 'react-navigation-material-bottom-tabs' {
-    export function createMaterialBottomTabNavigator(
-        arg1: any,
-        arg2?: any,
-    ): any;
+    export function createMaterialBottomTabNavigator(arg1: any, arg2?: any): any;
 }

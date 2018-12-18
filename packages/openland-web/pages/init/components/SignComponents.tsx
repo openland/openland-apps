@@ -49,104 +49,94 @@ const ErrorText = Glamorous.div({
     marginLeft: '17px',
 });
 
-const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
-    [
-        props => ({
-            display: 'block',
-            width: '100%',
-            height: 48,
-            transition: 'all .15s ease',
-            backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>([
+    props => ({
+        display: 'block',
+        width: '100%',
+        height: 48,
+        transition: 'all .15s ease',
+        backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+        color: props.primary ? '#fff' : '#334562',
+        borderRadius: props.rounded ? 24 : 6,
+        border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
+        '&:hover': {
             color: props.primary ? '#fff' : '#334562',
-            borderRadius: props.rounded ? 24 : 6,
-            border: props.primary
-                ? 'solid 1px transparent'
-                : 'solid 1px #dcdee4',
-            '&:hover': {
-                color: props.primary ? '#fff' : '#334562',
-                backgroundColor: props.primary ? '#7159f9' : '#f3f3f5',
+            backgroundColor: props.primary ? '#7159f9' : '#f3f3f5',
+        },
+        '&:focus': {
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
+        '&:active': {
+            color: props.primary ? '#fff' : '#1790ff',
+            backgroundColor: props.primary ? '#1790ff' : '#eeecfa',
+        },
+        '& span': {
+            fontSize: 18,
+            fontWeight: 500,
+            letterSpacing: 0.6,
+            lineHeight: 1.11,
+        },
+        '& svg': {
+            width: 20,
+            height: 20,
+            marginRight: 8,
+        },
+        '&.email': {
+            '& svg': {
+                width: 23,
+                height: 23,
+                marginRight: 7,
             },
-            '&:focus': {
-                boxShadow:
-                    '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+            '& svg path': {
+                transition: 'all .15s',
             },
             '&:active': {
-                color: props.primary ? '#fff' : '#1790ff',
-                backgroundColor: props.primary ? '#1790ff' : '#eeecfa',
-            },
-            '& span': {
-                fontSize: 18,
-                fontWeight: 500,
-                letterSpacing: 0.6,
-                lineHeight: 1.11,
-            },
-            '& svg': {
-                width: 20,
-                height: 20,
-                marginRight: 8,
-            },
-            '&.email': {
-                '& svg': {
-                    width: 23,
-                    height: 23,
-                    marginRight: 7,
-                },
-                '& svg path': {
-                    transition: 'all .15s',
-                },
-                '&:active': {
-                    '& svg path:first-child': {
-                        fill: '#1790ff',
-                    },
+                '& svg path:first-child': {
+                    fill: '#1790ff',
                 },
             },
-        }),
-        props =>
-            props.rounded
-                ? {
-                      height: 44,
-                      borderRadius: 20,
-                      backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+        },
+    }),
+    props =>
+        props.rounded
+            ? {
+                  height: 44,
+                  borderRadius: 20,
+                  backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+                  color: props.primary ? '#ffffff' : '#334562',
+                  border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
+                  '&:hover': {
                       color: props.primary ? '#ffffff' : '#334562',
-                      border: props.primary
-                          ? 'solid 1px transparent'
-                          : 'solid 1px #dcdee4',
-                      '&:hover': {
-                          color: props.primary ? '#ffffff' : '#334562',
-                          backgroundColor: props.primary
-                              ? '#45a6ff'
-                              : '#f3f3f5',
+                      backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
+                  },
+                  '&:active': {
+                      color: props.primary ? '#ffffff' : '#1790ff',
+                      backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
+                  },
+                  '& span': {
+                      fontSize: 16,
+                      fontWeight: 500,
+                      letterSpacing: -0.4,
+                      lineHeight: '16px',
+                  },
+                  '& svg': {
+                      marginRight: 9,
+                      marginLeft: -2,
+                  },
+                  '&.email': {
+                      '& svg': {
+                          margin: '1px 7px -1px -2px',
                       },
                       '&:active': {
-                          color: props.primary ? '#ffffff' : '#1790ff',
-                          backgroundColor: props.primary
-                              ? '#117fe4'
-                              : 'rgba(23, 144, 255, 0.05)',
-                      },
-                      '& span': {
-                          fontSize: 16,
-                          fontWeight: 500,
-                          letterSpacing: -0.4,
-                          lineHeight: '16px',
-                      },
-                      '& svg': {
-                          marginRight: 9,
-                          marginLeft: -2,
-                      },
-                      '&.email': {
-                          '& svg': {
-                              margin: '1px 7px -1px -2px',
-                          },
-                          '&:active': {
-                              '& svg path:first-child': {
-                                  fill: '#1790ff',
-                              },
+                          '& svg path:first-child': {
+                              fill: '#1790ff',
                           },
                       },
-                  }
-                : {},
-    ],
-);
+                  },
+              }
+            : {},
+]);
 
 const ButtonChildren = Glamorous.div({
     width: '100%',
@@ -350,33 +340,25 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
     };
 });
 
-const MainContentInner = Glamorous.div<{ pageMode: PageModeT }>(
-    ({ pageMode }) => {
-        if (pageMode === 'CreateProfile') {
-            return {};
-        }
-        return {
-            position: 'absolute',
-            top: '35%',
-            left: 0,
-            right: 0,
-        };
-    },
-);
+const MainContentInner = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
+    if (pageMode === 'CreateProfile') {
+        return {};
+    }
+    return {
+        position: 'absolute',
+        top: '35%',
+        left: 0,
+        right: 0,
+    };
+});
 
 export const WebSignUpContainer = (props: SignContainerProps) => {
     return (
         <RootContainer>
             <LeftContainer>
-                <Header
-                    text={props.text}
-                    path={props.path}
-                    linkText={props.linkText}
-                />
+                <Header text={props.text} path={props.path} linkText={props.linkText} />
                 <MainContent pageMode={props.pageMode}>
-                    <MainContentInner pageMode={props.pageMode}>
-                        {props.children}
-                    </MainContentInner>
+                    <MainContentInner pageMode={props.pageMode}>{props.children}</MainContentInner>
                 </MainContent>
                 <Footer>
                     {props.showTerms ? (
@@ -392,9 +374,7 @@ export const WebSignUpContainer = (props: SignContainerProps) => {
                             .
                         </FooterText>
                     ) : (
-                        <FooterText>
-                            © {new Date().getFullYear()} Openland
-                        </FooterText>
+                        <FooterText>© {new Date().getFullYear()} Openland</FooterText>
                     )}
                 </Footer>
             </LeftContainer>
@@ -486,8 +466,7 @@ const RoomSignupHeader = Glamorous.div<{
             ? {
                   backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
                   '&:before': {
-                      background:
-                          'url(/static/X/signup/header-sign.png) no-repeat',
+                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
                       backgroundImage:
                           '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
                       backgroundSize: '100% auto',
@@ -499,8 +478,7 @@ const RoomSignupHeader = Glamorous.div<{
             ? {
                   backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
                   '&:before': {
-                      background:
-                          'url(/static/X/signup/header-sign.png) no-repeat',
+                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
                       backgroundImage:
                           '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
                       backgroundSize: '100% auto',
@@ -512,8 +490,7 @@ const RoomSignupHeader = Glamorous.div<{
             ? {
                   backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
                   '&:before': {
-                      background:
-                          'url(/static/X/signup/header-profile.png) no-repeat',
+                      background: 'url(/static/X/signup/header-profile.png) no-repeat',
                       backgroundImage:
                           '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
                       backgroundSize: '100% auto',
@@ -525,8 +502,7 @@ const RoomSignupHeader = Glamorous.div<{
             ? {
                   backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
                   '&:before': {
-                      background:
-                          'url(/static/X/signup/header-organization.png) no-repeat',
+                      background: 'url(/static/X/signup/header-organization.png) no-repeat',
                       backgroundImage:
                           '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
                       backgroundSize: '100% auto',
@@ -544,9 +520,7 @@ interface RoomSignupContainerProps {
     children?: any;
 }
 
-export class RoomSignupContainer extends React.Component<
-    RoomSignupContainerProps
-> {
+export class RoomSignupContainer extends React.Component<RoomSignupContainerProps> {
     render() {
         const props = this.props;
 
@@ -555,15 +529,11 @@ export class RoomSignupContainer extends React.Component<
                 {props.text && (
                     <RoomToggler>
                         <RoomTogglerText>{props.text}</RoomTogglerText>
-                        <RoomTogglerLink path={props.path}>
-                            {props.linkText}
-                        </RoomTogglerLink>
+                        <RoomTogglerLink path={props.path}>{props.linkText}</RoomTogglerLink>
                     </RoomToggler>
                 )}
                 <RoomSignupBox>
-                    <RoomSignupHeader
-                        headerStyle={props.headerStyle || 'signin'}
-                    />
+                    <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
                     {props.children}
                 </RoomSignupBox>
             </RoomSignupWrapper>
@@ -614,11 +584,7 @@ const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
     </SeparatorStyle>
 );
 
-const GoogleButton = (props: {
-    onClick: any;
-    rounded?: boolean;
-    text: string;
-}) => {
+const GoogleButton = (props: { onClick: any; rounded?: boolean; text: string }) => {
     return (
         <ImgButton
             dataTestId="google-button"
@@ -645,11 +611,7 @@ const GoogleButton = (props: {
     );
 };
 
-const EmailButton = (props: {
-    onClick: any;
-    rounded?: boolean;
-    text: string;
-}) => {
+const EmailButton = (props: { onClick: any; rounded?: boolean; text: string }) => {
     return (
         <ImgButton
             dataTestId="email-button"
@@ -657,12 +619,7 @@ const EmailButton = (props: {
             className="email"
             rounded={props.rounded}
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <g fill="none" fillRule="evenodd">
                     <path
                         fill="#ADB5C0"
@@ -693,12 +650,8 @@ export const InviteInfoInner = ({
     signin: boolean;
     inviter: { photo: string | null; name: string; id: string };
 }) => {
-    const googleButtonText = signin
-        ? InitTexts.auth.signinGoogle
-        : InitTexts.auth.signupGoogle;
-    const emailText = signin
-        ? InitTexts.auth.signinEmail
-        : InitTexts.auth.signupEmail;
+    const googleButtonText = signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle;
+    const emailText = signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail;
 
     return (
         <div>
@@ -722,22 +675,14 @@ export const InviteInfoInner = ({
                 }}
             >
                 <p>
-                    Openland is a professional messenger designed to support{' '}
-                    <br /> all communication needs of a modern business
+                    Openland is a professional messenger designed to support <br /> all
+                    communication needs of a modern business
                 </p>
             </SubTitle>
             <ButtonsWrapper marginTop={37} width={280}>
-                <GoogleButton
-                    rounded
-                    onClick={loginWithGoogle}
-                    text={googleButtonText}
-                />
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
                 <Separator />
-                <EmailButton
-                    rounded
-                    onClick={loginWithEmail}
-                    text={emailText}
-                />
+                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>
         </div>
     );
@@ -799,17 +744,11 @@ type AuthMechanism = {
     loginWithEmail: Function;
 };
 
-export const RoomAuthMechanism = ({
-    signin,
-    loginWithGoogle,
-    loginWithEmail,
-}: AuthMechanism) => {
+export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: AuthMechanism) => {
     const auth = InitTexts.auth;
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
     const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
-    const googleButtonText = signin
-        ? InitTexts.auth.signinGoogle
-        : InitTexts.auth.signupGoogle;
+    const googleButtonText = signin ? InitTexts.auth.signinGoogle : InitTexts.auth.signupGoogle;
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
@@ -817,30 +756,16 @@ export const RoomAuthMechanism = ({
             <Title roomView={true}>{title}</Title>
             <RoomText>{subTitle}</RoomText>
             <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
-                <GoogleButton
-                    onClick={loginWithGoogle}
-                    text={googleButtonText}
-                    rounded={true}
-                />
+                <GoogleButton onClick={loginWithGoogle} text={googleButtonText} rounded={true} />
                 <Separator marginTop={10} marginBottom={10} />
-                <EmailButton
-                    onClick={loginWithEmail}
-                    text={emailText}
-                    rounded={true}
-                />
+                <EmailButton onClick={loginWithEmail} text={emailText} rounded={true} />
             </ButtonsWrapper>
 
             {!signin && (
                 <RoomTerms>
                     By creating an account you are accepting our{' '}
-                    <XLink href="https://openland.com/terms">
-                        Terms of Service
-                    </XLink>{' '}
-                    and{' '}
-                    <XLink href="https://openland.com/privacy">
-                        Privacy Policy
-                    </XLink>
-                    .
+                    <XLink href="https://openland.com/terms">Terms of Service</XLink> and{' '}
+                    <XLink href="https://openland.com/privacy">Privacy Policy</XLink>.
                 </RoomTerms>
             )}
         </div>
@@ -863,17 +788,9 @@ export const WebSignUpAuthMechanism = ({
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton
-                    rounded
-                    onClick={loginWithGoogle}
-                    text={googleButtonText}
-                />
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
                 <Separator />
-                <EmailButton
-                    rounded
-                    onClick={loginWithEmail}
-                    text={emailText}
-                />
+                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>
         </div>
     );
@@ -1167,8 +1084,7 @@ export const RoomCreateWithEmail = ({
                 input: {
                     email: [
                         {
-                            rule: (value: string) =>
-                                value !== '' && validateEmail(value),
+                            rule: (value: string) => value !== '' && validateEmail(value),
                             errorMessage: InitTexts.auth.emailInvalid,
                         },
                     ],
@@ -1242,8 +1158,7 @@ export const WebSignUpCreateWithEmail = ({
                 input: {
                     email: [
                         {
-                            rule: (value: string) =>
-                                value !== '' && validateEmail(value),
+                            rule: (value: string) => value !== '' && validateEmail(value),
                             errorMessage: InitTexts.auth.emailInvalid,
                         },
                     ],
@@ -1257,9 +1172,7 @@ export const WebSignUpCreateWithEmail = ({
             defaultLayout={false}
         >
             <Title roomView={false}>
-                {signin
-                    ? InitTexts.auth.signinEmail
-                    : InitTexts.auth.signupEmail}
+                {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
             </Title>
             <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280}>
@@ -1322,9 +1235,7 @@ export const CreateProfileFormInner = (props: {
 
     return (
         <div>
-            <MyTitle roomView={roomView}>
-                {InitTexts.create_profile.title}
-            </MyTitle>
+            <MyTitle roomView={roomView}>{InitTexts.create_profile.title}</MyTitle>
             <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280} marginBottom={80}>
                 <XForm
@@ -1339,15 +1250,13 @@ export const CreateProfileFormInner = (props: {
                             firstName: [
                                 {
                                     rule: (value: string) => value !== '',
-                                    errorMessage:
-                                        InitTexts.auth.firstNameIsEmptyError,
+                                    errorMessage: InitTexts.auth.firstNameIsEmptyError,
                                 },
                             ],
                             lastName: [
                                 {
                                     rule: (value: string) => value !== '',
-                                    errorMessage:
-                                        InitTexts.auth.lastNameIsEmptyError,
+                                    errorMessage: InitTexts.auth.lastNameIsEmptyError,
                                 },
                             ],
                         },
@@ -1362,18 +1271,12 @@ export const CreateProfileFormInner = (props: {
                                 field="input.photoRef"
                                 dataTestId="photo"
                                 size="default"
-                                initialUrl={
-                                    prefill ? prefill.picture : undefined
-                                }
+                                initialUrl={prefill ? prefill.picture : undefined}
                             />
 
                             <XView>
                                 <XFormField2 field="input.firstName">
-                                    {({
-                                        showError,
-                                    }: {
-                                        showError: boolean;
-                                    }) => (
+                                    {({ showError }: { showError: boolean }) => (
                                         <>
                                             <XInputWrapper
                                                 invalid={showError}
@@ -1383,9 +1286,7 @@ export const CreateProfileFormInner = (props: {
                                                 dataTestId="first-name"
                                             />
 
-                                            {showError && (
-                                                <XFormError field="input.firstName" />
-                                            )}
+                                            {showError && <XFormError field="input.firstName" />}
                                         </>
                                     )}
                                 </XFormField2>
@@ -1393,11 +1294,7 @@ export const CreateProfileFormInner = (props: {
 
                             <XView>
                                 <XFormField2 field="input.lastName">
-                                    {({
-                                        showError,
-                                    }: {
-                                        showError: boolean;
-                                    }) => (
+                                    {({ showError }: { showError: boolean }) => (
                                         <>
                                             <XInputWrapper
                                                 invalid={showError}
@@ -1406,9 +1303,7 @@ export const CreateProfileFormInner = (props: {
                                                 title="Last name"
                                                 dataTestId="last-name"
                                             />
-                                            {showError && (
-                                                <XFormError field="input.lastName" />
-                                            )}
+                                            {showError && <XFormError field="input.lastName" />}
                                         </>
                                     )}
                                 </XFormField2>
@@ -1543,8 +1438,7 @@ export class CreateOrganizationFormInner extends React.Component<
     filterOptions = (_: any, val: any) => {
         const res = this.getOrganizations().filter(
             ({ label, value }: any) =>
-                (label.includes &&
-                    label.toLowerCase().includes(val.toLowerCase())) ||
+                (label.includes && label.toLowerCase().includes(val.toLowerCase())) ||
                 value === NEW_ORGANIZATION_BUTTON_VALUE,
         );
 
@@ -1557,8 +1451,7 @@ export class CreateOrganizationFormInner extends React.Component<
         }
         const selectedNewOrganization =
             store.readValue('fields.input.name') &&
-            store.readValue('fields.input.name').value ===
-                NEW_ORGANIZATION_BUTTON_VALUE;
+            store.readValue('fields.input.name').value === NEW_ORGANIZATION_BUTTON_VALUE;
         return (
             <div>
                 <XVertical alignItems="center" separator="none">
@@ -1566,10 +1459,7 @@ export class CreateOrganizationFormInner extends React.Component<
                         {({ showError }: { showError: boolean }) => (
                             <>
                                 <div>
-                                    <XHorizontal
-                                        separator="none"
-                                        alignItems="center"
-                                    >
+                                    <XHorizontal separator="none" alignItems="center">
                                         <OrganizationSelector
                                             menuStyle={{ maxHeight: 150 }}
                                             invalid={showError}
@@ -1579,10 +1469,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                             filterOptions={this.filterOptions}
                                             field="input.name"
                                             dataTestId="organization-name"
-                                            title={
-                                                InitTexts.create_organization
-                                                    .name
-                                            }
+                                            title={InitTexts.create_organization.name}
                                             onInputChange={
                                                 ((inputValue: any) => {
                                                     this.setState(
@@ -1590,9 +1477,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                                             inputValue,
                                                         },
                                                         () => {
-                                                            this.props.onPrefixChanges(
-                                                                inputValue,
-                                                            );
+                                                            this.props.onPrefixChanges(inputValue);
                                                         },
                                                     );
                                                 }) as any
@@ -1605,9 +1490,8 @@ export class CreateOrganizationFormInner extends React.Component<
                                         <XPopper
                                             content={
                                                 <InfoText>
-                                                    To register as an
-                                                    individual, simply enter
-                                                    your name
+                                                    To register as an individual, simply enter your
+                                                    name
                                                 </InfoText>
                                             }
                                             showOnHover={true}
@@ -1623,9 +1507,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                 {showError && (
                                     <XFormError
                                         field="input.name"
-                                        fieldErrorComponent={
-                                            OrganizationErrorText
-                                        }
+                                        fieldErrorComponent={OrganizationErrorText}
                                     />
                                 )}
                             </>
@@ -1637,8 +1519,7 @@ export class CreateOrganizationFormInner extends React.Component<
                             style="primary"
                             text={
                                 selectedNewOrganization
-                                    ? InitTexts.create_organization
-                                          .createAndContinue
+                                    ? InitTexts.create_organization.createAndContinue
                                     : InitTexts.create_organization.continue
                             }
                             size="large"
@@ -1656,17 +1537,14 @@ export class CreateOrganizationFormInner extends React.Component<
 
         return (
             <div>
-                <MyTitle roomView={roomView}>
-                    {InitTexts.create_organization.title}
-                </MyTitle>
+                <MyTitle roomView={roomView}>{InitTexts.create_organization.title}</MyTitle>
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={(data: any) => {
                         defaultAction({
                             name: data.input.name.label,
                             id:
-                                data.input.name.value !==
-                                NEW_ORGANIZATION_BUTTON_VALUE
+                                data.input.name.value !== NEW_ORGANIZATION_BUTTON_VALUE
                                     ? data.input.name.value
                                     : undefined,
                         });
@@ -1681,8 +1559,7 @@ export class CreateOrganizationFormInner extends React.Component<
                             name: [
                                 {
                                     rule: (value: string) => value !== '',
-                                    errorMessage:
-                                        InitTexts.auth.organizationIsEmptyError,
+                                    errorMessage: InitTexts.auth.organizationIsEmptyError,
                                 },
                             ],
                         },
@@ -1693,9 +1570,7 @@ export class CreateOrganizationFormInner extends React.Component<
                         <XFormError width={472} />
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
-                                <XStoreContext.Consumer>
-                                    {this.renderSelect}
-                                </XStoreContext.Consumer>
+                                <XStoreContext.Consumer>{this.renderSelect}</XStoreContext.Consumer>
                             </ButtonsWrapper>
                         </XFormLoadingContent>
                     </XVertical>

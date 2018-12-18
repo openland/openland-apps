@@ -10,8 +10,7 @@ const joinedUserPopperRowExample = {
     title: 'Sarah Massey',
     subtitle: 'Altpoint Capital',
     id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
-    photo:
-        'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/512x512/0,0/',
+    photo: 'https://ucarecdn.com/9b9f7027-e80e-4366-9e71-74b7817680f8/-/crop/512x512/0,0/',
 };
 
 export default withApp('UI Framework - Popper', 'viewer', () => {

@@ -149,11 +149,7 @@ export class RoomsExploreComponent extends React.Component<
                     )}
                     {this.state.query.length > 0 &&
                         this.state.count > 0 && (
-                            <XSubHeader
-                                title="Rooms"
-                                counter={this.state.count}
-                                right={sortBox}
-                            />
+                            <XSubHeader title="Rooms" counter={this.state.count} right={sortBox} />
                         )}
                     <Rooms
                         variables={{

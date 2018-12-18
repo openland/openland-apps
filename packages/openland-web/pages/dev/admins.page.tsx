@@ -83,12 +83,8 @@ export default withApp(
                         <XTable.Body>
                             {props.data.superAdmins.map(v => (
                                 <XTable.Row key={v.user.id}>
-                                    <XTable.Cell width={100}>
-                                        {v.user.firstName}
-                                    </XTable.Cell>
-                                    <XTable.Cell width={100}>
-                                        {v.user.lastName}
-                                    </XTable.Cell>
+                                    <XTable.Cell width={100}>{v.user.firstName}</XTable.Cell>
+                                    <XTable.Cell width={100}>{v.user.lastName}</XTable.Cell>
                                     <XTable.Cell>{v.email}</XTable.Cell>
                                     <XTable.Cell>{v.role}</XTable.Cell>
                                 </XTable.Row>

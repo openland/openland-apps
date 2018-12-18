@@ -93,18 +93,10 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
         );
     }
     if (props.file) {
-        let w = props.fileMetadata!!.imageWidth
-            ? props.fileMetadata!!.imageWidth!!
-            : undefined;
-        let h = props.fileMetadata!!.imageHeight
-            ? props.fileMetadata!!.imageHeight!!
-            : undefined;
-        let name = props.fileMetadata!!.name
-            ? props.fileMetadata!!.name!!
-            : undefined;
-        let size = props.fileMetadata!!.size
-            ? props.fileMetadata!!.size!!
-            : undefined;
+        let w = props.fileMetadata!!.imageWidth ? props.fileMetadata!!.imageWidth!! : undefined;
+        let h = props.fileMetadata!!.imageHeight ? props.fileMetadata!!.imageHeight!! : undefined;
+        let name = props.fileMetadata!!.name ? props.fileMetadata!!.name!! : undefined;
+        let size = props.fileMetadata!!.size ? props.fileMetadata!!.size!! : undefined;
 
         if (props.fileMetadata!!.isImage && !!w && !!h) {
             if (props.fileMetadata!!.imageFormat === 'GIF') {
@@ -156,9 +148,7 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                             style="colorus"
                             objectName={props.sender!!.name}
                             objectId={props.sender!!.id}
-                            cloudImageUuid={
-                                props.sender ? props.sender.photo : undefined
-                            }
+                            cloudImageUuid={props.sender ? props.sender.photo : undefined}
                             path={usrPath}
                         />
                         <MessageWrapper separator={2} flexGrow={1}>

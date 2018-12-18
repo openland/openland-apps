@@ -6,18 +6,9 @@ import {
     SwitchReactionMutation,
 } from 'openland-api';
 
-export const withSetReaction = graphqlMutation(
-    MessageSetReactionMutation,
-    'setReaction',
-);
-export const withUnsetReaction = graphqlMutation(
-    MessageUnsetReactionMutation,
-    'unsetReaction',
-);
-export const withSwitchReaction = graphqlMutation(
-    SwitchReactionMutation,
-    'switch',
-);
+export const withSetReaction = graphqlMutation(MessageSetReactionMutation, 'setReaction');
+export const withUnsetReaction = graphqlMutation(MessageUnsetReactionMutation, 'unsetReaction');
+export const withSwitchReaction = graphqlMutation(SwitchReactionMutation, 'switch');
 export const withChangeReaction = graphqlCompose3(
     withUnsetReaction,
     withSetReaction,

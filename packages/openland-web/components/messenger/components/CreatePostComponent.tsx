@@ -23,13 +23,14 @@ import FileIcon from './icons/ic-file-3.svg';
 import UloadIc from './icons/file-upload.svg';
 
 const postTexts = {
-    "BLANK": {
+    BLANK: {
         header: 'Quick post',
         titlePlaceholder: 'Title',
         text: '',
-        textPlaceholder: '✍🏼 Write your post here. You can ask for help, share opportunities, and offer services.'
+        textPlaceholder:
+            '✍🏼 Write your post here. You can ask for help, share opportunities, and offer services.',
     },
-    "JOB_OPPORTUNITY": {
+    JOB_OPPORTUNITY: {
         header: 'Job opportunity',
         titlePlaceholder: 'Job Opportunity Title',
         text: `💰 Salary range $XX-XXXk
@@ -54,32 +55,33 @@ const postTexts = {
         • A
         • B 
         • C`,
-        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+        textPlaceholder:
+            '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
     },
-    "OFFICE_HOURS": {
+    OFFICE_HOURS: {
         header: 'Office hours',
         titlePlaceholder: 'Office hours with XX',
-        text:
-            `👋 About you / your expertise areas 
+        text: `👋 About you / your expertise areas 
 🙄 Who can apply 
 💬 Preferred way to connect
 `,
-        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
+        textPlaceholder:
+            '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
     },
-    "REQUEST_FOR_STARTUPS": {
+    REQUEST_FOR_STARTUPS: {
         header: 'Request for startups',
         titlePlaceholder: 'XX — Request for startups',
-        text:
-            `💰 Typical check size
+        text: `💰 Typical check size
 ⏳ Investment process and average decision time
 ✅ Preferred moment to invest / criteria
 🌎 Markets / geographies / keywords
 🔗 Website / links
 📞 Preferred way to be contacted (intros, directly, etc.)
 `,
-        textPlaceholder: '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.'
-    }
-}
+        textPlaceholder:
+            '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
+    },
+};
 
 const Wrapper = Glamorous.div({
     display: 'flex',
@@ -89,7 +91,7 @@ const Wrapper = Glamorous.div({
     top: -56,
     left: 0,
     width: '100%',
-    height: 'calc(100% + 56px)'
+    height: 'calc(100% + 56px)',
 });
 
 const Header = Glamorous(XHorizontal)({
@@ -101,8 +103,8 @@ const Header = Glamorous(XHorizontal)({
         opacity: 0.3,
         fontSize: 12,
         fontWeight: 600,
-        color: '#000'
-    }
+        color: '#000',
+    },
 });
 
 const CloseWrapper = Glamorous.div({
@@ -115,19 +117,19 @@ const CloseWrapper = Glamorous.div({
     height: 32,
     borderRadius: 50,
     '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)'
-    }
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    },
 });
 
 const ChatTitle = Glamorous.div({
     fontSize: 14,
     fontWeight: 600,
-    color: '#000'
+    color: '#000',
 });
 
 const PostTypeTitle = Glamorous.div({
     fontSize: 14,
-    color: '#000'
+    color: '#000',
 });
 
 const Body = Glamorous.div({
@@ -138,13 +140,13 @@ const Body = Glamorous.div({
     paddingRight: 20,
     paddingTop: 20,
     paddingBottom: 12,
-    position: 'relative'
+    position: 'relative',
 });
 
 const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
     zIndex: 1,
     '& *': {
-        color: props.invalid ? '#e26363 !important' : undefined
+        color: props.invalid ? '#e26363 !important' : undefined,
     },
     '& *, & input, & *:focus-within, & *:focus': {
         fontSize: 22,
@@ -155,8 +157,8 @@ const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
         paddingLeft: '0 !important',
         paddingRight: '0 !important',
         minHeight: 30,
-        display: 'block'
-    }
+        display: 'block',
+    },
 }));
 
 const PostText = Glamorous.div<{ invalid: boolean }>(props => ({
@@ -179,17 +181,17 @@ const PostText = Glamorous.div<{ invalid: boolean }>(props => ({
         borderRadius: 0,
         '&:focus, &:active': {
             boxShadow: 'none',
-            border: 'none'
-        }
+            border: 'none',
+        },
     },
     '& textarea::placeholder': {
-        color: props.invalid ? 'rgb(226, 99, 99)' : undefined
-    }
+        color: props.invalid ? 'rgb(226, 99, 99)' : undefined,
+    },
 }));
 
 const FilesWrapper = Glamorous(XVertical)({
     paddingTop: 10,
-    borderTop: '1px solid #ececec'
+    borderTop: '1px solid #ececec',
 });
 
 const FileItem = Glamorous(XHorizontal)({
@@ -202,15 +204,15 @@ const FileItem = Glamorous(XHorizontal)({
         marginTop: 1,
         cursor: 'pointer',
         '& > svg > g > path:last-child': {
-            fill: '#C7C7C7'
+            fill: '#C7C7C7',
         },
         '&:hover > svg > g > path:last-child': {
-            fill: '#4a4a4a'
-        }
+            fill: '#4a4a4a',
+        },
     },
     '& span': {
-        opacity: 0.6
-    }
+        opacity: 0.6,
+    },
 });
 
 const FileImage = Glamorous.div({
@@ -228,7 +230,7 @@ const FooterWrapper = Glamorous(XHorizontal)({
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 14,
-    paddingBottom: 14
+    paddingBottom: 14,
 });
 
 const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
@@ -264,7 +266,7 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
         '& > *': {
             fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
         },
-    }
+    },
 }));
 
 const CoverWrapper = Glamorous.div({
@@ -273,8 +275,8 @@ const CoverWrapper = Glamorous.div({
     position: 'relative',
     alignSelf: 'flex-start',
     '& > img': {
-        display: 'block'
-    }
+        display: 'block',
+    },
 });
 
 const CoverDelButton = Glamorous.div({
@@ -293,11 +295,11 @@ const CoverDelButton = Glamorous.div({
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     cursor: 'pointer',
     '& > img': {
-        display: 'block'
+        display: 'block',
     },
     '& > svg > g > path:last-child': {
-        fill: '#fff'
-    }
+        fill: '#fff',
+    },
 });
 
 const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
@@ -323,9 +325,7 @@ const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
     alignItems: 'center',
     justifyContent: 'center',
     border: '2px dashed',
-    borderColor: props.dragUnder
-        ? 'rgba(23, 144, 255, 0.2)'
-        : 'rgba(51, 69, 98, 0.1)',
+    borderColor: props.dragUnder ? 'rgba(23, 144, 255, 0.2)' : 'rgba(51, 69, 98, 0.1)',
     borderRadius: 8,
     backgroundColor: props.dragUnder ? 'rgba(23, 144, 255, 0.02)' : '#fff',
     '& > svg': {
@@ -391,8 +391,10 @@ const SendPostButton = withSendPostMessage(props => {
                             title: title,
                             text: text,
                             attachments: attachments,
-                            postType: (props as any).postType ? (props as any).postType : PostMessageType.BLANK
-                        }
+                            postType: (props as any).postType
+                                ? (props as any).postType
+                                : PostMessageType.BLANK,
+                        },
                     });
                 } else if (!checkTitleSend && !checkTextSend) {
                     (props as any).checkValue();
@@ -454,8 +456,10 @@ const EditPostButton = withEditPostMessage(props => {
                             title: title,
                             text: text,
                             attachments: attachments,
-                            postType: (props as any).postType ? (props as any).postType : PostMessageType.BLANK
-                        }
+                            postType: (props as any).postType
+                                ? (props as any).postType
+                                : PostMessageType.BLANK,
+                        },
                     });
                 } else if (!checkTitleSend && !checkTextSend) {
                     (props as any).checkValue();
@@ -512,7 +516,10 @@ interface CreatePostComponentState {
     invalidText: boolean;
 }
 
-export class CreatePostComponent extends React.Component<CreatePostComponentProps, CreatePostComponentState> {
+export class CreatePostComponent extends React.Component<
+    CreatePostComponentProps,
+    CreatePostComponentState
+> {
     constructor(props: CreatePostComponentProps) {
         super(props);
 
@@ -537,42 +544,42 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
             files: null,
             cover: null,
             invalidTitle: false,
-            invalidText: false
-        }
+            invalidText: false,
+        };
     }
 
     invalidTitleHandler = () => {
         this.setState({
-            invalidTitle: true
+            invalidTitle: true,
         });
-    }
+    };
 
     invalidTextHandler = () => {
         this.setState({
-            invalidText: true
+            invalidText: true,
         });
-    }
+    };
 
     invalidValue = () => {
         this.setState({
             invalidTitle: true,
-            invalidText: true
+            invalidText: true,
         });
-    }
+    };
 
     private titleChange = (src: string) => {
         this.setState({
             title: src,
-            invalidTitle: false
-        })
-    }
+            invalidTitle: false,
+        });
+    };
 
     private textChange = (src: string) => {
         this.setState({
             text: src,
-            invalidText: false
-        })
-    }
+            invalidText: false,
+        });
+    };
 
     private propsFileSaver = (files: Set<File>) => {
         let cover: File | null = null;
@@ -592,9 +599,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
 
         this.setState({
             files: moreFiles,
-            cover: cover
+            cover: cover,
         });
-    }
+    };
 
     private fileSaver = (file: File | null) => {
         let { files, cover } = this.state;
@@ -605,7 +612,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
             newState = {
                 ...newState,
                 files: files,
-                uploadProgress: null
+                uploadProgress: null,
             };
         }
         if (!files && file) {
@@ -614,7 +621,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
             newState = {
                 ...newState,
                 files: files,
-                uploadProgress: null
+                uploadProgress: null,
             };
         }
         if (file && file.isImage && !cover) {
@@ -622,11 +629,11 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                 ...newState,
                 files: files,
                 uploadProgress: null,
-                cover: file
+                cover: file,
             };
         }
         this.setState(newState);
-    }
+    };
 
     private fileRemover = (file: File | null) => {
         let { files, cover } = this.state;
@@ -641,9 +648,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
 
         this.setState({
             files: files,
-            cover: newCover
-        })
-    }
+            cover: newCover,
+        });
+    };
 
     private handleDrop = (e: any) => {
         e.preventDefault();
@@ -662,7 +669,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
 
         dialog.progress(r => {
             this.setState({
-                uploadProgress: r.progress
+                uploadProgress: r.progress,
             });
         });
         dialog.done(r => {
@@ -670,9 +677,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                 uuid: r.uuid,
                 name: r.name,
                 size: r.size,
-                isImage: r.isImage
+                isImage: r.isImage,
             };
-            this.fileSaver(ucFile)
+            this.fileSaver(ucFile);
         });
     };
 
@@ -689,9 +696,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
     private handleMouseOut = () => {
         this.setState({
             dragOn: false,
-            dragUnder: false
+            dragUnder: false,
         });
-    }
+    };
 
     private handleWindowDrop = (e: any) => {
         e.preventDefault();
@@ -725,7 +732,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         dialog.done(res => {
             res.progress(r => {
                 this.setState({
-                    uploadProgress: r.progress
+                    uploadProgress: r.progress,
                 });
             });
             res.done(r => {
@@ -733,9 +740,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                     uuid: r.uuid,
                     name: r.name,
                     size: r.size,
-                    isImage: r.isImage
+                    isImage: r.isImage,
                 };
-                this.fileSaver(ucFile)
+                this.fileSaver(ucFile);
             });
         });
     };
@@ -772,7 +779,12 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
         return (
             <Wrapper>
                 <Header justifyContent="center">
-                    <XHorizontal alignItems="center" justifyContent="space-between" maxWidth={950} flexGrow={1}>
+                    <XHorizontal
+                        alignItems="center"
+                        justifyContent="space-between"
+                        maxWidth={950}
+                        flexGrow={1}
+                    >
                         <XHorizontal alignItems="center">
                             <XAvatar
                                 size="small"
@@ -784,7 +796,9 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                             <XHorizontal alignItems="center" separator={3}>
                                 <ChatTitle>{props.objectName}</ChatTitle>
                                 <div className="dot">•</div>
-                                <PostTypeTitle>{props.editData ? 'Post editing' : header}</PostTypeTitle>
+                                <PostTypeTitle>
+                                    {props.editData ? 'Post editing' : header}
+                                </PostTypeTitle>
                             </XHorizontal>
                         </XHorizontal>
                         <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
@@ -797,10 +811,18 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
                                 <PostTitle invalid={state.invalidTitle}>
-                                    <XInput placeholder={titlePlaceholder} onChange={this.titleChange} value={this.state.title} />
+                                    <XInput
+                                        placeholder={titlePlaceholder}
+                                        onChange={this.titleChange}
+                                        value={this.state.title}
+                                    />
                                 </PostTitle>
                                 <PostText invalid={state.invalidText}>
-                                    <XTextArea placeholder={textPlaceholder} value={this.state.text} onChange={this.textChange} />
+                                    <XTextArea
+                                        placeholder={textPlaceholder}
+                                        value={this.state.text}
+                                        onChange={this.textChange}
+                                    />
                                 </PostText>
                             </XVertical>
                             {cover && (
@@ -817,28 +839,41 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 </CoverWrapper>
                             )}
                         </XHorizontal>
-                        {(moreFiles && moreFiles.length > 0) && (
-                            <FilesWrapper>
-                                {moreFiles.map(i => (
-                                    <FileItem key={'file' + i.uuid} separator={4} alignItems="center">
-                                        <FileImage />
-                                        <XHorizontal alignItems="center" separator={4}>
-                                            <div>{i.name} <span>•</span> {niceBytes(Number(i.size))}</div>
-                                            <XHorizontal alignItems="center" className="remove" onClick={() => this.fileRemover(i)}>
-                                                <RemoveIcon />
+                        {moreFiles &&
+                            moreFiles.length > 0 && (
+                                <FilesWrapper>
+                                    {moreFiles.map(i => (
+                                        <FileItem
+                                            key={'file' + i.uuid}
+                                            separator={4}
+                                            alignItems="center"
+                                        >
+                                            <FileImage />
+                                            <XHorizontal alignItems="center" separator={4}>
+                                                <div>
+                                                    {i.name} <span>•</span>{' '}
+                                                    {niceBytes(Number(i.size))}
+                                                </div>
+                                                <XHorizontal
+                                                    alignItems="center"
+                                                    className="remove"
+                                                    onClick={() => this.fileRemover(i)}
+                                                >
+                                                    <RemoveIcon />
+                                                </XHorizontal>
                                             </XHorizontal>
-                                        </XHorizontal>
-                                    </FileItem>
-                                ))}
-                            </FilesWrapper>
-                        )}
-                        {(!!uploadProgress && uploadProgress > 0) && (
-                            <MessageUploadComponent
-                                key={'file_uploading'}
-                                progress={Math.round(uploadProgress * 100)}
-                                title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
-                            />
-                        )}
+                                        </FileItem>
+                                    ))}
+                                </FilesWrapper>
+                            )}
+                        {!!uploadProgress &&
+                            uploadProgress > 0 && (
+                                <MessageUploadComponent
+                                    key={'file_uploading'}
+                                    progress={Math.round(uploadProgress * 100)}
+                                    title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
+                                />
+                            )}
                     </XVertical>
                     <DropArea dragOn={this.state.dragOn}>
                         <DropAreaContent
@@ -850,14 +885,17 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                         >
                             <UloadIc />
                             <DropAreaTitle>Drop files here</DropAreaTitle>
-                            <DropAreaSubtitle>
-                                To send them as files
-                        </DropAreaSubtitle>
+                            <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
                         </DropAreaContent>
                     </DropArea>
                 </Body>
                 <FooterWrapper justifyContent="center" alignItems="center">
-                    <XHorizontal justifyContent="space-between" alignItems="center" flexGrow={1} maxWidth={700}>
+                    <XHorizontal
+                        justifyContent="space-between"
+                        alignItems="center"
+                        flexGrow={1}
+                        maxWidth={700}
+                    >
                         <XHorizontal>
                             <AttachmentButton onClick={this.handleAttach}>
                                 <PhotoIcon />
@@ -880,11 +918,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 checkTextValue={this.invalidTextHandler}
                                 checkValue={this.invalidValue}
                             >
-                                <XButton
-                                    text="Send"
-                                    style="primary"
-                                    iconRight="send"
-                                />
+                                <XButton text="Send" style="primary" iconRight="send" />
                             </SendPostButton>
                         )}
                         {props.editData && (
@@ -899,10 +933,7 @@ export class CreatePostComponent extends React.Component<CreatePostComponentProp
                                 checkTextValue={this.invalidTextHandler}
                                 checkValue={this.invalidValue}
                             >
-                                <XButton
-                                    text="Save changes"
-                                    style="primary"
-                                />
+                                <XButton text="Save changes" style="primary" />
                             </EditPostButton>
                         )}
                     </XHorizontal>

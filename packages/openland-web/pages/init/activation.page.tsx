@@ -149,8 +149,7 @@ export default withAppBase('Activation Needed', props => {
                 <Container>
                     <Title>Activation needed</Title>
                     <Description>
-                        We are working on your account and will notify when it
-                        will became active.
+                        We are working on your account and will notify when it will became active.
                     </Description>
                 </Container>
             </XTrack>

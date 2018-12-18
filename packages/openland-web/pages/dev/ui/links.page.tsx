@@ -9,9 +9,7 @@ export default withApp('UI Framework - Links', 'viewer', props => {
         <DevDocsScaffold title="Links">
             <XContent>
                 <XLink path="/ui">Simple Path</XLink>
-                <XLink query={{ field: 'query', value: 'yes' }}>
-                    Query String Set
-                </XLink>
+                <XLink query={{ field: 'query', value: 'yes' }}>Query String Set</XLink>
                 <XLink query={{ field: 'query' }}>Query String Remove</XLink>
                 {/* <XVertical>
                     <XTitle>Select</XTitle>

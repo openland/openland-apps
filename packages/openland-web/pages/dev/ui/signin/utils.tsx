@@ -83,12 +83,10 @@ export const CreateWrapIntoState = (schema: any) => {
                                 branch:
                                 <XSelect
                                     value={this.state.branch}
-                                    options={Object.keys(schema).map(
-                                        (item: any) => ({
-                                            value: item,
-                                            label: item,
-                                        }),
-                                    )}
+                                    options={Object.keys(schema).map((item: any) => ({
+                                        value: item,
+                                        label: item,
+                                    }))}
                                     onChange={(val: any) => {
                                         const value = val ? val.value : null;
                                         this.setState({
@@ -104,27 +102,15 @@ export const CreateWrapIntoState = (schema: any) => {
 
                             if (anyValue.type === 'select') {
                                 return (
-                                    <div
-                                        style={
-                                            anyValue.hide
-                                                ? { display: 'none' }
-                                                : {}
-                                        }
-                                    >
+                                    <div style={anyValue.hide ? { display: 'none' } : {}}>
                                         <XSelect
-                                            value={this.getBranchValueState(
-                                                key,
-                                            )}
-                                            options={anyValue.value.map(
-                                                (item: any) => ({
-                                                    value: item,
-                                                    label: item,
-                                                }),
-                                            )}
+                                            value={this.getBranchValueState(key)}
+                                            options={anyValue.value.map((item: any) => ({
+                                                value: item,
+                                                label: item,
+                                            }))}
                                             onChange={(val: any) => {
-                                                const value = val
-                                                    ? val.value
-                                                    : null;
+                                                const value = val ? val.value : null;
 
                                                 this.setBranchState(key, value);
                                             }}
@@ -134,24 +120,13 @@ export const CreateWrapIntoState = (schema: any) => {
                             }
                             if (anyValue.type === 'checkbox') {
                                 return (
-                                    <div
-                                        style={
-                                            anyValue.hide
-                                                ? { display: 'none' }
-                                                : {}
-                                        }
-                                    >
+                                    <div style={anyValue.hide ? { display: 'none' } : {}}>
                                         <XCheckbox
                                             label={key}
                                             switcher={true}
-                                            checked={this.getBranchValueState(
-                                                key,
-                                            )}
+                                            checked={this.getBranchValueState(key)}
                                             onChange={({ checked }) => {
-                                                this.setBranchState(
-                                                    key,
-                                                    checked,
-                                                );
+                                                this.setBranchState(key, checked);
                                             }}
                                         />
                                     </div>
@@ -161,22 +136,12 @@ export const CreateWrapIntoState = (schema: any) => {
                             if (anyValue.type === 'input') {
                                 console.log(anyValue);
                                 return (
-                                    <div
-                                        style={
-                                            anyValue.hide
-                                                ? { display: 'none' }
-                                                : {}
-                                        }
-                                    >
+                                    <div style={anyValue.hide ? { display: 'none' } : {}}>
                                         <XInput
                                             size="large"
                                             title={key}
-                                            value={this.getBranchValueState(
-                                                key,
-                                            )}
-                                            onChange={value =>
-                                                this.setBranchState(key, value)
-                                            }
+                                            value={this.getBranchValueState(key)}
+                                            onChange={value => this.setBranchState(key, value)}
                                         />
                                     </div>
                                 );

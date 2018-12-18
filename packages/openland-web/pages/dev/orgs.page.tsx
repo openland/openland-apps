@@ -43,36 +43,25 @@ export default withApp(
             withRouter(props => {
                 let orgs = props.data.superAccounts;
                 let orgsCurrentTab = orgs.filter(
-                    o =>
-                        o.state ===
-                        (props.router.query.orgState || 'ACTIVATED'),
+                    o => o.state === (props.router.query.orgState || 'ACTIVATED'),
                 );
 
                 return (
                     <DevToolsScaffold title="Organizations">
-                        <XHeader
-                            text="Organizations"
-                            description={orgs.length + ' total'}
-                        >
+                        <XHeader text="Organizations" description={orgs.length + ' total'}>
                             <AddAccountForm />
                         </XHeader>
 
                         <XSwitcherMargin style="flat">
                             <XSwitcher.Item
                                 query={{ field: 'orgState' }}
-                                counter={
-                                    orgs.filter(o => o.state === 'ACTIVATED')
-                                        .length
-                                }
+                                counter={orgs.filter(o => o.state === 'ACTIVATED').length}
                             >
                                 ACTIVATED
                             </XSwitcher.Item>
                             <XSwitcher.Item
                                 query={{ field: 'orgState', value: 'PENDING' }}
-                                counter={
-                                    orgs.filter(o => o.state === 'PENDING')
-                                        .length
-                                }
+                                counter={orgs.filter(o => o.state === 'PENDING').length}
                             >
                                 PENDING
                             </XSwitcher.Item>
@@ -81,10 +70,7 @@ export default withApp(
                                     field: 'orgState',
                                     value: 'SUSPENDED',
                                 }}
-                                counter={
-                                    orgs.filter(o => o.state === 'SUSPENDED')
-                                        .length
-                                }
+                                counter={orgs.filter(o => o.state === 'SUSPENDED').length}
                             >
                                 SUSPENDED
                             </XSwitcher.Item>
@@ -109,10 +95,7 @@ export default withApp(
                                                     text="Settings"
                                                 />
                                                 <XButton
-                                                    path={
-                                                        '/directory/o/' +
-                                                        v.orgId
-                                                    }
+                                                    path={'/directory/o/' + v.orgId}
                                                     style="ghost"
                                                     text="Profile"
                                                 />

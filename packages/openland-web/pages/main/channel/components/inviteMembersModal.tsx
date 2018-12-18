@@ -64,9 +64,7 @@ const LinkHolder = Glamorous(XVertical)({
     },
 });
 
-class OwnerLinkComponent extends React.Component<
-    { invite: string } & XWithRouter
-> {
+class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRouter> {
     input?: any;
 
     handleRef = (e: any) => {
@@ -100,9 +98,7 @@ class OwnerLinkComponent extends React.Component<
                                 this.props.invite
                             }
                         />
-                        <InviteText>
-                            Anyone with the link will be able to join
-                        </InviteText>
+                        <InviteText>Anyone with the link will be able to join</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -162,12 +158,7 @@ const RemoverInputGroup = Glamorous.div({
 });
 
 const InviteComponent = (props: InviteComponentProps) => (
-    <XHorizontal
-        separator={2}
-        alignItems="center"
-        flexGrow={1}
-        justifyContent="space-between"
-    >
+    <XHorizontal separator={2} alignItems="center" flexGrow={1} justifyContent="space-between">
         <XInputGroup flexGrow={1}>
             <XInput
                 size="large"
@@ -186,9 +177,7 @@ const InviteComponent = (props: InviteComponentProps) => (
                 field={'inviteRequests.' + props.index + '.lastName'}
             />
             {!props.single && (
-                <RemoverInputGroup
-                    onClick={() => props.handleRemove(props.index)}
-                >
+                <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
                     <CloseIcon />
                 </RemoverInputGroup>
             )}
@@ -313,9 +302,7 @@ class InviteMembersModalRaw extends React.Component<
         if (!store) {
             return;
         }
-        let invites = store
-            ? store.readValue('fields.inviteRequests') || []
-            : [];
+        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
         invites.push({});
         store.writeValue('fields.inviteRequests', invites);
     };
@@ -324,9 +311,7 @@ class InviteMembersModalRaw extends React.Component<
         if (!store) {
             return;
         }
-        let invites = store
-            ? store.readValue('fields.inviteRequests') || []
-            : [];
+        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
         invites.splice(index, 1);
         store.writeValue('fields.inviteRequests', invites);
     };
@@ -366,12 +351,7 @@ class InviteMembersModalRaw extends React.Component<
                             variables={{ roomId: this.props.roomId }}
                             refetchVars={{ roomId: this.props.roomId }}
                         />
-                        <XFormSubmit
-                            succesText="Copied!"
-                            key="link"
-                            style="primary"
-                            text="Copy"
-                        />
+                        <XFormSubmit succesText="Copied!" key="link" style="primary" text="Copy" />
                     </XHorizontal>
                 )}
                 {!this.state.showLink && (
@@ -394,15 +374,11 @@ class InviteMembersModalRaw extends React.Component<
                         let invites = data.inviteRequests
                             .filter(
                                 (invite: any) =>
-                                    invite.email ||
-                                    invite.firstName ||
-                                    invite.lastName,
+                                    invite.email || invite.firstName || invite.lastName,
                             )
                             .map((invite: any) => ({
                                 ...invite,
-                                emailText: this.state.customTextAreaOpen
-                                    ? data.customText
-                                    : null,
+                                emailText: this.state.customTextAreaOpen ? data.customText : null,
                             }));
                         await this.props.sendInviteMutation({
                             variables: {
@@ -415,9 +391,7 @@ class InviteMembersModalRaw extends React.Component<
                     }
                 }}
                 title="Invite people to"
-                titleChildren={
-                    <ChannelName>{this.props.channelTitle}</ChannelName>
-                }
+                titleChildren={<ChannelName>{this.props.channelTitle}</ChannelName>}
                 useTopCloser={true}
                 scrollableContent={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
@@ -432,41 +406,26 @@ class InviteMembersModalRaw extends React.Component<
                             <XStoreContext.Consumer>
                                 {store => {
                                     let invites = store
-                                        ? store.readValue(
-                                              'fields.inviteRequests',
-                                          ) || []
+                                        ? store.readValue('fields.inviteRequests') || []
                                         : [];
                                     return (
                                         <XVertical flexGrow={1} separator={11}>
                                             <XVertical>
-                                                {invites.map(
-                                                    (
-                                                        invite: Invite,
-                                                        i: number,
-                                                    ) => (
-                                                        <InviteComponent
-                                                            first={i === 0}
-                                                            key={i}
-                                                            index={i}
-                                                            invite={invite}
-                                                            single={
-                                                                invites.length ===
-                                                                1
-                                                            }
-                                                            handleRemove={index =>
-                                                                this.handleRemove(
-                                                                    index,
-                                                                    store,
-                                                                )
-                                                            }
-                                                        />
-                                                    ),
-                                                )}
+                                                {invites.map((invite: Invite, i: number) => (
+                                                    <InviteComponent
+                                                        first={i === 0}
+                                                        key={i}
+                                                        index={i}
+                                                        invite={invite}
+                                                        single={invites.length === 1}
+                                                        handleRemove={index =>
+                                                            this.handleRemove(index, store)
+                                                        }
+                                                    />
+                                                ))}
                                             </XVertical>
                                             <AddButton
-                                                onClick={() =>
-                                                    this.handleAdd(store)
-                                                }
+                                                onClick={() => this.handleAdd(store)}
                                                 title="Add another"
                                             />
                                         </XVertical>
@@ -484,11 +443,7 @@ class InviteMembersModalRaw extends React.Component<
                                 />
                             )}
                             {this.state.customTextAreaOpen && (
-                                <XHorizontal
-                                    flexGrow={1}
-                                    width="100%"
-                                    separator={6}
-                                >
+                                <XHorizontal flexGrow={1} width="100%" separator={6}>
                                     <XTextArea
                                         flexGrow={1}
                                         valueStoreKey="fields.customText"

@@ -19,9 +19,7 @@ class Toggler extends React.Component<{}, { visible: boolean }> {
             <XVertical>
                 <XButton
                     text="Toggle"
-                    onClick={() =>
-                        this.setState({ visible: !this.state.visible })
-                    }
+                    onClick={() => this.setState({ visible: !this.state.visible })}
                 />
             </XVertical>
         );

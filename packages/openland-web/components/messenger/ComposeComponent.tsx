@@ -9,10 +9,7 @@ import { MessagesContainer } from './components/view/MessagesContainer';
 import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import {
-    MessengerEngine,
-    MessengerContext,
-} from 'openland-engines/MessengerEngine';
+import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import RoomIcon from './components/icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
@@ -120,9 +117,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                         popper={true}
                         placeholder={TextCompose.searchPlaceholder}
                         rounded={true}
-                        onInputChange={data =>
-                            (props as any).onChangeInput(data)
-                        }
+                        onInputChange={data => (props as any).onChangeInput(data)}
                         helpText={TextCompose.searchLoading}
                         inCompose={true}
                     />
@@ -142,9 +137,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                         label: u.name,
                         value: u.id,
                         photo: u.photo,
-                        org: u.primaryOrganization
-                            ? u.primaryOrganization.name
-                            : '',
+                        org: u.primaryOrganization ? u.primaryOrganization.name : '',
                     };
                 }) || []
             }
@@ -233,9 +226,7 @@ class ComposeComponentRender extends React.Component<
             throw Error('conversation should be defined here');
         }
 
-        this.unmounter = this.conversation.engine.mountConversation(
-            conversationId,
-        );
+        this.unmounter = this.conversation.engine.mountConversation(conversationId);
         this.unmounter2 = this.conversation.subscribe(this);
 
         let convState = this.conversation.getState();
@@ -275,19 +266,15 @@ class ComposeComponentRender extends React.Component<
                 conversationId: null,
             });
             (async () => {
-                let id = await this.props.messenger.global.resolvePrivateConversation(
-                    nvals[0].value!! as string,
-                );
+                let id = await this.props.messenger.global.resolvePrivateConversation(nvals[0]
+                    .value!! as string);
 
-                this.setState(
-                    { conversationId: id.id, resolving: false },
-                    () => {
-                        this.updateConversation({
-                            conversationId: id.id,
-                            messenger: this.props.messenger,
-                        });
-                    },
-                );
+                this.setState({ conversationId: id.id, resolving: false }, () => {
+                    this.updateConversation({
+                        conversationId: id.id,
+                        messenger: this.props.messenger,
+                    });
+                });
             })();
         } else if (nvals.length > 1) {
             this.setState({
@@ -314,14 +301,10 @@ class ComposeComponentRender extends React.Component<
         }
     };
 
-    handleSend = async (
-        msg: string,
-        mentions: MessageFull_mentions[] | null,
-    ) => {
+    handleSend = async (msg: string, mentions: MessageFull_mentions[] | null) => {
         if (this.state.values.length === 1) {
-            let id = await this.props.messenger.global.resolvePrivateConversation(
-                this.state.values[0].value!! as string,
-            );
+            let id = await this.props.messenger.global.resolvePrivateConversation(this.state
+                .values[0].value!! as string);
             await this.props.messenger.sender.sendMessageAsync({
                 conversationId: id.id,
                 message: msg,
@@ -420,10 +403,7 @@ export const ComposeComponent = withUserInfo((props: any) => {
     return (
         <MessengerContext.Consumer>
             {messenger => (
-                <ComposeComponentRender
-                    messenger={messenger!!}
-                    me={(props as any).user}
-                />
+                <ComposeComponentRender messenger={messenger!!} me={(props as any).user} />
             )}
         </MessengerContext.Consumer>
     );

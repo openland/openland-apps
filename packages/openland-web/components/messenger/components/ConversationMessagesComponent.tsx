@@ -4,9 +4,7 @@ import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
-import {
-    ConversationEngine,
-} from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
@@ -52,7 +50,7 @@ interface ConversationMessagesComponentProps {
 
 export class ConversationMessagesComponent extends React.PureComponent<
     ConversationMessagesComponentProps
-    > {
+> {
     messagesList = React.createRef<MessageListComponent>();
 
     scrollToBottom = () => {

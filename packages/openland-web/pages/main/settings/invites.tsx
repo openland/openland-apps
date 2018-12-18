@@ -93,11 +93,9 @@ export const FooterWrap = Glamorous.div({
     borderTop: '1px solid rgba(220, 222, 228, 0.6)',
 });
 
-const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>(
-    props => ({
-        paddingBottom: props.bottomOfset ? 60 : undefined,
-    }),
-);
+const ModalContentWrapper = Glamorous(XVertical)<{ bottomOfset?: boolean }>(props => ({
+    paddingBottom: props.bottomOfset ? 60 : undefined,
+}));
 
 interface Invite {
     email?: string;
@@ -187,9 +185,7 @@ const InviteComponent = (props: InviteComponentProps) => (
             )}
 
             {!props.single && (
-                <RemoverInputGroup
-                    onClick={() => props.handleRemove(props.index)}
-                >
+                <RemoverInputGroup onClick={() => props.handleRemove(props.index)}>
                     <CloseIcon />
                 </RemoverInputGroup>
             )}
@@ -215,9 +211,7 @@ interface OwnerLinkComponentProps {
     organization: boolean;
 }
 
-class OwnerLinkComponent extends React.Component<
-    OwnerLinkComponentProps & XWithRouter
-> {
+class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWithRouter> {
     input?: any;
     constructor(props: any) {
         super(props);
@@ -250,15 +244,11 @@ class OwnerLinkComponent extends React.Component<
                                 this.props.router.protocol +
                                 '://' +
                                 this.props.router.hostName +
-                                (this.props.organization
-                                    ? '/invite/'
-                                    : '/join/') +
+                                (this.props.organization ? '/invite/' : '/join/') +
                                 (this.props.appInvite || this.props.invite!.key)
                             }
                         />
-                        <InviteText>
-                            Anyone with the link will be able to join
-                        </InviteText>
+                        <InviteText>Anyone with the link will be able to join</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -323,9 +313,7 @@ class InvitesModalRaw extends React.Component<
         if (!store) {
             return;
         }
-        let invites = store
-            ? store.readValue('fields.inviteRequests') || []
-            : [];
+        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
         invites.splice(index, 1);
         store.writeValue('fields.inviteRequests', invites);
     };
@@ -334,9 +322,7 @@ class InvitesModalRaw extends React.Component<
         if (!store) {
             return;
         }
-        let invites = store
-            ? store.readValue('fields.inviteRequests') || []
-            : [];
+        let invites = store ? store.readValue('fields.inviteRequests') || [] : [];
         invites.push({ role: 'MEMBER' });
         store.writeValue('fields.inviteRequests', invites);
     };
@@ -359,9 +345,7 @@ class InvitesModalRaw extends React.Component<
                     {!this.state.showLink && (
                         <XWithRole role="admin" orgPermission={'primary'}>
                             <InviteButton
-                                onClick={() =>
-                                    this.setState({ showLink: true })
-                                }
+                                onClick={() => this.setState({ showLink: true })}
                                 icon={<LinkIcon />}
                                 title={TextInvites.getLinkButtonLinkExists}
                                 marginLeft={4}
@@ -372,9 +356,7 @@ class InvitesModalRaw extends React.Component<
                     {this.state.showLink &&
                         !this.props.global && (
                             <InviteButton
-                                onClick={() =>
-                                    this.setState({ showLink: false })
-                                }
+                                onClick={() => this.setState({ showLink: false })}
                                 icon={<EmailIcon />}
                                 marginLeft={4}
                                 marginRight={10}
@@ -383,8 +365,7 @@ class InvitesModalRaw extends React.Component<
                         )}
                 </XHorizontal>
 
-                {this.state.showLink &&
-                    !this.props.global && <RenewInviteLinkButton />}
+                {this.state.showLink && !this.props.global && <RenewInviteLinkButton />}
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
@@ -415,19 +396,12 @@ class InvitesModalRaw extends React.Component<
                         let invites = data.inviteRequests
                             .filter(
                                 (invite: any) =>
-                                    invite.email ||
-                                    invite.firstName ||
-                                    invite.lastName,
+                                    invite.email || invite.firstName || invite.lastName,
                             )
                             .map((invite: any) => ({
                                 ...invite,
-                                role:
-                                    this.props.useRoles !== false
-                                        ? invite.role
-                                        : undefined,
-                                emailText: this.state.customTextAreaOpen
-                                    ? data.customText
-                                    : null,
+                                role: this.props.useRoles !== false ? invite.role : undefined,
+                                emailText: this.state.customTextAreaOpen ? data.customText : null,
                             }));
                         await this.props.mutation({
                             variables: {
@@ -440,10 +414,7 @@ class InvitesModalRaw extends React.Component<
                 }}
                 scrollableContent={true}
                 defaultData={{
-                    inviteRequests: [
-                        { email: '', role: 'MEMBER' },
-                        { email: '', role: 'MEMBER' },
-                    ],
+                    inviteRequests: [{ email: '', role: 'MEMBER' }, { email: '', role: 'MEMBER' }],
                 }}
                 submitProps={submitProps}
                 customFooter={footer}
@@ -455,45 +426,27 @@ class InvitesModalRaw extends React.Component<
                             <XStoreContext.Consumer>
                                 {store => {
                                     let invites = store
-                                        ? store.readValue(
-                                              'fields.inviteRequests',
-                                          ) || []
+                                        ? store.readValue('fields.inviteRequests') || []
                                         : [];
                                     return (
                                         <XVertical separator={8}>
                                             <XVertical separator={8}>
-                                                {invites.map(
-                                                    (
-                                                        invite: Invite,
-                                                        i: number,
-                                                    ) => (
-                                                        <InviteComponent
-                                                            first={i === 0}
-                                                            key={i}
-                                                            index={i}
-                                                            invite={invite}
-                                                            single={
-                                                                invites.length ===
-                                                                1
-                                                            }
-                                                            handleRemove={index =>
-                                                                this.handleRemove(
-                                                                    index,
-                                                                    store,
-                                                                )
-                                                            }
-                                                            useRoles={
-                                                                this.props
-                                                                    .useRoles
-                                                            }
-                                                        />
-                                                    ),
-                                                )}
+                                                {invites.map((invite: Invite, i: number) => (
+                                                    <InviteComponent
+                                                        first={i === 0}
+                                                        key={i}
+                                                        index={i}
+                                                        invite={invite}
+                                                        single={invites.length === 1}
+                                                        handleRemove={index =>
+                                                            this.handleRemove(index, store)
+                                                        }
+                                                        useRoles={this.props.useRoles}
+                                                    />
+                                                ))}
                                             </XVertical>
                                             <AddButton
-                                                onClick={() =>
-                                                    this.handleAdd(store)
-                                                }
+                                                onClick={() => this.handleAdd(store)}
                                                 title={TextInvites.addEmail}
                                             />
                                         </XVertical>
@@ -511,11 +464,7 @@ class InvitesModalRaw extends React.Component<
                                 />
                             )}
                             {this.state.customTextAreaOpen && (
-                                <XHorizontal
-                                    flexGrow={1}
-                                    width="100%"
-                                    separator={6}
-                                >
+                                <XHorizontal flexGrow={1} width="100%" separator={6}>
                                     <XFormField
                                         field="customText"
                                         title={TextInvites.customMessageTitle}
@@ -542,18 +491,14 @@ class InvitesModalRaw extends React.Component<
                         !this.props.global && (
                             <OwnerLink
                                 innerRef={this.handleLinkComponentRef}
-                                onBack={() =>
-                                    this.setState({ showLink: false })
-                                }
+                                onBack={() => this.setState({ showLink: false })}
                             />
                         )}
                     {this.state.showLink &&
                         this.props.global && (
                             <OwnerLinkOrganization
                                 innerRef={this.handleLinkComponentRef}
-                                onBack={() =>
-                                    this.setState({ showLink: false })
-                                }
+                                onBack={() => this.setState({ showLink: false })}
                             />
                         )}
                 </ModalContentWrapper>
@@ -562,18 +507,16 @@ class InvitesModalRaw extends React.Component<
     }
 }
 
-export const InvitesToOrganizationModal = withOrganizationInviteMembers(
-    props => (
-        <InvitesModalRaw
-            mutation={props.sendInvite}
-            targetQuery={(props as any).targetQuery}
-            target={(props as any).target}
-            title={TextInvites.modalTitle}
-            submitProps={{ text: TextInvites.modalAction }}
-            global={false}
-        />
-    ),
-) as React.ComponentType<{
+export const InvitesToOrganizationModal = withOrganizationInviteMembers(props => (
+    <InvitesModalRaw
+        mutation={props.sendInvite}
+        targetQuery={(props as any).targetQuery}
+        target={(props as any).target}
+        title={TextInvites.modalTitle}
+        submitProps={{ text: TextInvites.modalAction }}
+        global={false}
+    />
+)) as React.ComponentType<{
     targetQuery?: string;
     target?: any;
     refetchVars?: { orgId: string };

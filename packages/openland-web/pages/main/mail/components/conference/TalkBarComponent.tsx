@@ -28,10 +28,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
         <XView height={0} alignSelf="stretch">
             <YApolloContext.Consumer>
                 {apollo => (
-                    <YQuery
-                        query={ConferenceQuery}
-                        variables={{ id: props.conversationId }}
-                    >
+                    <YQuery query={ConferenceQuery} variables={{ id: props.conversationId }}>
                         {data => {
                             if (data.loading) {
                                 return null;
@@ -65,81 +62,56 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                 backgroundColor="#32bb78"
                                                 flexDirection="row"
                                             >
-                                                {data.data!.conference.peers.map(
-                                                    v => (
-                                                        <React.Fragment key={v.id}>
-                                                            <XView flexDirection="row">
-                                                                <XAvatar
-                                                                    size="m-small"
-                                                                    style="user"
-                                                                    objectId={
-                                                                        v.user
-                                                                            .id
-                                                                    }
-                                                                    online={
-                                                                        false
-                                                                    }
-                                                                    cloudImageUuid={
-                                                                        v.user
-                                                                            .photo ||
-                                                                        undefined
-                                                                    }
-                                                                />
-                                                                {/* <span>{v.connection && v.connection.state}</span> */}
-                                                            </XView>
-                                                            <XView width={8} />
-                                                        </React.Fragment>
-                                                    ),
-                                                )}
-                                                {ctx.cid ===
-                                                    props.conversationId && (
-                                                        <>
-                                                            <XButton
-                                                                style="success"
-                                                                text={
-                                                                    ctx.muted
-                                                                        ? 'Unmute'
-                                                                        : 'Mute'
-                                                                }
-                                                                onClick={() =>
-                                                                    ctx.toggleMute()
+                                                {data.data!.conference.peers.map(v => (
+                                                    <React.Fragment key={v.id}>
+                                                        <XView flexDirection="row">
+                                                            <XAvatar
+                                                                size="m-small"
+                                                                style="user"
+                                                                objectId={v.user.id}
+                                                                online={false}
+                                                                cloudImageUuid={
+                                                                    v.user.photo || undefined
                                                                 }
                                                             />
-                                                            <XView width={8} />
-                                                            <XButton
-                                                                style="success"
-                                                                text={
-                                                                    ctx.state ===
-                                                                        'connecting'
-                                                                        ? 'Connecting'
-                                                                        : 'Leave'
-                                                                }
-                                                                onClick={() =>
-                                                                    ctx.leaveCall()
-                                                                }
-                                                            />
-                                                        </>
-                                                    )}
-                                                {ctx.cid !==
-                                                    props.conversationId && (
+                                                            {/* <span>{v.connection && v.connection.state}</span> */}
+                                                        </XView>
+                                                        <XView width={8} />
+                                                    </React.Fragment>
+                                                ))}
+                                                {ctx.cid === props.conversationId && (
+                                                    <>
+                                                        <XButton
+                                                            style="success"
+                                                            text={ctx.muted ? 'Unmute' : 'Mute'}
+                                                            onClick={() => ctx.toggleMute()}
+                                                        />
+                                                        <XView width={8} />
                                                         <XButton
                                                             style="success"
                                                             text={
-                                                                ctx.cid
-                                                                    ? 'Leave'
-                                                                    : 'Join'
+                                                                ctx.state === 'connecting'
+                                                                    ? 'Connecting'
+                                                                    : 'Leave'
                                                             }
-                                                            onClick={
-                                                                ctx.cid
-                                                                    ? () =>
-                                                                        ctx.leaveCall()
-                                                                    : () =>
-                                                                        ctx.joinCall(
-                                                                            props.conversationId,
-                                                                        )
-                                                            }
+                                                            onClick={() => ctx.leaveCall()}
                                                         />
-                                                    )}
+                                                    </>
+                                                )}
+                                                {ctx.cid !== props.conversationId && (
+                                                    <XButton
+                                                        style="success"
+                                                        text={ctx.cid ? 'Leave' : 'Join'}
+                                                        onClick={
+                                                            ctx.cid
+                                                                ? () => ctx.leaveCall()
+                                                                : () =>
+                                                                      ctx.joinCall(
+                                                                          props.conversationId,
+                                                                      )
+                                                        }
+                                                    />
+                                                )}
                                             </XView>
                                         )}
                                     </TalkContext.Consumer>

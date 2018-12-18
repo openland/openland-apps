@@ -7,11 +7,7 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { getDataFromTree } from 'react-apollo';
-import {
-    SharedStorage,
-    getServerStorage,
-    getClientStorage,
-} from 'openland-x-utils/SharedStorage';
+import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 
 export function withData(App: React.ComponentType<any>) {
     return class WithData extends React.Component<{ apolloState: any }> {
@@ -53,10 +49,7 @@ export function withData(App: React.ComponentType<any>) {
                     // Prevent Apollo Client GraphQL errors from crashing SSR.
                     // Handle them in components via the data.error prop:
                     // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-                    console.error(
-                        'Error while running `getDataFromTree`',
-                        error,
-                    );
+                    console.error('Error while running `getDataFromTree`', error);
                 }
 
                 // getDataFromTree Last names not call componentWillUnmount
