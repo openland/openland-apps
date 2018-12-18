@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { withSettings } from '../../../api/withSettings';
 import { withQueryLoader } from '../../../components/withQueryLoader';
@@ -26,6 +25,7 @@ import CloseIcon from './icons/ic-close.svg';
 import LockIcon from './icons/ic-lock-settings.svg';
 import NotificationsIcon from './icons/ic-notifications.svg';
 import NotificationsFirefoxIcon from './icons/ic-notifications-firefox-2.svg';
+import { css } from 'linaria';
 
 const Container = (props: { children?: any }) => (
     <XView paddingTop={16} paddingLeft={30} paddingRight={30}>
@@ -41,21 +41,21 @@ const Header = (props: { children?: any }) => (
 
 const Group = (props: { children?: any }) => <XView maxWidth={570}>{props.children}</XView>;
 
-const GroupText = Glamorous.div({
-    fontSize: 14,
-    lineHeight: '20px',
-    marginTop: -3,
-    marginBottom: 16,
-    opacity: 0.9,
+const GroupText = css`
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: -3px;
+    margin-bottom: 16px;
+    opacity: 0.9;
 
-    '&:last-child': {
-        marginBottom: 0,
-    },
+    &:last-child {
+        margin-bottom: 0;
+    }
 
-    '> strong': {
-        fontWeight: 600,
-    },
-});
+    & > strong {
+        font-weight: 600;
+    }
+`;
 
 const GroupTitle = (props: { children?: any }) => (
     <XView fontSize={16} lineHeight="20px" fontWeight={'600'} marginBottom={12}>
@@ -69,31 +69,32 @@ const GroupSubTitle = (props: { children?: any }) => (
     </XView>
 );
 
-const Instruction = Glamorous.div({
-    paddingTop: 4,
-    paddingBottom: 40,
-});
+const Instruction = (props: { children?: any }) => (
+    <XView paddingTop={4} paddingBottom={40}>
+        {props.children}
+    </XView>
+);
 
-const InstructionItem = Glamorous.div({
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.9)',
-    lineHeight: '20px',
-    marginBottom: 20,
+const InstructionItem = css`
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.9);
+    line-height: 20px;
+    margin-bottom: 20px;
 
-    '&:last-child': {
-        marginBottom: 0,
-    },
+    &:last-child {
+        margin-bottom: 0;
+    }
 
-    '& svg': {
-        display: 'inline-block',
-        verticalAlign: 'top',
-        opacity: 0.7,
-    },
+    & svg {
+        display: inline-block;
+        vertical-align: top;
+        opacity: 0.7;
+    }
 
-    '& strong': {
-        fontWeight: 600,
-    },
-});
+    & strong: {
+        font-weight: 600;
+    }
+`;
 
 class BrowserNotifications extends React.Component<
     {},
@@ -142,89 +143,86 @@ class BrowserNotifications extends React.Component<
                     <GroupTitle>Desktop notifications</GroupTitle>
 
                     {notificationsState === 'granted' && (
-                        <GroupText>
+                        <div className={GroupText}>
                             Notifications are turned on in this browser.
                             <br />
                             You can always change it in your browser preferences.
-                        </GroupText>
+                        </div>
                     )}
 
-                    {notificationsState !== 'granted' &&
-                        !SupportedBrowsers && (
-                            <GroupText>
-                                Notifications are turned off in this browser.
-                                <br />
-                                You can always change it in your browser preferences.
-                            </GroupText>
-                        )}
+                    {notificationsState !== 'granted' && !SupportedBrowsers && (
+                        <div className={GroupText}>
+                            Notifications are turned off in this browser.
+                            <br />
+                            You can always change it in your browser preferences.
+                        </div>
+                    )}
 
-                    {notificationsState !== 'granted' &&
-                        SupportedBrowsers && (
-                            <>
-                                <GroupText>Notifications are disabled for this browser.</GroupText>
+                    {notificationsState !== 'granted' && SupportedBrowsers && (
+                        <>
+                            <div className={GroupText}>
+                                Notifications are disabled for this browser.
+                            </div>
 
-                                {notificationsState === 'default' && (
-                                    <XButton
-                                        alignSelf="flex-start"
-                                        style="warning"
-                                        size="small"
-                                        text="Enable"
-                                        onClick={this.handleEnableClick}
-                                    />
-                                )}
+                            {notificationsState === 'default' && (
+                                <XButton
+                                    alignSelf="flex-start"
+                                    style="warning"
+                                    size="small"
+                                    text="Enable"
+                                    onClick={this.handleEnableClick}
+                                />
+                            )}
 
-                                {notificationsState !== 'default' && (
-                                    <XModal
-                                        title="Turn on browser notifications for Openland"
-                                        useTopCloser={true}
-                                        target={
+                            {notificationsState !== 'default' && (
+                                <XModal
+                                    title="Turn on browser notifications for Openland"
+                                    useTopCloser={true}
+                                    target={
+                                        <XButton
+                                            alignSelf="flex-start"
+                                            style="warning"
+                                            size="small"
+                                            text="Enable"
+                                        />
+                                    }
+                                    footer={
+                                        <XModalFooter>
                                             <XButton
-                                                alignSelf="flex-start"
-                                                style="warning"
-                                                size="small"
-                                                text="Enable"
+                                                text="Got it"
+                                                style="primary"
+                                                autoClose={true}
                                             />
-                                        }
-                                        footer={
-                                            <XModalFooter>
-                                                <XButton
-                                                    text="Got it"
-                                                    style="primary"
-                                                    autoClose={true}
-                                                />
-                                            </XModalFooter>
-                                        }
-                                    >
-                                        {isChrome && (
-                                            <Instruction>
-                                                <InstructionItem>
-                                                    1. Click <LockIcon /> in your browser's address
-                                                    bar.
-                                                </InstructionItem>
-                                                <InstructionItem>
-                                                    2. Locate <NotificationsIcon />{' '}
-                                                    <strong>Notifications</strong> and select
-                                                    "Allow".
-                                                </InstructionItem>
-                                            </Instruction>
-                                        )}
-                                        {isFirefox && (
-                                            <Instruction>
-                                                <InstructionItem>
-                                                    1. Click <LockIcon /> in your browser's address
-                                                    bar.
-                                                </InstructionItem>
-                                                <InstructionItem>
-                                                    2. Locate <NotificationsFirefoxIcon />{' '}
-                                                    <strong>Receive notifications</strong> and
-                                                    select <CloseIcon /> next to «Blocked».
-                                                </InstructionItem>
-                                            </Instruction>
-                                        )}
-                                    </XModal>
-                                )}
-                            </>
-                        )}
+                                        </XModalFooter>
+                                    }
+                                >
+                                    {isChrome && (
+                                        <Instruction>
+                                            <div className={InstructionItem}>
+                                                1. Click <LockIcon /> in your browser's address bar.
+                                            </div>
+                                            <div className={InstructionItem}>
+                                                2. Locate <NotificationsIcon />{' '}
+                                                <strong>Notifications</strong> and select "Allow".
+                                            </div>
+                                        </Instruction>
+                                    )}
+                                    {isFirefox && (
+                                        <Instruction>
+                                            <div className={InstructionItem}>
+                                                1. Click <LockIcon /> in your browser's address bar.
+                                            </div>
+                                            <div className={InstructionItem}>
+                                                2. Locate <NotificationsFirefoxIcon />{' '}
+                                                <strong>Receive notifications</strong> and select{' '}
+                                                <CloseIcon /> next to «Blocked».
+                                            </div>
+                                        </Instruction>
+                                    )}
+                                </XModal>
+                            )}
+                        </>
+                    )}
                 </Group>
             );
         } else {
@@ -237,35 +235,38 @@ class BrowserNotifications extends React.Component<
     }
 }
 
-const MobileApp = Glamorous.a<{ system: 'ios' | 'android' }>(props => ({
-    width: 103,
-    height: props.system === 'ios' ? 33 : 34,
-    background: 'center center no-repeat',
-    backgroundSize: '100% 100%',
-    backgroundImage:
-        props.system === 'ios'
-            ? 'url(/static/X/settings/appstore@2x.png)'
-            : 'url(/static/X/settings/googleplay@2x.png)',
-    opacity: 0.5,
-    marginRight: 18,
-
-    '&:hover': {
-        opacity: 0.8,
-    },
-
-    '&:last-child': {
-        marginRight: 0,
-    },
-}));
-
 const MobileApps = () => (
     <Group>
         <GroupTitle>Mobile apps</GroupTitle>
-        <GroupText>Install Openland mobile app to receive new messages on the go.</GroupText>
+        <div className={GroupText}>
+            Install Openland mobile app to receive new messages on the go.
+        </div>
 
         <XView flexDirection="row">
-            <MobileApp system="ios" href="https://oplnd.com/ios" target="_blank" />
-            <MobileApp system="android" href="https://oplnd.com/android_beta" target="_blank" />
+            <XView
+                as="a"
+                href="https://oplnd.com/ios"
+                target="_blank"
+                marginRight={18}
+                opacity={0.5}
+                hoverOpacity={0.8}
+            >
+                <XView as="img" width={103} height={33} src="/static/X/settings/appstore@2x.png" />
+            </XView>
+            <XView
+                as="a"
+                href="https://oplnd.com/android_beta"
+                target="_blank"
+                opacity={0.5}
+                hoverOpacity={0.8}
+            >
+                <XView
+                    as="img"
+                    width={103}
+                    height={34}
+                    src="/static/X/settings/googleplay@2x.png"
+                />
+            </XView>
         </XView>
     </Group>
 );
@@ -409,12 +410,12 @@ class NotificationsSettingsPageInner extends React.Component<
                             <XVertical separator={8}>
                                 <Group>
                                     <GroupTitle>Email notifications</GroupTitle>
-                                    <GroupText>
+                                    <div className={GroupText}>
                                         When you’re not online, Openland can send you email
                                         notifications for new direct messages and mentions of your
                                         name. Notifications are sent to{' '}
                                         <strong>{this.props.settings.primaryEmail}.</strong>
-                                    </GroupText>
+                                    </div>
                                     <GroupSubTitle>You can email me</GroupSubTitle>
                                     <XView maxWidth={440}>
                                         <XSelect
