@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { MessagePage } from '../../components/MessagePage';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
@@ -9,10 +8,11 @@ import { AuthRouter } from '../../components/AuthRouter';
 import { InitTexts } from './_text';
 import { withInviteActivation } from '../../api/withInviteActivation';
 import { XLoader } from 'openland-x/XLoader';
+import { css } from 'linaria';
 
-const InfoText = Glamorous.div({
-    marginBottom: 15,
-});
+const InfoText = css`
+    margin-bottom: 15px;
+`;
 
 class AcceptInviteComponent extends React.Component<{ mutation: any }> {
     componentDidMount() {
@@ -45,7 +45,9 @@ export default withAppBase(
                             ))}
                         {!(props.data.invite || props.data.appInvite) && (
                             <MessagePageContent title="Invite">
-                                <InfoText>{InitTexts.invite.unableToFindInvite}</InfoText>
+                                <div className={InfoText}>
+                                    {InitTexts.invite.unableToFindInvite}
+                                </div>
                             </MessagePageContent>
                         )}
                     </MessagePage>
