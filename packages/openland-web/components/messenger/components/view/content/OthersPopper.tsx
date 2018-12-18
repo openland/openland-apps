@@ -4,7 +4,6 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 
 type JoinedUserPopperRowProps = {
     title: string;
@@ -62,22 +61,15 @@ export const JoinedUserPopperRow = ({ title, subtitle, photo, id }: JoinedUserPo
     );
 };
 
-const xPopperContentClassName = css`
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-`;
-
 export const OthersPopper = (props: any) => {
     return (
         <XPopper
-            contentContainer={<XPopperContent className={xPopperContentClassName} />}
+            contentContainer={<XPopperContent />}
             content={props.items.map((item: any, key: any) => {
                 return <JoinedUserPopperRow {...item} key={key} />;
             })}
-            show={true}
-            // showOnHover={true}
+            // show={true}
+            showOnHover={true}
             placement="top"
         >
             <XView cursor="pointer" color="#1790ff">
