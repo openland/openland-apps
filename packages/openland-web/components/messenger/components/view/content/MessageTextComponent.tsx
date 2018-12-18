@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { preprocessText, Span } from '../../../utils/TextProcessor';
+import { preprocessText } from '../../../utils/TextProcessor';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
