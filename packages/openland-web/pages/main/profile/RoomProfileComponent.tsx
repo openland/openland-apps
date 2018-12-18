@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withAlterChat } from '../../../api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -17,7 +16,6 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
@@ -55,30 +53,29 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XView } from 'react-mental';
 
-const HeaderMembers = Glamorous.div<{ online?: boolean }>(props => ({
-    fontSize: 13,
-    lineHeight: 1.23,
-    color: props.online ? '#1790ff' : '#7F7F7F',
-}));
+const HeaderMembers = (props: { online?: boolean; children?: any }) => (
+    <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
+        {props.children}
+    </XView>
+);
 
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data &&
-                props.data.roomSuper && (
-                    <RoomSetFeatured
-                        val={props.data.roomSuper!.featured}
-                        roomId={props.data.roomSuper.id}
-                    />
-                )}
-            {props.data &&
-                props.data.roomSuper && (
-                    <RoomSetHidden
-                        val={props.data.roomSuper!.listed}
-                        roomId={props.data.roomSuper.id}
-                    />
-                )}
+            {props.data && props.data.roomSuper && (
+                <RoomSetFeatured
+                    val={props.data.roomSuper!.featured}
+                    roomId={props.data.roomSuper.id}
+                />
+            )}
+            {props.data && props.data.roomSuper && (
+                <RoomSetHidden
+                    val={props.data.roomSuper!.listed}
+                    roomId={props.data.roomSuper.id}
+                />
+            )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -223,19 +220,18 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description &&
-                meAdmin && (
-                    <Section separator={0}>
-                        <XSubHeader title="About" paddingBottom={0} />
-                        <SectionContent>
-                            <AboutPlaceholder
-                                roomId={chat.id}
-                                description={chat.description}
-                                target={<EditButton text="Add a short description" />}
-                            />
-                        </SectionContent>
-                    </Section>
-                )}
+            {!chat.description && meAdmin && (
+                <Section separator={0}>
+                    <XSubHeader title="About" paddingBottom={0} />
+                    <SectionContent>
+                        <AboutPlaceholder
+                            roomId={chat.id}
+                            description={chat.description}
+                            target={<EditButton text="Add a short description" />}
+                        />
+                    </SectionContent>
+                </Section>
+            )}
         </>
     );
 };
@@ -305,23 +301,22 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                 : 'members';
         return (
             <Section separator={0}>
-                {props.meOwner &&
-                    (props.requests || []).length > 0 && (
-                        <XSwitcher style="button">
-                            <XSwitcher.Item
-                                query={{ field: 'requests' }}
-                                counter={props.members.length}
-                            >
-                                Members
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'requests', value: '1' }}
-                                counter={props.requests!.length}
-                            >
-                                Requests
-                            </XSwitcher.Item>
-                        </XSwitcher>
-                    )}
+                {props.meOwner && (props.requests || []).length > 0 && (
+                    <XSwitcher style="button">
+                        <XSwitcher.Item
+                            query={{ field: 'requests' }}
+                            counter={props.members.length}
+                        >
+                            Members
+                        </XSwitcher.Item>
+                        <XSwitcher.Item
+                            query={{ field: 'requests', value: '1' }}
+                            counter={props.requests!.length}
+                        >
+                            Requests
+                        </XSwitcher.Item>
+                    </XSwitcher>
+                )}
                 {((props.requests || []).length === 0 || !props.meOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
