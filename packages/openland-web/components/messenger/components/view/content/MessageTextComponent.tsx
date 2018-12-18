@@ -1,20 +1,15 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { preprocessText } from '../../../utils/TextProcessor';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
-import { XButton } from 'openland-x/XButton';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'react-mental';
-import { XPopper } from 'openland-x/XPopper';
-import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { css } from 'linaria';
 import { isEmoji } from '../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/components/messenger/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/components/messenger/utils/makeInternalLinkRelative';
-
+import { OthersPopper } from './OthersPopper';
 export interface MessageTextComponentProps {
     alphaMentions?: any;
     mentions: MessageFull_mentions[] | null;
@@ -22,72 +17,6 @@ export interface MessageTextComponentProps {
     isService: boolean;
     isEdited: boolean;
 }
-
-const Title = Glamorous.span({
-    fontSize: 12,
-    fontWeight: 600,
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: 1.67,
-    letterSpacing: 'normal',
-    color: '#000',
-});
-
-const SubTitle = Glamorous.span({
-    opacity: 0.4,
-    fontSize: 12,
-    fontWeight: 600,
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: '1.5',
-    letterSpacing: 'normal',
-    color: '#000',
-});
-
-const XButtonStyled = Glamorous(XButton)({
-    borderRadius: 20,
-    width: 68,
-    height: 22,
-});
-
-type JoinedUserPopperRowProps = {
-    title: string;
-    subtitle: string;
-    photo: string;
-    id: string;
-};
-
-export const JoinedUserPopperRow = ({ title, subtitle, photo, id }: JoinedUserPopperRowProps) => {
-    return (
-        <XView
-            cursor="pointer"
-            flexDirection="row"
-            alignItems="center"
-            hoverBackgroundColor="#f9f9f9"
-            paddingLeft={16}
-            paddingRight={16}
-            width={393}
-            height={36}
-            path={'/mail/u/' + id}
-        >
-            <XAvatar
-                style="user"
-                cloudImageUuid={photo === null ? undefined : photo}
-                objectName={title}
-                objectId={id}
-                size="m-small"
-            />
-            <XView marginLeft={12} flexDirection="column">
-                <Title>{title}</Title>
-            </XView>
-            <XView marginLeft={9} flexDirection="column">
-                <SubTitle>{subtitle}</SubTitle>
-            </XView>
-            <XView flexGrow={1} />
-            <XButtonStyled text="Message" style="primary" size="tiny" path={'/mail/' + id} />
-        </XView>
-    );
-};
 
 const TextStyle = css`
     display: inline;
@@ -234,35 +163,6 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
             </span>
         );
     });
-};
-
-const XPopperContentStyled = Glamorous(XPopperContent)({
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 0,
-    paddingRight: 0,
-});
-
-export const OthersPopper = (props: any) => {
-    return (
-        <XPopper
-            contentContainer={<XPopperContentStyled />}
-            content={props.items.map((item: any, key: any) => {
-                return <JoinedUserPopperRow {...item} key={key} />;
-            })}
-            showOnHover={true}
-            placement="top"
-        >
-            <span
-                style={{
-                    cursor: 'pointer',
-                    color: '#1790ff',
-                }}
-            >
-                {props.children}
-            </span>
-        </XPopper>
-    );
 };
 
 const LinkToRoom = ({ children, roomId }: any) => {
