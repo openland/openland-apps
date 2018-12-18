@@ -29,6 +29,7 @@ import { XView } from 'react-mental';
 import { XRouting } from 'openland-x-routing/XRouting';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
 import { XListView } from '../XListView';
+import { DialogViewCompact } from './dialog/DialogViewCompact';
 
 let SelectContext = React.createContext({ select: -1 });
 
@@ -81,10 +82,18 @@ class ConversationComponent extends React.PureComponent<
     };
 
     render() {
+        if (this.props.compact) {
+            return (
+                <DialogViewCompact
+                    item={this.props.conversation}
+                    handleRef={this.handleRef}
+                    onSelect={this.props.onSelect}
+                />
+            );
+        }
         return (
             <DialogView
                 item={this.props.conversation}
-                compact={this.props.compact}
                 handleRef={this.handleRef}
                 onSelect={this.props.onSelect}
             />

@@ -89,7 +89,6 @@ const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
 interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
-    loadBefore: (id: string) => void;
     conversationType?: SharedRoomKind | 'PRIVATE';
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
@@ -143,7 +142,7 @@ export class MessageListComponent extends React.PureComponent<
 
     handleScroll = (e: any) => {
         if (lastMessageId !== '' && e.target.scrollTop < 50) {
-            this.props.loadBefore(lastMessageId);
+            this.props.conversation.loadBefore(lastMessageId);
         }
     };
 

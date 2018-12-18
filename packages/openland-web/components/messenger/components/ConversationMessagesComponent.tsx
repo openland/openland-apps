@@ -2,17 +2,15 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
-// import { XAvatar } from 'openland-x/XAvatar';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
 import {
     ConversationEngine,
-    ConversationStateHandler,
 } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { TypignsComponent, TypingContext } from './TypingsComponent';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
+import { TypingsView } from '../typings/TypingsView';
 
 const TypingWrapper = Glamorous.div({
     display: 'flex',
@@ -33,47 +31,11 @@ const TypingContent = Glamorous(XHorizontal)({
     margin: 'auto',
 });
 
-const TypingString = Glamorous.div({
-    opacity: 0.5,
-    fontSize: 12,
-    fontWeight: 500,
-    letterSpacing: -0.2,
-    color: '#334562',
-    marginTop: 8,
-    marginBottom: 8,
-});
-
 const TypingComponent = (props: { chatId: string }) => (
     <TypingWrapper>
-        <TypignsComponent conversatonId={props.chatId}>
-            <TypingContext.Consumer>
-                {typing => (
-                    <TypingContent
-                        separator={5}
-                        alignItems="center"
-                        flexGrow={1}
-                    >
-                        {/* {typing.users && (
-                            <TypingAvatarWrapper>
-                                {typing.users.map((i, j) => (
-                                    <TypingAvatar
-                                        size="x-small"
-                                        key={'typing_img_' + j}
-                                        style="colorus"
-                                        objectName={i.userName}
-                                        objectId={i.userId}
-                                        cloudImageUuid={i.userPic || undefined}
-                                    />
-                                ))}
-                            </TypingAvatarWrapper>
-                        )} */}
-                        {typing.typing && (
-                            <TypingString>{typing.typing}</TypingString>
-                        )}
-                    </TypingContent>
-                )}
-            </TypingContext.Consumer>
-        </TypignsComponent>
+        <TypingContent>
+            <TypingsView conversationId={props.chatId} />
+        </TypingContent>
     </TypingWrapper>
 );
 
@@ -99,16 +61,11 @@ export class ConversationMessagesComponent extends React.PureComponent<
         }
     };
 
-    loadBefore = (id: string) => {
-        this.props.conversation.loadBefore(id);
-    };
-
     render() {
         return (
             <MessagesContainer>
                 <MessageListComponent
                     me={this.props.me}
-                    loadBefore={this.loadBefore}
                     conversation={this.props.conversation}
                     conversationType={this.props.conversationType}
                     messages={this.props.messages}
@@ -117,7 +74,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     conversationId={this.props.conversationId}
                     editPostHandler={this.props.editPostHandler}
                 />
-                <XLoader loading={this.props.loading} />
+                {this.props.loading && <XLoader loading={this.props.loading} />}
                 <TypingComponent chatId={this.props.conversationId} />
             </MessagesContainer>
         );
