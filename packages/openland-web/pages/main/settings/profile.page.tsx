@@ -1,9 +1,7 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withApp } from '../../../components/withApp';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
-import { XContent } from 'openland-x-layout/XContent';
 import { withProfile } from '../../../api/withProfile';
 import { Navigation } from './_navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -20,63 +18,57 @@ import { Query } from '../../../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 import { DateFormater } from 'openland-x/XDate';
+import { XView } from 'react-mental';
 
-const Content = Glamorous(XContent)({
-    paddingTop: 20,
-    paddingLeft: 30,
-    paddingRight: 30,
-    flexGrow: 1,
-});
+const Content = (props: { children?: any }) => (
+    <XView paddingTop={20} paddingLeft={30} paddingRight={30} flexGrow={1} flexDirection="column">
+        {props.children}
+    </XView>
+);
 
-const HeadTitle = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 600,
-    letterSpacing: 0,
-    color: '#000000',
-});
+const HeadTitle = (props: { children?: any }) => (
+    <XView fontSize={18} fontWeight="600" color="#000000">
+        {props.children}
+    </XView>
+);
 
-const CardText = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    borderRadius: 10,
-    border: 'solid 1px rgba(220, 222, 228, 0.45)',
-    padding: 16,
+const CardText = (props: { children?: any }) => (
+    <XView
+        flexDirection="row"
+        alignItems="center"
+        alignSelf="flex-start"
+        borderRadius={10}
+        borderWidth={1}
+        borderColor="rgba(220, 222, 228, 0.45)"
+        paddingLeft={16}
+        paddingRight={16}
+        paddingTop={16}
+        paddingBottom={16}
+        fontSize={14}
+        lineHeight={1.43}
+        color="#334562"
+    >
+        {props.children}
+    </XView>
+);
 
-    fontSize: 14,
-    lineHeight: 1.43,
-    letterSpacing: -0.2,
-    color: '#334562',
-    '& .bold': {
-        fontWeight: 600,
-    },
-    '& .person': {
-        color: '#1790ff',
-    },
-});
-
-const TextAreaWrapper = Glamorous.div({
-    position: 'relative',
-    '& > textarea': {
-        height: 85,
-        minHeight: 85,
-    },
-});
-
-const TextAreaTitle = Glamorous.div({
-    top: -10,
-    left: 13,
-    height: 20,
-    fontSize: 12,
-    lineHeight: '20px',
-    position: 'absolute',
-    paddingLeft: 3,
-    paddingRight: 3,
-    backgroundColor: 'white',
-    color: 'rgba(0, 0, 0, 0.4)',
-    zIndex: 2,
-    pointerEvents: 'none',
-});
+const TextAreaTitle = (props: { children?: any }) => (
+    <XView
+        top={-10}
+        left={13}
+        height={20}
+        fontSize={12}
+        lineHeight="20px"
+        position="absolute"
+        paddingLeft={3}
+        paddingRight={3}
+        backgroundColor="white"
+        color="rgba(0, 0, 0, 0.4)"
+        zIndex={2}
+    >
+        {props.children}
+    </XView>
+);
 
 export default withApp(
     'Profile',
@@ -161,15 +153,16 @@ export default withApp(
                                                                         label: org.name,
                                                                     }))}
                                                                 />
-                                                                <TextAreaWrapper>
+                                                                <XView position="relative">
                                                                     <TextAreaTitle>
                                                                         About
                                                                     </TextAreaTitle>
                                                                     <XTextArea
                                                                         valueStoreKey="fields.input.about"
                                                                         resize={false}
+                                                                        minHeight={85}
                                                                     />
-                                                                </TextAreaWrapper>
+                                                                </XView>
                                                             </XVertical>
                                                             <XAvatarUpload field="input.photoRef" />
                                                         </XHorizontal>
@@ -252,33 +245,28 @@ export default withApp(
                                 <XWithRole role="super-admin">
                                     <HeadTitle>Super admin</HeadTitle>
                                     <XHorizontal separator={8}>
-                                        {props.data.profile &&
-                                            props.data.profile.joinedAt && (
-                                                <CardText>
-                                                    <span>
-                                                        Joined{' '}
-                                                        <span className="bold">
-                                                            {DateFormater(
-                                                                props.data.profile.joinedAt,
-                                                            )}
-                                                        </span>
-                                                    </span>
-                                                </CardText>
-                                            )}
-                                        {props.data.profile && (
+                                        {props.data.profile && props.data.profile.joinedAt && (
                                             <CardText>
-                                                {!props.data.profile.invitedBy && (
-                                                    <span>Self-registered</span>
-                                                )}
-                                                {props.data.profile.invitedBy && (
-                                                    <span>
-                                                        Invited by{' '}
-                                                        <span className="bold person">
-                                                            {props.data.profile.invitedBy.name ||
-                                                                'First name Last name'}
-                                                        </span>
-                                                    </span>
-                                                )}
+                                                Joined
+                                                <XView fontWeight="600" paddingLeft={4}>
+                                                    {DateFormater(props.data.profile.joinedAt)}
+                                                </XView>
+                                            </CardText>
+                                        )}
+                                        {props.data.profile && !props.data.profile.invitedBy && (
+                                            <CardText>Self-registered</CardText>
+                                        )}
+                                        {props.data.profile && props.data.profile.invitedBy && (
+                                            <CardText>
+                                                Invited by
+                                                <XView
+                                                    fontWeight="600"
+                                                    paddingLeft={4}
+                                                    color="#1790ff"
+                                                >
+                                                    {props.data.profile.invitedBy.name ||
+                                                        'First name Last name'}
+                                                </XView>
                                             </CardText>
                                         )}
                                     </XHorizontal>
