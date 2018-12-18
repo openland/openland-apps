@@ -143,176 +143,179 @@ export default () => (
     <DevDocsScaffold title="MessageTextComponent">
         <XContent>
             <XVertical>
-                <XVertical>
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: 'isService false',
-                            isService: false,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: 'isService true',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: 'isEdited true',
-                            isService: false,
-                            isEdited: true,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: '🌈 insane 🌈',
-                            isService: false,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: ': this is normal :',
-                            isService: false,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: ':tada:',
-                            isService: false,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: 'https://google.com',
-                            isService: false,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [],
-                            mentions: [],
-                            message: 'https://app.openland.com/joinChannel/1dVnQiH',
-                            isService: false,
-                            isEdited: false,
-                        }}
-                    />
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: 'isService false',
+                        isService: false,
+                        isEdited: false,
+                    }}
+                />
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: 'isService true',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
 
-                    <XMenuTitle>1. Joines</XMenuTitle>
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [sergeyLapinUserMention],
-                            mentions: [],
-                            message: '@Sergey Lapin joined the room',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [sergeyLapinUserMention, prettyTUserMention],
-                            mentions: [],
-                            message: '@Sergey Lapin joined the room along with @Fred Morozov 🔥',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [
-                                qwertyUserMention,
-                                taraBUserMention,
-                                prettyTUserMention,
-                            ],
-                            mentions: [],
-                            message: '@qwerty asdfgh joined the room along with 2 others',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <XMenuTitle>2. Service Messages</XMenuTitle>
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [
-                                sergeyLapinUserMention,
-                                qwertyUserMention,
-                                walrusSharedRoomMention,
-                            ],
-                            mentions: [],
-                            message:
-                                '🙌 @Sergey Lapin — @qwerty asdfgh is responding to your post “54545” in @I am the walrus.\nNow you can chat!',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [
-                                sergeyLapinUserMention,
-                                qwertyUserMention,
-                                walrusSharedRoomMention,
-                                qwertyUserMention,
-                                sergeyLapinUserMention,
-                            ],
-                            mentions: [],
-                            message:
-                                '🙌 @Sergey Lapin — @qwerty asdfgh is interested in your job opportunity “54545” in @I am the walrus.\n@qwerty asdfgh — as the next step, please, tell @Sergey Lapin a little bit about yourself.',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [
-                                sergeyLapinUserMention,
-                                qwertyUserMention,
-                                walrusSharedRoomMention,
-                                qwertyUserMention,
-                                sergeyLapinUserMention,
-                            ],
-                            mentions: [],
-                            message:
-                                '🙌  @Sergey Lapin — @qwerty asdfgh is looking to recommend a candidate in response to your post “54545” in @I am the walrus.\n@Sergey Lapin — as the next step, please, describe your recommended candidate, how well do you know them, and share any relevant links.',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                    <MessageTextComponent
-                        {...{
-                            alphaMentions: [
-                                sergeyLapinUserMention,
-                                qwertyUserMention,
-                                walrusSharedRoomMention,
-                                qwertyUserMention,
-                                sergeyLapinUserMention,
-                            ],
-                            mentions: [],
-                            message:
-                                '🙌  @Sergey Lapin — @qwerty asdfgh is interested to make a recommendation following up to your post “54545” in @I am the walrus.',
-                            isService: true,
-                            isEdited: false,
-                        }}
-                    />
-                </XVertical>
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: 'isEdited true',
+                        isService: false,
+                        isEdited: true,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: '🌈 insane 🌈',
+                        isService: false,
+                        isEdited: false,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: ': this is normal :',
+                        isService: false,
+                        isEdited: false,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: ':tada:',
+                        isService: false,
+                        isEdited: false,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: 'https://google.com',
+                        isService: false,
+                        isEdited: false,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [],
+                        mentions: [],
+                        message: 'https://app.openland.com/joinChannel/1dVnQiH',
+                        isService: false,
+                        isEdited: false,
+                    }}
+                />
+
+                <XMenuTitle>1. Joines</XMenuTitle>
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [sergeyLapinUserMention],
+                        mentions: [],
+                        message: '@Sergey Lapin joined the room',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [sergeyLapinUserMention, prettyTUserMention],
+                        mentions: [],
+                        message: '@Sergey Lapin joined the room along with @Fred Morozov 🔥',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
+
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [qwertyUserMention, taraBUserMention, prettyTUserMention],
+                        mentions: [],
+                        message: '@qwerty asdfgh joined the room along with 2 others',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
+
+                <XMenuTitle>2. Service Messages</XMenuTitle>
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [
+                            sergeyLapinUserMention,
+                            qwertyUserMention,
+                            walrusSharedRoomMention,
+                        ],
+                        mentions: [],
+                        message:
+                            '🙌 @Sergey Lapin — @qwerty asdfgh is responding to your post “54545” in @I am the walrus.\nNow you can chat!',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [
+                            sergeyLapinUserMention,
+                            qwertyUserMention,
+                            walrusSharedRoomMention,
+                            qwertyUserMention,
+                            sergeyLapinUserMention,
+                        ],
+                        mentions: [],
+                        message:
+                            '🙌 @Sergey Lapin — @qwerty asdfgh is interested in your job opportunity “54545” in @I am the walrus.\n@qwerty asdfgh — as the next step, please, tell @Sergey Lapin a little bit about yourself.',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [
+                            sergeyLapinUserMention,
+                            qwertyUserMention,
+                            walrusSharedRoomMention,
+                            qwertyUserMention,
+                            sergeyLapinUserMention,
+                        ],
+                        mentions: [],
+                        message:
+                            '🙌  @Sergey Lapin — @qwerty asdfgh is looking to recommend a candidate in response to your post “54545” in @I am the walrus.\n@Sergey Lapin — as the next step, please, describe your recommended candidate, how well do you know them, and share any relevant links.',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
+                <MessageTextComponent
+                    {...{
+                        alphaMentions: [
+                            sergeyLapinUserMention,
+                            qwertyUserMention,
+                            walrusSharedRoomMention,
+                            qwertyUserMention,
+                            sergeyLapinUserMention,
+                        ],
+                        mentions: [],
+                        message:
+                            '🙌  @Sergey Lapin — @qwerty asdfgh is interested to make a recommendation following up to your post “54545” in @I am the walrus.',
+                        isService: true,
+                        isEdited: false,
+                    }}
+                />
             </XVertical>
         </XContent>
     </DevDocsScaffold>

@@ -78,7 +78,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             if (props.active !== undefined && props.active !== null) {
                 return props.active as boolean; // as boolean for simplifying derived types
             }
-            if (props.path) {
+            if (props.path && props.__router) {
                 let ncurrent = normalizePath(props.__router.path);
                 let ntarget = undefined;
                 if (typeof (props.path) === 'string') {
@@ -88,7 +88,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && props.activateForSubpaths)) {
                     return true;
                 }
-            } else if (props.query) {
+            } else if (props.query && props.__router) {
                 return props.__router.query[props.query.field] === props.query.value;
             }
             return false;
@@ -177,9 +177,9 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             // Resolving Url
             if (typeof (this.props.anchor) === 'string') {
                 linkHref = this.props.anchor!;
-            } else if (typeof (this.props.path) === 'string') {
+            } else if (this.props.__router && typeof (this.props.path) === 'string') {
                 linkHref = this.props.__router.resolveLink(this.props.path);
-            } else if (this.props.query) {
+            } else if (this.props.__router && this.props.query) {
                 let linkPath = resolveActionPath(this.props, this.props.__router);
                 linkHref = this.props.__router.resolveLink(linkPath);
             } else if (typeof (this.props.href) === 'string') {

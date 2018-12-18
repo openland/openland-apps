@@ -1,36 +1,31 @@
 module.exports = {
+    globals: {
+        'ts-jest': {
+            useBabelrc: true,
+            tsConfigFile: './tsconfig.json',
+        },
+    },
     testEnvironment: 'jsdom',
     transform: {
-        "^.+\\.tsx?$": "ts-jest"
+        '^.+\\.tsx?$': 'ts-jest',
+        '^.+\\.svg$': 'jest-svg-transformer',
     },
-    moduleFileExtensions: [
-        'ts',
-        'tsx',
-        'js',
-        'jsx',
-        'json',
-        'node'
-    ],
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     testResultsProcessor: 'jest-teamcity-reporter',
     testRegex: '.*\\.spec\\.tsx?$',
     testPathIgnorePatterns: ['/node_modules/', '/build/', '/dist/'],
     coverageDirectory: 'coverage',
-    collectCoverageFrom: [
-        'packages/**/*.{ts,tsx,js,jsx}',
-        '!packages/**/*.d.ts',
-    ],
+    collectCoverageFrom: ['packages/**/*.{ts,tsx,js,jsx}', '!packages/**/*.d.ts'],
+    setupTestFrameworkScriptFile: './jestSetup.js',
     moduleDirectories: [
         '.',
         'packages',
         'packages/openland-x-utils',
         'packages/openland-x',
-        'node_modules'
+        'node_modules',
     ],
-    snapshotSerializers: [
-        "jest-glamor-react"
-    ],
+    snapshotSerializers: ['jest-glamor-react'],
     moduleNameMapper: {
-
         //
         // WARNING: ORDER MATTERS
         //

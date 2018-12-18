@@ -266,6 +266,7 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
 
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
     // Preprocessing
+
     var messageText = props.message;
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
@@ -298,7 +299,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
 
                 try {
                     url = decodeURI(text);
-                } catch {
+                } catch (err) {
                     url = text;
                 }
 

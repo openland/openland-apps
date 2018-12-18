@@ -201,8 +201,6 @@ routes.add('/ui/userpopper', '/dev/ui/userpopper');
 routes.add('/ui/userpopper/', '/dev/ui/userpopper');
 routes.add('/ui/message-text-component', '/dev/ui/message-text-component');
 routes.add('/ui/message-text-component/', '/dev/ui/message-text-component');
-routes.add('/ui/serviceMessages', '/dev/ui/serviceMessages');
-routes.add('/ui/serviceMessages/', '/dev/ui/serviceMessages');
 routes.add('/ui/avatar', '/dev/ui/avatar');
 routes.add('/ui/avatar/', '/dev/ui/avatar');
 routes.add('/ui/links', '/dev/ui/links');

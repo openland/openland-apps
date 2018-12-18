@@ -46,7 +46,6 @@ export function DevDocsScaffold(props: {
                                 Message Text Component
                             </Sidebar.Item>
                             <Sidebar.Item path="/ui/userpopper">User Popper</Sidebar.Item>
-                            <Sidebar.Item path="/ui/serviceMessages">Service Messages</Sidebar.Item>
                             <Sidebar.Item path="/ui/avatar">Avatar</Sidebar.Item>
                             <Sidebar.Item path="/ui/files">Files</Sidebar.Item>
                             <Sidebar.Item path="/ui/loaders">Loaders</Sidebar.Item>
