@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import * as Cookie from 'js-cookie';
 import { withAppBase } from '../../components/withAppBase';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
@@ -23,11 +22,7 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { withAppInviteInfo } from '../../api/withAppInvite';
-
-const RoomLoader = Glamorous.div({
-    height: 150,
-    position: 'relative',
-});
+import { XView } from 'react-mental';
 
 const InviteInfo = withAppInviteInfo((props: any) => {
     let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
@@ -275,9 +270,9 @@ class SignInComponent extends React.Component<
         const AuthMechanism = roomView ? RoomAuthMechanism : WebSignUpAuthMechanism;
         const Loader = roomView
             ? () => (
-                  <RoomLoader>
+                  <XView height={150} position="relative">
                       <XLoader loading={true} />
-                  </RoomLoader>
+                  </XView>
               )
             : () => <XLoader loading={!this.state.emailSent} />;
 

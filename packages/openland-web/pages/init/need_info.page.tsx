@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { MessagePage } from '../../components/MessagePage';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
@@ -9,10 +8,11 @@ import { AuthRouter } from '../../components/AuthRouter';
 import { TextGlobal } from 'openland-text/TextGlobal';
 import { XButton } from 'openland-x/XButton';
 import { InitTexts } from './_text';
+import { css } from 'linaria';
 
-const InfoText = Glamorous.div({
-    marginBottom: 15,
-});
+const InfoText = css`
+    margin-bottom: 15px;
+`;
 
 export default withAppBase('Need Info', props => {
     return (
@@ -24,7 +24,7 @@ export default withAppBase('Need Info', props => {
             <XTrack event="View Need Info">
                 <MessagePage>
                     <MessagePageContent title={InitTexts.need_info.title}>
-                        <InfoText>{InitTexts.need_info.content}</InfoText>
+                        <div className={InfoText}>{InitTexts.need_info.content}</div>
                         <XButton
                             path="/auth/logout"
                             text={TextGlobal.signOut}

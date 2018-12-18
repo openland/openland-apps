@@ -60,13 +60,6 @@ routes.add('/settings/organization/:organizationId', '/main/settings/organizatio
 routes.add('/settings/organization/:organizationId/', '/main/settings/organization');
 
 //
-// Home
-//
-
-routes.add('/home', '/main/home/main');
-routes.add('/home/', '/main/home/main');
-
-//
 // Onboarding
 //
 routes.add('/new/invite', '/main/onboarding/invite');

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from './MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
@@ -10,6 +9,7 @@ import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../MessengerRootComponent';
+import { XView } from 'react-mental';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -30,45 +30,35 @@ function dateFormat(date: number) {
     return prefix + months[dt.getMonth()] + ' ' + dt.getDate() + 'th';
 }
 
-const DateDivider = Glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'sticky',
-    top: 8,
-    zIndex: 1,
-    marginTop: 24,
-    marginBottom: 0,
-    '& > div': {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 50,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingTop: 2,
-        paddingBottom: 2,
-        '& > span': {
-            fontSize: 13,
-            fontWeight: 400,
-            color: '#99A2B0',
-        },
-    },
-});
+const MessagesWrapper = (props: { children?: any }) => (
+    <XView
+        flexDirection="column"
+        alignItems="stretch"
+        alignSelf="center"
+        paddingTop={96}
+        paddingBottom={40}
+        width="100%"
+        maxWidth={930}
+    >
+        {props.children}
+    </XView>
+);
 
-const MessagesWrapper = Glamorous.div<{ empty?: boolean }>(props => ({
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: props.empty ? 'center' : undefined,
-    alignItems: 'stretch',
-    alignSelf: 'center',
-    flexGrow: props.empty ? 1 : undefined,
-    paddingTop: props.empty ? 20 : 96,
-    paddingBottom: props.empty ? 0 : 40,
-    width: '100%',
-    maxWidth: 930,
-}));
+const MessagesWrapperEmpty = (props: { children?: any }) => (
+    <XView
+        flexDirection="column"
+        alignItems="stretch"
+        alignSelf="center"
+        justifyContent="center"
+        flexGrow={1}
+        paddingTop={20}
+        paddingBottom={0}
+        width="100%"
+        maxWidth={930}
+    >
+        {props.children}
+    </XView>
+);
 
 interface MessageListProps {
     conversation: ConversationEngine;
@@ -164,11 +154,30 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             let dstr = dateFormat(date);
             if (dstr !== prevDate) {
                 messages.push(
-                    <DateDivider key={'date-' + dstr}>
-                        <div>
-                            <span>{dstr}</span>
-                        </div>
-                    </DateDivider>,
+                    <XView
+                        key={'date-' + dstr}
+                        justifyContent="center"
+                        alignItems="center"
+                        top={8}
+                        zIndex={1}
+                        marginTop={24}
+                        marginBottom={0}
+                    >
+                        <XView
+                            justifyContent="center"
+                            alignItems="center"
+                            backgroundColor="#ffffff"
+                            borderRadius={50}
+                            paddingLeft={10}
+                            paddingRight={10}
+                            paddingTop={2}
+                            paddingBottom={2}
+                        >
+                            <XView fontSize={13} color="#99A2B0">
+                                {dstr}
+                            </XView>
+                        </XView>
+                    </XView>,
                 );
                 prevDate = dstr;
                 prevMessageDate = undefined;
@@ -261,12 +270,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             <>
                 {this.isEmpty() && (
                     <XScrollViewReversed ref={this.scroller}>
-                        <MessagesWrapper empty={this.isEmpty()}>
+                        <MessagesWrapperEmpty>
                             <EmptyBlock
                                 conversationType={this.props.conversationType}
                                 onClick={this.props.inputShower}
                             />
-                        </MessagesWrapper>
+                        </MessagesWrapperEmpty>
                     </XScrollViewReversed>
                 )}
                 {!this.isEmpty() && (
@@ -276,7 +285,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         onResize={this.resizeHandler}
                     >
                         <XScrollViewReversed ref={this.scroller}>
-                            <MessagesWrapper empty={this.isEmpty()}>{messages}</MessagesWrapper>
+                            <MessagesWrapper>{messages}</MessagesWrapper>
                         </XScrollViewReversed>
                     </XResizeDetector>
                 )}

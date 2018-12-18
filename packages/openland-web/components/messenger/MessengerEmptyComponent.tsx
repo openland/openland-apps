@@ -1,56 +1,47 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
-
-const Root = Glamorous.div({
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    minWidth: '100%',
-    height: '100%',
-    padding: 28,
-    flexShrink: 0,
-});
-
-const ImageWrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    zIndex: 1,
-});
-
-const Image = Glamorous.div({
-    width: 358,
-    height: 311,
-    backgroundImage: "url('/static/X/messenger/messenger-empty.svg')",
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    marginBottom: 50,
-});
-
-const InfoText = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 400,
-    lineHeight: '24px',
-    letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.4)',
-    marginBottom: 32,
-});
+import { XView } from 'react-mental';
 
 export class MessengerEmptyComponent extends React.Component {
     render() {
         return (
-            <Root>
-                <ImageWrapper>
-                    <Image />
-                    <InfoText>Select a chat or start a new one</InfoText>
+            <XView
+                position="relative"
+                flexDirection="column"
+                justifyContent="center"
+                minWidth="100%"
+                height="100%"
+                paddingTop={28}
+                paddingLeft={28}
+                paddingBottom={28}
+                paddingRight={28}
+                flexShrink={0}
+            >
+                <XView
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    alignSelf="center"
+                    zIndex={1}
+                >
+                    <XView
+                        as="img"
+                        width={358}
+                        height={311}
+                        src="/static/X/messenger/messenger-empty.svg"
+                        marginBottom={50}
+                    />
+                    <XView
+                        fontSize={16}
+                        lineHeight="24px"
+                        color="rgba(0, 0, 0, 0.4)"
+                        marginBottom={32}
+                    >
+                        Select a chat or start a new one
+                    </XView>
                     <XButton style="primary" text="New chat" path="/mail/new" />
-                </ImageWrapper>
-            </Root>
+                </XView>
+            </XView>
         );
     }
 }

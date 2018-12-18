@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { MessagePage } from '../../components/MessagePage';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
@@ -10,10 +9,11 @@ import { withInviteInfo } from '../../api/withInviteInfo';
 import { XButton } from 'openland-x/XButton';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
+import { css } from 'linaria';
 
-const InfoText = Glamorous.div({
-    marginBottom: 15,
-});
+const InfoText = css`
+    margin-bottom: 15px;
+`;
 
 export default withAppBase(
     'Join',
@@ -28,7 +28,7 @@ export default withAppBase(
                     <MessagePage>
                         {props.data.invite && (
                             <MessagePageContent title={InitTexts.join.title}>
-                                <InfoText>{props.data.invite.title}</InfoText>
+                                <div className={InfoText}>{props.data.invite.title}</div>
                                 {props.data.invite.joined && (
                                     <XButton
                                         text={InitTexts.join.goButton}
@@ -53,7 +53,7 @@ export default withAppBase(
                         )}
                         {!props.data.invite && (
                             <MessagePageContent title="Join">
-                                <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                <div className={InfoText}>{InitTexts.join.unableToFindInvite}</div>
                             </MessagePageContent>
                         )}
                     </MessagePage>

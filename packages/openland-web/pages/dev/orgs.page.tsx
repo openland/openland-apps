@@ -9,11 +9,11 @@ import { XTable } from 'openland-x/XTable';
 import { XForm } from 'openland-x-forms/XForm';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XModalForm } from 'openland-x-modal/XModalForm';
-import glamorous from 'glamorous';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withSuperAccounts } from '../../api/withSuperAccounts';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XView } from 'react-mental';
 
 const AddAccountForm = withSuperAccountAdd(props => {
     return (
@@ -29,10 +29,6 @@ const AddAccountForm = withSuperAccountAdd(props => {
             </XFormField>
         </XModalForm>
     );
-});
-
-const XSwitcherMargin = glamorous(XSwitcher)({
-    marginLeft: 24,
 });
 
 export default withApp(
@@ -52,30 +48,31 @@ export default withApp(
                             <AddAccountForm />
                         </XHeader>
 
-                        <XSwitcherMargin style="flat">
-                            <XSwitcher.Item
-                                query={{ field: 'orgState' }}
-                                counter={orgs.filter(o => o.state === 'ACTIVATED').length}
-                            >
-                                ACTIVATED
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'orgState', value: 'PENDING' }}
-                                counter={orgs.filter(o => o.state === 'PENDING').length}
-                            >
-                                PENDING
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{
-                                    field: 'orgState',
-                                    value: 'SUSPENDED',
-                                }}
-                                counter={orgs.filter(o => o.state === 'SUSPENDED').length}
-                            >
-                                SUSPENDED
-                            </XSwitcher.Item>
-                        </XSwitcherMargin>
-
+                        <XView marginLeft={24}>
+                            <XSwitcher style="flat">
+                                <XSwitcher.Item
+                                    query={{ field: 'orgState' }}
+                                    counter={orgs.filter(o => o.state === 'ACTIVATED').length}
+                                >
+                                    ACTIVATED
+                                </XSwitcher.Item>
+                                <XSwitcher.Item
+                                    query={{ field: 'orgState', value: 'PENDING' }}
+                                    counter={orgs.filter(o => o.state === 'PENDING').length}
+                                >
+                                    PENDING
+                                </XSwitcher.Item>
+                                <XSwitcher.Item
+                                    query={{
+                                        field: 'orgState',
+                                        value: 'SUSPENDED',
+                                    }}
+                                    counter={orgs.filter(o => o.state === 'SUSPENDED').length}
+                                >
+                                    SUSPENDED
+                                </XSwitcher.Item>
+                            </XSwitcher>
+                        </XView>
                         <XTable>
                             <XTable.Header>
                                 <XTable.Cell>Title</XTable.Cell>
