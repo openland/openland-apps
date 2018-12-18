@@ -17,7 +17,7 @@ import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
 import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
-import { RoomsInviteComponent } from './RoomsInviteComponent';
+import { RoomsInviteComponent } from './invite/RoomsInviteComponent';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';

@@ -6,8 +6,8 @@ const styleContainer = css`
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
-    padding-left: 16;
-    padding-right: 16;
+    padding-left: 16px;
+    padding-right: 16px;
     overflow: hidden;
 `;
 
@@ -24,17 +24,17 @@ const styleInner = css`
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-    & > div:first-child: {
+    & > div:first-child {
         width: 100%;
         max-width: 100%;
         flex-basis: 100%;
         height: 100%;
         max-height: 100%;
         flex-grow: 1;
-        & > .simplebar-track.horizontal: {
+        & > .simplebar-track.horizontal {
             display: none;
         },
-        & > .simplebar-scroll-content > .simplebar-content: {
+        & > .simplebar-scroll-content > .simplebar-content {
             overflow-x: unset !important;
             overflow-y: unset !important;
             width: 100%;

@@ -6,7 +6,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { InitTexts } from './_text';
 import { withChannelInviteInfo } from '../../api/withChannelInviteInfo';
-import { RoomsInviteComponent } from '../../components/messenger/RoomsInviteComponent';
+import { RoomsInviteComponent } from '../../components/messenger/invite/RoomsInviteComponent';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withUserInfo } from '../../components/UserInfo';
 import * as Cookie from 'js-cookie';

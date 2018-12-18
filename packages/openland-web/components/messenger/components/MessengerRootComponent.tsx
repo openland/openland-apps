@@ -18,7 +18,7 @@ import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
 import { ConversationMessagesComponent } from './ConversationMessagesComponent';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationContainer } from './view/ConversationContainer';
-import { UplaodCareUploading } from '../UploadCareUploading';
+import { UplaodCareUploading } from '../utils/UploadCareUploading';
 import { withUserInfo } from '../../UserInfo';
 import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';

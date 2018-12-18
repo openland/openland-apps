@@ -5,7 +5,6 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
-import emojiData from './data/emoji-data';
 import {
     MentionComponentInner,
     removeEmojiFromText,
@@ -16,6 +15,8 @@ import { XView } from 'react-mental';
 import { XPopper } from 'openland-x/XPopper';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
 import { css } from 'linaria';
+import { isEmoji } from './utils/isEmoji';
+
 export interface MessageTextComponentProps {
     alphaMentions?: any;
     mentions: MessageFull_mentions[] | null;
@@ -175,8 +176,6 @@ export let isInternalLink = (url: string) => {
         url.includes('//next.openland.com/')
     );
 };
-
-const asciiToUnicodeCache = new Map();
 
 function indexes(source: string, find: string) {
     let result = [];
@@ -407,179 +406,121 @@ class MessageWithMentionsTextComponent extends React.PureComponent<{
     }
 }
 
-export class MessageTextComponent extends React.PureComponent<
-    MessageTextComponentProps
-    > {
-    private preprocessed: Span[];
-    big = false;
-    insane = false;
-    mouthpiece = false;
-    textSticker = false;
+export const MessageTextComponent = React.memo<MessageTextComponentProps>((props) => {
 
-    constructor(props: MessageTextComponentProps) {
-        super(props);
+    // Preprocessing
+    const preprocessed = React.useMemo(() => preprocessText(props.message), [props.message]);
+    const messageText = props.message;
+    const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
+    const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
+    const isSingleEmoji = React.useMemo(() => isEmoji(messageText), [props.message]);
+    const isBig = isSingleEmoji || messageText.length <= 302 &&
+        messageText.startsWith(':') &&
+        messageText.endsWith(':');
+    const isTextSticker = !isSingleEmoji && isBig;
 
-        this.preprocessed = preprocessText(props.message);
+    // Rendering
+    let parts = preprocessed.map((v, i) => {
+        if (v.type === 'new_line') {
+            return <br key={'br-' + i} />;
+        } else if (v.type === 'link') {
+            if (v.link && isInternalLink(v.link)) {
+                let path = v.link;
+                let text = v.text || path;
 
-        this.checkTextSticker(props);
-    }
+                path = makeInternalLinkRelative(path);
 
-    componentWillUpdate(nextProps: MessageTextComponentProps) {
-        this.preprocessed = preprocessText(nextProps.message);
+                let url: string;
 
-        if (nextProps.message !== this.props.message) {
-            this.checkTextSticker(nextProps);
-        }
-    }
-
-    checkTextSticker = (p: MessageTextComponentProps) => {
-        let messageText = p.message;
-
-        let isShortnameSmile = false;
-        let isUnicodeSmile = false;
-        let isAsciiSmile = false;
-
-        if (messageText.startsWith(':') && messageText.endsWith(':')) {
-            isShortnameSmile = emojiData.shortToUnicode.has(messageText);
-        }
-
-        if (!isShortnameSmile) {
-            isUnicodeSmile = emojiData.unicodeToShort.has(messageText);
-        }
-
-        if (!isShortnameSmile && !isUnicodeSmile) {
-            if (asciiToUnicodeCache.has(messageText)) {
-                isAsciiSmile = true;
-            } else {
-                for (const [
-                    regExp,
-                    unicode,
-                ] of emojiData.asciiToUnicode.entries()) {
-                    if (messageText.replace(regExp, unicode) === unicode) {
-                        asciiToUnicodeCache.set(messageText, unicode);
-                        isAsciiSmile = true;
-                    }
-                }
-            }
-        }
-
-        if (isAsciiSmile || isShortnameSmile || isUnicodeSmile) {
-            this.big = true;
-        } else {
-            this.big =
-                messageText.length <= 302 &&
-                messageText.startsWith(':') &&
-                messageText.endsWith(':');
-            this.insane =
-                messageText.startsWith('🌈') && messageText.endsWith('🌈');
-            this.mouthpiece =
-                messageText.startsWith('📣') && messageText.endsWith('📣');
-
-            this.textSticker = this.big;
-        }
-    };
-
-    render() {
-        let parts = this.preprocessed.map((v, i) => {
-            if (v.type === 'new_line') {
-                return <br key={'br-' + i} />;
-            } else if (v.type === 'link') {
-                if (v.link && isInternalLink(v.link)) {
-                    let path = v.link;
-                    let text = v.text || path;
-
-                    path = makeInternalLinkRelative(path);
-
-                    let url: string;
-
-                    try {
-                        url = decodeURI(text);
-                    } catch {
-                        url = text;
-                    }
-
-                    return (
-                        <XLink
-                            className="link"
-                            key={'link-' + i}
-                            path={path}
-                            onClick={(e: any) => e.stopPropagation()}
-                        >
-                            {url}
-                        </XLink>
-                    );
+                try {
+                    url = decodeURI(text);
+                } catch {
+                    url = text;
                 }
 
                 return (
-                    <XLinkExternal
+                    <XLink
                         className="link"
                         key={'link-' + i}
-                        href={v.link!!}
-                        content={v.text!!}
-                        showIcon={false}
-                    />
-                );
-            } else {
-                let text = v.text!!;
-
-                if (
-                    (this.props.mentions && this.props.mentions.length !== 0) ||
-                    (this.props.alphaMentions &&
-                        this.props.alphaMentions.length !== 0)
-                ) {
-                    return (
-                        <MessageWithMentionsTextComponent
-                            key={'text-' + i}
-                            text={text}
-                            mentions={this.props.mentions}
-                            alphaMentions={this.props.alphaMentions}
-                            isService={this.props.isService}
-                        />
-                    );
-                }
-
-                if (this.textSticker) {
-                    text = text.slice(1, text.length - 1);
-                }
-
-                if (this.insane || this.mouthpiece) {
-                    text = text.replace(/🌈/g, '').replace(/📣/g, '');
-                }
-
-                let smileSize =
-                    this.big || this.insane || this.mouthpiece ? 44 : 18;
-
-                return (
-                    <span
-                        style={
-                            this.insane
-                                ? {
-                                    background:
-                                        'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
-                                    backgroundClip: 'text, border',
-                                    ...({
-                                        WebkitBackgroundClip: 'text',
-                                    } as any),
-                                    color: 'transparent',
-                                }
-                                : {}
-                        }
-                        key={'text-' + i}
+                        path={path}
+                        onClick={(e: any) => e.stopPropagation()}
                     >
-                        {emoji(text, smileSize)}
-                    </span>
+                        {url}
+                    </XLink>
                 );
             }
-        });
 
-        let wrapperClassName =  this.props.isService ? TextServiceStyle
-        : ((this.big || this.insane || this.mouthpiece) ? TextLargeStyle
-            : TextStyle);
-        return (
-            <span className={wrapperClassName}>
-                {parts}
-                {this.props.isEdited && <span className={styleEditLabel}>(Edited)</span>}
-            </span>
-        );
-    }
-}
+            return (
+                <XLinkExternal
+                    className="link"
+                    key={'link-' + i}
+                    href={v.link!!}
+                    content={v.text!!}
+                    showIcon={false}
+                />
+            );
+        } else {
+            let text = v.text!!;
+
+            if (
+                (props.mentions && props.mentions.length !== 0) ||
+                (props.alphaMentions &&
+                    props.alphaMentions.length !== 0)
+            ) {
+                return (
+                    <MessageWithMentionsTextComponent
+                        key={'text-' + i}
+                        text={text}
+                        mentions={props.mentions}
+                        alphaMentions={props.alphaMentions}
+                        isService={props.isService}
+                    />
+                );
+            }
+
+            if (isTextSticker) {
+                text = text.slice(1, text.length - 1);
+            }
+
+            if (isInsane || isMouthpiece) {
+                text = text.replace(/🌈/g, '').replace(/📣/g, '');
+            }
+
+            let smileSize = isBig || isInsane || isMouthpiece ? 44 : 18;
+
+            return (
+                <span
+                    style={
+                        isInsane
+                            ? {
+                                background:
+                                    'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
+                                backgroundClip: 'text, border',
+                                ...({
+                                    WebkitBackgroundClip: 'text',
+                                } as any),
+                                color: 'transparent',
+                            }
+                            : {}
+                    }
+                    key={'text-' + i}
+                >
+                    {emoji(text, smileSize)}
+                </span>
+            );
+        }
+    });
+
+    let wrapperClassName =
+        props.isService
+            ? TextServiceStyle
+            : (isBig || isInsane || isMouthpiece)
+                ? TextLargeStyle
+                : TextStyle;
+    return (
+        <span className={wrapperClassName}>
+            {parts}
+            {props.isEdited && <span className={styleEditLabel}>(Edited)</span>}
+        </span>
+    );
+});

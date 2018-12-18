@@ -12,7 +12,7 @@ import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
 import { MessengerEmptyComponent } from '../../../components/messenger/MessengerEmptyComponent';
-import { RoomsInviteComponent } from '../../../components/messenger/RoomsInviteComponent';
+import { RoomsInviteComponent } from '../../../components/messenger/invite/RoomsInviteComponent';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
