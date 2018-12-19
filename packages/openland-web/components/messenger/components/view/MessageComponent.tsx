@@ -25,7 +25,7 @@ import {
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import { UserPopper, UserAvatar } from './content/UserPopper';
+import { UserPopper } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
 import { File, EditPostProps } from '../../../../fragments/MessengerRootComponent';
@@ -350,14 +350,13 @@ class MessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.message && (
-                                <IconButton
-                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.message && (
+                            <IconButton
+                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );

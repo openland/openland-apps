@@ -182,15 +182,17 @@ type MentionComponentInnerTextProps = {
     inCompose?: boolean;
 };
 
-const MentionComponentInnerText = Glamorous.span(
+export const MentionComponentInnerText = Glamorous.span(
     {},
     ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
-        const paddings = inCompose ? {
-            paddingTop: 1,
-            paddingBottom: 1,
-            paddingLeft: 3,
-            paddingRight: 3,
-        } : {};
+        const paddings = inCompose
+            ? {
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 3,
+                  paddingRight: 3,
+              }
+            : {};
 
         if (isYou) {
             return {
@@ -229,7 +231,11 @@ const mentionPlugin = createMentionPlugin({
     positionSuggestions,
     mentionComponent: (props: any) => {
         return (
-            <MentionComponentInner isYou={props.mention.isYou} className={props.className} inCompose>
+            <MentionComponentInner
+                isYou={props.mention.isYou}
+                className={props.className}
+                inCompose
+            >
                 {props.children}
             </MentionComponentInner>
         );
@@ -279,7 +285,14 @@ export const MentionEntry = (props: any) => {
             backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
             hoverBackgroundColor={'#f9f9f9'}
         >
-            <XAvatar size={'m-small'} style={'user'} src={mention.avatar} objectName={mention.name} objectId={mention.id} online={mention.online} />
+            <XAvatar
+                size={'m-small'}
+                style={'user'}
+                src={mention.avatar}
+                objectName={mention.name}
+                objectId={mention.id}
+                online={mention.online}
+            />
 
             <XView
                 flexDirection="column"
@@ -374,19 +387,19 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 suggestions: defaultSuggestionsFilter(value, mentionsData),
             });
         });
-    }
+    };
 
     focus = () => {
         window.requestAnimationFrame(() => {
             this.setState({
-                editorState: EditorState.moveFocusToEnd(this.state.editorState)
+                editorState: EditorState.moveFocusToEnd(this.state.editorState),
             });
 
             if (this.editorRef.current) {
                 this.editorRef.current.focus();
             }
         });
-    }
+    };
 
     reset = () => {
         window.requestAnimationFrame(() => {
@@ -398,7 +411,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 ),
             }));
         });
-    }
+    };
 
     resetAndFocus = () => {
         window.requestAnimationFrame(() => {
@@ -415,7 +428,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 },
             );
         });
-    }
+    };
 
     onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
         if (command === 'x-editor-submit') {
@@ -425,7 +438,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             }
         }
         return 'not-handled';
-    }
+    };
 
     onChange = (editorState: EditorState) => {
         const plainText = editorState.getCurrentContent().getPlainText();
@@ -440,7 +453,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                 }
             },
         );
-    }
+    };
 
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;

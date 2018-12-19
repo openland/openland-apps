@@ -756,23 +756,33 @@ exports[`MessageTextComponent should render correctly 1`] = `
   letter-spacing: 0;
   font-weight: 700;
 }
-.css-gqd39d,
-[data-css-gqd39d] {
-  cursor: pointer;
-  background-color: #fff6e5;
-  color: #1790ff;
+.css-5uyuv6,
+[data-css-5uyuv6] {
+  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+}
+.css-1k8tu3j,
+[data-css-1k8tu3j] {
+  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+}
+.css-1owbun0,
+[data-css-1owbun0] {
+  flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+}
+.css-pf17gp,
+[data-css-pf17gp] {
+  color: #99a2b0;
 }
 .css-1f5rsnp,
 [data-css-1f5rsnp] {
   cursor: pointer;
-  color: #1790ff;
-}
-.css-dw3c54,
-[data-css-dw3c54] {
-  cursor: pointer;
-}
-.css-15arwwg,
-[data-css-15arwwg] {
   color: #1790ff;
 }
 
@@ -832,24 +842,35 @@ exports[`MessageTextComponent should render correctly 1`] = `
 
 .css-4,
 [data-css-4] {
-  cursor: pointer;
-  background-color: #fff6e5;
-  color: #1790ff;
+  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
 }
 
 .css-5,
 [data-css-5] {
-  cursor: pointer;
-  color: #1790ff;
+  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
 }
 
 .css-6,
 [data-css-6] {
-  cursor: pointer;
+  flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
 }
 
 .css-7,
 [data-css-7] {
+  color: #99a2b0;
+}
+
+.css-8,
+[data-css-8] {
+  cursor: pointer;
   color: #1790ff;
 }
 
@@ -860,659 +881,512 @@ exports[`MessageTextComponent should render correctly 1`] = `
     <div
       className="css-2"
     >
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 14px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <span>
-          isService false
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
-",
-          ]
-        }
-      >
-        <span>
-          isService true
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 14px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <span>
-          isEdited true
-        </span>
-        <span
-          className={
-            Array [
-              "
-    display: inline-block;
-    vertical-align: baseline;
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 22px;
-    padding-left: 6px;
-",
-            ]
-          }
-        >
-          (Edited)
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 36px;
-    min-height: 44px;
-    line-height: 40px;
-    letter-spacing: -0.5;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <span
-          className={
-            Array [
-              "
-    background: url(/static/insane.gif);
-    background-clip: text, border;
-    -webkit-background-clip: text;
-    color: transparent;
-",
-            ]
-          }
-        >
-          insane
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 36px;
-    min-height: 44px;
-    line-height: 40px;
-    letter-spacing: -0.5;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <span>
-          this is normal
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 36px;
-    min-height: 44px;
-    line-height: 40px;
-    letter-spacing: -0.5;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <span>
-          <span
-            style={
-              Object {
-                "backgroundImage": "url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)",
-                "backgroundPosition": "-715px -268.125px",
-                "backgroundRepeat": "no-repeat",
-                "backgroundSize": "2860px",
-                "display": "inline-block",
-                "fontSize": "inherit",
-                "height": 44,
-                "imageRendering": "optimizeQuality",
-                "lineHeight": "normal",
-                "margin": "0 .15em",
-                "position": "relative",
-                "textIndent": "-9999em",
-                "top": -3,
-                "verticalAlign": "middle",
-                "width": 44,
-              }
-            }
-            title=":tada:"
-          >
-            🎉
-          </span>
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 14px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <a
-          className="x"
-          href="https://google.com"
-          target="_blank"
-        >
-          https://google.com
-        </a>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 14px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.8);
-",
-          ]
-        }
-      >
-        <a
-          className="x"
-          href="/joinChannel/1dVnQiH"
-          onClick={[Function]}
-        >
-          https://app.openland.com/joinChannel/1dVnQiH
-        </a>
-      </span>
       <div
         className="css-3"
       >
         1. Joines
       </div>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
-",
-          ]
-        }
+      <div
+        className="x css-4 css-5"
       >
-        <span>
-          
+        <div
+          className="x css-6 css-5 css-7"
+        >
           <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
+            }
           >
+            🙌
             <span
-              className="css-4"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
-              Sergey Lapin
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             joined the room
+          </span>
+        </div>
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
+            }
+          >
+            🙌
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             joined the room along with
+             
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Tara B
+              </span>
             </span>
           </span>
-        </span>
-        <span>
-           joined the room
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
-",
-          ]
-        }
+        </div>
+      </div>
+      <div
+        className="x css-4 css-5"
       >
-        <span>
-          
+        <div
+          className="x css-6 css-5 css-7"
+        >
           <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
+            }
           >
+            🙌
             <span
-              className="css-4"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
-              Sergey Lapin
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             joined the room along with
+             
+            <span
+              className="css-8"
+            >
+              3
+               others
             </span>
           </span>
-        </span>
-        <span>
-           joined the room along with @Fred Morozov 🔥
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
-",
-          ]
-        }
-      >
-        <span>
-          
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-5"
-            >
-              qwerty asdfgh
-            </span>
-          </span>
-        </span>
-        <span>
-           joined the room along with 
-          <div
-            className="x css-6 css-7"
-          >
-            2 others
-          </div>
-        </span>
-        <span>
-          
-        </span>
-      </span>
+        </div>
+      </div>
       <div
         className="css-3"
       >
         2. Service Messages
       </div>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
-",
-          ]
-        }
+      <div
+        className="css-3"
       >
-        <span>
-          🙌 
+        JobOpportunity
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
           <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-4"
-            >
-              Sergey Lapin
-            </span>
-          </span>
-        </span>
-        <span>
-           — 
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-5"
-            >
-              qwerty asdfgh
-            </span>
-          </span>
-        </span>
-        <span>
-           is responding to your post “54545” in 
-          <a
-            className="link"
-            onClick={[Function]}
-            style={
-              Object {
-                "cursor": "pointer",
-              }
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
             }
           >
-            I am the walrus
-          </a>
-        </span>
-        <span>
-          .
-        </span>
-        <br />
-        <span>
-          Now you can chat!
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
+            🙌
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             —
+             
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                qwerty asdfgh
+              </span>
+            </span>
+             is interested in your job opportunity
+             
+            <strong>
+              “Looking for React developer“
+            </strong>
+             in 
+            <a
+              className={
+                Array [
+                  "
+    color: #1790ff;
 ",
-          ]
-        }
-      >
-        <span>
-          🙌 
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-4"
-            >
-              Sergey Lapin
-            </span>
-          </span>
-        </span>
-        <span>
-           — 
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-5"
-            >
-              qwerty asdfgh
-            </span>
-          </span>
-        </span>
-        <span>
-           is interested in your job opportunity “54545” in 
-          <a
-            className="link"
-            onClick={[Function]}
-            style={
-              Object {
-                "cursor": "pointer",
+                ]
               }
+              onClick={[Function]}
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+            >
+              I am the walrus
+            </a>
+            .
+            <br />
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                qwerty asdfgh
+              </span>
+            </span>
+             — as the next step, please, tell
+             
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             — a little bit about yourself.
+          </span>
+        </div>
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
             }
           >
-            I am the walrus
-          </a>
-        </span>
-        <span>
-          .
-        </span>
-        <br />
-        <span>
-          
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
+            🙌
             <span
-              className="css-5"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
-              qwerty asdfgh
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
             </span>
-          </span>
-        </span>
-        <span>
-           — as the next step, please, tell 
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
+             —
+             
             <span
-              className="css-4"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
-              Sergey Lapin
+              <span
+                className="css-8"
+              >
+                qwerty asdfgh
+              </span>
             </span>
-          </span>
-        </span>
-        <span>
-           a little bit about yourself.
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
+             is looking to recommend a candidate in response to your post 
+            <strong>
+              “Looking for React developer“
+            </strong>
+             in
+             
+            <a
+              className={
+                Array [
+                  "
+    color: #1790ff;
 ",
-          ]
-        }
-      >
-        <span>
-          🙌  
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-4"
-            >
-              Sergey Lapin
-            </span>
-          </span>
-        </span>
-        <span>
-           — 
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-5"
-            >
-              qwerty asdfgh
-            </span>
-          </span>
-        </span>
-        <span>
-           is looking to recommend a candidate in response to your post “54545” in 
-          <a
-            className="link"
-            onClick={[Function]}
-            style={
-              Object {
-                "cursor": "pointer",
+                ]
               }
+              onClick={[Function]}
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+            >
+              I am the walrus
+            </a>
+            .
+            <br />
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             — as the next step, please, describe your recommended candidate, how well do you know them, and share any relevant links.
+          </span>
+        </div>
+      </div>
+      <div
+        className="css-3"
+      >
+        OfficeHours
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
             }
           >
-            I am the walrus
-          </a>
-        </span>
-        <span>
-          .
-        </span>
-        <br />
-        <span>
-          
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
+            🙌
             <span
-              className="css-4"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
-              Sergey Lapin
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
             </span>
-          </span>
-        </span>
-        <span>
-           — as the next step, please, describe your recommended candidate, how well do you know them, and share any relevant links.
-        </span>
-      </span>
-      <span
-        className={
-          Array [
-            "
-    display: inline;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font-size: 13px;
-    line-height: 22px;
-    letter-spacing: 0;
-    font-weight: 400;
-    text-align: center;
-    color: #99a2b0;
+             —
+             
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                qwerty asdfgh
+              </span>
+            </span>
+             is responding to your post
+             
+            <strong>
+              “Office hours with XX“
+            </strong>
+             in 
+            <a
+              className={
+                Array [
+                  "
+    color: #1790ff;
 ",
-          ]
-        }
-      >
-        <span>
-          🙌  
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-4"
-            >
-              Sergey Lapin
-            </span>
-          </span>
-        </span>
-        <span>
-           — 
-          <span
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-          >
-            <span
-              className="css-5"
-            >
-              qwerty asdfgh
-            </span>
-          </span>
-        </span>
-        <span>
-           is interested to make a recommendation following up to your post “54545” in 
-          <a
-            className="link"
-            onClick={[Function]}
-            style={
-              Object {
-                "cursor": "pointer",
+                ]
               }
+              onClick={[Function]}
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+            >
+              I am the walrus
+            </a>
+            .
+            <br />
+            Now you can chat!
+          </span>
+        </div>
+      </div>
+      <div
+        className="css-3"
+      >
+        RequestForStartups
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
             }
           >
-            I am the walrus
-          </a>
-        </span>
-        <span>
-          .
-        </span>
-      </span>
+            🙌
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             —
+             
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                qwerty asdfgh
+              </span>
+            </span>
+             is responding to your post
+             
+            <strong>
+              “Looking for React developer“
+            </strong>
+             in 
+            <a
+              className={
+                Array [
+                  "
+    color: #1790ff;
+",
+                ]
+              }
+              onClick={[Function]}
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+            >
+              I am the walrus
+            </a>
+            .
+            <br />
+            Now you can chat!
+          </span>
+        </div>
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    white-space: pre;
+    text-align: center;
+",
+              ]
+            }
+          >
+            🙌
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             —
+             
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                qwerty asdfgh
+              </span>
+            </span>
+             is interested to make a recommendation following up to your post 
+            <strong>
+              “Looking for React developer“
+            </strong>
+             in
+             
+            <a
+              className={
+                Array [
+                  "
+    color: #1790ff;
+",
+                ]
+              }
+              onClick={[Function]}
+              style={
+                Object {
+                  "cursor": "pointer",
+                }
+              }
+            >
+              I am the walrus
+            </a>
+            .
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
