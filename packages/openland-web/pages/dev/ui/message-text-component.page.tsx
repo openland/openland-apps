@@ -8,6 +8,7 @@ import { UserPopper } from '../../../components/messenger/components/view/conten
 import { XView } from 'react-mental';
 import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { css } from 'linaria';
+import { OthersPopper } from '../../../components/messenger/components/view/content/OthersPopper';
 
 const spanWithWhiteSpacesClassName = css`
     white-space: pre;
@@ -149,17 +150,28 @@ const JoinManyServiceMessage = ({
     firstUser: any;
     otherUsers: any;
     myUserId: string;
-}) => (
-    <Container>
-        🙌
-        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room along
-        with{' '}
-        <MentionComponentInnerText isYou={false}>
-            {otherUsers.length} others
-        </MentionComponentInnerText>
-    </Container>
-);
-
+}) => {
+    return (
+        <Container>
+            🙌
+            <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
+            along with{' '}
+            <span>
+                <OthersPopper
+                    show={true}
+                    items={otherUsers.map(({ id, name, photo, primaryOrganization }: any) => ({
+                        title: name,
+                        subtitle: primaryOrganization ? primaryOrganization.name : '',
+                        photo,
+                        id,
+                    }))}
+                >
+                    {otherUsers.length} others
+                </OthersPopper>
+            </span>
+        </Container>
+    );
+};
 type PostServiceMessageProps = {
     postAuthorUser: any;
     responderUser: any;
