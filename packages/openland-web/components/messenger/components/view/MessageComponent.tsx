@@ -33,35 +33,6 @@ import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { MessageContainer } from '../../message/MessageContainer';
 
-const Name = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    color: 'rgba(0, 0, 0, 0.8)',
-});
-
-const Organization = makeNavigable(
-    Glamorous.div<NavigableChildProps>(() => ({
-        fontSize: 12,
-        fontWeight: 600,
-        color: 'rgba(0, 0, 0, 0.4)',
-        letterSpacing: 0,
-        alignSelf: 'flex-end',
-        marginBottom: -1,
-        cursor: 'pointer',
-    })),
-);
-
-const DateComponent = Glamorous.div<{ small?: boolean }>(props => ({
-    flexShrink: 0,
-    width: props.small ? 55 : 62,
-    marginBottom: props.small ? undefined : -1,
-    fontSize: props.small ? 11 : 12,
-    paddingTop: props.small ? 1 : 1,
-    fontWeight: 600,
-    whiteSpace: 'nowrap',
-    color: 'rgba(0, 0, 0, 0.4)',
-}));
-
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
     width: 18,
@@ -120,15 +91,6 @@ const MessageWrapper = Glamorous(XHorizontal)<{
             pointerEvents: props.startSelected ? 'none' : props.isEditView ? 'none' : 'auto',
         },
     },
-}));
-
-const MessageCompactContent = Glamorous(XVertical)<{ isIntro?: boolean }>(props => ({
-    '& .url-augmentation':
-        props.isIntro === true
-            ? {}
-            : {
-                  width: 'calc(100% + 20px)',
-              },
 }));
 
 const ReplyMessageWrapper = Glamorous.div({

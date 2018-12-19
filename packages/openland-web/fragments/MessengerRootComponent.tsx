@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { SetTypingMutation } from 'openland-api';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
@@ -9,7 +10,6 @@ import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { MessageComposeComponentDraft } from '../components/messenger/components/view/MessageComposeComponent';
 import { ConversationMessagesComponent } from '../components/messenger/components/ConversationMessagesComponent';
-import { ConversationContainer } from '../components/messenger/components/view/ConversationContainer';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
 import { withUserInfo } from '../components/UserInfo';
 import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';
@@ -20,7 +20,6 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './CreatePostComponent';
-import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 
 export interface File {
     uuid: string;
@@ -265,7 +264,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
 
         return (
-            <ConversationContainer>
+            <XView
+                flexDirection="column"
+                width="100%"
+                height="100%"
+            >
                 {this.state.hideChat && (
                     <CreatePostComponent
                         handleHideChat={this.handleHideChat}
@@ -314,7 +317,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         <LeaveChatComponent />
                     </>
                 )}
-            </ConversationContainer>
+            </XView>
         );
     }
 }
