@@ -8,11 +8,11 @@ import { UserInfoContext } from '../components/UserInfo';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
 import { XView } from 'react-mental';
-import { FrowardPlaceholder } from './chat/ForwardPlaceholder';
 import { useQuery } from 'openland-web/components/useQuery';
 import { RoomQuery } from 'openland-api';
 import { XLoader } from 'openland-x/XLoader';
 import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
+import { ForwardPlaceholder } from './chat/ForwardPlaceholder';
 
 export interface MessengerComponentProps {
     id: string;
@@ -61,7 +61,7 @@ export const MessengerFragment = ((props: MessengerComponentProps) => {
                 alignSelf="stretch"
                 alignItems="stretch"
             >
-                {state.useForwardPlaceholder && <FrowardPlaceholder state={state} />}
+                {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
 
                 <XView
                     flexDirection="row"
