@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 
@@ -61,8 +61,7 @@ const AvatarImage = (props: XAvatar2Props) => {
     let opsRetina = '-/format/jpeg/-/scale_crop/' + ((size * 2) + 'x' + (size * 2)) + '/center/-/quality/lighter/-/progressive/yes/ 2x';
 
     return (
-        <XView
-            as="img"
+        <XImage
             width="100%"
             height="100%"
 
