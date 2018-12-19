@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withChatSearchChannels } from '../../api/withChatSearchChannels';
+import { withChatSearchChannels } from '../api/withChatSearchChannels';
 import { XLoader } from 'openland-x/XLoader';
-import { SortPicker } from '../../pages/main/directory/sortPicker';
+import { SortPicker } from '../pages/main/directory/sortPicker';
 import { XScrollView2 } from 'openland-x/XScrollView2';
-import { EmptyComponent } from './components/view/content/RoomEmptyComponent';
+import { EmptyComponent } from '../components/messenger/components/view/content/RoomEmptyComponent';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { SearchBox } from '../../pages/main/directory/components/SearchBox';
+import { SearchBox } from '../pages/main/directory/components/SearchBox';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 
 const RoomsListWrapper = Glamorous(XScrollView2)({

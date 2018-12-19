@@ -7,7 +7,7 @@ import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
-import { EditPostProps } from './MessengerRootComponent';
+import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { TypingsView } from '../typings/TypingsView';
 
 const TypingWrapper = Glamorous.div({

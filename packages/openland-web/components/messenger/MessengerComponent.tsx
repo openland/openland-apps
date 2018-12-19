@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRoom } from '../../api/withRoom';
 import { withQueryLoader } from '../withQueryLoader';
-import { MessengerRootComponent } from './components/MessengerRootComponent';
+import { MessengerRootComponent } from '../../fragments/MessengerRootComponent';
 import { XOverflow } from '../Incubator/XOverflow';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuItemWrapper, XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';

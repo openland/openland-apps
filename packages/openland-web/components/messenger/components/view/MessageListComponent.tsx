@@ -8,7 +8,7 @@ import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from './content/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
-import { EditPostProps } from '../MessengerRootComponent';
+import { EditPostProps } from '../../../../fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

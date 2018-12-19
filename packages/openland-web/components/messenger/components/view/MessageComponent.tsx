@@ -28,7 +28,7 @@ import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStat
 import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
-import { File, EditPostProps } from '../MessengerRootComponent';
+import { File, EditPostProps } from '../../../../fragments/MessengerRootComponent';
 import ReplyIcon from '../icons/ic-reply1.svg';
 import EditIcon from '../icons/ic-edit.svg';
 import { MessageContainer } from '../../message/MessageContainer';

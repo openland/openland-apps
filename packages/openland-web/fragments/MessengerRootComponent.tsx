@@ -10,20 +10,20 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { withChatHistory } from '../../../api/withChatHistory';
-import { MessageComposeComponentDraft } from './view/MessageComposeComponent';
-import { ConversationMessagesComponent } from './ConversationMessagesComponent';
-import { MessagesContainer } from './view/MessagesContainer';
-import { ConversationContainer } from './view/ConversationContainer';
-import { UplaodCareUploading } from '../utils/UploadCareUploading';
-import { withUserInfo } from '../../UserInfo';
+import { withChatHistory } from '../api/withChatHistory';
+import { MessageComposeComponentDraft } from '../components/messenger/components/view/MessageComposeComponent';
+import { ConversationMessagesComponent } from '../components/messenger/components/ConversationMessagesComponent';
+import { MessagesContainer } from '../components/messenger/components/view/MessagesContainer';
+import { ConversationContainer } from '../components/messenger/components/view/ConversationContainer';
+import { UplaodCareUploading } from '../components/messenger/utils/UploadCareUploading';
+import { withUserInfo } from '../components/UserInfo';
 import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
-import { withDeleteMessage } from '../../../api/withDeleteMessage';
-import { withDeleteUrlAugmentation } from '../../../api/withDeleteUrlAugmentation';
+import { withDeleteMessage } from '../api/withDeleteMessage';
+import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
-import { withChatLeave } from '../../../api/withChatLeave';
+import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './CreatePostComponent';
 
 export interface File {

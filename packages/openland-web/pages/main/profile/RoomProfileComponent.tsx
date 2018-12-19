@@ -16,7 +16,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../components/Incubator/XOverflow';
-import { LeaveChatComponent } from '../../../components/messenger/components/MessengerRootComponent';
+import { LeaveChatComponent } from '../../../fragments/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {

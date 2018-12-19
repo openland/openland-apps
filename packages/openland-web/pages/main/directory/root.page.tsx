@@ -3,7 +3,7 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { RoomsExploreComponent } from '../../../components/messenger/RoomsExploreComponent';
+import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
 import { RootWrapper, Sidebar, Container } from './components/Layout';
 import { RoomProfile } from '../profile/RoomProfileComponent';
