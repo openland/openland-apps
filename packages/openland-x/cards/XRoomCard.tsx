@@ -105,11 +105,9 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
             <XView
                 alignItems="center"
                 height={64}
-                paddingLeft={16}
-                paddingRight={16}
+                paddingHorizontal={16}
+                marginHorizontal={-16}
                 cursor="pointer"
-                marginLeft={-16}
-                marginRight={-16}
                 borderRadius={8}
                 flexDirection="row"
                 hoverBackgroundColor="#F9F9F9"
