@@ -5,7 +5,7 @@ import SearchIcon from 'openland-icons/ic-search-small.svg';
 
 let searchStyle = css`
     margin-left: 16px;
-    margin-righ: 16px;
+    margin-right: 16px;
     margin-top: 5px;
     margin-bottom: 12px;
     height: 36px;
@@ -15,9 +15,10 @@ let searchStyle = css`
     &:focus-within svg > g > path:last-child {
         fill: rgba(23, 144, 255, 0.5);
     }
-    & .input-placeholder, & input {
+    & .input-placeholder,
+    & input {
         padding-left: 33px;
-    }  
+    }
     > .icom {
         left: 12px;
     }
