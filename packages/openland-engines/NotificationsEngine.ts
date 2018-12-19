@@ -1,6 +1,10 @@
 import { MessengerEngine } from './MessengerEngine';
 import { SettingsQuery, RoomQuery } from 'openland-api';
-import { Settings as SettingsQueryType, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import {
+    Settings as SettingsQueryType,
+    Room_room_SharedRoom,
+    Room_room_PrivateRoom,
+} from 'openland-api/Types';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { AppNotifications } from 'openland-y-runtime/AppNotifications';
 import { doSimpleHash } from 'openland-y-utils/hash';
@@ -17,7 +21,7 @@ export class NotificationsEngine {
 
     handleGlobalCounterChanged = (counter: number) => {
         AppBadge.setBadge(counter);
-    }
+    };
 
     private blinkDocumentTitle = () => {
         if (!document.hasFocus() && !this.blinkingAlreadyStarted) {
@@ -29,16 +33,10 @@ export class NotificationsEngine {
             let interval = setInterval(() => {
                 isBlinkedTitle = !isBlinkedTitle;
 
-                let originalTitle = prevTitle;
-
-                if (typeof (document as any).realTitle === 'string') {
-                    originalTitle = (document as any).realTitle;
-                }
-
                 if (!document.hasFocus() && localStorage.getItem('blinkingStarted') !== 'stoped') {
                     localStorage.setItem('blinkingStarted', 'started');
 
-                    document.title = (isBlinkedTitle) ? 'New message · Openland' : originalTitle;
+                    document.title = isBlinkedTitle ? 'New message · Openland' : prevTitle;
                 } else {
                     localStorage.setItem('blinkingStarted', 'stoped');
 
@@ -51,7 +49,7 @@ export class NotificationsEngine {
                         }, 2000);
                     }
 
-                    document.title = originalTitle;
+                    document.title = prevTitle;
 
                     this.blinkingAlreadyStarted = false;
 
@@ -59,16 +57,17 @@ export class NotificationsEngine {
                 }
             }, 1000);
         }
-    }
+    };
 
     handleIncomingMessage = async (cid: string, msg: any) => {
         let settings = this.engine.client.client.readQuery<SettingsQueryType>({
-            query: SettingsQuery.document
+            query: SettingsQuery.document,
         })!!.settings;
 
         let room = (await this.engine.client.query(RoomQuery, { id: cid })).data.room!;
-        let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
-        let privateRoom = room.__typename === 'PrivateRoom' ? room as Room_room_PrivateRoom : null;
+        let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
+        let privateRoom =
+            room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
 
         if (settings.desktopNotifications === 'NONE') {
             return;
@@ -84,7 +83,11 @@ export class NotificationsEngine {
             if (msg.message) {
                 AppNotifications.displayNotification({
                     title: 'New Message',
-                    body: msg.sender.name + (!privateRoom ? '@' + sharedRoom!.title : '') + ': ' + msg.message,
+                    body:
+                        msg.sender.name +
+                        (!privateRoom ? '@' + sharedRoom!.title : '') +
+                        ': ' +
+                        msg.message,
                     path: '/mail/' + cid,
                     image: msg.sender.picture,
                     id: doSimpleHash(cid).toString(),
@@ -92,7 +95,10 @@ export class NotificationsEngine {
             } else {
                 AppNotifications.displayNotification({
                     title: 'New Message',
-                    body: msg.sender.name + (!privateRoom ? '@' + sharedRoom!.title : '') + ': <file>',
+                    body:
+                        msg.sender.name +
+                        (!privateRoom ? '@' + sharedRoom!.title : '') +
+                        ': <file>',
                     path: '/mail/' + conversationId,
                     image: msg.sender.picture,
                     id: doSimpleHash(cid).toString(),
@@ -101,5 +107,5 @@ export class NotificationsEngine {
 
             this.blinkDocumentTitle();
         }
-    }
+    };
 }
