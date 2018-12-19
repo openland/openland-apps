@@ -1,10 +1,9 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XVertical } from 'openland-x-layout/XVertical';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../routes';
 import { MessageComposeComponent } from '../components/messenger/components/view/MessageComposeComponent';
-import { ConversationContainer } from '../components/messenger/components/view/ConversationContainer';
 import { MessagesContainer } from '../components/messenger/components/view/MessagesContainer';
 import { ConversationMessagesComponent } from '../components/messenger/components/ConversationMessagesComponent';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
@@ -22,95 +21,21 @@ import { withExplorePeople } from '../api/withExplorePeople';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { RoomCreateMutation } from 'openland-api';
 
-export let MessengerContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
-    height: '100vh',
-    justifyContent: 'center',
-    position: 'relative',
-});
-
-const Root = Glamorous(XVertical)({
-    display: 'flex',
-    flexDirection: 'column',
-    maxHeight: '100%',
-    width: '100%',
-    maxWidth: '100%',
-});
-
-const HeaderWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    paddingTop: 10,
-    flexShrink: 0,
-    maxWidth: 832,
-    paddingLeft: 77,
-    paddingRight: 77,
-    width: '100%',
-    alignSelf: 'center',
-});
-
-const HeaderButton = Glamorous(XButton)({
-    '& svg': {
-        marginLeft: -4,
+const HeadButton = css`
+    & > a svg {
+        margin-left: -4px;
     },
-    '& svg *': {
-        transition: 'all .15s ease',
-        fill: 'rgba(0, 0, 0, 0.2)',
+    & > a svg * {
+        transition: all .15s ease;
+        fill: rgba(0, 0, 0, 0.2);
     },
-    '&:hover svg *': {
-        fill: 'rgba(0, 0, 0, 0.5)',
+    & > a:hover svg * {
+        fill: rgba(0, 0, 0, 0.5);
     },
-    '&:active svg *': {
-        fill: '#ffffff',
-    },
-});
-
-const Title = Glamorous.div({
-    alignItems: 'center',
-    maxWidth: '100%',
-    width: '100%',
-    flexBasis: '100%',
-    fontSize: 18,
-    lineHeight: '20px',
-    fontWeight: 600,
-    letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.9)',
-});
-
-const ComposeSelectWrapper = Glamorous.div({
-    maxWidth: 832,
-    marginTop: 10,
-    paddingLeft: 61,
-    paddingRight: 61,
-    width: '100%',
-    alignSelf: 'center',
-    zIndex: 2,
-    position: 'relative',
-});
-
-const EmptyWrapper = Glamorous(XVertical)({
-    zIndex: 1,
-    position: 'relative',
-    paddingTop: 30,
-    paddingBottom: 30,
-    marginLeft: -16,
-    marginRight: -16,
-});
-
-const EmptyImage = Glamorous.div({
-    width: 358,
-    height: 311,
-    background: 'url(/static/X/messenger/compose-empty.png) no-repeat',
-    backgroundImage:
-        '-webkit-image-set(url(/static/X/messenger/compose-empty.png) 1x, url(/static/X/messenger/compose-empty@2x.png) 2x)',
-    backgroundSize: '100% auto',
-    backgroundPosition: 'center bottom',
-    marginBottom: 50,
-});
+    & > a:active svg * {
+        fill: #ffffff;
+    }
+`;
 
 const SearchPeopleModule = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
@@ -169,12 +94,12 @@ const SearchPeopleModule = withExplorePeople(props => {
     onChangeInput: (data: string) => void;
 }>;
 
-type ComposeComponentRenderProps = {
+type ComposeComponentProps = {
     messenger: MessengerEngine;
     me?: UserShort;
 };
 
-type ComposeComponentRenderState = {
+type ComposeComponentState = {
     values: Option<OptionValues>[];
     resolving: boolean;
     conversationId: string | null;
@@ -183,16 +108,13 @@ type ComposeComponentRenderState = {
     messages: ModelMessage[];
 };
 
-class ComposeComponentRender extends React.Component<
-    ComposeComponentRenderProps,
-    ComposeComponentRenderState
-    > {
+class ComposeComponentRender extends React.Component<ComposeComponentProps, ComposeComponentState> {
     conversationMessages = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
     unmounter: (() => void) | null = null;
     unmounter2: (() => void) | null = null;
 
-    constructor(props: ComposeComponentRenderProps) {
+    constructor(props: ComposeComponentProps) {
         super(props);
 
         this.conversation = null;
@@ -354,18 +276,66 @@ class ComposeComponentRender extends React.Component<
 
     render() {
         return (
-            <MessengerContainer>
-                <Root flexGrow={1} separator={'none'}>
-                    <HeaderWrapper>
-                        <Title>{TextCompose.headerTitle}</Title>
-                        <HeaderButton
-                            text={TextCompose.headerNewRoom}
-                            icon={<RoomIcon />}
-                            query={{ field: 'createRoom', value: 'true' }}
-                        />
-                    </HeaderWrapper>
-                    <ConversationContainer>
-                        <ComposeSelectWrapper>
+            <XView
+                flexGrow={1}
+                height="100vh"
+                justifyContent="center"
+                position="relative"
+            >
+                <XView
+                    flexGrow={1}
+                    maxHeight="100%"
+                    width="100%"
+                    maxWidth="100%"
+                    flexDirection="column"
+                >
+                    <XView
+                        alignItems="center"
+                        justifyContent="center"
+                        alignSelf="center"
+                        flexDirection="row"
+                        height={50}
+                        paddingTop={10}
+                        flexShrink={0}
+                        maxWidth={832}
+                        paddingLeft={77}
+                        paddingRight={77}
+                        width="100%"
+                    >
+                        <XView
+                            maxWidth="100%"
+                            flexGrow={1}
+                            fontSize={18}
+                            lineHeight="20px"
+                            fontWeight="600"
+                            color="rgba(0, 0, 0, 0.9)"
+                        >
+                            {TextCompose.headerTitle}
+                        </XView>
+                        <div className={HeadButton}>
+                            <XButton
+                                text={TextCompose.headerNewRoom}
+                                icon={<RoomIcon />}
+                                query={{ field: 'createRoom', value: 'true' }}
+                            />
+                        </div>
+                    </XView>
+                    <XView
+                        flexDirection="column"
+                        width="100%"
+                        maxHeight="calc(100% - 50px)"
+                        flexGrow={1}
+                    >
+                        <XView
+                            maxWidth={832}
+                            marginTop={10}
+                            paddingLeft={61}
+                            paddingRight={61}
+                            width="100%"
+                            alignSelf="center"
+                            zIndex={2}
+                            position="relative"
+                        >
                             <SearchPeopleModule
                                 onChange={this.handleChange}
                                 onChangeInput={this.handleSearchText}
@@ -375,17 +345,27 @@ class ComposeComponentRender extends React.Component<
                                     organizations: this.state.values.length === 0,
                                 }}
                             />
-                        </ComposeSelectWrapper>
+                        </XView>
                         <MessagesContainer>
                             {!this.state.conversationId && (
-                                <EmptyWrapper
-                                    separator={10}
+                                <XView
                                     alignItems="center"
                                     justifyContent="center"
+                                    flexDirection="column"
                                     flexGrow={1}
+                                    zIndex={1}
+                                    paddingTop={30}
+                                    paddingBottom={30}
+                                    marginLeft={-16}
+                                    marginRight={-16}
                                 >
-                                    <EmptyImage />
-                                </EmptyWrapper>
+                                    <XView
+                                        as="img"
+                                        width={358}
+                                        src="/static/X/messenger/compose-empty.png"
+                                        srcSet="/static/X/messenger/compose-empty@2x.png"
+                                    />
+                                </XView>
                             )}
                             {this.state.conversationId && (
                                 <ConversationMessagesComponent
@@ -403,9 +383,9 @@ class ComposeComponentRender extends React.Component<
                             onSend={this.handleSend}
                             enabled={this.state.values.length > 0}
                         />
-                    </ConversationContainer>
-                </Root>
-            </MessengerContainer>
+                    </XView>
+                </XView>
+            </XView>
         );
     }
 }
