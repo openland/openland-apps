@@ -8,7 +8,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
 
     private watchers: ((state: AppNotifcationsState) => void)[] = [];
     private router: { replaceRoute(path: string): void } | null = null;
-    private sound = new Howl({
+    private sound = canUseDOM ? new Howl({
         src: ['/static/sounds/notification.mp3'],
         onloaderror: () => {
             console.warn('sound error');
@@ -16,7 +16,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
         onplayerror: () => {
             console.warn('sound play error');
         }
-    });
+    }) : undefined;
 
     constructor() {
         if (canUseDOM) {
@@ -95,7 +95,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
     }
 
     playIncomingSound() {
-        this.sound.play();
+        this.sound!.play();
     }
 
     displayNotification(content: { path: string, title: string, body: string, image?: string }) {

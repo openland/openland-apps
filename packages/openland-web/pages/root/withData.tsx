@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { isPageChanged } from 'openland-x-routing/NextRouting';
 import { getDataFromTree } from 'react-apollo';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 
@@ -13,8 +12,13 @@ export function withData(App: React.ComponentType<any>) {
     return class WithData extends React.Component<{ apolloState: any }> {
         static async getInitialProps(ctx: NextAppContext) {
             let appProps = {};
-            if ((App as any).getInitialProps) {
-                appProps = await (App as any).getInitialProps(ctx);
+            try {
+                if ((App as any).getInitialProps) {
+                    appProps = await (App as any).getInitialProps(ctx);
+                }
+            } catch (e) {
+                console.warn(e);
+                throw e;
             }
 
             let host: string;

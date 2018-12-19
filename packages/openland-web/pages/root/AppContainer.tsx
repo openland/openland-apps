@@ -9,7 +9,7 @@ import { useQuery } from 'openland-web/components/useQuery';
 import { AccountQuery } from 'openland-api';
 import { XLoader } from 'openland-x/XLoader';
 
-export const AppContainer = React.memo((props) => {
+export const AppContainer = React.memo<{ children?: any }>((props) => {
     let apollo = React.useContext(YApolloContext)!;
     let account = useQuery(AccountQuery);
     if (account.loading) {
