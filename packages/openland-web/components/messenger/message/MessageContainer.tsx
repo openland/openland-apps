@@ -7,6 +7,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XPopper2 } from 'openland-web/components/XPopper2';
 import { usePopperClick } from 'openland-web/components/usePopperClick';
 import { usePopperHover } from 'openland-web/components/usePopperHover';
+import { UserPopup } from 'openland-web/fragments/UserPopup';
 
 export interface MessageContainerProps {
     compact: boolean;
@@ -29,7 +30,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
     let popupRef = React.useRef(null);
     let popup = (
         <XPopper2 ref={popupRef} placement="top">
-            Test
+            <UserPopup id={props.sender.id} />
         </XPopper2>
     );
     // let popupClick = usePopperClick(popupRef);
