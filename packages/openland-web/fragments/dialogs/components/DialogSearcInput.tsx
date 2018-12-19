@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XInputProps, XInput } from 'openland-x/XInput';
-import SearchIcon from '../../../components/icons/ic-search-small.svg';
+import SearchIcon from 'openland-icons/ic-search-small.svg';
 
 let searchStyle = css`
     margin-left: 16px;

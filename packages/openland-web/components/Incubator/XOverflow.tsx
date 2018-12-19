@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XPopper, Placement } from 'openland-x/XPopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
-import NotifyIcon from '../icons/notify-icon.svg';
+import NotifyIcon from 'openland-icons/notify-icon.svg';
 
 const Shadow = Glamorous.div<{ active: boolean }>(props => ({
     position: 'fixed',

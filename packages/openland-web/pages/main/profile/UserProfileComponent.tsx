@@ -14,7 +14,7 @@ import {
     ModalCloser,
     ModalPic,
 } from '../../../components/messenger/components/view/content/MessageImageComponent';
-import ModalCloseIcon from '../../../components/messenger/components/icons/ic-modal-close.svg';
+import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import {
     BackButton,
     Section,

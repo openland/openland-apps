@@ -19,8 +19,8 @@ import { MessageTextComponent } from './MessageTextComponent';
 import { niceBytes } from '../../view/content/MessageFileComponent';
 import { Reactions } from '../MessageReaction';
 import { withRespondPostMessage } from '../../../../../api/withRespondPostMessage';
-import ReplyIcon from '../../icons/ic-reply1.svg';
-import MoreIcon from '../../icons/ic-arrow-down-blue.svg';
+import ReplyIcon from 'openland-icons/ic-reply1.svg';
+import MoreIcon from 'openland-icons/ic-arrow-down-blue.svg';
 
 const Wrapper = Glamorous(XVertical)({
     paddingTop: 4,

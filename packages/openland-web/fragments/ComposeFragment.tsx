@@ -11,7 +11,7 @@ import { ConversationState } from 'openland-engines/messenger/ConversationState'
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
-import RoomIcon from '../components/messenger/components/icons/ic-channel-2.svg';
+import RoomIcon from 'openland-icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withUserInfo } from '../components/UserInfo';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import AddIcon from '../icons/ic-add-medium.svg';
+import AddIcon from 'openland-icons/ic-add-medium.svg';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 
 const Wrapper = Glamorous(XHorizontal)({

@@ -4,7 +4,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
-import SearchIcon from '../icons/ic-search-small.svg';
+import SearchIcon from 'openland-icons/ic-search-small.svg';
 
 const SearchWrapper = Glamorous.div({
     borderBottom: '1px solid #ececec',

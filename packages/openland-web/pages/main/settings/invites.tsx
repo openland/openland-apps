@@ -19,10 +19,10 @@ import { XMutation } from 'openland-x/XMutation';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { TextInvites } from 'openland-text/TextInvites';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import PlusIcon from './icons/ic-add-small.svg';
-import LinkIcon from './icons/ic-link.svg';
-import EmailIcon from './icons/ic-email.svg';
-import CloseIcon from './icons/ic-close-1.svg';
+import PlusIcon from 'openland-icons/ic-add-small.svg';
+import LinkIcon from 'openland-icons/ic-link.svg';
+import EmailIcon from 'openland-icons/ic-email.svg';
+import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { withAppInvite } from '../../../api/withAppInvite';
 
 const AddButtonStyled = Glamorous(XLink)({

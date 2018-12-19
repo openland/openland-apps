@@ -4,8 +4,8 @@ import { layoutMedia } from '../../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XModal } from 'openland-x-modal/XModal';
 import { XLink } from 'openland-x/XLink';
-import ModalCloseIcon from '../../icons/ic-modal-close.svg';
-import DownloadButtonIcon from '../../icons/ic_file_download.svg';
+import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
+import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { XView } from 'react-mental';
 
 export const ModalCloser = Glamorous(XLink)({

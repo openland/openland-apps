@@ -3,11 +3,11 @@ import Glamorous from 'glamorous';
 import { XPopper } from './XPopper';
 import { XButton } from './XButton';
 import { TextGlobal } from 'openland-text/TextGlobal';
-import WebsiteIcon from './icons/website-2.svg';
-import LinkedinIcon from './icons/linkedin-2.svg';
-import PhoneIcon from './icons/ic-phone.svg';
-import TwitterIcon from './icons/twitter-2.svg';
-import FacebookIcon from './icons/ic-fb.svg';
+import WebsiteIcon from 'openland-icons/website-2.svg';
+import LinkedinIcon from 'openland-icons/linkedin-2.svg';
+import PhoneIcon from 'openland-icons/ic-phone.svg';
+import TwitterIcon from 'openland-icons/twitter-2.svg';
+import FacebookIcon from 'openland-icons/ic-fb.svg';
 
 const SocialIconWrapper = Glamorous.div({
     margin: '0 -16px',

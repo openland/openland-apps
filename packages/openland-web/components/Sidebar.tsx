@@ -1,5 +1,5 @@
 import * as React from 'react';
-import RightIcon from './icons/ic-arrow-rignt.svg';
+import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 

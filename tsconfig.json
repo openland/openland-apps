@@ -59,7 +59,8 @@
             "react-native-fast-navigation": ["react-native-fast-navigation"],
             "react-native-s": ["react-native-s"],
             "openland-xs": ["openland-xs"],
-            "react-native-auth0-s": ["react-native-auth0-s"]
+            "react-native-auth0-s": ["react-native-auth0-s"],
+            "openland-icons": ["openland-icons"]
         },
         "importHelpers": true
     },
@@ -113,6 +114,7 @@
         "./packages/openland-mac/src",
         "./packages/openland-shared",
         "./packages/openland-xs",
+        "./packages/openland-icons",
         "./packages/react-native-async-view",
         "./packages/react-native-fast-navigation",
         "./packages/react-native-s",

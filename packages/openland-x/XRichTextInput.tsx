@@ -7,7 +7,7 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
-import EmojiIcon from './icons/ic-emoji.svg';
+import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';

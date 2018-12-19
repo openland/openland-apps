@@ -16,10 +16,10 @@ import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland
 import { withConversationSettingsUpdate } from 'openland-web/api/withConversationSettingsUpdate';
 import { withOnline } from 'openland-web/api/withOnline';
 import { XDate } from 'openland-x/XDate';
-import NotificationsIcon from '../../components/messenger/components/icons/ic-notifications.svg';
-import NotificationsOffIcon from '../../components/messenger/components/icons/ic-notifications-off.svg';
-import PlusIcon from '../../components/icons/ic-add-medium-2.svg';
-import CloseIcon from '../../components/messenger/components/icons/ic-close.svg';
+import NotificationsIcon from 'openland-icons/ic-notifications.svg';
+import NotificationsOffIcon from 'openland-icons/ic-notifications-off.svg';
+import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessagesStateContext } from 'openland-web/components/messenger/components/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';

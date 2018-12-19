@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { XIcon } from './XIcon';
 import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XFlexStyles } from './basics/Flex';
-import CloseIcon from './icons/ic-close-1.svg';
+import CloseIcon from 'openland-icons/ic-close-1.svg';
 
 type XTagSizeType = 'large' | 'default' | 'small';
 type XTagStyleType = 'default' | 'primary' | 'green' | 'ghost';

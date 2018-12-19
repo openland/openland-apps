@@ -4,7 +4,7 @@ import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleRes
 import { XFlexStyles, applyFlex } from './Flex';
 import { XPopper } from '../XPopper';
 import { XIcon } from '../XIcon';
-import ClearIcon from '../icons/ic-close.svg';
+import ClearIcon from 'openland-icons/ic-close.svg';
 
 type XInputSize = 'large' | 'default' | 'small';
 type XInputAttach = 'left' | 'right' | 'both';

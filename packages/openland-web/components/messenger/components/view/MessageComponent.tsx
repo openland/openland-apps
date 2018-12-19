@@ -29,8 +29,8 @@ import { UserPopper, UserAvatar } from './content/UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
 import { File, EditPostProps } from '../../../../fragments/MessengerRootComponent';
-import ReplyIcon from '../icons/ic-reply1.svg';
-import EditIcon from '../icons/ic-edit.svg';
+import ReplyIcon from 'openland-icons/ic-reply1.svg';
+import EditIcon from 'openland-icons/ic-edit.svg';
 import { MessageContainer } from '../../message/MessageContainer';
 
 const Name = Glamorous.div({

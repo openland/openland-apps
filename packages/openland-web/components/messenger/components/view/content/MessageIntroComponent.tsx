@@ -7,13 +7,13 @@ import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import { PostIntroModal } from './PostIntroModal';
-import CheckIconSmall from '../../icons/ic-check-small.svg';
+import CheckIconSmall from 'openland-icons/ic-check-small.svg';
 import { XOverflow } from '../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
-import IntroIcon from '../../icons/ic-tag-intro.svg';
-import PassedIcon from '../../icons/ic-passed.svg';
+import IntroIcon from 'openland-icons/ic-tag-intro.svg';
+import PassedIcon from 'openland-icons/ic-passed.svg';
 import { SharedRoomKind } from 'openland-api/Types';
 
 const SetAccesReactionButton = withSetReaction(

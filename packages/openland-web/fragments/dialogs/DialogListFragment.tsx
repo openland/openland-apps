@@ -7,7 +7,7 @@ import { XButton } from 'openland-x/XButton';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XFont } from 'openland-x/XFont';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import PlusIcon from '../../components/icons/ic-add-medium-2.svg';
+import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 
 const ChatListContainer = Glamorous.div({
     display: 'flex',

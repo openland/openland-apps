@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
-import InviteIcon from '../../../components/messenger/components/icons/ic-invite-plus.svg';
+import InviteIcon from 'openland-icons/ic-invite-plus.svg';
 
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
