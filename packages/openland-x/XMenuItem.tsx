@@ -4,11 +4,11 @@ import { styleResolver } from 'openland-x-utils/styleResolver';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XIcon } from 'openland-x/XIcon';
 import { XPopperContent } from 'openland-x/popper/XPopperContent';
-import RightIcon from './icons/ic-right-1.svg';
-import DropdownChatIcon from './icons/ic-dropdown-message.svg';
-import DropdownRoomIcon from './icons/ic-dropdown-channel.svg';
-import DropdownCommunityIcon from './icons/ic-dropdown-community.svg';
-import DropdownOrganizationIcon from './icons/ic-dropdown-organization.svg';
+import RightIcon from 'openland-icons/ic-right-1.svg';
+import DropdownChatIcon from 'openland-icons/ic-dropdown-message.svg';
+import DropdownRoomIcon from 'openland-icons/ic-dropdown-channel.svg';
+import DropdownCommunityIcon from 'openland-icons/ic-dropdown-community.svg';
+import DropdownOrganizationIcon from 'openland-icons/ic-dropdown-organization.svg';
 
 type XMenuItemStyle = 'default' | 'danger' | 'gray';
 
