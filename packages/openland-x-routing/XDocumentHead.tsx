@@ -2,7 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 import { XRouterContext } from './XRouterContext';
 
-let DEFAULT_OG = {
+const DEFAULT_OG = {
     title: 'Openland',
     description:
         'Openland is a professional messenger designed to support all communication needs of a modern business.',
