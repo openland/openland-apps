@@ -494,7 +494,6 @@ interface CreatePostComponentProps {
     objectName: string;
     objectId?: string;
     cloudImageUuid?: string;
-    avatarStyle: XAvatarStyle;
 }
 
 interface File {
@@ -788,7 +787,7 @@ export class CreatePostComponent extends React.Component<
                         <XHorizontal alignItems="center">
                             <XAvatar
                                 size="small"
-                                style={props.avatarStyle}
+                                style="user"
                                 cloudImageUuid={props.cloudImageUuid}
                                 objectName={props.objectName}
                                 objectId={props.objectId}

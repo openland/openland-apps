@@ -12,13 +12,17 @@ import { TalkContext } from 'openland-web/pages/main/mail/components/conference/
 import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
-import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { withConversationSettingsUpdate } from 'openland-web/api/withConversationSettingsUpdate';
 import { withOnline } from 'openland-web/api/withOnline';
 import { XDate } from 'openland-x/XDate';
 import NotificationsIcon from '../../components/messenger/components/icons/ic-notifications.svg';
 import NotificationsOffIcon from '../../components/messenger/components/icons/ic-notifications-off.svg';
 import PlusIcon from '../../components/icons/ic-add-medium-2.svg';
+import CloseIcon from '../../components/messenger/components/icons/ic-close.svg';
+import { MessagesStateContext } from 'openland-web/components/messenger/components/MessagesStateContext';
+import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
+import { XMutation } from 'openland-x/XMutation';
 
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
     fontSize: 13,
@@ -41,8 +45,8 @@ const LastSeen = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    )}
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -111,7 +115,7 @@ const NotificationsWrapper = Glamorous(XVertical)({
 class NotificationSettingsComponent extends React.Component<
     { mutation: any; settings: { mute: boolean }; roomId: string },
     { settings: { mute: boolean } }
-> {
+    > {
     handleClick = () => {
         let value = !this.props.settings.mute;
 
@@ -202,8 +206,109 @@ let HeaderLeftContent = (props: { chatType?: string; path?: string; children?: a
     }
 };
 
+const ClearButton = Glamorous.div({
+    fontSize: 16,
+    lineHeight: 1.38,
+    color: '#000',
+    '& svg': {
+        marginTop: 3,
+        cursor: 'pointer',
+
+        '&:hover > g > path:last-child': {
+            fill: '#000',
+        },
+    },
+});
+
+const DeletMessagesButton = withDeleteMessages(p => {
+    return (
+        <XMutation
+            mutation={p.deleteMessages}
+            onSuccess={(p as any).onSuccess}
+            variables={{
+                roomId: (p as any).roomId,
+                mids: (p as any).messagesIds,
+            }}
+        >
+            {p.children}
+        </XMutation>
+    );
+}) as React.ComponentType<{
+    roomId: string;
+    messagesIds: string[];
+    onSuccess: () => void;
+}>;
+
+const ForwardHeader = (props: {
+    me: UserShort;
+    roomId: string;
+}) => {
+    const state = React.useContext(MessagesStateContext);
+    const { forwardMessagesId } = state;
+    if (forwardMessagesId && forwardMessagesId.size) {
+        let size = forwardMessagesId.size;
+        return (
+            <ChatHeaderContent justifyContent="space-between" alignItems="center">
+                <ClearButton>
+                    <XHorizontal separator={4} alignItems="center">
+                        <span>
+                            {size} {size === 1 ? 'message selected' : 'messages selected'}
+                        </span>
+                        <CloseIcon
+                            onClick={() => {
+                                state.resetAll();
+                            }}
+                        />
+                    </XHorizontal>
+                </ClearButton>
+                <XHorizontal alignItems="center" separator={5}>
+                    <XWithRole role="super-admin">
+                        <DeletMessagesButton
+                            roomId={props.roomId}
+                            messagesIds={Array.from(state.selectedMessages).map(m => m.id)}
+                            onSuccess={state.resetAll}
+                        >
+                            <XButton text="Delete" style="default" />
+                        </DeletMessagesButton>
+                    </XWithRole>
+                    <XWithRole role="super-admin" negate={true}>
+                        {!Array.from(state.selectedMessages).find(
+                            msg => msg.sender.id !== props.me.id,
+                        ) && (
+                                <DeletMessagesButton
+                                    roomId={props.roomId}
+                                    messagesIds={Array.from(state.selectedMessages).map(
+                                        m => m.id,
+                                    )}
+                                    onSuccess={state.resetAll}
+                                >
+                                    <XButton text="Delete" style="default" />
+                                </DeletMessagesButton>
+                            )}
+                    </XWithRole>
+                    <XButton
+                        text="Reply"
+                        style="primary"
+                        onClick={() =>
+                            state.setReplyMessages(state.forwardMessagesId, null, null)
+                        }
+                    />
+                    <XButton
+                        text="Forward"
+                        style="primary"
+                        onClick={() => state.forwardMessages()}
+                    />
+                </XHorizontal>
+            </ChatHeaderContent>
+        );
+    } else {
+        return null;
+    }
+};
+
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
+    me: UserShort;
 }
 
 export const ChatHeaderView = React.memo<ChatHeaderViewProps>((props) => {
@@ -249,6 +354,16 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>((props) => {
         } else if (sharedRoom.kind === 'PUBLIC' || sharedRoom.kind === 'GROUP') {
             headerPath = '/mail/p/' + sharedRoom.id;
         }
+    }
+
+    const state = React.useContext(MessagesStateContext);
+    if (state.useForwardHeader) {
+        return (
+            <ForwardHeader
+                roomId={(sharedRoom || privateRoom)!.id}
+                me={props.me}
+            />
+        );
     }
 
     return (

@@ -21,15 +21,12 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { UserSelect } from '../api/UserSelect';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
-import { XButton } from 'openland-x/XButton';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { withRoomAddMembers } from '../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { MessagesStateContext, MessagesStateContextProps } from '../components/messenger/components/MessagesStateContext';
 import CloseIcon from '../components/messenger/components/icons/ic-close.svg';
 import { withUserInfo } from '../components/UserInfo';
-import { withDeleteMessages } from '../api/withDeleteMessage';
-import { XMutation } from 'openland-x/XMutation';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
@@ -137,13 +134,6 @@ const ChatHeaderWrapper = Glamorous.div({
     paddingLeft: 20,
     paddingRight: 20,
     borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-});
-
-const ChatHeaderContent = Glamorous(XHorizontal)({
-    alignItems: 'center',
-    maxWidth: 950,
-    width: '100%',
-    flexBasis: '100%',
 });
 
 class SwitchComponent extends React.Component<
@@ -318,126 +308,6 @@ export const AddMemberForm = withRoomAddMembers(props => {
     );
 }) as React.ComponentType<{ roomId: string }>;
 
-interface MessengerWrapperProps {
-    chatTitle: string;
-    chatType: string;
-    userName?: string;
-    children?: any;
-}
-
-const MessengerWrapper = (props: MessengerWrapperProps) => {
-    return (
-        <>
-            <XDocumentHead
-                title={props.chatType === 'PrivateConversation' ? props.userName : props.chatTitle}
-            />
-            <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
-                {props.children}
-            </XVertical>
-        </>
-    );
-};
-
-const ClearButton = Glamorous.div({
-    fontSize: 16,
-    lineHeight: 1.38,
-    color: '#000',
-    '& svg': {
-        marginTop: 3,
-        cursor: 'pointer',
-
-        '&:hover > g > path:last-child': {
-            fill: '#000',
-        },
-    },
-});
-
-const DeletMessagesButton = withDeleteMessages(p => {
-    return (
-        <XMutation
-            mutation={p.deleteMessages}
-            onSuccess={(p as any).onSuccess}
-            variables={{
-                roomId: (p as any).roomId,
-                mids: (p as any).messagesIds,
-            }}
-        >
-            {p.children}
-        </XMutation>
-    );
-}) as React.ComponentType<{
-    roomId: string;
-    messagesIds: string[];
-    onSuccess: () => void;
-}>;
-
-const ForwardHeader = (props: {
-    state: MessagesStateContextProps;
-    me: UserShort;
-    roomId: string;
-}) => {
-    const { forwardMessagesId } = props.state;
-    if (forwardMessagesId && forwardMessagesId.size) {
-        let size = forwardMessagesId.size;
-        return (
-            <ChatHeaderContent justifyContent="space-between" alignItems="center">
-                <ClearButton>
-                    <XHorizontal separator={4} alignItems="center">
-                        <span>
-                            {size} {size === 1 ? 'message selected' : 'messages selected'}
-                        </span>
-                        <CloseIcon
-                            onClick={() => {
-                                props.state.resetAll();
-                            }}
-                        />
-                    </XHorizontal>
-                </ClearButton>
-                <XHorizontal alignItems="center" separator={5}>
-                    <XWithRole role="super-admin">
-                        <DeletMessagesButton
-                            roomId={props.roomId}
-                            messagesIds={Array.from(props.state.selectedMessages).map(m => m.id)}
-                            onSuccess={props.state.resetAll}
-                        >
-                            <XButton text="Delete" style="default" />
-                        </DeletMessagesButton>
-                    </XWithRole>
-                    <XWithRole role="super-admin" negate={true}>
-                        {!Array.from(props.state.selectedMessages).find(
-                            msg => msg.sender.id !== props.me.id,
-                        ) && (
-                                <DeletMessagesButton
-                                    roomId={props.roomId}
-                                    messagesIds={Array.from(props.state.selectedMessages).map(
-                                        m => m.id,
-                                    )}
-                                    onSuccess={props.state.resetAll}
-                                >
-                                    <XButton text="Delete" style="default" />
-                                </DeletMessagesButton>
-                            )}
-                    </XWithRole>
-                    <XButton
-                        text="Reply"
-                        style="primary"
-                        onClick={() =>
-                            props.state.setReplyMessages(props.state.forwardMessagesId, null, null)
-                        }
-                    />
-                    <XButton
-                        text="Forward"
-                        style="primary"
-                        onClick={() => props.state.forwardMessages()}
-                    />
-                </XHorizontal>
-            </ChatHeaderContent>
-        );
-    } else {
-        return null;
-    }
-};
-
 let MessengerComponentLoader = withRoom(
     withQueryLoader(
         withUserInfo(props => {
@@ -449,6 +319,7 @@ let MessengerComponentLoader = withRoom(
             let privateRoom: Room_room_PrivateRoom | null =
                 props.data.room!.__typename === 'PrivateRoom' ? (props.data.room as any) : null;
 
+            // WTF?
             if (
                 sharedRoom &&
                 sharedRoom.kind !== 'INTERNAL' &&
@@ -462,70 +333,51 @@ let MessengerComponentLoader = withRoom(
             }
             let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
 
-            let chatType = props.data.room!.__typename;
-
             let messagesState = (props as any).state as MessagesStateContextProps;
-            let selectedHeader = messagesState.useForwardHeader;
             let placeholder = messagesState.useForwardPlaceholder;
             return (
-                <MessengerWrapper
-                    chatTitle={title}
-                    chatType={chatType}
-                    userName={privateRoom ? privateRoom.user.name : undefined}
-                >
-                    {placeholder && <FrowardPlaceholder state={messagesState} />}
-                    <ChatHeaderWrapper>
-                        {selectedHeader ? (
-                            <ForwardHeader
-                                state={(props as any).state}
-                                roomId={(sharedRoom || privateRoom)!.id}
-                                me={props.user!}
-                            />
-                        ) : (
-                                <ChatHeaderView room={props.data.room!} />
-                            )}
-                    </ChatHeaderWrapper>
-                    <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
-                    <XHorizontal
-                        justifyContent="center"
-                        width="100%"
-                        height="calc(100% - 56px)"
-                        separator={0}
-                    >
-                        <MessengerRootComponent
-                            objectName={title}
-                            objectId={
-                                sharedRoom
-                                    ? sharedRoom.organization
+                <>
+                    <XDocumentHead title={title} />
+                    <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
+
+                        {placeholder && <FrowardPlaceholder state={messagesState} />}
+
+                        <ChatHeaderWrapper>
+                            <ChatHeaderView room={props.data.room!} me={props.user!} />
+                        </ChatHeaderWrapper>
+                        <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
+                        <XHorizontal
+                            justifyContent="center"
+                            width="100%"
+                            height="calc(100% - 56px)"
+                            separator={0}
+                        >
+                            <MessengerRootComponent
+                                objectName={title}
+                                objectId={
+                                    sharedRoom
+                                        ? sharedRoom.organization
+                                            ? sharedRoom.organization.id
+                                            : sharedRoom.id
+                                        : privateRoom
+                                            ? privateRoom.user.id
+                                            : undefined
+                                }
+                                cloudImageUuid={
+                                    (sharedRoom && sharedRoom.photo) ||
+                                    (privateRoom && privateRoom.user.photo) ||
+                                    undefined
+                                }
+                                organizationId={
+                                    sharedRoom && sharedRoom.organization
                                         ? sharedRoom.organization.id
-                                        : sharedRoom.id
-                                    : privateRoom
-                                        ? privateRoom.user.id
-                                        : undefined
-                            }
-                            cloudImageUuid={
-                                (sharedRoom && sharedRoom.photo) ||
-                                (privateRoom && privateRoom.user.photo) ||
-                                undefined
-                            }
-                            avatarStyle={
-                                sharedRoom && sharedRoom.kind === 'INTERNAL'
-                                    ? 'organization'
-                                    : sharedRoom && sharedRoom.kind === 'GROUP'
-                                        ? 'group'
-                                        : sharedRoom && sharedRoom.kind === 'PUBLIC'
-                                            ? 'room'
-                                            : 'colorus'
-                            }
-                            organizationId={
-                                sharedRoom && sharedRoom.organization
-                                    ? sharedRoom.organization.id
-                                    : null
-                            }
-                            conversationId={props.data.room!.id}
-                            conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
-                        />
-                    </XHorizontal>
+                                        : null
+                                }
+                                conversationId={props.data.room!.id}
+                                conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
+                            />
+                        </XHorizontal>
+                    </XVertical>
                     {sharedRoom && (
                         <RoomEditComponent
                             title={sharedRoom.title}
@@ -535,9 +387,10 @@ let MessengerComponentLoader = withRoom(
                             roomId={sharedRoom.id}
                         />
                     )}
-
-                    <AddMemberForm roomId={props.data.room!.id} />
-                </MessengerWrapper>
+                    {sharedRoom && (
+                        <AddMemberForm roomId={props.data.room!.id} />
+                    )}
+                </>
             );
         }),
     ),

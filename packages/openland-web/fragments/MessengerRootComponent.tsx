@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { SetTypingMutation } from 'openland-api';
-import { XAvatarStyle } from 'openland-x/XAvatar';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
@@ -47,7 +46,6 @@ interface MessagesComponentProps {
     objectName: string;
     objectId?: string;
     cloudImageUuid?: string;
-    avatarStyle: XAvatarStyle;
 }
 
 interface MessagesComponentState {
@@ -276,7 +274,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         objectName={this.props.objectName}
                         objectId={this.props.objectId}
                         cloudImageUuid={this.props.cloudImageUuid}
-                        avatarStyle={this.props.avatarStyle}
                     />
                 )}
                 {!this.state.hideChat && (
@@ -328,7 +325,6 @@ interface MessengerRootComponentProps {
     objectName: string;
     objectId?: string;
     cloudImageUuid?: string;
-    avatarStyle: XAvatarStyle;
 }
 
 const MessagesWithUser = withUserInfo(props => (
@@ -342,7 +338,6 @@ const MessagesWithUser = withUserInfo(props => (
         objectName={props.objectName}
         objectId={props.objectId}
         cloudImageUuid={props.cloudImageUuid}
-        avatarStyle={props.avatarStyle}
     />
 )) as React.ComponentType<{
     conversationId: string;
@@ -352,7 +347,6 @@ const MessagesWithUser = withUserInfo(props => (
     objectName: string;
     objectId?: string;
     cloudImageUuid?: string;
-    avatarStyle: XAvatarStyle;
 }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
@@ -366,7 +360,6 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
             objectName={props.objectName}
             objectId={props.objectId}
             cloudImageUuid={props.cloudImageUuid}
-            avatarStyle={props.avatarStyle}
         />
     );
 };
