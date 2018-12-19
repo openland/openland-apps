@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
+import { ChatsComponent } from '../../../fragments/ChatsComponent';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';

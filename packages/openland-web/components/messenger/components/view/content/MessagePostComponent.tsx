@@ -17,7 +17,6 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XAvatar } from 'openland-x/XAvatar';
 import { MessageTextComponent } from './MessageTextComponent';
 import { niceBytes } from '../../view/content/MessageFileComponent';
-import { ReactionComponent } from '../MessageReaction';
 import { Reactions } from '../MessageReaction';
 import { withRespondPostMessage } from '../../../../../api/withRespondPostMessage';
 import ReplyIcon from '../../icons/ic-reply1.svg';

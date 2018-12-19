@@ -325,17 +325,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 }
 
-const Placeholder = withChatHistory(() => {
-    return (
-        <ConversationContainer>
-            <MessagesContainer>
-                <XLoader loading={true} />
-            </MessagesContainer>
-            <MessageComposeComponentDraft enabled={false} />
-        </ConversationContainer>
-    );
-});
-
 interface MessengerRootComponentProps {
     organizationId: string | null;
     conversationId: string;
@@ -371,10 +360,6 @@ const MessagesWithUser = withUserInfo(props => (
 }>;
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
-    // We are not allowing messenger to be rendered on server side: just preload history and that's all
-    if (!canUseDOM) {
-        return <Placeholder variables={{ roomId: props.conversationId }} />;
-    }
     let messenger = React.useContext(MessengerContext);
     return (
         <MessagesWithUser
