@@ -29,8 +29,8 @@ import { MessageFull } from 'openland-api/Types';
 export const ChatContainer = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
-    height: '100%',
-    maxHeight: '100%',
+    alignItems: 'stretch',
+    height: '100vh',
     width: '100%',
     flexGrow: 1,
     flexShrink: 0,
@@ -38,16 +38,15 @@ export const ChatContainer = Glamorous.div({
 });
 
 export const ConversationContainer = Glamorous.div({
+    justifyContent: 'center',
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
     flexShrink: 0,
-    height: '100%',
-    maxHeight: '100vh',
-    width: 'calc(100% - 344px)',
+    minWidth: 0,
+    overflow: 'hidden',
     backgroundColor: XThemeDefault.backgroundColor,
-    justifyContent: 'center',
-    position: 'relative',
     '@media (max-width: 1100px)': {
         width: 'calc(100% - 300px)',
     },
@@ -192,7 +191,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
     };
 
     render() {
-        let { props, state } = this;
+        let { props } = this;
 
         let isCompose = props.router.path.endsWith('/new');
         let pageTitle = isCompose ? 'New chat' : undefined;

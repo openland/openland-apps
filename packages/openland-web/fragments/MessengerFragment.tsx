@@ -30,6 +30,7 @@ import { withUserInfo } from '../components/UserInfo';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
+import { XView } from 'react-mental';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -338,19 +339,27 @@ let MessengerComponentLoader = withRoom(
             return (
                 <>
                     <XDocumentHead title={title} />
-                    <XVertical flexGrow={1} separator={'none'} width="100%" height="100%">
-
+                    <XView
+                        flexGrow={1}
+                        flexShrink={1}
+                        flexBasis={0}
+                        minWidth={0}
+                        minHeight={0}
+                        alignSelf="stretch"
+                        alignItems="stretch"
+                    >
                         {placeholder && <FrowardPlaceholder state={messagesState} />}
 
                         <ChatHeaderWrapper>
                             <ChatHeaderView room={props.data.room!} me={props.user!} />
                         </ChatHeaderWrapper>
                         <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
-                        <XHorizontal
-                            justifyContent="center"
-                            width="100%"
-                            height="calc(100% - 56px)"
-                            separator={0}
+                        <XView
+                            alignItems="center"
+                            flexGrow={1}
+                            flexBasis={0}
+                            minHeight={0}
+                            flexShrink={1}
                         >
                             <MessengerRootComponent
                                 objectName={title}
@@ -376,8 +385,8 @@ let MessengerComponentLoader = withRoom(
                                 conversationId={props.data.room!.id}
                                 conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
                             />
-                        </XHorizontal>
-                    </XVertical>
+                        </XView>
+                    </XView>
                     {sharedRoom && (
                         <RoomEditComponent
                             title={sharedRoom.title}
