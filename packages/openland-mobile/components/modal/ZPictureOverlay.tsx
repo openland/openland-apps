@@ -10,7 +10,7 @@ import { ActionSheetBuilder } from '../ActionSheet';
 import Share from 'react-native-share';
 import UUID from 'uuid/v4';
 import RNFetchBlob from 'rn-fetch-blob';
-import { layoutMedia } from '../../../openland-web/components/messenger/utils/MediaLayout';
+import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { preprocessText } from '../../../utils/TextProcessor';
+import { preprocessText } from '../../../../../utils/TextProcessor';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { isEmoji } from '../../../utils/isEmoji';
-import { isInternalLink } from 'openland-web/components/messenger/utils/isInternalLink';
-import { makeInternalLinkRelative } from 'openland-web/components/messenger/utils/makeInternalLinkRelative';
+import { isEmoji } from '../../../../../utils/isEmoji';
+import { isInternalLink } from 'openland-web/utils/isInternalLink';
+import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { OthersPopper } from './OthersPopper';
 export interface MessageTextComponentProps {
     alphaMentions?: any;
