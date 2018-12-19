@@ -5,7 +5,6 @@ import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types'
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { MessagesStateContext } from '../components/messenger/components/MessagesStateContext';
 import { UserInfoContext } from '../components/UserInfo';
-import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
 import { XView } from 'react-mental';
@@ -13,6 +12,7 @@ import { FrowardPlaceholder } from './chat/ForwardPlaceholder';
 import { useQuery } from 'openland-web/components/useQuery';
 import { RoomQuery } from 'openland-api';
 import { XLoader } from 'openland-x/XLoader';
+import { TalkBarComponent } from 'openland-web/modules/conference/TalkBarComponent';
 
 export interface MessengerComponentProps {
     id: string;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -7,7 +6,6 @@ import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
 import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
 import { XOverflow } from 'openland-web/components/Incubator/XOverflow';
 import { XView } from 'react-mental';
-import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
 import { XButton } from 'openland-x/XButton';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
@@ -22,6 +20,7 @@ import { css } from 'linaria';
 import { RoomEditModal } from '../RoomEditModal';
 import { RoomAddMemberModal } from '../RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
+import { TalkContext } from 'openland-web/modules/conference/TalkProviderComponent';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.4);
