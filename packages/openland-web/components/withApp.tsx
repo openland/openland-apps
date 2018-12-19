@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withAppBase } from './withAppBase';
 import { AuthRouter } from './AuthRouter';
-import { XPageTrack } from './XPageTrack';
 
 export function withApp(
     name: string,
@@ -11,14 +10,11 @@ export function withApp(
 ) {
     return withAppBase(name, () => {
         return (
-            <>
-                <XPageTrack name={name} />
-                <AuthRouter>
-                    <XWithRole role={role}>
-                        <WrappedComponent />
-                    </XWithRole>
-                </AuthRouter>
-            </>
+            <AuthRouter>
+                <XWithRole role={role}>
+                    <WrappedComponent />
+                </XWithRole>
+            </AuthRouter>
         );
     });
 }

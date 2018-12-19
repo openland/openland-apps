@@ -24,40 +24,39 @@ export default withAppBase(
                     title={InitTexts.join.pageTitle}
                     titleSocial={InitTexts.socialPageTitle}
                 />
-                <XTrack event="Join">
-                    <MessagePage>
-                        {props.data.invite && (
-                            <MessagePageContent title={InitTexts.join.title}>
-                                <div className={InfoText}>{props.data.invite.title}</div>
-                                {props.data.invite.joined && (
-                                    <XButton
-                                        text={InitTexts.join.goButton}
-                                        onClick={() =>
-                                            switchOrganization(props.data.invite!!.orgId)
-                                        }
-                                        style="primary"
-                                    />
-                                )}
-                                {!props.data.invite.joined && (
-                                    <XButton
-                                        text={InitTexts.join.joinButton}
-                                        action={async () => {
-                                            await props.doJoin({});
-                                            switchOrganization(props.data.invite!!.orgId);
-                                        }}
-                                        style="primary"
-                                    />
-                                )}
-                                {/* <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" /> */}
-                            </MessagePageContent>
-                        )}
-                        {!props.data.invite && (
-                            <MessagePageContent title="Join">
-                                <div className={InfoText}>{InitTexts.join.unableToFindInvite}</div>
-                            </MessagePageContent>
-                        )}
-                    </MessagePage>
-                </XTrack>
+                <XTrack event="Join" />
+                <MessagePage>
+                    {props.data.invite && (
+                        <MessagePageContent title={InitTexts.join.title}>
+                            <div className={InfoText}>{props.data.invite.title}</div>
+                            {props.data.invite.joined && (
+                                <XButton
+                                    text={InitTexts.join.goButton}
+                                    onClick={() =>
+                                        switchOrganization(props.data.invite!!.orgId)
+                                    }
+                                    style="primary"
+                                />
+                            )}
+                            {!props.data.invite.joined && (
+                                <XButton
+                                    text={InitTexts.join.joinButton}
+                                    action={async () => {
+                                        await props.doJoin({});
+                                        switchOrganization(props.data.invite!!.orgId);
+                                    }}
+                                    style="primary"
+                                />
+                            )}
+                            {/* <XButton path="/auth/logout" text={TextGlobal.signOut} style="primary" alignSelf="center" /> */}
+                        </MessagePageContent>
+                    )}
+                    {!props.data.invite && (
+                        <MessagePageContent title="Join">
+                            <div className={InfoText}>{InitTexts.join.unableToFindInvite}</div>
+                        </MessagePageContent>
+                    )}
+                </MessagePage>
             </AuthRouter>
         );
     }),

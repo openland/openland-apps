@@ -16,9 +16,7 @@ export default withAppBase(
                     title={InitTexts.rootPageTitle}
                     titleSocial={InitTexts.socialPageTitle}
                 />
-                <XTrack event="View Root">
-                    <XPageRedirect path={'/mail'} />
-                </XTrack>
+                <XPageRedirect path={'/mail'} />
             </AuthRouter>
         );
     }),

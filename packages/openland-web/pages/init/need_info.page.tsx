@@ -21,19 +21,17 @@ export default withAppBase('Need Info', props => {
                 title={InitTexts.need_info.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <XTrack event="View Need Info">
-                <MessagePage>
-                    <MessagePageContent title={InitTexts.need_info.title}>
-                        <div className={InfoText}>{InitTexts.need_info.content}</div>
-                        <XButton
-                            path="/auth/logout"
-                            text={TextGlobal.signOut}
-                            style="primary"
-                            alignSelf="center"
-                        />
-                    </MessagePageContent>
-                </MessagePage>
-            </XTrack>
+            <MessagePage>
+                <MessagePageContent title={InitTexts.need_info.title}>
+                    <div className={InfoText}>{InitTexts.need_info.content}</div>
+                    <XButton
+                        path="/auth/logout"
+                        text={TextGlobal.signOut}
+                        style="primary"
+                        alignSelf="center"
+                    />
+                </MessagePageContent>
+            </MessagePage>
         </AuthRouter>
     );
 });

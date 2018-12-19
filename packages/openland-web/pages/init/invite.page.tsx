@@ -37,21 +37,19 @@ export default withAppBase(
                     title={InitTexts.invite.pageTitle}
                     titleSocial={InitTexts.socialPageTitle}
                 />
-                <XTrack event="Invite">
-                    <MessagePage>
-                        {props.data.invite ||
-                            (props.data.appInvite && (
-                                <AcceptInviteComponent mutation={props.activate} />
-                            ))}
-                        {!(props.data.invite || props.data.appInvite) && (
-                            <MessagePageContent title="Invite">
-                                <div className={InfoText}>
-                                    {InitTexts.invite.unableToFindInvite}
-                                </div>
-                            </MessagePageContent>
-                        )}
-                    </MessagePage>
-                </XTrack>
+                <MessagePage>
+                    {props.data.invite ||
+                        (props.data.appInvite && (
+                            <AcceptInviteComponent mutation={props.activate} />
+                        ))}
+                    {!(props.data.invite || props.data.appInvite) && (
+                        <MessagePageContent title="Invite">
+                            <div className={InfoText}>
+                                {InitTexts.invite.unableToFindInvite}
+                            </div>
+                        </MessagePageContent>
+                    )}
+                </MessagePage>
             </AuthRouter>
         );
     }),
