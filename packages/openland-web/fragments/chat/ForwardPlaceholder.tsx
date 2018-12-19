@@ -68,7 +68,7 @@ const InfoText = Glamorous.div({
     },
 });
 
-export const FrowardPlaceholder = (props: { state: MessagesStateContextProps }) => {
+export const ForwardPlaceholder = (props: { state: MessagesStateContextProps }) => {
     let { state } = props;
     let msgLength = 0;
     if (state.forwardMessagesId) {

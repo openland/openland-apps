@@ -49,8 +49,9 @@ import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { AddMemberForm, RoomEditComponent } from 'openland-web/fragments/chat/ChatHeaderView';
 import { RoomSetFeatured, RoomSetHidden } from 'openland-web/pages/main/profile/RoomControls';
+import { RoomEditModal } from 'openland-web/fragments/RoomEditModal';
+import { RoomAddMemberModal } from 'openland-web/fragments/RoomAddMemberModal';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -137,7 +138,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                 }
                             />
                             <LeaveChatComponent />
-                            <RoomEditComponent
+                            <RoomEditModal
                                 roomId={chat.id}
                                 title={chat.title}
                                 description={chat.description}
@@ -341,7 +342,7 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                 </SectionContent>
                 {props.meOwner && (
                     <>
-                        <AddMemberForm roomId={props.chatId} />
+                        <RoomAddMemberModal roomId={props.chatId} />
                         <RemoveMemberModal
                             members={members}
                             roomId={props.chatId}
