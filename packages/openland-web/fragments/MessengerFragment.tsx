@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRoom } from '../api/withRoom';
 import { withQueryLoader } from '../components/withQueryLoader';
 import { MessengerRootComponent } from './MessengerRootComponent';
-import { makeNavigable } from 'openland-x/Navigable';
 import { XMenuItemWrapper } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -16,7 +15,6 @@ import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { withAlterChat } from '../api/withAlterChat';
-import { withOnline } from '../api/withOnline';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { withChannelSetHidden } from '../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -27,7 +25,6 @@ import { XButton } from 'openland-x/XButton';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { withRoomAddMembers } from '../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { XDate } from 'openland-x/XDate';
 import { MessagesStateContext, MessagesStateContextProps } from '../components/messenger/components/MessagesStateContext';
 import CloseIcon from '../components/messenger/components/icons/ic-close.svg';
 import { withUserInfo } from '../components/UserInfo';
@@ -148,12 +145,6 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
     width: '100%',
     flexBasis: '100%',
 });
-
-const NavChatLeftContent = makeNavigable(XHorizontal);
-
-const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftContent)(props => ({
-    cursor: props.path || props.query ? 'pointer' : undefined,
-}));
 
 class SwitchComponent extends React.Component<
     {
@@ -327,52 +318,6 @@ export const AddMemberForm = withRoomAddMembers(props => {
     );
 }) as React.ComponentType<{ roomId: string }>;
 
-const InviteButton = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s',
-    },
-    '& svg > g > path:last-child': {
-        fill: '#000000',
-        opacity: 0.4,
-    },
-    '&:active svg > g > path:last-child': {
-        fill: '#ffffff',
-        opacity: 0.4,
-    },
-});
-
-const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
-    fontSize: 13,
-    fontWeight: 400,
-    lineHeight: '16px',
-    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
-    letterSpacing: 0,
-}));
-
-const LastSeen = withOnline(props => {
-    if (
-        props.data.user &&
-        (props.data.user.lastSeen &&
-            props.data.user.lastSeen !== 'online' &&
-            !props.data.user.online)
-    ) {
-        return (
-            <LastSeenWrapper online={false}>
-                Last seen{' '}
-                {props.data.user.lastSeen === 'never_online' ? (
-                    'moments ago'
-                ) : (
-                        <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                    )}
-            </LastSeenWrapper>
-        );
-    } else if (props.data.user && props.data.user.online) {
-        return <LastSeenWrapper online={true}>Online</LastSeenWrapper>;
-    } else {
-        return null;
-    }
-}) as React.ComponentType<{ variables: { userId: string } }>;
-
 interface MessengerWrapperProps {
     chatTitle: string;
     chatType: string;
@@ -391,49 +336,6 @@ const MessengerWrapper = (props: MessengerWrapperProps) => {
             </XVertical>
         </>
     );
-};
-
-let HeaderLeftContent = (props: { chatType?: string; path?: string; children?: any }) => {
-    if (props.chatType === 'ChannelConversation') {
-        return (
-            <NavChatLeftContentStyled
-                path={props.path}
-                separator={10}
-                alignItems="center"
-                flexGrow={0}
-                maxWidth="calc(100% - 380px)"
-                width="calc(100% - 380px)"
-            >
-                {props.children}
-            </NavChatLeftContentStyled>
-        );
-    } else if (props.chatType === 'GroupConversation') {
-        return (
-            <NavChatLeftContentStyled
-                path={props.path}
-                separator={10}
-                alignItems="center"
-                flexGrow={0}
-                maxWidth="calc(100% - 100px)"
-                width="calc(100% - 100px)"
-            >
-                {props.children}
-            </NavChatLeftContentStyled>
-        );
-    } else {
-        return (
-            <NavChatLeftContentStyled
-                path={props.path}
-                separator={10}
-                alignItems="center"
-                flexGrow={0}
-                maxWidth="calc(100% - 100px)"
-                width="calc(100% - 100px)"
-            >
-                {props.children}
-            </NavChatLeftContentStyled>
-        );
-    }
 };
 
 const ClearButton = Glamorous.div({
