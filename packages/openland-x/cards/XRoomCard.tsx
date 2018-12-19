@@ -1,62 +1,20 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
-import { makeNavigable } from 'openland-x/Navigable';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { XAvatar2 } from 'openland-x/XAvatar2';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 
-const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
-    height: 64,
-    paddingLeft: 16,
-    paddingRight: 16,
-    flexShrink: 0,
-    cursor: 'pointer',
-    marginLeft: -16,
-    marginRight: -16,
-    borderRadius: 8,
-    '&:hover': {
-        backgroundColor: '#F9F9F9',
-    }
-}) as any) as any;
-
-const RoomAvatar = Glamorous(XAvatar)({
-    cursor: 'pointer',
-    '& *': {
-        cursor: 'pointer'
-    }
-});
-
-const RoomTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000',
-    marginTop: '-2px!important',
-    marginBottom: 2,
-
-    '&': {
-        height: 22,
-        overflow: 'hidden',
-        display: '-webkit-box',
-        WebkitLineClamp: 1,
-        WebkitBoxOrient: 'vertical'
-    }
-});
-
-const RoomMembers = Glamorous.div({
-    fontSize: 13,
-    fontWeight: 400,
-    lineHeight: '18px',
-    letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.5)'
-});
+const RoomTitleInner = css`
+    height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`;
 
 interface XRoomCardProps {
     room: Room_room_SharedRoom;
@@ -73,12 +31,15 @@ interface XRoomCardState {
 
 export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
     state = {
-        isHovered: false
+        isHovered: false,
     };
 
     render() {
         let { room, path, customButton, customMenu, extraMenu } = this.props;
-        let title = (room.kind !== SharedRoomKind.INTERNAL && room.organization ? (room.organization.name + ' / ') : '') + room.title;
+        let title =
+            (room.kind !== SharedRoomKind.INTERNAL && room.organization
+                ? room.organization.name + ' / '
+                : '') + room.title;
 
         let buttonPath = '/mail/' + room.id;
 
@@ -86,75 +47,115 @@ export class XRoomCard extends React.Component<XRoomCardProps, XRoomCardState> {
             buttonPath = '/directory/r/' + room.id;
         }
 
-        let button = (typeof customButton === 'undefined') ? (
-            <>
-                {room.membership && (
-                    <XButton
-                        text={TextProfiles.Room.status[room.membership]}
-                        path={buttonPath}
-                        style={['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1 ? 'primary' : 'ghost'}
-                    />
-                )}
-            </>
-        ) : customButton;
+        let button = this.state.isHovered ? (
+            typeof customButton === 'undefined' ? (
+                <>
+                    {room.membership && (
+                        <XButton
+                            text={TextProfiles.Room.status[room.membership]}
+                            path={buttonPath}
+                            style={
+                                ['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1
+                                    ? 'primary'
+                                    : 'ghost'
+                            }
+                        />
+                    )}
+                </>
+            ) : (
+                customButton
+            )
+        ) : (
+            undefined
+        );
 
-        let menu = (typeof customMenu === 'undefined') ? (
-            <>
-                <XWithRole role={['super-admin', 'editor']}>
-                    <XOverflow
-                        flat={true}
-                        placement="bottom-end"
-                        content={(
-                            <div style={{ width: 160 }} onClick={(e) => e.stopPropagation()}>
-                                {extraMenu}
-
-                                <XMenuTitle>Super admin</XMenuTitle>
-                                {/* <RoomSetFeatured conversationId={room.id} val={room.featured} />
-                                <RoomSetHidden conversationId={room.id} val={room.hidden} /> */}
-                            </div>
-                        )}
-                    />
-                </XWithRole>
-                {extraMenu && (
-                    <XWithRole role={['super-admin', 'editor']} negate={true}>
+        let menu =
+            typeof customMenu === 'undefined' ? (
+                <>
+                    <XWithRole role={['super-admin', 'editor']}>
                         <XOverflow
                             flat={true}
                             placement="bottom-end"
-                            content={(
-                                <div>
+                            content={
+                                <div style={{ width: 160 }} onClick={e => e.stopPropagation()}>
                                     {extraMenu}
+
+                                    <XMenuTitle>Super admin</XMenuTitle>
+                                    {/* <RoomSetFeatured conversationId={room.id} val={room.featured} />
+                                <RoomSetHidden conversationId={room.id} val={room.hidden} /> */}
                                 </div>
-                            )}
+                            }
                         />
                     </XWithRole>
-                )}
-            </>
-        ) : customMenu;
+                    {extraMenu && (
+                        <XWithRole role={['super-admin', 'editor']} negate={true}>
+                            <XOverflow
+                                flat={true}
+                                placement="bottom-end"
+                                content={<div>{extraMenu}</div>}
+                            />
+                        </XWithRole>
+                    )}
+                </>
+            ) : (
+                customMenu
+            );
 
         return (
-            <RoomWrapper
+            <XView
+                alignItems="center"
+                height={64}
+                paddingLeft={16}
+                paddingRight={16}
+                cursor="pointer"
+                marginLeft={-16}
+                marginRight={-16}
+                borderRadius={8}
+                flexDirection="row"
+                hoverBackgroundColor="#F9F9F9"
                 path={path || '/mail/' + room.id}
                 key={'room_' + room.id}
-                alignItems="center"
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
-                separator={5}
+                minWidth={0}
+                flexShrink={1}
             >
-                <XHorizontal separator={8} alignItems="center" flexGrow={1}>
-                    <RoomAvatar
-                        style="room"
-                        cloudImageUuid={room.photo || (room.organization ? room.organization.photo || undefined : undefined)}
-                        objectName={room.title}
-                        objectId={room.id}
+                <XView
+                    flexDirection="row"
+                    alignItems="center"
+                    flexGrow={1}
+                    marginRight={10}
+                    minWidth={0}
+                    flexShrink={1}
+                >
+                    <XAvatar2
+                        src={
+                            room.photo || (room.organization ? room.organization.photo : undefined)
+                        }
+                        title={room.title}
+                        id={room.id}
                     />
-                    <XVertical separator={0} flexGrow={1}>
-                        <RoomTitle>{title}</RoomTitle>
-                        <RoomMembers>{TextProfiles.Room.membersLabel(room.membersCount || 0)}</RoomMembers>
-                    </XVertical>
-                </XHorizontal>
-                {this.state.isHovered && button}
-                {menu}
-            </RoomWrapper>
+                    <XView flexGrow={1} marginLeft={16} minWidth={0} flexShrink={1}>
+                        <XView
+                            fontSize={14}
+                            fontWeight="600"
+                            lineHeight="22px"
+                            color="#000000"
+                            marginTop={-2}
+                            marginBottom={2}
+                            minWidth={0}
+                            flexShrink={1}
+                        >
+                            <div className={RoomTitleInner}>{title}</div>
+                        </XView>
+                        <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
+                            {TextProfiles.Room.membersLabel(room.membersCount || 0)}
+                        </XView>
+                    </XView>
+                </XView>
+                {button}
+                <XView marginLeft={10}>{menu}</XView>
+            </XView>
         );
     }
 }
