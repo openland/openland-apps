@@ -5,6 +5,7 @@ import * as Cookie from 'js-cookie';
 import { withUser } from '../openland-web/api/withUserSimple';
 import { withOrganization } from '../openland-web/api/withOrganizationSimple';
 import { withChannelInviteInfo } from '../openland-web/api/withChannelInviteInfo';
+import { XRouterContext } from './XRouterContext';
 
 interface OpenGraphObject {
     title: string;
@@ -83,7 +84,8 @@ const RoomInviteSmartHead = withChannelInviteInfo(withRouter((props) => {
     }
 }));
 
-export const XDocumentHead = withRouter<{ title?: string | string[], titleWithoutReverse?: boolean, titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
+export const XDocumentHead = React.memo<{ title?: string | string[], titleWithoutReverse?: boolean, titleSocial?: string | null, imgCloud?: string | null, imgUrl?: string | null }>((props) => {
+    let router = React.useContext(XRouterContext)!;
     if (Cookie.get('x-openland-token')) {
         let parts = ['Openland'];
         if (typeof (props.title) === 'string') {
@@ -109,13 +111,13 @@ export const XDocumentHead = withRouter<{ title?: string | string[], titleWithou
             <Head>
                 <title key="page_title">{title}</title>
                 <meta key="og_title" property="og:title" content={props.titleSocial ? props.titleSocial : title} />
-                <meta key="og_url" property="og:url" content={props.router.href} />
+                <meta key="og_url" property="og:url" content={router.href} />
                 <meta key="og_description" property="og:description" content={DEFAULT_OG.description} />
                 <meta key="og_img" property="og:image" content={img} />
             </Head>
         );
     } else {
-        let p = props.router.path;
+        let p = router.path;
 
         if (p.startsWith('/directory/u/') || p.startsWith('/mail/u/')) {
             return <UserSmartHead />;
@@ -129,6 +131,8 @@ export const XDocumentHead = withRouter<{ title?: string | string[], titleWithou
             return <RoomInviteSmartHead />;
         }
 
-        return <SmartHead url={props.router.href} />;
+        return <SmartHead url={router.href} />;
     }
 });
+
+XDocumentHead.displayName = 'XDocumentHead';
