@@ -32,18 +32,23 @@ import { XDate } from 'openland-x/XDate';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { css } from 'linaria';
 
-const StatusWrapper = (props: { online: boolean; children?: any }) => (
-    <XView
-        color={props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.5)'}
-        fontSize={13}
-        fontWeight="400"
-        lineHeight="18px"
-        marginTop={7}
-    >
-        {props.children}
-    </XView>
-);
+const StatusWrapperOffline = css`
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    margin-top: 7px;
+`;
+
+const StatusWrapperOnline = css`
+    color: #1790ff;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+    margin-top: 7px;
+`;
 
 const UserStatus = withOnline(props => {
     if (
@@ -53,17 +58,17 @@ const UserStatus = withOnline(props => {
             !props.data.user.online)
     ) {
         return (
-            <StatusWrapper online={false}>
+            <div className={StatusWrapperOffline}>
                 {TextProfiles.User.status.lastSeen}{' '}
                 {props.data.user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
                     <XDate value={props.data.user.lastSeen} format="humanize_cute" />
                 )}
-            </StatusWrapper>
+            </div>
         );
     } else if (props.data.user && props.data.user.online) {
-        return <StatusWrapper online={true}>{TextProfiles.User.status.online}</StatusWrapper>;
+        return <div className={StatusWrapperOnline}>{TextProfiles.User.status.online}</div>;
     } else {
         return null;
     }
