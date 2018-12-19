@@ -7,7 +7,7 @@ import { XForm } from 'openland-x-forms/XForm2';
 import { Navigation } from './_navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -251,7 +251,7 @@ const MobileApps = () => (
                 opacity={0.5}
                 hoverOpacity={0.8}
             >
-                <XView as="img" width={103} height={33} src="/static/X/settings/appstore@2x.png" />
+                <XImage width={103} height={33} src="/static/X/settings/appstore@2x.png" />
             </XView>
             <XView
                 as="a"
@@ -260,12 +260,7 @@ const MobileApps = () => (
                 opacity={0.5}
                 hoverOpacity={0.8}
             >
-                <XView
-                    as="img"
-                    width={103}
-                    height={34}
-                    src="/static/X/settings/googleplay@2x.png"
-                />
+                <XImage width={103} height={34} src="/static/X/settings/googleplay@2x.png" />
             </XView>
         </XView>
     </Group>

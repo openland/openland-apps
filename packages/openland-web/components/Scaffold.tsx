@@ -35,7 +35,7 @@ import { withCreateChannel } from '../api/withCreateChannel';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 import {
     SharedRoomKind,
     MyOrganizations_myOrganizations,
@@ -79,8 +79,7 @@ const Logo = () => (
         height={38}
         overflow="hidden"
     >
-        <XView
-            as="img"
+        <XImage
             width={38}
             height={38}
             src="/static/X/logo-5.png"
@@ -319,50 +318,48 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                         path={'/directory/o/' + primaryOrganization.id}
                                     />
 
-                                    {organizations &&
-                                        organizations.length > 1 && (
-                                            <XPopper
-                                                placement="right"
-                                                contentContainer={<XMenuVertical />}
-                                                showOnHover={true}
-                                                padding={25}
-                                                marginLeft={8}
-                                                marginBottom={5}
-                                                arrow={null}
-                                                content={
-                                                    <OutherOrgWrapepr
-                                                        separator="none"
-                                                        ref={this.onInner}
-                                                        maxHeight="90vh"
-                                                    >
-                                                        {organizations
-                                                            .sort((a, b) =>
-                                                                a.name.localeCompare(b.name),
-                                                            )
-                                                            .map(
-                                                                (org, index) =>
-                                                                    index >= 0 ? (
-                                                                        <XMenuItem
-                                                                            path={
-                                                                                (org.isCommunity
-                                                                                    ? '/directory/c/'
-                                                                                    : '/directory/o/') +
-                                                                                org.id
-                                                                            }
-                                                                            key={'other-' + org.id}
-                                                                        >
-                                                                            {org.name}
-                                                                        </XMenuItem>
-                                                                    ) : null,
-                                                            )}
-                                                    </OutherOrgWrapepr>
-                                                }
-                                            >
-                                                <XMenuItem iconRight="x-right">
-                                                    Other organizations
-                                                </XMenuItem>
-                                            </XPopper>
-                                        )}
+                                    {organizations && organizations.length > 1 && (
+                                        <XPopper
+                                            placement="right"
+                                            contentContainer={<XMenuVertical />}
+                                            showOnHover={true}
+                                            padding={25}
+                                            marginLeft={8}
+                                            marginBottom={5}
+                                            arrow={null}
+                                            content={
+                                                <OutherOrgWrapepr
+                                                    separator="none"
+                                                    ref={this.onInner}
+                                                    maxHeight="90vh"
+                                                >
+                                                    {organizations
+                                                        .sort((a, b) =>
+                                                            a.name.localeCompare(b.name),
+                                                        )
+                                                        .map((org, index) =>
+                                                            index >= 0 ? (
+                                                                <XMenuItem
+                                                                    path={
+                                                                        (org.isCommunity
+                                                                            ? '/directory/c/'
+                                                                            : '/directory/o/') +
+                                                                        org.id
+                                                                    }
+                                                                    key={'other-' + org.id}
+                                                                >
+                                                                    {org.name}
+                                                                </XMenuItem>
+                                                            ) : null,
+                                                        )}
+                                                </OutherOrgWrapepr>
+                                            }
+                                        >
+                                            <XMenuItem iconRight="x-right">
+                                                Other organizations
+                                            </XMenuItem>
+                                        </XPopper>
+                                    )}
                                 </>
                             )}
                         </XVertical>
@@ -596,10 +593,9 @@ export const MessengerButton = withNotificationCounter(props => {
             <NavigatorItem path="/mail">
                 <MessagesIcon />
 
-                {props.data.counter &&
-                    props.data.counter.unreadCount > 0 && (
-                        <CounterWrapper count={props.data.counter.unreadCount} />
-                    )}
+                {props.data.counter && props.data.counter.unreadCount > 0 && (
+                    <CounterWrapper count={props.data.counter.unreadCount} />
+                )}
             </NavigatorItem>
         </XPopper>
     );

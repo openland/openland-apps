@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { XButton } from 'openland-x/XButton';
-import { XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 import { css } from 'linaria';
 
 const Description = css`
@@ -38,12 +38,11 @@ export const ErrorPage = (props: ErrorPageProps) => (
                     paddingRight={32}
                     alignSelf="flex-start"
                 >
-                    <XView as="img" width={145} height={42} src="/static/X/signup/logo-2.svg" />
+                    <XImage width={145} height={42} src="/static/X/signup/logo-2.svg" />
                 </XView>
                 <XView flexGrow={1} alignItems="center">
                     <XView flexGrow={1} justifyContent="center" alignItems="center">
-                        <XView
-                            as="img"
+                        <XImage
                             marginTop={-9}
                             marginBottom={53}
                             width={346}
