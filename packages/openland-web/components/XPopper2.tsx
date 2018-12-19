@@ -2,6 +2,7 @@ import * as React from 'react';
 import Popper, { Placement } from 'popper.js';
 import * as ReactDOM from 'react-dom';
 import { css } from 'linaria';
+import ReactResizeDetector from 'react-resize-detector';
 
 const contentStyle = css`
     position: relative;
@@ -85,12 +86,14 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
     let [node, setNode] = React.useState<HTMLElement | undefined>(undefined);
     let [internalNode, setInternalNode] = React.useState<HTMLElement | undefined>(undefined);
     let [arrowNode, setArrowNode] = React.useState<HTMLElement | undefined>(undefined);
+    let currentPopper = React.useRef<Popper | undefined>(undefined);
 
     // Create popper if needed
     React.useLayoutEffect(
         () => {
             if (node && internalNode && arrowNode) {
                 let popper = new Popper(node, internalNode, {
+                    eventsEnabled: true,
                     modifiers: {
                         arrow: {
                             enabled: true,
@@ -106,6 +109,7 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
                         },
                     },
                     onCreate: (data: Popper.Data) => {
+                        console.log(data);
                         if (arrowNode) {
                             arrowNode.setAttribute('x-placement', data.placement);
                         }
@@ -117,6 +121,7 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
                         }
                     },
                     onUpdate: (data: Popper.Data) => {
+                        console.log(data);
                         if (arrowNode) {
                             arrowNode.setAttribute('x-placement', data.placement);
                         }
@@ -129,7 +134,9 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
                     },
                     placement: props.placement ? props.placement : 'auto',
                 });
+                currentPopper.current = popper;
                 return () => {
+                    currentPopper.current = undefined;
                     popper.destroy();
                 };
             } else {
@@ -166,19 +173,28 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
         },
     }));
 
+    let Component = React.useMemo(() => {
+        return () => {
+            React.useLayoutEffect(() => {
+                if (currentPopper.current) { currentPopper.current.update(); }
+            });
+            return (
+                <div key={'pop-' + index} ref={popupRef}>
+                    <div className={'popper ' + (props.className ? props.className : contentStyle)}>
+                        {props.children}
+                        {/* <ReactResizeDetector handleWidth={true} handleHeight={true} onResize={() => currentPopper.current && currentPopper.current.scheduleUpdate()} /> */}
+                    </div>
+                    <div className={arrowStyle} ref={popupArrowRef} style={{ width: 12, height: 6 }}>
+                        <div />
+                    </div>
+                </div>
+            );
+        }
+    }, [props.children]);
+
     // Render
     if (node) {
-        let popup = (
-            <div key={'pop-' + index} ref={popupRef}>
-                <div className={'popper ' + (props.className ? props.className : contentStyle)}>
-                    {props.children}
-                </div>
-                <div className={arrowStyle} ref={popupArrowRef} style={{ width: 12, height: 6 }}>
-                    <div />
-                </div>
-            </div>
-        );
-        return ReactDOM.createPortal(popup, document.body);
+        return ReactDOM.createPortal(<Component />, document.body);
     } else {
         return null;
     }
