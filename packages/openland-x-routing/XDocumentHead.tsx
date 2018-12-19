@@ -15,6 +15,7 @@ export const XDocumentHead = React.memo<{
     titleSocial?: string | null;
     imgCloud?: string | null;
     imgUrl?: string | null;
+    description?: string | null;
 }>(props => {
     let router = React.useContext(XRouterContext)!;
 
@@ -35,6 +36,8 @@ export const XDocumentHead = React.memo<{
         img = 'https://ucarecdn.com/' + props.imgCloud;
     }
 
+    let description = props.description || DEFAULT_OG.description;
+
     return (
         <Head>
             <title key="page_title">{title}</title>
@@ -44,7 +47,7 @@ export const XDocumentHead = React.memo<{
                 content={props.titleSocial ? props.titleSocial : title}
             />
             <meta key="og_url" property="og:url" content={router.href} />
-            <meta key="og_description" property="og:description" content={DEFAULT_OG.description} />
+            <meta key="og_description" property="og:description" content={description} />
             <meta key="og_img" property="og:image" content={img} />
         </Head>
     );

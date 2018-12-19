@@ -780,6 +780,12 @@ exports[`MessageTextComponent should render correctly 1`] = `
 [data-css-pf17gp] {
   color: #99a2b0;
 }
+.css-gqd39d,
+[data-css-gqd39d] {
+  cursor: pointer;
+  background-color: #fff6e5;
+  color: #1790ff;
+}
 .css-1f5rsnp,
 [data-css-1f5rsnp] {
   cursor: pointer;
@@ -871,6 +877,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
 .css-8,
 [data-css-8] {
   cursor: pointer;
+  background-color: #fff6e5;
+  color: #1790ff;
+}
+
+.css-9,
+[data-css-9] {
+  cursor: pointer;
   color: #1790ff;
 }
 
@@ -944,14 +957,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
                 Sergey Lapin
               </span>
             </span>
-             joined the room along with
-             
+             joined the room along with 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 Tara B
               </span>
@@ -989,7 +1001,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
              joined the room along with
              
             <span
-              className="css-8"
+              className="css-9"
             >
               3
                others
@@ -1041,17 +1053,17 @@ exports[`MessageTextComponent should render correctly 1`] = `
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 qwerty asdfgh
               </span>
             </span>
-             is interested in your job opportunity
-             
+             is interested in your job opportunity 
             <strong>
               “Looking for React developer“
             </strong>
-             in 
+             in
+             
             <a
               className={
                 Array [
@@ -1076,13 +1088,12 @@ exports[`MessageTextComponent should render correctly 1`] = `
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 qwerty asdfgh
               </span>
             </span>
-             — as the next step, please, tell
-             
+             — as the next step, please, tell 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1131,7 +1142,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 qwerty asdfgh
               </span>
@@ -1214,7 +1225,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 qwerty asdfgh
               </span>
@@ -1287,7 +1298,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 qwerty asdfgh
               </span>
@@ -1355,7 +1366,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               onMouseLeave={[Function]}
             >
               <span
-                className="css-8"
+                className="css-9"
               >
                 qwerty asdfgh
               </span>

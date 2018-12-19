@@ -14,17 +14,15 @@ const spanWithWhiteSpacesClassName = css`
     text-align: center;
 `;
 
-const SpanWithWhiteSpaces = ({ children }: { children: any }) => {
-    return <span className={spanWithWhiteSpacesClassName}>{children}</span>;
-};
+const SpanWithWhiteSpaces = ({ children }: { children: any }) => (
+    <span className={spanWithWhiteSpacesClassName}>{children}</span>
+);
 
-const MentionedUser = ({ user, isMe }: any) => {
-    return (
-        <UserPopper user={user} isMe={isMe} noCardOnMe startSelected={false}>
-            <MentionComponentInnerText isYou={isMe}>{user.name}</MentionComponentInnerText>
-        </UserPopper>
-    );
-};
+const MentionedUser = ({ user, isYou }: { user: any; isYou: boolean }) => (
+    <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
+        <MentionComponentInnerText isYou={isYou}>{user.name}</MentionComponentInnerText>
+    </UserPopper>
+);
 
 const sergeyLapinUser = {
     id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
@@ -120,37 +118,49 @@ const Container = ({ children }: { children: any }) => (
 );
 
 // Service Messages
-const JoinOneServiceMessage = ({ firstUser }: { firstUser: any }) => (
+const JoinOneServiceMessage = ({ firstUser, myUserId }: { firstUser: any; myUserId: string }) => (
     <Container>
         🙌
-        <MentionedUser user={firstUser} isYou={true} /> joined the room
+        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
     </Container>
 );
 
-const JoinTwoServiceMessage = ({ firstUser, secondUser }: { firstUser: any; secondUser: any }) => (
+const JoinTwoServiceMessage = ({
+    firstUser,
+    secondUser,
+    myUserId,
+}: {
+    firstUser: any;
+    secondUser: any;
+    myUserId: string;
+}) => (
     <Container>
         🙌
-        <MentionedUser user={firstUser} isYou={true} /> joined the room along with{' '}
-        <MentionedUser user={secondUser} isYou={false} />
+        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room along
+        with <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
     </Container>
 );
 
-const JoinManyServiceMessage = ({ firstUser, otherUsers }: { firstUser: any; otherUsers: any }) => (
+const JoinManyServiceMessage = ({
+    firstUser,
+    otherUsers,
+    myUserId,
+}: {
+    firstUser: any;
+    otherUsers: any;
+    myUserId: string;
+}) => (
     <Container>
         🙌
-        <MentionedUser user={firstUser} isYou={true} /> joined the room along with{' '}
+        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room along
+        with{' '}
         <MentionComponentInnerText isYou={false}>
             {otherUsers.length} others
         </MentionComponentInnerText>
     </Container>
 );
 
-const RespondToPostServiceMessage = ({
-    postAuthorUser,
-    responderUser,
-    chat,
-    postTitle,
-}: {
+type PostServiceMessageProps = {
     postAuthorUser: any;
     responderUser: any;
     chat: {
@@ -158,90 +168,93 @@ const RespondToPostServiceMessage = ({
         title: string;
     };
     postTitle: string;
-}) => (
-    <Container>
-        🙌
-        <MentionedUser user={postAuthorUser} isYou={true} /> —{' '}
-        <MentionedUser user={responderUser} isYou={false} /> is responding to your post{' '}
-        <strong>{postTitle}</strong> in <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
-        <br />
-        Now you can chat!
-    </Container>
-);
+    myUserId: string;
+};
+
+const RespondToPostServiceMessage = ({
+    postAuthorUser,
+    responderUser,
+    chat,
+    postTitle,
+    myUserId,
+}: PostServiceMessageProps) => {
+    const amIPostAuthor = myUserId === postAuthorUser.id;
+    return (
+        <Container>
+            🙌
+            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is responding to your post{' '}
+            <strong>{postTitle}</strong> in <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
+            <br />
+            Now you can chat!
+        </Container>
+    );
+};
 
 const JobOpportunityApplyTextServiceMessage = ({
     postAuthorUser,
     responderUser,
     chat,
     postTitle,
-}: {
-    postAuthorUser: any;
-    responderUser: any;
-    chat: {
-        id: string;
-        title: string;
-    };
-    postTitle: string;
-}) => (
-    <Container>
-        🙌
-        <MentionedUser user={postAuthorUser} isYou={true} /> —{' '}
-        <MentionedUser user={responderUser} isYou={false} /> is interested in your job opportunity{' '}
-        <strong>{postTitle}</strong> in <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
-        <br />
-        <MentionedUser user={responderUser} isYou={true} /> — as the next step, please, tell{' '}
-        <MentionedUser user={postAuthorUser} isYou={true} /> — a little bit about yourself.
-    </Container>
-);
+    myUserId,
+}: PostServiceMessageProps) => {
+    const amIPostAuthor = myUserId === postAuthorUser.id;
+    return (
+        <Container>
+            🙌
+            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is interested in your job
+            opportunity <strong>{postTitle}</strong> in{' '}
+            <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
+            <br />
+            <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> — as the next step,
+            please, tell <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> — a little
+            bit about yourself.
+        </Container>
+    );
+};
 
 const JobOpportunityRecomendTextServiceMessage = ({
     postAuthorUser,
     responderUser,
     chat,
     postTitle,
-}: {
-    postAuthorUser: any;
-    responderUser: any;
-    chat: {
-        id: string;
-        title: string;
-    };
-    postTitle: string;
-}) => (
-    <Container>
-        🙌
-        <MentionedUser user={postAuthorUser} isYou={true} /> —{' '}
-        <MentionedUser user={responderUser} isYou={false} /> is looking to recommend a candidate in
-        response to your post <strong>{postTitle}</strong> in{' '}
-        <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
-        <br />
-        <MentionedUser user={postAuthorUser} isYou={true} /> — as the next step, please, describe
-        your recommended candidate, how well do you know them, and share any relevant links.
-    </Container>
-);
+    myUserId,
+}: PostServiceMessageProps) => {
+    const amIPostAuthor = myUserId === postAuthorUser.id;
+    return (
+        <Container>
+            🙌
+            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is looking to recommend a
+            candidate in response to your post <strong>{postTitle}</strong> in{' '}
+            <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
+            <br />
+            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> — as the next step,
+            please, describe your recommended candidate, how well do you know them, and share any
+            relevant links.
+        </Container>
+    );
+};
 
 const RequestForStartupsRecomendTextServiceMessage = ({
     postAuthorUser,
     responderUser,
     chat,
     postTitle,
-}: {
-    postAuthorUser: any;
-    responderUser: any;
-    chat: {
-        id: string;
-        title: string;
-    };
-    postTitle: string;
-}) => (
-    <Container>
-        🙌
-        <MentionedUser user={postAuthorUser} isYou={true} /> —{' '}
-        <MentionedUser user={responderUser} isYou={false} /> is interested to make a recommendation
-        following up to your post <strong>{postTitle}</strong> in{' '}
-        <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
-    </Container>
-);
+    myUserId,
+}: PostServiceMessageProps) => {
+    const amIPostAuthor = myUserId === postAuthorUser.id;
+    return (
+        <Container>
+            🙌
+            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is interested to make a
+            recommendation following up to your post <strong>{postTitle}</strong> in{' '}
+            <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
+        </Container>
+    );
+};
 
 export default () => (
     <DevDocsScaffold title="MessageTextComponent">
@@ -249,11 +262,16 @@ export default () => (
             <XVertical>
                 <XMenuTitle>1. Joines</XMenuTitle>
 
-                <JoinOneServiceMessage firstUser={sergeyLapinUser} />
-                <JoinTwoServiceMessage firstUser={sergeyLapinUser} secondUser={taraBUser} />
+                <JoinOneServiceMessage firstUser={sergeyLapinUser} myUserId={sergeyLapinUser.id} />
+                <JoinTwoServiceMessage
+                    firstUser={sergeyLapinUser}
+                    secondUser={taraBUser}
+                    myUserId={sergeyLapinUser.id}
+                />
                 <JoinManyServiceMessage
                     firstUser={sergeyLapinUser}
                     otherUsers={[taraBUser, qwertyUser, prettyTUser]}
+                    myUserId={sergeyLapinUser.id}
                 />
 
                 <XMenuTitle>2. Service Messages</XMenuTitle>
@@ -265,6 +283,7 @@ export default () => (
                     responderUser={qwertyUser}
                     chat={chatSample}
                     postTitle={'“Looking for React developer“'}
+                    myUserId={sergeyLapinUser.id}
                 />
 
                 <JobOpportunityRecomendTextServiceMessage
@@ -272,6 +291,7 @@ export default () => (
                     responderUser={qwertyUser}
                     chat={chatSample}
                     postTitle={'“Looking for React developer“'}
+                    myUserId={sergeyLapinUser.id}
                 />
 
                 <XMenuTitle>OfficeHours</XMenuTitle>
@@ -280,6 +300,7 @@ export default () => (
                     responderUser={qwertyUser}
                     chat={chatSample}
                     postTitle={'“Office hours with XX“'}
+                    myUserId={sergeyLapinUser.id}
                 />
 
                 <XMenuTitle>RequestForStartups</XMenuTitle>
@@ -289,12 +310,14 @@ export default () => (
                     responderUser={qwertyUser}
                     chat={chatSample}
                     postTitle={'“Looking for React developer“'}
+                    myUserId={sergeyLapinUser.id}
                 />
                 <RequestForStartupsRecomendTextServiceMessage
                     postAuthorUser={sergeyLapinUser}
                     responderUser={qwertyUser}
                     chat={chatSample}
                     postTitle={'“Looking for React developer“'}
+                    myUserId={sergeyLapinUser.id}
                 />
             </XVertical>
         </XContent>
