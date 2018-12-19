@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { XLink2 } from 'openland-x/XLink2';
-import { XAvatar } from 'openland-x/XAvatar';
 import { DialogViewProps } from './DialogView';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 
 export const DialogViewCompact = (props: DialogViewProps) => {
     let dialog = props.item;
@@ -20,25 +20,16 @@ export const DialogViewCompact = (props: DialogViewProps) => {
             hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
             selectedBackgroundColor="#4596e1"
             selectedHoverBackgroundColor="#4596e1"
-            onClick={props.onSelect ? () => props.onSelect && props.onSelect(props.item.key) : undefined}
+            onClick={
+                props.onSelect ? () => props.onSelect && props.onSelect(props.item.key) : undefined
+            }
         >
-            <XAvatar
-                style={
-                    dialog.kind === 'INTERNAL'
-                        ? 'organization'
-                        : dialog.kind === 'GROUP'
-                            ? 'group'
-                            : dialog.kind === 'PUBLIC'
-                                ? 'room'
-                                : dialog.kind === 'PRIVATE'
-                                    ? 'user'
-                                    : undefined
-                }
-                objectName={dialog.title}
-                objectId={dialog.flexibleId}
+            <XAvatar2
+                title={dialog.title}
+                id={dialog.flexibleId}
                 online={dialog.online}
-                cloudImageUuid={dialog.photo}
-                size="m-small"
+                src={dialog.photo}
+                size={28}
             />
             <XView
                 flexDirection="column"
