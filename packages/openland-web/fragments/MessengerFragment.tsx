@@ -5,16 +5,12 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withRoom } from '../api/withRoom';
 import { withQueryLoader } from '../components/withQueryLoader';
 import { MessengerRootComponent } from './MessengerRootComponent';
-import { XOverflow } from '../components/Incubator/XOverflow';
-import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
-import { XMenuItemWrapper, XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
+import { makeNavigable } from 'openland-x/Navigable';
+import { XMenuItemWrapper } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withChannelSetFeatured } from '../api/withChannelSetFeatured';
-import { withConversationSettingsUpdate } from '../api/withConversationSettingsUpdate';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
-import { InviteMembersModal } from '../pages/main/channel/components/inviteMembersModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -28,7 +24,6 @@ import { UserSelect } from '../api/UserSelect';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XButton } from 'openland-x/XButton';
-import PlusIcon from '../components/icons/ic-add-medium-2.svg';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { withRoomAddMembers } from '../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
@@ -38,14 +33,9 @@ import CloseIcon from '../components/messenger/components/icons/ic-close.svg';
 import { withUserInfo } from '../components/UserInfo';
 import { withDeleteMessages } from '../api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
-import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
-import NotificationsIcon from '../components/messenger/components/icons/ic-notifications.svg';
-import NotificationsOffIcon from '../components/messenger/components/icons/ic-notifications-off.svg';
-import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
-import { XView } from 'react-mental';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { XAvatar2 } from 'openland-x/XAvatar2';
+import { ChatHeaderView } from './chat/ChatHeaderView';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -159,91 +149,11 @@ const ChatHeaderContent = Glamorous(XHorizontal)({
     flexBasis: '100%',
 });
 
-const TitleWrapper = Glamorous(XHorizontal)({
-    marginTop: '-2px!important',
-});
-
-const Title = makeNavigable(
-    Glamorous.div<NavigableChildProps>(props => ({
-        fontSize: 14,
-        fontWeight: 600,
-        lineHeight: '18px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        cursor: props.href ? 'pointer' : undefined,
-        color: '#000000',
-    })),
-);
-
-const SubtitleWrapper = Glamorous.div({
-    marginTop: '4px!important',
-    marginBottom: '0px!important',
-});
-
-const SubTitle = makeNavigable(
-    Glamorous.div<NavigableChildProps & { inTop?: boolean }>(props => ({
-        fontSize: 13,
-        fontWeight: props.inTop ? 600 : 400,
-        color: 'rgba(0, 0, 0, 0.4)',
-        lineHeight: props.inTop ? '18px' : '16px',
-        letterSpacing: 0,
-        cursor: props.href ? 'pointer' : undefined,
-    })),
-);
-
 const NavChatLeftContent = makeNavigable(XHorizontal);
 
 const NavChatLeftContentStyled = Glamorous<{ path?: string } & any>(NavChatLeftContent)(props => ({
     cursor: props.path || props.query ? 'pointer' : undefined,
 }));
-
-class BlockSwitcherComponent extends React.Component<
-    {
-        unblock: any;
-        block: any;
-        blocked: boolean;
-        userId: string;
-        refetchVars: { conversationId: string };
-    },
-    { blocked: boolean }
-> {
-    constructor(props: any) {
-        super(props);
-        this.state = { blocked: props.blocked };
-    }
-
-    render() {
-        return (
-            <XMenuItemWrapper>
-                <XVertical>
-                    <XCheckbox
-                        label="Block"
-                        switcher={true}
-                        value={this.state.blocked ? 'blocked' : 'unblocked'}
-                        trueValue="blocked"
-                        onChange={() => {
-                            this.setState({ blocked: !this.state.blocked });
-                            delay(0).then(() => {
-                                this.props.blocked
-                                    ? this.props.unblock({
-                                          variables: {
-                                              userId: this.props.userId,
-                                          },
-                                      })
-                                    : this.props.block({
-                                          variables: {
-                                              userId: this.props.userId,
-                                          },
-                                      });
-                            });
-                        }}
-                    />
-                </XVertical>
-            </XMenuItemWrapper>
-        );
-    }
-}
 
 class SwitchComponent extends React.Component<
     {
@@ -254,7 +164,7 @@ class SwitchComponent extends React.Component<
         fieldTitle?: string;
     },
     { val: boolean }
-> {
+    > {
     constructor(props: any) {
         super(props);
         this.state = { val: props.val };
@@ -306,53 +216,6 @@ export const RoomSetHidden = withChannelSetHidden(props => (
     />
 )) as React.ComponentType<{ val: boolean; roomId: string }>;
 
-const NotificationsWrapper = Glamorous(XVertical)({
-    cursor: 'pointer',
-    '& svg path:last-child': {
-        fill: 'rgba(0, 0, 0, 0.2)',
-    },
-    '&:hover svg path:last-child': {
-        fill: '#1790ff',
-    },
-});
-
-class NotificationSettingsComponent extends React.Component<
-    { mutation: any; settings: { mute: boolean }; roomId: string },
-    { settings: { mute: boolean } }
-> {
-    handleClick = () => {
-        let value = !this.props.settings.mute;
-
-        this.props.mutation({
-            variables: {
-                settings: {
-                    mute: value,
-                },
-                roomId: this.props.roomId,
-            },
-        });
-    };
-
-    render() {
-        return (
-            <NotificationsWrapper onClick={this.handleClick}>
-                {this.props.settings.mute ? <NotificationsOffIcon /> : <NotificationsIcon />}
-            </NotificationsWrapper>
-        );
-    }
-}
-
-const NotificationSettings = withConversationSettingsUpdate(props => (
-    <NotificationSettingsComponent
-        mutation={props.update}
-        settings={(props as any).settings}
-        roomId={(props as any).roomId}
-    />
-)) as React.ComponentType<{
-    settings: { mute: boolean | null };
-    roomId: string;
-}>;
-
 export const RoomEditComponent = withAlterChat(props => {
     let editTitle = (props as any).title;
     let editDescription = (props as any).description;
@@ -383,8 +246,8 @@ export const RoomEditComponent = withAlterChat(props => {
                                 : {}),
                             ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
                                 ? {
-                                      socialImageRef: sanitizeIamgeRef(newSocialImage),
-                                  }
+                                    socialImageRef: sanitizeIamgeRef(newSocialImage),
+                                }
                                 : {}),
                         },
                     },
@@ -499,8 +362,8 @@ const LastSeen = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    )}
             </LastSeenWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -642,16 +505,16 @@ const ForwardHeader = (props: {
                         {!Array.from(props.state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeletMessagesButton
-                                roomId={props.roomId}
-                                messagesIds={Array.from(props.state.selectedMessages).map(
-                                    m => m.id,
-                                )}
-                                onSuccess={props.state.resetAll}
-                            >
-                                <XButton text="Delete" style="default" />
-                            </DeletMessagesButton>
-                        )}
+                                <DeletMessagesButton
+                                    roomId={props.roomId}
+                                    messagesIds={Array.from(props.state.selectedMessages).map(
+                                        m => m.id,
+                                    )}
+                                    onSuccess={props.state.resetAll}
+                                >
+                                    <XButton text="Delete" style="default" />
+                                </DeletMessagesButton>
+                            )}
                     </XWithRole>
                     <XButton
                         text="Reply"
@@ -696,213 +559,8 @@ let MessengerComponentLoader = withRoom(
                 }
             }
             let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
-            let titlePath: string | undefined = undefined;
-
-            let subtitle = '';
-
-            let subtitlePath: string | undefined = undefined;
-            let uId: string | null = null;
-            if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
-                subtitle = 'Organization';
-            } else if (
-                sharedRoom &&
-                (sharedRoom.kind === 'PUBLIC' || sharedRoom.kind === 'GROUP')
-            ) {
-                subtitle =
-                    sharedRoom.membersCount +
-                    (sharedRoom.membersCount === 1 ? ' member' : ' members');
-            } else if (privateRoom) {
-                uId = privateRoom && privateRoom.user.id;
-                let user = privateRoom.user;
-                if (user.primaryOrganization) {
-                    subtitle = user.primaryOrganization.name;
-                    titlePath = '/mail/u/' + user.id;
-                    subtitlePath = '/mail/o/' + user.primaryOrganization.id;
-                }
-            }
 
             let chatType = props.data.room!.__typename;
-
-            let headerPath: string | undefined;
-            if (privateRoom) {
-                headerPath = '/mail/u/' + privateRoom.user.id;
-            } else if (sharedRoom) {
-                if (sharedRoom.kind === 'INTERNAL') {
-                    headerPath = '/mail/o/' + sharedRoom.organization!.id;
-                } else if (sharedRoom.kind === 'PUBLIC' || sharedRoom.kind === 'GROUP') {
-                    headerPath = '/mail/p/' + sharedRoom.id;
-                }
-            }
-
-            const headerRender = () => (
-                <ChatHeaderContent justifyContent="space-between">
-                    <HeaderLeftContent chatType={chatType} path={headerPath}>
-                        <XHorizontal
-                            alignItems="center"
-                            separator={8}
-                            maxWidth="100%"
-                            width="100%"
-                            flexBasis={0}
-                            flexGrow={1}
-                        >
-                            <XAvatar2
-                                size={36}
-                                src={
-                                    (sharedRoom && sharedRoom.photo) ||
-                                    (privateRoom && privateRoom.user.photo)
-                                }
-                                title={title}
-                                id={
-                                    sharedRoom
-                                        ? sharedRoom.organization
-                                            ? sharedRoom.organization.id
-                                            : sharedRoom.id
-                                        : privateRoom
-                                            ? privateRoom.user.id
-                                            : ''
-                                }
-                            />
-                            <XVertical separator="none" maxWidth="calc(100% - 48px)">
-                                <TitleWrapper separator={3}>
-                                    <Title path={titlePath}>{title}</Title>
-                                    {privateRoom && (
-                                        <SubTitle path={subtitlePath} inTop={true}>
-                                            {subtitle}
-                                        </SubTitle>
-                                    )}
-                                </TitleWrapper>
-                                <SubtitleWrapper>
-                                    {!privateRoom && (
-                                        <SubTitle path={subtitlePath}>{subtitle}</SubTitle>
-                                    )}
-                                    {uId && <LastSeen variables={{ userId: uId }} />}
-                                </SubtitleWrapper>
-                            </XVertical>
-                        </XHorizontal>
-                    </HeaderLeftContent>
-                    <XHorizontal alignItems="center" separator={8}>
-                        {sharedRoom &&
-                            sharedRoom.kind === 'PUBLIC' && (
-                                <XHorizontal separator={8}>
-                                    <XHorizontal
-                                        alignSelf="center"
-                                        alignItems="center"
-                                        separator={12}
-                                    >
-                                        <XWithRole role="feature-non-production">
-                                            <TalkContext.Consumer>
-                                                {ctx =>
-                                                    ctx.cid !== sharedRoom!.id && (
-                                                        <XButton
-                                                            text="Call"
-                                                            onClick={() =>
-                                                                ctx.joinCall(sharedRoom!.id)
-                                                            }
-                                                        />
-                                                    )
-                                                }
-                                            </TalkContext.Consumer>
-                                        </XWithRole>
-                                        <InviteMembersModal
-                                            channelTitle={title}
-                                            roomId={props.data.room!.id}
-                                            target={
-                                                <InviteButton
-                                                    text="Invite"
-                                                    size="small"
-                                                    icon={<PlusIcon />}
-                                                />
-                                            }
-                                        />
-                                    </XHorizontal>
-                                </XHorizontal>
-                            )}
-
-                        {sharedRoom &&
-                            sharedRoom.kind === 'GROUP' && (
-                                <XWithRole role="feature-non-production">
-                                    <TalkContext.Consumer>
-                                        {ctx =>
-                                            ctx.cid !== sharedRoom!.id && (
-                                                <XButton
-                                                    text="Call"
-                                                    onClick={() => ctx.joinCall(sharedRoom!.id)}
-                                                />
-                                            )
-                                        }
-                                    </TalkContext.Consumer>
-                                </XWithRole>
-                            )}
-
-                        {privateRoom && (
-                            <XWithRole role="feature-non-production">
-                                <TalkContext.Consumer>
-                                    {ctx =>
-                                        ctx.cid !== privateRoom!.id && (
-                                            <XButton
-                                                text="Call"
-                                                onClick={() => ctx.joinCall(sharedRoom!.id)}
-                                            />
-                                        )
-                                    }
-                                </TalkContext.Consumer>
-                            </XWithRole>
-                        )}
-
-                        <XView marginRight={-3}>
-                            <NotificationSettings
-                                settings={(sharedRoom || privateRoom)!.settings}
-                                roomId={props.data.room!.id}
-                            />
-                        </XView>
-
-                        {sharedRoom && (
-                            <XOverflow
-                                flat={true}
-                                placement="bottom-end"
-                                content={
-                                    <>
-                                        <XWithRole
-                                            role="super-admin"
-                                            or={
-                                                sharedRoom.role === 'OWNER' ||
-                                                sharedRoom.role === 'ADMIN'
-                                            }
-                                        >
-                                            <XMenuItem
-                                                query={{
-                                                    field: 'editChat',
-                                                    value: 'true',
-                                                }}
-                                            >
-                                                Settings
-                                            </XMenuItem>
-                                        </XWithRole>
-                                        <XMenuItem
-                                            query={{
-                                                field: 'leaveFromChat',
-                                                value: props.data.room!.id,
-                                            }}
-                                            style="danger"
-                                        >
-                                            Leave room
-                                        </XMenuItem>
-                                        <XWithRole role="super-admin">
-                                            <XMenuItemSeparator />
-                                            <AdminTools
-                                                id={sharedRoom.id}
-                                                variables={{
-                                                    id: sharedRoom.id,
-                                                }}
-                                            />
-                                        </XWithRole>
-                                    </>
-                                }
-                            />
-                        )}
-                    </XHorizontal>
-                </ChatHeaderContent>
-            );
 
             let messagesState = (props as any).state as MessagesStateContextProps;
             let selectedHeader = messagesState.useForwardHeader;
@@ -922,8 +580,8 @@ let MessengerComponentLoader = withRoom(
                                 me={props.user!}
                             />
                         ) : (
-                            headerRender()
-                        )}
+                                <ChatHeaderView room={props.data.room!} />
+                            )}
                     </ChatHeaderWrapper>
                     <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
                     <XHorizontal
