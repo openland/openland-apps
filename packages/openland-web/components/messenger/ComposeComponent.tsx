@@ -22,6 +22,15 @@ import { withExplorePeople } from '../../api/withExplorePeople';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { RoomCreateMutation } from 'openland-api';
 
+export let MessengerContainer = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    flexGrow: 1,
+    height: '100vh',
+    justifyContent: 'center',
+    position: 'relative',
+});
+
 const Root = Glamorous(XVertical)({
     display: 'flex',
     flexDirection: 'column',
@@ -177,7 +186,7 @@ type ComposeComponentRenderState = {
 class ComposeComponentRender extends React.Component<
     ComposeComponentRenderProps,
     ComposeComponentRenderState
-> {
+    > {
     conversationMessages = React.createRef<ConversationMessagesComponent>();
     private conversation: ConversationEngine | null;
     unmounter: (() => void) | null = null;
@@ -345,56 +354,58 @@ class ComposeComponentRender extends React.Component<
 
     render() {
         return (
-            <Root flexGrow={1} separator={'none'}>
-                <HeaderWrapper>
-                    <Title>{TextCompose.headerTitle}</Title>
-                    <HeaderButton
-                        text={TextCompose.headerNewRoom}
-                        icon={<RoomIcon />}
-                        query={{ field: 'createRoom', value: 'true' }}
-                    />
-                </HeaderWrapper>
-                <ConversationContainer>
-                    <ComposeSelectWrapper>
-                        <SearchPeopleModule
-                            onChange={this.handleChange}
-                            onChangeInput={this.handleSearchText}
-                            value={this.state.values}
-                            variables={{
-                                query: this.state.query,
-                                organizations: this.state.values.length === 0,
-                            }}
+            <MessengerContainer>
+                <Root flexGrow={1} separator={'none'}>
+                    <HeaderWrapper>
+                        <Title>{TextCompose.headerTitle}</Title>
+                        <HeaderButton
+                            text={TextCompose.headerNewRoom}
+                            icon={<RoomIcon />}
+                            query={{ field: 'createRoom', value: 'true' }}
                         />
-                    </ComposeSelectWrapper>
-                    <MessagesContainer>
-                        {!this.state.conversationId && (
-                            <EmptyWrapper
-                                separator={10}
-                                alignItems="center"
-                                justifyContent="center"
-                                flexGrow={1}
-                            >
-                                <EmptyImage />
-                            </EmptyWrapper>
-                        )}
-                        {this.state.conversationId && (
-                            <ConversationMessagesComponent
-                                messages={this.state.messages}
-                                loading={this.state.loading}
-                                me={this.props.me}
-                                conversation={this.props.messenger.getConversation(
-                                    this.state.conversationId!!,
-                                )}
-                                conversationId={this.state.conversationId}
+                    </HeaderWrapper>
+                    <ConversationContainer>
+                        <ComposeSelectWrapper>
+                            <SearchPeopleModule
+                                onChange={this.handleChange}
+                                onChangeInput={this.handleSearchText}
+                                value={this.state.values}
+                                variables={{
+                                    query: this.state.query,
+                                    organizations: this.state.values.length === 0,
+                                }}
                             />
-                        )}
-                    </MessagesContainer>
-                    <MessageComposeComponent
-                        onSend={this.handleSend}
-                        enabled={this.state.values.length > 0}
-                    />
-                </ConversationContainer>
-            </Root>
+                        </ComposeSelectWrapper>
+                        <MessagesContainer>
+                            {!this.state.conversationId && (
+                                <EmptyWrapper
+                                    separator={10}
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexGrow={1}
+                                >
+                                    <EmptyImage />
+                                </EmptyWrapper>
+                            )}
+                            {this.state.conversationId && (
+                                <ConversationMessagesComponent
+                                    messages={this.state.messages}
+                                    loading={this.state.loading}
+                                    me={this.props.me}
+                                    conversation={this.props.messenger.getConversation(
+                                        this.state.conversationId!!,
+                                    )}
+                                    conversationId={this.state.conversationId}
+                                />
+                            )}
+                        </MessagesContainer>
+                        <MessageComposeComponent
+                            onSend={this.handleSend}
+                            enabled={this.state.values.length > 0}
+                        />
+                    </ConversationContainer>
+                </Root>
+            </MessengerContainer>
         );
     }
 }

@@ -6,13 +6,12 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
 import { ChatsComponent } from '../../../components/messenger/ChatsComponent';
-import { MessengerContainer } from '../../../components/messenger/MessengerContainer';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerEmptyComponent } from '../../../fragments/MessengerEmptyComponent';
-import { RoomsInviteComponent } from '../../../components/messenger/invite/RoomsInviteComponent';
+import { RoomsInviteComponent } from '../../../fragments/RoomsInviteComponent';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
@@ -106,15 +105,15 @@ export const RoomInviteFromLink = withChannelInviteInfo(
             props.data.invite.room.membership === 'MEMBER' ? (
                 <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
             ) : (
-                <RoomsInviteComponent
-                    inviteLink={props.router.routeQuery.invite}
-                    room={props.data.invite.room as any}
-                    invite={props.data.invite}
-                />
-            )
+                    <RoomsInviteComponent
+                        inviteLink={props.router.routeQuery.invite}
+                        room={props.data.invite.room as any}
+                        invite={props.data.invite}
+                    />
+                )
         ) : (
-            <XLoader loading={true} />
-        ),
+                <XLoader loading={true} />
+            ),
 );
 
 export const AddButton = Glamorous(XButton)({
@@ -150,7 +149,7 @@ class ChatListContainerWrapper extends React.PureComponent<{
     }
 }
 
-interface MessagePageInnerState extends MessagesStateContextProps {}
+interface MessagePageInnerState extends MessagesStateContextProps { }
 
 class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageInnerState> {
     constructor(props: { router: XRouter }) {
@@ -180,7 +179,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
     componentWillReceiveProps(nextProps: { router: XRouter }) {
         if (
             this.props.router.routeQuery.conversationId !==
-                nextProps.router.routeQuery.conversationId &&
+            nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
             this.state.resetAll();
@@ -346,9 +345,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
 
                                 <ConversationContainer>
                                     {tab === 'compose' && (
-                                        <MessengerContainer>
-                                            <ComposeComponent />
-                                        </MessengerContainer>
+                                        <ComposeComponent />
                                     )}
                                     {tab === 'empty' && <MessengerEmptyComponent />}
                                     {tab === 'conversation' && (
