@@ -20,7 +20,7 @@ export const DialogViewCompact = (props: DialogViewProps) => {
             hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
             selectedBackgroundColor="#4596e1"
             selectedHoverBackgroundColor="#4596e1"
-            onClick={props.onSelect}
+            onClick={props.onSelect ? () => props.onSelect && props.onSelect(props.item.key) : undefined}
         >
             <XAvatar
                 style={

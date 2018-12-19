@@ -38,7 +38,7 @@ export let documentIcon = css`
 export interface DialogViewProps {
     item: DialogDataSourceItem;
     handleRef?: any;
-    onSelect?: () => void;
+    onSelect?: (id: string) => void;
 }
 
 export const DialogView = React.memo<DialogViewProps>(props => {
