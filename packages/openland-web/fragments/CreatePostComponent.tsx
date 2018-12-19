@@ -16,11 +16,11 @@ import { niceBytes } from '../components/messenger/components/view/content/Messa
 import { withSendPostMessage, withEditPostMessage } from '../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
-import CloseIcon from '../components/messenger/components/icons/ic-close-post.svg';
-import RemoveIcon from '../components/messenger/components/icons/ic-close.svg';
-import PhotoIcon from '../components/messenger/components/icons/ic-photo-2.svg';
-import FileIcon from '../components/messenger/components/icons/ic-file-3.svg';
-import UloadIc from '../components/messenger/components/icons/file-upload.svg';
+import CloseIcon from 'openland-icons/ic-close-post.svg';
+import RemoveIcon from 'openland-icons/ic-close.svg';
+import PhotoIcon from 'openland-icons/ic-photo-2.svg';
+import FileIcon from 'openland-icons/ic-file-3.svg';
+import UloadIc from 'openland-icons/file-upload.svg';
 
 const postTexts = {
     BLANK: {

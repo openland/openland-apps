@@ -7,7 +7,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XSelect } from 'openland-x/XSelect';
-import IcFile from '../../icons/ic-file-3.svg';
+import IcFile from 'openland-icons/ic-file-3.svg';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withExplorePeople } from '../../../../../api/withExplorePeople';
 import { withIntro } from '../../../../../api/withIntro';

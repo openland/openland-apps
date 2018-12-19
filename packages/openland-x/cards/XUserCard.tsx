@@ -8,7 +8,7 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { User_user } from 'openland-api/Types';
 import { withOnline } from '../../openland-web/api/withOnline';
 import { XPopper } from 'openland-x/XPopper';
-import AdminIcon from '../icons/ic-star-admin.svg';
+import AdminIcon from 'openland-icons/ic-star-admin.svg';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XDate } from 'openland-x/XDate';

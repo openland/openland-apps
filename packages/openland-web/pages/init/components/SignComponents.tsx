@@ -14,8 +14,8 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XFormField2 } from 'openland-x-forms/XFormField2';
-import IcInfo from '../components/icons/ic-info.svg';
-import IcAdd from '../components/icons/ic-add-medium-active.svg';
+import IcInfo from 'openland-icons/ic-info.svg';
+import IcAdd from 'openland-icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 

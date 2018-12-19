@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
-import IcClose from '../../icons/ic-close.svg';
+import IcClose from 'openland-icons/ic-close.svg';
 
 const FileButton = Glamorous(XLink)(props => ({
     display: 'flex',

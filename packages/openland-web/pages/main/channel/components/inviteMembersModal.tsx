@@ -11,15 +11,15 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XInput, XInputGroup } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
-import PlusIcon from './icons/ic-add-small.svg';
-import LinkIcon from './icons/ic-link.svg';
-import EmailIcon from './icons/ic-email.svg';
+import PlusIcon from 'openland-icons/ic-add-small.svg';
+import LinkIcon from 'openland-icons/ic-link.svg';
+import EmailIcon from 'openland-icons/ic-email.svg';
 import { withChanneSendlnviteLink } from '../../../../api/withChanneSendlnviteLink';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';
 import { XMutation } from 'openland-x/XMutation';
 import { XButton } from 'openland-x/XButton';
-import CloseIcon from './icons/ic-close-1.svg';
+import CloseIcon from 'openland-icons/ic-close-1.svg';
 
 const ChannelName = Glamorous.div({
     display: 'flex',

@@ -17,7 +17,7 @@ import { withConversationKick } from '../../../../api/withConversationKick';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
-import CloseIcon from './icons/ic-close-1.svg';
+import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XText } from 'openland-x/XText';

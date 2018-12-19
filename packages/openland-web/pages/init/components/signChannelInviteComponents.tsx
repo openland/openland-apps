@@ -3,9 +3,9 @@ import Glamorous from 'glamorous';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import RoomIcon from './icons/ic-channels-empty.svg';
-import ChatIcon from './icons/ic-organization-empty.svg';
-import ListingIcon from './icons/ic-listings-empty.svg';
+import RoomIcon from 'openland-icons/ic-channels-empty.svg';
+import ChatIcon from 'openland-icons/ic-organization-empty.svg';
+import ListingIcon from 'openland-icons/ic-listings-empty.svg';
 
 const RoomsLineWidth = [
     {

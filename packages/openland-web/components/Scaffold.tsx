@@ -19,11 +19,11 @@ import { InvitesToOrganizationModal, InvitesGlobalModal } from '../pages/main/se
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
-import AddIcon from './icons/add-3.svg';
-import MessagesIcon from './icons/messages-4.svg';
-import RoomIcon from './icons/channel-2.svg';
-import DevToolsIcon from './icons/devtools-3.svg';
-import DirecoryIcon from './icons/directory-3.svg';
+import AddIcon from 'openland-icons/add-3.svg';
+import MessagesIcon from 'openland-icons/messages-4.svg';
+import RoomIcon from 'openland-icons/channel-2.svg';
+import DevToolsIcon from 'openland-icons/devtools-3.svg';
+import DirecoryIcon from 'openland-icons/directory-3.svg';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';

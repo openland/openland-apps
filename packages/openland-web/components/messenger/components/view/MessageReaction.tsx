@@ -6,7 +6,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import ReactionIcon from '../icons/ic-reactions.svg';
+import ReactionIcon from 'openland-icons/ic-reactions.svg';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 6px',
