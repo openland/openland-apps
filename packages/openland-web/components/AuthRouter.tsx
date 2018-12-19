@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { withUserInfo, UserInfo } from './UserInfo';
+import { UserInfoContext } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { withRouter } from 'openland-x-routing/withRouter';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
+export const AuthRouter = React.memo((props) => {
+
+    let router = React.useContext(XRouterContext)!;
+    let userInfo = React.useContext(UserInfoContext)!;
+
     // Compute Redirect Value
-    let redirect = props.router.query && props.router.query.redirect;
+    let redirect = router.query && router.query.redirect;
     let redirectPath: string = '/';
 
     let isJoinRedirect = false;
@@ -23,12 +27,12 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
                 '/createProfile',
                 '/signin',
                 '/signup',
-            ].indexOf(props.router.path) < 0
+            ].indexOf(router.path) < 0
         ) {
             // ].indexOf(props.router.path) < 0 && !props.router.path.startsWith('/join/') && !props.router.path.startsWith('/invite/')) {
-            if (props.router.path !== '/') {
-                redirect = '?redirect=' + encodeURIComponent(props.router.path);
-                redirectPath = props.router.path;
+            if (router.path !== '/') {
+                redirect = '?redirect=' + encodeURIComponent(router.path);
+                redirectPath = router.path;
             } else {
                 redirect = '';
                 redirectPath = '/';
@@ -44,7 +48,7 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
     // Redirect to Join prview before Signup/Signin if there are was redirect to join
     if (
         !handled &&
-        !props.isLoggedIn &&
+        !userInfo.isLoggedIn &&
         (redirectPath.startsWith('/join/') || redirectPath.startsWith('/invite/'))
     ) {
         handled = true;
@@ -52,18 +56,18 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
     }
 
     // Redirect to Signup/Signin pages
-    if (!props.isLoggedIn) {
+    if (!userInfo.isLoggedIn) {
         handled = true;
-        if (['/signin', '/signup'].indexOf(props.router.path) < 0) {
+        if (['/signin', '/signup'].indexOf(router.path) < 0) {
             console.warn('NotLoggedIn');
             return <XPageRedirect path={'/signin' + redirect} />;
         }
     }
 
     // Redirect suspended accounts
-    if (!handled && props.isBlocked) {
+    if (!handled && userInfo.isBlocked) {
         handled = true;
-        if (['/suspended'].indexOf(props.router.path) < 0) {
+        if (['/suspended'].indexOf(router.path) < 0) {
             console.warn('Suspended');
             return <XPageRedirect path="/suspended" />;
         }
@@ -72,12 +76,12 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
     // Redirect to profile creation if join
     console.warn(redirectPath);
     if (
-        (isJoinRedirect || props.router.path.startsWith('/join/')) &&
+        (isJoinRedirect || router.path.startsWith('/join/')) &&
         !handled &&
-        !props.isProfileCreated
+        !userInfo.isProfileCreated
     ) {
         handled = true;
-        if (['/createProfile'].indexOf(props.router.path) < 0) {
+        if (['/createProfile'].indexOf(router.path) < 0) {
             console.warn('NoProfile');
             return <XPageRedirect path={'/createProfile' + redirect} />;
         }
@@ -86,63 +90,63 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
     // Redirect to Join before account creation/picking if there are was redirect to join
     if (!handled && redirectPath.startsWith('/join/')) {
         handled = true;
-        if (!props.router.path.startsWith('/join/')) {
+        if (!router.path.startsWith('/join/')) {
             return <XPageRedirect path={redirectPath} />;
         }
     }
 
     // Bypass Next steps for join
-    if (!handled && props.router.path.startsWith('/join/')) {
+    if (!handled && router.path.startsWith('/join/')) {
         handled = true;
     }
 
     // Redirect to activate user
-    if (!handled && !props.isCompleted && redirectPath.startsWith('/invite/')) {
+    if (!handled && !userInfo.isCompleted && redirectPath.startsWith('/invite/')) {
         handled = true;
-        if (!props.router.path.startsWith('/invite/')) {
+        if (!router.path.startsWith('/invite/')) {
             return <XPageRedirect path={redirectPath} />;
         }
     }
 
     // Bypass Next steps for invite
-    if (!handled && !props.isCompleted && props.router.path.startsWith('/invite/')) {
+    if (!handled && !userInfo.isCompleted && router.path.startsWith('/invite/')) {
         handled = true;
     }
 
     // Redirect to profile and organization creation
-    if (!handled && !props.isProfileCreated) {
+    if (!handled && !userInfo.isProfileCreated) {
         handled = true;
-        if (['/createProfile'].indexOf(props.router.path) < 0) {
+        if (['/createProfile'].indexOf(router.path) < 0) {
             console.warn('NoProfile');
             return <XPageRedirect path={'/createProfile' + redirect} />;
         }
     }
 
     if (
-        (!handled && props.router.path.includes('joinChannel')) ||
-        props.router.path.includes('acceptChannelInvite')
+        (!handled && router.path.includes('joinChannel')) ||
+        router.path.includes('acceptChannelInvite')
     ) {
         handled = true;
     }
 
     // Bypass create organization
-    if (!handled && props.router.path.startsWith('/createOrganization')) {
+    if (!handled && router.path.startsWith('/createOrganization')) {
         handled = true;
     }
 
     // Redirect to organization add
-    if (!handled && !props.isAccountExists) {
+    if (!handled && !userInfo.isAccountExists) {
         handled = true;
-        if (['/createOrganization'].indexOf(props.router.path) < 0) {
+        if (['/createOrganization'].indexOf(router.path) < 0) {
             console.warn('NoOrganization');
             return <XPageRedirect path={'/createOrganization' + redirect} />;
         }
     }
 
     // Redirect to generic 'need more info' page if signup is not completed
-    if (!handled && !props.isCompleted) {
+    if (!handled && !userInfo.isCompleted) {
         handled = true;
-        if (['/waitlist'].indexOf(props.router.path) < 0) {
+        if (['/waitlist'].indexOf(router.path) < 0) {
             console.warn('NeedInfo');
             return <XPageRedirect path="/waitlist" />;
         }
@@ -160,7 +164,7 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
     // }
 
     // Redirect from service pages to the app root
-    if (!handled && props.isCompleted) {
+    if (!handled && userInfo.isCompleted) {
         handled = true;
         if (
             [
@@ -170,12 +174,12 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
                 '/createProfile',
                 '/signin',
                 '/signup',
-            ].indexOf(props.router.path) >= 0 ||
-            props.router.path.startsWith('/invite')
+            ].indexOf(router.path) >= 0 ||
+            router.path.startsWith('/invite')
         ) {
             console.warn('Completed');
             console.warn(redirectPath);
-            if (props.router.path.startsWith('/invite')) {
+            if (router.path.startsWith('/invite')) {
                 redirectPath = '/';
             }
             return <XPageRedirect path={redirectPath} />;
@@ -184,4 +188,4 @@ export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
 
     // Everything is ok! Display content
     return <>{props.children}</>;
-}));
+});

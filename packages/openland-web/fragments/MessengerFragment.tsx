@@ -11,7 +11,7 @@ import { withChannelSetHidden } from '../api/withChannelSetHidden';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { MessagesStateContext, MessagesStateContextProps } from '../components/messenger/components/MessagesStateContext';
-import { withUserInfo } from '../components/UserInfo';
+import { withUserInfo, UserInfoContext } from '../components/UserInfo';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
@@ -79,98 +79,97 @@ export const RoomSetHidden = withChannelSetHidden(props => (
     />
 )) as React.ComponentType<{ val: boolean; roomId: string }>;
 
-let MessengerComponentLoader = withRoom(
-    withQueryLoader(
-        withUserInfo(props => {
-            if (!props.data) {
-                return <div />;
-            }
-            let sharedRoom: Room_room_SharedRoom | null =
-                props.data.room!.__typename === 'SharedRoom' ? (props.data.room as any) : null;
-            let privateRoom: Room_room_PrivateRoom | null =
-                props.data.room!.__typename === 'PrivateRoom' ? (props.data.room as any) : null;
+let MessengerComponentLoader = withRoom(withQueryLoader((props => {
+    if (!props.data) {
+        return <div />;
+    }
 
-            // WTF?
-            if (
-                sharedRoom &&
-                sharedRoom.kind !== 'INTERNAL' &&
-                sharedRoom.membership !== 'MEMBER'
-            ) {
-                if (sharedRoom.kind === 'PUBLIC') {
-                    return <RoomsInviteComponent room={sharedRoom} />;
-                } else {
-                    return <XPageRedirect path="/mail" />;
-                }
-            }
-            let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
+    let user = React.useContext(UserInfoContext);
 
-            let messagesState = (props as any).state as MessagesStateContextProps;
-            let placeholder = messagesState.useForwardPlaceholder;
-            return (
-                <>
-                    <XDocumentHead title={title} />
-                    <XView
-                        flexGrow={1}
-                        flexShrink={1}
-                        flexBasis={0}
-                        minWidth={0}
-                        minHeight={0}
-                        alignSelf="stretch"
-                        alignItems="stretch"
-                    >
-                        {placeholder && <FrowardPlaceholder state={messagesState} />}
+    let sharedRoom: Room_room_SharedRoom | null =
+        props.data.room!.__typename === 'SharedRoom' ? (props.data.room as any) : null;
+    let privateRoom: Room_room_PrivateRoom | null =
+        props.data.room!.__typename === 'PrivateRoom' ? (props.data.room as any) : null;
 
-                        <XView
-                            flexDirection="row"
-                            alignItems="center"
-                            justifyContent="center"
-                            height={56}
-                            paddingLeft={20}
-                            paddingRight={20}
-                        >
-                            <ChatHeaderView room={props.data.room!} me={props.user!} />
-                        </XView>
-                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                        <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
+    // WTF?
+    if (
+        sharedRoom &&
+        sharedRoom.kind !== 'INTERNAL' &&
+        sharedRoom.membership !== 'MEMBER'
+    ) {
+        if (sharedRoom.kind === 'PUBLIC') {
+            return <RoomsInviteComponent room={sharedRoom} />;
+        } else {
+            return <XPageRedirect path="/mail" />;
+        }
+    }
+    let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
 
-                        <XView
-                            alignItems="center"
-                            flexGrow={1}
-                            flexBasis={0}
-                            minHeight={0}
-                            flexShrink={1}
-                        >
-                            <MessengerRootComponent
-                                objectName={title}
-                                objectId={
-                                    sharedRoom
-                                        ? sharedRoom.organization
-                                            ? sharedRoom.organization.id
-                                            : sharedRoom.id
-                                        : privateRoom
-                                            ? privateRoom.user.id
-                                            : undefined
-                                }
-                                cloudImageUuid={
-                                    (sharedRoom && sharedRoom.photo) ||
-                                    (privateRoom && privateRoom.user.photo) ||
-                                    undefined
-                                }
-                                organizationId={
-                                    sharedRoom && sharedRoom.organization
-                                        ? sharedRoom.organization.id
-                                        : null
-                                }
-                                conversationId={props.data.room!.id}
-                                conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
-                            />
-                        </XView>
-                    </XView>
-                </>
-            );
-        }),
-    ),
-) as React.ComponentType<{
+    let messagesState = (props as any).state as MessagesStateContextProps;
+    let placeholder = messagesState.useForwardPlaceholder;
+    return (
+        <>
+            <XDocumentHead title={title} />
+            <XView
+                flexGrow={1}
+                flexShrink={1}
+                flexBasis={0}
+                minWidth={0}
+                minHeight={0}
+                alignSelf="stretch"
+                alignItems="stretch"
+            >
+                {placeholder && <FrowardPlaceholder state={messagesState} />}
+
+                <XView
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    height={56}
+                    paddingLeft={20}
+                    paddingRight={20}
+                >
+                    <ChatHeaderView room={props.data.room!} me={user!.user!} />
+                </XView>
+                <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
+
+                <XView
+                    alignItems="center"
+                    flexGrow={1}
+                    flexBasis={0}
+                    minHeight={0}
+                    flexShrink={1}
+                >
+                    <MessengerRootComponent
+                        objectName={title}
+                        objectId={
+                            sharedRoom
+                                ? sharedRoom.organization
+                                    ? sharedRoom.organization.id
+                                    : sharedRoom.id
+                                : privateRoom
+                                    ? privateRoom.user.id
+                                    : undefined
+                        }
+                        cloudImageUuid={
+                            (sharedRoom && sharedRoom.photo) ||
+                            (privateRoom && privateRoom.user.photo) ||
+                            undefined
+                        }
+                        organizationId={
+                            sharedRoom && sharedRoom.organization
+                                ? sharedRoom.organization.id
+                                : null
+                        }
+                        conversationId={props.data.room!.id}
+                        conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
+                    />
+                </XView>
+            </XView>
+        </>
+    );
+}))) as React.ComponentType<{
     variables: { id: string };
     state: MessagesStateContextProps;
 }>;
