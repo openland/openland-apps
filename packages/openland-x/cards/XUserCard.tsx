@@ -139,12 +139,9 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
             <XView
                 cursor="pointer"
                 backgroundColor="#ffffff"
-                paddingTop={12}
-                paddingRight={16}
-                paddingBottom={12}
-                paddingLeft={16}
-                marginLeft={-16}
-                marginRight={-16}
+                paddingVertical={12}
+                paddingHorizontal={16}
+                marginHorizontal={-16}
                 borderRadius={8}
                 height={64}
                 hoverBackgroundColor="#f9f9f9"

@@ -3498,10 +3498,10 @@ babel-plugin-transform-exponentiation-operator@^6.22.0:
     babel-plugin-syntax-exponentiation-operator "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-mental@^1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.4.6.tgz#a85f074cf39e2b338b6e868ed4006ab268d76c8d"
-  integrity sha512-h/jn4+EjihTNqp3090I+40D9jIt43d6gHnrUwHObOsDNVj2Y1t+krQyEuz9GNbxPOF0nD3yWiStHLn+QxUuwJw==
+babel-plugin-transform-mental@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.4.8.tgz#5349ee2d42e63d1785de20a5bc8cd6e59d2d34a2"
+  integrity sha512-e33zofP/Y6OGwdTkIKTrsYAw/PCJjx32hhLnZODP9vaLAS4gAXbFsBbL+T6KVnoRfaf1Xy21k8v6oQkCz3rY8w==
   dependencies:
     "@babel/generator" "^7.2.0"
     "@babel/traverse" "^7.1.6"
@@ -3511,7 +3511,7 @@ babel-plugin-transform-mental@^1.4.6:
     "@types/mkdirp" "^0.5.2"
     "@types/uuid" "^3.4.4"
     glamor "^2.20.40"
-    mental-styles "^1.4.6"
+    mental-styles "^1.4.8"
     mkdirp "^0.5.1"
     uuid "^3.3.2"
 
@@ -9176,10 +9176,10 @@ memory-fs@^0.4.0, memory-fs@^0.4.1, memory-fs@~0.4.1:
     errno "^0.1.3"
     readable-stream "^2.0.1"
 
-mental-styles@^1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.4.6.tgz#e4a34895186daaa83ac650b1a214e6b383639a8a"
-  integrity sha512-eFc6dkVr09ycMmys03NOtBl6HCmGxiu7ZTPU8JrSzQM91q+o9H+303cnvWB96NaqaaZWsNjAjm2Kw2v8tDKHYA==
+mental-styles@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.4.8.tgz#10341cc61468ffeaeeaaeb839773650471014366"
+  integrity sha512-QoNqk/f/o5umfa3qUwbPRVWp5d6Hmu3AIJCu5lJ42AKZnTa8aQyORcdnx91NnYpAFZPftp7NKtS0DMBeXsITtA==
 
 merge-descriptors@1.0.1:
   version "1.0.1"
@@ -11262,13 +11262,13 @@ react-lottie@^1.1.0:
     babel-runtime "^6.26.0"
     lottie-web "^5.1.3"
 
-react-mental@1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.4.6.tgz#aeb4126175da022a17eb10a7d9dab27133156f52"
-  integrity sha512-a3wgSPTRYSDO7eCTjfOW9poFho4HZHtRIiCVviYfMe4C1PDhrPaIn45e02/oC51qt6FhuVn6BZwLDavltGJAnQ==
+react-mental@1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.4.8.tgz#77b7abf8d2935218806b3b3e9db7c023b9d7af16"
+  integrity sha512-GFeI96x+z6VccBEgZMrLo2wBEuZDAPDfAHq6KQq6Qv8P5reYVTAM/GiOM+0r8W7vlHNvREVvwEyuMAf3Fbytqw==
   dependencies:
-    babel-plugin-transform-mental "^1.4.6"
-    mental-styles "^1.4.6"
+    babel-plugin-transform-mental "^1.4.8"
+    mental-styles "^1.4.8"
 
 react-modal@^3.2.1:
   version "3.6.1"

@@ -99,12 +99,10 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
         return (
             <XView
                 backgroundColor="#ffffff"
-                paddingTop={12}
-                paddingBottom={12}
+                paddingVertical={12}
                 paddingLeft={16}
                 paddingRight={11}
-                marginLeft={-16}
-                marginRight={-16}
+                marginHorizontal={-16}
                 borderRadius={8}
                 cursor="pointer"
                 hoverBackgroundColor="#F9F9F9"
