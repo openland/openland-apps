@@ -34,6 +34,7 @@ export interface XInputBasicProps extends XFlexStyles {
     onFocus?: () => void;
     onBlur?: () => void;
     dataTestId?: string;
+    className?: string;
 }
 
 let sizeStyles = styleResolver({

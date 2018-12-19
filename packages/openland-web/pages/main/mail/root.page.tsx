@@ -5,7 +5,7 @@ import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
-import { ChatsComponent } from '../../../fragments/ChatsComponent';
+import { DialogListFragment } from '../../../fragments/dialogs/DialogListFragment';
 import { ComposeComponent } from '../../../components/messenger/ComposeComponent';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -126,28 +126,23 @@ export const AddButton = Glamorous(XButton)({
     },
 });
 
-class ChatListContainerWrapper extends React.PureComponent<{
-    emptyState: boolean;
-}> {
-    render() {
-        const emptyState = this.props.emptyState;
-        return (
-            <ChatListContainer>
-                <Header alignItems="center" justifyContent="space-between">
-                    <Title data-test-id="messages-title">Messages</Title>
-                    <AddButton
-                        style="light"
-                        path="/mail/new"
-                        text="New"
-                        icon={<PlusIcon />}
-                        size="small"
-                    />
-                </Header>
-                <ChatsComponent emptyState={emptyState} />
-            </ChatListContainer>
-        );
-    }
-}
+const ChatList = React.memo(() => {
+    return (
+        <ChatListContainer>
+            <Header alignItems="center" justifyContent="space-between">
+                <Title data-test-id="messages-title">Messages</Title>
+                <AddButton
+                    style="light"
+                    path="/mail/new"
+                    text="New"
+                    icon={<PlusIcon />}
+                    size="small"
+                />
+            </Header>
+            <DialogListFragment />
+        </ChatListContainer>
+    );
+});
 
 interface MessagePageInnerState extends MessagesStateContextProps { }
 
@@ -341,7 +336,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MessagesStateContext.Provider value={this.state}>
                             <ChatContainer>
-                                <ChatListContainerWrapper emptyState={tab === 'empty'} />
+                                <ChatList />
 
                                 <ConversationContainer>
                                     {tab === 'compose' && (
