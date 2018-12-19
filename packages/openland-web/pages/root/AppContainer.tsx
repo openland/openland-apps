@@ -8,6 +8,7 @@ import { TalkProviderComponent } from '../main/mail/components/conference/TalkPr
 import { useQuery } from 'openland-web/components/useQuery';
 import { AccountQuery } from 'openland-api';
 import { XLoader } from 'openland-x/XLoader';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export const AppContainer = React.memo<{ children?: any }>((props) => {
     let apollo = React.useContext(YApolloContext)!;
@@ -21,7 +22,7 @@ export const AppContainer = React.memo<{ children?: any }>((props) => {
         )
     }
 
-    let hasMessenger = !!account.data.me;
+    let hasMessenger = canUseDOM && !!account.data.me;
     return (
         <>
             <PushEngineComponent enable={hasMessenger} />
@@ -33,9 +34,10 @@ export const AppContainer = React.memo<{ children?: any }>((props) => {
                 roles={account.data.myPermissions.roles}
             >
                 <MessengerProvider user={hasMessenger ? account.data.me!! : undefined}>
-                    <TalkProviderComponent client={apollo}>
+                    {hasMessenger && <TalkProviderComponent client={apollo}>
                         {props.children}
-                    </TalkProviderComponent>
+                    </TalkProviderComponent>}
+                    {!hasMessenger && props.children}
                 </MessengerProvider>
             </UserInfoProvider>
         </>
