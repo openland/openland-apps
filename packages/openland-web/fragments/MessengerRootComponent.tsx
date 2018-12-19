@@ -20,6 +20,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './CreatePostComponent';
+import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 
 export interface File {
     uuid: string;

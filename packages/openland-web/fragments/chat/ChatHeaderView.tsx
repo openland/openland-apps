@@ -23,6 +23,17 @@ import CloseIcon from '../../components/messenger/components/icons/ic-close.svg'
 import { MessagesStateContext } from 'openland-web/components/messenger/components/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
+import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
+import { XFormField } from 'openland-x-forms/XFormField';
+import { XForm } from 'openland-x-forms/XForm';
+import { UserSelect } from 'openland-web/api/UserSelect';
+import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
+import { withAlterChat } from 'openland-web/api/withAlterChat';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
+import { sanitizeIamgeRef } from 'openland-web/utils/sanitizer';
+import { XAvatarUpload } from 'openland-x/XAvatarUpload';
+import { XInput } from 'openland-x/XInput';
+import { XTextArea } from 'openland-x/XTextArea';
 
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
     fontSize: 13,
@@ -239,6 +250,100 @@ const DeletMessagesButton = withDeleteMessages(p => {
     onSuccess: () => void;
 }>;
 
+export const RoomEditComponent = withAlterChat(props => {
+    let editTitle = (props as any).title;
+    let editDescription = (props as any).description;
+    let editPhotoRef = (props as any).photo;
+    let editSocialImageRef = (props as any).socialImage;
+    return (
+        <XModalForm
+            scrollableContent={true}
+            targetQuery="editChat"
+            useTopCloser={true}
+            title="Room settings"
+            defaultAction={data => {
+                let newTitle = data.input.title;
+                let newDescription = data.input.description;
+                let newPhoto = data.input.photoRef;
+                let newSocialImage = data.input.socialImageRef;
+                console.warn(newPhoto, newSocialImage);
+                props.alter({
+                    variables: {
+                        roomId: (props as any).roomId,
+                        input: {
+                            ...(newTitle !== editTitle ? { title: newTitle } : {}),
+                            ...(newDescription !== editDescription
+                                ? { description: newDescription }
+                                : {}),
+                            ...(newPhoto && newPhoto.uuid !== editPhotoRef
+                                ? { photoRef: sanitizeIamgeRef(newPhoto) }
+                                : {}),
+                            ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
+                                ? {
+                                    socialImageRef: sanitizeIamgeRef(newSocialImage),
+                                }
+                                : {}),
+                        },
+                    },
+                });
+            }}
+            defaultData={{
+                input: {
+                    title: (props as any).title || '',
+                    description: (props as any).description || '',
+                    photoRef: { uuid: (props as any).photo },
+                    socialImageRef: (props as any).socialImage
+                        ? { uuid: (props as any).socialImage }
+                        : undefined,
+                },
+            }}
+        >
+            <XVertical separator={12}>
+                <XHorizontal separator={12}>
+                    <XAvatarUpload
+                        size="default"
+                        field="input.photoRef"
+                        placeholder={{
+                            add: 'Add photo',
+                            change: 'Change Photo',
+                        }}
+                    />
+                    <XVertical flexGrow={1} separator={10} alignSelf="flex-start">
+                        <XInput title="Room name" field="input.title" size="large" />
+                        <XWithRole role="feature-chat-embedded-attach">
+                            <XInput
+                                field="input.longDescription"
+                                flexGrow={1}
+                                title="Attach link"
+                                size="large"
+                            />
+                        </XWithRole>
+                    </XVertical>
+                </XHorizontal>
+                <XTextArea
+                    valueStoreKey="fields.input.description"
+                    placeholder="Description"
+                    resize={false}
+                />
+                <XAvatarUpload
+                    cropParams="1:1, free"
+                    field="input.socialImageRef"
+                    placeholder={{
+                        add: 'Add social image',
+                        change: 'Change social image',
+                    }}
+                />
+            </XVertical>
+        </XModalForm>
+    );
+}) as React.ComponentType<{
+    title: string;
+    photo: string;
+    socialImage: string | null;
+    description: string | null;
+    roomId: string;
+}>;
+
 const ForwardHeader = (props: {
     me: UserShort;
     roomId: string;
@@ -305,6 +410,23 @@ const ForwardHeader = (props: {
         return null;
     }
 };
+
+export const AddMemberForm = withRoomAddMembers(props => {
+    return (
+        <XModalFormOld
+            title="Add member to room"
+            submitMutation={props.addMember}
+            mutationDirect={true}
+            actionName="Add"
+            targetQuery="addMember"
+            defaultValues={{ roomId: (props as any).roomId }}
+        >
+            <XFormField title="User">
+                <XForm.Select field="userId" component={UserSelect} />
+            </XFormField>
+        </XModalFormOld>
+    );
+}) as React.ComponentType<{ roomId: string }>;
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -525,6 +647,18 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>((props) => {
                                 </XWithRole>
                             </>
                         }
+                    />
+                )}
+                {sharedRoom && (
+                    <AddMemberForm roomId={props.room.id} />
+                )}
+                {sharedRoom && (
+                    <RoomEditComponent
+                        title={sharedRoom.title}
+                        description={sharedRoom.description}
+                        photo={sharedRoom.photo}
+                        socialImage={sharedRoom.socialImage}
+                        roomId={sharedRoom.id}
                     />
                 )}
             </XHorizontal>
