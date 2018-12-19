@@ -8,7 +8,6 @@ import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
 import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
 import { XOverflow } from 'openland-web/components/Incubator/XOverflow';
 import { XView } from 'react-mental';
-import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
 import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
@@ -34,6 +33,7 @@ import { sanitizeIamgeRef } from 'openland-web/utils/sanitizer';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
+import { TalkContext } from 'openland-web/modules/conference/TalkProviderComponent';
 
 const LastSeenWrapper = Glamorous.div<{ online: boolean }>(props => ({
     fontSize: 13,
