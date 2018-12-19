@@ -1,84 +1,28 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XAvatar } from 'openland-x/XAvatar';
 import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
+import { XAvatar2 } from 'openland-x/XAvatar2';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 
-const CommunityCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
-    backgroundColor: '#fff',
-    paddingTop: 12,
-    paddingBottom: 12,
-    paddingLeft: 16,
-    paddingRight: 11,
-    marginLeft: -16,
-    marginRight: -16,
-    borderRadius: 8,
-    '&:hover': {
-        backgroundColor: '#F9F9F9'
-    },
-    cursor: 'pointer'
-})));
-
-const CommunityContent = Glamorous(XHorizontal)({
-    flexGrow: 1
-});
-
-const CommunityInfo = Glamorous.div({
-    flexGrow: 1
-});
-
-const CommunityAvatar = Glamorous(XAvatar)({
-    cursor: 'pointer',
-    '& *': {
-        cursor: 'pointer'
-    }
-});
-
-const CommunityTitle = Glamorous(XLink)({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: '22px',
-    letterSpacing: 0,
-    color: '#000000!important',
-    marginTop: '-2px!important',
-    marginBottom: 2,
-    display: 'block',
-
-    '&': {
-        height: 22,
-        overflow: 'hidden',
-        display: '-webkit-box',
-        WebkitLineClamp: 1,
-        WebkitBoxOrient: 'vertical'
-    }
-});
-
-const CommunityCounter = Glamorous.div({
-    fontSize: 13,
-    fontWeight: 400,
-    lineHeight: '18px',
-    letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.5)'
-});
-
-const CommunityTools = Glamorous(XHorizontal)({
-    paddingTop: 4
-});
+const CommunityTitleInner = css`
+    height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`;
 
 interface XCommunityCardProps {
     community: {
-        id: string,
-        name: string,
-        photo: string | null,
-        isMine: boolean,
-        channels: any[],
+        id: string;
+        name: string;
+        photo: string | null;
+        isMine: boolean;
+        channels: any[];
     };
     path?: string;
     customButton?: any;
@@ -99,71 +43,101 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
         let { community, path, customButton, customMenu, extraMenu } = this.props;
         let roomsCount = community.channels.filter(c => c && !c.hidden).length;
 
-        let button = (typeof customButton === 'undefined') ? (
-            <XButton
-                style="primary"
-                path={path || '/directory/c/' + community.id}
-                text={TextProfiles.Organization.view}
-            />
-        ) : customButton;
+        let button = this.state.isHovered ? (
+            typeof customButton === 'undefined' ? (
+                <XButton
+                    style="primary"
+                    path={path || '/directory/c/' + community.id}
+                    text={TextProfiles.Organization.view}
+                />
+            ) : (
+                customButton
+            )
+        ) : (
+            undefined
+        );
 
-        let menu = (typeof customMenu === 'undefined') ? (
-            <XOverflow
-                placement="bottom-end"
-                flat={true}
-                content={(
-                    <>
-                        {extraMenu}
+        let menu =
+            typeof customMenu === 'undefined' ? (
+                <XOverflow
+                    placement="bottom-end"
+                    flat={true}
+                    content={
+                        <>
+                            {extraMenu}
 
-                        <XMenuItem href={'/directory/c/' + community.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                            <XMenuItem href={'/directory/c/' + community.id}>
+                                {TextDirectory.buttonViewProfile}
+                            </XMenuItem>
 
-                        {community.isMine && (
-                            <XMenuItem query={{ field: 'createRoom', value: community.id }}>{TextDirectory.buttonCreateRoom}</XMenuItem>
-                        )}
+                            {community.isMine && (
+                                <XMenuItem query={{ field: 'createRoom', value: community.id }}>
+                                    {TextDirectory.buttonCreateRoom}
+                                </XMenuItem>
+                            )}
 
-                        <XWithRole role="admin" orgPermission={community.id}>
-                            <XMenuItem href="/settings/organization">{TextDirectory.buttonEdit}</XMenuItem>
-                        </XWithRole>
-
-                        {!community.isMine && (
-                            <XWithRole role={['super-admin', 'editor']}>
-                                <XMenuItem href={'/settings/organization/' + community.id}>{TextDirectory.buttonEdit}</XMenuItem>
+                            <XWithRole role="admin" orgPermission={community.id}>
+                                <XMenuItem href="/settings/organization">
+                                    {TextDirectory.buttonEdit}
+                                </XMenuItem>
                             </XWithRole>
-                        )}
 
-                        {/* <XWithRole role={['super-admin', 'editor']}>
-                            <AlterOrgPublishedButton orgId={community.id} published={community.published} />
-                        </XWithRole> */}
-                    </>
-                )}
-            />
-        ) : customMenu;
+                            {!community.isMine && (
+                                <XWithRole role={['super-admin', 'editor']}>
+                                    <XMenuItem href={'/settings/organization/' + community.id}>
+                                        {TextDirectory.buttonEdit}
+                                    </XMenuItem>
+                                </XWithRole>
+                            )}
+                        </>
+                    }
+                />
+            ) : (
+                customMenu
+            );
 
         return (
-            <CommunityCardWrapper
+            <XView
+                linkSelectable={true}
+                backgroundColor="#ffffff"
+                paddingTop={12}
+                paddingBottom={12}
+                paddingLeft={16}
+                paddingRight={11}
+                marginLeft={-16}
+                marginRight={-16}
+                borderRadius={8}
+                cursor="pointer"
+                hoverBackgroundColor="#F9F9F9"
+                flexDirection="row"
+                minWidth={0}
                 path={path || '/directory/c/' + community.id}
                 onMouseEnter={() => this.setState({ isHovered: true })}
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
-                <XHorizontal justifyContent="space-between" separator={8}>
-                    <CommunityAvatar
-                        cloudImageUuid={community.photo!!}
-                        style="room"
-                        objectName={community.name}
-                        objectId={community.id}
-                    />
-                    <CommunityContent>
-                        <CommunityInfo>
-                            <CommunityTitle>{community.name}</CommunityTitle>
-                            <CommunityCounter>{TextProfiles.Organization.roomsLabel(roomsCount)}</CommunityCounter>
-                        </CommunityInfo>
-                        <CommunityTools separator={5}>
-                            {this.state.isHovered && button}
-                            {menu}
-                        </CommunityTools>
-                    </CommunityContent>
-                </XHorizontal>
-            </CommunityCardWrapper>
+                <XAvatar2 src={community.photo} title={community.name} id={community.id} />
+                <XView minWidth={0} flexGrow={1} flexShrink={1} marginLeft={16} flexDirection="row">
+                    <XView minWidth={0} flexGrow={1} flexShrink={1} marginRight={12}>
+                        <XView
+                            fontSize={14}
+                            fontWeight="600"
+                            lineHeight="22px"
+                            color="#000000"
+                            marginTop={-2}
+                            marginBottom={2}
+                        >
+                            <div className={CommunityTitleInner}>{community.name}</div>
+                        </XView>
+                        <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
+                            {TextProfiles.Organization.roomsLabel(roomsCount)}
+                        </XView>
+                    </XView>
+                    <XView flexDirection="row" paddingTop={4}>
+                        {button}
+                        <XView marginLeft={10}>{menu}</XView>
+                    </XView>
+                </XView>
+            </XView>
         );
     }
 }
