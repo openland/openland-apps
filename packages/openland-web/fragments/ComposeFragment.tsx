@@ -2,23 +2,23 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
-import { Router } from '../../routes';
-import { MessageComposeComponent } from './components/view/MessageComposeComponent';
-import { ConversationContainer } from './components/view/ConversationContainer';
-import { MessagesContainer } from './components/view/MessagesContainer';
-import { ConversationMessagesComponent } from './components/ConversationMessagesComponent';
+import { Router } from '../routes';
+import { MessageComposeComponent } from '../components/messenger/components/view/MessageComposeComponent';
+import { ConversationContainer } from '../components/messenger/components/view/ConversationContainer';
+import { MessagesContainer } from '../components/messenger/components/view/MessagesContainer';
+import { ConversationMessagesComponent } from '../components/messenger/components/ConversationMessagesComponent';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
-import RoomIcon from './components/icons/ic-channel-2.svg';
+import RoomIcon from '../components/messenger/components/icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { withUserInfo } from '../UserInfo';
+import { withUserInfo } from '../components/UserInfo';
 import { UserShort } from 'openland-api/Types';
 import { TextCompose } from 'openland-text/TextCompose';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { withExplorePeople } from '../../api/withExplorePeople';
+import { withExplorePeople } from '../api/withExplorePeople';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { RoomCreateMutation } from 'openland-api';
 
@@ -410,7 +410,7 @@ class ComposeComponentRender extends React.Component<
     }
 }
 
-export const ComposeComponent = withUserInfo((props: any) => {
+export const ComposeFragment = withUserInfo((props: any) => {
     return (
         <MessengerContext.Consumer>
             {messenger => (

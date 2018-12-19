@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { SetTypingMutation } from 'openland-api';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { XLoader } from 'openland-x/XLoader';
 import { XAvatarStyle } from 'openland-x/XAvatar';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
@@ -10,10 +8,8 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { withChatHistory } from '../api/withChatHistory';
 import { MessageComposeComponentDraft } from '../components/messenger/components/view/MessageComposeComponent';
 import { ConversationMessagesComponent } from '../components/messenger/components/ConversationMessagesComponent';
-import { MessagesContainer } from '../components/messenger/components/view/MessagesContainer';
 import { ConversationContainer } from '../components/messenger/components/view/ConversationContainer';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
 import { withUserInfo } from '../components/UserInfo';
