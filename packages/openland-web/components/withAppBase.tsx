@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XPageTrack } from './XPageTrack';
 
 export function withAppBase(name: string, WrappedComponent: React.ComponentType<{}>) {
-    return (props: any) => {
+    let res = (props: any) => {
         return (
             <>
                 <XPageTrack name={name} />
@@ -10,4 +10,7 @@ export function withAppBase(name: string, WrappedComponent: React.ComponentType<
             </>
         );
     };
+
+    (res as any).displayName = 'AppRoot';
+    return res;
 }

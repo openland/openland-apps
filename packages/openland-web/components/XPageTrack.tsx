@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { withRouter } from 'openland-x-routing/withRouter';
 import { XTrack } from 'openland-x-analytics/XTrack';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-export const XPageTrack = withRouter<{ name: string }>((props) => {
-    return (<XTrack event={'View ' + props.name} params={props.router.routeQuery} />)
+export const XPageTrack = React.memo<{ name: string }>((props) => {
+    let router = React.useContext(XRouterContext)!;
+    return (<XTrack event={'View ' + props.name} params={router.routeQuery} />)
 });
+
+XPageTrack.displayName = 'XPageTrack';
