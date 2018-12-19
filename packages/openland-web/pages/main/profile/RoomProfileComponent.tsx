@@ -24,7 +24,7 @@ import {
     RoomEditComponent,
     RoomSetFeatured,
     RoomSetHidden,
-} from '../../../components/messenger/MessengerComponent';
+} from '../../../fragments/MessengerFragment';
 import {
     HeaderAvatar,
     HeaderTitle,

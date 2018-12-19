@@ -4,7 +4,7 @@ import { withQueryLoader } from '../../../components/withQueryLoader';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
+import { MessengerFragment } from '../../../fragments/MessengerFragment';
 import { DialogListFragment } from '../../../fragments/dialogs/DialogListFragment';
 import { ComposeFragment } from '../../../fragments/ComposeFragment';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
@@ -278,11 +278,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                                 <ConversationContainer>
                                     {tab === 'compose' && <ComposeFragment />}
                                     {tab === 'empty' && <MessengerEmptyFragment />}
-                                    {tab === 'conversation' && (
-                                        <MessengerComponent
-                                            id={props.router.routeQuery.conversationId}
-                                        />
-                                    )}
+                                    {tab === 'conversation' && (<MessengerFragment id={props.router.routeQuery.conversationId} />)}
                                     {tab === 'rooms' && <RoomsExploreComponent />}
                                     {tab === 'invite' && <RoomInviteFromLink />}
                                     {tab === 'organization' && (

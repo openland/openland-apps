@@ -4,7 +4,7 @@ import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
-import { MessengerComponent } from '../../../components/messenger/MessengerComponent';
+import { MessengerFragment } from '../../../fragments/MessengerFragment';
 import { RootWrapper, Sidebar, Container } from './components/Layout';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 
@@ -27,7 +27,7 @@ class RootComponent extends React.Component<XWithRouter> {
                 <Container>
                     {tab === 'rooms' && <RoomsExploreComponent />}
                     {tab === 'invite' && (
-                        <MessengerComponent id={router.routeQuery.conversationId} />
+                        <MessengerFragment id={router.routeQuery.conversationId} />
                     )}
                     {tab === 'profile' && (
                         <RoomProfile conversationId={router.routeQuery.conversationId} />

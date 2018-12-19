@@ -2,45 +2,45 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { withRoom } from '../../api/withRoom';
-import { withQueryLoader } from '../withQueryLoader';
-import { MessengerRootComponent } from '../../fragments/MessengerRootComponent';
-import { XOverflow } from '../Incubator/XOverflow';
+import { withRoom } from '../api/withRoom';
+import { withQueryLoader } from '../components/withQueryLoader';
+import { MessengerRootComponent } from './MessengerRootComponent';
+import { XOverflow } from '../components/Incubator/XOverflow';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XMenuItemWrapper, XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { delay } from 'openland-y-utils/timer';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { withChannelSetFeatured } from '../../api/withChannelSetFeatured';
-import { withConversationSettingsUpdate } from '../../api/withConversationSettingsUpdate';
-import { RoomsInviteComponent } from '../../fragments/RoomsInviteComponent';
-import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
+import { withChannelSetFeatured } from '../api/withChannelSetFeatured';
+import { withConversationSettingsUpdate } from '../api/withConversationSettingsUpdate';
+import { RoomsInviteComponent } from './RoomsInviteComponent';
+import { InviteMembersModal } from '../pages/main/channel/components/inviteMembersModal';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
-import { withAlterChat } from '../../api/withAlterChat';
-import { withOnline } from '../../api/withOnline';
+import { withAlterChat } from '../api/withAlterChat';
+import { withOnline } from '../api/withOnline';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
-import { withChannelSetHidden } from '../../api/withChannelSetHidden';
+import { withChannelSetHidden } from '../api/withChannelSetHidden';
 import { XTextArea } from 'openland-x/XTextArea';
-import { UserSelect } from '../../api/UserSelect';
+import { UserSelect } from '../api/UserSelect';
 import { XForm } from 'openland-x-forms/XForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XButton } from 'openland-x/XButton';
-import PlusIcon from '../icons/ic-add-medium-2.svg';
+import PlusIcon from '../components/icons/ic-add-medium-2.svg';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
-import { withRoomAddMembers } from '../../api/withRoomAddMembers';
+import { withRoomAddMembers } from '../api/withRoomAddMembers';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XDate } from 'openland-x/XDate';
-import { MessagesStateContext, MessagesStateContextProps } from './components/MessagesStateContext';
-import CloseIcon from './components/icons/ic-close.svg';
-import { withUserInfo } from '../UserInfo';
-import { withDeleteMessages } from '../../api/withDeleteMessage';
+import { MessagesStateContext, MessagesStateContextProps } from '../components/messenger/components/MessagesStateContext';
+import CloseIcon from '../components/messenger/components/icons/ic-close.svg';
+import { withUserInfo } from '../components/UserInfo';
+import { withDeleteMessages } from '../api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
 import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
-import NotificationsIcon from './components/icons/ic-notifications.svg';
-import NotificationsOffIcon from './components/icons/ic-notifications-off.svg';
+import NotificationsIcon from '../components/messenger/components/icons/ic-notifications.svg';
+import NotificationsOffIcon from '../components/messenger/components/icons/ic-notifications-off.svg';
 import { TalkContext } from 'openland-web/pages/main/mail/components/conference/TalkProviderComponent';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XView } from 'react-mental';
@@ -990,7 +990,7 @@ interface MessengerComponentProps {
     id: string;
 }
 
-export const MessengerComponent = (props: MessengerComponentProps) => (
+export const MessengerFragment = (props: MessengerComponentProps) => (
     <MessagesStateContext.Consumer>
         {(state: MessagesStateContextProps) => (
             <MessengerComponentLoader variables={{ id: props.id }} state={state} />

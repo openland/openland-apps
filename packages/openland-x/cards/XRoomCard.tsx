@@ -8,8 +8,7 @@ import { makeNavigable } from 'openland-x/Navigable';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
-import { RoomSetFeatured, RoomSetHidden } from '../../openland-web/components/messenger/MessengerComponent';
-import { SharedRoomKind, Room_room, Room_room_SharedRoom } from 'openland-api/Types';
+import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 
 const RoomWrapper = makeNavigable(Glamorous(XHorizontal)({
