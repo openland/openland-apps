@@ -3,7 +3,7 @@ import { UserInfoContext } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 
-export const AuthRouter = React.memo((props) => {
+export const AuthRouter = React.memo<{ children?: any }>((props) => {
 
     let router = React.useContext(XRouterContext)!;
     let userInfo = React.useContext(UserInfoContext)!;
