@@ -19,10 +19,7 @@ import { XOverflow } from '../../../components/Incubator/XOverflow';
 import { LeaveChatComponent } from '../../../fragments/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
-import {
-    RoomSetFeatured,
-    RoomSetHidden,
-} from '../../../fragments/MessengerFragment';
+
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -53,6 +50,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { AddMemberForm, RoomEditComponent } from 'openland-web/fragments/chat/ChatHeaderView';
+import { RoomSetFeatured, RoomSetHidden } from 'openland-web/components/messenger/RoomControls';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>

@@ -1,95 +1,39 @@
 import * as React from 'react';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { withRoom } from '../api/withRoom';
-import { withQueryLoader } from '../components/withQueryLoader';
 import { MessengerRootComponent } from './MessengerRootComponent';
-import { XMenuItemWrapper } from 'openland-x/XMenuItem';
-import { XCheckbox } from 'openland-x/XCheckbox';
-import { withChannelSetFeatured } from '../api/withChannelSetFeatured';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
-import { withChannelSetHidden } from '../api/withChannelSetHidden';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
-import { MessagesStateContext, MessagesStateContextProps } from '../components/messenger/components/MessagesStateContext';
-import { withUserInfo, UserInfoContext } from '../components/UserInfo';
+import { MessagesStateContext } from '../components/messenger/components/MessagesStateContext';
+import { UserInfoContext } from '../components/UserInfo';
 import { TalkBarComponent } from 'openland-web/pages/main/mail/components/conference/TalkBarComponent';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
 import { XView } from 'react-mental';
 import { FrowardPlaceholder } from './chat/ForwardPlaceholder';
+import { useQuery } from 'openland-web/components/useQuery';
+import { RoomQuery } from 'openland-api';
+import { XLoader } from 'openland-x/XLoader';
 
-class SwitchComponent extends React.Component<
-    {
-        mutation: any;
-        roomId: string;
-        val: boolean;
-        fieldName: string;
-        fieldTitle?: string;
-    },
-    { val: boolean }
-    > {
-    constructor(props: any) {
-        super(props);
-        this.state = { val: props.val };
-    }
-
-    render() {
-        return (
-            <XMenuItemWrapper>
-                <XVertical>
-                    <XCheckbox
-                        label={this.props.fieldTitle || this.props.fieldName}
-                        value={this.state.val ? 'featured' : 'unfeatured'}
-                        trueValue="featured"
-                        onChange={() => {
-                            this.props.mutation({
-                                variables: {
-                                    roomId: this.props.roomId,
-                                    [this.props.fieldName]: !this.props.val,
-                                },
-                            });
-                            this.setState({
-                                val: !this.state.val,
-                            });
-                        }}
-                    />
-                </XVertical>
-            </XMenuItemWrapper>
-        );
-    }
+export interface MessengerComponentProps {
+    id: string;
 }
 
-export const RoomSetFeatured = withChannelSetFeatured(props => (
-    <SwitchComponent
-        mutation={props.setFeatured}
-        val={(props as any).val}
-        fieldName={'featured'}
-        fieldTitle={'Featured'}
-        roomId={(props as any).roomId}
-    />
-)) as React.ComponentType<{ val: boolean; roomId: string }>;
-
-export const RoomSetHidden = withChannelSetHidden(props => (
-    <SwitchComponent
-        mutation={props.setHidden}
-        val={(props as any).val}
-        fieldName={'listed'}
-        fieldTitle={'Listed'}
-        roomId={(props as any).roomId}
-    />
-)) as React.ComponentType<{ val: boolean; roomId: string }>;
-
-let MessengerComponentLoader = withRoom(withQueryLoader((props => {
-    if (!props.data) {
+export const MessengerFragment = ((props: MessengerComponentProps) => {
+    let q = useQuery(RoomQuery, { id: props.id });
+    let state = React.useContext(MessagesStateContext);
+    if (!q.data || q.loading) {
+        if (q.loading) {
+            return (<XLoader loading={true} />)
+        }
         return <div />;
     }
 
     let user = React.useContext(UserInfoContext);
 
     let sharedRoom: Room_room_SharedRoom | null =
-        props.data.room!.__typename === 'SharedRoom' ? (props.data.room as any) : null;
+        q.data.room!.__typename === 'SharedRoom' ? (q.data.room as any) : null;
     let privateRoom: Room_room_PrivateRoom | null =
-        props.data.room!.__typename === 'PrivateRoom' ? (props.data.room as any) : null;
+        q.data.room!.__typename === 'PrivateRoom' ? (q.data.room as any) : null;
 
     // WTF?
     if (
@@ -105,8 +49,6 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props => {
     }
     let title = sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '';
 
-    let messagesState = (props as any).state as MessagesStateContextProps;
-    let placeholder = messagesState.useForwardPlaceholder;
     return (
         <>
             <XDocumentHead title={title} />
@@ -119,7 +61,7 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props => {
                 alignSelf="stretch"
                 alignItems="stretch"
             >
-                {placeholder && <FrowardPlaceholder state={messagesState} />}
+                {state.useForwardPlaceholder && <FrowardPlaceholder state={state} />}
 
                 <XView
                     flexDirection="row"
@@ -129,10 +71,10 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props => {
                     paddingLeft={20}
                     paddingRight={20}
                 >
-                    <ChatHeaderView room={props.data.room!} me={user!.user!} />
+                    <ChatHeaderView room={q.data.room!} me={user!.user!} />
                 </XView>
                 <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                <TalkBarComponent conversationId={(sharedRoom || privateRoom)!.id} />
+                <TalkBarComponent conversationId={q.data.room!.id} />
 
                 <XView
                     alignItems="center"
@@ -162,26 +104,11 @@ let MessengerComponentLoader = withRoom(withQueryLoader((props => {
                                 ? sharedRoom.organization.id
                                 : null
                         }
-                        conversationId={props.data.room!.id}
+                        conversationId={q.data.room!.id}
                         conversationType={sharedRoom ? sharedRoom.kind : 'PRIVATE'}
                     />
                 </XView>
             </XView>
         </>
     );
-}))) as React.ComponentType<{
-    variables: { id: string };
-    state: MessagesStateContextProps;
-}>;
-
-interface MessengerComponentProps {
-    id: string;
-}
-
-export const MessengerFragment = (props: MessengerComponentProps) => (
-    <MessagesStateContext.Consumer>
-        {(state: MessagesStateContextProps) => (
-            <MessengerComponentLoader variables={{ id: props.id }} state={state} />
-        )}
-    </MessagesStateContext.Consumer>
-);
+});
