@@ -5,7 +5,7 @@ import { PushEngineComponent } from 'openland-web/components/push/PushEngineComp
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { UserInfoProvider } from 'openland-web/components/UserInfo';
 import { MessengerProvider } from 'openland-web/components/messenger/MessengerProvider';
-import { YApolloProvider, YApolloContext } from 'openland-y-graphql/YApolloProvider';
+import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { TalkProviderComponent } from '../main/mail/components/conference/TalkProviderComponent';
 
 export const AppContainer = withAccountQuery(
@@ -16,7 +16,6 @@ export const AppContainer = withAccountQuery(
                 <PushEngineComponent enable={hasMessenger} />
                 <XDocumentHead title={['App']} />
                 <UserInfoProvider
-                    router={props.router}
                     sessionState={props.data.sessionState}
                     user={props.data.me}
                     organization={props.data.me && props.data.me.primaryOrganization}
