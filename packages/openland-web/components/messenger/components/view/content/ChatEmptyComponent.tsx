@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { SharedRoomKind } from 'openland-api/Types';
-import { XView } from 'react-mental';
+import { XView, XImage } from 'react-mental';
 
 const ImagePrivate = () => (
-    <XView as="img" width={391} height={380} src="/static/X/messenger/chat-empty.svg" />
+    <XImage width={391} height={380} src="/static/X/messenger/chat-empty.svg" />
 );
 
 const ImageRoom = () => (
-    <XView as="img" width={434} height={352} src="/static/X/messenger/chat-channel-empty.svg" />
+    <XImage width={434} height={352} src="/static/X/messenger/chat-channel-empty.svg" />
 );
 
 const Text = (props: { children: any }) => (
