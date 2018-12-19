@@ -4,28 +4,28 @@ import { XView } from 'react-mental';
 import { DialogListView } from './components/DialogListView';
 import { DialogsInviteButton } from './components/DialogsInviteButton';
 import { XButton } from 'openland-x/XButton';
-import { XThemeDefault } from 'openland-x/XTheme';
 import { XFont } from 'openland-x/XFont';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import { css } from 'linaria';
 
-const ChatListContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    width: 344,
-    flexShrink: 0,
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: XThemeDefault.separatorColor,
-    backgroundColor: XThemeDefault.backgroundColor,
-    '@media (max-width: 1100px)': {
-        width: 300,
-    },
-    '@media (max-width: 950px)': {
-        width: 230,
-    },
-});
+const containerStyle = css`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 344px;
+    flex-shrink: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #ececec;
+    background-color: #fff;
+    @media (max-width: 1100px) {
+        width: 300px;
+    }
+    @media (max-width: 950px) {
+        width: 230px;
+    }
+`;
 
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -52,7 +52,7 @@ const Title = Glamorous.div({
 
 export const DialogListFragment = React.memo(() => {
     return (
-        <ChatListContainer>
+        <div className={containerStyle}>
             <XView flexGrow={1} flexBasis={0}>
                 <Header alignItems="center" justifyContent="space-between">
                     <Title data-test-id="messages-title">Messages</Title>
@@ -67,6 +67,6 @@ export const DialogListFragment = React.memo(() => {
                 <DialogListView />
                 <DialogsInviteButton />
             </XView>
-        </ChatListContainer>
+        </div>
     )
 });

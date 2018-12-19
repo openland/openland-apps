@@ -410,11 +410,11 @@ class ComposeComponentRender extends React.Component<
     }
 }
 
-export const ComposeFragment = withUserInfo((props: any) => {
+export const ComposeFragment = withUserInfo((props) => {
     return (
         <MessengerContext.Consumer>
             {messenger => (
-                <ComposeComponentRender messenger={messenger!!} me={(props as any).user} />
+                <ComposeComponentRender messenger={messenger!!} me={props.user!} />
             )}
         </MessengerContext.Consumer>
     );

@@ -11,6 +11,7 @@ import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { withUserInfo } from '../../components/UserInfo';
 import * as Cookie from 'js-cookie';
 import { XLoader } from 'openland-x/XLoader';
+import { withRouter } from 'openland-x-routing/withRouter';
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -101,7 +102,7 @@ export const InviteInfo = withChannelInviteInfo(InviteInfoInner) as React.Compon
 
 export default withAppBase(
     'Join Room',
-    withUserInfo(props => {
+    withRouter(withUserInfo(props => {
         let invite = props.router.routeQuery.invite;
 
         Cookie.set('x-openland-invite', invite, { path: '/' });
@@ -128,4 +129,4 @@ export default withAppBase(
             </>
         );
     }),
-);
+));

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { withUserInfo } from './UserInfo';
+import { withUserInfo, UserInfo } from './UserInfo';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
+import { withRouter } from 'openland-x-routing/withRouter';
 
-export const AuthRouter = withUserInfo(props => {
+export const AuthRouter = withRouter<UserInfo>(withUserInfo(props => {
     // Compute Redirect Value
     let redirect = props.router.query && props.router.query.redirect;
     let redirectPath: string = '/';
@@ -183,4 +184,4 @@ export const AuthRouter = withUserInfo(props => {
 
     // Everything is ok! Display content
     return <>{props.children}</>;
-});
+}));

@@ -24,12 +24,11 @@ import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { PostIntroModal } from './content/PostIntroModal';
-import { withUserInfo, UserInfoComponentProps } from '../../../UserInfo';
+import { withUserInfo, UserInfo } from '../../../UserInfo';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
-import { withOrganization } from '../../../../api/withOrganizationSimple';
 import {
     MessageFull,
     ReplyMessageVariables,
@@ -363,7 +362,7 @@ interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
 interface MessageComposeComponentInnerProps
     extends MessageComposeComponentProps,
         XWithRouter,
-        UserInfoComponentProps {
+        UserInfo {
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
