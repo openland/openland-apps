@@ -98,7 +98,6 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
 
         return (
             <XView
-                linkSelectable={true}
                 backgroundColor="#ffffff"
                 paddingTop={12}
                 paddingBottom={12}
