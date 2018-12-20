@@ -1,5 +1,9 @@
 const { reactSerializer } = require('linaria-jest');
 
+const mockMath = Object.create(global.Math);
+mockMath.random = () => 0.5;
+global.Math = mockMath;
+
 const linaria = require('linaria');
 const React = require('react');
 React.memo = node => {
