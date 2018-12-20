@@ -50,8 +50,8 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { RoomSetFeatured, RoomSetHidden } from 'openland-web/pages/main/profile/RoomControls';
-import { RoomEditModal } from 'openland-web/fragments/RoomEditModal';
-import { RoomAddMemberModal } from 'openland-web/fragments/RoomAddMemberModal';
+import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
+import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
