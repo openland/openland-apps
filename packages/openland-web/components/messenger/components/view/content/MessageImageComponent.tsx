@@ -1,56 +1,42 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { layoutMedia } from '../../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XModal } from 'openland-x-modal/XModal';
-import { XLink } from 'openland-x/XLink';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
-import { XView } from 'react-mental';
 
-export const ModalCloser = Glamorous(XLink)({
-    position: 'fixed',
-    right: 20,
-    top: 20,
-    width: 36,
-    height: 36,
-    borderRadius: 5,
-    backgroundColor: 'transparent',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-});
+const ImgDownload = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+`;
 
-const ImgDownload = Glamorous.a({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 36,
-    height: 36,
-    borderRadius: 5,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    opacity: 0,
-    position: 'absolute',
-    top: 20,
-    right: 20,
-});
+const ModalBody = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 40px;
+    &:hover > a {
+        opacity: 1 !important;
+    }
+`;
 
-export const ModalBody = Glamorous.div({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    marginBottom: 40,
-    '&:hover > .download-button': {
-        opacity: 1,
-    },
-});
-
-export const ModalPic = Glamorous(XCloudImage)({
-    borderRadius: 8,
-    objectFit: 'contain',
-    maxHeight: '90vh',
-});
+const ModalImage = css`
+    border-radius: 8px;
+    object-fit: contain;
+    max-height: 90vh;
+`;
 
 interface MessageImageComponentProps {
     file: string;
@@ -63,7 +49,7 @@ interface MessageImageComponentProps {
 export class MessageImageComponent extends React.PureComponent<
     MessageImageComponentProps,
     { isOpen: boolean }
-> {
+    > {
     constructor(props: MessageImageComponentProps) {
         super(props);
 
@@ -88,6 +74,40 @@ export class MessageImageComponent extends React.PureComponent<
         });
     };
 
+    private modalBody = (width: number, height: number) => (
+        <div className={ModalBody}>
+            <XView
+                onClick={this.handleClose}
+                cursor="pointer"
+                position="fixed"
+                right={20}
+                top={20}
+                width={36}
+                height={36}
+                borderRadius={5}
+                backgroundColor="transparent"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <ModalCloseIcon />
+            </XView>
+            <XCloudImage
+                srcCloud={'https://ucarecdn.com/' + this.props.file + '/'}
+                resize={'fill'}
+                width={width}
+                height={height}
+                className={ModalImage}
+            />
+            <a
+                className={ImgDownload}
+                target="_blank"
+                href={'https://ucarecdn.com/' + this.props.file + '/-/preview/-/inline/no/'}
+            >
+                <DownloadButtonIcon />
+            </a>
+        </div>
+    );
+
     render() {
         const { props } = this;
         let dimensions = layoutMedia(props.width, props.height);
@@ -101,27 +121,7 @@ export class MessageImageComponent extends React.PureComponent<
                     transparent={true}
                     isOpen={this.state.isOpen}
                     onClosed={this.handleClose}
-                    body={
-                        <ModalBody>
-                            <ModalCloser autoClose={true} className="closer">
-                                <ModalCloseIcon />
-                            </ModalCloser>
-                            <ModalPic
-                                srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                                resize={'fill'}
-                                width={dimensions2.width}
-                                height={dimensions2.height}
-                            />
-                            <ImgDownload
-                                className="download-button"
-                                href={
-                                    'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'
-                                }
-                            >
-                                <DownloadButtonIcon />
-                            </ImgDownload>
-                        </ModalBody>
-                    }
+                    body={this.modalBody(dimensions2.width, dimensions2.height)}
                 />
                 <XView onClick={this.handleOpen} cursor="pointer">
                     <XCloudImage

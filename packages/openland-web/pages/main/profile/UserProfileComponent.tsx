@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
+import { css } from 'linaria';
 import { withUser } from '../../../api/withUserSimple';
 import { User, User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -9,11 +11,8 @@ import { XButton } from 'openland-x/XButton';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XModal } from 'openland-x-modal/XModal';
-import {
-    ModalBody,
-    ModalCloser,
-    ModalPic,
-} from '../../../components/messenger/components/view/content/MessageImageComponent';
+import { XLink } from 'openland-x/XLink';
+import { XCloudImage } from 'openland-x/XCloudImage';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import {
     BackButton,
@@ -32,7 +31,36 @@ import { XDate } from 'openland-x/XDate';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { css } from 'linaria';
+
+const ModalCloser = Glamorous(XLink)({
+    position: 'fixed',
+    right: 20,
+    top: 20,
+    width: 36,
+    height: 36,
+    borderRadius: 5,
+    backgroundColor: 'transparent',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+});
+
+const ModalBody = Glamorous.div({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 40,
+    '&:hover > .download-button': {
+        opacity: 1,
+    },
+});
+
+const ModalPic = Glamorous(XCloudImage)({
+    borderRadius: 8,
+    objectFit: 'contain',
+    maxHeight: '90vh',
+});
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);

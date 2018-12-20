@@ -1,9 +1,6 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import {
     MessageFull_reply_sender,
     MessageFull_reply_fileMetadata,
@@ -14,56 +11,6 @@ import { MessageAnimationComponent } from './MessageAnimationComponent';
 import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
-
-const MessageContainer = Glamorous.div<{ compact?: boolean }>(props => ({
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingLeft: 15,
-    paddingRight: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
-    width: '100%',
-    marginTop: props.compact ? 6 : 12,
-    borderRadius: 6,
-    '& .time': {
-        opacity: '1 !important',
-    },
-}));
-
-const MessageWrapper = Glamorous(XVertical)({
-    width: 'calc(100% - 60px)',
-    paddingTop: 1,
-});
-
-const Name = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    lineHeight: '16px',
-    color: 'rgba(0, 0, 0, 0.8)',
-});
-
-const Organization = makeNavigable(
-    Glamorous.div<NavigableChildProps>(() => ({
-        fontSize: 12,
-        fontWeight: 600,
-        lineHeight: '14px',
-        color: 'rgba(0, 0, 0, 0.4)',
-        letterSpacing: 0,
-        alignSelf: 'flex-end',
-        cursor: 'pointer',
-    })),
-);
-
-const DateComponent = Glamorous.div({
-    width: 62,
-    fontSize: 12,
-    fontWeight: 600,
-    lineHeight: '14px',
-    whiteSpace: 'nowrap',
-    color: 'rgba(0, 0, 0, 0.4)',
-    paddingTop: 1,
-});
 
 interface ReplyMessageProps {
     sender: MessageFull_reply_sender;
@@ -78,7 +25,7 @@ interface ReplyMessageProps {
     compact?: boolean;
 }
 
-export const MessageReplyComponent = (props: ReplyMessageProps) => {
+export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
     let date = <XDate value={props.date} format="time" />;
     let content = [];
     if (props.message) {
@@ -93,33 +40,37 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
         );
     }
     if (props.file) {
-        let w = props.fileMetadata!!.imageWidth ? props.fileMetadata!!.imageWidth!! : undefined;
-        let h = props.fileMetadata!!.imageHeight ? props.fileMetadata!!.imageHeight!! : undefined;
-        let name = props.fileMetadata!!.name ? props.fileMetadata!!.name!! : undefined;
-        let size = props.fileMetadata!!.size ? props.fileMetadata!!.size!! : undefined;
+        const { fileMetadata } = props;
+        const size = props.fileMetadata!!.size || undefined;
+        const name = props.fileMetadata!!.name || undefined;
 
-        if (props.fileMetadata!!.isImage && !!w && !!h) {
-            if (props.fileMetadata!!.imageFormat === 'GIF') {
-                content.push(
-                    <MessageAnimationComponent
-                        key={'file'}
-                        file={props.file}
-                        fileName={name}
-                        width={w}
-                        height={h}
-                    />,
-                );
-            } else {
-                content.push(
-                    <MessageImageComponent
-                        key={'file'}
-                        file={props.file}
-                        fileName={name}
-                        width={w}
-                        height={h}
-                        startSelected={props.startSelected}
-                    />,
-                );
+        if (fileMetadata && fileMetadata.isImage) {
+            let w = fileMetadata.imageWidth || undefined;
+            let h = fileMetadata.imageHeight || undefined;
+
+            if (!!w && !!h) {
+                if (fileMetadata.imageFormat === 'GIF') {
+                    content.push(
+                        <MessageAnimationComponent
+                            key={'file'}
+                            file={props.file}
+                            fileName={name}
+                            width={w}
+                            height={h}
+                        />,
+                    );
+                } else {
+                    content.push(
+                        <MessageImageComponent
+                            key={'file'}
+                            file={props.file}
+                            fileName={name}
+                            width={w}
+                            height={h}
+                            startSelected={props.startSelected}
+                        />,
+                    );
+                }
             }
         } else {
             content.push(
@@ -128,21 +79,35 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                     file={props.file}
                     fileName={name}
                     fileSize={size}
+                    marginTop={0}
                 />,
             );
         }
     }
     let orgPath: string | undefined = undefined;
     let usrPath: string | undefined;
-    if (props.sender!!.primaryOrganization && !props.startSelected) {
-        orgPath = '/mail/o/' + props.sender!!.primaryOrganization!!.id;
-        usrPath = '/mail/u/' + props.sender!!.id;
+
+    if (props.sender && props.sender.primaryOrganization && !props.startSelected) {
+        orgPath = '/mail/o/' + props.sender.primaryOrganization.id;
+        usrPath = '/mail/u/' + props.sender.id;
     }
+
     return (
-        <MessageContainer compact={props.compact}>
-            <XVertical separator={4}>
-                {!props.compact && (
-                    <XHorizontal alignSelf="stretch" separator={6}>
+        <XView
+            flexDirection="column"
+            position="relative"
+            paddingLeft={15}
+            width="100%"
+            marginTop={props.compact ? 6 : 12}
+            borderRadius={6}
+        >
+            {!props.compact && (
+                <XView
+                    alignSelf="stretch"
+                    flexDirection="row"
+                    marginBottom={4}
+                >
+                    <XView marginRight={12}>
                         <XAvatar
                             size="small"
                             style="colorus"
@@ -151,21 +116,62 @@ export const MessageReplyComponent = (props: ReplyMessageProps) => {
                             cloudImageUuid={props.sender ? props.sender.photo : undefined}
                             path={usrPath}
                         />
-                        <MessageWrapper separator={2} flexGrow={1}>
-                            <XHorizontal separator={5} alignItems="center">
-                                <Name>{props.sender!!.name}</Name>
-                                {props.sender!!.primaryOrganization && (
-                                    <Organization path={orgPath}>
-                                        {props.sender!!.primaryOrganization!!.name}
-                                    </Organization>
-                                )}
-                            </XHorizontal>
-                            <DateComponent className="time">{date}</DateComponent>
-                        </MessageWrapper>
-                    </XHorizontal>
-                )}
+                    </XView>
+                    <XView
+                        flexGrow={1}
+                        width="calc(100% - 60px)"
+                        paddingTop={1}
+                    >
+                        <XView
+                            alignItems="center"
+                            flexDirection="row"
+                            marginBottom={4}
+                        >
+                            <XView
+                                marginRight={props.sender!!.primaryOrganization ? 5 : 0}
+                                fontSize={14}
+                                fontWeight="600"
+                                lineHeight="16px"
+                                color="rgba(0, 0, 0, 0.8)"
+                            >
+                                {props.sender!!.name}
+                            </XView>
+                            {props.sender!!.primaryOrganization && (
+                                <XView
+                                    as="a"
+                                    path={orgPath}
+                                    marginLeft={5}
+                                    fontSize={12}
+                                    fontWeight="600"
+                                    lineHeight="14px"
+                                    color="rgba(0, 0, 0, 0.4)"
+                                    alignSelf="flex-end"
+                                    cursor="pointer"
+                                >
+                                    {props.sender!!.primaryOrganization!!.name}
+                                </XView>
+                            )}
+                        </XView>
+                        <XView
+                            width={62}
+                            fontSize={12}
+                            fontWeight="600"
+                            lineHeight="14px"
+                            whiteSpace="nowrap"
+                            color="rgba(0, 0, 0, 0.4)"
+                            paddingTop={1}
+                        >
+                            {date}
+                        </XView>
+                    </XView>
+                </XView>
+            )}
+            <XView
+                flexShrink={0}
+                marginTop={props.compact ? 0 : 4}
+            >
                 {content}
-            </XVertical>
-        </MessageContainer>
+            </XView>
+        </XView>
     );
-};
+});
