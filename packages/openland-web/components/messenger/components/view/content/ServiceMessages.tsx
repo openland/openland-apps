@@ -69,7 +69,6 @@ export const JoinOneServiceMessage = ({
     myUserId: string;
 }) => (
     <Container>
-        🙌
         <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
     </Container>
 );
@@ -84,7 +83,6 @@ export const JoinTwoServiceMessage = ({
     myUserId: string;
 }) => (
     <Container>
-        🙌
         <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room along
         with <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
     </Container>
@@ -101,7 +99,6 @@ export const JoinManyServiceMessage = ({
 }) => {
     return (
         <Container>
-            🙌
             <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
             along with{' '}
             <span>
