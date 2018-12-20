@@ -465,7 +465,7 @@ export const ServiceMessage = (params: {
     }) as any;
 
     if (typesObject === null) {
-        return <div />;
+        return <TextServiceMessageFallback message={params.message} />;
     }
 
     return <ServiceMessageComponentByTypes typesObject={typesObject} otherParams={params} />;
