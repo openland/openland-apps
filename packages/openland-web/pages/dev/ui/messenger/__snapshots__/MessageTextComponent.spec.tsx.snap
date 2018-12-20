@@ -915,7 +915,6 @@ exports[`MessageTextComponent should render correctly 1`] = `
               ]
             }
           >
-            🙌
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -946,7 +945,6 @@ exports[`MessageTextComponent should render correctly 1`] = `
               ]
             }
           >
-            🙌
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -987,7 +985,6 @@ exports[`MessageTextComponent should render correctly 1`] = `
               ]
             }
           >
-            🙌
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -1076,19 +1073,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
              in
              
             <a
-              className={
-                Array [
-                  "
+              className="
+    cursor: pointer;
+    color: rgb(23, 144, 255);
+ 
     color: #1790ff;
-",
-                ]
-              }
+"
               onClick={[Function]}
-              style={
-                Object {
-                  "cursor": "pointer",
-                }
-              }
             >
               I am the walrus
             </a>
@@ -1167,19 +1158,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
              in
              
             <a
-              className={
-                Array [
-                  "
+              className="
+    cursor: pointer;
+    color: rgb(23, 144, 255);
+ 
     color: #1790ff;
-",
-                ]
-              }
+"
               onClick={[Function]}
-              style={
-                Object {
-                  "cursor": "pointer",
-                }
-              }
             >
               I am the walrus
             </a>
@@ -1252,19 +1237,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
             </strong>
              in 
             <a
-              className={
-                Array [
-                  "
+              className="
+    cursor: pointer;
+    color: rgb(23, 144, 255);
+ 
     color: #1790ff;
-",
-                ]
-              }
+"
               onClick={[Function]}
-              style={
-                Object {
-                  "cursor": "pointer",
-                }
-              }
             >
               I am the walrus
             </a>
@@ -1327,19 +1306,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
             </strong>
              in 
             <a
-              className={
-                Array [
-                  "
+              className="
+    cursor: pointer;
+    color: rgb(23, 144, 255);
+ 
     color: #1790ff;
-",
-                ]
-              }
+"
               onClick={[Function]}
-              style={
-                Object {
-                  "cursor": "pointer",
-                }
-              }
             >
               I am the walrus
             </a>
@@ -1397,19 +1370,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
              in
              
             <a
-              className={
-                Array [
-                  "
+              className="
+    cursor: pointer;
+    color: rgb(23, 144, 255);
+ 
     color: #1790ff;
-",
-                ]
-              }
+"
               onClick={[Function]}
-              style={
-                Object {
-                  "cursor": "pointer",
-                }
-              }
             >
               I am the walrus
             </a>
