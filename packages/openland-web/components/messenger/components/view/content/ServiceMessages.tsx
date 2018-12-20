@@ -61,6 +61,12 @@ export const KickServiceServiceMessage = TextServiceMessageFallback;
 export const PhotoChangeServiceMessage = TextServiceMessageFallback;
 export const TitleChangeServiceMessage = TextServiceMessageFallback;
 
+const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
+
+const GetRandomJoinEmoji = () => {
+    return joinEmojiList[Math.floor(Math.random() * joinEmojiList.length)];
+};
+
 export const JoinOneServiceMessage = ({
     firstUser,
     myUserId,
@@ -69,7 +75,8 @@ export const JoinOneServiceMessage = ({
     myUserId: string;
 }) => (
     <Container>
-        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
+        {GetRandomJoinEmoji()} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
+        joined the room
     </Container>
 );
 
@@ -83,8 +90,9 @@ export const JoinTwoServiceMessage = ({
     myUserId: string;
 }) => (
     <Container>
-        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room along
-        with <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
+        {GetRandomJoinEmoji()} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
+        joined the room along with{' '}
+        <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
     </Container>
 );
 
@@ -99,6 +107,7 @@ export const JoinManyServiceMessage = ({
 }) => {
     return (
         <Container>
+            {GetRandomJoinEmoji()}{' '}
             <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
             along with{' '}
             <span>
@@ -454,6 +463,7 @@ export const ServiceMessage = (params: {
     serviceMetadata: any;
     message: any;
     alphaMentions: any;
+    myUserId: string;
 }) => {
     const typesObject = resolveServiceMessageType({
         serviceMetadata: params.serviceMetadata,

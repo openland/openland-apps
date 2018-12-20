@@ -425,6 +425,7 @@ class MessageComponentInner extends React.PureComponent<
                     if (message.isService) {
                         content.push(
                             <ServiceMessage
+                                myUserId={this.props.me ? this.props.me.id : ''}
                                 serviceMetadata={message.serviceMetadata}
                                 message={message.message || ''}
                                 alphaMentions={(message as any).alphaMentions}
