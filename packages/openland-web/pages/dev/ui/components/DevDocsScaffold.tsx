@@ -42,9 +42,28 @@ export function DevDocsScaffold(props: {
                             <Sidebar.Item path="/ui/select">Select</Sidebar.Item>
                             <Sidebar.Item path="/ui/modals">Modals</Sidebar.Item>
                             <Sidebar.Item path="/ui/popper">Popper</Sidebar.Item>
-                            <Sidebar.Item path="/ui/message-text-component">
-                                Message Text Component
-                            </Sidebar.Item>
+                            <Sidebar.Item>Messenger Components</Sidebar.Item>
+                            <Sidebar.Subitem path="/ui/messenger/MessageFileComponent">
+                                MessageFileComponent
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/messenger/MessageImageComponent">
+                                MessageImageComponent
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/messenger/MessageIntroComponent">
+                                MessageIntroComponent
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/messenger/MessageComponent">
+                                MessageComponent
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/messenger/MessageReplyComponent">
+                                MessageReplyComponent
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/messenger/MessageTextComponent">
+                                MessageTextComponent
+                            </Sidebar.Subitem>
+                            <Sidebar.Subitem path="/ui/messenger/MessageWithMentionsTextComponent">
+                                MessageWithMentionsTextComponent
+                            </Sidebar.Subitem>
                             <Sidebar.Item path="/ui/userpopper">User Popper</Sidebar.Item>
                             <Sidebar.Item path="/ui/avatar">Avatar</Sidebar.Item>
                             <Sidebar.Item path="/ui/files">Files</Sidebar.Item>

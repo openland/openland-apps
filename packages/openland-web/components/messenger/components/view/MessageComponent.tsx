@@ -32,6 +32,7 @@ import { File, EditPostProps } from '../../../../fragments/MessengerRootComponen
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { MessageContainer } from '../../message/MessageContainer';
+import { ServiceMessage } from './content/ServiceMessages';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -388,6 +389,7 @@ class MessageComponentInner extends React.PureComponent<
             if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
                 isIntro = true;
             }
+
             if (message.message && message.alphaTitle && message.alphaType === 'POST') {
                 isPost = true;
                 let meId = this.props.me ? this.props.me.id : '';
@@ -420,16 +422,25 @@ class MessageComponentInner extends React.PureComponent<
                 );
             } else {
                 if (message.message && message.message.length > 0 && !isIntro && !isPost) {
-                    content.push(
-                        <MessageTextComponent
-                            message={message.message}
-                            mentions={message.mentions}
-                            alphaMentions={(message as any).alphaMentions}
-                            key={'text'}
-                            isService={message.isService}
-                            isEdited={edited}
-                        />,
-                    );
+                    if (message.isService) {
+                        content.push(
+                            <ServiceMessage
+                                serviceMetadata={message.serviceMetadata}
+                                message={message.message || ''}
+                                alphaMentions={(message as any).alphaMentions}
+                            />,
+                        );
+                    } else {
+                        content.push(
+                            <MessageTextComponent
+                                message={message.message || ''}
+                                mentions={message.mentions}
+                                alphaMentions={(message as any).alphaMentions}
+                                key={'text'}
+                                isEdited={edited}
+                            />,
+                        );
+                    }
                 }
 
                 const { file, fileMetadata } = message;

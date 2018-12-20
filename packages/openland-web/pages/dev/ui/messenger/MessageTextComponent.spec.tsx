@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as renderer from 'react-test-renderer';
 
-jest.doMock('./components/DevDocsScaffold', () => {
+jest.doMock('../components/DevDocsScaffold', () => {
     const ComponentToMock = ({ children }: any) => <div>{children}</div>;
 
     return {
@@ -10,7 +10,7 @@ jest.doMock('./components/DevDocsScaffold', () => {
 });
 
 describe.only('MessageTextComponent', () => {
-    const PageComponent = require('./message-text-component.page').default;
+    const PageComponent = require('./MessageTextComponent.page').default;
     it('should render correctly', () => {
         expect(renderer.create(<PageComponent />).toJSON()).toMatchSnapshot();
     });

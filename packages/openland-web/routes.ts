@@ -192,8 +192,26 @@ routes.add('/ui/popper', '/dev/ui/popper');
 routes.add('/ui/popper/', '/dev/ui/popper');
 routes.add('/ui/userpopper', '/dev/ui/userpopper');
 routes.add('/ui/userpopper/', '/dev/ui/userpopper');
-routes.add('/ui/message-text-component', '/dev/ui/message-text-component');
-routes.add('/ui/message-text-component/', '/dev/ui/message-text-component');
+routes.add('/ui/messenger/MessageFileComponent', '/dev/ui/messenger/MessageFileComponent');
+routes.add('/ui/messenger/MessageFileComponent/', '/dev/ui/messenger/MessageFileComponent');
+routes.add('/ui/messenger/MessageImageComponent', '/dev/ui/messenger/MessageImageComponent');
+routes.add('/ui/messenger/MessageImageComponent/', '/dev/ui/messenger/MessageImageComponent');
+routes.add('/ui/messenger/MessageIntroComponent', '/dev/ui/messenger/MessageIntroComponent');
+routes.add('/ui/messenger/MessageIntroComponent/', '/dev/ui/messenger/MessageIntroComponent');
+routes.add('/ui/messenger/MessageComponent', '/dev/ui/messenger/MessageComponent');
+routes.add('/ui/messenger/MessageComponent/', '/dev/ui/messenger/MessageComponent');
+routes.add('/ui/messenger/MessageReplyComponent', '/dev/ui/messenger/MessageReplyComponent');
+routes.add('/ui/messenger/MessageReplyComponent/', '/dev/ui/messenger/MessageReplyComponent');
+routes.add('/ui/messenger/MessageTextComponent', '/dev/ui/messenger/MessageTextComponent');
+routes.add('/ui/messenger/MessageTextComponent/', '/dev/ui/messenger/MessageTextComponent');
+routes.add(
+    '/ui/messenger/MessageWithMentionsTextComponent',
+    '/dev/ui/messenger/MessageWithMentionsTextComponent',
+);
+routes.add(
+    '/ui/messenger/MessageWithMentionsTextComponent/',
+    '/dev/ui/messenger/MessageWithMentionsTextComponent',
+);
 routes.add('/ui/avatar', '/dev/ui/avatar');
 routes.add('/ui/avatar/', '/dev/ui/avatar');
 routes.add('/ui/links', '/dev/ui/links');
