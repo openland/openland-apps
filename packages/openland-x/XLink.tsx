@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { makeNavigable, NavigableParentProps } from './Navigable';
+import { css, cx } from 'linaria';
+
+const XLinkStyle = css`
+    cursor: pointer;
+    color: rgb(23, 144, 255);
+`;
 
 export type XLinkProps = NavigableParentProps<{
     className?: string;
-    
 }>;
 
-export const XLink = makeNavigable<{ className?: string, dataTestId?: string; }>(props => {
-    let className = props.className ? props.className : undefined;
-    if (props.active) {
-        if (className) {
-            className += ' is-active';
-        } else {
-            className = 'is-active';
-        }
-    }
+export const XLink = makeNavigable<{ className?: string; dataTestId?: string }>(props => {
+    let className = cx(XLinkStyle, props.className, props.active && 'is-active');
+
     return (
         <a
             data-test-id={props.dataTestId}
-            style={{ cursor: 'pointer' }}
             href={props.href}
             target={props.hrefTarget}
             onClick={props.onClick}
