@@ -1069,7 +1069,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
             </span>
              is interested in your job opportunity 
             <strong>
+              “
               “Looking for React developer“
+              “
             </strong>
              in
              
@@ -1158,7 +1160,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
             </span>
              is looking to recommend a candidate in response to your post 
             <strong>
+              “
               “Looking for React developer“
+              “
             </strong>
              in
              
@@ -1242,7 +1246,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
              is responding to your post
              
             <strong>
+              “
               “Office hours with XX“
+              “
             </strong>
              in 
             <a
@@ -1315,7 +1321,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
              is responding to your post
              
             <strong>
+              “
               “Looking for React developer“
+              “
             </strong>
              in 
             <a
@@ -1382,7 +1390,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
             </span>
              is interested to make a recommendation following up to your post 
             <strong>
+              “
               “Looking for React developer“
+              “
             </strong>
              in
              
