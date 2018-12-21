@@ -24,14 +24,14 @@ import { RoomCreateMutation } from 'openland-api';
 const HeadButton = css`
     & > a svg {
         margin-left: -4px;
-    },
+    }
     & > a svg * {
-        transition: all .15s ease;
+        transition: all 0.15s ease;
         fill: rgba(0, 0, 0, 0.2);
-    },
+    }
     & > a:hover svg * {
         fill: rgba(0, 0, 0, 0.5);
-    },
+    }
     & > a:active svg * {
         fill: #ffffff;
     }
@@ -276,12 +276,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
 
     render() {
         return (
-            <XView
-                flexGrow={1}
-                height="100vh"
-                justifyContent="center"
-                position="relative"
-            >
+            <XView flexGrow={1} height="100vh" justifyContent="center" position="relative">
                 <XView
                     flexGrow={1}
                     maxHeight="100%"
@@ -390,12 +385,10 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
     }
 }
 
-export const ComposeFragment = withUserInfo((props) => {
+export const ComposeFragment = withUserInfo(props => {
     return (
         <MessengerContext.Consumer>
-            {messenger => (
-                <ComposeComponentRender messenger={messenger!!} me={props.user!} />
-            )}
+            {messenger => <ComposeComponentRender messenger={messenger!!} me={props.user!} />}
         </MessengerContext.Consumer>
     );
 });
