@@ -1,19 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 import IcClose from 'openland-icons/ic-close.svg';
-
-const fileIcon = css`
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    background-color: #f3f3f5;
-    border-radius: 50px;
-    background-image: url(/static/X/file.svg);
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-right: 12px;
-`;
+import IcFile from 'openland-icons/ic-file.svg';
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
@@ -71,7 +59,18 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
             position="relative"
             hoverColor="#1790ff"
         >
-            <div className={fileIcon}/>
+            <XView
+                width={40}
+                height={40}
+                flexShrink={0}
+                marginRight={12}
+                backgroundColor="#f3f3f5"
+                borderRadius={50}
+                alignItems="center"
+                justifyContent="center"
+            >
+                <IcFile />
+            </XView>
             <XView
                 flexDirection="column"
                 flexGrow={1}
@@ -97,7 +96,7 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
             </XView>
             {props.clearButton && (
                 <XView onClick={props.onClearClick}>
-                    <IcClose/>
+                    <IcClose />
                 </XView>
             )}
         </XView>
