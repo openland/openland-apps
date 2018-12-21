@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withConversationSettingsUpdate } from 'openland-web/api/withConversationSettingsUpdate';
-import NotificationsIcon from 'openland-icons/ic-notifications.svg';
-import NotificationsOffIcon from 'openland-icons/ic-notifications-off.svg';
+import NotificationsOnIcon from 'openland-icons/notifications/ic-notifications-on.svg';
+import NotificationsOffIcon from 'openland-icons/notifications/ic-notifications-off.svg';
 import { css } from 'linaria';
 
 const muteButtonClass = css`
@@ -37,7 +37,7 @@ class NotificationSettingsComponent extends React.Component<
     render() {
         return (
             <div className={muteButtonClass} onClick={this.handleClick}>
-                {this.props.settings.mute ? <NotificationsOffIcon /> : <NotificationsIcon />}
+                {this.props.settings.mute ? <NotificationsOffIcon /> : <NotificationsOnIcon />}
             </div>
         );
     }
