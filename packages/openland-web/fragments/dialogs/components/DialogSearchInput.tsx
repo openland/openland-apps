@@ -8,7 +8,7 @@ let searchStyle = css`
     margin-right: 16px;
     margin-top: 5px;
     margin-bottom: 12px;
-    height: 36px;
+    height: 36px !important;
     & svg > g > path:last-child {
         fill: #c8c8c8;
     }
@@ -19,8 +19,8 @@ let searchStyle = css`
     & input {
         padding-left: 33px;
     }
-    > .icom {
-        left: 12px;
+    > .icon {
+        left: 12px !important;
     }
 `;
 
