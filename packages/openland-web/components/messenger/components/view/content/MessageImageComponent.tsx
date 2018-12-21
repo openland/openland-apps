@@ -7,20 +7,6 @@ import { XModal } from 'openland-x-modal/XModal';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 
-const ImgDownload = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-`;
-
 const ModalBody = css`
     display: flex;
     justify-content: center;
@@ -98,13 +84,22 @@ export class MessageImageComponent extends React.PureComponent<
                 height={height}
                 className={ModalImage}
             />
-            <a
-                className={ImgDownload}
-                target="_blank"
+            <XView
+                as="a"
+                justifyContent="center"
+                alignItems="center"
+                width={36}
+                height={36}
+                borderRadius={5}
+                backgroundColor="rgba(0, 0, 0, 0.6)"
+                opacity={0}
+                position="absolute"
+                top={20}
+                right={20}
                 href={'https://ucarecdn.com/' + this.props.file + '/-/preview/-/inline/no/'}
             >
                 <DownloadButtonIcon />
-            </a>
+            </XView>
         </div>
     );
 
