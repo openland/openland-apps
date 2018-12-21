@@ -11,7 +11,13 @@ import { XOverflow } from '../../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withSetReaction, withChangeReaction } from '../../../../../../api/withSetReaction';
 import IntroIcon from 'openland-icons/ic-tag-intro.svg';
-import { SharedRoomKind } from 'openland-api/Types';
+import { 
+    SharedRoomKind, 
+    MessageFull_reactions, 
+    MessageFull_urlAugmentation_user_User, 
+    MessageFull_fileMetadata, 
+    MessageFull_urlAugmentation 
+} from 'openland-api/Types';
 
 const SetReactionButton = withSetReaction(props => (
     <XMutation mutation={props.setReaction}>{props.children}</XMutation>
@@ -150,47 +156,11 @@ function niceBytes(x: number | undefined) {
 }
 
 interface MessageIntroComponentProps {
-    urlAugmentation: {
-        url: string;
-        title: string | null;
-        date: string | null;
-        subtitle: string | null;
-        description: string | null;
-        photo: {
-            uuid: string;
-            crop: {
-                x: number;
-                y: number;
-                w: number;
-                h: number;
-            } | null;
-        } | null;
-    };
+    urlAugmentation: MessageFull_urlAugmentation;
     file: string | null;
-    fileMetadata: {
-        name: string;
-        mimeType: string | null;
-        isImage: boolean;
-        imageWidth: number | null;
-        imageHeight: number | null;
-        imageFormat: string | null;
-        size: number;
-    } | null;
-    user: {
-        id: string;
-        name: string;
-        photo: string | null;
-        primaryOrganization: {
-            id?: string | null;
-            name?: string | null;
-        } | null;
-    } | null;
-    reactions: {
-        user: {
-            id: string;
-        };
-        reaction: string;
-    }[];
+    fileMetadata: MessageFull_fileMetadata | null;
+    user: MessageFull_urlAugmentation_user_User;
+    reactions: MessageFull_reactions[];
     messageId: string;
     meId: string;
     senderId: string;

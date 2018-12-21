@@ -7,7 +7,11 @@ import CheckIconSmall from 'openland-icons/ic-check-small.svg';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { withSetReaction } from '../../../../../../api/withSetReaction';
 import PassedIcon from 'openland-icons/ic-passed.svg';
-import { SharedRoomKind } from 'openland-api/Types';
+import { 
+    SharedRoomKind, 
+    MessageFull_reactions, 
+    MessageFull_urlAugmentation_user_User
+} from 'openland-api/Types';
 
 const SetAccesReactionButton = withSetReaction(
     withRouter(props => (
@@ -46,21 +50,8 @@ const Counter = Glamorous.div<{ alignSelf?: string; accepted: boolean }>(props =
 }));
 
 interface ReactionsRenderProps {
-    user: {
-        id: string;
-        name: string;
-        photo: string | null;
-        primaryOrganization: {
-            id?: string | null;
-            name?: string | null;
-        } | null;
-    } | null;
-    reactions: {
-        user: {
-            id: string;
-        };
-        reaction: string;
-    }[];
+    user: MessageFull_urlAugmentation_user_User;
+    reactions: MessageFull_reactions[];
     messageId: string;
     meId: string;
     senderId: string;
