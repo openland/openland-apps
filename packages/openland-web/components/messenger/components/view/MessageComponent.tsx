@@ -9,13 +9,12 @@ import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
-import { MessageIntroComponent } from './content/MessageIntroComponent';
+import { MessageIntroComponent } from './content/introMessage/MessageIntroComponent';
 import { MessagePostComponent } from './content/MessagePostComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
-import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import {
     MessageFull,
     UserShort,

@@ -23,7 +23,7 @@ import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
-import { PostIntroModal } from './content/PostIntroModal';
+import { PostIntroModal } from './content/introMessage/PostIntroModal';
 import { withUserInfo, UserInfo } from '../../../UserInfo';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { withMessageState } from '../../../../api/withMessageState';

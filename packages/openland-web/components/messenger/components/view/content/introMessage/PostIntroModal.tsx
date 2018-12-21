@@ -9,13 +9,13 @@ import { XLink, XLinkProps } from 'openland-x/XLink';
 import { XSelect } from 'openland-x/XSelect';
 import IcFile from 'openland-icons/ic-file-3.svg';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { withExplorePeople } from '../../../../../api/withExplorePeople';
-import { withIntro } from '../../../../../api/withIntro';
+import { withExplorePeople } from '../../../../../../api/withExplorePeople';
+import { withIntro } from '../../../../../../api/withIntro';
 import { XFileUpload } from 'openland-x/files/XFileUpload';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { MessageUploadComponent } from './MessageUploadComponent';
-import { MessageFileComponent } from './MessageFileComponent';
+import { MessageUploadComponent } from '../MessageUploadComponent';
+import { MessageFileComponent } from '../MessageFileComponent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XThemeDefault } from 'openland-x/XTheme';
 

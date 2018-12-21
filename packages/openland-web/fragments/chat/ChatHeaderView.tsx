@@ -97,17 +97,15 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
     }
 
     callButton = (
-        <XWithRole role="feature-non-production">
-            <TalkContext.Consumer>
-                {ctx =>
-                    ctx.cid !== room.id && (
-                        <XView paddingRight={8}>
-                            <XButton text="Call" onClick={() => ctx.joinCall(room.id)} />
-                        </XView>
-                    )
-                }
-            </TalkContext.Consumer>
-        </XWithRole>
+        <TalkContext.Consumer>
+            {ctx =>
+                ctx.cid !== room.id && (
+                    <XView paddingRight={8}>
+                        <XButton text="Call" onClick={() => ctx.joinCall(room.id)} />
+                    </XView>
+                )
+            }
+        </TalkContext.Consumer>
     );
 
     muteButton = <HeaderMuteButton settings={room.settings} roomId={room.id} />;
