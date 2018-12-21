@@ -141,10 +141,7 @@ class MessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
 > {
-    static getDerivedStateFromProps = (
-        props: MessageComponentInnerProps,
-        state: { isEditView: boolean },
-    ) => {
+    static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
         if (isServerMessage(props.message)) {
             if (props.messagesContext.editMessageId === props.message.id) {
                 return {

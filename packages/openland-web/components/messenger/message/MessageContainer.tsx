@@ -5,7 +5,6 @@ import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XPopper2 } from 'openland-web/components/XPopper2';
-import { usePopperClick } from 'openland-web/components/usePopperClick';
 import { usePopperHover } from 'openland-web/components/usePopperHover';
 import { UserPopup } from 'openland-web/fragments/UserPopup';
 
@@ -28,6 +27,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
     let onMouseEnter = React.useMemo(() => () => onHover(true), [onHover]);
     let onMouseLeave = React.useMemo(() => () => onHover(false), [onHover]);
     let popupRef = React.useRef(null);
+
     let popup = (
         <XPopper2 ref={popupRef} placement="top">
             <UserPopup id={props.sender.id} />
@@ -38,7 +38,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
 
     // Selector Icon
     let selector = (
-        <XView marginRight={22} width={18} height={22} alignSelf="flex-start">
+        <XView marginRight={22} width={18} height={22} alignSelf="center">
             {(hover || props.selecting) && (
                 <MessageSelector selected={props.selected} onClick={props.onSelected} />
             )}
@@ -46,36 +46,29 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
     );
 
     // Left side of message
-    let preambula: any;
-    if (props.compact) {
-        preambula = (
-            <XView
-                width={55}
-                height={22}
-                alignSelf="flex-start"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                fontSize={12}
-                paddingTop={1}
-                fontWeight="600"
-                lineHeight="22px"
-                color="rgba(0, 0, 0, 0.4)"
-            >
-                {hover && <XDate value={props.date.toString()} format="time" />}
-            </XView>
-        );
-    } else {
-        preambula = (
-            <XView width={55} alignSelf="flex-start" {...popupHover}>
-                <XAvatar2
-                    id={props.sender.id}
-                    title={props.sender.name}
-                    src={props.sender.photo}
-                    size={36}
-                />
-            </XView>
-        );
-    }
+    const { compact, sender, date } = props;
+
+    const preambula = (
+        <XView
+            width={55}
+            height={22}
+            alignSelf="flex-start"
+            fontSize={12}
+            whiteSpace={'nowrap'}
+            overflow={compact ? 'hidden' : null}
+            paddingTop={compact ? 1 : null}
+            fontWeight={compact ? '600' : undefined}
+            lineHeight={compact ? '22px' : undefined}
+            color={compact ? 'rgba(0, 0, 0, 0.4)' : undefined}
+            {...(compact ? {} : popupHover)}
+        >
+            {!compact ? (
+                <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+            ) : (
+                hover && <XDate value={date.toString()} format="time" />
+            )}
+        </XView>
+    );
 
     // Content
     let content: any;

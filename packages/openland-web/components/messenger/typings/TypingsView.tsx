@@ -9,6 +9,7 @@ export interface TypingsViewProps {
 export const TypingsView = React.memo<TypingsViewProps>(props => {
     let messeger = React.useContext(MessengerContext);
     let [typing, setTyping] = React.useState<string | null>(null);
+
     React.useEffect(
         () => {
             return messeger.getTypings(props.conversationId).subcribe(typings => {
@@ -25,6 +26,8 @@ export const TypingsView = React.memo<TypingsViewProps>(props => {
     if (typing) {
         return (
             <XView
+                marginLeft={55}
+                alignItems="flex-start"
                 opacity={0.5}
                 fontSize={12}
                 fontWeight="600"

@@ -1,40 +1,35 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { MessageListComponent } from './view/MessageListComponent';
 import { XLoader } from 'openland-x/XLoader';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { MessagesContainer } from './view/MessagesContainer';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { TypingsView } from '../typings/TypingsView';
-
-const TypingWrapper = Glamorous.div({
-    display: 'flex',
-    alignItems: 'flex-start',
-    width: '100%',
-    flexShrink: 0,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-});
-
-const TypingContent = Glamorous(XHorizontal)({
-    backgroundColor: '#fff',
-    maxHeight: 33,
-    maxWidth: 930,
-    paddingLeft: 112,
-    paddingRight: 40,
-    margin: 'auto',
-});
+import { XView } from 'react-mental';
 
 const TypingComponent = (props: { chatId: string }) => (
-    <TypingWrapper>
-        <TypingContent>
+    <XView
+        alignItems="center"
+        width={'100%'}
+        flexShrink={0}
+        position={'absolute'}
+        bottom={0}
+        left={0}
+    >
+        <XView
+            alignItems="flex-start"
+            width={'100%'}
+            backgroundColor={'#fff'}
+            maxHeight={33}
+            maxWidth={930}
+            paddingLeft={60}
+            paddingRight={40}
+        >
             <TypingsView conversationId={props.chatId} />
-        </TypingContent>
-    </TypingWrapper>
+        </XView>
+    </XView>
 );
 
 interface ConversationMessagesComponentProps {

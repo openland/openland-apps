@@ -158,7 +158,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         key={'date-' + dstr}
                         justifyContent="center"
                         alignItems="center"
-                        top={8}
                         zIndex={1}
                         marginTop={24}
                         marginBottom={0}
