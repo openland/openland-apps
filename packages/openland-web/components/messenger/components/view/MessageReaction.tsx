@@ -74,6 +74,7 @@ class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
             <XHorizontal separator={2} alignItems="center">
                 {this.defaultReactions.map((r: string) => (
                     <ReactionItem
+                        key={'msg_reaction' + r}
                         onClick={e => {
                             e.stopPropagation();
                             this.handleSetReaction(r);

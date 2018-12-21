@@ -425,6 +425,7 @@ class MessageComponentInner extends React.PureComponent<
                                 serviceMetadata={message.serviceMetadata}
                                 message={message.message || ''}
                                 alphaMentions={(message as any).alphaMentions}
+                                key={'service_message'}
                             />,
                         );
                     } else {
