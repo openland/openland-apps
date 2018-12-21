@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { DialogSearchInput } from './DialogSearcInput';
+import { DialogSearchInput } from './DialogSearchInput';
 import { XListView } from 'openland-web/components/XListView';
 import Glamorous from 'glamorous';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -17,37 +17,32 @@ export interface DialogListViewProps {
     onDialogClick?: (id: string) => void;
 }
 
-export const DialogListView = React.memo<DialogListViewProps>((props) => {
-
+export const DialogListView = React.memo<DialogListViewProps>(props => {
     let messenger = React.useContext(MessengerContext);
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
 
-    const renderLoading = React.useMemo((() => {
+    const renderLoading = React.useMemo(() => {
         return () => {
             return (
                 <LoadingWrapper>
                     <XButton alignSelf="center" style="flat" loading={true} />
                 </LoadingWrapper>
             );
-        }
-    }), []);
-    const renderDialog = React.useMemo(() => {
-        return (item: DialogDataSourceItem) => (
-            <DialogView item={item} />
-        );
-    }, [props.onDialogClick]);
+        };
+    }, []);
+    const renderDialog = React.useMemo(
+        () => {
+            return (item: DialogDataSourceItem) => <DialogView item={item} />;
+        },
+        [props.onDialogClick],
+    );
 
     return (
         <XView flexGrow={1} flexBasis={0} minHeight={0}>
-            <DialogSearchInput
-                value={query}
-                onChange={setQuery}
-            />
+            <DialogSearchInput value={query} onChange={setQuery} />
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                {isSearching && (
-                    <DialogSearchResults variables={{ query: query }} />
-                )}
+                {isSearching && <DialogSearchResults variables={{ query: query }} />}
                 {!isSearching && (
                     <XListView
                         dataSource={messenger.dialogList.dataSource}
@@ -59,5 +54,5 @@ export const DialogListView = React.memo<DialogListViewProps>((props) => {
                 )}
             </XView>
         </XView>
-    )
-})
+    );
+});
