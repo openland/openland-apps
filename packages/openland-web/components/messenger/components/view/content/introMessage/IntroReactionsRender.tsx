@@ -94,8 +94,8 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     return null;
                 } else {
                     return (
-                        <Counter 
-                            alignSelf="flex-end" 
+                        <Counter
+                            alignSelf="flex-end"
                             accepted={true}
                             icon={<CheckIconSmall />}
                             text="Accepted"
@@ -109,8 +109,8 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
         } else if (conversationType !== null) {
             if (reactionsLength > 0 && acceptLength > 0) {
                 return (
-                    <Counter 
-                        alignSelf="flex-end" 
+                    <Counter
+                        alignSelf="flex-end"
                         accepted={true}
                         icon={<CheckIconSmall />}
                         text={`${acceptLength} accepted`}
@@ -126,13 +126,13 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
     } else if (senderId !== meId) {
         if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
             return (
-                <XView 
-                    justifyContent="space-between" 
+                <XView
+                    justifyContent="space-between"
                     alignItems="center"
                     flexDirection="row"
                     marginTop={12}
                 >
-                    <Counter 
+                    <Counter
                         accepted={false}
                         icon={<PassedIcon />}
                         text="You passed"
@@ -140,7 +140,7 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     {reactionsLength > 0 &&
                         conversationType !== null &&
                         acceptLength > 0 && (
-                            <Counter 
+                            <Counter
                                 accepted={true}
                                 icon={<CheckIconSmall />}
                                 text={`${acceptLength} accepted`}
@@ -150,15 +150,15 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
             );
         } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
             return (
-                <XView 
-                    justifyContent="space-between" 
+                <XView
+                    justifyContent="space-between"
                     alignItems="center"
                     flexDirection="row"
                     marginTop={12}
                 >
                     {reactionsLength > 0 &&
                         acceptLength > 0 && (
-                            <Counter 
+                            <Counter
                                 accepted={true}
                                 icon={<CheckIconSmall />}
                                 text={acceptLength === 1 ? 'You accepted' : `You + ${acceptLength - 1} accepted`}
@@ -168,8 +168,8 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
             );
         } else {
             return (
-                <XView 
-                    justifyContent="space-between" 
+                <XView
+                    justifyContent="space-between"
                     alignItems="center"
                     flexDirection="row"
                     marginTop={12}
