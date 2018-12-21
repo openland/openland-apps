@@ -1,15 +1,14 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import CheckIconSmall from 'openland-icons/ic-check-small.svg';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { withSetReaction } from '../../../../../../api/withSetReaction';
 import PassedIcon from 'openland-icons/ic-passed.svg';
-import { 
-    SharedRoomKind, 
-    MessageFull_reactions, 
+import {
+    SharedRoomKind,
+    MessageFull_reactions,
     MessageFull_urlAugmentation_user_User
 } from 'openland-api/Types';
 
@@ -28,26 +27,38 @@ const SetAccesReactionButton = withSetReaction(
     userId: string;
 }>;
 
-const Counter = Glamorous.div<{ alignSelf?: string; accepted: boolean }>(props => ({
-    display: 'flex',
-    alignItems: 'center',
-    alignSelf: props.alignSelf,
-    height: 22,
-    borderRadius: 16,
-    backgroundColor: props.accepted ? '#e6f7e6' : '#f6f6f6',
-    paddingLeft: 10,
-    paddingRight: 10,
-    '& svg': {
-        marginRight: 5,
-    },
-    '& span': {
-        opacity: props.accepted ? 0.7 : 0.5,
-        fontSize: 12,
-        fontWeight: 600,
-        letterSpacing: -0.2,
-        color: props.accepted ? '#65b969' : '#000',
-    },
-}));
+interface CounterProps {
+    alignSelf?: "center" | "stretch" | "flex-end" | "flex-start" | null | undefined;
+    accepted: boolean;
+    icon: any;
+    text: string;
+    marginTop?: number;
+}
+
+const Counter = (props: CounterProps) => (
+    <XView
+        alignSelf={props.alignSelf}
+        flexDirection="row"
+        alignItems="center"
+        height={22}
+        borderRadius={16}
+        backgroundColor={props.accepted ? '#e6f7e6' : '#f6f6f6'}
+        paddingLeft={10}
+        paddingRight={10}
+        marginTop={props.marginTop}
+    >
+        {props.icon}
+        <XView
+            opacity={props.accepted ? 0.7 : 0.5}
+            fontSize={12}
+            fontWeight="600"
+            color={props.accepted ? '#65b969' : '#000'}
+            marginLeft={5}
+        >
+            {props.text}
+        </XView>
+    </XView>
+);
 
 interface ReactionsRenderProps {
     user: MessageFull_urlAugmentation_user_User;
@@ -83,10 +94,13 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     return null;
                 } else {
                     return (
-                        <Counter alignSelf="flex-end" accepted={true}>
-                            <CheckIconSmall />
-                            <span>Accepted</span>
-                        </Counter>
+                        <Counter 
+                            alignSelf="flex-end" 
+                            accepted={true}
+                            icon={<CheckIconSmall />}
+                            text="Accepted"
+                            marginTop={12}
+                        />
                     );
                 }
             } else {
@@ -95,10 +109,13 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
         } else if (conversationType !== null) {
             if (reactionsLength > 0 && acceptLength > 0) {
                 return (
-                    <Counter alignSelf="flex-end" accepted={true}>
-                        <CheckIconSmall />
-                        <span>{acceptLength} accepted</span>
-                    </Counter>
+                    <Counter 
+                        alignSelf="flex-end" 
+                        accepted={true}
+                        icon={<CheckIconSmall />}
+                        text={`${acceptLength} accepted`}
+                        marginTop={12}
+                    />
                 );
             } else {
                 return null;
@@ -109,40 +126,54 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
     } else if (senderId !== meId) {
         if (reactions.find(r => r.user.id === meId && r.reaction === 'pass')) {
             return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
-                    <Counter accepted={false}>
-                        <PassedIcon />
-                        <span>You passed</span>
-                    </Counter>
+                <XView 
+                    justifyContent="space-between" 
+                    alignItems="center"
+                    flexDirection="row"
+                    marginTop={12}
+                >
+                    <Counter 
+                        accepted={false}
+                        icon={<PassedIcon />}
+                        text="You passed"
+                    />
                     {reactionsLength > 0 &&
                         conversationType !== null &&
                         acceptLength > 0 && (
-                            <Counter accepted={true}>
-                                <CheckIconSmall />
-                                <span>{acceptLength} accepted</span>
-                            </Counter>
+                            <Counter 
+                                accepted={true}
+                                icon={<CheckIconSmall />}
+                                text={`${acceptLength} accepted`}
+                            />
                         )}
-                </XHorizontal>
+                </XView>
             );
         } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
             return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
+                <XView 
+                    justifyContent="space-between" 
+                    alignItems="center"
+                    flexDirection="row"
+                    marginTop={12}
+                >
                     {reactionsLength > 0 &&
                         acceptLength > 0 && (
-                            <Counter accepted={true}>
-                                <CheckIconSmall />
-                                {acceptLength === 1 ? (
-                                    <span>You accepted</span>
-                                ) : (
-                                        <span>You + {acceptLength - 1} accepted</span>
-                                    )}
-                            </Counter>
+                            <Counter 
+                                accepted={true}
+                                icon={<CheckIconSmall />}
+                                text={acceptLength === 1 ? 'You accepted' : `You + ${acceptLength - 1} accepted`}
+                            />
                         )}
-                </XHorizontal>
+                </XView>
             );
         } else {
             return (
-                <XHorizontal justifyContent="space-between" alignItems="center">
+                <XView 
+                    justifyContent="space-between" 
+                    alignItems="center"
+                    flexDirection="row"
+                    marginTop={12}
+                >
                     <SetAccesReactionButton
                         variables={{
                             messageId: messageId,
@@ -154,12 +185,13 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     </SetAccesReactionButton>
                     {reactionsLength > 0 &&
                         acceptLength > 0 && (
-                            <Counter accepted={true}>
-                                <CheckIconSmall />
-                                <span>{acceptLength} accepted</span>
-                            </Counter>
+                            <Counter
+                                accepted={true}
+                                icon={<CheckIconSmall />}
+                                text={`${acceptLength} accepted`}
+                            />
                         )}
-                </XHorizontal>
+                </XView>
             );
         }
     } else {
