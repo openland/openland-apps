@@ -101,7 +101,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
             <TalkContext.Consumer>
                 {ctx =>
                     ctx.cid !== room.id && (
-                        <XButton text="Call" size="small" onClick={() => ctx.joinCall(room.id)} />
+                        <XButton text="Call" size="default" onClick={() => ctx.joinCall(room.id)} />
                     )
                 }
             </TalkContext.Consumer>
