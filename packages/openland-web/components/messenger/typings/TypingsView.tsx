@@ -1,6 +1,15 @@
 import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XView } from 'react-mental';
+import { css } from 'linaria';
+
+const typingClassName = css`
+    opacity: 0.5;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    color: rgb(51, 69, 98);
+`;
 
 export interface TypingsViewProps {
     conversationId: string;
@@ -35,7 +44,7 @@ export const TypingsView = React.memo<TypingsViewProps>(props => {
                 marginTop={8}
                 marginBottom={8}
             >
-                {typing}
+                <span className={typingClassName}>{typing}</span>
             </XView>
         );
     } else {
