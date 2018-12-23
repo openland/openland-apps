@@ -1,1 +1,1 @@
-nativefier --name "Openland" --internal-urls ".*" --icon "./packages/openland-desktop/icon.png" https://app.openland.com
+nativefier --name "Openland" --internal-urls ".*" --icon "./packages/openland-desktop/icon.png" https://app.openland.com ./build/desktop
