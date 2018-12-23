@@ -289,6 +289,17 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                         padding: 10
                     },
                 },
+                onCreate: (data: PopperJS.Data) => {
+                    if (this._arrowNode) {
+                        this._arrowNode.setAttribute('x-placement', data.placement);
+                    }
+                    if (this._node) {
+                        this._node.setAttribute('x-placement', data.placement);
+                    }
+                    if (this._contentNode) {
+                        this._contentNode.setAttribute('x-placement', data.placement);
+                    }
+                },
                 onUpdate: (data: PopperJS.Data) => {
                     if (this._arrowNode) {
                         this._arrowNode.setAttribute('x-placement', data.placement);
@@ -301,11 +312,6 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                     }
                 },
                 placement: this.props.placement !== undefined ? this.props.placement : 'auto'
-            });
-            setTimeout(() => {
-                if (this._popper) {
-                    this._popper.scheduleUpdate();
-                }
             });
         }
     }
@@ -391,13 +397,8 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     }
 
     componentDidMount() {
-        window.setTimeout(() => {
-            this.setState({ ownMounted: true });
-        });
-
         if (this.props.onClickOutside) {
             document.addEventListener('mousedown', this.onMouseDown, true);
-
         }
     }
 
