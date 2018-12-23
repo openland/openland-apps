@@ -65,7 +65,6 @@ interface XPopperProps {
 interface XPopperState {
     showPopper: boolean;
     willHide: boolean;
-    ownMounted: boolean;
 }
 
 const PlacementTop = '&[x-placement^="top"]';
@@ -193,8 +192,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
         this.state = {
             showPopper: this.props.show === true,
-            willHide: false,
-            ownMounted: false
+            willHide: false
         };
         this.arrow = props.arrow === undefined ? (
             <XPopperArrow />
@@ -464,7 +462,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
         return (
             <XPopperContext.Provider value={{ invalidate: this.invalidate }}>
                 {target}
-                {((this.state.showPopper || this.props.show === true) && canUseDOM && this.state.ownMounted && ReactDOM.createPortal(
+                {((this.state.showPopper || this.props.show === true) && canUseDOM && ReactDOM.createPortal(
                     <XPopperGrouped {...renderProps} parent={this} />,
                     document.body
                 ))}
