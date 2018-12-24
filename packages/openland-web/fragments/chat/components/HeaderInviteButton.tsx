@@ -6,6 +6,7 @@ import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { css } from 'linaria';
 
 const inviteButtonClass = css`
+    margin-left: 16px !important;
     & svg > g > path {
         transition: all 0.2s;
     }

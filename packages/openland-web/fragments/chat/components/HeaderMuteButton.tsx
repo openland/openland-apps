@@ -8,7 +8,6 @@ const muteButtonClass = css`
     display: flex;
     align-items: center;
     cursor: pointer;
-    margin-right: -3px !important;
     & svg path:last-child {
         fill: rgba(0, 0, 0, 0.2);
     }
