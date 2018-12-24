@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
@@ -100,7 +99,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
         <TalkContext.Consumer>
             {ctx =>
                 ctx.cid !== room.id && (
-                    <XView paddingRight={8}>
+                    <XView>
                         <XButton text="Call" onClick={() => ctx.joinCall(room.id)} />
                     </XView>
                 )

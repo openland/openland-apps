@@ -17,6 +17,10 @@ export interface MessageTextComponentProps {
     isService?: boolean;
 }
 
+const LinkText = css`
+    display: inline-block;
+`;
+
 const TextStyle = css`
     display: inline;
     white-space: pre-wrap;
@@ -121,21 +125,25 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                 }
 
                 return (
-                    <XView
-                        as="a"
-                        key={'link-' + i}
-                        path={path}
-                        onClick={(e: any) => e.stopPropagation()}
-                    >
-                        {url}
-                    </XView>
+                    <span className={LinkText}>
+                        <XView
+                            as="a"
+                            key={'link-' + i}
+                            path={path}
+                            onClick={(e: any) => e.stopPropagation()}
+                        >
+                            {url}
+                        </XView>
+                    </span>
                 );
             }
 
             return (
-                <XView as="a" key={'link-' + i} href={v.link!!} target="_blank">
-                    {v.text}
-                </XView>
+                <span className={LinkText}>
+                    <XView as="a" key={'link-' + i} href={v.link!!} target="_blank">
+                        {v.text}
+                    </XView>
+                </span>
             );
         } else {
             let text = v.text!!;
