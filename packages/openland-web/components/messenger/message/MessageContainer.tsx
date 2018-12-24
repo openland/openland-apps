@@ -82,10 +82,17 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             color={compact ? 'rgba(0, 0, 0, 0.4)' : undefined}
         >
             {!compact ? (
-                <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+                <UserPopper
+                    isMe={props.sender.isYou}
+                    startSelected={false}
+                    user={props.sender}
+                    ref={userPopperRef}
+                >
+                    <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+                </UserPopper>
             ) : (
-                    hover && <XDate value={date.toString()} format="time" />
-                )}
+                hover && <XDate value={date.toString()} format="time" />
+            )}
         </XView>
     );
 
@@ -102,39 +109,39 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             {props.compact ? (
                 props.children
             ) : (
-                    <>
-                        <XView flexDirection="row">
-                            <XView
-                                fontSize={14}
-                                fontWeight="600"
-                                color="rgba(0, 0, 0, 0.8)"
-                                onMouseEnter={onAvatarOrUserNameMouseEnter}
-                                onMouseLeave={onAvatarOrUserNameMouseLeave}
-                            >
-                                {props.sender.name}
-                            </XView>
-                            {props.sender.primaryOrganization && (
-                                <XView
-                                    fontSize={12}
-                                    fontWeight="600"
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    paddingLeft={8}
-                                >
-                                    {props.sender.primaryOrganization.name}
-                                </XView>
-                            )}
-                            <XView
-                                paddingLeft={8}
-                                fontSize={12}
-                                color="rgba(0, 0, 0, 0.4)"
-                                fontWeight="600"
-                            >
-                                <XDate value={props.date.toString()} format="time" />
-                            </XView>
+                <>
+                    <XView flexDirection="row">
+                        <XView
+                            fontSize={14}
+                            fontWeight="600"
+                            color="rgba(0, 0, 0, 0.8)"
+                            onMouseEnter={onAvatarOrUserNameMouseEnter}
+                            onMouseLeave={onAvatarOrUserNameMouseLeave}
+                        >
+                            {props.sender.name}
                         </XView>
-                        <XView flexDirection="column">{props.children}</XView>
-                    </>
-                )}
+                        {props.sender.primaryOrganization && (
+                            <XView
+                                fontSize={12}
+                                fontWeight="600"
+                                color="rgba(0, 0, 0, 0.4)"
+                                paddingLeft={8}
+                            >
+                                {props.sender.primaryOrganization.name}
+                            </XView>
+                        )}
+                        <XView
+                            paddingLeft={8}
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                        >
+                            <XDate value={props.date.toString()} format="time" />
+                        </XView>
+                    </XView>
+                    <XView flexDirection="column">{props.children}</XView>
+                </>
+            )}
         </XView>
     );
 
@@ -154,17 +161,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             paddingRight={20}
         >
             {selector}
-            <div className={AvatarWrapper}>
-                <UserPopper
-                    isMe={props.sender.isYou}
-                    startSelected={false}
-                    user={props.sender}
-                    ref={userPopperRef}
-                >
-
-                    {preambula}
-                </UserPopper>
-            </div>
+            <div className={AvatarWrapper}>{preambula}</div>
             {content}
             {actions}
         </XView>
