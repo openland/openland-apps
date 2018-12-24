@@ -1,19 +1,10 @@
 import * as React from 'react';
-import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MessageSelector } from './MessageSelector';
 import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
-
-const AvatarWrapper = css`
-    align-self: flex-start;
-    padding-top: 3px;
-    & > span: {
-        align-self: flex-start;
-    }
-`;
 
 export interface MessageContainerProps {
     compact: boolean;
@@ -59,7 +50,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
 
     // Selector Icon
     let selector = (
-        <XView marginRight={22} width={18} height={22} alignSelf="center" padding={2}>
+        <XView marginRight={20} width={19} height={22} alignSelf="center" padding={2}>
             {(hover || props.selecting) && (
                 <MessageSelector selected={props.selected} onClick={props.onSelected} />
             )}
@@ -71,13 +62,14 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
 
     const preambula = (
         <XView
-            marginRight={compact ? undefined : 16}
             alignSelf="flex-start"
             minHeight={23}
+            width={55}
             fontSize={compact ? 11 : 12}
             whiteSpace={'nowrap'}
             overflow={compact ? 'hidden' : null}
-            paddingTop={compact ? 1 : null}
+            paddingTop={compact ? 1 : 3}
+            paddingLeft={compact ? null : 3}
             fontWeight={compact ? '600' : undefined}
             lineHeight={compact ? '22px' : undefined}
             color={compact ? 'rgba(0, 0, 0, 0.4)' : undefined}
@@ -92,7 +84,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
                     <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
                 </UserPopper>
             ) : (
-                    <XView width={52}>
+                    <XView>
                         {hover && (
                             <XDate value={date.toString()} format="time" />
                         )}
@@ -144,6 +136,8 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
                             fontSize={12}
                             color="rgba(0, 0, 0, 0.4)"
                             fontWeight="600"
+                            alignSelf="flex-end"
+                            marginBottom={-1}
                         >
                             <XDate value={props.date.toString()} format="time" />
                         </XView>
@@ -166,15 +160,13 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             marginTop={props.compact ? 0 : 12}
-            paddingLeft={20}
+            paddingLeft={18}
             paddingRight={20}
             paddingTop={compact ? 2 : 7}
             paddingBottom={3}
         >
             {selector}
-            <div className={compact ? undefined : AvatarWrapper}>
-                {preambula}
-            </div>
+            {preambula}
             {content}
             {actions}
         </XView>
