@@ -73,12 +73,15 @@ export const JoinOneServiceMessage = ({
 }: {
     firstUser: any;
     myUserId: string;
-}) => (
-    <Container>
-        {GetRandomJoinEmoji()} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-        joined the room
-    </Container>
-);
+}) => {
+    let [handEmoji] = React.useState(GetRandomJoinEmoji());
+    return (
+        <Container>
+            {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
+            the room
+        </Container>
+    );
+};
 
 export const JoinTwoServiceMessage = ({
     firstUser,
@@ -88,13 +91,16 @@ export const JoinTwoServiceMessage = ({
     firstUser: any;
     secondUser: any;
     myUserId: string;
-}) => (
-    <Container>
-        {GetRandomJoinEmoji()} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-        joined the room along with{' '}
-        <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
-    </Container>
-);
+}) => {
+    let [handEmoji] = React.useState(GetRandomJoinEmoji());
+    return (
+        <Container>
+            {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
+            the room along with{' '}
+            <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
+        </Container>
+    );
+};
 
 export const JoinManyServiceMessage = ({
     firstUser,
@@ -105,11 +111,11 @@ export const JoinManyServiceMessage = ({
     otherUsers: any;
     myUserId: string;
 }) => {
+    let [handEmoji] = React.useState(GetRandomJoinEmoji());
     return (
         <Container>
-            {GetRandomJoinEmoji()}{' '}
-            <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined the room
-            along with{' '}
+            {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
+            the room along with{' '}
             <span>
                 <OthersPopper
                     show={true}
