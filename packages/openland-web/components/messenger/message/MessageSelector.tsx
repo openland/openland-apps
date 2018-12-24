@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import CheckIcon from 'openland-icons/ic-check-msg.svg';
 
 export const MessageSelector = React.memo<{
     selected: boolean;
@@ -17,12 +18,12 @@ export const MessageSelector = React.memo<{
             >
                 <XView
                     position="absolute"
-                    top={5}
-                    left={5}
-                    width={8}
-                    height={8}
-                    backgroundImage="url('/static/img/icons/check-form.svg')"
-                />
+                    top={6}
+                    left={4}
+                    alignItems="center"
+                >
+                    <CheckIcon/>
+                </XView>
             </XView>
         );
     } else {
