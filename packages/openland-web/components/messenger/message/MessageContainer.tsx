@@ -7,6 +7,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XPopper2 } from 'openland-web/components/XPopper2';
 import { usePopperHover } from 'openland-web/components/usePopperHover';
 import { UserPopup } from 'openland-web/fragments/UserPopup';
+import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
 
 export interface MessageContainerProps {
     compact: boolean;
@@ -24,17 +25,31 @@ export interface MessageContainerProps {
 
 export const MessageContainer = React.memo<MessageContainerProps>(props => {
     let [hover, onHover] = React.useState(false);
-    let onMouseEnter = React.useMemo(() => () => onHover(true), [onHover]);
-    let onMouseLeave = React.useMemo(() => () => onHover(false), [onHover]);
-    let popupRef = React.useRef(null);
+    let userPopperRef = React.useRef<UserPopper>(null);
 
-    let popup = (
-        <XPopper2 ref={popupRef} placement="top">
-            <UserPopup id={props.sender.id} />
-        </XPopper2>
+    let onAvatarOrUserNameMouseEnter = () => {
+        if (userPopperRef.current) {
+            userPopperRef.current.showPopper();
+        }
+    };
+
+    let onAvatarOrUserNameMouseLeave = () => {
+        if (userPopperRef.current) {
+            userPopperRef.current.hidePopper();
+        }
+    };
+    let onMouseEnter = React.useMemo(
+        () => () => {
+            onHover(true);
+        },
+        [onHover],
     );
-    // let popupClick = usePopperClick(popupRef);
-    let popupHover = usePopperHover(popupRef);
+    let onMouseLeave = React.useMemo(
+        () => () => {
+            onHover(false);
+        },
+        [onHover],
+    );
 
     // Selector Icon
     let selector = (
@@ -60,7 +75,6 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             fontWeight={compact ? '600' : undefined}
             lineHeight={compact ? '22px' : undefined}
             color={compact ? 'rgba(0, 0, 0, 0.4)' : undefined}
-            {...(compact ? {} : popupHover)}
         >
             {!compact ? (
                 <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
@@ -71,94 +85,80 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
     );
 
     // Content
-    let content: any;
-    if (!props.compact) {
-        content = (
-            <XView
-                flexDirection="column"
-                flexGrow={1}
-                flexShrink={1}
-                flexBasis={0}
-                minWidth={0}
-                alignItems="stretch"
-            >
-                <XView flexDirection="row">
-                    <XView
-                        fontSize={14}
-                        fontWeight="600"
-                        color="rgba(0, 0, 0, 0.8)"
-                        {...popupHover}
-                    >
-                        {props.sender.name}
-                    </XView>
-                    {props.sender.primaryOrganization && (
+    const content = (
+        <XView
+            flexDirection="column"
+            flexGrow={1}
+            flexShrink={1}
+            flexBasis={0}
+            minWidth={0}
+            alignItems="stretch"
+        >
+            {props.compact ? (
+                props.children
+            ) : (
+                <>
+                    <XView flexDirection="row">
                         <XView
-                            fontSize={12}
+                            fontSize={14}
                             fontWeight="600"
-                            color="rgba(0, 0, 0, 0.4)"
-                            paddingLeft={8}
+                            color="rgba(0, 0, 0, 0.8)"
+                            onMouseEnter={onAvatarOrUserNameMouseEnter}
+                            onMouseLeave={onAvatarOrUserNameMouseLeave}
                         >
-                            {props.sender.primaryOrganization.name}
+                            {props.sender.name}
                         </XView>
-                    )}
-                    <XView
-                        paddingLeft={8}
-                        fontSize={12}
-                        color="rgba(0, 0, 0, 0.4)"
-                        fontWeight="600"
-                    >
-                        <XDate value={props.date.toString()} format="time" />
+                        {props.sender.primaryOrganization && (
+                            <XView
+                                fontSize={12}
+                                fontWeight="600"
+                                color="rgba(0, 0, 0, 0.4)"
+                                paddingLeft={8}
+                            >
+                                {props.sender.primaryOrganization.name}
+                            </XView>
+                        )}
+                        <XView
+                            paddingLeft={8}
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                        >
+                            <XDate value={props.date.toString()} format="time" />
+                        </XView>
                     </XView>
-                </XView>
-                <XView flexDirection="column">{props.children}</XView>
-            </XView>
-        );
-    } else {
-        content = (
-            <XView flexDirection="column" flexGrow={1} flexShrink={1} flexBasis={0} minWidth={0}>
-                {props.children}
-            </XView>
-        );
-    }
+                    <XView flexDirection="column">{props.children}</XView>
+                </>
+            )}
+        </XView>
+    );
 
     // Actions
     let actions = <XView width={83}>{hover && props.renderMenu()}</XView>;
 
     // Result
-    if (props.compact) {
-        return (
-            <XView
-                alignItems="center"
-                flexDirection="row"
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                paddingLeft={20}
-                paddingRight={20}
+
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            marginTop={props.compact ? 0 : 12}
+            paddingLeft={20}
+            paddingRight={20}
+        >
+            {selector}
+            <UserPopper
+                isMe={props.sender.isYou}
+                startSelected={false}
+                user={props.sender}
+                ref={userPopperRef}
             >
-                {popup}
-                {selector}
                 {preambula}
-                {content}
-                {actions}
-            </XView>
-        );
-    } else {
-        return (
-            <XView
-                alignItems="center"
-                flexDirection="row"
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                marginTop={12}
-                paddingLeft={20}
-                paddingRight={20}
-            >
-                {popup}
-                {selector}
-                {preambula}
-                {content}
-                {actions}
-            </XView>
-        );
-    }
+            </UserPopper>
+            {content}
+            {actions}
+        </XView>
+    );
 });
