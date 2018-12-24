@@ -22,12 +22,16 @@ React.memo = node => {
 
 React.useContext = id => id;
 React.useMemo = id => id();
+React.useState = id => [id];
 
 const { XStyleFactoryRegistry } = require('react-mental');
-const { css } = require('glamor');
+const glamor = require('glamor');
+
+// XPopperRenderer keyfraimes animation goes to each snapshot otherwise
+glamor.keyframes = () => ({});
 XStyleFactoryRegistry.registerFactory({
     createStyle: styles => {
-        return css(styles).toString();
+        return glamor.css(styles).toString();
     },
 });
 

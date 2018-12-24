@@ -9,7 +9,7 @@ jest.doMock('../components/DevDocsScaffold', () => {
     };
 });
 
-describe.only('MessageTextComponent', () => {
+describe('MessageTextComponent', () => {
     const PageComponent = require('./MessageTextComponent.page').default;
     it('should render correctly', () => {
         expect(renderer.create(<PageComponent />).toJSON()).toMatchSnapshot();
