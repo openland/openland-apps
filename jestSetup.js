@@ -22,6 +22,7 @@ React.memo = node => {
 
 React.useContext = id => id;
 React.useMemo = id => id();
+React.useState = id => [id];
 
 const { XStyleFactoryRegistry } = require('react-mental');
 const { css } = require('glamor');

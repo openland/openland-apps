@@ -927,8 +927,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
                 Sergey Lapin
               </span>
             </span>
-             
-            joined the room
+             joined the room
           </span>
         </div>
       </div>
@@ -960,8 +959,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
                 Sergey Lapin
               </span>
             </span>
-             
-            joined the room along with
+             joined the room along with
              
             <span
               onMouseEnter={[Function]}
