@@ -83,7 +83,14 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             color={compact ? 'rgba(0, 0, 0, 0.4)' : undefined}
         >
             {!compact ? (
-                <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+                <UserPopper
+                    isMe={props.sender.isYou}
+                    startSelected={false}
+                    user={props.sender}
+                    ref={userPopperRef}
+                >
+                    <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
+                </UserPopper>
             ) : (
                     <XView width={52}>
                         {hover && (
@@ -132,20 +139,18 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
                                     </XView>
                                 )}
                             </XView>
-                            <XView
-                                paddingLeft={8}
-                                fontSize={12}
-                                color="rgba(0, 0, 0, 0.4)"
-                                fontWeight="600"
-                                alignSelf="flex-end"
-                                marginBottom={-1}
-                            >
-                                <XDate value={props.date.toString()} format="time" />
-                            </XView>
+                        <XView
+                            paddingLeft={8}
+                            fontSize={12}
+                            color="rgba(0, 0, 0, 0.4)"
+                            fontWeight="600"
+                        >
+                            <XDate value={props.date.toString()} format="time" />
                         </XView>
-                        <XView flexDirection="column">{props.children}</XView>
-                    </>
-                )}
+                    </XView>
+                    <XView flexDirection="column">{props.children}</XView>
+                </>
+            )}
         </XView>
     );
 
@@ -168,14 +173,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
         >
             {selector}
             <div className={compact ? undefined : AvatarWrapper}>
-                <UserPopper
-                    isMe={props.sender.isYou}
-                    startSelected={false}
-                    user={props.sender}
-                    ref={userPopperRef}
-                >
-                    {preambula}
-                </UserPopper>
+                {preambula}
             </div>
             {content}
             {actions}
