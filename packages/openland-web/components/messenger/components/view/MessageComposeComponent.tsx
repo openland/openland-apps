@@ -317,6 +317,18 @@ const EditText = Glamorous.div({
 
 const EditCloseBtn = Glamorous.div({
     cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    '& > svg': {
+        width: 16,
+        height: 16
+    },
+    '& > svg > path': {
+        fill: '#BCC3CC'
+    },
+    '&:hover > svg > path': {
+        fill: '#000000'
+    }
 });
 
 const EditView = (props: { title: string; message: string; onCancel: () => void }) => (

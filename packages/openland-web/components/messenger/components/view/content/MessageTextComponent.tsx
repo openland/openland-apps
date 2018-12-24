@@ -18,7 +18,12 @@ export interface MessageTextComponentProps {
 }
 
 const LinkText = css`
-    display: inline-block;
+    display: inline;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    & > a {
+        display: inline;
+    }
 `;
 
 const TextStyle = css`
