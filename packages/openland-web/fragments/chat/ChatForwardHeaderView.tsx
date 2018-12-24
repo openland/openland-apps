@@ -11,11 +11,15 @@ import { XMutation } from 'openland-x/XMutation';
 import { css } from 'linaria';
 
 const ClearIconClass = css`
-    margin-top: 3px;
-    margin-left: 8px;
+    margin-top: 4px;
+    margin-left: 5px;
     cursor: pointer;
-
-    &:hover > g > path:last-child {
+    width: 16px;
+    height: 16px;
+    & > path {
+        fill: #BCC3CC
+    }
+    &:hover > path {
         fill: #000000;
     }
 `;
