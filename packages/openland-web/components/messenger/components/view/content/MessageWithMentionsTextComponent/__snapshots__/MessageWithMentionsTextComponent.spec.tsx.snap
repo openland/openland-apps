@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageTextComponent should render mention 1`] = `
+Array [
+  .css-gqd39d,
+[data-css-gqd39d] {
+  cursor: pointer;
+  background-color: #fff6e5;
+  color: #1790ff;
+}
+
+.css-0,
+[data-css-0] {
+  cursor: pointer;
+  background-color: #fff6e5;
+  color: #1790ff;
+}
+
+<span>
+    
+    <span
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    >
+      <span
+        className="css-0"
+      >
+        Sergey Lapin
+      </span>
+    </span>
+  </span>,
+  .css-gqd39d,
+[data-css-gqd39d] {
+  cursor: pointer;
+  background-color: #fff6e5;
+  color: #1790ff;
+}
+
+<span>
+    
+  </span>,
+]
+`;
+
+exports[`MessageTextComponent should render simple text - has alphaMentions, no @ 1`] = `
+<span>
+  no match
+</span>
+`;
+
+exports[`MessageTextComponent should render simple text - just text 1`] = `
+<span>
+  text
+</span>
+`;
+
+exports[`MessageTextComponent should render simple text - with @ 1`] = `
+<span>
+  @Sergey Lapin
+</span>
+`;

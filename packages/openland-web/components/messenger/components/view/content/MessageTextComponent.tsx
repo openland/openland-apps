@@ -7,7 +7,7 @@ import { css } from 'linaria';
 import { isEmoji } from '../../../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { MessageWithMentionsTextComponent } from './MessageWithMentionsTextComponent';
+import { MessageWithMentionsTextComponent } from './MessageWithMentionsTextComponent/MessageWithMentionsTextComponent';
 
 export interface MessageTextComponentProps {
     alphaMentions?: any;

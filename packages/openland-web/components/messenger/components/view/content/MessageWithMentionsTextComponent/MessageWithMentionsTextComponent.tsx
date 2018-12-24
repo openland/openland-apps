@@ -107,6 +107,7 @@ export class MessageWithMentionsTextComponent extends React.PureComponent<{
                         }
                     });
             }
+            console.log(mentionsFinal);
 
             return <>{getSplittedTextArray({ text, mentions: mentionsFinal })}</>;
         } catch (err) {

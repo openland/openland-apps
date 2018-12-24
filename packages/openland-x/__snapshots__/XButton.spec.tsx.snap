@@ -1,54 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`XButton should render correctly 1`] = `
-@-webkit-keyframes animation_4vt6la {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-    -webkit-transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-}
-@-moz-keyframes animation_4vt6la {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-    -webkit-transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-}
-@-o-keyframes animation_4vt6la {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-    -webkit-transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-}
-@keyframes animation_4vt6la {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-    -webkit-transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-}
 .css-1x6gts7,
 [data-css-1x6gts7] {
   display: -webkit-box;
