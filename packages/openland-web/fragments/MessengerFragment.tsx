@@ -18,12 +18,12 @@ export interface MessengerComponentProps {
     id: string;
 }
 
-export const MessengerFragment = ((props: MessengerComponentProps) => {
+export const MessengerFragment = (props: MessengerComponentProps) => {
     let q = useQuery(RoomQuery, { id: props.id });
     let state = React.useContext(MessagesStateContext);
     if (!q.data || q.loading) {
         if (q.loading) {
-            return (<XLoader loading={true} />)
+            return <XLoader loading={true} />;
         }
         return <div />;
     }
@@ -36,11 +36,7 @@ export const MessengerFragment = ((props: MessengerComponentProps) => {
         q.data.room!.__typename === 'PrivateRoom' ? (q.data.room as any) : null;
 
     // WTF?
-    if (
-        sharedRoom &&
-        sharedRoom.kind !== 'INTERNAL' &&
-        sharedRoom.membership !== 'MEMBER'
-    ) {
+    if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
         if (sharedRoom.kind === 'PUBLIC') {
             return <RoomsInviteComponent room={sharedRoom} />;
         } else {
@@ -67,7 +63,7 @@ export const MessengerFragment = ((props: MessengerComponentProps) => {
                     flexDirection="row"
                     alignItems="center"
                     justifyContent="center"
-                    height={56}
+                    height={55}
                     paddingLeft={20}
                     paddingRight={20}
                 >
@@ -76,13 +72,7 @@ export const MessengerFragment = ((props: MessengerComponentProps) => {
                 <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                 <TalkBarComponent conversationId={q.data.room!.id} />
 
-                <XView
-                    alignItems="center"
-                    flexGrow={1}
-                    flexBasis={0}
-                    minHeight={0}
-                    flexShrink={1}
-                >
+                <XView alignItems="center" flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                     <MessengerRootComponent
                         objectName={title}
                         objectId={
@@ -91,8 +81,8 @@ export const MessengerFragment = ((props: MessengerComponentProps) => {
                                     ? sharedRoom.organization.id
                                     : sharedRoom.id
                                 : privateRoom
-                                    ? privateRoom.user.id
-                                    : undefined
+                                ? privateRoom.user.id
+                                : undefined
                         }
                         cloudImageUuid={
                             (sharedRoom && sharedRoom.photo) ||
@@ -111,4 +101,4 @@ export const MessengerFragment = ((props: MessengerComponentProps) => {
             </XView>
         </>
     );
-});
+};
