@@ -90,7 +90,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
 
     let usrPath = undefined;
 
-    if (accept || (meId === senderId)) {
+    if (user && (accept || (meId === senderId))) {
         usrPath = '/mail/u/' + user.id;
     }
 
