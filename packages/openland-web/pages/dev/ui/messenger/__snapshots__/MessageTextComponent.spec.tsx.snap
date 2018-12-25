@@ -211,7 +211,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -249,7 +249,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -298,7 +298,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -362,7 +362,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -437,7 +437,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -524,7 +524,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -601,7 +601,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
@@ -673,7 +673,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
               Array [
                 "
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
