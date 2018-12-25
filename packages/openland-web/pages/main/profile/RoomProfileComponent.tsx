@@ -81,6 +81,7 @@ export const AdminTools = withRoomAdminTools(
 const Header = (props: { chat: Room_room_SharedRoom }) => {
     let chat = props.chat;
     let meMember = chat.membership === 'MEMBER';
+    let leaveText = chat.kind === 'GROUP' ? 'Leave group' : 'Leave room';
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -128,7 +129,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                                             }}
                                             style="danger"
                                         >
-                                            Leave room
+                                            {leaveText}
                                         </XMenuItem>
                                         <XWithRole role="super-admin">
                                             <XMenuItemSeparator />
@@ -228,14 +229,20 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const MemberCard = (props: { member: RoomFull_SharedRoom_members; meOwner: boolean }) => {
+const MemberCard = (props: { member: RoomFull_SharedRoom_members; meOwner: boolean, isGroup: boolean }) => {
+    let removeText = props.isGroup ? 'Remove from group' : 'Remove from room';
+
+    if (props.member.user.isYou) {
+        removeText = props.isGroup ? 'Leave group' : 'Leave room';
+    }
+
     let overflowMenu = (
         <XOverflow
             placement="bottom-end"
             flat={true}
             content={
                 <XMenuItem style="danger" query={{ field: 'remove', value: props.member.user.id }}>
-                    Remove from group
+                    {removeText}
                 </XMenuItem>
             }
         />
@@ -323,7 +330,12 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                             />
 
                             {members.map((member, i) => (
-                                <MemberCard key={i} member={member} meOwner={props.meOwner} />
+                                <MemberCard
+                                    key={i}
+                                    member={member}
+                                    meOwner={props.meOwner}
+                                    isGroup={props.kind === 'GROUP'}
+                                />
                             ))}
                         </>
                     )}
@@ -365,7 +377,6 @@ interface RoomGroupProfileInnerProps extends XWithRouter {
 
 const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
     let chat = props.chat;
-
     return (
         <>
             <XDocumentHead title={chat.title} />
@@ -400,8 +411,8 @@ const RoomGroupProfileProvider = withRoom(
                 conversationId={(props as any).conversationId}
             />
         ) : (
-            <XLoader loading={true} />
-        );
+                <XLoader loading={true} />
+            );
     }),
 ) as React.ComponentType<{
     variables: { id: string };
