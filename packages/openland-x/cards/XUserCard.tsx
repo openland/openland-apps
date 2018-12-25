@@ -106,7 +106,11 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
             typeof customButton === 'undefined' ? (
                 <>
                     {user.isYou && (
-                        <XButton style="ghost" text={TextProfiles.User.you} enabled={false} />
+                        <XButton 
+                            style="ghost" 
+                            text={TextProfiles.User.you} 
+                            enabled={false}
+                        />
                     )}
                     {!user.isYou && (
                         <XButton
@@ -180,9 +184,14 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                             </XView>
                             {user.id && <UserStatus variables={{ userId: user.id }} />}
                         </XView>
-                        <XView flexDirection="row" paddingTop={4}>
+                        <XView 
+                            flexDirection="row"
+                            alignItems="center"
+                        >
                             {button}
-                            <XView marginLeft={10}>{menu}</XView>
+                            {(customMenu || extraMenu) && (
+                                <XView marginLeft={10}>{menu}</XView>
+                            )}
                         </XView>
                     </XView>
                 </XView>
