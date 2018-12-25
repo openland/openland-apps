@@ -189,8 +189,9 @@ export const MentionComponentInnerText = Glamorous.span(
             ? {
                   paddingTop: 1,
                   paddingBottom: 1,
-                  paddingLeft: 3,
-                  paddingRight: 3,
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  borderRadius: 5
               }
             : {};
 
