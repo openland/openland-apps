@@ -68,3 +68,4 @@ org.eclipse.buildship.core.prefs
 android/captures
 ios/Pods
 .linaria-cache
+packages/openland-desktop/dist
