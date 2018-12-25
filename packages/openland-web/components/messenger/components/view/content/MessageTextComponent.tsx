@@ -130,10 +130,9 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                 }
 
                 return (
-                    <span className={LinkText}>
+                    <span key={'link-' + i} className={LinkText}>
                         <XView
                             as="a"
-                            key={'link-' + i}
                             path={path}
                             onClick={(e: any) => e.stopPropagation()}
                         >
@@ -144,8 +143,8 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
             }
 
             return (
-                <span className={LinkText}>
-                    <XView as="a" key={'link-' + i} href={v.link!!} target="_blank">
+                <span key={'link-' + i} className={LinkText}>
+                    <XView as="a" href={v.link!!} target="_blank">
                         {v.text}
                     </XView>
                 </span>
