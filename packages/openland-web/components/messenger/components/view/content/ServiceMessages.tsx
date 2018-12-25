@@ -24,7 +24,7 @@ const LinkToRoom = ({ children, roomId }: any) => {
 };
 const spanWithWhiteSpacesClassName = css`
     font-family: SFProText-Regular;
-    white-space: pre;
+    white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {

@@ -150,7 +150,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XView flexDirection="row" justifyContent="space-between">
-                    <XAvatar2 src={user.photo} title={user.id || ''} id={user.name || ''} />
+                    <XAvatar2 src={user.photo} title={user.name || ''} id={user.id || ''} />
                     <XView flexDirection="row" flexGrow={1} marginLeft={16}>
                         <XView flexGrow={1} marginRight={12}>
                             <XView
