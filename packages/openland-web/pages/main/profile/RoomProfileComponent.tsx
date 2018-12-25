@@ -94,7 +94,7 @@ const Header = (props: { chat: Room_room_SharedRoom }) => {
                         {/* {chat.membersOnline > 0 && <HeaderMembers online={true}>{chat.membersOnline} online</HeaderMembers>} */}
                     </XHorizontal>
                 </HeaderInfo>
-                <HeaderTools separator={8}>
+                <HeaderTools separator={3}>
                     <XButton
                         text={meMember ? 'View' : 'Request invite'}
                         style="primary"

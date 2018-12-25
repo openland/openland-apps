@@ -137,8 +137,10 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
             <XHorizontal alignItems="center" separator={8}>
                 {callButton}
                 {inviteButton}
-                {muteButton}
-                {menu}
+                <XHorizontal alignItems="center" separator={3}>
+                    {muteButton}
+                    {menu}
+                </XHorizontal>
             </XHorizontal>
 
             {sharedRoom && (
