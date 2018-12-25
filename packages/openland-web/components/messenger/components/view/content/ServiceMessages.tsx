@@ -23,8 +23,14 @@ const LinkToRoom = ({ children, roomId }: any) => {
     );
 };
 const spanWithWhiteSpacesClassName = css`
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 `;
 
 const SpanWithWhiteSpaces = ({ children }: { children: any }) => (
@@ -158,12 +164,11 @@ export const RespondToPostServiceMessage = ({
     const amIPostAuthor = myUserId === postAuthorUser.id;
     return (
         <Container>
-            🙌
-            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            🙌 <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
             <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is responding to your post{' '}
             <strong>“{postTitle}“</strong> in <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>
             .
-            <br />
+            <XView height={8} />
             Now you can chat!
         </Container>
     );
@@ -189,15 +194,13 @@ export const JobOpportunityApplyTextServiceMessage = ({
     const amIPostAuthor = myUserId === postAuthorUser.id;
     return (
         <Container>
-            🙌
-            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            🙌 <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
             <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is interested in your job
             opportunity <strong>“{postTitle}“</strong> in{' '}
             <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
-            <br />
-            <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> — as the next step,
-            please, tell <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> — a little
-            bit about yourself.
+            <XView height={8} />
+            {responderUser.firstName} — as the next step, please, tell {postAuthorUser.firstName} a
+            little bit about yourself.
         </Container>
     );
 };
@@ -219,12 +222,11 @@ export const JobOpportunityRecomendTextServiceMessage = ({
     const amIPostAuthor = myUserId === postAuthorUser.id;
     return (
         <Container>
-            🙌
-            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            🙌 <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
             <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is looking to recommend a
             candidate in response to your post <strong>“{postTitle}“</strong> in{' '}
             <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
-            <br />
+            <XView height={8} />
             <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> — as the next step,
             please, describe your recommended candidate, how well do you know them, and share any
             relevant links.
@@ -249,8 +251,7 @@ export const RequestForStartupsRecomendTextServiceMessage = ({
     const amIPostAuthor = myUserId === postAuthorUser.id;
     return (
         <Container>
-            🙌
-            <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
+            🙌 <MentionedUser user={postAuthorUser} isYou={amIPostAuthor} /> —{' '}
             <MentionedUser user={responderUser} isYou={!amIPostAuthor} /> is interested to make a
             recommendation following up to your post <strong>“{postTitle}“</strong> in{' '}
             <LinkToRoom roomId={chat.id}>{chat.title}</LinkToRoom>.
@@ -300,7 +301,7 @@ const ServiceMessageComponentByTypes = ({
         const postServiceProps = {
             postAuthorUser: otherParams.alphaMentions[0].user,
             responderUser: otherParams.alphaMentions[1].user,
-            chat: otherParams.alphaMentions[2],
+            chat: otherParams.alphaMentions[2].sharedRoom,
             postTitle,
             myUserId: otherParams.myUserId,
         };
