@@ -83,6 +83,10 @@ exports[`MessageTextComponent should render correctly 1`] = `
   cursor: pointer;
   color: #1790ff;
 }
+.css-1pcom96,
+[data-css-1pcom96] {
+  height: 8px;
+}
 
 .css-0,
 [data-css-0] {
@@ -179,6 +183,11 @@ exports[`MessageTextComponent should render correctly 1`] = `
   color: #1790ff;
 }
 
+.css-10,
+[data-css-10] {
+  height: 8px;
+}
+
 <div>
   <div
     className="x css-0 css-1"
@@ -201,8 +210,14 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
@@ -233,8 +248,14 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
@@ -276,8 +297,14 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
@@ -334,13 +361,19 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
           >
-            🙌
+            🙌 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -383,29 +416,13 @@ exports[`MessageTextComponent should render correctly 1`] = `
               I am the walrus
             </a>
             .
-            <br />
-            <span
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-            >
-              <span
-                className="css-9"
-              >
-                qwerty asdfgh
-              </span>
-            </span>
+            <div
+              className="x css-10"
+            />
+            qwerty
              — as the next step, please, tell 
-            <span
-              onMouseEnter={[Function]}
-              onMouseLeave={[Function]}
-            >
-              <span
-                className="css-8"
-              >
-                Sergey Lapin
-              </span>
-            </span>
-             — a little bit about yourself.
+            Sergey
+             a little bit about yourself.
           </span>
         </div>
       </div>
@@ -419,13 +436,19 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
           >
-            🙌
+            🙌 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -468,7 +491,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
               I am the walrus
             </a>
             .
-            <br />
+            <div
+              className="x css-10"
+            />
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -498,13 +523,19 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
           >
-            🙌
+            🙌 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -547,7 +578,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
               I am the walrus
             </a>
             .
-            <br />
+            <div
+              className="x css-10"
+            />
             Now you can chat!
           </span>
         </div>
@@ -567,13 +600,19 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
           >
-            🙌
+            🙌 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
@@ -616,7 +655,9 @@ exports[`MessageTextComponent should render correctly 1`] = `
               I am the walrus
             </a>
             .
-            <br />
+            <div
+              className="x css-10"
+            />
             Now you can chat!
           </span>
         </div>
@@ -631,13 +672,19 @@ exports[`MessageTextComponent should render correctly 1`] = `
             className={
               Array [
                 "
+    font-family: SFProText-Regular;
     white-space: pre;
     text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
 ",
               ]
             }
           >
-            🙌
+            🙌 
             <span
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
