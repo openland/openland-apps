@@ -7,6 +7,13 @@
         "build": "electron-builder --dir",
         "bundle": "electron-builder"
     },
+    "build": {
+        "appId": "com.openland.app",
+        "productName": "Openland",
+        "directories": {
+            "buildResources": "assets"
+        }
+    },
     "devDependencies": {
         "electron": "^4.0.0",
         "electron-builder": "^20.38.4"

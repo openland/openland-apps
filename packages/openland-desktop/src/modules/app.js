@@ -3,6 +3,7 @@ const {
 } = require('electron');
 const os = require('os');
 const createMainWindow = require('./window').createMainWindow;
+const createAppMenu = require('./menu').createAppMenu;
 
 let mainWindow;
 const isOSX = os.platform() === 'darwin';
@@ -19,7 +20,12 @@ module.exports = {
 
         // Open new window
         app.on('ready', () => {
+
+            // Create window
             mainWindow = createMainWindow();
+
+            // Create menu
+            createAppMenu(mainWindow);
 
             // Handle closing
             mainWindow.on('close', (event) => {
