@@ -25,6 +25,7 @@ const styleInner = css`
     max-width: 100%;
     overflow: hidden;
     & > div:first-child {
+        position: absolute;
         width: 100%;
         max-width: 100%;
         flex-basis: 100%;
