@@ -31,7 +31,7 @@ export const MessageFull = gql`
         serviceMetadata {
             ... on KickServiceMetadata {
                 user {
-                    id
+                    ...UserShort
                 }
                 kickedBy {
                     id
@@ -177,9 +177,14 @@ export const RoomMessageFull = gql`
             }
         }
         serviceMetadata {
+            ... on InviteServiceMetadata {
+                users {
+                    ...UserShort
+                }
+            }
             ... on KickServiceMetadata {
                 user {
-                    id
+                    ...UserShort
                 }
                 kickedBy {
                     id

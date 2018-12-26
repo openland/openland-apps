@@ -198,7 +198,113 @@ exports[`MessageTextComponent should render correctly 1`] = `
       <div
         className="css-3"
       >
-        1. Joines
+        1. Kick
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    font-family: SFProText-Regular;
+    white-space: pre-wrap;
+    text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
+",
+              ]
+            }
+          >
+            <span
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                className="css-8"
+              >
+                Sergey Lapin
+              </span>
+            </span>
+             has left the room
+          </span>
+        </div>
+      </div>
+      <div
+        className="css-3"
+      >
+        2. PhotoChange
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    font-family: SFProText-Regular;
+    white-space: pre-wrap;
+    text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
+",
+              ]
+            }
+          >
+            New room photo
+          </span>
+        </div>
+      </div>
+      <div
+        className="css-3"
+      >
+        3. TitleChange
+      </div>
+      <div
+        className="x css-4 css-5"
+      >
+        <div
+          className="x css-6 css-5 css-7"
+        >
+          <span
+            className={
+              Array [
+                "
+    font-family: SFProText-Regular;
+    white-space: pre-wrap;
+    text-align: center;
+    color: #7f7f7f;
+    & > strong {
+        font-family: SFProText-Semibold;
+        color: #7f7f7f;
+    }
+",
+              ]
+            }
+          >
+            New room name: 
+            <strong>
+              Service Messages
+            </strong>
+          </span>
+        </div>
+      </div>
+      <div
+        className="css-3"
+      >
+        4. Joines
       </div>
       <div
         className="x css-4 css-5"
@@ -344,7 +450,7 @@ exports[`MessageTextComponent should render correctly 1`] = `
       <div
         className="css-3"
       >
-        2. Service Messages
+        5. Post Service Messages
       </div>
       <div
         className="css-3"

@@ -11,6 +11,9 @@ import {
     JobOpportunityRecomendTextServiceMessage,
     RespondToPostServiceMessage,
     RequestForStartupsRecomendTextServiceMessage,
+    KickServiceServiceMessage,
+    PhotoChangeServiceMessage,
+    TitleChangeServiceMessage,
 } from '../../../../components/messenger/components/view/content/ServiceMessages';
 import { sergeyLapinUser, taraBUser, qwertyUser, prettyTUser, chatSample } from './fixtureData';
 
@@ -18,7 +21,17 @@ export default () => (
     <DevDocsScaffold title="MessageTextComponent">
         <XContent>
             <XVertical>
-                <XMenuTitle>1. Joines</XMenuTitle>
+                <XMenuTitle>1. Kick</XMenuTitle>
+                <KickServiceServiceMessage
+                    kickedUser={sergeyLapinUser}
+                    myUserId={sergeyLapinUser.id}
+                />
+                <XMenuTitle>2. PhotoChange</XMenuTitle>
+                <PhotoChangeServiceMessage />
+                <XMenuTitle>3. TitleChange</XMenuTitle>
+                <TitleChangeServiceMessage newRoomName={'Service Messages'} />
+
+                <XMenuTitle>4. Joines</XMenuTitle>
 
                 <JoinOneServiceMessage firstUser={sergeyLapinUser} myUserId={sergeyLapinUser.id} />
                 <JoinTwoServiceMessage
@@ -32,7 +45,7 @@ export default () => (
                     myUserId={sergeyLapinUser.id}
                 />
 
-                <XMenuTitle>2. Service Messages</XMenuTitle>
+                <XMenuTitle>5. Post Service Messages</XMenuTitle>
 
                 <XMenuTitle>JobOpportunity</XMenuTitle>
 

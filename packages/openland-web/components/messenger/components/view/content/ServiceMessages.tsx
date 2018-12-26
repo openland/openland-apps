@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { OthersPopper } from './OthersPopper';
 import { UserPopper } from './UserPopper';
-import { MessageTextComponent } from './MessageTextComponent';
 import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { css } from 'linaria';
 import { XLink } from 'openland-x/XLink';
@@ -54,24 +53,34 @@ const Container = ({ children }: { children: any }) => (
 );
 
 // Service Messages
-
 export const TextServiceMessageFallback = ({ message }: { message: string }) => {
-    return (
-        <Container>
-            <MessageTextComponent message={message} isEdited={false} isService={true} />
-        </Container>
-    );
+    return <Container>{message}</Container>;
 };
 
-export const KickServiceServiceMessage = TextServiceMessageFallback;
-export const PhotoChangeServiceMessage = TextServiceMessageFallback;
-export const TitleChangeServiceMessage = TextServiceMessageFallback;
+export const KickServiceServiceMessage = ({
+    kickedUser,
+    myUserId,
+}: {
+    kickedUser: any;
+    myUserId: string;
+}) => (
+    <Container>
+        <MentionedUser user={kickedUser} isYou={myUserId === kickedUser.id} /> has left the room
+    </Container>
+);
+
+export const RoomCreatedServiceMessage = () => <Container>Room created</Container>;
+export const PhotoChangeServiceMessage = () => <Container>New room photo</Container>;
+
+export const TitleChangeServiceMessage = ({ newRoomName }: { newRoomName: string }) => (
+    <Container>
+        New room name: <strong>{newRoomName}</strong>
+    </Container>
+);
 
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
-const GetRandomJoinEmoji = () => {
-    return joinEmojiList[Math.floor(Math.random() * joinEmojiList.length)];
-};
+const GetRandomJoinEmoji = () => joinEmojiList[Math.floor(Math.random() * joinEmojiList.length)];
 
 export const JoinOneServiceMessage = ({
     firstUser,
@@ -259,17 +268,13 @@ export const RequestForStartupsRecomendTextServiceMessage = ({
     );
 };
 
-type ServiceMessageType =
-    | 'JOIN'
-    | 'POST'
-    | 'KICK'
-    | 'PHOTO_CHANGE'
-    | 'PHOTO_CHANGE'
-    | 'TITLE_CHANGE';
+type ServiceMessageType = 'JOIN' | 'POST' | 'KICK' | 'PHOTO_CHANGE' | 'TITLE_CHANGE';
 
 type PostMessageType = 'BLANK' | 'JOB_OPPORTUNITY' | 'REQUEST_FOR_STARTUPS' | 'OFFICE_HOURS';
 type PostMessageSubType = 'APPLY_TEXT' | 'RECOMMEND_TEXT' | null;
 type JoinMessageType = 'ONE' | 'TWO' | 'MANY';
+
+const hackToGetRoomName = (message: string) => message.slice('New room name: '.length);
 
 const ServiceMessageComponentByTypes = ({
     typesObject,
@@ -331,60 +336,68 @@ const ServiceMessageComponentByTypes = ({
         } = typesObject as {
             joinMessageType: JoinMessageType;
         };
+        const joinUsers = getJoinUsers(otherParams);
         if (joinMessageType === 'ONE') {
             return (
-                <JoinOneServiceMessage
-                    myUserId={otherParams.myUserId}
-                    firstUser={otherParams.alphaMentions[0].user}
-                />
+                <JoinOneServiceMessage myUserId={otherParams.myUserId} firstUser={joinUsers[0]} />
             );
         } else if (joinMessageType === 'TWO') {
             return (
                 <JoinTwoServiceMessage
                     myUserId={otherParams.myUserId}
-                    firstUser={otherParams.alphaMentions[0].user}
-                    secondUser={otherParams.alphaMentions[1].user}
+                    firstUser={joinUsers[0]}
+                    secondUser={joinUsers[1]}
                 />
             );
         } else if (joinMessageType === 'MANY') {
             return (
                 <JoinManyServiceMessage
                     myUserId={otherParams.myUserId}
-                    firstUser={otherParams.alphaMentions[0].user}
-                    otherUsers={otherParams.alphaMentions
-                        .slice(1)
-                        .map(({ user }: { user: any }) => {
-                            return user;
-                        })}
+                    firstUser={joinUsers[0]}
+                    otherUsers={joinUsers.slice(1).map(({ user }: { user: any }) => {
+                        return user;
+                    })}
                 />
             );
         }
     } else if (typesObject.type === 'KICK') {
-        return <KickServiceServiceMessage message={otherParams.message} />;
+        return (
+            <KickServiceServiceMessage
+                kickedUser={otherParams.serviceMetadata.user}
+                myUserId={otherParams.myUserId}
+            />
+        );
     } else if (typesObject.type === 'PHOTO_CHANGE') {
-        return <PhotoChangeServiceMessage message={otherParams.message} />;
+        return <PhotoChangeServiceMessage />;
     } else if (typesObject.type === 'TITLE_CHANGE') {
-        return <TitleChangeServiceMessage message={otherParams.message} />;
+        const newRoomName = hackToGetRoomName(otherParams.message);
+        return <TitleChangeServiceMessage newRoomName={newRoomName} />;
     }
 
     return <TextServiceMessageFallback message={otherParams.message} />;
 };
 
-const resolveJoinMessageType = ({ alphaMentions }: { alphaMentions: any }) => {
-    if (alphaMentions === null) {
+const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
+    return serviceMetadata.users
+        ? serviceMetadata.users
+        : alphaMentions.map(({ user }: any) => user);
+};
+
+const resolveJoinMessageType = ({ users }: { users: any }) => {
+    if (users === null) {
         return null;
     }
-    if (alphaMentions.length === 1) {
+    if (users.length === 1) {
         return {
             type: 'JOIN',
             joinMessageType: 'ONE',
         };
-    } else if (alphaMentions.length === 2) {
+    } else if (users.length === 2) {
         return {
             type: 'JOIN',
             joinMessageType: 'TWO',
         };
-    } else if (alphaMentions.length > 2) {
+    } else if (users.length > 2) {
         return {
             type: 'JOIN',
             joinMessageType: 'MANY',
@@ -436,15 +449,16 @@ const hackToGuessPostMessageType = (message: string) => {
 const resolveServiceMessageType = ({
     serviceMetadata,
     message,
-    alphaMentions,
+    params,
 }: {
     serviceMetadata: any;
     message: any;
-    alphaMentions: any;
+    params: any;
 }) => {
     if (serviceMetadata) {
         if (serviceMetadata.__typename === 'InviteServiceMetadata') {
-            return resolveJoinMessageType({ alphaMentions: alphaMentions });
+            const users = getJoinUsers(params);
+            return resolveJoinMessageType({ users });
         } else if (serviceMetadata.__typename === 'KickServiceMetadata') {
             return {
                 type: 'KICK',
@@ -475,7 +489,7 @@ export const ServiceMessage = (params: {
     const typesObject = resolveServiceMessageType({
         serviceMetadata: params.serviceMetadata,
         message: params.message,
-        alphaMentions: params.alphaMentions,
+        params,
     }) as any;
 
     if (typesObject === null) {
