@@ -32,9 +32,7 @@ export default withAppBase(
                             {props.data.invite.joined && (
                                 <XButton
                                     text={InitTexts.join.goButton}
-                                    onClick={() =>
-                                        switchOrganization(props.data.invite!!.orgId)
-                                    }
+                                    onClick={() => switchOrganization(props.data.invite!!.orgId)}
                                     style="primary"
                                 />
                             )}

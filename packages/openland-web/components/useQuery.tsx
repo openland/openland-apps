@@ -42,28 +42,39 @@ export function useQuery<T, V>(query: GraphqlTypedQuery<T, V>, variables?: V) {
     let client = React.useContext(YApolloContext)!;
     let k = objToKey(variables);
     // let lk = React.useRef<string>(k!);
-    let watchQuery = React.useMemo(() => client.client.watchQuery<T, V>({
-        query: query.document,
-        variables: variables ? { ...(variables as any) } as any : undefined
-    }), [query, k]);
+    let watchQuery = React.useMemo(
+        () =>
+            client.client.watchQuery<T, V>({
+                query: query.document,
+                variables: variables ? ({ ...(variables as any) } as any) : undefined,
+            }),
+        [query, k],
+    );
     let [state, setState] = React.useState<number>(0);
     let stateRef = React.useRef(0);
     let res = watchQuery.currentResult();
     let lastState = React.useRef<any>(res);
     lastState.current = res;
-    React.useEffect(() => {
-        let subs = watchQuery.subscribe((d) => {
-            if (!shallowEq(d.data, lastState.current.data) || d.loading !== lastState.current.loading || (d.errors && d.errors.length > 0)) {
-                lastState.current = d;
-                setState(++stateRef.current);
-            }
-        });
-        return () => subs.unsubscribe();
-    }, [watchQuery]);
+    React.useEffect(
+        () => {
+            let subs = watchQuery.subscribe(d => {
+                if (
+                    !shallowEq(d.data, lastState.current.data) ||
+                    d.loading !== lastState.current.loading ||
+                    (d.errors && d.errors.length > 0)
+                ) {
+                    lastState.current = d;
+                    setState(++stateRef.current);
+                }
+            });
+            return () => subs.unsubscribe();
+        },
+        [watchQuery],
+    );
 
     return {
         data: res.data as T,
         loading: res.loading,
-        error: res.error
+        error: res.error,
     };
 }

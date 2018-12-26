@@ -16,7 +16,7 @@ import {
     MessageFull_reactions,
     MessageFull_urlAugmentation_user_User,
     MessageFull_fileMetadata,
-    MessageFull_urlAugmentation
+    MessageFull_urlAugmentation,
 } from 'openland-api/Types';
 
 const SetReactionButton = withSetReaction(props => (
@@ -80,9 +80,9 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
         fileData = {
             uuid: file,
             name: fileMetadata.name,
-            size: fileMetadata.size.toString()
+            size: fileMetadata.size.toString(),
         };
-        filePath = `'https://ucarecdn.com/'${file}/${fileMetadata.name}`
+        filePath = `'https://ucarecdn.com/'${file}/${fileMetadata.name}`;
     }
 
     const accept = reactions.find(r => r.user.id === meId && r.reaction === 'accept');
@@ -90,17 +90,12 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
 
     let usrPath = undefined;
 
-    if (user && (accept || (meId === senderId))) {
+    if (user && (accept || meId === senderId)) {
         usrPath = '/mail/u/' + user.id;
     }
 
     return (
-        <XView
-            flexDirection="column"
-            paddingTop={4}
-            paddingBottom={4}
-            maxWidth={550}
-        >
+        <XView flexDirection="column" paddingTop={4} paddingBottom={4} maxWidth={550}>
             <XView
                 flexDirection="column"
                 borderColor="#ececec"
@@ -110,23 +105,14 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                 position="relative"
                 backgroundColor="#fcfcfc"
             >
-                <XView
-                    paddingTop={16}
-                    paddingBottom={16}
-                    paddingLeft={20}
-                    paddingRight={16}
-                >
+                <XView paddingTop={16} paddingBottom={16} paddingLeft={20} paddingRight={16}>
                     {user && (
                         <XView
                             justifyContent="space-between"
                             alignItems="center"
                             flexDirection="row"
                         >
-                            <XView
-                                alignItems="center"
-                                flexDirection="row"
-                                marginRight={16}
-                            >
+                            <XView alignItems="center" flexDirection="row" marginRight={16}>
                                 <XAvatar
                                     path={usrPath}
                                     objectId={user.id}
@@ -134,10 +120,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                                     photoRef={urlAugmentation.photo || undefined}
                                     style="colorus"
                                 />
-                                <XView
-                                    flexDirection="column"
-                                    marginLeft={12}
-                                >
+                                <XView flexDirection="column" marginLeft={12}>
                                     <XView
                                         as="a"
                                         path={usrPath}
@@ -162,10 +145,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                                     )}
                                 </XView>
                             </XView>
-                            <XView
-                                alignItems="center"
-                                flexDirection="row"
-                            >
+                            <XView alignItems="center" flexDirection="row">
                                 <XView
                                     alignItems="center"
                                     flexDirection="row"
@@ -220,9 +200,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                                                         <XMenuItem>Pass</XMenuItem>
                                                     </SetReactionButton>
                                                 )}
-                                            <XMenuItem path={usrPath}>
-                                                View profile
-                                            </XMenuItem>
+                                            <XMenuItem path={usrPath}>View profile</XMenuItem>
                                             {meId === senderId && (
                                                 <>
                                                     <XMenuItem
@@ -251,10 +229,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                         </XView>
                     )}
                     {urlAugmentation.description && (
-                        <XView
-                            marginTop={12}
-                            flexShrink={0}
-                        >
+                        <XView marginTop={12} flexShrink={0}>
                             <MessageTextComponent
                                 message={urlAugmentation.description}
                                 isEdited={false}
@@ -263,15 +238,8 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                     )}
                 </XView>
                 {fileData && (
-                    <XView
-                        flexDirection="column"
-                    >
-                        <XView
-                            width="100%"
-                            height={1}
-                            flexShrink={0}
-                            backgroundColor="#eef0f2"
-                        />
+                    <XView flexDirection="column">
+                        <XView width="100%" height={1} flexShrink={0} backgroundColor="#eef0f2" />
                         <XView
                             as="a"
                             href={filePath}
@@ -283,12 +251,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                             hoverColor="#1790ff"
                         >
                             <IcFile />
-                            <XView
-                                fontSize={13}
-                                fontWeight="600"
-                                lineHeight={1.54}
-                                marginLeft={8}
-                            >
+                            <XView fontSize={13} fontWeight="600" lineHeight={1.54} marginLeft={8}>
                                 {fileData.name}({niceBytes(Number(fileData.size))})
                             </XView>
                         </XView>
@@ -313,4 +276,4 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
             )}
         </XView>
     );
-})
+});

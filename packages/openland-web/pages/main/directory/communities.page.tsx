@@ -165,19 +165,18 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     }
                                                 />
                                             )}
-                                            {this.state.query.length > 0 &&
-                                                orgCount > 0 && (
-                                                    <XSubHeader
-                                                        title="Communities"
-                                                        counter={orgCount}
-                                                        right={
-                                                            <SortPicker
-                                                                sort={this.state.sort}
-                                                                onPick={this.changeSort}
-                                                            />
-                                                        }
-                                                    />
-                                                )}
+                                            {this.state.query.length > 0 && orgCount > 0 && (
+                                                <XSubHeader
+                                                    title="Communities"
+                                                    counter={orgCount}
+                                                    right={
+                                                        <SortPicker
+                                                            sort={this.state.sort}
+                                                            onPick={this.changeSort}
+                                                        />
+                                                    }
+                                                />
+                                            )}
                                             <Communities
                                                 featuredFirst={this.state.sort.featured}
                                                 query={this.state.query}

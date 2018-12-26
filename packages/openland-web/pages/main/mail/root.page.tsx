@@ -63,24 +63,23 @@ export const OrganizationProfileContainer = Glamorous.div({
     flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo(
-    props =>
-        props.data && props.data.invite ? (
-            props.data.invite.room.membership === 'MEMBER' ? (
-                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
-            ) : (
-                    <RoomsInviteComponent
-                        inviteLink={props.router.routeQuery.invite}
-                        room={props.data.invite.room as any}
-                        invite={props.data.invite}
-                    />
-                )
+export const RoomInviteFromLink = withChannelInviteInfo(props =>
+    props.data && props.data.invite ? (
+        props.data.invite.room.membership === 'MEMBER' ? (
+            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
         ) : (
-                <XLoader loading={true} />
-            ),
+            <RoomsInviteComponent
+                inviteLink={props.router.routeQuery.invite}
+                room={props.data.invite.room as any}
+                invite={props.data.invite}
+            />
+        )
+    ) : (
+        <XLoader loading={true} />
+    ),
 );
 
-interface MessagePageInnerState extends MessagesStateContextProps { }
+interface MessagePageInnerState extends MessagesStateContextProps {}
 
 class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageInnerState> {
     constructor(props: { router: XRouter }) {
@@ -110,7 +109,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
     componentWillReceiveProps(nextProps: { router: XRouter }) {
         if (
             this.props.router.routeQuery.conversationId !==
-            nextProps.router.routeQuery.conversationId &&
+                nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
             this.state.resetAll();
@@ -222,8 +221,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
             | 'organization'
             | 'user'
             | 'conference'
-            | 'chat' =
-            'empty';
+            | 'chat' = 'empty';
 
         if (isCompose) {
             tab = 'compose';
@@ -277,7 +275,11 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
                                 <ConversationContainer>
                                     {tab === 'compose' && <ComposeFragment />}
                                     {tab === 'empty' && <MessengerEmptyFragment />}
-                                    {tab === 'conversation' && (<MessengerFragment id={props.router.routeQuery.conversationId} />)}
+                                    {tab === 'conversation' && (
+                                        <MessengerFragment
+                                            id={props.router.routeQuery.conversationId}
+                                        />
+                                    )}
                                     {tab === 'rooms' && <RoomsExploreComponent />}
                                     {tab === 'invite' && <RoomInviteFromLink />}
                                     {tab === 'organization' && (

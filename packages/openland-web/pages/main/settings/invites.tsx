@@ -353,16 +353,15 @@ class InvitesModalRaw extends React.Component<
                             />
                         </XWithRole>
                     )}
-                    {this.state.showLink &&
-                        !this.props.global && (
-                            <InviteButton
-                                onClick={() => this.setState({ showLink: false })}
-                                icon={<EmailIcon />}
-                                marginLeft={4}
-                                marginRight={10}
-                                title={TextInvites.backToEmailInvites}
-                            />
-                        )}
+                    {this.state.showLink && !this.props.global && (
+                        <InviteButton
+                            onClick={() => this.setState({ showLink: false })}
+                            icon={<EmailIcon />}
+                            marginLeft={4}
+                            marginRight={10}
+                            title={TextInvites.backToEmailInvites}
+                        />
+                    )}
                 </XHorizontal>
 
                 {this.state.showLink && !this.props.global && <RenewInviteLinkButton />}
@@ -487,20 +486,18 @@ class InvitesModalRaw extends React.Component<
                             )}
                         </XVertical>
                     )}
-                    {this.state.showLink &&
-                        !this.props.global && (
-                            <OwnerLink
-                                innerRef={this.handleLinkComponentRef}
-                                onBack={() => this.setState({ showLink: false })}
-                            />
-                        )}
-                    {this.state.showLink &&
-                        this.props.global && (
-                            <OwnerLinkOrganization
-                                innerRef={this.handleLinkComponentRef}
-                                onBack={() => this.setState({ showLink: false })}
-                            />
-                        )}
+                    {this.state.showLink && !this.props.global && (
+                        <OwnerLink
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
+                    {this.state.showLink && this.props.global && (
+                        <OwnerLinkOrganization
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
                 </ModalContentWrapper>
             </XModalForm>
         );

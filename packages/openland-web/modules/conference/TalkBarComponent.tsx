@@ -68,9 +68,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                 style="user"
                                                 objectId={v.user.id}
                                                 online={false}
-                                                cloudImageUuid={
-                                                    v.user.photo || undefined
-                                                }
+                                                cloudImageUuid={v.user.photo || undefined}
                                             />
                                             {/* <span>{v.connection && v.connection.state}</span> */}
                                         </XView>
@@ -88,9 +86,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         <XButton
                                             style="success"
                                             text={
-                                                ctx.state === 'connecting'
-                                                    ? 'Connecting'
-                                                    : 'Leave'
+                                                ctx.state === 'connecting' ? 'Connecting' : 'Leave'
                                             }
                                             onClick={() => ctx.leaveCall()}
                                         />
@@ -103,19 +99,13 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                         onClick={
                                             ctx.cid
                                                 ? () => ctx.leaveCall()
-                                                : () =>
-                                                    ctx.joinCall(
-                                                        props.conversationId,
-                                                    )
+                                                : () => ctx.joinCall(props.conversationId)
                                         }
                                     />
                                 )}
                             </XView>
                             )}
-                            <TalkWatchComponent
-                                apollo={apollo!}
-                                id={data.data!.conference.id}
-                            />
+                            <TalkWatchComponent apollo={apollo!} id={data.data!.conference.id} />
                         </>
                     );
                 }}

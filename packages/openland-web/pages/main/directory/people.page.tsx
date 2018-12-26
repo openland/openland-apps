@@ -162,20 +162,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     }
                                                 />
                                             )}
-                                            {this.state.query.length > 0 &&
-                                                orgCount > 0 && (
-                                                    <XSubHeader
-                                                        title="People"
-                                                        counter={orgCount}
-                                                        right={
-                                                            <SortPicker
-                                                                sort={this.state.sort}
-                                                                onPick={this.changeSort}
-                                                                withoutFeatured={true}
-                                                            />
-                                                        }
-                                                    />
-                                                )}
+                                            {this.state.query.length > 0 && orgCount > 0 && (
+                                                <XSubHeader
+                                                    title="People"
+                                                    counter={orgCount}
+                                                    right={
+                                                        <SortPicker
+                                                            sort={this.state.sort}
+                                                            onPick={this.changeSort}
+                                                            withoutFeatured={true}
+                                                        />
+                                                    }
+                                                />
+                                            )}
                                             <Communities
                                                 featuredFirst={this.state.sort.featured}
                                                 searchText={this.state.query}

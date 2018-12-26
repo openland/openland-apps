@@ -79,12 +79,11 @@ export const InviteInfoInner = (props: any) => {
                                     }
                                 />
                             )}
-                            {!props.data.invite &&
-                                !props.loading && (
-                                    <MessagePageContent title="Join">
-                                        <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
-                                    </MessagePageContent>
-                                )}
+                            {!props.data.invite && !props.loading && (
+                                <MessagePageContent title="Join">
+                                    <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
+                                </MessagePageContent>
+                            )}
                             {!props.data.invite && props.loading && <XLoader loading={true} />}
                         </Content>
                     </Root>
@@ -102,31 +101,33 @@ export const InviteInfo = withChannelInviteInfo(InviteInfoInner) as React.Compon
 
 export default withAppBase(
     'Join Room',
-    withRouter(withUserInfo(props => {
-        let invite = props.router.routeQuery.invite;
+    withRouter(
+        withUserInfo(props => {
+            let invite = props.router.routeQuery.invite;
 
-        Cookie.set('x-openland-invite', invite, { path: '/' });
+            Cookie.set('x-openland-invite', invite, { path: '/' });
 
-        return (
-            <>
-                <XDocumentHead
-                    title={InitTexts.invite.pageTitle}
-                    titleSocial={InitTexts.socialPageTitle}
-                />
-                <XTrack event="Invite">
-                    <InviteInfo
-                        variables={{ invite: invite }}
-                        redirect={'/acceptChannelInvite/' + invite}
-                        instantRedirect={
-                            props.isLoggedIn
-                                ? (props.isCompleted
-                                      ? '/mail/joinChannel/'
-                                      : '/acceptChannelInvite/') + invite
-                                : undefined
-                        }
+            return (
+                <>
+                    <XDocumentHead
+                        title={InitTexts.invite.pageTitle}
+                        titleSocial={InitTexts.socialPageTitle}
                     />
-                </XTrack>
-            </>
-        );
-    }),
-));
+                    <XTrack event="Invite">
+                        <InviteInfo
+                            variables={{ invite: invite }}
+                            redirect={'/acceptChannelInvite/' + invite}
+                            instantRedirect={
+                                props.isLoggedIn
+                                    ? (props.isCompleted
+                                          ? '/mail/joinChannel/'
+                                          : '/acceptChannelInvite/') + invite
+                                    : undefined
+                            }
+                        />
+                    </XTrack>
+                </>
+            );
+        }),
+    ),
+);

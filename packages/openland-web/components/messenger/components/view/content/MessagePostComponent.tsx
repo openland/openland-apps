@@ -241,57 +241,56 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                 alignSelf="center"
                 alignItems="center"
             >
-                {respondUsers.length > 0 &&
-                    meSender && (
-                        <XPopper
-                            placement="top"
-                            showOnHover={true}
-                            contentContainer={<XMenuVertical />}
-                            content={respondUsers.map((i, j) => (
-                                <RespondUserWrapper
-                                    key={'post_respond' + j}
-                                    style="gray"
-                                    path={'/mail/u/' + i.user.id}
+                {respondUsers.length > 0 && meSender && (
+                    <XPopper
+                        placement="top"
+                        showOnHover={true}
+                        contentContainer={<XMenuVertical />}
+                        content={respondUsers.map((i, j) => (
+                            <RespondUserWrapper
+                                key={'post_respond' + j}
+                                style="gray"
+                                path={'/mail/u/' + i.user.id}
+                            >
+                                <RespondUserContent
+                                    justifyContent="space-between"
+                                    alignItems="center"
                                 >
-                                    <RespondUserContent
-                                        justifyContent="space-between"
-                                        alignItems="center"
-                                    >
-                                        <XHorizontal separator={6} alignItems="center">
-                                            <RespondUserAvatar
-                                                style="user"
-                                                cloudImageUuid={i.user.photo}
-                                                objectId={i.user.id}
-                                                objectName={i.user.name}
-                                                size="m-small"
-                                            />
-                                            <XHorizontal separator={5} alignItems="center">
-                                                <RespondUserName>{i.user.name}</RespondUserName>
-                                                {i.user.primaryOrganization && (
-                                                    <RespondUserCompany>
-                                                        {i.user.primaryOrganization.name}
-                                                    </RespondUserCompany>
-                                                )}
-                                            </XHorizontal>
+                                    <XHorizontal separator={6} alignItems="center">
+                                        <RespondUserAvatar
+                                            style="user"
+                                            cloudImageUuid={i.user.photo}
+                                            objectId={i.user.id}
+                                            objectName={i.user.name}
+                                            size="m-small"
+                                        />
+                                        <XHorizontal separator={5} alignItems="center">
+                                            <RespondUserName>{i.user.name}</RespondUserName>
+                                            {i.user.primaryOrganization && (
+                                                <RespondUserCompany>
+                                                    {i.user.primaryOrganization.name}
+                                                </RespondUserCompany>
+                                            )}
                                         </XHorizontal>
-                                        {i.user.id !== props.meId && (
-                                            <XButton
-                                                style="primary"
-                                                text="Message"
-                                                size="tiny"
-                                                path={'/mail/' + i.user.id}
-                                            />
-                                        )}
-                                    </RespondUserContent>
-                                </RespondUserWrapper>
-                            ))}
-                        >
-                            <RespondWrapper separator={2} alignItems="center">
-                                <ReplyIcon />
-                                <div>{respondUsers.length}</div>
-                            </RespondWrapper>
-                        </XPopper>
-                    )}
+                                    </XHorizontal>
+                                    {i.user.id !== props.meId && (
+                                        <XButton
+                                            style="primary"
+                                            text="Message"
+                                            size="tiny"
+                                            path={'/mail/' + i.user.id}
+                                        />
+                                    )}
+                                </RespondUserContent>
+                            </RespondUserWrapper>
+                        ))}
+                    >
+                        <RespondWrapper separator={2} alignItems="center">
+                            <ReplyIcon />
+                            <div>{respondUsers.length}</div>
+                        </RespondWrapper>
+                    </XPopper>
+                )}
                 {otherReactions.length > 0 && (
                     <Reactions
                         messageId={props.messageId}
@@ -382,54 +381,50 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                     </ShowMore>
                                 )}
                             </XVertical>
-                            {cover &&
-                                (cover as MessageFull_alphaAttachments).fileId && (
-                                    <CoverWrapper>
-                                        <XCloudImage
-                                            srcCloud={
-                                                'https://ucarecdn.com/' +
-                                                (cover as MessageFull_alphaAttachments).fileId +
-                                                '/'
-                                            }
-                                            resize={'fill'}
-                                            width={134}
-                                            height={134}
-                                        />
-                                    </CoverWrapper>
-                                )}
+                            {cover && (cover as MessageFull_alphaAttachments).fileId && (
+                                <CoverWrapper>
+                                    <XCloudImage
+                                        srcCloud={
+                                            'https://ucarecdn.com/' +
+                                            (cover as MessageFull_alphaAttachments).fileId +
+                                            '/'
+                                        }
+                                        resize={'fill'}
+                                        width={134}
+                                        height={134}
+                                    />
+                                </CoverWrapper>
+                            )}
                         </XHorizontal>
                     </Container>
-                    {moreFiles &&
-                        moreFiles.length > 0 && (
-                            <FilesWrapper separator={3}>
-                                {moreFiles.map(
-                                    i =>
-                                        i.fileMetadata && (
-                                            <FileItem
-                                                key={'file' + i.fileId}
-                                                href={
-                                                    'https://ucarecdn.com/' +
-                                                    i.fileId +
-                                                    '/' +
-                                                    (i.fileMetadata.name
-                                                        ? i.fileMetadata.name!!
-                                                        : '')
-                                                }
-                                            >
-                                                <XHorizontal separator={4} alignItems="center">
-                                                    <FileImage className="icon" />
-                                                    <XHorizontal alignItems="center" separator={2}>
-                                                        <div>
-                                                            {i.fileMetadata.name} <span>•</span>{' '}
-                                                            {niceBytes(Number(i.fileMetadata.size))}
-                                                        </div>
-                                                    </XHorizontal>
+                    {moreFiles && moreFiles.length > 0 && (
+                        <FilesWrapper separator={3}>
+                            {moreFiles.map(
+                                i =>
+                                    i.fileMetadata && (
+                                        <FileItem
+                                            key={'file' + i.fileId}
+                                            href={
+                                                'https://ucarecdn.com/' +
+                                                i.fileId +
+                                                '/' +
+                                                (i.fileMetadata.name ? i.fileMetadata.name!! : '')
+                                            }
+                                        >
+                                            <XHorizontal separator={4} alignItems="center">
+                                                <FileImage className="icon" />
+                                                <XHorizontal alignItems="center" separator={2}>
+                                                    <div>
+                                                        {i.fileMetadata.name} <span>•</span>{' '}
+                                                        {niceBytes(Number(i.fileMetadata.size))}
+                                                    </div>
                                                 </XHorizontal>
-                                            </FileItem>
-                                        ),
-                                )}
-                            </FilesWrapper>
-                        )}
+                                            </XHorizontal>
+                                        </FileItem>
+                                    ),
+                            )}
+                        </FilesWrapper>
+                    )}
                 </Root>
                 <XHorizontal justifyContent="space-between">
                     {!props.privateConversation && (

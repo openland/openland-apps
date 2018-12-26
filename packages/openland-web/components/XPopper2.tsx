@@ -173,24 +173,37 @@ export const XPopper2 = React.forwardRef<XPoperRef, XPopper2Props>((props: XPopp
         },
     }));
 
-    let Component = React.useMemo(() => {
-        return () => {
-            React.useLayoutEffect(() => {
-                if (currentPopper.current) { currentPopper.current.update(); }
-            });
-            return (
-                <div key={'pop-' + index} ref={popupRef}>
-                    <div className={'popper ' + (props.className ? props.className : contentStyle)}>
-                        {props.children}
-                        {/* <ReactResizeDetector handleWidth={true} handleHeight={true} onResize={() => currentPopper.current && currentPopper.current.scheduleUpdate()} /> */}
+    let Component = React.useMemo(
+        () => {
+            return () => {
+                React.useLayoutEffect(() => {
+                    if (currentPopper.current) {
+                        currentPopper.current.update();
+                    }
+                });
+                return (
+                    <div key={'pop-' + index} ref={popupRef}>
+                        <div
+                            className={
+                                'popper ' + (props.className ? props.className : contentStyle)
+                            }
+                        >
+                            {props.children}
+                            {/* <ReactResizeDetector handleWidth={true} handleHeight={true} onResize={() => currentPopper.current && currentPopper.current.scheduleUpdate()} /> */}
+                        </div>
+                        <div
+                            className={arrowStyle}
+                            ref={popupArrowRef}
+                            style={{ width: 12, height: 6 }}
+                        >
+                            <div />
+                        </div>
                     </div>
-                    <div className={arrowStyle} ref={popupArrowRef} style={{ width: 12, height: 6 }}>
-                        <div />
-                    </div>
-                </div>
-            );
-        }
-    }, [props.children]);
+                );
+            };
+        },
+        [props.children],
+    );
 
     // Render
     if (node) {

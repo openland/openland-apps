@@ -10,7 +10,7 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { TalkProviderComponent } from 'openland-web/modules/conference/TalkProviderComponent';
 
-export const AppContainer = React.memo<{ children?: any }>((props) => {
+export const AppContainer = React.memo<{ children?: any }>(props => {
     let apollo = React.useContext(YApolloContext)!;
     let account = useQuery(AccountQuery);
     if (account.loading) {
@@ -19,7 +19,7 @@ export const AppContainer = React.memo<{ children?: any }>((props) => {
                 <XDocumentHead title={['App']} />
                 <XLoader loading={true} />
             </>
-        )
+        );
     }
 
     let hasMessenger = canUseDOM && !!account.data.me;

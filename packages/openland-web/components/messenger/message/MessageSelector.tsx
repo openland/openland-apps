@@ -16,13 +16,8 @@ export const MessageSelector = React.memo<{
                 cursor="pointer"
                 onClick={props.onClick}
             >
-                <XView
-                    position="absolute"
-                    top={6}
-                    left={4}
-                    alignItems="center"
-                >
-                    <CheckIcon/>
+                <XView position="absolute" top={6} left={4} alignItems="center">
+                    <CheckIcon />
                 </XView>
             </XView>
         );

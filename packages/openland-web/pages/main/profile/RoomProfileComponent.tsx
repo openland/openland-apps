@@ -229,7 +229,11 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
     );
 };
 
-const MemberCard = (props: { member: RoomFull_SharedRoom_members; meOwner: boolean, isGroup: boolean }) => {
+const MemberCard = (props: {
+    member: RoomFull_SharedRoom_members;
+    meOwner: boolean;
+    isGroup: boolean;
+}) => {
     let removeText = props.isGroup ? 'Remove from group' : 'Remove from room';
 
     if (props.member.user.isYou) {
@@ -411,8 +415,8 @@ const RoomGroupProfileProvider = withRoom(
                 conversationId={(props as any).conversationId}
             />
         ) : (
-                <XLoader loading={true} />
-            );
+            <XLoader loading={true} />
+        );
     }),
 ) as React.ComponentType<{
     variables: { id: string };

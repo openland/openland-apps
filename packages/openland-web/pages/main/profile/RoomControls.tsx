@@ -14,7 +14,7 @@ class SwitchComponent extends React.Component<
         fieldTitle?: string;
     },
     { val: boolean }
-    > {
+> {
     constructor(props: any) {
         super(props);
         this.state = { val: props.val };

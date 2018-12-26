@@ -35,7 +35,7 @@ interface MessageImageComponentProps {
 export class MessageImageComponent extends React.PureComponent<
     MessageImageComponentProps,
     { isOpen: boolean }
-    > {
+> {
     constructor(props: MessageImageComponentProps) {
         super(props);
 
@@ -118,11 +118,7 @@ export class MessageImageComponent extends React.PureComponent<
                     onClosed={this.handleClose}
                     body={this.modalBody(dimensions2.width, dimensions2.height)}
                 />
-                <XView 
-                    onClick={this.handleOpen} 
-                    cursor="pointer" 
-                    paddingBottom={5}
-                >
+                <XView onClick={this.handleOpen} cursor="pointer" paddingBottom={5}>
                     <XCloudImage
                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                         resize={'fill'}

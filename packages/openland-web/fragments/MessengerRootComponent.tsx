@@ -264,11 +264,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
 
         return (
-            <XView
-                flexDirection="column"
-                width="100%"
-                height="100%"
-            >
+            <XView flexDirection="column" width="100%" height="100%">
                 {this.state.hideChat && (
                     <CreatePostComponent
                         handleHideChat={this.handleHideChat}

@@ -44,9 +44,7 @@ export default withAppBase(
                         ))}
                     {!(props.data.invite || props.data.appInvite) && (
                         <MessagePageContent title="Invite">
-                            <div className={InfoText}>
-                                {InitTexts.invite.unableToFindInvite}
-                            </div>
+                            <div className={InfoText}>{InitTexts.invite.unableToFindInvite}</div>
                         </MessagePageContent>
                     )}
                 </MessagePage>

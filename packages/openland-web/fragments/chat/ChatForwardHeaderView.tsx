@@ -17,7 +17,7 @@ const ClearIconClass = css`
     width: 16px;
     height: 16px;
     & > path {
-        fill: #BCC3CC
+        fill: #bcc3cc;
     }
     &:hover > path {
         fill: #000000;

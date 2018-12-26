@@ -102,11 +102,7 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
             borderRadius={6}
         >
             {!props.compact && (
-                <XView
-                    alignSelf="stretch"
-                    flexDirection="row"
-                    marginBottom={4}
-                >
+                <XView alignSelf="stretch" flexDirection="row" marginBottom={4}>
                     <XView marginRight={12}>
                         <XAvatar
                             size="small"
@@ -117,16 +113,8 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
                             path={usrPath}
                         />
                     </XView>
-                    <XView
-                        flexGrow={1}
-                        width="calc(100% - 60px)"
-                        paddingTop={1}
-                    >
-                        <XView
-                            alignItems="center"
-                            flexDirection="row"
-                            marginBottom={4}
-                        >
+                    <XView flexGrow={1} width="calc(100% - 60px)" paddingTop={1}>
+                        <XView alignItems="center" flexDirection="row" marginBottom={4}>
                             <XView
                                 marginRight={props.sender!!.primaryOrganization ? 5 : 0}
                                 fontSize={14}
@@ -166,10 +154,7 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
                     </XView>
                 </XView>
             )}
-            <XView
-                flexShrink={0}
-                marginTop={props.compact ? 0 : 4}
-            >
+            <XView flexShrink={0} marginTop={props.compact ? 0 : 4}>
                 {content}
             </XView>
         </XView>

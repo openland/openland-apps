@@ -68,5 +68,5 @@ export const DialogListFragment = React.memo(() => {
                 <DialogsInviteButton />
             </XView>
         </div>
-    )
+    );
 });

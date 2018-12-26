@@ -27,8 +27,7 @@ const Image = Glamorous.div({
     backgroundPosition: 'center',
 });
 
-export const DialogSearchResults = withChatSearchText((props) => {
-
+export const DialogSearchResults = withChatSearchText(props => {
     if (!props.data || !props.data.items) {
         return <PlaceholderLoader color="#334562" />;
     }
@@ -53,20 +52,22 @@ export const DialogSearchResults = withChatSearchText((props) => {
         );
     }
 
-    return (<>
-        {items.map((i, j) => (
-            <DialogViewCompact
-                key={i.id}
-                onSelect={(props as any).onSelect}
-                item={{
-                    key: i.id,
-                    flexibleId: i.flexibleId,
-                    kind: i.kind,
-                    title: i.title,
-                    photo: i.photo || i.photos[0],
-                    unread: 0,
-                }}
-            />
-        ))}
-    </>);
+    return (
+        <>
+            {items.map((i, j) => (
+                <DialogViewCompact
+                    key={i.id}
+                    onSelect={(props as any).onSelect}
+                    item={{
+                        key: i.id,
+                        flexibleId: i.flexibleId,
+                        kind: i.kind,
+                        title: i.title,
+                        photo: i.photo || i.photos[0],
+                        unread: 0,
+                    }}
+                />
+            ))}
+        </>
+    );
 });

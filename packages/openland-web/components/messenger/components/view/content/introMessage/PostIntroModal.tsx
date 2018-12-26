@@ -241,16 +241,14 @@ class FileComponent extends React.PureComponent<FileComponentProps> {
         let { file } = this.props;
         return (
             <>
-                {file &&
-                    file.name &&
-                    file.size && (
-                        <MessageFileComponent
-                            fileName={file.name}
-                            fileSize={Number(file.size)}
-                            clearButton={true}
-                            onClearClick={this.handleClearClick}
-                        />
-                    )}
+                {file && file.name && file.size && (
+                    <MessageFileComponent
+                        fileName={file.name}
+                        fileSize={Number(file.size)}
+                        clearButton={true}
+                        onClearClick={this.handleClearClick}
+                    />
+                )}
             </>
         );
     }
@@ -383,19 +381,15 @@ class PostIntroModalRaw extends React.PureComponent<
                             );
                         }}
                     </XStoreContext.Consumer>
-                    {this.state.progress !== 0 &&
-                        !file &&
-                        this.state.fileUploading && (
-                            <MessageUploadComponent
-                                key={'file'}
-                                progress={Math.round((this.state.progress || 0) * 100)}
-                                title={
-                                    'Uploading (' +
-                                    Math.round((this.state.progress || 0) * 100) +
-                                    '%)'
-                                }
-                            />
-                        )}
+                    {this.state.progress !== 0 && !file && this.state.fileUploading && (
+                        <MessageUploadComponent
+                            key={'file'}
+                            progress={Math.round((this.state.progress || 0) * 100)}
+                            title={
+                                'Uploading (' + Math.round((this.state.progress || 0) * 100) + '%)'
+                            }
+                        />
+                    )}
                 </XVertical>
             </XModalForm>
         );

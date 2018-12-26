@@ -50,10 +50,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     let sender = dialog.isOut
         ? 'You: '
         : isPrivate
-            ? ''
-            : dialog.sender
-                ? dialog.sender + ': '
-                : '';
+        ? ''
+        : dialog.sender
+        ? dialog.sender + ': '
+        : '';
     let message: any = undefined;
     if (dialog.typing) {
         message = dialog.typing;

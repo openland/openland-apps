@@ -321,14 +321,14 @@ const EditCloseBtn = Glamorous.div({
     alignItems: 'center',
     '& > svg': {
         width: 16,
-        height: 16
+        height: 16,
     },
     '& > svg > path': {
-        fill: '#BCC3CC'
+        fill: '#BCC3CC',
     },
     '&:hover > svg > path': {
-        fill: '#000000'
-    }
+        fill: '#000000',
+    },
 });
 
 const EditView = (props: { title: string; message: string; onCancel: () => void }) => (
@@ -444,8 +444,8 @@ class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                    ? props.handleHideChat
-                    : undefined;
+                ? props.handleHideChat
+                : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -984,18 +984,17 @@ class MessageComposeComponentInner extends React.PureComponent<
                 </DropArea>
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage &&
-                            forwardMessageId && (
-                                <EditView
-                                    message={stateMessage}
-                                    title={
-                                        forwardMessageSender !== undefined
-                                            ? forwardMessageSender
-                                            : 'Edit message'
-                                    }
-                                    onCancel={this.closeEditor}
-                                />
-                            )}
+                        {stateMessage && forwardMessageId && (
+                            <EditView
+                                message={stateMessage}
+                                title={
+                                    forwardMessageSender !== undefined
+                                        ? forwardMessageSender
+                                        : 'Edit message'
+                                }
+                                onCancel={this.closeEditor}
+                            />
+                        )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}

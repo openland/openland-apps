@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 
 export const MessageUploadComponent = React.memo((props: { title?: string; progress: number }) => (
     <XView
-        flexDirection='row'
+        flexDirection="row"
         justifyContent="center"
         alignItems="center"
         alignSelf="stretch"
@@ -22,13 +22,7 @@ export const MessageUploadComponent = React.memo((props: { title?: string; progr
             backgroundColor="#1790ff"
             transition="all .2s"
         />
-        <XView
-            fontSize={12}
-            fontWeight="600"
-            lineHeight={1.33}
-            color="#fff"
-            zIndex={1}
-        >
+        <XView fontSize={12} fontWeight="600" lineHeight={1.33} color="#fff" zIndex={1}>
             {props.title}
         </XView>
     </XView>

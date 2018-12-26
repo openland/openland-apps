@@ -147,10 +147,9 @@ export class RoomsExploreComponent extends React.Component<
                     {this.state.query.length <= 0 && (
                         <XSubHeader title="Featured rooms" right={sortBox} />
                     )}
-                    {this.state.query.length > 0 &&
-                        this.state.count > 0 && (
-                            <XSubHeader title="Rooms" counter={this.state.count} right={sortBox} />
-                        )}
+                    {this.state.query.length > 0 && this.state.count > 0 && (
+                        <XSubHeader title="Rooms" counter={this.state.count} right={sortBox} />
+                    )}
                     <Rooms
                         variables={{
                             query: this.state.query.toLowerCase(),

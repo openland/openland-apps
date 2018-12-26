@@ -25,9 +25,8 @@ export interface UserInfoProps {
 }
 
 export class UserInfoProvider extends React.Component<UserInfoProps> {
-
     ctx: UserInfo;
-    rolesCtx: { roles: string[], currentOrganizatonId?: string };
+    rolesCtx: { roles: string[]; currentOrganizatonId?: string };
 
     constructor(props: UserInfoProps) {
         super(props);
@@ -58,9 +57,7 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
 
         this.rolesCtx = {
             roles: this.props.roles,
-            currentOrganizatonId: this.props.organization
-                ? this.props.organization.id
-                : undefined,
+            currentOrganizatonId: this.props.organization ? this.props.organization.id : undefined,
         };
     }
 
@@ -78,9 +75,8 @@ export class UserInfoProvider extends React.Component<UserInfoProps> {
 export function withUserInfo<P>(
     WrappedComponent: React.ComponentType<P & UserInfo>,
 ): React.ComponentType<P> {
-
     return (props: P) => {
         let ctx = React.useContext(UserInfoContext);
-        return <WrappedComponent {...props}  {...ctx!} />;
-    }
+        return <WrappedComponent {...props} {...ctx!} />;
+    };
 }

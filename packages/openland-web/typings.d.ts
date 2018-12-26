@@ -185,9 +185,7 @@ declare module 'react-localstorage-hoc' {
     export default ReturnType;
 }
 
-declare module 'lodash.flowright' {
-
-}
+declare module 'lodash.flowright' {}
 
 declare namespace UploadCare {
     interface Dialog {
@@ -517,9 +515,7 @@ declare module 'ifvisible.js' {
     export = ifvisible;
 }
 
-declare module 'favico.js' {
-
-}
+declare module 'favico.js' {}
 
 declare module 'draft-js-plugins-editor' {
     export type PluginsEditorProps =

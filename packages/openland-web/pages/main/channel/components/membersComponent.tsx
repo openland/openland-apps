@@ -281,17 +281,16 @@ export class RoomMembersComponent extends React.Component<ChannelMembersComponen
                             />
                         ))}
                 </XContentWrapper>
-                {members.length <= 3 &&
-                    this.props.emptyText && (
-                        <EmptyComponent
-                            orgId={this.props.orgId}
-                            aloneMember={members.length + requests.length === 1}
-                            smaller={members.length >= 2}
-                            channelTitle={(this.props as any).channelTitle}
-                            chatId={this.props.roomId}
-                            text={this.props.emptyText}
-                        />
-                    )}
+                {members.length <= 3 && this.props.emptyText && (
+                    <EmptyComponent
+                        orgId={this.props.orgId}
+                        aloneMember={members.length + requests.length === 1}
+                        smaller={members.length >= 2}
+                        channelTitle={(this.props as any).channelTitle}
+                        chatId={this.props.roomId}
+                        text={this.props.emptyText}
+                    />
+                )}
                 <RemoveMemberModal
                     members={this.props.members}
                     roomId={this.props.roomId}

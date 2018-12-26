@@ -6,4 +6,4 @@ describe('isEmoji', () => {
         expect(isEmoji('🤝')).toBe(true);
         expect(isEmoji('🙋🏽‍♀️')).toBe(true);
     });
-})
+});

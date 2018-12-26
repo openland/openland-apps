@@ -35,7 +35,7 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
         marginTop = props.marginTop;
     }
     if (props.file) {
-        href = `https://ucarecdn.com/${props.file}/${(props.fileName ? props.fileName!! : '')}`;
+        href = `https://ucarecdn.com/${props.file}/${props.fileName ? props.fileName!! : ''}`;
     }
     return (
         <XView
@@ -71,11 +71,7 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
             >
                 <IcFile />
             </XView>
-            <XView
-                flexDirection="column"
-                flexGrow={1}
-                width="calc(100% - 52px)"
-            >
+            <XView flexDirection="column" flexGrow={1} width="calc(100% - 52px)">
                 <XView
                     width="100%"
                     whiteSpace="nowrap"
@@ -86,11 +82,7 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
                 >
                     {props.fileName ? props.fileName!! : 'file'}
                 </XView>
-                <XView
-                    opacity={0.5}
-                    fontSize={14}
-                    color="#334562 !important"
-                >
+                <XView opacity={0.5} fontSize={14} color="#334562 !important">
                     {niceBytes(props.fileSize)}
                 </XView>
             </XView>

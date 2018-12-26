@@ -201,17 +201,16 @@ export class MessageUrlAugmentationComponent extends React.Component<
                     {title && <Title>{title}</Title>}
                     {parts && <Description>{parts}</Description>}
                 </ContentWrapper>
-                {photo &&
-                    dimensions && (
-                        <ImageWrapper>
-                            <XCloudImage
-                                srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
-                                resize="fill"
-                                width={dimensions.width}
-                                height={dimensions.height}
-                            />
-                        </ImageWrapper>
-                    )}
+                {photo && dimensions && (
+                    <ImageWrapper>
+                        <XCloudImage
+                            srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
+                            resize="fill"
+                            width={dimensions.width}
+                            height={dimensions.height}
+                        />
+                    </ImageWrapper>
+                )}
                 {this.props.isMe && (
                     <DeleteButton
                         query={{

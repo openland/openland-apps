@@ -9,7 +9,7 @@ import PassedIcon from 'openland-icons/ic-passed.svg';
 import {
     SharedRoomKind,
     MessageFull_reactions,
-    MessageFull_urlAugmentation_user_User
+    MessageFull_urlAugmentation_user_User,
 } from 'openland-api/Types';
 
 const SetAccesReactionButton = withSetReaction(
@@ -28,7 +28,7 @@ const SetAccesReactionButton = withSetReaction(
 }>;
 
 interface CounterProps {
-    alignSelf?: "center" | "stretch" | "flex-end" | "flex-start" | null | undefined;
+    alignSelf?: 'center' | 'stretch' | 'flex-end' | 'flex-start' | null | undefined;
     accepted: boolean;
     icon: any;
     text: string;
@@ -132,20 +132,14 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     flexDirection="row"
                     marginTop={12}
                 >
-                    <Counter
-                        accepted={false}
-                        icon={<PassedIcon />}
-                        text="You passed"
-                    />
-                    {reactionsLength > 0 &&
-                        conversationType !== null &&
-                        acceptLength > 0 && (
-                            <Counter
-                                accepted={true}
-                                icon={<CheckIconSmall />}
-                                text={`${acceptLength} accepted`}
-                            />
-                        )}
+                    <Counter accepted={false} icon={<PassedIcon />} text="You passed" />
+                    {reactionsLength > 0 && conversationType !== null && acceptLength > 0 && (
+                        <Counter
+                            accepted={true}
+                            icon={<CheckIconSmall />}
+                            text={`${acceptLength} accepted`}
+                        />
+                    )}
                 </XView>
             );
         } else if (reactions.find(r => r.user.id === meId && r.reaction === 'accept')) {
@@ -156,14 +150,17 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     flexDirection="row"
                     marginTop={12}
                 >
-                    {reactionsLength > 0 &&
-                        acceptLength > 0 && (
-                            <Counter
-                                accepted={true}
-                                icon={<CheckIconSmall />}
-                                text={acceptLength === 1 ? 'You accepted' : `You + ${acceptLength - 1} accepted`}
-                            />
-                        )}
+                    {reactionsLength > 0 && acceptLength > 0 && (
+                        <Counter
+                            accepted={true}
+                            icon={<CheckIconSmall />}
+                            text={
+                                acceptLength === 1
+                                    ? 'You accepted'
+                                    : `You + ${acceptLength - 1} accepted`
+                            }
+                        />
+                    )}
                 </XView>
             );
         } else {
@@ -183,14 +180,13 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                     >
                         <XButton text="Accept intro" style="primary" alignSelf="flex-start" />
                     </SetAccesReactionButton>
-                    {reactionsLength > 0 &&
-                        acceptLength > 0 && (
-                            <Counter
-                                accepted={true}
-                                icon={<CheckIconSmall />}
-                                text={`${acceptLength} accepted`}
-                            />
-                        )}
+                    {reactionsLength > 0 && acceptLength > 0 && (
+                        <Counter
+                            accepted={true}
+                            icon={<CheckIconSmall />}
+                            text={`${acceptLength} accepted`}
+                        />
+                    )}
                 </XView>
             );
         }

@@ -101,40 +101,40 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
     props =>
         props.rounded
             ? {
-                height: 44,
-                borderRadius: 20,
-                backgroundColor: props.primary ? '#1790ff' : '#ffffff',
-                color: props.primary ? '#ffffff' : '#334562',
-                border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
-                '&:hover': {
-                    color: props.primary ? '#ffffff' : '#334562',
-                    backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
-                },
-                '&:active': {
-                    color: props.primary ? '#ffffff' : '#1790ff',
-                    backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
-                },
-                '& span': {
-                    fontSize: 16,
-                    fontWeight: 500,
-                    letterSpacing: -0.4,
-                    lineHeight: '16px',
-                },
-                '& svg': {
-                    marginRight: 9,
-                    marginLeft: -2,
-                },
-                '&.email': {
-                    '& svg': {
-                        margin: '1px 7px -1px -2px',
-                    },
-                    '&:active': {
-                        '& svg path:first-child': {
-                            fill: '#1790ff',
-                        },
-                    },
-                },
-            }
+                  height: 44,
+                  borderRadius: 20,
+                  backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+                  color: props.primary ? '#ffffff' : '#334562',
+                  border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
+                  '&:hover': {
+                      color: props.primary ? '#ffffff' : '#334562',
+                      backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
+                  },
+                  '&:active': {
+                      color: props.primary ? '#ffffff' : '#1790ff',
+                      backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
+                  },
+                  '& span': {
+                      fontSize: 16,
+                      fontWeight: 500,
+                      letterSpacing: -0.4,
+                      lineHeight: '16px',
+                  },
+                  '& svg': {
+                      marginRight: 9,
+                      marginLeft: -2,
+                  },
+                  '&.email': {
+                      '& svg': {
+                          margin: '1px 7px -1px -2px',
+                      },
+                      '&:active': {
+                          '& svg path:first-child': {
+                              fill: '#1790ff',
+                          },
+                      },
+                  },
+              }
             : {},
 ]);
 
@@ -328,11 +328,11 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
         ...(pageMode === 'CreateProfile'
             ? { margin: 'auto' }
             : {
-                position: 'relative',
-                marginRight: 'auto',
-                marginLeft: 'auto',
-                height: '100%',
-            }),
+                  position: 'relative',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  height: '100%',
+              }),
         '@media(max-width: 530px)': {
             width: '100%',
             maxWidth: 442,
@@ -352,7 +352,7 @@ const MainContentInner = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) =
     };
 });
 
-export const WebSignUpContainer = React.memo<SignContainerProps>((props) => {
+export const WebSignUpContainer = React.memo<SignContainerProps>(props => {
     return (
         <RootContainer>
             <LeftContainer>
@@ -374,8 +374,8 @@ export const WebSignUpContainer = React.memo<SignContainerProps>((props) => {
                             .
                         </FooterText>
                     ) : (
-                            <FooterText>© {new Date().getFullYear()} Openland</FooterText>
-                        )}
+                        <FooterText>© {new Date().getFullYear()} Openland</FooterText>
+                    )}
                 </Footer>
             </LeftContainer>
         </RootContainer>
@@ -464,50 +464,50 @@ const RoomSignupHeader = Glamorous.div<{
     props =>
         props.headerStyle === 'signin'
             ? {
-                backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                },
-            }
+                  backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                  },
+              }
             : {},
     props =>
         props.headerStyle === 'signup'
             ? {
-                backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                },
-            }
+                  backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                  },
+              }
             : {},
     props =>
         props.headerStyle === 'profile'
             ? {
-                backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-profile.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                },
-            }
+                  backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-profile.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                  },
+              }
             : {},
     props =>
         props.headerStyle === 'organization'
             ? {
-                backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-organization.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                },
-            }
+                  backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-organization.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                  },
+              }
             : {},
 ]);
 
@@ -520,7 +520,7 @@ interface RoomSignupContainerProps {
     children?: any;
 }
 
-export const RoomSignupContainer = React.memo<RoomSignupContainerProps>((props) => {
+export const RoomSignupContainer = React.memo<RoomSignupContainerProps>(props => {
     return (
         <RoomSignupWrapper>
             {props.text && (
@@ -902,19 +902,19 @@ export const WebSignUpActivationCode = ({
                             <SmallerText>Sending code...</SmallerText>
                         </>
                     ) : (
-                            <>
-                                <SmallerText>
-                                    {emailWasResend
-                                        ? 'Code successfully sent.'
-                                        : InitTexts.auth.haveNotReceiveCode}
-                                </SmallerText>
-                                <ResendButton
-                                    onClick={resendCodeClick}
-                                    style="link"
-                                    text={InitTexts.auth.resend}
-                                />
-                            </>
-                        )}
+                        <>
+                            <SmallerText>
+                                {emailWasResend
+                                    ? 'Code successfully sent.'
+                                    : InitTexts.auth.haveNotReceiveCode}
+                            </SmallerText>
+                            <ResendButton
+                                onClick={resendCodeClick}
+                                style="link"
+                                text={InitTexts.auth.resend}
+                            />
+                        </>
+                    )}
                 </XHorizontal>
             </ResendCodeRow>
             <ButtonsWrapper marginTop={20}>
@@ -1010,19 +1010,19 @@ export const RoomActivationCode = ({
                             <SmallerText>Sending code...</SmallerText>
                         </>
                     ) : (
-                            <>
-                                <SmallerText>
-                                    {emailWasResend
-                                        ? 'Code successfully sent.'
-                                        : InitTexts.auth.haveNotReceiveCode}
-                                </SmallerText>
-                                <ResendButton
-                                    onClick={resendCodeClick}
-                                    style="link"
-                                    text={InitTexts.auth.resend}
-                                />
-                            </>
-                        )}
+                        <>
+                            <SmallerText>
+                                {emailWasResend
+                                    ? 'Code successfully sent.'
+                                    : InitTexts.auth.haveNotReceiveCode}
+                            </SmallerText>
+                            <ResendButton
+                                onClick={resendCodeClick}
+                                style="link"
+                                text={InitTexts.auth.resend}
+                            />
+                        </>
+                    )}
                 </XHorizontal>
             </ResendCodeRow>
 
@@ -1379,7 +1379,7 @@ export class CreateOrganizationFormInner extends React.Component<
     {
         inputValue: string;
     }
-    > {
+> {
     constructor(props: any) {
         super(props);
         this.state = {
