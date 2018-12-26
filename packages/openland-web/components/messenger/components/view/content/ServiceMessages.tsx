@@ -276,6 +276,12 @@ type JoinMessageType = 'ONE' | 'TWO' | 'MANY';
 
 const hackToGetRoomName = (message: string) => message.slice('New room name: '.length);
 
+const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
+    return serviceMetadata.users
+        ? serviceMetadata.users
+        : alphaMentions.map(({ user }: any) => user);
+};
+
 const ServiceMessageComponentByTypes = ({
     typesObject,
     otherParams,
@@ -375,12 +381,6 @@ const ServiceMessageComponentByTypes = ({
     }
 
     return <TextServiceMessageFallback message={otherParams.message} />;
-};
-
-const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
-    return serviceMetadata.users
-        ? serviceMetadata.users
-        : alphaMentions.map(({ user }: any) => user);
 };
 
 const resolveJoinMessageType = ({ users }: { users: any }) => {
