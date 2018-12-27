@@ -108,7 +108,8 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                 // }
                 let notification = new Notification(content.title, {
                     body: content.body,
-                    icon: content.image
+                    icon: content.image,
+                    silent: true
                 });
                 let router = this.router;
                 notification.onclick = function () {
