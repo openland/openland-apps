@@ -164,17 +164,12 @@ class SignInComponent extends React.Component<
         }
     }
 
-    loginWithGoogle = (e: React.SyntheticEvent<any>) => {
-        e.preventDefault();
+    loginWithGoogle = () => {
         this.setState({ googleStarting: true, signInInvite: false });
         this.fireGoogle();
     };
 
-    loginWithEmail = (e?: React.SyntheticEvent<any>) => {
-        if (e) {
-            e.preventDefault();
-        }
-
+    loginWithEmail = () => {
         this.setState({
             email: true,
             emailValue: '',
@@ -188,11 +183,7 @@ class SignInComponent extends React.Component<
         });
     };
 
-    loginReset = (e?: React.SyntheticEvent<any>) => {
-        if (e) {
-            e.preventDefault();
-        }
-
+    loginReset = () => {
         this.setState({
             email: false,
             emailValue: '',
@@ -215,10 +206,7 @@ class SignInComponent extends React.Component<
         this.setState({ codeValue: val }, cb);
     };
 
-    loginEmailStart = (e?: React.SyntheticEvent<any>) => {
-        if (e) {
-            e.preventDefault();
-        }
+    loginEmailStart = () => {
         this.setState({
             emailSending: true,
             emailError: '',
@@ -228,10 +216,7 @@ class SignInComponent extends React.Component<
         this.fireEmail();
     };
 
-    loginCodeStart = async (e?: React.SyntheticEvent<any>) => {
-        if (e) {
-            e.preventDefault();
-        }
+    loginCodeStart = async () => {
         this.setState({ codeSending: true });
         createAuth0Client().passwordlessVerify(
             {

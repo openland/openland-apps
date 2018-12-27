@@ -8,10 +8,7 @@ import { storeMerge } from 'openland-y-store/utils/storeMerge';
 import { XFormContextValue, XFormContext } from './XFormContext';
 import { XFormError } from './XFormError';
 import { XFormLoadingContent } from './XFormLoadingContent';
-import {
-    XModalContext,
-    XModalContextValue,
-} from 'openland-x-modal/XModalContext';
+import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
 import { delay } from 'openland-y-utils/timer';
 
@@ -74,12 +71,7 @@ class XFormController extends React.PureComponent<
     }
 
     clientValidation = (props: any) => {
-        if (
-            !(
-                this.props.store.export().fields &&
-                this.props.store.export().fields.input
-            )
-        ) {
+        if (!(this.props.store.export().fields && this.props.store.export().fields.input)) {
             return [];
         }
 
@@ -97,13 +89,7 @@ class XFormController extends React.PureComponent<
             const errors: string[] = [];
 
             validateRules.forEach(
-                ({
-                    rule,
-                    errorMessage,
-                }: {
-                    rule: Function;
-                    errorMessage: string;
-                }) => {
+                ({ rule, errorMessage }: { rule: Function; errorMessage: string }) => {
                     if (!rule(field)) {
                         errors.push(errorMessage);
                     }
@@ -116,15 +102,9 @@ class XFormController extends React.PureComponent<
         return collectedErrors;
     };
 
-    componentWillReceiveProps(
-        nextProps: XFormControllerProps,
-        nextState: XFormControllerState,
-    ) {
+    componentWillReceiveProps(nextProps: XFormControllerProps, nextState: XFormControllerState) {
         let nextTouched: any[] = [];
-        if (
-            this.props.store.export().fields &&
-            this.props.store.export().fields.input
-        ) {
+        if (this.props.store.export().fields && this.props.store.export().fields.input) {
             const previousTouched = this.contextValue.touched;
             const prevFields = this.props.store.export().fields;
             const nextFields = nextProps.store.export().fields;
@@ -136,10 +116,8 @@ class XFormController extends React.PureComponent<
                 ...Object.keys(nextInputFields)
                     .filter(fieldName => {
                         return (
-                            previousTouched.indexOf(`input.${fieldName}`) ===
-                                -1 &&
-                            nextInputFields[fieldName] !==
-                                prevInputFields[fieldName]
+                            previousTouched.indexOf(`input.${fieldName}`) === -1 &&
+                            nextInputFields[fieldName] !== prevInputFields[fieldName]
                         );
                     })
                     .map(fieldName => `input.${fieldName}`),
@@ -161,18 +139,14 @@ class XFormController extends React.PureComponent<
     private submit = async (action?: (data: any) => any) => {
         this.setState({ submited: true });
         let clientValidationFailed = false;
-        if (
-            this.props.store.export().fields &&
-            this.props.store.export().fields.input
-        ) {
-            this.contextValue.touched = Object.keys(
-                this.props.store.export().fields.input,
-            ).map((fieldName: string) => `input.${fieldName}`);
+        if (this.props.store.export().fields && this.props.store.export().fields.input) {
+            this.contextValue.touched = Object.keys(this.props.store.export().fields.input).map(
+                (fieldName: string) => `input.${fieldName}`,
+            );
 
             clientValidationFailed =
-                this.contextValue.validated.filter(
-                    ([first, second]: any) => second.length,
-                ).length !== 0;
+                this.contextValue.validated.filter(([first, second]: any) => second.length)
+                    .length !== 0;
         }
         if (this._isLoading) {
             return;
@@ -192,9 +166,7 @@ class XFormController extends React.PureComponent<
                 if (this.props.autoClose) {
                     if (this.props.modal) {
                         if (typeof this.props.autoClose === 'number') {
-                            delay(this.props.autoClose).then(
-                                this.props.modal.close,
-                            );
+                            delay(this.props.autoClose).then(this.props.modal.close);
                         } else {
                             this.props.modal.close();
                         }
@@ -221,10 +193,7 @@ class XFormController extends React.PureComponent<
             // writeValue can throw exception for wrong field name
             try {
                 this.props.store.writeValue('form.error', message);
-                this.props.store.writeValue(
-                    'form.error_fields',
-                    fields.length !== 0,
-                );
+                this.props.store.writeValue('form.error_fields', fields.length !== 0);
                 for (let f of fields) {
                     this.props.store.writeValue('errors.' + f.key, f.messages);
                 }
@@ -238,14 +207,17 @@ class XFormController extends React.PureComponent<
         }
     };
 
+    onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        this.submit();
+    };
+
     render() {
         if (LOGGING) {
             console.warn(this.state);
         }
         return (
-            <XFormContext.Provider
-                value={{ ...this.contextValue, submited: this.state.submited }}
-            >
+            <XFormContext.Provider value={{ ...this.contextValue, submited: this.state.submited }}>
                 {this.props.defaultLayout !== false && (
                     <FormContainer className={this.props.className}>
                         <XFormLoadingContent>
@@ -257,7 +229,7 @@ class XFormController extends React.PureComponent<
                     </FormContainer>
                 )}
                 {this.props.defaultLayout === false && (
-                    <FormContainer className={this.props.className}>
+                    <FormContainer className={this.props.className} onSubmit={this.onSubmit}>
                         {this.props.children}
                     </FormContainer>
                 )}
@@ -296,9 +268,7 @@ export class XForm extends React.PureComponent<XFormProps> {
                                     autoClose={this.props.autoClose}
                                     className={this.props.className}
                                     defaultLayout={this.props.defaultLayout}
-                                    resetAfterSubmit={
-                                        this.props.resetAfterSubmit
-                                    }
+                                    resetAfterSubmit={this.props.resetAfterSubmit}
                                 >
                                     {this.props.children}
                                 </XFormController>

@@ -887,7 +887,6 @@ export const WebSignUpActivationCode = ({
                                 autofocus={true}
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
-                                onEnter={loginCodeStart}
                             />
                             {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
@@ -995,7 +994,6 @@ export const RoomActivationCode = ({
                                 autofocus={true}
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
-                                onEnter={loginCodeStart}
                             />
                             {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
@@ -1112,7 +1110,6 @@ export const RoomCreateWithEmail = ({
                                 type="email"
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
-                                onEnter={loginEmailStart}
                             />
                             {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
