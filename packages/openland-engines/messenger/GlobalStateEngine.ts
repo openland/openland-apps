@@ -37,19 +37,19 @@ let GLOBAL_SUBSCRIPTION = gql`
             globalUnread
             message {
                 mentions
-                ...MessageShort
+                ...RoomMessageShort
             }
         }
         ... on DialogMessageUpdated {
             cid
             message {
-                ...MessageShort
+                ...RoomMessageShort
             }
         }
         ... on DialogMessageDeleted {
             cid
             message {
-                ...MessageShort
+                ...RoomMessageShort
             }
             unread
             globalUnread
