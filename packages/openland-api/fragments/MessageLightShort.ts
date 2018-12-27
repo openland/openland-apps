@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const MessageLightShort = gql`
-    fragment MessageLightShort on Message {
+    fragment MessageLightShort on RoomMessage {
         id
         date
         text

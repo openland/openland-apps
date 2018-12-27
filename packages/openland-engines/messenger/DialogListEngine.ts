@@ -71,7 +71,6 @@ export const extractDialog = (
         title,
         photo,
         unreadCount,
-        topMessage,
         betaTopMessage,
         isMuted,
         haveMention,
@@ -90,20 +89,16 @@ export const extractDialog = (
         flexibleId: fid,
         unread: unreadCount,
         message: msg,
-        fileMeta: betaTopMessage
-            ? betaTopMessage.fileMetadata || undefined
-            : undefined,
-        isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
-        sender: topMessage
-            ? topMessage!!.sender.id === uid
+        fileMeta: betaTopMessage ? betaTopMessage.fileMetadata || undefined : undefined,
+        isOut: betaTopMessage ? betaTopMessage!!.sender.id === uid : undefined,
+        sender: betaTopMessage
+            ? betaTopMessage!!.sender.id === uid
                 ? 'You'
-                : topMessage!!.sender.name
+                : betaTopMessage!!.sender.name
             : undefined,
-        messageId: topMessage ? topMessage.id : undefined,
-        date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
-        messageEmojified: msg
-            ? emoji(msg, 13)
-            : undefined,
+        messageId: betaTopMessage ? betaTopMessage.id : undefined,
+        date: betaTopMessage ? parseInt(betaTopMessage!!.date, 10) : undefined,
+        messageEmojified: msg ? emoji(msg, 13) : undefined,
     };
 };
 
