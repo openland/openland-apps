@@ -24,6 +24,7 @@ export function emoji(src: string, size?: number) {
             return (
                 <img
                     style={{
+                        alignSelf: 'center',
                         margin: '0 .15em'
                     }}
                     width={height}
