@@ -8,7 +8,13 @@ interface PageProps {
 }
 
 export const Page = (props: PageProps) => (
-    <XView overflow="hidden" flexDirection="column" minHeight="100vh">
+    <XView
+        overflow="hidden"
+        flexDirection="column"
+        width="100vw"
+        minHeight="100vh"
+        backgroundColor="#ffffff"
+    >
         <Header />
         <XView flexGrow={1}>{props.children}</XView>
         <Footer />
