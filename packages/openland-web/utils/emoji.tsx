@@ -20,7 +20,20 @@ export function emoji(src: string, size?: number) {
             let fname = emojiList[v].uc_base;
             let url = baseUrl + assetSize + '/' + fname + '.png';
             let retinaUrl = baseUrl + assetRetinaSize + '/' + fname + '.png';
-            return <img width={height} height={height} key={'e-' + i} alt={v} src={url} srcSet={retinaUrl + ' 2x'} />
+            // margin: '0 .15em',
+            return (
+                <img
+                    style={{
+                        margin: '0 .15em'
+                    }}
+                    width={height}
+                    height={height}
+                    key={'e-' + i}
+                    alt={v}
+                    src={url}
+                    srcSet={retinaUrl + ' 2x'}
+                />
+            );
         } else {
             return v;
         }

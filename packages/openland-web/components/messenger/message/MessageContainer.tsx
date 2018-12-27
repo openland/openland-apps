@@ -184,6 +184,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
                         <XView flexDirection="row" marginBottom={4}>
                             <XView flexDirection="row">
                                 <XView
+                                    flexDirection="row"
                                     fontSize={14}
                                     fontWeight="600"
                                     color="rgba(0, 0, 0, 0.8)"

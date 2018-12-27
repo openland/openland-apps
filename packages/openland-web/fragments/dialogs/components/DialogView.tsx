@@ -155,6 +155,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     marginBottom={3}
                 >
                     <XView
+                        flexDirection="row"
                         flexGrow={1}
                         flexShrink={1}
                         minWidth={0}
@@ -167,7 +168,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {dialog.title}
+                        {emoji(dialog.title, 14)}
                     </XView>
                     {dialog.date && (
                         <XView
