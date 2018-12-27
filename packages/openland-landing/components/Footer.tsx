@@ -20,7 +20,7 @@ export const Footer = () => (
                 <div className={FooterStyles.column}>
                     <FooterTitle content="Company" />
                     <FooterLinks>
-                        <FooterLinksItem path="/about" content="About" />
+                        <FooterLinksItem path="/landing/about" content="About" />
                         <FooterLinksItem
                             path="https://angel.co/openland/jobs"
                             target="_blank"
@@ -31,8 +31,8 @@ export const Footer = () => (
                 <div className={FooterStyles.column}>
                     <FooterTitle content="Legal" />
                     <FooterLinks>
-                        <FooterLinksItem path="/privacy" content="Privacy Policy" />
-                        <FooterLinksItem path="/terms" content="Terms of Service" />
+                        <FooterLinksItem path="/landing/privacy" content="Privacy Policy" />
+                        <FooterLinksItem path="/landing/terms" content="Terms of Service" />
                     </FooterLinks>
                 </div>
                 <div className={FooterStyles.column}>
