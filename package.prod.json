@@ -8,6 +8,7 @@
         "postinstall": "patch-package"
     },
     "dependencies": {
+        "emojione": "^4.0.0",
         "@babel/core": "7.0.0-beta.47",
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/mapbox-gl-geocoder": "^2.2.0",

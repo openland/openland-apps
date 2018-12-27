@@ -5515,6 +5515,11 @@ emojione@^2.2.7:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/emojione/-/emojione-2.2.7.tgz#46457cf6b9b2f8da13ae8a2e4e547de06ee15e96"
 
+emojione@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/emojione/-/emojione-4.0.0.tgz#bbe117a1d24d18d3a62b18ef6d42725a59ded258"
+  integrity sha512-ATFSRHrK838NoTUE96j9rpmS1R4a/qpK1maQURGdFtarpWloEttjjIBBWbSFqsUxC0Vot6P2WXmSlotvZoegxw==
+
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
