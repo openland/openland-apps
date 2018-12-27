@@ -24,8 +24,8 @@ export const Header = () => (
                     <HeaderNavigationItem path="/landing/about" content="About" />
                 </nav>
                 <div className={HeaderStyles.apps}>
-                    <HeaderAppsItem path="/landing" icon={<AndroidIcon />} />
-                    <HeaderAppsItem path="/landing" icon={<IosIcon />} />
+                    <HeaderAppsItem path="https://oplnd.com/android_beta" icon={<AndroidIcon />} />
+                    <HeaderAppsItem path="https://oplnd.com/ios" icon={<IosIcon />} />
                 </div>
                 <div className={HeaderStyles.btn}>
                     <XButton path="/signin" text="Sign in" style="electric" size="large" />
