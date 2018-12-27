@@ -671,7 +671,10 @@ const StyledButton = Glamorous.a<StyledButtonProps>([
         '& .loading-icon': {
             position: 'absolute',
         },
-        '& .icon-responsive': { display: 'none' }
+        '& .icon-responsive': { display: 'none' },
+        '&:hover, &:hover *': {
+            textDecoration: 'none !important'
+        }
     },
     (props) => ({
         pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',

@@ -20,6 +20,93 @@ export interface MessageContainerProps {
     selected: boolean;
 }
 
+const CompactPreambulaContainer = ({ children }: { children: any }) => {
+    return (
+        <XView
+            alignSelf="flex-start"
+            minHeight={23}
+            width={55}
+            fontSize={11}
+            whiteSpace={'nowrap'}
+            overflow={'hidden'}
+            paddingTop={1}
+            fontWeight={'600'}
+            lineHeight={'22px'}
+            color={'rgba(0, 0, 0, 0.4)'}
+        >
+            {children}
+        </XView>
+    );
+};
+
+const NotCompactPreambulaContainer = ({ children }: { children: any }) => {
+    return (
+        <XView
+            alignSelf="flex-start"
+            minHeight={23}
+            width={55}
+            fontSize={12}
+            whiteSpace={'nowrap'}
+            paddingTop={3}
+            paddingLeft={3}
+        >
+            {children}
+        </XView>
+    );
+};
+
+const CompactMessageContainerWrapper = ({
+    children,
+    onMouseEnter,
+    onMouseLeave,
+}: {
+    children: any;
+    onMouseEnter: (event: React.MouseEvent<any>) => void;
+    onMouseLeave: (event: React.MouseEvent<any>) => void;
+}) => {
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            marginTop={0}
+            paddingTop={2}
+            paddingLeft={18}
+            paddingRight={20}
+            paddingBottom={3}
+        >
+            {children}
+        </XView>
+    );
+};
+
+const NotCompactMessageContainerWrapper = ({
+    children,
+    onMouseEnter,
+    onMouseLeave,
+}: {
+    children: any;
+    onMouseEnter: (event: React.MouseEvent<any>) => void;
+    onMouseLeave: (event: React.MouseEvent<any>) => void;
+}) => {
+    return (
+        <XView
+            alignItems="center"
+            flexDirection="row"
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            marginTop={12}
+            paddingTop={7}
+            paddingLeft={18}
+            paddingRight={20}
+            paddingBottom={3}
+        >
+            {children}
+        </XView>
+    );
+};
+
 export const MessageContainer = React.memo<MessageContainerProps>(props => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
@@ -60,20 +147,10 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
     // Left side of message
     const { compact, sender, date } = props;
 
+    const PreambulaContainer = compact ? CompactPreambulaContainer : NotCompactPreambulaContainer;
+
     const preambula = (
-        <XView
-            alignSelf="flex-start"
-            minHeight={23}
-            width={55}
-            fontSize={compact ? 11 : 12}
-            whiteSpace={'nowrap'}
-            overflow={compact ? 'hidden' : null}
-            paddingTop={compact ? 1 : 3}
-            paddingLeft={compact ? null : 3}
-            fontWeight={compact ? '600' : undefined}
-            lineHeight={compact ? '22px' : undefined}
-            color={compact ? 'rgba(0, 0, 0, 0.4)' : undefined}
-        >
+        <PreambulaContainer>
             {!compact ? (
                 <UserPopper
                     isMe={props.sender.isYou}
@@ -86,7 +163,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             ) : (
                 <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
             )}
-        </XView>
+        </PreambulaContainer>
     );
 
     // Content
@@ -154,23 +231,15 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
     );
 
     // Result
-
+    const MessageContainerWrapper = compact
+        ? CompactMessageContainerWrapper
+        : NotCompactMessageContainerWrapper;
     return (
-        <XView
-            alignItems="center"
-            flexDirection="row"
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            marginTop={props.compact ? 0 : 12}
-            paddingLeft={18}
-            paddingRight={20}
-            paddingTop={compact ? 2 : 7}
-            paddingBottom={3}
-        >
+        <MessageContainerWrapper onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             {selector}
             {preambula}
             {content}
             {actions}
-        </XView>
+        </MessageContainerWrapper>
     );
 });
