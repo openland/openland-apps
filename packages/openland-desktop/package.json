@@ -1,17 +1,23 @@
 {
     "name": "openland-desktop",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "main": "src/main.js",
     "scripts": {
         "dev": "./node_modules/.bin/electron ./src/dev.js",
         "build": "electron-builder --dir",
+        "release": "electron-builder --platform all --publish always",
         "bundle": "electron-builder"
     },
     "build": {
-        "appId": "com.openland.app",
+        "appId": "com.openland.mac",
         "productName": "Openland",
         "directories": {
             "buildResources": "assets"
+        },
+        "publish": {
+            "provider": "spaces",
+            "name": "openland-updates",
+            "region": "sfo2"
         }
     },
     "devDependencies": {

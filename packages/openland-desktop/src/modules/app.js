@@ -4,6 +4,7 @@ const {
 const os = require('os');
 const createMainWindow = require('./window').createMainWindow;
 const createAppMenu = require('./menu').createAppMenu;
+const updates = require('./updates');
 
 let mainWindow;
 const isOSX = os.platform() === 'darwin';
@@ -26,6 +27,11 @@ module.exports = {
 
             // Create menu
             createAppMenu(mainWindow, devMode);
+
+            // Handle updates
+            if (!devMode) {
+                updates.run();
+            }
 
             // Handle closing
             mainWindow.on('close', (event) => {
