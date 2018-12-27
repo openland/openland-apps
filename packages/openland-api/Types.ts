@@ -406,6 +406,10 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_primaryOrganization | null;
 }
 
@@ -444,6 +448,10 @@ export interface Dialogs_dialogs_items_topMessage_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage {
@@ -471,6 +479,10 @@ export interface Dialogs_dialogs_items_betaTopMessage_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface Dialogs_dialogs_items_betaTopMessage {
@@ -3739,6 +3751,10 @@ export interface Organization_organization_members_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
 }
 
@@ -3774,6 +3790,10 @@ export interface Organization_organization_requests_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Organization_organization_requests_user_primaryOrganization | null;
 }
 
@@ -6981,6 +7001,10 @@ export interface MessageLightShort_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface MessageLightShort {
@@ -7015,6 +7039,10 @@ export interface MessageShort_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface MessageShort {
@@ -7049,6 +7077,10 @@ export interface RoomMessageShort_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface RoomMessageShort {
@@ -7095,6 +7127,10 @@ export interface OrganizationFull_members_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
 }
 
@@ -7130,6 +7166,10 @@ export interface OrganizationFull_requests_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: OrganizationFull_requests_user_primaryOrganization | null;
 }
 
@@ -7529,6 +7569,10 @@ export interface UserFull {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: UserFull_primaryOrganization | null;
 }
 
@@ -7579,6 +7623,10 @@ export interface UserTiny {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 /* tslint:disable */
