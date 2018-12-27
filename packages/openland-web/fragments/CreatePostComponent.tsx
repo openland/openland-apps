@@ -250,6 +250,7 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
     opacity: props.disable ? 0.7 : undefined,
     cursor: props.disable ? 'default !important' : 'pointer',
     '&:hover': {
+        textDecoration: 'none',
         color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
         backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
         '& > svg > *': {

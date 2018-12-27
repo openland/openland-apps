@@ -47,6 +47,7 @@ const AvatarPlaceholder = (props: XAvatar2Props) => {
             color="white"
             fontSize={PlaceholderFontSize[props.size || 40]}
             overflow="hidden"
+            hoverTextDecoration="none"
         >
             {ph}
         </XView>
