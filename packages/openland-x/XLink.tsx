@@ -5,6 +5,10 @@ import { css, cx } from 'linaria';
 const XLinkStyle = css`
     cursor: pointer;
     color: rgb(23, 144, 255);
+
+    &:hover {
+        text-decoration: none;
+    }
 `;
 
 export type XLinkProps = NavigableParentProps<{

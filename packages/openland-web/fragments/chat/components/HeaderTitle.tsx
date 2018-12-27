@@ -25,6 +25,7 @@ export const HeaderTitle = (props: {
             path={props.path}
             minWidth={0}
             flexShrink={1}
+            hoverTextDecoration="none"
         >
             <div className={titleInnerClass}>{props.value}</div>
         </XView>
@@ -37,6 +38,7 @@ export const HeaderTitle = (props: {
                 color="rgba(0, 0, 0, 0.4)"
                 lineHeight="18px"
                 path={'/mail/o/' + props.organization.id}
+                hoverTextDecoration="none"
             >
                 {props.organization.name}
             </XView>
