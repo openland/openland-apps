@@ -176,7 +176,7 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                             messageId: messageId,
                             reaction: 'accept',
                         }}
-                        userId={user!.id}
+                        userId={user ? user.id : ''}
                     >
                         <XButton text="Accept intro" style="primary" alignSelf="flex-start" />
                     </SetAccesReactionButton>

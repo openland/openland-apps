@@ -10,7 +10,7 @@ import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageIntroComponent } from './content/introMessage/MessageIntroComponent';
-import { MessagePostComponent } from './content/MessagePostComponent';
+import { MessagePostComponent } from './content/postMessage/MessagePostComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
