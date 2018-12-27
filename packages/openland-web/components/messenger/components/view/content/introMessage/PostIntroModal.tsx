@@ -57,6 +57,7 @@ const ImgButtonStyles = Glamorous(XLink)<ImgButtonStylesProps>(props => ({
         marginLeft: -12,
     },
     '&:hover': {
+        textDecoration: 'none',
         color: 'rgba(0, 0, 0, 0.5)',
         backgroundColor: 'rgba(0, 0, 0, 0.03)',
         '& > svg > *': {
