@@ -97,6 +97,7 @@ export class MessageImageComponent extends React.PureComponent<
                 top={20}
                 right={20}
                 href={'https://ucarecdn.com/' + this.props.file + '/-/preview/-/inline/no/'}
+                hoverTextDecoration="none"
             >
                 <DownloadButtonIcon />
             </XView>

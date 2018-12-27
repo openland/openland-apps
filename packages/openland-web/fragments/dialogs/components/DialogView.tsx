@@ -130,7 +130,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             selectedBackgroundColor="#4596e1"
             selectedHoverBackgroundColor="#4596e1"
             linkSelectable={true}
-            hoverTextDecoration={'none'}
+            hoverTextDecoration="none"
         >
             <XAvatar2
                 title={dialog.title}

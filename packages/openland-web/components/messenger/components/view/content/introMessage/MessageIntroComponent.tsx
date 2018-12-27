@@ -130,6 +130,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                                         color="#121e2b"
                                         cursor={usrPath ? 'pointer' : undefined}
                                         hoverColor={usrPath ? '#1790ff' : '#121e2b'}
+                                        hoverTextDecoration="none"
                                     >
                                         {user.name}
                                     </XView>
@@ -249,6 +250,7 @@ export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(prop
                             flexDirection="row"
                             color="rgba(18, 30, 43, 0.46)"
                             hoverColor="#1790ff"
+                            hoverTextDecoration="none"
                         >
                             <IcFile />
                             <XView fontSize={13} fontWeight="600" lineHeight={1.54} marginLeft={8}>

@@ -9,6 +9,7 @@ export const HeaderSubtitle = (props: { value: string; path?: string }) => (
         color="rgba(0, 0, 0, 0.4)"
         lineHeight="16px"
         path={props.path}
+        hoverTextDecoration="none"
     >
         {props.value}
     </XView>

@@ -201,6 +201,7 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
                                     alignSelf="flex-end"
                                     marginBottom={-1}
                                     path={`/mail/o/${props.sender.primaryOrganization.id}`}
+                                    hoverTextDecoration="none"
                                 >
                                     {props.sender.primaryOrganization.name}
                                 </XView>

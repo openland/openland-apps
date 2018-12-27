@@ -77,6 +77,7 @@ const Logo = () => (
         width={38}
         height={38}
         overflow="hidden"
+        hoverTextDecoration="none"
     >
         <XImage
             width={38}
