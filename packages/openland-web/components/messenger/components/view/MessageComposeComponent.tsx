@@ -30,12 +30,12 @@ import { withMessageState } from '../../../../api/withMessageState';
 import { withGetDraftMessage } from '../../../../api/withMessageState';
 import { withChannelMembers } from '../../../../api/withChannelMembers';
 import {
-    MessageFull,
+    RoomMessageFull,
     ReplyMessageVariables,
     ReplyMessage,
     SaveDraftMessageVariables,
     SaveDraftMessage,
-    MessageFull_mentions,
+    RoomMessageFull_mentions,
     SharedRoomKind,
     RoomMembers_members,
     PostMessageType,
@@ -356,7 +356,7 @@ export interface MessageComposeComponentProps {
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
-    onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
+    onSend?: (text: string, mentions: RoomMessageFull_mentions[] | null) => void;
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
@@ -614,7 +614,7 @@ class MessageComposeComponentInner extends React.PureComponent<
             let mentions = this.getMentions(message);
             const currentMessages = this.props.getMessages ? this.props.getMessages() : [];
 
-            const replyMessages = currentMessages.filter((item: MessageFull) => {
+            const replyMessages = currentMessages.filter((item: RoomMessageFull) => {
                 return messages.indexOf(item.id) !== -1;
             });
 

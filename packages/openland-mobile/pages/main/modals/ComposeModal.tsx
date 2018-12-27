@@ -6,7 +6,7 @@ import { AppStyles } from '../../../styles/AppStyles';
 import { MessageInputBar } from '../components/MessageInputBar';
 import { ZQuery } from '../../../components/ZQuery';
 import { ZUserListItem } from '../components/ZUserListItem';
-import { UserShort, MessageFull } from 'openland-api/Types';
+import { UserShort, RoomMessageFull } from 'openland-api/Types';
 import { ZTagView } from '../../../components/ZTagView';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ZLoader } from '../../../components/ZLoader';
@@ -130,11 +130,11 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
         // this.props.navigator.navigate('ProfileUser', { 'id': userId });
     }
 
-    handlePhotoPress = (message: MessageFull) => {
+    handlePhotoPress = (message: RoomMessageFull) => {
         // this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
     }
 
-    handleDocumentPress = (message: MessageFull) => {
+    handleDocumentPress = (message: RoomMessageFull) => {
         // this.props.navigator.navigate('PicturePreview', { 'uuid': message.file!! });
     }
 

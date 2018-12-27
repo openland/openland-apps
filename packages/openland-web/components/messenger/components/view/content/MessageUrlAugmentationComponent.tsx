@@ -5,7 +5,7 @@ import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
-import { MessageFull_urlAugmentation } from 'openland-api/Types';
+import { RoomMessageFull_urlAugmentation } from 'openland-api/Types';
 import { layoutMediaReverse } from '../../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from 'openland-icons/ic-close.svg';
@@ -135,7 +135,7 @@ const ImageWrapper = Glamorous.div({
     },
 });
 
-interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentation {
+interface MessageUrlAugmentationComponentProps extends RoomMessageFull_urlAugmentation {
     messageId: string;
     isMe: boolean;
 }

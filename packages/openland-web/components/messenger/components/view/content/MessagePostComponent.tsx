@@ -2,9 +2,9 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import {
-    MessageFull_alphaAttachments,
-    MessageFull_alphaButtons,
-    MessageFull_reactions,
+    RoomMessageFull_alphaAttachments,
+    RoomMessageFull_alphaButtons,
+    RoomMessageFull_reactions,
 } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -207,9 +207,9 @@ interface MessagePostComponentProps {
     senderName: string;
     message: string;
     alphaTitle: string;
-    alphaButtons: (MessageFull_alphaButtons[] | null)[];
-    alphaAttachments: MessageFull_alphaAttachments[];
-    reactions: MessageFull_reactions[];
+    alphaButtons: (RoomMessageFull_alphaButtons[] | null)[];
+    alphaAttachments: RoomMessageFull_alphaAttachments[];
+    reactions: RoomMessageFull_reactions[];
     edited: boolean;
     privateConversation: boolean;
 }
@@ -324,21 +324,21 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
             meRespond = true;
         }
 
-        let cover: MessageFull_alphaAttachments[] | MessageFull_alphaAttachments | null = null;
-        let moreFiles: MessageFull_alphaAttachments[] | null = null;
+        let cover: RoomMessageFull_alphaAttachments[] | RoomMessageFull_alphaAttachments | null = null;
+        let moreFiles: RoomMessageFull_alphaAttachments[] | null = null;
 
         if (props.alphaAttachments.length > 0) {
             cover = props.alphaAttachments.filter(i => i.fileMetadata && i.fileMetadata.isImage);
             if (cover[0]) {
                 cover = cover[0];
             }
-            if ((cover as MessageFull_alphaAttachments).fileId) {
+            if ((cover as RoomMessageFull_alphaAttachments).fileId) {
                 moreFiles = props.alphaAttachments.filter(
-                    i => i.fileId !== (cover as MessageFull_alphaAttachments).fileId,
+                    i => i.fileId !== (cover as RoomMessageFull_alphaAttachments).fileId,
                 );
             }
 
-            if (!(cover as MessageFull_alphaAttachments).fileId) {
+            if (!(cover as RoomMessageFull_alphaAttachments).fileId) {
                 moreFiles = props.alphaAttachments;
             }
         }
@@ -360,7 +360,7 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                 separator={3}
                                 flexGrow={1}
                                 maxWidth={
-                                    cover && (cover as MessageFull_alphaAttachments).fileId
+                                    cover && (cover as RoomMessageFull_alphaAttachments).fileId
                                         ? 'calc(100% - 152px)'
                                         : '100%'
                                 }
@@ -385,12 +385,12 @@ export class MessagePostComponent extends React.PureComponent<MessagePostCompone
                                     </ShowMore>
                                 )}
                             </XVertical>
-                            {cover && (cover as MessageFull_alphaAttachments).fileId && (
+                            {cover && (cover as RoomMessageFull_alphaAttachments).fileId && (
                                 <CoverWrapper>
                                     <XCloudImage
                                         srcCloud={
                                             'https://ucarecdn.com/' +
-                                            (cover as MessageFull_alphaAttachments).fileId +
+                                            (cover as RoomMessageFull_alphaAttachments).fileId +
                                             '/'
                                         }
                                         resize={'fill'}

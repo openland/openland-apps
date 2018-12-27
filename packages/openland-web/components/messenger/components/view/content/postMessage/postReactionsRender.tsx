@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
-import { MessageFull_reactions } from 'openland-api/Types';
+import { RoomMessageFull_reactions } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
@@ -84,7 +84,7 @@ interface ReactionsRenderProps {
     messageId: string;
     userId: string;
     meId: string;
-    reactions: MessageFull_reactions[];
+    reactions: RoomMessageFull_reactions[];
 }
 
 export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {

@@ -5,12 +5,17 @@ import { UserPopper } from './UserPopper';
 import { MentionComponentInnerText } from 'openland-x/XRichTextInput';
 import { css } from 'linaria';
 import { XLink } from 'openland-x/XLink';
+import {
+    UserShort,
+    RoomHistory_messages_alphaMentions,
+    RoomMessageFull_serviceMetadata,
+} from 'openland-api/Types';
 
 const roomLinkClassName = css`
     color: #1790ff;
 `;
 
-const LinkToRoom = ({ children, roomId }: any) => {
+const LinkToRoom = ({ children, roomId }: { children: any; roomId: string }) => {
     return (
         <XLink
             className={roomLinkClassName}
@@ -36,7 +41,7 @@ const SpanWithWhiteSpaces = ({ children }: { children: any }) => (
     <span className={spanWithWhiteSpacesClassName}>{children}</span>
 );
 
-const MentionedUser = ({ user, isYou }: { user: any; isYou: boolean }) => {
+const MentionedUser = ({ user, isYou }: { user: UserShort; isYou: boolean }) => {
     return (
         <UserPopper user={user} isMe={isYou} noCardOnMe startSelected={false}>
             <MentionComponentInnerText isYou={isYou}>{user.name}</MentionComponentInnerText>
@@ -61,7 +66,7 @@ export const KickServiceServiceMessage = ({
     kickedUser,
     myUserId,
 }: {
-    kickedUser: any;
+    kickedUser: UserShort;
     myUserId: string;
 }) => (
     <Container>
@@ -86,7 +91,7 @@ export const JoinOneServiceMessage = ({
     firstUser,
     myUserId,
 }: {
-    firstUser: any;
+    firstUser: UserShort;
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
@@ -103,8 +108,8 @@ export const JoinTwoServiceMessage = ({
     secondUser,
     myUserId,
 }: {
-    firstUser: any;
-    secondUser: any;
+    firstUser: UserShort;
+    secondUser: UserShort;
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
@@ -122,8 +127,8 @@ export const JoinManyServiceMessage = ({
     otherUsers,
     myUserId,
 }: {
-    firstUser: any;
-    otherUsers: any;
+    firstUser: UserShort;
+    otherUsers: UserShort[];
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
@@ -149,8 +154,8 @@ export const JoinManyServiceMessage = ({
 };
 
 type PostServiceMessageProps = {
-    postAuthorUser: any;
-    responderUser: any;
+    postAuthorUser: UserShort;
+    responderUser: UserShort;
     chat: {
         id: string;
         title: string;
@@ -276,7 +281,13 @@ type JoinMessageType = 'ONE' | 'TWO' | 'MANY';
 
 const hackToGetRoomName = (message: string) => message.slice('New room name: '.length);
 
-const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
+const getJoinUsers = ({
+    serviceMetadata,
+    alphaMentions,
+}: {
+    serviceMetadata: any;
+    alphaMentions: RoomHistory_messages_alphaMentions[];
+}) => {
     return serviceMetadata.users
         ? serviceMetadata.users
         : alphaMentions.map(({ user }: any) => user);
@@ -381,7 +392,7 @@ const ServiceMessageComponentByTypes = ({
     return <TextServiceMessageFallback message={otherParams.message} />;
 };
 
-const resolveJoinMessageType = ({ users }: { users: any }) => {
+const resolveJoinMessageType = ({ users }: { users: UserShort[] }) => {
     if (users === null) {
         return null;
     }
@@ -449,8 +460,8 @@ const resolveServiceMessageType = ({
     message,
     params,
 }: {
-    serviceMetadata: any;
-    message: any;
+    serviceMetadata: RoomMessageFull_serviceMetadata;
+    message: string;
     params: any;
 }) => {
     if (serviceMetadata) {
@@ -479,11 +490,15 @@ const resolveServiceMessageType = ({
 };
 
 export const ServiceMessage = (params: {
-    serviceMetadata: any;
-    message: any;
-    alphaMentions: any;
+    serviceMetadata: RoomMessageFull_serviceMetadata | null;
+    message: string;
+    alphaMentions: RoomHistory_messages_alphaMentions[];
     myUserId: string;
 }) => {
+    if (params.serviceMetadata === null) {
+        return <TextServiceMessageFallback message={params.message} />;
+    }
+
     const typesObject = resolveServiceMessageType({
         serviceMetadata: params.serviceMetadata,
         message: params.message,

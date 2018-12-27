@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { RoomMessageFull_mentions } from 'openland-api/Types';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
@@ -177,7 +177,7 @@ const positionSuggestions = ({ state, props }: any) => {
 type MentionComponentInnerTextProps = {
     isYou: boolean;
     className?: string;
-    user?: MessageFull_mentions;
+    user?: RoomMessageFull_mentions;
     hasPopper?: boolean;
     inCompose?: boolean;
 };

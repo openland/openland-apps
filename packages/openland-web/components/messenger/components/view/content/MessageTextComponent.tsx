@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { preprocessText } from '../../../../../utils/TextProcessor';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { RoomMessageFull_mentions } from 'openland-api/Types';
 import { emojify } from 'react-emojione';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
@@ -11,7 +11,7 @@ import { MessageWithMentionsTextComponent } from './MessageWithMentionsTextCompo
 
 export interface MessageTextComponentProps {
     alphaMentions?: any;
-    mentions?: MessageFull_mentions[] | null;
+    mentions?: RoomMessageFull_mentions[] | null;
     message: string;
     isEdited: boolean;
     isService?: boolean;

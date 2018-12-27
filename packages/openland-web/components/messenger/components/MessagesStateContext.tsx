@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { MessageFull } from 'openland-api/Types';
+import { RoomMessageFull } from 'openland-api/Types';
 
 export interface MessagesStateContextProps {
     editMessageId: string | null;
     editMessage: string | null;
     setEditMessage: (id: string | null, message: string | null) => void;
     forwardMessagesId: Set<string> | null;
-    selectedMessages: Set<MessageFull>;
-    switchMessageSelect: (message: MessageFull) => void;
+    selectedMessages: Set<RoomMessageFull>;
+    switchMessageSelect: (message: RoomMessageFull) => void;
     setForwardMessages: (id: Set<string> | null) => void;
     forwardMessages: () => void;
     useForwardMessages: boolean;

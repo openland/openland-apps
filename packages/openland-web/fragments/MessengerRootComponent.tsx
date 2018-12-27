@@ -17,7 +17,7 @@ import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../api/withDeleteMessage';
 import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { RoomMessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './CreatePostComponent';
 
@@ -213,7 +213,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.messageText = text;
     };
 
-    handleSend = (text: string, mentions: MessageFull_mentions[] | null) => {
+    handleSend = (text: string, mentions: RoomMessageFull_mentions[] | null) => {
         if (!this.conversation) {
             throw Error('conversation should be defined here');
         }
