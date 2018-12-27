@@ -11184,10 +11184,6 @@ react-dom@^16.4.0:
     prop-types "^15.6.2"
     scheduler "^0.11.2"
 
-react-emojione@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-emojione/-/react-emojione-5.0.0.tgz#230fef5e85aa9e1183b9506a15fff37d59ef472f"
-
 react-error-overlay@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"

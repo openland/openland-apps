@@ -12,7 +12,9 @@ export default withApp('UI Framework - Files', 'viewer', props => {
             <XContent>
                 <XVertical>
                     <XTitle>Simple</XTitle>
-                    <span>{emoji('🦄🌈👷🏽‍♂️')}</span>
+                    <span>{emoji(':unicorn:🦄🌈👷🏽‍♂️')}</span>
+                    <span>{emoji('🦄🌈👷🏽‍♂️', 18)}</span>
+                    <span>{emoji('🦄🌈👷🏽‍♂️', 44)}</span>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

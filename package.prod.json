@@ -81,7 +81,6 @@
         "react-dates": "^16.3.6",
         "react-diff": "^0.0.7",
         "react-dom": "16.7.0-alpha.2",
-        "react-emojione": "^5.0.0",
         "react-form": "^2.14.1",
         "react-ga": "^2.3.5",
         "react-hot-loader": "4.0.1",
