@@ -1,6 +1,6 @@
 {
     "name": "openland-desktop",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "src/main.js",
     "scripts": {
         "dev": "./node_modules/.bin/electron ./src/dev.js",
@@ -18,6 +18,9 @@
             "provider": "spaces",
             "name": "openland-updates",
             "region": "sfo2"
+        },
+        "mac": {
+            "identity": "DATA MAKES PERFECT INC. (ATWUYU6747)"
         }
     },
     "devDependencies": {
