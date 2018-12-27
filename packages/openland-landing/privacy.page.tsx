@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
+import { Page } from './components/Page';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 
 export default class PrivacyPage extends React.Component {
     render() {
         return (
-            <>
-                <Header />
-                <div>Privacy</div>
-                <Footer />
-            </>
+            <Page>
+                <XDocumentHead title="Privacy" />
+                Privacy
+            </Page>
         );
     }
 }
