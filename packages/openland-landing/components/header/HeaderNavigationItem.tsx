@@ -20,6 +20,7 @@ export const HeaderNavigationItem = (props: HeaderNavigationItemProps) => (
         paddingVertical={10}
         selectedColor="#1f3449"
         position="relative"
+        hoverTextDecoration="none"
     >
         {props.content}
         <XView
