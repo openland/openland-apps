@@ -24,7 +24,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../../../components/messenger/components/MessagesStateContext';
-import { RoomMessageFull } from 'openland-api/Types';
+import { MessageFull } from 'openland-api/Types';
 
 export const ChatContainer = Glamorous.div({
     display: 'flex',
@@ -116,7 +116,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         }
     }
 
-    private switchMessageSelect = (message: RoomMessageFull) => {
+    private switchMessageSelect = (message: MessageFull) => {
         let res = new Set(this.state.selectedMessages);
         if (res.has(message)) {
             res.delete(message);

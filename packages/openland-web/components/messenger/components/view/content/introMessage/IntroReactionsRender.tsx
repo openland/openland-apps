@@ -8,8 +8,8 @@ import { withSetReaction } from '../../../../../../api/withSetReaction';
 import PassedIcon from 'openland-icons/ic-passed.svg';
 import {
     SharedRoomKind,
-    RoomMessageFull_reactions,
-    RoomMessageFull_urlAugmentation_user_User,
+    MessageFull_reactions,
+    MessageFull_urlAugmentation_user_User,
 } from 'openland-api/Types';
 
 const SetAccesReactionButton = withSetReaction(
@@ -61,8 +61,8 @@ const Counter = (props: CounterProps) => (
 );
 
 interface ReactionsRenderProps {
-    user: RoomMessageFull_urlAugmentation_user_User;
-    reactions: RoomMessageFull_reactions[];
+    user: MessageFull_urlAugmentation_user_User;
+    reactions: MessageFull_reactions[];
     messageId: string;
     meId: string;
     senderId: string;

@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
-import { RoomMessageFull_sender } from 'openland-api/Types';
+import { MessageFull_sender } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
 import { withOnline } from '../../../../../api/withOnline';
@@ -112,7 +112,7 @@ const Status = withOnline(props => {
 }) as React.ComponentType<{ variables: { userId: string } }>;
 
 export class UserAvatar extends React.PureComponent<{
-    user: RoomMessageFull_sender;
+    user: MessageFull_sender;
     startSelected: boolean;
 }> {
     render() {
@@ -135,7 +135,7 @@ export class UserAvatar extends React.PureComponent<{
 
 export class UserPopper extends React.PureComponent<
     {
-        user: RoomMessageFull_sender;
+        user: MessageFull_sender;
         isMe: boolean;
         startSelected: boolean;
         noCardOnMe?: boolean;

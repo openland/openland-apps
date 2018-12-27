@@ -1,6 +1,4 @@
-import { UserShort } from 'openland-api/Types';
-
-export const sergeyLapinUser: UserShort = {
+export const sergeyLapinUser = {
     id: 'WDZbkEbBelIVyYAX6KgltyyPWB',
     name: 'Sergey Lapin',
     firstName: 'Sergey',
@@ -20,7 +18,7 @@ export const sergeyLapinUser: UserShort = {
     __typename: 'User',
 };
 
-export const qwertyUser: UserShort = {
+export const qwertyUser = {
     id: 'EQxWy3WA9MHvgDp63BAjc9X1Qy',
     name: 'qwerty asdfgh',
     firstName: 'qwerty',
@@ -40,7 +38,7 @@ export const qwertyUser: UserShort = {
     __typename: 'User',
 };
 
-export const taraBUser: UserShort = {
+export const taraBUser = {
     id: '3YkjQVj09LHRbXDkkyeQTP4vWb',
     name: 'Tara B',
     firstName: 'Tara',
@@ -60,7 +58,7 @@ export const taraBUser: UserShort = {
     __typename: 'User',
 };
 
-export const prettyTUser: UserShort = {
+export const prettyTUser = {
     id: 'Y9QLkELbDLfdrzvZ3eDbsXg6o4',
     name: 'Pretty T',
     firstName: 'Pretty',

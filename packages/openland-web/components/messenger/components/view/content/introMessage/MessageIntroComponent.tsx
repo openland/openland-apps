@@ -13,10 +13,10 @@ import IntroIcon from 'openland-icons/ic-tag-intro.svg';
 import IcFile from 'openland-icons/ic-file.svg';
 import {
     SharedRoomKind,
-    RoomMessageFull_reactions,
-    RoomMessageFull_urlAugmentation_user_User,
-    RoomMessageFull_fileMetadata,
-    RoomMessageFull_urlAugmentation,
+    MessageFull_reactions,
+    MessageFull_urlAugmentation_user_User,
+    MessageFull_fileMetadata,
+    MessageFull_urlAugmentation,
 } from 'openland-api/Types';
 
 const SetReactionButton = withSetReaction(props => (
@@ -50,11 +50,11 @@ const ChangeReactionButton = withChangeReaction(props => (
 )) as React.ComponentType<ChangeReactionButtonProps>;
 
 interface MessageIntroComponentProps {
-    urlAugmentation: RoomMessageFull_urlAugmentation;
+    urlAugmentation: MessageFull_urlAugmentation;
     file: string | null;
-    fileMetadata: RoomMessageFull_fileMetadata | null;
-    user: RoomMessageFull_urlAugmentation_user_User;
-    reactions: RoomMessageFull_reactions[];
+    fileMetadata: MessageFull_fileMetadata | null;
+    user: MessageFull_urlAugmentation_user_User;
+    reactions: MessageFull_reactions[];
     messageId: string;
     meId: string;
     senderId: string;
