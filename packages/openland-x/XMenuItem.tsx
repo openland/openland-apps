@@ -73,7 +73,9 @@ const XMenuItemStyled = Glamorous(XLink)<{ colorTheme?: XMenuItemStyle }>([
         padding: '0 16px',
         display: 'flex',
         alignItems: 'center',
-
+        '&:hover': {
+            textDecoration: 'none'
+        },
         '& .svg-icon-left': {
             marginRight: 10,
         },

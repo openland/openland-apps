@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { preprocessText } from '../../../../../utils/TextProcessor';
 import { RoomMessageFull_mentions } from 'openland-api/Types';
-import { emojify } from 'react-emojione';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { isEmoji } from '../../../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { MessageWithMentionsTextComponent } from './MessageWithMentionsTextComponent/MessageWithMentionsTextComponent';
+import { emoji } from 'openland-web/utils/emoji';
 
 export interface MessageTextComponentProps {
     alphaMentions?: any;
@@ -81,14 +81,6 @@ const styleInsane = css`
     color: transparent;
 `;
 
-let emoji = (text: string, height: number) =>
-    emojify(text, {
-        style: {
-            height: height,
-            backgroundImage: 'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-        },
-    });
-
 export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
     // Preprocessing
 
@@ -131,7 +123,12 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
 
                 return (
                     <span key={'link-' + i} className={LinkText}>
-                        <XView as="a" path={path} onClick={(e: any) => e.stopPropagation()}>
+                        <XView
+                            as="a"
+                            hoverTextDecoration="none"
+                            path={path}
+                            onClick={(e: any) => e.stopPropagation()}
+                        >
                             {url}
                         </XView>
                     </span>
@@ -140,7 +137,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
 
             return (
                 <span key={'link-' + i} className={LinkText}>
-                    <XView as="a" href={v.link!!} target="_blank">
+                    <XView as="a" hoverTextDecoration="none" href={v.link!!} target="_blank">
                         {v.text}
                     </XView>
                 </span>

@@ -10,7 +10,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { emojify } from 'react-emojione';
+import { emoji } from 'openland-web/utils/emoji';
 
 export interface DialogDataSourceItem {
     key: string;
@@ -102,13 +102,7 @@ export const extractDialog = (
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
         messageEmojified: msg
-            ? emojify(msg, {
-                  style: {
-                      height: 13,
-                      backgroundImage:
-                          'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                  },
-              })
+            ? emoji(msg, 13)
             : undefined,
     };
 };
@@ -320,13 +314,7 @@ export class DialogListEngine {
                 messageId: event.message.id,
                 message: msg,
                 messageEmojified: msg
-                    ? emojify(msg, {
-                          style: {
-                              height: 13,
-                              backgroundImage:
-                                  'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                          },
-                      })
+                    ? emoji(msg, 13)
                     : undefined,
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
@@ -382,13 +370,7 @@ export class DialogListEngine {
                     messageId: event.message.id,
                     message: msg,
                     messageEmojified: msg
-                        ? emojify(msg, {
-                              style: {
-                                  height: 13,
-                                  backgroundImage:
-                                      'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                              },
-                          })
+                        ? emoji(msg, 13)
                         : undefined,
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,

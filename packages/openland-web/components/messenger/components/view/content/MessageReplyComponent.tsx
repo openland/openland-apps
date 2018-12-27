@@ -135,6 +135,7 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
                                     color="rgba(0, 0, 0, 0.4)"
                                     alignSelf="flex-end"
                                     cursor="pointer"
+                                    hoverTextDecoration="none"
                                 >
                                     {props.sender!!.primaryOrganization!!.name}
                                 </XView>

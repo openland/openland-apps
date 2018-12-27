@@ -250,6 +250,7 @@ const MobileApps = () => (
                 marginRight={18}
                 opacity={0.5}
                 hoverOpacity={0.8}
+                hoverTextDecoration="none"
             >
                 <XImage width={103} height={33} src="/static/X/settings/appstore@2x.png" />
             </XView>
@@ -259,6 +260,7 @@ const MobileApps = () => (
                 target="_blank"
                 opacity={0.5}
                 hoverOpacity={0.8}
+                hoverTextDecoration="none"
             >
                 <XImage width={103} height={34} src="/static/X/settings/googleplay@2x.png" />
             </XView>

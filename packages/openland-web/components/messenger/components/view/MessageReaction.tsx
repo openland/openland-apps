@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { emojify } from 'react-emojione';
 import { RoomMessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
+import { emoji } from 'openland-web/utils/emoji';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 6px',
@@ -80,13 +80,7 @@ class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
                             this.handleSetReaction(r);
                         }}
                     >
-                        {emojify(r, {
-                            style: {
-                                height: 24,
-                                backgroundImage:
-                                    'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                            },
-                        })}
+                        {emoji(r, 24)}
                     </ReactionItem>
                 ))}
             </XHorizontal>
@@ -312,13 +306,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={true}
                         >
-                            {emojify(reactionsMap[k][0].reaction, {
-                                style: {
-                                    height: 16,
-                                    backgroundImage:
-                                        'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                                },
-                            })}
+                            {emoji(reactionsMap[k][0].reaction, 16)}
                         </SingleReactionUnset>
                     </XPopper>,
                 );
@@ -346,13 +334,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={false}
                         >
-                            {emojify(reactionsMap[k][0].reaction, {
-                                style: {
-                                    height: 16,
-                                    backgroundImage:
-                                        'url(https://cdn.openland.com/shared/web/emojione-3.1.2-64x64.png)',
-                                },
-                            })}
+                            {emoji(reactionsMap[k][0].reaction, 16)}
                         </SingleReactionSet>
                     </XPopper>,
                 );

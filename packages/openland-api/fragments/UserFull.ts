@@ -19,6 +19,7 @@ export const UserFull = gql`
         lastSeen
         linkedin
         twitter
+        shortname
         primaryOrganization {
             ...OrganizationShort
         }

@@ -58,6 +58,7 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
             maxWidth={550}
             position="relative"
             hoverColor="#1790ff"
+            hoverTextDecoration="none"
         >
             <XView
                 width={40}

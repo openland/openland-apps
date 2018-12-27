@@ -3,6 +3,10 @@ import { SettingsFull } from '../fragments/SettingsFragment';
 
 export const ProfileQuery = gql`
     query Profile {
+        user: me {
+            id
+            shortname
+        }
         profile: myProfile {
             id
             firstName
@@ -63,6 +67,12 @@ export const ProfileUpdateMutation = gql`
                 name
             }
         }
+    }
+`;
+
+export const SetUserShortnameMutation = gql`
+    mutation SetUserShortname($shortname: String!) {
+        alphaSetUserShortName(shortname: $shortname)
     }
 `;
 

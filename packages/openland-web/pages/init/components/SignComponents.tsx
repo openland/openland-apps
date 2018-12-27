@@ -60,6 +60,7 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
         borderRadius: props.rounded ? 24 : 6,
         border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
         '&:hover': {
+            textDecoration: 'none',
             color: props.primary ? '#fff' : '#334562',
             backgroundColor: props.primary ? '#7159f9' : '#f3f3f5',
         },
@@ -233,6 +234,9 @@ const FooterLink = Glamorous(XLink)({
     fontWeight: 500,
     textAlign: 'center',
     color: '#334562',
+    '&:hover': {
+        textDecoration: 'none'
+    }
 });
 
 const Logo = Glamorous(XLink)({
@@ -275,6 +279,7 @@ const SignupButton = Glamorous(XLink)({
     marginLeft: 5,
     '&:hover': {
         color: '#1f3449',
+        textDecoration: 'none'
     },
     '@media (max-width: 400px)': {
         marginLeft: 0,

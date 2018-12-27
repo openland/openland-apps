@@ -9,6 +9,7 @@ import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { emoji } from 'openland-web/utils/emoji';
 
 export let iconClass = css`
     display: inline-block;
@@ -50,10 +51,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     let sender = dialog.isOut
         ? 'You: '
         : isPrivate
-        ? ''
-        : dialog.sender
-        ? dialog.sender + ': '
-        : '';
+            ? ''
+            : dialog.sender
+                ? <>{emoji(dialog.sender, 14)}: </>
+                : '';
     let message: any = undefined;
     if (dialog.typing) {
         message = dialog.typing;
@@ -130,7 +131,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
             selectedBackgroundColor="#4596e1"
             selectedHoverBackgroundColor="#4596e1"
             linkSelectable={true}
-            // hoverTextDecoration={'none'}
+            hoverTextDecoration="none"
         >
             <XAvatar2
                 title={dialog.title}
@@ -154,6 +155,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     marginBottom={3}
                 >
                     <XView
+                        flexDirection="row"
                         flexGrow={1}
                         flexShrink={1}
                         minWidth={0}
@@ -166,7 +168,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {dialog.title}
+                        {emoji(dialog.title, 14)}
                     </XView>
                     {dialog.date && (
                         <XView

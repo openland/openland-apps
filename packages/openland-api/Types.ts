@@ -24,6 +24,10 @@ export interface Account_me {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Account_me_primaryOrganization | null;
 }
 
@@ -78,6 +82,10 @@ export interface AccountSettings_me {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: AccountSettings_me_primaryOrganization | null;
 }
 
@@ -141,6 +149,10 @@ export interface AccountInviteInfo_invite_creator {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: AccountInviteInfo_invite_creator_primaryOrganization | null;
 }
 
@@ -191,6 +203,10 @@ export interface AccountAppInviteInfo_invite_creator {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: AccountAppInviteInfo_invite_creator_primaryOrganization | null;
 }
 
@@ -218,6 +234,10 @@ export interface AccountAppInviteInfo_appInvite_inviter {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: AccountAppInviteInfo_appInvite_inviter_primaryOrganization | null;
 }
 
@@ -386,6 +406,10 @@ export interface CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrgan
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: CreateUserProfileAndOrganization_alphaCreateUserProfileAndOrganization_user_primaryOrganization | null;
 }
 
@@ -424,6 +448,10 @@ export interface Dialogs_dialogs_items_topMessage_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface Dialogs_dialogs_items_topMessage {
@@ -451,6 +479,10 @@ export interface Dialogs_dialogs_items_betaTopMessage_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface Dialogs_dialogs_items_betaTopMessage {
@@ -526,6 +558,10 @@ export interface Room_room_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Room_room_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -568,6 +604,10 @@ export interface Room_room_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -597,6 +637,10 @@ export interface Room_room_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Room_room_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -877,6 +921,10 @@ export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_user
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
 }
 
@@ -904,6 +952,10 @@ export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomHistory_messages_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
@@ -950,6 +1002,10 @@ export interface RoomHistory_messages_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomHistory_messages_sender_primaryOrganization | null;
 }
 
@@ -972,6 +1028,10 @@ export interface RoomHistory_messages_reply_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomHistory_messages_reply_sender_primaryOrganization | null;
 }
 
@@ -1036,6 +1096,10 @@ export interface RoomHistory_messages_mentions {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomHistory_messages_mentions_primaryOrganization | null;
 }
 
@@ -1058,6 +1122,10 @@ export interface RoomHistory_messages_alphaMentions_UserMention_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomHistory_messages_alphaMentions_UserMention_user_primaryOrganization | null;
 }
 
@@ -1392,6 +1460,10 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -1434,6 +1506,10 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -1463,6 +1539,10 @@ export interface RoomAddMember_betaRoomInvite_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomAddMember_betaRoomInvite_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -1534,6 +1614,10 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_us
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -1576,6 +1660,10 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_mem
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -1605,6 +1693,10 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_req
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -1673,6 +1765,10 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -1715,6 +1811,10 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -1744,6 +1844,10 @@ export interface RoomAddMembers_betaRoomInvite_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomAddMembers_betaRoomInvite_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -1815,6 +1919,10 @@ export interface RoomKick_betaRoomKick_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -1857,6 +1965,10 @@ export interface RoomKick_betaRoomKick_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -1886,6 +1998,10 @@ export interface RoomKick_betaRoomKick_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomKick_betaRoomKick_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -1954,6 +2070,10 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -1996,6 +2116,10 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -2025,6 +2149,10 @@ export interface RoomLeave_betaRoomLeave_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomLeave_betaRoomLeave_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -2124,6 +2252,10 @@ export interface RoomSearch_items_edges_node_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomSearch_items_edges_node_members_user_primaryOrganization | null;
 }
 
@@ -2153,6 +2285,10 @@ export interface RoomSearch_items_edges_node_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomSearch_items_edges_node_requests_user_primaryOrganization | null;
 }
 
@@ -2291,6 +2427,10 @@ export interface RoomMembers_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMembers_members_user_primaryOrganization | null;
 }
 
@@ -2360,6 +2500,10 @@ export interface RoomJoin_join_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomJoin_join_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -2402,6 +2546,10 @@ export interface RoomJoin_join_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -2431,6 +2579,10 @@ export interface RoomJoin_join_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomJoin_join_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -2517,6 +2669,10 @@ export interface RoomJoinInviteLink_join_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -2559,6 +2715,10 @@ export interface RoomJoinInviteLink_join_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -2588,6 +2748,10 @@ export interface RoomJoinInviteLink_join_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomJoinInviteLink_join_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -2713,6 +2877,10 @@ export interface RoomInviteInfo_invite_invitedByUser {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomInviteInfo_invite_invitedByUser_primaryOrganization | null;
 }
 
@@ -2845,6 +3013,10 @@ export interface Conference_conference_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Conference_conference_peers_user_primaryOrganization | null;
 }
 
@@ -2910,6 +3082,10 @@ export interface ConferenceJoin_conferenceJoin_conference_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceJoin_conferenceJoin_conference_peers_user_primaryOrganization | null;
 }
 
@@ -2981,6 +3157,10 @@ export interface ConferenceLeave_conferenceLeave_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceLeave_conferenceLeave_peers_user_primaryOrganization | null;
 }
 
@@ -3047,6 +3227,10 @@ export interface ConferenceKeepAlive_conferenceKeepAlive_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceKeepAlive_conferenceKeepAlive_peers_user_primaryOrganization | null;
 }
 
@@ -3113,6 +3297,10 @@ export interface ConferenceWatch_alphaConferenceWatch_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceWatch_alphaConferenceWatch_peers_user_primaryOrganization | null;
 }
 
@@ -3178,6 +3366,10 @@ export interface ConferenceOffer_peerConnectionOffer_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceOffer_peerConnectionOffer_peers_user_primaryOrganization | null;
 }
 
@@ -3246,6 +3438,10 @@ export interface ConferenceAnswer_peerConnectionAnswer_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceAnswer_peerConnectionAnswer_peers_user_primaryOrganization | null;
 }
 
@@ -3314,6 +3510,10 @@ export interface ConferenceCandidate_peerConnectionCandidate_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceCandidate_peerConnectionCandidate_peers_user_primaryOrganization | null;
 }
 
@@ -3551,6 +3751,10 @@ export interface Organization_organization_members_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Organization_organization_members_user_primaryOrganization | null;
 }
 
@@ -3586,6 +3790,10 @@ export interface Organization_organization_requests_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: Organization_organization_requests_user_primaryOrganization | null;
 }
 
@@ -4097,6 +4305,10 @@ export interface SuperAdmins_superAdmins_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: SuperAdmins_superAdmins_user_primaryOrganization | null;
 }
 
@@ -4156,6 +4368,10 @@ export interface SuperAccount_superAccount_members {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: SuperAccount_superAccount_members_primaryOrganization | null;
 }
 
@@ -4324,6 +4540,10 @@ export interface SuperAccountMemberAdd_superAccountMemberAdd_members {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: SuperAccountMemberAdd_superAccountMemberAdd_members_primaryOrganization | null;
 }
 
@@ -4368,6 +4588,10 @@ export interface SuperAccountMemberRemove_superAccountMemberRemove_members {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: SuperAccountMemberRemove_superAccountMemberRemove_members_primaryOrganization | null;
 }
 
@@ -4424,6 +4648,15 @@ export interface SuperAdminRemoveVariables {
 // GraphQL query operation: Profile
 // ====================================================
 
+export interface Profile_user {
+  __typename: "User";
+  id: string;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+}
+
 export interface Profile_profile_photoRef_crop {
   __typename: "ImageCrop";
   x: number;
@@ -4471,6 +4704,7 @@ export interface Profile_profile {
 }
 
 export interface Profile {
+  user: Profile_user | null;
   profile: Profile_profile | null;
 }
 
@@ -4531,6 +4765,21 @@ export interface ProfileUpdate {
 export interface ProfileUpdateVariables {
   input: UpdateProfileInput;
   uid?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: SetUserShortname
+// ====================================================
+
+export interface SetUserShortname {
+  alphaSetUserShortName: string | null;
+}
+
+export interface SetUserShortnameVariables {
+  shortname: string;
 }
 
 /* tslint:disable */
@@ -4783,6 +5032,10 @@ export interface ExplorePeople_items_edges_node {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ExplorePeople_items_edges_node_primaryOrganization | null;
 }
 
@@ -4845,6 +5098,10 @@ export interface ConferenceFull_peers_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: ConferenceFull_peers_user_primaryOrganization | null;
 }
 
@@ -4929,6 +5186,10 @@ export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_users {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
 }
 
@@ -4956,6 +5217,10 @@ export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
@@ -5002,6 +5267,10 @@ export interface RoomMessageFull_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMessageFull_sender_primaryOrganization | null;
 }
 
@@ -5024,6 +5293,10 @@ export interface RoomMessageFull_reply_sender {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMessageFull_reply_sender_primaryOrganization | null;
 }
 
@@ -5088,6 +5361,10 @@ export interface RoomMessageFull_mentions {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMessageFull_mentions_primaryOrganization | null;
 }
 
@@ -5110,6 +5387,10 @@ export interface RoomMessageFull_alphaMentions_UserMention_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomMessageFull_alphaMentions_UserMention_user_primaryOrganization | null;
 }
 
@@ -5247,6 +5528,10 @@ export interface MessageLightShort_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface MessageLightShort {
@@ -5281,6 +5566,10 @@ export interface RoomMessageShort_sender {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 export interface RoomMessageShort {
@@ -5327,6 +5616,10 @@ export interface OrganizationFull_members_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: OrganizationFull_members_user_primaryOrganization | null;
 }
 
@@ -5362,6 +5655,10 @@ export interface OrganizationFull_requests_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: OrganizationFull_requests_user_primaryOrganization | null;
 }
 
@@ -5522,6 +5819,10 @@ export interface RoomFull_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomFull_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -5564,6 +5865,10 @@ export interface RoomFull_SharedRoom_members_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_members_user_primaryOrganization | null;
 }
 
@@ -5593,6 +5898,10 @@ export interface RoomFull_SharedRoom_requests_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomFull_SharedRoom_requests_user_primaryOrganization | null;
 }
 
@@ -5652,6 +5961,10 @@ export interface RoomShort_PrivateRoom_user {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: RoomShort_PrivateRoom_user_primaryOrganization | null;
 }
 
@@ -5745,6 +6058,10 @@ export interface UserFull {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: UserFull_primaryOrganization | null;
 }
 
@@ -5774,6 +6091,10 @@ export interface UserShort {
   online: boolean;
   lastSeen: string | null;
   isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: UserShort_primaryOrganization | null;
 }
 
@@ -5791,6 +6112,10 @@ export interface UserTiny {
   firstName: string;
   lastName: string | null;
   picture: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
 }
 
 /* tslint:disable */

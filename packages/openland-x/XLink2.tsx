@@ -19,6 +19,7 @@ export const XLink2 = makeNavigable<XViewProps>(
                     as="a"
                     cursor="pointer"
                     selected={!!props.active}
+                    hoverTextDecoration="none"
                     {...props}
                 >
                     {props.children}
