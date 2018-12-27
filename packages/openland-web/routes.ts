@@ -287,6 +287,19 @@ routes.add('/compatibility', '/perf/compat');
 routes.add('/performance', '/perf/perf');
 
 //
+// Landing
+//
+
+routes.add('/landing', '/landing/home');
+routes.add('/landing/', '/landing/home');
+routes.add('/landing/about', '/landing/about');
+routes.add('/landing/about/', '/landing/about');
+routes.add('/landing/terms', '/landing/terms');
+routes.add('/landing/terms/', '/landing/terms');
+routes.add('/landing/privacy', '/landing/privacy');
+routes.add('/landing/privacy/', '/landing/privacy');
+
+//
 // Authentication
 //
 
