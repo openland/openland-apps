@@ -53,7 +53,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         : isPrivate
             ? ''
             : dialog.sender
-                ? emoji(dialog.sender, 14) + ': '
+                ? <>{emoji(dialog.sender, 14)}: </>
                 : '';
     let message: any = undefined;
     if (dialog.typing) {
