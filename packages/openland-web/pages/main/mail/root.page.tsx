@@ -47,12 +47,14 @@ export const ConversationContainer = Glamorous.div({
     minWidth: 0,
     overflow: 'hidden',
     backgroundColor: XThemeDefault.backgroundColor,
-    maxWidth: 'calc(100% - 345px)',
+    maxWidth: 'calc(100% - 344px)',
     '@media (max-width: 1100px)': {
         width: 'calc(100% - 300px)',
+        maxWidth: 'calc(100% - 300px)'
     },
     '@media (max-width: 950px)': {
         width: 'calc(100% - 230px)',
+        maxWidth: 'calc(100% - 230px)'
     },
 });
 
