@@ -45,17 +45,17 @@ const CHAT_SUBSCRIPTION = gql`
     }
     fragment ConversationUpdateFragment on ConversationUpdate {
         ... on ConversationMessageReceived {
-            message {
+            message: betaMessage {
                 ...RoomMessageFull
             }
         }
         ... on ConversationMessageUpdated {
-            message {
+            message: betaMessage {
                 ...RoomMessageFull
             }
         }
         ... on ConversationMessageDeleted {
-            message {
+            message: betaMessage {
                 id
             }
         }

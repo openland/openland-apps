@@ -5264,40 +5264,6 @@ export interface MessageLightShort {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: MessageShort
-// ====================================================
-
-export interface MessageShort_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-}
-
-export interface MessageShort_sender {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  picture: string | null;
-}
-
-export interface MessageShort {
-  __typename: "ConversationMessage";
-  id: string;
-  date: any;
-  message: string | null;
-  file: string | null;
-  isService: boolean;
-  fileMetadata: MessageShort_fileMetadata | null;
-  sender: MessageShort_sender;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL fragment: RoomMessageShort
 // ====================================================
 
