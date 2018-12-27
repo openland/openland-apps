@@ -9,7 +9,7 @@ let mainWindow;
 const isOSX = os.platform() === 'darwin';
 
 module.exports = {
-    run: () => {
+    run: (devMode) => {
 
         // Try to obtain instance lock
         let lock = app.requestSingleInstanceLock()
@@ -22,10 +22,10 @@ module.exports = {
         app.on('ready', () => {
 
             // Create window
-            mainWindow = createMainWindow();
+            mainWindow = createMainWindow(devMode);
 
             // Create menu
-            createAppMenu(mainWindow);
+            createAppMenu(mainWindow, devMode);
 
             // Handle closing
             mainWindow.on('close', (event) => {

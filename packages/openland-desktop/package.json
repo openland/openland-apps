@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "src/main.js",
     "scripts": {
-        "start": "./node_modules/.bin/electron ./src/main.js",
+        "dev": "./node_modules/.bin/electron ./src/dev.js",
         "build": "electron-builder --dir",
         "bundle": "electron-builder"
     },

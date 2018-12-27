@@ -4,7 +4,7 @@ const {
 } = require('electron');
 
 module.exports = {
-    createAppMenu: (win) => {
+    createAppMenu: (win, devMode) => {
         if (Menu.getApplicationMenu()) {
             return;
         }

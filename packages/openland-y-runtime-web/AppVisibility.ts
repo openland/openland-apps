@@ -5,13 +5,24 @@ import { AppVisibilityApi } from 'openland-y-runtime-api/AppVisibilityApi';
 class AppVisibilityWeb implements AppVisibilityApi {
 
     isVisible: boolean;
-
+    private readonly isDesktop = canUseDOM && !!(global as any).require;
     private readonly ifvisible = canUseDOM ? backoff(() => import('ifvisible.js')) : null;
     private watchers: ((isVisible: boolean) => void)[] = [];
 
     constructor() {
         this.isVisible = true;
-        if (this.ifvisible) {
+        if (this.isDesktop) {
+            let window = (global as any).require('electron').remote.getCurrentWindow();
+            window.on('close', () => {
+                this.onIdleHandler();
+            });
+            window.on('blur', () => {
+                this.onIdleHandler();
+            });
+            window.on('focus', () => {
+                this.onWakeupHandler();
+            });
+        } else if (this.ifvisible) {
             this.ifvisible.then((v) => {
                 v.on('idle', this.onIdleHandler);
                 v.on('wakeup', this.onWakeupHandler);

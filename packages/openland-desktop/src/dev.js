@@ -1,2 +1,2 @@
 const run = require('./modules/app').run;
-run(false);
+run(true);

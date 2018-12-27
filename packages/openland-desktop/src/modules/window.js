@@ -5,7 +5,7 @@ const windowStateKeeper = require('electron-window-state');
 const handleLinkOpen = require('./links').handleLinkOpen;
 
 module.exports = {
-    createMainWindow: () => {
+    createMainWindow: (devMode) => {
 
         // Create window
         const mainWindowState = windowStateKeeper({
@@ -22,7 +22,7 @@ module.exports = {
         win.webContents.on('new-window', handleLinkOpen);
 
         // Load app URL
-        win.loadURL('https://app.openland.com');
+        win.loadURL(devMode ? 'http://localhost:3000' : 'https://app.openland.com');
 
         return win;
     }
