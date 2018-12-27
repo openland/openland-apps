@@ -110,7 +110,7 @@ class AppNotiticationsWeb implements AppNotificationsApi {
                     body: content.body,
                     icon: content.image,
                     silent: true
-                });
+                } as any);
                 let router = this.router;
                 notification.onclick = function () {
                     if (router) {
