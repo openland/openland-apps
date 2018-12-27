@@ -9,6 +9,7 @@ import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { emoji } from 'openland-web/utils/emoji';
 
 export let iconClass = css`
     display: inline-block;
@@ -50,10 +51,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     let sender = dialog.isOut
         ? 'You: '
         : isPrivate
-        ? ''
-        : dialog.sender
-        ? dialog.sender + ': '
-        : '';
+            ? ''
+            : dialog.sender
+                ? emoji(dialog.sender, 14) + ': '
+                : '';
     let message: any = undefined;
     if (dialog.typing) {
         message = dialog.typing;
