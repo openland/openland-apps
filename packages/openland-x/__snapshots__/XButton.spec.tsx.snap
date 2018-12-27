@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`XButton should render correctly 1`] = `
-.css-1x6gts7,
-[data-css-1x6gts7] {
+.css-126rrgb,
+[data-css-126rrgb] {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -30,8 +30,8 @@ exports[`XButton should render correctly 1`] = `
   -moz-transition: box-shadow 0.08s ease-in, color 0.08s ease-in, border 0s,
     all 0.15s ease;
 }
-.css-1x6gts7 .loading-icon,
-[data-css-1x6gts7] .loading-icon {
+.css-126rrgb .loading-icon,
+[data-css-126rrgb] .loading-icon {
   position: absolute;
   width: 32px;
   height: 32px;
@@ -39,45 +39,51 @@ exports[`XButton should render correctly 1`] = `
   top: calc(50% - 16px);
   left: calc(50% - 16px);
 }
-.css-1x6gts7 .icon-responsive,
-[data-css-1x6gts7] .icon-responsive {
+.css-126rrgb .icon-responsive,
+[data-css-126rrgb] .icon-responsive {
   display: none;
 }
-.css-1x6gts7:hover,
-[data-css-1x6gts7]:hover {
+.css-126rrgb:hover,
+[data-css-126rrgb]:hover,
+.css-126rrgb:hover *,
+[data-css-126rrgb]:hover * {
+  text-decoration: none !important;
+}
+.css-126rrgb:hover,
+[data-css-126rrgb]:hover {
   background-color: #e6e9ec;
   color: rgba(0, 0, 0, 0.7);
 }
-.css-1x6gts7:active,
-[data-css-1x6gts7]:active {
+.css-126rrgb:active,
+[data-css-126rrgb]:active {
   background-color: #1790ff;
   color: #ffffff;
 }
-.css-1x6gts7:focus,
-[data-css-1x6gts7]:focus {
+.css-126rrgb:focus,
+[data-css-126rrgb]:focus {
   box-shadow: 0 0 0 1px rgba(50, 151, 211, 0.2),
     0 0 0 2px rgba(50, 151, 211, 0.25), 0 2px 5px 0 rgba(0, 0, 0, 0.1),
     0 0 0 0 transparent, 0 0 0 0 transparent;
 }
-.css-1x6gts7 .button-content,
-[data-css-1x6gts7] .button-content {
+.css-126rrgb .button-content,
+[data-css-126rrgb] .button-content {
   padding-left: 16px;
   padding-right: 16px;
 }
-.css-1x6gts7 .icon.material,
-[data-css-1x6gts7] .icon.material {
+.css-126rrgb .icon.material,
+[data-css-126rrgb] .icon.material {
   font-size: 20px;
 }
-.css-1x6gts7 i.icon-svg,
-[data-css-1x6gts7] i.icon-svg {
+.css-126rrgb i.icon-svg,
+[data-css-126rrgb] i.icon-svg {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
 }
-.css-1x6gts7 svg,
-[data-css-1x6gts7] svg {
+.css-126rrgb svg,
+[data-css-126rrgb] svg {
   margin-left: -2px;
   margin-right: 4px;
 }
@@ -169,6 +175,13 @@ exports[`XButton should render correctly 1`] = `
 .css-0 .icon-responsive,
 [data-css-0] .icon-responsive {
   display: none;
+}
+
+.css-0:hover,
+[data-css-0]:hover,
+.css-0:hover *,
+[data-css-0]:hover * {
+  text-decoration: none !important;
 }
 
 .css-0:hover,
