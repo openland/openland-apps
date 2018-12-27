@@ -360,9 +360,7 @@ const ServiceMessageComponentByTypes = ({
                 <JoinManyServiceMessage
                     myUserId={otherParams.myUserId}
                     firstUser={joinUsers[0]}
-                    otherUsers={joinUsers.slice(1).map(({ user }: { user: any }) => {
-                        return user;
-                    })}
+                    otherUsers={joinUsers.slice(1)}
                 />
             );
         }
