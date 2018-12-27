@@ -5,7 +5,7 @@ import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
-import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
+import { RoomMessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from '../../../../fragments/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../../../../fragments/MessengerRootComponent';
@@ -252,7 +252,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         lastMessageId = '';
 
         if (!this.props.conversation.historyFullyLoaded && lastMessage) {
-            let id = (lastMessage as MessageFull).id;
+            let id = (lastMessage as RoomMessageFull).id;
             lastMessageId = id;
             messages.unshift(
                 <XButton

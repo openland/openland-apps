@@ -5,7 +5,7 @@ import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
 import { SettingsQuery } from 'openland-api/SettingsQuery';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { MessageShort } from 'openland-api/fragments/MessageShort';
+import { RoomMessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { DialogsQuery } from 'openland-api/DialogsQuery';
 import { RoomQuery } from 'openland-api';
@@ -84,9 +84,8 @@ let GLOBAL_SUBSCRIPTION = gql`
             cid
             globalUnread
         }
-       
     }
-    ${MessageShort}
+    ${RoomMessageShort}
     ${UserTiny}
 `;
 
@@ -123,7 +122,7 @@ export class GlobalStateEngine {
         // Loading settings
         await backoff(async () => {
             return await this.engine.client.client.query({
-                query: SettingsQuery.document
+                query: SettingsQuery.document,
             });
         });
 
@@ -131,64 +130,73 @@ export class GlobalStateEngine {
         let start = Date.now();
         let res = (await backoff(async () => {
             return await this.engine.client.client.query({
-                query: DialogsQuery.document
+                query: DialogsQuery.document,
             });
         })).data;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
-        this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
+        this.engine.dialogList.handleInitialDialogs(
+            (res as any).dialogs.items,
+            (res as any).dialogs.cursor,
+        );
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client, this.handleGlobalEvent, this.handleSeqUpdated);
+        this.watcher = new SequenceModernWatcher(
+            'global',
+            GLOBAL_SUBSCRIPTION,
+            this.engine.client,
+            this.handleGlobalEvent,
+            this.handleSeqUpdated,
+        );
 
         // Subscribe for settings update
         let settingsSubscription = this.engine.client.client.subscribe({
-            query: SUBSCRIBE_SETTINGS
+            query: SUBSCRIBE_SETTINGS,
         });
         settingsSubscription.subscribe({
-            next: (event) => {
+            next: event => {
                 console.info('New settings received');
-            }
+            },
         });
-    }
+    };
 
     resolvePrivateConversation = async (uid: string) => {
         let res = await this.engine.client.client.query({
             query: RoomQuery.document,
             variables: {
-                id: uid
-            }
+                id: uid,
+            },
         });
         return {
             id: (res.data as any).room.id as string,
-            flexibleId: uid
+            flexibleId: uid,
         };
-    }
+    };
 
     resolveGroup = async (uids: string[]) => {
         let res = await this.engine.client.client.query({
             query: ChatSearchGroupQuery.document,
             variables: {
-                members: uids
-            }
+                members: uids,
+            },
         });
         if (!(res.data as any).group) {
             return null;
         }
         return {
             id: (res.data as any).group.id as string,
-            flexibleId: (res.data as any).group.flexibleId as string
+            flexibleId: (res.data as any).group.flexibleId as string,
         };
-    }
+    };
 
     onConversationVisible = (conversationId: string) => {
         this.visibleConversations.add(conversationId);
-    }
+    };
 
     onConversationHidden = (conversationId: string) => {
         this.visibleConversations.delete(conversationId);
-    }
+    };
 
     destroy = () => {
         // TODO: Implement
@@ -196,36 +204,38 @@ export class GlobalStateEngine {
         //     this.watcher.destroy();
         //     this.watcher = null;
         // }
-    }
+    };
 
     onVisible = (isVisible: boolean) => {
         this.isVisible = isVisible;
         if (isVisible) {
             this.reportSeqIfNeeded();
         }
-    }
+    };
 
     private handleSeqUpdated = (seq: number) => {
         this.maxSeq = Math.max(seq, this.maxSeq);
         if (this.isVisible) {
             this.reportSeqIfNeeded();
         }
-    }
+    };
 
     private reportSeqIfNeeded = () => {
         if (this.lastReportedSeq < this.maxSeq) {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.client.mutate({
-                    mutation: MARK_SEQ_READ,
-                    variables: {
-                        seq
-                    }
-                }));
+                backoff(() =>
+                    this.engine.client.client.mutate({
+                        mutation: MARK_SEQ_READ,
+                        variables: {
+                            seq,
+                        },
+                    }),
+                );
             })();
         }
-    }
+    };
 
     private handleGlobalEvent = async (event: any) => {
         console.log('handleGlobalEvent', event);
@@ -269,19 +279,19 @@ export class GlobalStateEngine {
         } else if (event.__typename === 'DialogTitleUpdated') {
             console.warn('new title ', event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);
-            this.engine.getConversation(event.cid).handleTitleUpdated(event.title)
+            this.engine.getConversation(event.cid).handleTitleUpdated(event.title);
         } else if (event.__typename === 'DialogMuteChanged') {
             console.warn('new mute ', event);
             this.engine.dialogList.handleMuteUpdated(event.cid, event.mute);
             console.log(event.cid);
-            this.engine.getConversation(event.cid).handleMuteUpdated(event.mute)
+            this.engine.getConversation(event.cid).handleMuteUpdated(event.mute);
         } else if (event.__typename === 'DialogMentionedChanged') {
             console.warn('new haveMention ', event);
             this.engine.dialogList.handleHaveMentionUpdated(event.cid, event.haveMention);
         } else if (event.__typename === 'DialogPhotoUpdated') {
             console.warn('new photo ', event);
             this.engine.dialogList.handlePhotoUpdated(event.cid, event.photo);
-            this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo)
+            this.engine.getConversation(event.cid).handlePhotoUpdated(event.photo);
         } else if (event.__typename === 'DialogMessageUpdated') {
             // Dialogs List
             console.log(event);
@@ -300,7 +310,7 @@ export class GlobalStateEngine {
         } else {
             console.log('Unhandled update: ' + event.__typename);
         }
-    }
+    };
 
     // looks like thmth is broken in apollo query with react alpha - Query not updated  after writeQuery
     // temp solution - use listener
@@ -315,16 +325,15 @@ export class GlobalStateEngine {
                 this.counterListeners.splice(index, 1);
             }
         };
-    }
+    };
 
     private writeGlobalCounter = (counter: number, visible: boolean) => {
-
         //
         // Update counter anywhere in the app
         //
 
         let existing = this.engine.client.client.readQuery({
-            query: GlobalCounterQuery.document
+            query: GlobalCounterQuery.document,
         });
         if (existing) {
             if (visible) {
@@ -336,12 +345,12 @@ export class GlobalStateEngine {
             (existing as any).counter.unreadCount = counter;
             this.engine.client.client.writeQuery({
                 query: GlobalCounterQuery.document,
-                data: existing
+                data: existing,
             });
         }
 
         for (let l of this.counterListeners) {
             l(counter, visible);
         }
-    }
+    };
 }

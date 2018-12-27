@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { emojify } from 'react-emojione';
-import { MessageFull_reactions } from 'openland-api/Types';
+import { RoomMessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
 import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
@@ -236,7 +236,7 @@ const SingleReactionUnset = withUnsetReaction(props => (
 interface ReactionsInnerProps {
     messageId: string;
     meId: string;
-    reactions: MessageFull_reactions[];
+    reactions: RoomMessageFull_reactions[];
 }
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {

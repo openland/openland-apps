@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { RoomMessageFull_mentions } from 'openland-api/Types';
 import { MentionComponentInner, removeEmojiFromText } from 'openland-x/XRichTextInput';
 
 function indexes(source: string, find: string) {
@@ -89,7 +89,7 @@ const getSplittedTextArray = ({ text, mentions }: any) => {
 export class MessageWithMentionsTextComponent extends React.PureComponent<{
     alphaMentions: any;
     text: string;
-    mentions?: MessageFull_mentions[] | null;
+    mentions?: RoomMessageFull_mentions[] | null;
 }> {
     render() {
         const { text, mentions, alphaMentions } = this.props;

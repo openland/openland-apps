@@ -16,10 +16,10 @@ import { isServerMessage, PendingMessage } from 'openland-engines/messenger/type
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
 import {
-    MessageFull,
+    RoomMessageFull,
     UserShort,
     SharedRoomKind,
-    MessageFull_urlAugmentation_user_User,
+    RoomMessageFull_urlAugmentation_user_User,
 } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
@@ -123,7 +123,7 @@ const IconButton = Glamorous.div({
 interface MessageComponentProps {
     compact: boolean;
     sender?: UserShort;
-    message: MessageFull | PendingMessage;
+    message: RoomMessageFull | PendingMessage;
     conversation: ConversationEngine;
     out: boolean;
     me?: UserShort | null;
@@ -176,7 +176,7 @@ class MessageComponentInner extends React.PureComponent<
     private setEditMessage = (e: any) => {
         let { message, messagesContext } = this.props;
         if (isServerMessage(message)) {
-            message = message as MessageFull;
+            message = message as RoomMessageFull;
 
             e.stopPropagation();
             messagesContext.resetAll();
@@ -187,7 +187,7 @@ class MessageComponentInner extends React.PureComponent<
     private setEditPostMessage = (e: any) => {
         let { message, editPostHandler } = this.props;
         if (isServerMessage(message) && editPostHandler && message.alphaTitle && message.message) {
-            message = message as MessageFull;
+            message = message as RoomMessageFull;
 
             let postFiles: Set<File> = new Set();
             let file: File | null = null;
@@ -285,7 +285,7 @@ class MessageComponentInner extends React.PureComponent<
         let { message, out } = this.props;
 
         if (isServerMessage(message)) {
-            message = message as MessageFull;
+            message = message as RoomMessageFull;
 
             const isPost = message.message && message.alphaTitle && message.alphaType === 'POST';
 
@@ -328,7 +328,7 @@ class MessageComponentInner extends React.PureComponent<
         let { message } = this.props;
 
         if (isServerMessage(message)) {
-            message = message as MessageFull;
+            message = message as RoomMessageFull;
 
             if (
                 !message.urlAugmentation ||
@@ -373,14 +373,14 @@ class MessageComponentInner extends React.PureComponent<
         let isPost = false;
         let { forwardMessagesId } = this.props.messagesContext;
         if (forwardMessagesId) {
-            isSelect = forwardMessagesId.has((message as MessageFull).id);
+            isSelect = forwardMessagesId.has((message as RoomMessageFull).id);
             if (forwardMessagesId.size > 0) {
                 hideMenu = true;
             }
         }
 
         if (isServerMessage(message)) {
-            message = message as MessageFull;
+            message = message as RoomMessageFull;
 
             if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
                 isIntro = true;
@@ -492,7 +492,7 @@ class MessageComponentInner extends React.PureComponent<
                                 fileMetadata={message.fileMetadata}
                                 user={
                                     message.urlAugmentation
-                                        .user as MessageFull_urlAugmentation_user_User
+                                        .user as RoomMessageFull_urlAugmentation_user_User
                                 }
                                 messageId={message.id}
                                 reactions={message.reactions}

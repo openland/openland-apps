@@ -2,7 +2,7 @@ import UUID from 'uuid/v4';
 import { SendMessageMutation } from 'openland-api/SendMessageMutation';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { UploadingFile, UploadStatus } from './types';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { RoomMessageFull_mentions } from 'openland-api/Types';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -14,7 +14,7 @@ type MessageBodyT = {
     message: string | null;
     file: string | null;
     replyMessages: number[] | null;
-    mentions: MessageFull_mentions[] | null;
+    mentions: RoomMessageFull_mentions[] | null;
 };
 
 export class MessageSender {
@@ -44,17 +44,13 @@ export class MessageSender {
                     },
                     onFailed(key: string) {
                         reject();
-                    }
-                }
+                    },
+                },
             });
         });
     }
 
-    sendFile(
-        conversationId: string,
-        file: UploadingFile,
-        callback: MessageSendHandler
-    ) {
+    sendFile(conversationId: string, file: UploadingFile, callback: MessageSendHandler) {
         let key = UUID();
         (async () => {
             try {
@@ -63,13 +59,9 @@ export class MessageSender {
                         file.watch(state => {
                             if (state.status === UploadStatus.FAILED) {
                                 reject();
-                            } else if (
-                                state.status === UploadStatus.UPLOADING
-                            ) {
+                            } else if (state.status === UploadStatus.UPLOADING) {
                                 callback.onProgress(key, state.progress!!);
-                            } else if (
-                                state.status === UploadStatus.COMPLETED
-                            ) {
+                            } else if (state.status === UploadStatus.COMPLETED) {
                                 resolver(state.uuid!!);
                             }
                         });
@@ -86,7 +78,7 @@ export class MessageSender {
                 message: null,
                 conversationId,
                 key,
-                callback
+                callback,
             });
         })();
         return key;
@@ -96,16 +88,16 @@ export class MessageSender {
         conversationId,
         message,
         mentions,
-        callback
+        callback,
     }: {
-            conversationId: string;
-            message: string;
-            mentions: MessageFull_mentions[] | null;
-            callback: MessageSendHandler;
-        }) {
+        conversationId: string;
+        message: string;
+        mentions: RoomMessageFull_mentions[] | null;
+        callback: MessageSendHandler;
+    }) {
         message = message.trim();
         if (message.length === 0) {
-            throw Error('Message can\'t be empty');
+            throw Error("Message can't be empty");
         }
         let key = UUID();
 
@@ -116,7 +108,7 @@ export class MessageSender {
             conversationId,
             message,
             key,
-            callback
+            callback,
         });
         return key;
     }
@@ -124,12 +116,12 @@ export class MessageSender {
     async sendMessageAsync({
         conversationId,
         message,
-        mentions
+        mentions,
     }: {
-            conversationId: string;
-            message: string;
-            mentions: MessageFull_mentions[] | null;
-        }) {
+        conversationId: string;
+        message: string;
+        mentions: RoomMessageFull_mentions[] | null;
+    }) {
         await new Promise<string>((resolve, reject) => {
             let handler: MessageSendHandler = {
                 onCompleted: (key: string) => {
@@ -140,13 +132,13 @@ export class MessageSender {
                 },
                 onProgress: () => {
                     // Ignore
-                }
+                },
             };
             this.sendMessage({
                 conversationId,
                 message,
                 mentions,
-                callback: handler
+                callback: handler,
             });
         });
     }
@@ -157,7 +149,7 @@ export class MessageSender {
             this.doSendMessage({
                 ...messageBody,
                 key,
-                callback
+                callback,
             });
         }
     }
@@ -169,7 +161,7 @@ export class MessageSender {
         replyMessages,
         mentions,
         key,
-        callback
+        callback,
     }: MessageBodyT & {
         key: string;
         callback: MessageSendHandler;
@@ -180,7 +172,7 @@ export class MessageSender {
             file,
             conversationId,
             replyMessages,
-            mentions
+            mentions,
         };
 
         this.pending.set(key, messageBody);
@@ -195,14 +187,11 @@ export class MessageSender {
                         repeatKey: key,
                         mentions: mentionsToStrings ? mentionsToStrings.map(({ id }) => id) : null,
                         ...restMessageBody,
-                        roomId: conversationId
-                    }
+                        roomId: conversationId,
+                    },
                 });
             } catch (e) {
-                if (
-                    e.graphQLErrors &&
-                    e.graphQLErrors.find((v: any) => v.doubleInvoke === true)
-                ) {
+                if (e.graphQLErrors && e.graphQLErrors.find((v: any) => v.doubleInvoke === true)) {
                     // Ignore
                 } else {
                     // Just ignore for now

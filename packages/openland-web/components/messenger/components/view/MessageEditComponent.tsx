@@ -6,7 +6,7 @@ import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { MessageFull } from 'openland-api/Types';
+import { RoomMessageFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 
@@ -150,7 +150,7 @@ const EditMessageInline = withEditMessage(props => {
 }) as React.ComponentType<{ id: string; text: string | null; onClose: any }>;
 
 export class EditMessageInlineWrapper extends React.Component<{
-    message: MessageFull;
+    message: RoomMessageFull;
     onClose: any;
 }> {
     onCloseHandler = () => {

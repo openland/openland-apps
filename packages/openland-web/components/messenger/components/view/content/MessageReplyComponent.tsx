@@ -2,9 +2,9 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import {
-    MessageFull_reply_sender,
-    MessageFull_reply_fileMetadata,
-    MessageFull_mentions,
+    RoomMessageFull_reply_sender,
+    RoomMessageFull_reply_fileMetadata,
+    RoomMessageFull_mentions,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
@@ -13,14 +13,14 @@ import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 
 interface ReplyMessageProps {
-    sender: MessageFull_reply_sender;
-    mentions: MessageFull_mentions[] | null;
+    sender: RoomMessageFull_reply_sender;
+    mentions: RoomMessageFull_mentions[] | null;
     id: string;
     date: any;
     message: string | null;
     edited: boolean;
     file: string | null;
-    fileMetadata: MessageFull_reply_fileMetadata | null;
+    fileMetadata: RoomMessageFull_reply_fileMetadata | null;
     startSelected: boolean;
     compact?: boolean;
 }

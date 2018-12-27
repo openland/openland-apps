@@ -1,63 +1,73 @@
 import { MessengerEngine } from '../MessengerEngine';
 import { RoomReadMutation, RoomHistoryQuery, AccountQuery, RoomQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
-import { MessageFull } from 'openland-api/fragments/MessageFull';
+import { RoomMessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions } from 'openland-api/Types';
+import {
+    RoomMessageFull as MessageFullFragment,
+    UserShort as UserShortFragment,
+    RoomMessageFull_urlAugmentation,
+    RoomMessageFull_reactions,
+    RoomMessageFull_mentions,
+} from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
-import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
+import {
+    PendingMessage,
+    isPendingMessage,
+    isServerMessage,
+    UploadingFile,
+    ModelMessage,
+} from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 
 const CHAT_SUBSCRIPTION = gql`
-  subscription ChatSubscription($conversationId: ID!, $state: String) {
-    event: conversationUpdates(conversationId: $conversationId, fromState: $state) {
-        ... on ConversationUpdateSingle {
-            seq
-            state
-            update {
-                ...ConversationUpdateFragment
+    subscription ChatSubscription($conversationId: ID!, $state: String) {
+        event: conversationUpdates(conversationId: $conversationId, fromState: $state) {
+            ... on ConversationUpdateSingle {
+                seq
+                state
+                update {
+                    ...ConversationUpdateFragment
+                }
+            }
+            ... on ConversationUpdateBatch {
+                fromSeq
+                seq
+                state
+                updates {
+                    ...ConversationUpdateFragment
+                }
             }
         }
-        ... on ConversationUpdateBatch {
-            fromSeq
-            seq
-            state
-            updates {
-                ...ConversationUpdateFragment
+    }
+    fragment ConversationUpdateFragment on ConversationUpdate {
+        ... on ConversationMessageReceived {
+            message {
+                ...RoomMessageFull
             }
         }
-       
-    }
-  }
-  fragment ConversationUpdateFragment on ConversationUpdate {
-    ... on ConversationMessageReceived {
-        message {
-            ...MessageFull
+        ... on ConversationMessageUpdated {
+            message {
+                ...RoomMessageFull
+            }
+        }
+        ... on ConversationMessageDeleted {
+            message {
+                id
+            }
+        }
+        ... on ConversationDialogUpdate {
+            dialog {
+                haveMention
+                mute
+            }
         }
     }
-    ... on ConversationMessageUpdated {
-        message {
-            ...MessageFull
-        }
-    }
-    ... on ConversationMessageDeleted {
-        message {
-            id
-        }
-    }
-    ... on ConversationDialogUpdate {
-        dialog {
-            haveMention,
-            mute
-        }
-    }
-   
-  }
-  ${MessageFull}
-  ${UserShort}
+    ${RoomMessageFull}
+    ${UserShort}
 `;
 
 export interface ConversationStateHandler {
@@ -79,17 +89,17 @@ export interface DataSourceMessageItem {
     text?: string;
     title?: string;
     file?: {
-        fileName: string,
-        fileId?: string,
-        uri?: string,
-        fileSize?: number,
-        isImage: boolean,
-        isGif: boolean,
-        imageSize?: { width: number, height: number }
+        fileName: string;
+        fileId?: string;
+        uri?: string;
+        fileSize?: number;
+        isImage: boolean;
+        isGif: boolean;
+        imageSize?: { width: number; height: number };
     };
-    urlAugmentation?: MessageFull_urlAugmentation;
-    reactions?: MessageFull_reactions[];
-    mentions?: MessageFull_mentions[];
+    urlAugmentation?: RoomMessageFull_urlAugmentation;
+    reactions?: RoomMessageFull_reactions[];
+    mentions?: RoomMessageFull_mentions[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -103,7 +113,12 @@ export interface DataSourceDateItem {
     year: number;
 }
 
-export function convertMessage(src: MessageFullFragment & { local?: boolean }, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
+export function convertMessage(
+    src: MessageFullFragment & { local?: boolean },
+    engine: MessengerEngine,
+    prev?: MessageFullFragment,
+    next?: MessageFullFragment,
+): DataSourceMessageItem {
     return {
         type: 'message',
         id: src.id,
@@ -115,19 +130,30 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         senderPhoto: src.sender.photo || undefined,
         text: src.message || undefined,
         title: src.alphaTitle || undefined,
-        file: src.file ? {
-            fileName: src.fileMetadata!!.name,
-            fileId: src.file,
-            fileSize: src.fileMetadata!!.size,
-            isImage: src.fileMetadata!!.isImage,
-            isGif: src.fileMetadata!!.isImage && src.fileMetadata!!.imageFormat === 'GIF',
-            imageSize: src.fileMetadata!!.isImage ? { width: src.fileMetadata!!.imageWidth!!, height: src.fileMetadata!!.imageHeight!! } : undefined
-        } : undefined,
+        file: src.file
+            ? {
+                  fileName: src.fileMetadata!!.name,
+                  fileId: src.file,
+                  fileSize: src.fileMetadata!!.size,
+                  isImage: src.fileMetadata!!.isImage,
+                  isGif: src.fileMetadata!!.isImage && src.fileMetadata!!.imageFormat === 'GIF',
+                  imageSize: src.fileMetadata!!.isImage
+                      ? {
+                            width: src.fileMetadata!!.imageWidth!!,
+                            height: src.fileMetadata!!.imageHeight!!,
+                        }
+                      : undefined,
+              }
+            : undefined,
         isSending: false,
-        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) : false,
+        attachTop: next
+            ? next.sender.id === src.sender.id && isSameDate(next.date, src.date)
+            : false,
+        attachBottom: prev
+            ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date)
+            : false,
         urlAugmentation: src.urlAugmentation || undefined,
-        reactions: src.reactions || undefined
+        reactions: src.reactions || undefined,
     };
 }
 
@@ -136,7 +162,11 @@ function isSameDate(a: string, b: string) {
     let b1 = parseInt(b, 10);
     let a2 = new Date(a1);
     let b2 = new Date(b1);
-    return (a2.getFullYear() === b2.getFullYear() && a2.getMonth() === b2.getMonth() && a2.getDate() === b2.getDate());
+    return (
+        a2.getFullYear() === b2.getFullYear() &&
+        a2.getMonth() === b2.getMonth() &&
+        a2.getDate() === b2.getDate()
+    );
 }
 
 export class ConversationEngine implements MessageSendHandler {
@@ -174,7 +204,9 @@ export class ConversationEngine implements MessageSendHandler {
         console.info('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                return await this.engine.client.query(RoomHistoryQuery, { roomId: this.conversationId });
+                return await this.engine.client.query(RoomHistoryQuery, {
+                    roomId: this.conversationId,
+                });
             } catch (e) {
                 console.warn(e);
                 throw e;
@@ -186,18 +218,32 @@ export class ConversationEngine implements MessageSendHandler {
         this.messages = [...(initialChat.data as any).messages];
         this.messages.reverse();
 
-        this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+        this.state = new ConversationState(
+            false,
+            this.messages,
+            this.groupMessages(this.messages),
+            this.state.typing,
+            this.state.loadingHistory,
+            this.state.historyFullyLoaded,
+        );
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.data.state.state);
+        this.watcher = new SequenceModernWatcher(
+            'chat:' + this.conversationId,
+            CHAT_SUBSCRIPTION,
+            this.engine.client,
+            this.updateHandler,
+            undefined,
+            { conversationId: this.conversationId },
+            initialChat.data.state.state,
+        );
         this.onMessagesUpdated();
 
         // Update Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
-        let sourceFragments = [...(initialChat.data as any).messages as MessageFullFragment[]];
+        let sourceFragments = [...((initialChat.data as any).messages as MessageFullFragment[])];
         let prevDate: string | undefined;
         for (let i = 0; i < sourceFragments.length; i++) {
-
             // Append new date if needed
             if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                 let d = new Date(parseInt(prevDate, 10));
@@ -206,11 +252,18 @@ export class ConversationEngine implements MessageSendHandler {
                     key: 'date-' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
                     date: d.getDate(),
                     month: d.getMonth(),
-                    year: d.getFullYear()
+                    year: d.getFullYear(),
                 });
             }
 
-            dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
+            dsItems.push(
+                convertMessage(
+                    sourceFragments[i],
+                    this.engine,
+                    sourceFragments[i - 1],
+                    sourceFragments[i + 1],
+                ),
+            );
             prevDate = sourceFragments[i].date;
         }
 
@@ -221,27 +274,27 @@ export class ConversationEngine implements MessageSendHandler {
                 key: 'date-' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
                 date: d.getDate(),
                 month: d.getMonth(),
-                year: d.getFullYear()
+                year: d.getFullYear(),
             });
         }
 
         this.dataSource.initialize(dsItems, this.historyFullyLoaded);
-    }
+    };
 
     onOpen = () => {
         this.isOpen = true;
         this.markReadIfNeeded();
-    }
+    };
 
     onClosed = () => {
         this.isOpen = false;
-    }
+    };
 
     getState = () => {
         return this.state;
-    }
+    };
 
-    // 
+    //
 
     loadBefore = async (id?: string) => {
         if (id === undefined) {
@@ -254,20 +307,41 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (this.loadingHistory === undefined) {
             this.loadingHistory = id;
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                true,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.client.query({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId, before: id },
-                fetchPolicy: 'network-only'
-            }));
+            let loaded = await backoff(() =>
+                this.engine.client.client.query({
+                    query: RoomHistoryQuery.document,
+                    variables: { roomId: this.conversationId, before: id },
+                    fetchPolicy: 'network-only',
+                }),
+            );
 
-            let history = [...(loaded.data as any).messages].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+            let history = [...(loaded.data as any).messages].filter(
+                (remote: MessageFullFragment) =>
+                    this.messages.findIndex(
+                        local => isServerMessage(local) && local.id === remote.id,
+                    ) === -1,
+            );
             history.reverse();
 
             this.messages = [...history, ...this.messages];
             this.historyFullyLoaded = history.length < CONVERSATION_PAGE_SIZE;
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, false, this.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                false,
+                this.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
             this.loadingHistory = undefined;
 
@@ -275,9 +349,11 @@ export class ConversationEngine implements MessageSendHandler {
             let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
             let prevDate: string | undefined;
             if (this.dataSource.getSize() > 0) {
-                prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
+                prevDate =
+                    (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem)
+                        .date + '';
             }
-            let sourceFragments = [...(loaded.data as any).messages as MessageFullFragment[]];
+            let sourceFragments = [...((loaded.data as any).messages as MessageFullFragment[])];
             for (let i = 0; i < sourceFragments.length; i++) {
                 if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                     let d = new Date(parseInt(prevDate, 10));
@@ -286,11 +362,18 @@ export class ConversationEngine implements MessageSendHandler {
                         key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
                         date: d.getDate(),
                         month: d.getMonth(),
-                        year: d.getFullYear()
+                        year: d.getFullYear(),
                     });
                 }
 
-                dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
+                dsItems.push(
+                    convertMessage(
+                        sourceFragments[i],
+                        this.engine,
+                        sourceFragments[i - 1],
+                        sourceFragments[i + 1],
+                    ),
+                );
                 prevDate = sourceFragments[i].date;
             }
             if (this.historyFullyLoaded && prevDate) {
@@ -300,26 +383,42 @@ export class ConversationEngine implements MessageSendHandler {
                     key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
                     date: d.getDate(),
                     month: d.getMonth(),
-                    year: d.getFullYear()
+                    year: d.getFullYear(),
                 });
             }
             this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
         }
-    }
+    };
 
-    sendMessage = (text: string, mentions: MessageFull_mentions[] | null) => {
+    sendMessage = (text: string, mentions: RoomMessageFull_mentions[] | null) => {
         if (text.trim().length > 0) {
             let message = text.trim();
-            let date = (new Date().getTime()).toString();
+            let date = new Date().getTime().toString();
             let key = this.engine.sender.sendMessage({
                 conversationId: this.conversationId,
                 message,
                 mentions,
-                callback: this
+                callback: this,
             });
-            let msgs = { date, key, local: true, message, progress: 0, file: null, failed: false, mentions } as PendingMessage;
+            let msgs = {
+                date,
+                key,
+                local: true,
+                message,
+                progress: 0,
+                file: null,
+                failed: false,
+                mentions,
+            } as PendingMessage;
             this.messages = [...this.messages, msgs];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
 
             // Data Source
@@ -330,17 +429,43 @@ export class ConversationEngine implements MessageSendHandler {
                 l.onMessageSend();
             }
         }
-    }
+    };
 
     sendFile = (file: UploadingFile) => {
         let key = this.engine.sender.sendFile(this.conversationId, file, this);
         (async () => {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
-            let date = (new Date().getTime()).toString();
-            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false } as PendingMessage;
-            this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            let date = new Date().getTime().toString();
+            let pmsg = {
+                date,
+                key,
+                file: name,
+                uri: info.uri,
+                fileSize: info.fileSize,
+                progress: 0,
+                message: null,
+                failed: false,
+            } as PendingMessage;
+            this.messages = [
+                ...this.messages,
+                {
+                    date,
+                    key,
+                    file: name,
+                    progress: 0,
+                    message: null,
+                    failed: false,
+                } as PendingMessage,
+            ];
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
 
             // Data Source
@@ -352,77 +477,105 @@ export class ConversationEngine implements MessageSendHandler {
             }
         })();
         return key;
-    }
+    };
 
     retryMessage = (key: string) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
+        let ex = this.messages.find(v => isPendingMessage(v) && v.key === key);
         if (ex) {
-            this.messages = this.messages.map((v) => {
+            this.messages = this.messages.map(v => {
                 if (isPendingMessage(v) && v.key === key) {
                     return {
                         ...v,
-                        failed: false
+                        failed: false,
                     } as PendingMessage;
                 } else {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
             this.engine.sender.retryMessage(key, this);
         }
-    }
+    };
 
     cancelMessage = (key: string) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
+        let ex = this.messages.find(v => isPendingMessage(v) && v.key === key);
         if (ex) {
-            this.messages = this.messages.filter((v) => isServerMessage(v) || v.key !== key);
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.messages = this.messages.filter(v => isServerMessage(v) || v.key !== key);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
         }
-    }
+    };
 
     onFailed = (key: string) => {
         // Handle failed
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
+        let ex = this.messages.find(v => isPendingMessage(v) && v.key === key);
         if (ex) {
-            this.messages = this.messages.map((v) => {
+            this.messages = this.messages.map(v => {
                 if (isPendingMessage(v) && v.key === key) {
                     return {
                         ...v,
-                        failed: true
+                        failed: true,
                     } as PendingMessage;
                 } else {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
         }
-    }
+    };
 
     onCompleted = (key: string) => {
         // Handle completed
         // Dothing: wait for sequence to take care
-    }
+    };
 
     onProgress = (key: string, progress: number) => {
-        let ex = this.messages.find((v) => isPendingMessage(v) && v.key === key);
+        let ex = this.messages.find(v => isPendingMessage(v) && v.key === key);
         if (ex) {
-            this.messages = this.messages.map((v) => {
+            this.messages = this.messages.map(v => {
                 if (isPendingMessage(v) && v.key === key) {
                     return {
                         ...v,
-                        progress: progress
+                        progress: progress,
                     } as PendingMessage;
                 } else {
                     return v;
                 }
             });
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
         }
-    }
+    };
 
     subscribe = (listener: ConversationStateHandler) => {
         this.listeners.push(listener);
@@ -435,7 +588,7 @@ export class ConversationEngine implements MessageSendHandler {
                 this.listeners.splice(index, 1);
             }
         };
-    }
+    };
 
     destroy = () => {
         if (!this.isStarted) {
@@ -445,60 +598,54 @@ export class ConversationEngine implements MessageSendHandler {
         // if (this.watcher) {
         //     this.watcher!!.destroy();
         // }
-    }
+    };
 
     handleMuteUpdated = async (mute: boolean) => {
-        let info = await this.engine.client.client.readQuery(
-            {
-                query: RoomQuery.document,
-                variables: {
-                    id: this.conversationId,
-                }
-            }
-        );
+        let info = await this.engine.client.client.readQuery({
+            query: RoomQuery.document,
+            variables: {
+                id: this.conversationId,
+            },
+        });
         (info as any).room.settings.mute = mute;
         this.engine.client.client.writeQuery({
             query: RoomQuery.document,
             variables: { roomId: this.conversationId },
-            data: info
+            data: info,
         });
         console.warn(info);
-    }
+    };
 
     handleTitleUpdated = async (title: string) => {
-        let info = await this.engine.client.client.readQuery(
-            {
-                query: RoomQuery.document,
-                variables: {
-                    id: this.conversationId,
-                }
-            }
-        );
+        let info = await this.engine.client.client.readQuery({
+            query: RoomQuery.document,
+            variables: {
+                id: this.conversationId,
+            },
+        });
         (info as any).room.title = title;
         this.engine.client.client.writeQuery({
             query: RoomQuery.document,
             variables: { roomId: this.conversationId },
-            data: info
+            data: info,
         });
         console.warn(info);
-    }
+    };
 
     handlePhotoUpdated = async (photo: string) => {
-        let info = await this.engine.client.client.readQuery(
-            {
-                query: RoomQuery.document,
-                variables: {
-                    id: this.conversationId,
-                }
-            }
-        );
+        let info = await this.engine.client.client.readQuery({
+            query: RoomQuery.document,
+            variables: {
+                id: this.conversationId,
+            },
+        });
         (info as any).room.photo = photo;
         this.engine.client.client.writeQuery({
             query: RoomQuery.document,
             variables: { roomId: this.conversationId },
-            data: info
+            data: info,
         });
-    }
+    };
 
     private onMessagesUpdated = () => {
         console.log('Messages updated');
@@ -508,7 +655,7 @@ export class ConversationEngine implements MessageSendHandler {
         for (let l of this.listeners) {
             l.onConversationUpdated(this.state);
         }
-    }
+    };
 
     private markReadIfNeeded = () => {
         let id: string | null = null;
@@ -525,47 +672,61 @@ export class ConversationEngine implements MessageSendHandler {
                 mutation: RoomReadMutation.document,
                 variables: {
                     id: this.conversationId,
-                    mid: id
-                }
+                    mid: id,
+                },
             });
         }
-    }
+    };
 
     private updateHandler = async (event: any) => {
-        console.log('ConversationEngine', event)
+        console.log('ConversationEngine', event);
         if (event.__typename === 'ConversationMessageReceived') {
             // Handle message
             console.info('Received new message');
             // Write message to store
             let data = this.engine.client.client.readQuery({
                 query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId }
+                variables: { roomId: this.conversationId },
             });
             (data as any).messages = [event.message, ...(data as any).messages];
             this.engine.client.client.writeQuery({
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId },
-                data: data
+                data: data,
             });
             if (event.message.repeatKey) {
                 // Try to replace message inplace
-                let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.message.repeatKey);
+                let existing = this.messages.findIndex(
+                    v => isPendingMessage(v) && v.key === event.message.repeatKey,
+                );
                 if (existing >= 0) {
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
-                        date: msgs[existing].date
+                        date: msgs[existing].date,
                     };
                     this.messages = msgs;
                     this.localMessagesMap.set(event.message.id, event.message.repeatKey);
                     event.message.local = true;
                 } else {
-                    this.messages = [...this.messages.filter((v) => isServerMessage(v) || v.key !== event.message.repeatKey), event.message];
+                    this.messages = [
+                        ...this.messages.filter(
+                            v => isServerMessage(v) || v.key !== event.message.repeatKey,
+                        ),
+                        event.message,
+                    ];
                 }
             } else {
                 this.messages = [...this.messages, event.message];
             }
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
 
             // Add to datasource
@@ -573,9 +734,20 @@ export class ConversationEngine implements MessageSendHandler {
 
             // some fun
             if (event.message.message === '/insane') {
-                let account: any = this.engine.client.client.readQuery({ query: AccountQuery.document });
+                let account: any = this.engine.client.client.readQuery({
+                    query: AccountQuery.document,
+                });
                 console.warn(account);
-                this.engine.client.client.writeQuery({ query: AccountQuery.document, data: { ...account, permissions: { ...account.permissions, roles: [...account.permissions.roles, 'feature-insane-buttons'] } } });
+                this.engine.client.client.writeQuery({
+                    query: AccountQuery.document,
+                    data: {
+                        ...account,
+                        permissions: {
+                            ...account.permissions,
+                            roles: [...account.permissions.roles, 'feature-insane-buttons'],
+                        },
+                    },
+                });
             }
         } else if (event.__typename === 'ConversationMessageDeleted') {
             // Handle message
@@ -583,17 +755,26 @@ export class ConversationEngine implements MessageSendHandler {
             // Write message to store
             let data = this.engine.client.client.readQuery({
                 query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId }
+                variables: { roomId: this.conversationId },
             });
-            (data as any).messages = (data as any).messages.filter((m: any) => m.id !== event.message.id);
+            (data as any).messages = (data as any).messages.filter(
+                (m: any) => m.id !== event.message.id,
+            );
             this.engine.client.client.writeQuery({
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId },
-                data: data
+                data: data,
             });
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
 
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
 
             // Remove from datasource
@@ -602,25 +783,35 @@ export class ConversationEngine implements MessageSendHandler {
             if (this.dataSource.hasItem(id)) {
                 this.dataSource.removeItem(id);
             }
-
         } else if (event.__typename === 'ConversationMessageUpdated') {
             // Handle message
             console.info('Received edit message');
             // Write message to store
             let data = this.engine.client.client.readQuery({
                 query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId }
+                variables: { roomId: this.conversationId },
             });
             (data as any).messages.seq = event.seq;
-            (data as any).messages = (data as any).messages.map((m: any) => m.id !== event.message.id ? m : event.message);
+            (data as any).messages = (data as any).messages.map((m: any) =>
+                m.id !== event.message.id ? m : event.message,
+            );
             this.engine.client.client.writeQuery({
                 query: RoomHistoryQuery.document,
                 variables: { roomId: this.conversationId },
-                data: data
+                data: data,
             });
-            this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
+            this.messages = this.messages.map((m: any) =>
+                m.id !== event.message.id ? m : event.message,
+            );
 
-            this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
+            this.state = new ConversationState(
+                false,
+                this.messages,
+                this.groupMessages(this.messages),
+                this.state.typing,
+                this.state.loadingHistory,
+                this.state.historyFullyLoaded,
+            );
             this.onMessagesUpdated();
 
             // Update in datasource
@@ -628,10 +819,12 @@ export class ConversationEngine implements MessageSendHandler {
             conv.key = this.localMessagesMap.get(event.message.id) || event.message.id;
             let old = this.dataSource.getItem(conv.key);
             conv.attachTop = old ? (old as DataSourceMessageItem).attachTop : conv.attachTop;
-            conv.attachBottom = old ? (old as DataSourceMessageItem).attachBottom : conv.attachBottom;
+            conv.attachBottom = old
+                ? (old as DataSourceMessageItem).attachBottom
+                : conv.attachBottom;
             this.dataSource.updateItem(conv);
         } else if (event.__typename === 'ConversationDialogUpdate') {
-            console.log('ConversationDialogUpdate')
+            console.log('ConversationDialogUpdate');
             // this.dataSource.updateItem({
             //     haveMention: event.message,
             // });
@@ -639,7 +832,7 @@ export class ConversationEngine implements MessageSendHandler {
             console.warn('Received unknown message');
         }
         return undefined;
-    }
+    };
 
     private appendMessage = (src: ModelMessage) => {
         let prev: DataSourceMessageItem | DataSourceDateItem | undefined;
@@ -650,7 +843,8 @@ export class ConversationEngine implements MessageSendHandler {
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.engine, undefined);
 
-            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
+            conv.attachTop =
+                prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
         } else {
             let p = src as PendingMessage;
             conv = {
@@ -664,14 +858,17 @@ export class ConversationEngine implements MessageSendHandler {
                 isSending: true,
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
-                file: p.uri ? {
-                    uri: p.uri,
-                    fileName: p.file || 'image.png',
-                    fileSize: p.fileSize,
-                    isImage: false,
-                    isGif: false
-                } : undefined,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id : false
+                file: p.uri
+                    ? {
+                          uri: p.uri,
+                          fileName: p.file || 'image.png',
+                          fileSize: p.fileSize,
+                          isImage: false,
+                          isGif: false,
+                      }
+                    : undefined,
+                attachTop:
+                    prev && prev.type === 'message' ? prev.senderId === this.engine.user.id : false,
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
@@ -679,7 +876,7 @@ export class ConversationEngine implements MessageSendHandler {
             let converted = {
                 ...conv,
                 attachBottom: ex!!.attachBottom, // Do not update compact value
-                attachTop: ex!!.attachTop // Do not update compact value
+                attachTop: ex!!.attachTop, // Do not update compact value
             };
             this.dataSource.updateItem(converted);
         } else {
@@ -691,7 +888,7 @@ export class ConversationEngine implements MessageSendHandler {
             }
             // this.dataSource.addItem(conv, 0);
         }
-    }
+    };
 
     private groupMessages = (src: ModelMessage[]) => {
         let res: Day[] = [];
@@ -710,7 +907,13 @@ export class ConversationEngine implements MessageSendHandler {
             let dt = new Date(date);
             let dstr = dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
             if (dstr !== prevDate) {
-                currentDay = { day: dt.getDate(), month: dt.getMonth(), year: dt.getFullYear(), key: 'date-' + dstr, messages: [] };
+                currentDay = {
+                    day: dt.getDate(),
+                    month: dt.getMonth(),
+                    year: dt.getFullYear(),
+                    key: 'date-' + dstr,
+                    messages: [],
+                };
                 res.push(currentDay);
                 prevMessageDate = undefined;
                 prevMessageSender = undefined;
@@ -723,7 +926,11 @@ export class ConversationEngine implements MessageSendHandler {
         //
         // Start a new sender group
         //
-        let prepareSenderIfNeeded = (sender: UserShortFragnemt, message: ModelMessage, date: number) => {
+        let prepareSenderIfNeeded = (
+            sender: UserShortFragment,
+            message: ModelMessage,
+            date: number,
+        ) => {
             let day = prepareDateIfNeeded(date);
             if (prevMessageSender === sender.id && prevMessageDate !== undefined) {
                 // 10 sec
@@ -740,7 +947,7 @@ export class ConversationEngine implements MessageSendHandler {
             currentGroup = {
                 key: isServerMessage(message) ? 'msg-' + message.id : 'msg-pending-' + message.key,
                 sender,
-                messages: []
+                messages: [],
             };
             day.messages.push(currentGroup);
             return currentGroup!!;
@@ -756,5 +963,5 @@ export class ConversationEngine implements MessageSendHandler {
         }
 
         return res;
-    }
+    };
 }
