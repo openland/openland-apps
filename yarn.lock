@@ -3505,7 +3505,7 @@ babel-plugin-transform-exponentiation-operator@^6.22.0:
     babel-plugin-syntax-exponentiation-operator "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-mental@^1.4.9:
+babel-plugin-transform-mental@^1.4.10:
   version "1.4.10"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-mental/-/babel-plugin-transform-mental-1.4.10.tgz#8594fe21f18b3bb951e9e7e43f871475fc123584"
   integrity sha512-W9Xd9aO368nl3oxr32B0sbLhkkX3/GQSR1YsZfngMqvmKcGcK9VAoK7yWNcoithaauKzBY2++3bdQ34vhbnx4w==
@@ -9184,7 +9184,7 @@ memory-fs@^0.4.0, memory-fs@^0.4.1, memory-fs@~0.4.1:
     errno "^0.1.3"
     readable-stream "^2.0.1"
 
-mental-styles@^1.4.10, mental-styles@^1.4.9:
+mental-styles@^1.4.10:
   version "1.4.10"
   resolved "https://registry.yarnpkg.com/mental-styles/-/mental-styles-1.4.10.tgz#bee58d9eea20e28550d8588c24331371a190866f"
   integrity sha512-UBeugqo+GC4kiz3jbOxeRHYZJAtHm9JHFDZsZYWqx9nnFwmOqh6Foz/BQRGf9dSIUkz5dpLLU7atF+GSkF9YIw==
@@ -11271,13 +11271,13 @@ react-lottie@^1.1.0:
     babel-runtime "^6.26.0"
     lottie-web "^5.1.3"
 
-react-mental@1.4.9:
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.4.9.tgz#88fce77e44e05ce173cd1146311a71f20bc2d763"
-  integrity sha512-GVe5NyT/dyfnVGjM759YOV7Rlat0v2nxlm4t0G5hkrx4nqqP5xeq6pzOJFaiiZNtRFGkJN7/bfvdknDKeSkDTw==
+react-mental@1.4.10:
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/react-mental/-/react-mental-1.4.10.tgz#e1c596ab7792365ff39ee860a44391437dccd506"
+  integrity sha512-Yjnur2aPfSy3sAQogBu7rxUJT1fEeANcwezWrTS6grxapUwfIvCouLGWyP+PDvtmWEY/6YfiCmkqMvgPyQN39w==
   dependencies:
-    babel-plugin-transform-mental "^1.4.9"
-    mental-styles "^1.4.9"
+    babel-plugin-transform-mental "^1.4.10"
+    mental-styles "^1.4.10"
 
 react-modal@^3.2.1:
   version "3.6.1"
