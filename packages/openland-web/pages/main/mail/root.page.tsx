@@ -47,6 +47,7 @@ export const ConversationContainer = Glamorous.div({
     minWidth: 0,
     overflow: 'hidden',
     backgroundColor: XThemeDefault.backgroundColor,
+    maxWidth: 'calc(100% - 345px)',
     '@media (max-width: 1100px)': {
         width: 'calc(100% - 300px)',
     },
