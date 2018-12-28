@@ -25,6 +25,8 @@ let headerMenuOpenerClass = css`
     padding: 17px 0 0;
     width: 52px;
     height: 42px;
+    display: flex;
+    justify-content: center;
 
     @media (min-width: 768px) {
         display: none;

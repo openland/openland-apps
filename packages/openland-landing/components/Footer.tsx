@@ -8,6 +8,7 @@ import { FooterLinks, FooterLinksItem } from './footer/FooterLinks';
 import { FooterApp } from './footer/FooterApp';
 import PhoneIcon from 'openland-icons/landing/phone.svg';
 import MailIcon from 'openland-icons/landing/mail.svg';
+import { LandingLinks } from './_links';
 
 export const Footer = () => (
     <footer className={FooterStyles.root}>
@@ -23,9 +24,9 @@ export const Footer = () => (
                 <div className={FooterStyles.column}>
                     <FooterTitle content="Company" />
                     <FooterLinks>
-                        <FooterLinksItem path="/landing/about" content="About" />
+                        <FooterLinksItem path={LandingLinks.about} content="About" />
                         <FooterLinksItem
-                            path="https://angel.co/openland/jobs"
+                            path={LandingLinks.careers}
                             target="_blank"
                             content="Careers"
                         />
@@ -34,8 +35,8 @@ export const Footer = () => (
                 <div className={FooterStyles.column}>
                     <FooterTitle content="Legal" />
                     <FooterLinks>
-                        <FooterLinksItem path="/landing/privacy" content="Privacy Policy" />
-                        <FooterLinksItem path="/landing/terms" content="Terms of Service" />
+                        <FooterLinksItem path={LandingLinks.privacy} content="Privacy Policy" />
+                        <FooterLinksItem path={LandingLinks.terms} content="Terms of Service" />
                     </FooterLinks>
                 </div>
                 <div className={FooterStyles.column}>

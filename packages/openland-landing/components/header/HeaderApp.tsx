@@ -2,10 +2,11 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import AndroidIcon from 'openland-icons/landing/android.svg';
 import IosIcon from 'openland-icons/landing/ios.svg';
+import { LandingLinks } from '../_links';
 
 const AppPaths = {
-    ios: 'https://oplnd.com/ios',
-    android: 'https://oplnd.com/android_beta',
+    ios: LandingLinks.apple,
+    android: LandingLinks.google,
 };
 
 const AppIcons = {

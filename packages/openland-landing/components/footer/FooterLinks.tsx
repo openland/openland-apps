@@ -25,12 +25,13 @@ let footerLinksItemClass = css`
 
 let footerLinksItemInnerClass = css`
     color: #1f3449;
-    text-decoration: none!importan;
+    text-decoration: none;
     display: flex;
     align-items: center;
 
     &:hover {
         color: #1790ff;
+        text-decoration: none;
     }
 
     svg {

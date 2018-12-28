@@ -4,6 +4,7 @@ import LinkedinIcon from 'openland-icons/landing/linkedin.svg';
 import FacebookIcon from 'openland-icons/landing/facebook.svg';
 import TwitterIcon from 'openland-icons/landing/twitter.svg';
 import AngelIcon from 'openland-icons/landing/angel.svg';
+import { LandingSocials } from '../_links';
 
 let footerSocialsClass = css`
     margin: 0 0 0 -9px;
@@ -45,12 +46,9 @@ const FooterSocialsItem = (props: FooterSocialsItemProps) => (
 
 export const FooterSocials = () => (
     <div className={footerSocialsClass}>
-        <FooterSocialsItem
-            path="https://linkedin.com/company/openlandhq/"
-            icon={<LinkedinIcon />}
-        />
-        <FooterSocialsItem path="https://facebook.com/openlandhq/" icon={<FacebookIcon />} />
-        <FooterSocialsItem path="https://twitter.com/OpenlandHQ" icon={<TwitterIcon />} />
-        <FooterSocialsItem path="https://angel.co/openland" icon={<AngelIcon />} />
+        <FooterSocialsItem path={LandingSocials.linkedin} icon={<LinkedinIcon />} />
+        <FooterSocialsItem path={LandingSocials.facebook} icon={<FacebookIcon />} />
+        <FooterSocialsItem path={LandingSocials.twitter} icon={<TwitterIcon />} />
+        <FooterSocialsItem path={LandingSocials.angellist} icon={<AngelIcon />} />
     </div>
 );

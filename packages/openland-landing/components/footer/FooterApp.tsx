@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { LandingLinks } from '../_links';
 
 const AppPaths = {
-    ios: 'https://oplnd.com/ios',
-    android: 'https://oplnd.com/android_beta',
+    ios: LandingLinks.apple,
+    android: LandingLinks.google,
 };
 
 let footerAppClass = css`
