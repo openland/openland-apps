@@ -47,6 +47,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                 options={[]}
                 render={
                     <XSelectCustomUsersRender
+                        autoFocus
                         multi={true}
                         popper={true}
                         placeholder={TextCompose.searchPlaceholder}
@@ -78,6 +79,7 @@ const SearchPeopleModule = withExplorePeople(props => {
             onChange={data => (props as any).onChange(data)}
             render={
                 <XSelectCustomUsersRender
+                    autoFocus
                     multi={true}
                     placeholder={TextCompose.searchPlaceholder}
                     rounded={true}
