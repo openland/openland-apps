@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
 
 let footerLinksClass = css`
     list-style: none;

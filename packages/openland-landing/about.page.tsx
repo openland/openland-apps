@@ -5,6 +5,7 @@ import { Container } from './components/Container';
 import { XView } from 'react-mental';
 import { LandingLinks } from './components/_links';
 import { AboutStyles } from './components/about/styles';
+import { Founders } from './components/about/Founders';
 
 export default class AboutPage extends React.Component {
     render() {
@@ -31,7 +32,9 @@ export default class AboutPage extends React.Component {
                         </div>
                         <div className={AboutStyles.row}>
                             <div className={AboutStyles.label}>Founders</div>
-                            <div className={AboutStyles.box}>Box</div>
+                            <div className={AboutStyles.box}>
+                                <Founders />
+                            </div>
                         </div>
                         <div className={AboutStyles.row}>
                             <div className={AboutStyles.label}>
