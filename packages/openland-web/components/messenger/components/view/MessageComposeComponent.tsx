@@ -18,12 +18,12 @@ import { getConfig } from '../../../../config';
 import { MutationFunc } from 'react-apollo';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
-import UloadIc from 'openland-icons/file-upload.svg';
 import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { PostIntroModal } from './content/introMessage/PostIntroModal';
+import { DropZone } from '../../../../fragments/DropZone';
 import { withUserInfo, UserInfo } from '../../../UserInfo';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { withMessageState } from '../../../../api/withMessageState';
@@ -58,60 +58,6 @@ const SendMessageWrapper = Glamorous.div({
     borderTopStyle: 'solid',
     borderTopWidth: '1px',
     borderTopColor: XThemeDefault.separatorColor,
-});
-
-const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: 'calc(100% - 115px)',
-    zIndex: 2,
-    padding: 24,
-    visibility: props.dragOn ? 'visible' : 'hidden',
-    backgroundColor: props.dragOn ? '#fff' : 'transparent',
-}));
-
-const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '2px dashed',
-    borderColor: props.dragUnder ? 'rgba(23, 144, 255, 0.2)' : 'rgba(51, 69, 98, 0.1)',
-    borderRadius: 8,
-    backgroundColor: props.dragUnder ? 'rgba(23, 144, 255, 0.02)' : '#fff',
-    '& > svg': {
-        pointerEvents: 'none',
-        '& > g': {
-            stroke: props.dragUnder ? '#1790FF' : '#BCC3CC',
-        },
-    },
-}));
-
-const DropAreaTitle = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.5,
-    letterSpacing: -0.3,
-    textAlign: 'center',
-    color: '#334562',
-    marginTop: 23,
-    marginBottom: 4,
-});
-
-const DropAreaSubtitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    textAlign: 'center',
-    color: '#5c6a81',
 });
 
 const SendMessageContent = Glamorous(XHorizontal)({
@@ -374,8 +320,8 @@ interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
 
 interface MessageComposeComponentInnerProps
     extends MessageComposeComponentProps,
-        XWithRouter,
-        UserInfo {
+    XWithRouter,
+    UserInfo {
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
@@ -385,8 +331,6 @@ interface MessageComposeComponentInnerProps
 }
 
 interface MessageComposeComponentInnerState {
-    dragOn: boolean;
-    dragUnder: boolean;
     message: string;
     floatingMessage: string;
     forwardMessageReply?: string;
@@ -440,8 +384,8 @@ class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                ? props.handleHideChat
-                : undefined;
+                    ? props.handleHideChat
+                    : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -516,7 +460,7 @@ class PostButton extends React.PureComponent<PostButtonProps> {
 class MessageComposeComponentInner extends React.PureComponent<
     MessageComposeComponentInnerProps,
     MessageComposeComponentInnerState
-> {
+    > {
     listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
@@ -530,8 +474,6 @@ class MessageComposeComponentInner extends React.PureComponent<
         }
 
         this.state = {
-            dragOn: false,
-            dragUnder: false,
             message: message,
             floatingMessage: message,
             forwardMessageReply: undefined,
@@ -550,7 +492,7 @@ class MessageComposeComponentInner extends React.PureComponent<
             publicKey: getConfig().uploadcareKey!!,
         });
         dialog.done(r => {
-            this.setState({ message: '', dragOn: false }, () => {
+            this.setState({ message: '' }, () => {
                 if (this.props.onSendFile) {
                     this.props.onSendFile(r);
                 }
@@ -700,60 +642,12 @@ class MessageComposeComponentInner extends React.PureComponent<
         }
     };
 
-    private handleDrop = (e: any) => {
-        e.preventDefault();
-
-        this.setState({
-            dragOn: false,
-            dragUnder: false,
-        });
-
-        let file = e.dataTransfer.files[0];
-
-        let ucFile = UploadCare.fileFrom('object', file);
+    private handleDrop = (file: any) => {
+        const ucFile = UploadCare.fileFrom('object', file);
 
         if (this.props.onSendFile) {
             this.props.onSendFile(ucFile);
         }
-    };
-
-    private handleWindowDragover = (e: any) => {
-        e.preventDefault();
-        this.setState({
-            dragOn: true,
-        });
-    };
-
-    private handleWindowDrop = (e: any) => {
-        e.preventDefault();
-        this.setState({
-            dragOn: false,
-        });
-    };
-
-    private handleMouseOut = () => {
-        this.setState({
-            dragOn: false,
-            dragUnder: false,
-        });
-    };
-
-    private handleDragOver = () => {
-        this.setState({
-            dragUnder: true,
-        });
-    };
-
-    private handleDragLeave = (e: any) => {
-        let file = e.dataTransfer.files[0];
-        if (file === undefined) {
-            this.setState({
-                dragOn: false,
-            });
-        }
-        this.setState({
-            dragUnder: false,
-        });
     };
 
     private closeEditor = () => {
@@ -822,14 +716,10 @@ class MessageComposeComponentInner extends React.PureComponent<
             });
         }
         this.focusIfNeeded();
-        window.addEventListener('dragover', this.handleWindowDragover);
-        window.addEventListener('drop', this.handleWindowDrop);
         window.addEventListener('keydown', this.keydownHandler);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('dragover', this.handleWindowDragover);
-        window.removeEventListener('drop', this.handleWindowDrop);
         window.removeEventListener('keydown', this.keydownHandler);
     }
 
@@ -965,19 +855,10 @@ class MessageComposeComponentInner extends React.PureComponent<
 
         return (
             <SendMessageWrapper>
-                <DropArea dragOn={this.state.dragOn}>
-                    <DropAreaContent
-                        onDrop={this.handleDrop}
-                        onDragOver={this.handleDragOver}
-                        onDragLeave={this.handleDragLeave}
-                        onMouseOut={this.handleMouseOut}
-                        dragUnder={this.state.dragUnder}
-                    >
-                        <UloadIc />
-                        <DropAreaTitle>Drop files here</DropAreaTitle>
-                        <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
-                    </DropAreaContent>
-                </DropArea>
+                <DropZone
+                    height="calc(100% - 115px)"
+                    onFileDrop={this.handleDrop}
+                />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
                         {stateMessage && forwardMessageId && (
@@ -1038,9 +919,9 @@ class MessageComposeComponentInner extends React.PureComponent<
                                         this.props.enabled === false
                                             ? undefined
                                             : {
-                                                  field: 'addItro',
-                                                  value: 'true',
-                                              }
+                                                field: 'addItro',
+                                                value: 'true',
+                                            }
                                     }
                                     className="intro-button"
                                     disable={this.props.enabled === false}

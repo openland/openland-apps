@@ -17,11 +17,11 @@ import { niceBytes } from '../components/messenger/components/view/content/Messa
 import { withSendPostMessage, withEditPostMessage } from '../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
+import { DropZone } from './DropZone';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
-import UloadIc from 'openland-icons/file-upload.svg';
 
 const postTexts = {
     BLANK: {
@@ -248,40 +248,6 @@ const CoverDelButton = Glamorous.div({
     },
 });
 
-const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 2,
-    padding: 24,
-    visibility: props.dragOn ? 'visible' : 'hidden',
-    backgroundColor: props.dragOn ? '#fff' : 'transparent',
-}));
-
-const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '2px dashed',
-    borderColor: props.dragUnder ? 'rgba(23, 144, 255, 0.2)' : 'rgba(51, 69, 98, 0.1)',
-    borderRadius: 8,
-    backgroundColor: props.dragUnder ? 'rgba(23, 144, 255, 0.02)' : '#fff',
-    '& > svg': {
-        pointerEvents: 'none',
-        '& > g': {
-            stroke: props.dragUnder ? '#1790FF' : '#BCC3CC',
-        },
-    },
-}));
-
 interface SendPostButtonProps {
     conversationId: string;
     children: any;
@@ -432,8 +398,6 @@ interface File {
 interface CreatePostComponentState {
     title: string;
     text: string;
-    dragOn: boolean;
-    dragUnder: boolean;
     uploadProgress: number | null;
     files: Set<File> | null;
     cover: File | null;
@@ -463,8 +427,6 @@ export class CreatePostComponent extends React.Component<
         this.state = {
             title: title,
             text: text,
-            dragOn: false,
-            dragUnder: false,
             uploadProgress: null,
             files: null,
             cover: null,
@@ -577,19 +539,7 @@ export class CreatePostComponent extends React.Component<
         });
     };
 
-    private handleDrop = (e: any) => {
-        e.preventDefault();
-
-        this.setState({
-            dragOn: false,
-            dragUnder: false,
-        });
-
-        if (this.state.uploadProgress) {
-            return;
-        }
-
-        const file = e.dataTransfer.files[0];
+    private handleDrop = (file: any) => {
         const dialog = UploadCare.fileFrom('object', file);
 
         dialog.progress(r => {
@@ -605,48 +555,6 @@ export class CreatePostComponent extends React.Component<
                 isImage: r.isImage,
             };
             this.fileSaver(ucFile);
-        });
-    };
-
-    private handleWindowDragover = (e: any) => {
-        e.preventDefault();
-        if (this.state.uploadProgress) {
-            return;
-        }
-        this.setState({
-            dragOn: true,
-        });
-    };
-
-    private handleMouseOut = () => {
-        this.setState({
-            dragOn: false,
-            dragUnder: false,
-        });
-    };
-
-    private handleWindowDrop = (e: any) => {
-        e.preventDefault();
-        this.setState({
-            dragOn: false,
-        });
-    };
-
-    private handleDragOver = (e: any) => {
-        this.setState({
-            dragUnder: true,
-        });
-    };
-
-    private handleDragLeave = (e: any) => {
-        let file = e.dataTransfer.files[0];
-        if (file === undefined) {
-            this.setState({
-                dragOn: false,
-            });
-        }
-        this.setState({
-            dragUnder: false,
         });
     };
 
@@ -673,18 +581,10 @@ export class CreatePostComponent extends React.Component<
     };
 
     componentDidMount() {
-        window.addEventListener('dragover', this.handleWindowDragover);
-        window.addEventListener('drop', this.handleWindowDrop);
-
         const { editData } = this.props;
         if (editData && editData.files) {
             this.propsFileSaver(editData.files);
         }
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('dragover', this.handleWindowDragover);
-        window.removeEventListener('drop', this.handleWindowDrop);
     }
 
     render() {
@@ -838,39 +738,10 @@ export class CreatePostComponent extends React.Component<
                             />
                         )}
                     </XVertical>
-                    <DropArea dragOn={this.state.dragOn}>
-                        <DropAreaContent
-                            onDrop={this.handleDrop}
-                            onDragOver={this.handleDragOver}
-                            onDragLeave={this.handleDragLeave}
-                            onMouseOut={this.handleMouseOut}
-                            dragUnder={this.state.dragUnder}
-                        >
-                            <UloadIc />
-                            <XView
-                                fontSize={16}
-                                fontWeight="600"
-                                lineHeight={1.5}
-                                flexDirection="row"
-                                justifyContent="center"
-                                color="#334562"
-                                marginTop={23}
-                                marginBottom={4}
-                            >
-                                Drop files here
-                            </XView>
-                            <XView
-                                fontSize={14}
-                                fontWeight="600"
-                                lineHeight={1.71}
-                                flexDirection="row"
-                                justifyContent="center"
-                                color="#5c6a81"
-                            >
-                                To send them as files
-                            </XView>
-                        </DropAreaContent>
-                    </DropArea>
+                    <DropZone
+                        height="100%"
+                        onFileDrop={this.handleDrop}
+                    />
                 </XView>
                 <FooterWrapper justifyContent="center" alignItems="center">
                     <XHorizontal
