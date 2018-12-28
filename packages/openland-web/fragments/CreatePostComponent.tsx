@@ -243,9 +243,6 @@ const CoverDelButton = Glamorous.div({
     borderRadius: 6,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     cursor: 'pointer',
-    '& > img': {
-        display: 'block',
-    },
     '& > svg > g > path:last-child': {
         fill: '#fff',
     },
@@ -284,26 +281,6 @@ const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
         },
     },
 }));
-
-const DropAreaTitle = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.5,
-    letterSpacing: -0.3,
-    textAlign: 'center',
-    color: '#334562',
-    marginTop: 23,
-    marginBottom: 4,
-});
-
-const DropAreaSubtitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    textAlign: 'center',
-    color: '#5c6a81',
-});
 
 interface SendPostButtonProps {
     conversationId: string;
@@ -870,8 +847,28 @@ export class CreatePostComponent extends React.Component<
                             dragUnder={this.state.dragUnder}
                         >
                             <UloadIc />
-                            <DropAreaTitle>Drop files here</DropAreaTitle>
-                            <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
+                            <XView
+                                fontSize={16}
+                                fontWeight="600"
+                                lineHeight={1.5}
+                                flexDirection="row"
+                                justifyContent="center"
+                                color="#334562"
+                                marginTop={23}
+                                marginBottom={4}
+                            >
+                                Drop files here
+                            </XView>
+                            <XView
+                                fontSize={14}
+                                fontWeight="600"
+                                lineHeight={1.71}
+                                flexDirection="row"
+                                justifyContent="center"
+                                color="#5c6a81"
+                            >
+                                To send them as files
+                            </XView>
                         </DropAreaContent>
                     </DropArea>
                 </XView>
