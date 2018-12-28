@@ -54,16 +54,20 @@ let footerColumnClass = css`
         &:nth-child(2) {
             margin: 0 0 31px;
             width: 43%;
+            order: 1;
         }
         &:nth-child(3) {
+            width: 43%;
+            order: 3;
+        }
+        &:nth-child(4) {
+            order: 2;
             margin: 0 0 31px;
             width: 57%;
         }
-        &:nth-child(4) {
-            width: 43%;
-        }
         &:nth-child(5) {
             width: 57%;
+            order: 4;
         }
     }
     @media (min-width: 768px) and (max-width: 999px) {
