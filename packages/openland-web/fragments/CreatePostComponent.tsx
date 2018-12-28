@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../config';
@@ -8,7 +9,7 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
-import { XAvatar, XAvatarStyle } from 'openland-x/XAvatar';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { MessageUploadComponent } from '../components/messenger/components/view/content/MessageUploadComponent';
@@ -83,64 +84,11 @@ const postTexts = {
     },
 };
 
-const Wrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    backgroundColor: '#fff',
-    top: -56,
-    left: 0,
-    width: '100%',
-    height: 'calc(100% + 56px)',
-});
-
 const Header = Glamorous(XHorizontal)({
     height: 56,
     paddingLeft: 20,
     paddingRight: 20,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    '& .dot': {
-        opacity: 0.3,
-        fontSize: 12,
-        fontWeight: 600,
-        color: '#000',
-    },
-});
-
-const CloseWrapper = Glamorous.div({
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    width: 32,
-    height: 32,
-    borderRadius: 50,
-    '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    },
-});
-
-const ChatTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    color: '#000',
-});
-
-const PostTypeTitle = Glamorous.div({
-    fontSize: 14,
-    color: '#000',
-});
-
-const Body = Glamorous.div({
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
-    paddingBottom: 12,
-    position: 'relative',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
 const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
@@ -519,7 +467,7 @@ interface CreatePostComponentState {
 export class CreatePostComponent extends React.Component<
     CreatePostComponentProps,
     CreatePostComponentState
-> {
+    > {
     constructor(props: CreatePostComponentProps) {
         super(props);
 
@@ -777,7 +725,15 @@ export class CreatePostComponent extends React.Component<
         }
 
         return (
-            <Wrapper>
+            <XView
+                flexDirection="column"
+                position="absolute"
+                backgroundColor="#fff"
+                top={-56}
+                left={0}
+                width="100%"
+                height="calc(100% + 56px)"
+            >
                 <Header justifyContent="center">
                     <XHorizontal
                         alignItems="center"
@@ -786,27 +742,60 @@ export class CreatePostComponent extends React.Component<
                         flexGrow={1}
                     >
                         <XHorizontal alignItems="center">
-                            <XAvatar
-                                size="small"
-                                style="user"
-                                cloudImageUuid={props.cloudImageUuid}
-                                objectName={props.objectName}
-                                objectId={props.objectId}
+                            <XAvatar2
+                                size={36}
+                                src={props.cloudImageUuid}
+                                title={props.objectName}
+                                id={props.objectId || ''}
                             />
                             <XHorizontal alignItems="center" separator={3}>
-                                <ChatTitle>{props.objectName}</ChatTitle>
-                                <div className="dot">•</div>
-                                <PostTypeTitle>
+                                <XView
+                                    fontSize={14}
+                                    fontWeight="600"
+                                    color="#000"
+                                >
+                                    {props.objectName}
+                                </XView>
+                                <XView
+                                    opacity={0.3}
+                                    fontSize={12}
+                                    fontWeight="600"
+                                    color="#000"
+                                >
+                                    •
+                                </XView>
+                                <XView
+                                    fontSize={14}
+                                    color="#000"
+                                >
                                     {props.editData ? 'Post editing' : header}
-                                </PostTypeTitle>
+                                </XView>
                             </XHorizontal>
                         </XHorizontal>
-                        <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
+                        <XView
+                            onClick={() => this.props.handleHideChat(false, null)}
+                            cursor="pointer"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding={8}
+                            width={32}
+                            height={32}
+                            borderRadius={50}
+                            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                        >
                             <CloseIcon />
-                        </CloseWrapper>
+                        </XView>
                     </XHorizontal>
                 </Header>
-                <Body>
+                <XView
+                    flexDirection="row"
+                    flexGrow={1}
+                    justifyContent="center"
+                    paddingHorizontal={20}
+                    paddingTop={20}
+                    paddingBottom={12}
+                    position="relative"
+                >
                     <XVertical maxWidth={700} flexGrow={1}>
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
@@ -885,7 +874,7 @@ export class CreatePostComponent extends React.Component<
                             <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
                         </DropAreaContent>
                     </DropArea>
-                </Body>
+                </XView>
                 <FooterWrapper justifyContent="center" alignItems="center">
                     <XHorizontal
                         justifyContent="space-between"
@@ -935,7 +924,7 @@ export class CreatePostComponent extends React.Component<
                         )}
                     </XHorizontal>
                 </FooterWrapper>
-            </Wrapper>
+            </XView>
         );
     }
 }

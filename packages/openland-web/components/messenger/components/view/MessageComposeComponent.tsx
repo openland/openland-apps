@@ -384,11 +384,6 @@ interface MessageComposeComponentInnerProps
     draft?: string | null;
 }
 
-interface Draft {
-    conversationId?: string;
-    message?: string;
-}
-
 interface MessageComposeComponentInnerState {
     dragOn: boolean;
     dragUnder: boolean;
