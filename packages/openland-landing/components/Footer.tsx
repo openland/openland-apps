@@ -5,6 +5,7 @@ import { FooterSocials } from './footer/FooterSocials';
 import { FooterLogo } from './footer/FooterLogo';
 import { FooterTitle } from './footer/FooterTitle';
 import { FooterLinks, FooterLinksItem } from './footer/FooterLinks';
+import { FooterApp } from './footer/FooterApp';
 
 export const Footer = () => (
     <footer className={FooterStyles.root}>
@@ -47,6 +48,10 @@ export const Footer = () => (
                 </div>
                 <div className={FooterStyles.column}>
                     <FooterTitle content="Mobile apps" />
+                    <div className={FooterStyles.apps}>
+                        <FooterApp system="ios" />
+                        <FooterApp system="android" />
+                    </div>
                 </div>
             </div>
             <div className={FooterStyles.forMobile}>

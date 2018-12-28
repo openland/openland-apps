@@ -2,11 +2,9 @@ import * as React from 'react';
 import { Container } from './Container';
 import { XView, XImage } from 'react-mental';
 import BurgerIcon from 'openland-icons/landing/burger.svg';
-import AndroidIcon from 'openland-icons/landing/android.svg';
-import IosIcon from 'openland-icons/landing/ios.svg';
 import { XButton } from 'openland-x/XButton';
 import { HeaderNavigationItem } from './header/HeaderNavigationItem';
-import { HeaderAppsItem } from './header/HeaderAppsItem';
+import { HeaderApp } from './header/HeaderApp';
 import { HeaderStyles } from './header/styles';
 
 export const Header = () => (
@@ -24,8 +22,8 @@ export const Header = () => (
                     <HeaderNavigationItem path="/landing/about" content="About" />
                 </nav>
                 <div className={HeaderStyles.apps}>
-                    <HeaderAppsItem path="https://oplnd.com/android_beta" icon={<AndroidIcon />} />
-                    <HeaderAppsItem path="https://oplnd.com/ios" icon={<IosIcon />} />
+                    <HeaderApp system="android" />
+                    <HeaderApp system="ios" />
                 </div>
                 <div className={HeaderStyles.btn}>
                     <XButton path="/signin" text="Sign in" style="electric" size="large" />

@@ -96,6 +96,20 @@ let footerColumnClass = css`
     }
 `;
 
+let footerAppsClass = css`
+    padding: 4px 0 0;
+    margin: 0 0 0 -2px;
+    display: flex;
+
+    @media (min-width: 1000px) {
+        margin-right: -20px;
+    }
+
+    @media (max-width: 999px) {
+        flex-direction: column;
+    }
+`;
+
 let footerInfoClass = css`
     border-top: 1px solid rgba(237, 239, 243, 0.6);
     text-align: center;
@@ -125,5 +139,6 @@ export const FooterStyles = {
     forMobile: footerForMobileClass,
     columns: footerColumnsClass,
     column: footerColumnClass,
+    apps: footerAppsClass,
     info: footerInfoClass,
 };
