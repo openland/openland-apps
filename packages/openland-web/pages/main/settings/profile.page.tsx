@@ -178,6 +178,36 @@ export default withApp(
                                         </XForm>
                                         <XForm
                                             defaultData={{
+                                                shortname: props.data.user!.shortname
+                                            }}
+                                            defaultAction={async (data) => {
+                                                await props.setShortname({ variables: { shortname: data.shortname } });
+                                            }}
+                                        >
+                                            <XVertical separator={12}>
+                                                <HeadTitle>Username</HeadTitle>
+                                                <XFormError onlyGeneralErrors={true} />
+                                                <XVertical width={480} separator={12}>
+                                                    <XFormLoadingContent>
+                                                        <XVertical separator={10}>
+                                                            <XInput
+                                                                field="shortname"
+                                                                size="large"
+                                                                title="Username"
+                                                            />
+                                                        </XVertical>
+                                                    </XFormLoadingContent>
+                                                    <XFormSubmit
+                                                        text="Save changes"
+                                                        alignSelf="flex-start"
+                                                        style="primary"
+                                                        succesText="Changes saved!"
+                                                    />
+                                                </XVertical>
+                                            </XVertical>
+                                        </XForm>
+                                        <XForm
+                                            defaultData={{
                                                 input: {
                                                     phone: props.data.profile!!.phone,
                                                     email: props.data.profile!!.email,

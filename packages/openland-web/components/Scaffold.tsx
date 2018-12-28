@@ -7,7 +7,6 @@ import { withUserInfo } from './UserInfo';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
 import { TextGlobal } from 'openland-text/TextGlobal';
-import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
@@ -78,6 +77,7 @@ const Logo = () => (
         width={38}
         height={38}
         overflow="hidden"
+        hoverTextDecoration="none"
     >
         <XImage
             width={38}
@@ -145,6 +145,7 @@ class NavigatorItem extends React.Component<NavigatorItemProps> {
                 linkStrict={this.props.path ? true : undefined}
                 path={this.props.path}
                 onClick={this.props.onClick}
+                hoverTextDecoration="none"
             >
                 {this.props.children}
             </XView>
@@ -199,6 +200,7 @@ const TitleContainer = (props: TitleContainerProps) => (
         hoverBackgroundColor="rgba(23, 144, 255, 0.05)"
         hoverColor="#1790ff"
         path={props.path}
+        hoverTextDecoration="none"
     >
         <XAvatar2 title={props.title} id={props.id} src={props.src} />
         <XView paddingLeft={14}>

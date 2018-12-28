@@ -514,6 +514,10 @@ exports[`MessageTextComponent should render correctly 1`] = `
               className="
     cursor: pointer;
     color: rgb(23, 144, 255);
+
+    &:hover {
+        text-decoration: none;
+    }
  
     color: #1790ff;
 "
@@ -589,6 +593,10 @@ exports[`MessageTextComponent should render correctly 1`] = `
               className="
     cursor: pointer;
     color: rgb(23, 144, 255);
+
+    &:hover {
+        text-decoration: none;
+    }
  
     color: #1790ff;
 "
@@ -676,6 +684,10 @@ exports[`MessageTextComponent should render correctly 1`] = `
               className="
     cursor: pointer;
     color: rgb(23, 144, 255);
+
+    &:hover {
+        text-decoration: none;
+    }
  
     color: #1790ff;
 "
@@ -753,6 +765,10 @@ exports[`MessageTextComponent should render correctly 1`] = `
               className="
     cursor: pointer;
     color: rgb(23, 144, 255);
+
+    &:hover {
+        text-decoration: none;
+    }
  
     color: #1790ff;
 "
@@ -825,6 +841,10 @@ exports[`MessageTextComponent should render correctly 1`] = `
               className="
     cursor: pointer;
     color: rgb(23, 144, 255);
+
+    &:hover {
+        text-decoration: none;
+    }
  
     color: #1790ff;
 "

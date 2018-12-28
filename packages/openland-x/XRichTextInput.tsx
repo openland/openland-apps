@@ -191,7 +191,7 @@ export const MentionComponentInnerText = Glamorous.span(
                   paddingBottom: 1,
                   paddingLeft: 4,
                   paddingRight: 4,
-                  borderRadius: 5
+                  borderRadius: 5,
               }
             : {};
 
@@ -368,9 +368,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         this.state = {
             widthOfContainer: 200,
             suggestions: this.props.mentionsData || [],
-            editorState: EditorState.moveFocusToEnd(
-                EditorState.createWithContent(ContentState.createFromText(props.value)),
-            ),
+            editorState: EditorState.createWithContent(ContentState.createFromText(props.value)),
             plainText: props.value,
         };
     }

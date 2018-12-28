@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { preprocessText, Span } from '../../../../../utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
-import { emojify } from 'react-emojione';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
 import { MessageFull_urlAugmentation } from 'openland-api/Types';
@@ -12,6 +11,7 @@ import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
+import { emoji } from 'openland-web/utils/emoji';
 
 const Container = Glamorous(XLink)({
     display: 'flex',
@@ -166,7 +166,7 @@ export class MessageUrlAugmentationComponent extends React.Component<
                 );
             } else {
                 return (
-                    <span key={'text-' + i}>{emojify(v.text!!, { style: { height: 18 } })}</span>
+                    <span key={'text-' + i}>{emoji(v.text!!, 18)}</span>
                 );
             }
         });

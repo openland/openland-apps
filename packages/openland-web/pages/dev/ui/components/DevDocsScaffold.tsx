@@ -29,7 +29,7 @@ export function DevDocsScaffold(props: {
                         <Sidebar title="X Framework">
                             <Sidebar.Item path="/ui">Buttons</Sidebar.Item>
                             <Sidebar.Item path="/ui/inputs">Inputs</Sidebar.Item>
-                            <Sidebar.Item path="/ui/map">Maps</Sidebar.Item>
+                            <Sidebar.Item path="/ui/emoji">Emoji</Sidebar.Item>
                             <Sidebar.Item path="/ui/bullets">Bullets</Sidebar.Item>
                             <Sidebar.Item path="/ui/tabs">Tabs</Sidebar.Item>
                             <Sidebar.Item path="/ui/switchers">Switchers</Sidebar.Item>

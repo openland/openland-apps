@@ -5,6 +5,7 @@ import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/messenger/components/view/content/UserPopper';
+import { emoji } from 'openland-web/utils/emoji';
 
 export interface MessageContainerProps {
     compact: boolean;
@@ -161,8 +162,8 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
                     <XAvatar2 id={sender.id} title={sender.name} src={sender.photo} size={36} />
                 </UserPopper>
             ) : (
-                <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
-            )}
+                    <XView>{hover && <XDate value={date.toString()} format="time" />}</XView>
+                )}
         </PreambulaContainer>
     );
 
@@ -179,47 +180,49 @@ export const MessageContainer = React.memo<MessageContainerProps>(props => {
             {props.compact ? (
                 props.children
             ) : (
-                <>
-                    <XView flexDirection="row" marginBottom={4}>
-                        <XView flexDirection="row">
-                            <XView
-                                fontSize={14}
-                                fontWeight="600"
-                                color="rgba(0, 0, 0, 0.8)"
-                                onMouseEnter={onAvatarOrUserNameMouseEnter}
-                                onMouseLeave={onAvatarOrUserNameMouseLeave}
-                            >
-                                {props.sender.name}
-                            </XView>
-                            {props.sender.primaryOrganization && (
+                    <>
+                        <XView flexDirection="row" marginBottom={4}>
+                            <XView flexDirection="row">
                                 <XView
-                                    as="a"
-                                    fontSize={12}
+                                    flexDirection="row"
+                                    fontSize={14}
                                     fontWeight="600"
-                                    color="rgba(0, 0, 0, 0.4)"
-                                    paddingLeft={8}
-                                    alignSelf="flex-end"
-                                    marginBottom={-1}
-                                    path={`/mail/o/${props.sender.primaryOrganization.id}`}
+                                    color="rgba(0, 0, 0, 0.8)"
+                                    onMouseEnter={onAvatarOrUserNameMouseEnter}
+                                    onMouseLeave={onAvatarOrUserNameMouseLeave}
                                 >
-                                    {props.sender.primaryOrganization.name}
+                                    {emoji(props.sender.name, 14)}
                                 </XView>
-                            )}
+                                {props.sender.primaryOrganization && (
+                                    <XView
+                                        as="a"
+                                        fontSize={12}
+                                        fontWeight="600"
+                                        color="rgba(0, 0, 0, 0.4)"
+                                        paddingLeft={8}
+                                        alignSelf="flex-end"
+                                        marginBottom={-1}
+                                        path={`/mail/o/${props.sender.primaryOrganization.id}`}
+                                        hoverTextDecoration="none"
+                                    >
+                                        {props.sender.primaryOrganization.name}
+                                    </XView>
+                                )}
+                            </XView>
+                            <XView
+                                paddingLeft={8}
+                                fontSize={12}
+                                color="rgba(0, 0, 0, 0.4)"
+                                fontWeight="600"
+                                alignSelf="flex-end"
+                                marginBottom={-1}
+                            >
+                                <XDate value={props.date.toString()} format="time" />
+                            </XView>
                         </XView>
-                        <XView
-                            paddingLeft={8}
-                            fontSize={12}
-                            color="rgba(0, 0, 0, 0.4)"
-                            fontWeight="600"
-                            alignSelf="flex-end"
-                            marginBottom={-1}
-                        >
-                            <XDate value={props.date.toString()} format="time" />
-                        </XView>
-                    </XView>
-                    <XView flexDirection="column">{props.children}</XView>
-                </>
-            )}
+                        <XView flexDirection="column">{props.children}</XView>
+                    </>
+                )}
         </XView>
     );
 

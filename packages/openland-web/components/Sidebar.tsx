@@ -34,6 +34,7 @@ export const SidebarItem = (props: SidebarItemProps) => (
         selectedBackgroundColor="#f9f9f9"
         path={props.path}
         linkSelectable={true}
+        hoverTextDecoration="none"
     >
         <XView flexGrow={1}>{props.children}</XView>
         {props.arrow && <RightIcon className={ArrowIconClass} />}
@@ -62,6 +63,7 @@ export const SidebarSubItem = (props: SidebarSubItemProps) => (
         selectedBackgroundColor="#f9f9f9"
         path={props.path}
         linkSelectable={true}
+        hoverTextDecoration="none"
     >
         {props.children}
     </XView>

@@ -5522,6 +5522,11 @@ emojione@^2.2.7:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/emojione/-/emojione-2.2.7.tgz#46457cf6b9b2f8da13ae8a2e4e547de06ee15e96"
 
+emojione@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/emojione/-/emojione-4.0.0.tgz#bbe117a1d24d18d3a62b18ef6d42725a59ded258"
+  integrity sha512-ATFSRHrK838NoTUE96j9rpmS1R4a/qpK1maQURGdFtarpWloEttjjIBBWbSFqsUxC0Vot6P2WXmSlotvZoegxw==
+
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
@@ -11178,10 +11183,6 @@ react-dom@^16.4.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.11.2"
-
-react-emojione@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-emojione/-/react-emojione-5.0.0.tgz#230fef5e85aa9e1183b9506a15fff37d59ef472f"
 
 react-error-overlay@4.0.0:
   version "4.0.0"

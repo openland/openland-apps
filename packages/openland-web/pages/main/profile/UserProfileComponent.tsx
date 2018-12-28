@@ -153,6 +153,7 @@ const Header = (props: { user: User_user }) => {
                                 lineHeight="20px"
                                 color="rgba(0, 0, 0, 0.4)"
                                 path={'/directory/o/' + user.primaryOrganization.id}
+                                hoverTextDecoration="none"
                             >
                                 {user.primaryOrganization.name}
                             </XView>
