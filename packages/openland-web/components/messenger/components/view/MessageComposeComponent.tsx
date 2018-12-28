@@ -5,7 +5,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
-import { XModal } from 'openland-x-modal/XModal';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
@@ -23,6 +22,7 @@ import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { PostIntroModal } from './content/introMessage/PostIntroModal';
+import { ShortcutsModal } from './content/ShortcutsModal';
 import { DropZone } from '../../../../fragments/DropZone';
 import { withUserInfo, UserInfo } from '../../../UserInfo';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
@@ -135,93 +135,6 @@ const TextInputWrapper = Glamorous.div({
         },
     },
 });
-
-const KeyboardShortcuts = Glamorous.div({
-    padding: '7px 0 19px',
-});
-
-const KeyboardShortcut = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: '20px',
-    letterSpacing: 0,
-    color: '#000000',
-    marginBottom: 15,
-
-    '& span': {
-        margin: '-1px 8px -2px 0',
-        padding: '1px 8px 2px',
-        display: 'inline-block',
-        fontSize: 13,
-        fontWeight: 400,
-        lineHeight: '20px',
-        color: 'rgba(0, 0, 0, 0.5)',
-        borderRadius: 8,
-        backgroundColor: 'rgba(0, 0, 0, 0.06)',
-    },
-
-    '& strong': {
-        fontWeight: 600,
-    },
-});
-
-const ShortcutsModal = () => {
-    return (
-        <XModal
-            title="Keyboard shortcuts"
-            useTopCloser={true}
-            target={
-                <AttachmentButton className="shortcuts-button">
-                    <ShortcutsIcon />
-                    <span>Shortcuts</span>
-                </AttachmentButton>
-            }
-        >
-            <KeyboardShortcuts>
-                <KeyboardShortcut>
-                    <span>Ctrl + S</span> Search chats
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Esc</span> Close chat
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>
-                        <strong>↑</strong>
-                    </span>{' '}
-                    Edit last message (works when the message box is in focus)
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Ctrl + E</span> Edit last message
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Option + ↑ (Mac)</span>
-                    <span>Alt + ↑ (Windows)</span> Previous chat
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Option + ↓ (Mac)</span>
-                    <span>Alt + ↓ (Windows)</span> Next chat
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Enter</span> Send message
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Shift + Enter</span> New line
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Cmd + Enter (Mac)</span>
-                    <span>Ctrl + Enter (Windows)</span> Submit form
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)
-                </KeyboardShortcut>
-                <KeyboardShortcut>
-                    <span>Ctrl + Option + N (Mac)</span>
-                    <span>Ctrl + Alt + N (Windows)</span> New chat
-                </KeyboardShortcut>
-            </KeyboardShortcuts>
-        </XModal>
-    );
-};
 
 const EditWrapper = Glamorous(XHorizontal)({
     paddingLeft: 14,
@@ -929,7 +842,14 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     <IntroIc />
                                     <span>Intro</span>
                                 </AttachmentButton>
-                                <ShortcutsModal />
+                                <ShortcutsModal
+                                    target={
+                                        <AttachmentButton className="shortcuts-button">
+                                            <ShortcutsIcon />
+                                            <span>Shortcuts</span>
+                                        </AttachmentButton>
+                                    }
+                                />
                             </XHorizontal>
                             <XButton
                                 text="Send"
