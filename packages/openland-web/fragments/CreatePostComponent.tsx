@@ -256,9 +256,7 @@ interface SendPostButtonProps {
     files: Set<File> | null;
     postType: PostMessageType | null | string;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
-    checkTitleValue: () => void;
-    checkTextValue: () => void;
-    checkValue: () => void;
+    textValidation: (title: boolean, text: boolean) => void;
 }
 
 const SendPostButton = withSendPostMessage(props => {
@@ -288,23 +286,13 @@ const SendPostButton = withSendPostMessage(props => {
                                 : PostMessageType.BLANK,
                         },
                     });
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
-                } else {
-                    (props as any).checkTitleValue();
                 }
             }}
             onSuccess={() => {
                 if (checkTitleSend && checkTextSend) {
                     (props as any).handleHideChat(false, null);
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
                 } else {
-                    (props as any).checkTitleValue();
+                    (props as any).textValidation(!checkTitleSend, !checkTextSend);
                 }
             }}
         >
@@ -321,9 +309,7 @@ interface EditPostButtonProps {
     files: Set<File> | null;
     postType: PostMessageType | null | string;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
-    checkTitleValue: () => void;
-    checkTextValue: () => void;
-    checkValue: () => void;
+    textValidation: (title: boolean, text: boolean) => void;
 }
 
 const EditPostButton = withEditPostMessage(props => {
@@ -353,23 +339,13 @@ const EditPostButton = withEditPostMessage(props => {
                                 : PostMessageType.BLANK,
                         },
                     });
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
-                } else {
-                    (props as any).checkTitleValue();
                 }
             }}
             onSuccess={() => {
                 if (checkTitleSend && checkTextSend) {
                     (props as any).handleHideChat(false, null);
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
                 } else {
-                    (props as any).checkTitleValue();
+                    (props as any).textValidation(!checkTitleSend, !checkTextSend);
                 }
             }}
         >
@@ -435,24 +411,13 @@ export class CreatePostComponent extends React.Component<
         };
     }
 
-    invalidTitleHandler = () => {
+    private validation = (title: boolean, text: boolean) => {
+        console.log(title, text);
         this.setState({
-            invalidTitle: true,
+            invalidTitle: title,
+            invalidText: text
         });
-    };
-
-    invalidTextHandler = () => {
-        this.setState({
-            invalidText: true,
-        });
-    };
-
-    invalidValue = () => {
-        this.setState({
-            invalidTitle: true,
-            invalidText: true,
-        });
-    };
+    }
 
     private titleChange = (src: string) => {
         this.setState({
@@ -768,9 +733,7 @@ export class CreatePostComponent extends React.Component<
                                 text={state.text}
                                 files={state.files}
                                 handleHideChat={props.handleHideChat}
-                                checkTitleValue={this.invalidTitleHandler}
-                                checkTextValue={this.invalidTextHandler}
-                                checkValue={this.invalidValue}
+                                textValidation={this.validation}
                             >
                                 <XButton text="Send" style="primary" iconRight="send" />
                             </SendPostButton>
@@ -783,9 +746,7 @@ export class CreatePostComponent extends React.Component<
                                 text={state.text}
                                 files={state.files}
                                 handleHideChat={props.handleHideChat}
-                                checkTitleValue={this.invalidTitleHandler}
-                                checkTextValue={this.invalidTextHandler}
-                                checkValue={this.invalidValue}
+                                textValidation={this.validation}
                             >
                                 <XButton text="Save changes" style="primary" />
                             </EditPostButton>
