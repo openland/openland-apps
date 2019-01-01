@@ -1,0 +1,6 @@
+#root {
+    display: flex;
+    width: 90vw;
+    height: 90vh;
+    flex-direction: column;
+}

@@ -1,10 +1,11 @@
 const path = require('path');
 
 module.exports = {
-    rootPath: "./packages",
-    publicPath: "static", // these two are next.js
-    publicUrl: "/static/", // specific settings
+    rootPath: ".",
+    publicPath: "static",
+    publicUrl: "/static/",
     watchDirs: ['packages'],
+    globalImports: ['./cosmos.css', './packages/openland-web/static/css/x.css'],
     webpack: (config) => {
 
         const tsConfig = require('./tsconfig.json');
