@@ -35,7 +35,7 @@ export const HeaderLastSeen = withOnline(props => {
             </div>
         );
     } else if (props.data.user && props.data.user.online) {
-        return <div className={statusOnline}>Online</div>;
+        return <div className={statusOnline}>online</div>;
     } else {
         return null;
     }
