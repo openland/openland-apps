@@ -26,7 +26,7 @@ export const HeaderLastSeen = withOnline(props => {
     ) {
         return (
             <div className={statusOffline}>
-                Last seen{' '}
+                last seen{' '}
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (

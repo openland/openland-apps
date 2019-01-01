@@ -96,7 +96,7 @@ const Status = withOnline(props => {
     ) {
         return (
             <StatusWrapper online={false}>
-                Last seen{' '}
+                last seen{' '}
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (

@@ -4955,6 +4955,10 @@ export interface User_user {
   lastSeen: string | null;
   linkedin: string | null;
   twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
   primaryOrganization: User_user_primaryOrganization | null;
   /**
    * TODO: Refactor

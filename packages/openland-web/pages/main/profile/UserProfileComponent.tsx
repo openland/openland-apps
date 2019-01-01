@@ -91,8 +91,8 @@ const UserStatus = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    )}
             </div>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -204,6 +204,18 @@ const About = (props: { user: User_user }) => {
 
     return (
         <>
+            {user.shortname && (
+                <Section separator={0}>
+                    <XSubHeader title={TextProfiles.User.usernameTitle} paddingBottom={0} />
+                    <SectionContent>@{user.shortname}</SectionContent>
+                </Section>
+            )}
+            {user.email && (
+                <Section separator={0}>
+                    <XSubHeader title={TextProfiles.User.emailTitle} paddingBottom={0} />
+                    <SectionContent>{user.email}</SectionContent>
+                </Section>
+            )}
             {user.about && (
                 <Section separator={0}>
                     <XSubHeader title={TextProfiles.User.aboutTitle} paddingBottom={0} />
@@ -244,8 +256,8 @@ const UserProvider = withUser(
                 onDirectory={(props as any).onDirectory}
             />
         ) : (
-            <XLoader loading={true} />
-        ),
+                <XLoader loading={true} />
+            ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };

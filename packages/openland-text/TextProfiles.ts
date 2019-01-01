@@ -10,9 +10,12 @@ export const TextProfiles = {
 
         aboutTitle: 'About',
 
+        usernameTitle: 'Username',
+        emailTitle: 'Email',
+
         status: {
-            online: 'Online',
-            lastSeen: 'Last seen',
+            online: 'online',
+            lastSeen: 'last seen',
             momentsAgo: 'moments ago'
         }
     },
