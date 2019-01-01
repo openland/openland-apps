@@ -70,7 +70,7 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
                         paddingLeft={20}
                         paddingRight={20}
                     >
-                        <ChatHeaderView room={props.data.room!} me={user!.user!} />
+                        <ChatHeaderView room={props.data.room!} me={user!} />
                     </XView>
                     <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                     <TalkBarComponent conversationId={props.data.room!.id} />
