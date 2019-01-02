@@ -21,7 +21,6 @@ import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
-import { PostIntroModal } from './content/introMessage/PostIntroModal';
 import { ShortcutsModal } from './ShortcutsModal';
 import { DropZone } from '../../../../fragments/DropZone';
 import { withUserInfo, UserInfo } from '../../../UserInfo';
@@ -41,6 +40,7 @@ import {
     PostMessageType,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
+import { PostIntroModal } from '../../message/content/introMessage/PostIntroModal';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
