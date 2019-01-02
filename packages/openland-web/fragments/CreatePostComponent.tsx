@@ -12,8 +12,6 @@ import { XMutation } from 'openland-x/XMutation';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
-import { MessageUploadComponent } from '../components/messenger/components/view/content/MessageUploadComponent';
-import { niceBytes } from '../components/messenger/components/view/content/MessageFileComponent';
 import { withSendPostMessage, withEditPostMessage } from '../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
@@ -22,6 +20,8 @@ import CloseIcon from 'openland-icons/ic-close-post.svg';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
+import { MessageUploadComponent } from 'openland-web/components/messenger/message/content/MessageUploadComponent';
+import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 
 const postTexts = {
     BLANK: {
