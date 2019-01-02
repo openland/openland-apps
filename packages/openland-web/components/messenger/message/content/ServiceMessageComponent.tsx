@@ -185,7 +185,7 @@ const resolveServiceMessageType = ({
     return hackToGuessPostMessageType(message);
 };
 
-export const ServiceMessage = (params: {
+export const ServiceMessageComponent = (params: {
     serviceMetadata: any;
     message: any;
     alphaMentions: any;

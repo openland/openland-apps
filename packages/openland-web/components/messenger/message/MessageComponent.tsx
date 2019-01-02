@@ -9,20 +9,18 @@ import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
-import { MessageIntroComponent } from './content/introMessage/MessageIntroComponent';
-import { MessagePostComponent } from './content/postMessage/MessagePostComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { MessageUrlAugmentationComponent } from './content/MessageUrlAugmentationComponent';
+import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
 import {
     MessageFull,
     UserShort,
     SharedRoomKind,
     MessageFull_urlAugmentation_user_User,
 } from 'openland-api/Types';
-import { ReactionComponent } from './content/MessageReaction';
-import { Reactions } from './content/MessageReaction';
+import { ReactionComponent } from './MessageReaction';
+import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../components/MessagesStateContext';
 import { UserPopper } from '../components/view/UserPopper';
 import { EditMessageInlineWrapper } from '../components/view/MessageEditComponent';
@@ -31,7 +29,9 @@ import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
 import { MessageContainer } from './MessageContainer';
-import { ServiceMessage } from './content/ServiceMessages';
+import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
+import { ServiceMessageComponent } from './content/ServiceMessageComponent';
+import { MessageIntroComponent } from './content/attachments/introMessage/MessageIntroComponent';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -420,7 +420,7 @@ class MessageComponentInner extends React.PureComponent<
                 if (message.message && message.message.length > 0 && !isIntro && !isPost) {
                     if (message.isService) {
                         content.push(
-                            <ServiceMessage
+                            <ServiceMessageComponent
                                 myUserId={this.props.me ? this.props.me.id : ''}
                                 serviceMetadata={message.serviceMetadata}
                                 message={message.message || ''}

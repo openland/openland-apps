@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { MessageFull_reactions } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { MutationFunc } from 'react-apollo';
-import { withSetReaction, withUnsetReaction } from '../../../../api/withSetReaction';
+import { withSetReaction, withUnsetReaction } from '../../../api/withSetReaction';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emoji } from 'openland-web/utils/emoji';
