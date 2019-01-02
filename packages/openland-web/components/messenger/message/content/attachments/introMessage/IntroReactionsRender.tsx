@@ -4,7 +4,7 @@ import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import CheckIconSmall from 'openland-icons/ic-check-small.svg';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { withSetReaction } from '../../../../../api/withSetReaction';
+import { withSetReaction } from '../../../../../../api/withSetReaction';
 import PassedIcon from 'openland-icons/ic-passed.svg';
 import {
     SharedRoomKind,

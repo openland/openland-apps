@@ -40,7 +40,7 @@ import {
     PostMessageType,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { PostIntroModal } from '../../message/content/introMessage/PostIntroModal';
+import { PostIntroModal } from '../../message/content/attachments/introMessage/PostIntroModal';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',

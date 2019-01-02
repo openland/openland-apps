@@ -4,11 +4,11 @@ import { XAvatar } from 'openland-x/XAvatar';
 import { XMutation } from 'openland-x/XMutation';
 import { PostIntroModal } from './PostIntroModal';
 import { ReactionsRender } from './IntroReactionsRender';
-import { niceBytes } from '../MessageFileComponent';
-import { MessageTextComponent } from '../MessageTextComponent';
-import { XOverflow } from '../../../../Incubator/XOverflow';
+import { niceBytes } from '../../MessageFileComponent';
+import { MessageTextComponent } from '../../MessageTextComponent';
+import { XOverflow } from '../../../../../Incubator/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { withSetReaction, withChangeReaction } from '../../../../../api/withSetReaction';
+import { withSetReaction, withChangeReaction } from '../../../../../../api/withSetReaction';
 import IntroIcon from 'openland-icons/ic-tag-intro.svg';
 import IcFile from 'openland-icons/ic-file.svg';
 import {
