@@ -14,8 +14,8 @@ import { XButton } from 'openland-x/XButton';
 import { XLink } from 'openland-x/XLink';
 import { XMutation } from 'openland-x/XMutation';
 import { MessageTextComponent } from '../MessageTextComponent';
-import { niceBytes } from '../../../view/content/MessageFileComponent';
-import { withRespondPostMessage } from '../../../../../../api/withRespondPostMessage';
+import { niceBytes } from '../MessageFileComponent';
+import { withRespondPostMessage } from '../../../../../api/withRespondPostMessage';
 import MoreIcon from 'openland-icons/ic-arrow-down-blue.svg';
 import { ReactionsRender } from './postReactionsRender';
 

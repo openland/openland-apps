@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { MessageComponent } from './MessageComponent';
+import { MessageComponent } from '../../message/MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';

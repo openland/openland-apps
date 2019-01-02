@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { preprocessText } from '../../../../../utils/TextProcessor';
+import { preprocessText } from '../../../../utils/TextProcessor';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { isEmoji } from '../../../../../utils/isEmoji';
+import { isEmoji } from '../../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { MessageWithMentionsTextComponent } from './MessageWithMentionsTextComponent/MessageWithMentionsTextComponent';

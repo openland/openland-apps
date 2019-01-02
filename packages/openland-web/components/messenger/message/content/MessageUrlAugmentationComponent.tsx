@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { preprocessText, Span } from '../../../../../utils/TextProcessor';
+import { preprocessText, Span } from '../../../../utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
 import { MessageFull_urlAugmentation } from 'openland-api/Types';
-import { layoutMediaReverse } from '../../../../../utils/MediaLayout';
+import { layoutMediaReverse } from '../../../../utils/MediaLayout';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';

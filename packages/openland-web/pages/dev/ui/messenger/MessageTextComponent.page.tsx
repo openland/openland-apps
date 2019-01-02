@@ -3,26 +3,14 @@ import { DevDocsScaffold } from '../components/DevDocsScaffold';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XContent } from 'openland-x-layout/XContent';
 import { XMenuTitle } from 'openland-x/XMenuItem';
-import {
-    JoinOneServiceMessage,
-    JoinTwoServiceMessage,
-    JoinManyServiceMessage,
-    JobOpportunityApplyTextServiceMessage,
-    JobOpportunityRecomendTextServiceMessage,
-    RespondToPostServiceMessage,
-    RequestForStartupsRecomendTextServiceMessage,
-    KickServiceServiceMessage,
-    PhotoChangeServiceMessage,
-    TitleChangeServiceMessage,
-} from '../../../../components/messenger/components/view/content/ServiceMessages';
-import { sergeyLapinUser, taraBUser, qwertyUser, prettyTUser, chatSample } from './fixtureData';
+// import { sergeyLapinUser, taraBUser, qwertyUser, prettyTUser, chatSample } from './fixtureData';
 
 export default () => (
     <DevDocsScaffold title="MessageTextComponent">
         <XContent>
             <XVertical>
                 <XMenuTitle>1. Kick</XMenuTitle>
-                <KickServiceServiceMessage
+                {/* <KickServiceServiceMessage
                     kickedUser={sergeyLapinUser}
                     myUserId={sergeyLapinUser.id}
                 />
@@ -89,7 +77,7 @@ export default () => (
                     chat={chatSample}
                     postTitle={'“Looking for React developer“'}
                     myUserId={sergeyLapinUser.id}
-                />
+                /> */}
             </XVertical>
         </XContent>
     </DevDocsScaffold>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import { MessageFull_reactions } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
@@ -8,7 +7,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XAvatar } from 'openland-x/XAvatar';
-import { Reactions } from '../../MessageReaction';
+import { Reactions } from '../MessageReaction';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 
 const RespondWrapper = Glamorous(XHorizontal)({

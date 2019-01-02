@@ -21,16 +21,16 @@ import {
     SharedRoomKind,
     MessageFull_urlAugmentation_user_User,
 } from 'openland-api/Types';
-import { ReactionComponent } from './MessageReaction';
-import { Reactions } from './MessageReaction';
-import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import { UserPopper } from './UserPopper';
-import { EditMessageInlineWrapper } from './MessageEditComponent';
+import { ReactionComponent } from './content/MessageReaction';
+import { Reactions } from './content/MessageReaction';
+import { MessagesStateContext, MessagesStateContextProps } from '../components/MessagesStateContext';
+import { UserPopper } from '../components/view/UserPopper';
+import { EditMessageInlineWrapper } from '../components/view/MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
-import { File, EditPostProps } from '../../../../fragments/MessengerRootComponent';
+import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
-import { MessageContainer } from '../../message/MessageContainer';
+import { MessageContainer } from './MessageContainer';
 import { ServiceMessage } from './content/ServiceMessages';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
