@@ -1,4 +1,4 @@
-import { XAppBar } from './XAppBar';
+import { XSidebar } from './XSidebar';
 import { XStyleFactoryRegistry } from 'react-mental';
 import { css } from 'glamor';
 
@@ -9,7 +9,7 @@ XStyleFactoryRegistry.registerFactory({
 });
 
 export default {
-    name: 'XAppBar',
-    component: XAppBar,
+    name: 'XSidebar',
+    component: XSidebar,
     props: { title: 'Title' }
 };
