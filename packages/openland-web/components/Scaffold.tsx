@@ -625,7 +625,7 @@ export const CreateOrganization = withCreateOrganization(props => {
                             photoRef: data.input.photoRef,
                         },
                     },
-                });
+                }) as any;
                 let redirect =
                     (community ? '/directory/c/' : '/directory/o/') +
                     res.data.createOrganization.id;
@@ -688,7 +688,7 @@ export const CreateRoom = withCreateChannel(props => {
                         members: [],
                         kind: SharedRoomKind.PUBLIC,
                     },
-                });
+                }) as any;
                 delay(0).then(() => {
                     props.router.push('/mail/' + room.data.room.id);
                 });
