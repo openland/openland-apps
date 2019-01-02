@@ -7,6 +7,7 @@ import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { getDataFromTree } from 'react-apollo';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
+import { isPageChanged } from 'openland-x-routing/NextRouting';
 
 export function withData(App: React.ComponentType<any>) {
     return class WithData extends React.Component<{ apolloState: any }> {
@@ -37,7 +38,7 @@ export function withData(App: React.ComponentType<any>) {
             let token = getToken(ctx.ctx.req);
             const apollo = apolloClient({}, token);
 
-            if (!canUseDOM) {
+            if (!canUseDOM || isPageChanged({ pathname: ctx.router.pathname, query: ctx.router.query, asPath: ctx.router.asPath })) {
                 try {
                     let start = Date.now();
                     await getDataFromTree(
