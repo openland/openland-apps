@@ -24,7 +24,7 @@ import {
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import { UserPopper } from './content/UserPopper';
+import { UserPopper } from './UserPopper';
 import { EditMessageInlineWrapper } from './MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
 import { File, EditPostProps } from '../../../../fragments/MessengerRootComponent';
