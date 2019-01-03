@@ -3,7 +3,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
-import { AppUpdateTracker } from '../../utils/UpdateTracker';
+import CodePush from 'react-native-code-push';
 
 export const resolveNextPage: (session: SessionStateFull, current: string) => string = (session: SessionStateFull, current: string) => {
     if (!session.isProfileCreated) {
@@ -13,7 +13,7 @@ export const resolveNextPage: (session: SessionStateFull, current: string) => st
     } else if (!session.isAccountActivated) {
         return 'Waitlist';
     } else if (session.isCompleted) {
-        AppUpdateTracker.restartApp();
+        CodePush.restartApp();
         return current;
     }
     throw new Error('inconsistent state');

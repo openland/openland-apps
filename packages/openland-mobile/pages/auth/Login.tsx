@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator, Dimensions } from 'react-native';
 import { Auth0Client } from '../../index';
-import { AppUpdateTracker } from '../../utils/UpdateTracker';
+import CodePush from 'react-native-code-push';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SDevice } from 'react-native-s/SDevice';
 import { SHeader } from 'react-native-s/SHeader';
-import { style } from 'glamor';
-import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -100,7 +98,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 let body = await uploaded.json();
                 if (body.ok) {
                     await AsyncStorage.setItem('openland-token', body.token);
-                    AppUpdateTracker.restartApp();
+                    CodePush.restartApp();
                     // let client = buildNativeClient(body.token);
                     // let meq = await client.client.query<any>({
                     //     query: AccountQuery.document
