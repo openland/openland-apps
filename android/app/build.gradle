@@ -183,6 +183,8 @@ configurations.all {
 }
 
 dependencies {
+    def appCenterSdkVersion = '1.11.0'
+    implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
     compile project(':appcenter-crashes')
     compile project(':appcenter-analytics')
     compile project(':appcenter')

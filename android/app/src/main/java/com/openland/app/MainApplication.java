@@ -4,12 +4,17 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
+import com.microsoft.appcenter.distribute.Distribute;
 import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 
 import cl.json.RNSharePackage;
 
-import com.openlan.app.BuildConfig;
+import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.openland.app.BuildConfig;
 import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
@@ -98,5 +103,14 @@ public class MainApplication extends Application implements ReactApplication {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         Fresco.initialize(this);
+
+        // App Center
+        AppCenterReactNativeShared.configureAppCenter(this);
+        AppCenter.setEnabled(!BuildConfig.DEBUG);
+        AppCenter.start(this,
+                "310cf1a8-0d5f-4a92-8308-60c7d8c24f94",
+                Distribute.class,
+                Analytics.class,
+                Crashes.class);
     }
 }
