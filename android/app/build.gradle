@@ -125,6 +125,7 @@ android {
         renderscriptSupportModeEnabled true
         versionCode appVersionCode
         versionName "1.1."+appVersionCode
+        println("##teamcity[buildNumber '1.1.$appVersionCode']")
     }
     if(project.hasProperty("RELEASE_STORE_FILE")) {
         signingConfigs {
@@ -169,20 +170,6 @@ android {
             }
         }
     }
-
-    flavorDimensions "version"
-//    productFlavors {
-//        staging {
-//            versionCode appVersionCode
-//            versionName "1.1."+appVersionCode+"-dev"
-//            println("##teamcity[buildNumber '1.1.$appVersionCode-dev']")
-//        }
-//        production {
-//            versionCode appVersionCode
-//            versionName "1.1."+appVersionCode
-//            println("##teamcity[buildNumber '1.1.$appVersionCode']")
-//        }
-//    }
 }
 
 configurations.all {
