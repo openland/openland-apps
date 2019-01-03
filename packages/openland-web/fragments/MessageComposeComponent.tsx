@@ -13,7 +13,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { isServerMessage } from 'openland-engines/messenger/types';
-import { getConfig } from '../../../../config';
+import { getConfig } from '../config';
 import { MutationFunc } from 'react-apollo';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
@@ -21,13 +21,13 @@ import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
-import { ShortcutsModal } from './ShortcutsModal';
-import { DropZone } from '../../../../fragments/DropZone';
-import { withUserInfo, UserInfo } from '../../../UserInfo';
-import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import { withMessageState } from '../../../../api/withMessageState';
-import { withGetDraftMessage } from '../../../../api/withMessageState';
-import { withChannelMembers } from '../../../../api/withChannelMembers';
+import { ShortcutsModal } from '../components/messenger/view/ShortcutsModal';
+import { DropZone } from './DropZone';
+import { withUserInfo, UserInfo } from '../components/UserInfo';
+import { MessagesStateContext, MessagesStateContextProps } from '../components/messenger/MessagesStateContext';
+import { withMessageState } from '../api/withMessageState';
+import { withGetDraftMessage } from '../api/withMessageState';
+import { withChannelMembers } from '../api/withChannelMembers';
 import {
     MessageFull,
     ReplyMessageVariables,
@@ -40,7 +40,7 @@ import {
     PostMessageType,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { PostIntroModal } from '../../message/content/attachments/introMessage/PostIntroModal';
+import { PostIntroModal } from '../components/messenger/message/content/attachments/introMessage/PostIntroModal';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',

@@ -6,7 +6,7 @@ import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
-} from '../components/messenger/components/MessagesStateContext';
+} from '../components/messenger/MessagesStateContext';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { ChatHeaderView } from './chat/ChatHeaderView';
 import { XView } from 'react-mental';

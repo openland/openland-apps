@@ -19,7 +19,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { withQueryLoader } from '../../components/withQueryLoader';
 import { withSuperAccount } from '../../api/withSuperAccount';
 import { withOrganizationPublishedAlterSuper } from '../../api/withOrganizationPublishedAlter';
-import { XOverflow } from '../../components/Incubator/XOverflow';
+import { XOverflow } from '../../components/XOverflow';
 
 const ActivateButton = withSuperAccountActivate(props => (
     <XButton style="primary" action={() => props.activate({})} text="Activate" />

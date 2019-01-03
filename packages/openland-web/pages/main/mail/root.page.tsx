@@ -23,7 +23,7 @@ import { XRouter } from 'openland-x-routing/XRouter';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
-} from '../../../components/messenger/components/MessagesStateContext';
+} from '../../../components/messenger/MessagesStateContext';
 import { MessageFull } from 'openland-api/Types';
 
 export const ChatContainer = Glamorous.div({

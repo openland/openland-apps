@@ -21,9 +21,9 @@ import {
 } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
-import { MessagesStateContext, MessagesStateContextProps } from '../components/MessagesStateContext';
-import { UserPopper } from '../components/view/UserPopper';
-import { EditMessageInlineWrapper } from '../components/view/MessageEditComponent';
+import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
+import { UserPopper } from '../../UserPopper';
+import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
 import { XDate } from 'openland-x/XDate';
 import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';

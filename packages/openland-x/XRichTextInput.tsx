@@ -9,7 +9,7 @@ import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
-import { UserPopper } from 'openland-web/components/messenger/components/view/UserPopper';
+import { UserPopper } from 'openland-web/components/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XView } from 'react-mental';
 

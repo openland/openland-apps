@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
+import { XOverflow } from '../../openland-web/components/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
 import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';

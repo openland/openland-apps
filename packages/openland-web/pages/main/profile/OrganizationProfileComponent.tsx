@@ -23,7 +23,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
-import { XOverflow } from '../../../components/Incubator/XOverflow';
+import { XOverflow } from '../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';

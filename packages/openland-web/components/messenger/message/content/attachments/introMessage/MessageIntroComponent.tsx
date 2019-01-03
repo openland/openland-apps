@@ -6,7 +6,7 @@ import { PostIntroModal } from './PostIntroModal';
 import { ReactionsRender } from './IntroReactionsRender';
 import { niceBytes } from '../../MessageFileComponent';
 import { MessageTextComponent } from '../../MessageTextComponent';
-import { XOverflow } from '../../../../../Incubator/XOverflow';
+import { XOverflow } from '../../../../../XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { withSetReaction, withChangeReaction } from '../../../../../../api/withSetReaction';
 import IntroIcon from 'openland-icons/ic-tag-intro.svg';

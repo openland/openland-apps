@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { MessageComponent } from '../../message/MessageComponent';
+import { MessageComponent } from '../message/MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
-import { EmptyBlock } from '../../../../fragments/ChatEmptyComponent';
+import { EmptyBlock } from '../../../fragments/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
-import { EditPostProps } from '../../../../fragments/MessengerRootComponent';
+import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

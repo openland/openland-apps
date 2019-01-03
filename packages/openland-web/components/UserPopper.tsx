@@ -6,7 +6,7 @@ import { XPopper } from 'openland-x/XPopper';
 import { MessageFull_sender } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XButton } from 'openland-x/XButton';
-import { withOnline } from '../../../../api/withOnline';
+import { withOnline } from '../api/withOnline';
 import { XDate } from 'openland-x/XDate';
 import { XView } from 'react-mental';
 

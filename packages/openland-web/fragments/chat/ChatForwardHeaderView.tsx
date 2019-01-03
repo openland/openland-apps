@@ -5,7 +5,7 @@ import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { UserShort } from 'openland-api/Types';
 import CloseIcon from 'openland-icons/ic-close.svg';
-import { MessagesStateContext } from 'openland-web/components/messenger/components/MessagesStateContext';
+import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
 import { css } from 'linaria';
