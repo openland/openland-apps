@@ -6,8 +6,9 @@ import { css } from 'linaria';
 import { isEmoji } from '../../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { MessageWithMentionsTextComponent } from './MessageWithMentionsTextComponent/MessageWithMentionsTextComponent';
 import { emoji } from 'openland-web/utils/emoji';
+import { preprocessMentions } from './utils/preprocessMentions';
+import { MentionComponentInner } from 'openland-x/XRichTextInput';
 
 export interface MessageTextComponentProps {
     alphaMentions?: any;
@@ -124,29 +125,30 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                 </span>
             );
         } else {
-            let text = v.text!!;
 
-            if (
-                (props.mentions && props.mentions.length !== 0) ||
-                (props.alphaMentions && props.alphaMentions.length !== 0)
-            ) {
-                return (
-                    <MessageWithMentionsTextComponent
-                        key={'text-' + i}
-                        text={text}
-                        mentions={props.mentions}
-                        alphaMentions={props.alphaMentions}
-                    />
-                );
+            let mentions = preprocessMentions(v.text!, props.mentions, props.alphaMentions);
+            let smileSize = isBig ? 44 : 18;
+            let res: any[] = [];
+            let i2 = 0;
+            for (let m of mentions) {
+                if (m.type === 'text') {
+                    res.push(
+                        <span className={isInsane ? styleInsane : undefined} key={'text-' + i + '-' + i2}>
+                            {emoji(m.text, smileSize)}
+                        </span>
+                    );
+                } else {
+                    res.push(
+                        <MentionComponentInner key={'text-' + i + '-' + i2} isYou={m.user.isYou} user={m.user} hasPopper={true}>
+                            {emoji(m.text, smileSize)}
+                        </MentionComponentInner>
+                    )
+                }
+
+                i2++;
             }
 
-            let smileSize = isBig ? 44 : 18;
-
-            return (
-                <span className={isInsane ? styleInsane : undefined} key={'text-' + i}>
-                    {emoji(text, smileSize)}
-                </span>
-            );
+            return res;
         }
     });
 
