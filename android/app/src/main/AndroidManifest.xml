@@ -12,9 +12,8 @@
         android:name="com.openland.app.MainApplication"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
         <activity
             android:name="com.openland.app.MainActivity"
@@ -63,7 +62,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_notification" />
+            android:resource="@drawable/ic_launcher" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
