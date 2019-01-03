@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { Room_room_PrivateRoom_user_primaryOrganization } from 'openland-api/Types';
 import { css } from 'linaria';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 
 const titleInnerClass = css`
     height: 18px;

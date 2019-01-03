@@ -4,7 +4,7 @@ import { DevDocsScaffold } from './components/DevDocsScaffold';
 import { XContent } from 'openland-x-layout/XContent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XTitle } from 'openland-x/XTitle';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 
 export default withApp('UI Framework - Files', 'viewer', props => {
     return (

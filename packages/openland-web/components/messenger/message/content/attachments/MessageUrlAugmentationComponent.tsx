@@ -11,7 +11,7 @@ import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 
 const Container = Glamorous(XLink)({
     display: 'flex',
@@ -142,7 +142,7 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
 
 export class MessageUrlAugmentationComponent extends React.Component<
     MessageUrlAugmentationComponentProps
-> {
+    > {
     private preprocessed: Span[];
     constructor(props: MessageUrlAugmentationComponentProps) {
         super(props);
