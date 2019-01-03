@@ -22,7 +22,6 @@ import { AppRegistry, UIManager } from 'react-native';
 // Enable layout animations on Android
 if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
 // import Routes from './routes';
-import { withUpdateTracker } from './utils/UpdateTracker';
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';
-AppRegistry.registerComponent('openland', () => withUpdateTracker(withGlobalLoader(Init)));
+AppRegistry.registerComponent('openland', () => withGlobalLoader(Init));
