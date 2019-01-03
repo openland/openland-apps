@@ -183,8 +183,9 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':react-native-sentry')
-    compile project(':react-native-reanimated')
+    compile project(':appcenter-crashes')
+    compile project(':appcenter-analytics')
+    compile project(':appcenter')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.beust:klaxon:3.0.1'
     compile project(':react-native-share')
@@ -210,18 +211,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     compile 'com.facebook.react:react-native:+'
-    // From node_modules
-    def appCenterSdkVersion = '1.7.0'
-    compile "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-    compile "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
-    compile "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
     implementation 'com.facebook.litho:litho-core:0.18.0'
     implementation 'com.facebook.litho:litho-widget:0.18.0'
     implementation 'com.facebook.litho:litho-fresco:0.18.0'
     compileOnly 'com.facebook.litho:litho-annotations:0.18.0'
     kapt 'com.facebook.litho:litho-processor:0.18.0'
     annotationProcessor 'com.facebook.litho:litho-processor:0.18.0'
-
     implementation 'com.facebook.litho:litho-sections-core:0.18.0'
     implementation 'com.facebook.litho:litho-sections-widget:0.18.0'
     compileOnly 'com.facebook.litho:litho-sections-annotations:0.18.0'

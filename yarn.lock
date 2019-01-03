@@ -1383,17 +1383,6 @@
     "@sentry/utils" "4.4.1"
     tslib "^1.9.3"
 
-"@sentry/cli@^1.36.1":
-  version "1.37.0"
-  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-1.37.0.tgz#cd3f7fb1260da92650e8f719f2e60e9033f0df83"
-  dependencies:
-    fs-copy-file-sync "^1.1.1"
-    https-proxy-agent "^2.2.1"
-    mkdirp "^0.5.1"
-    node-fetch "^2.1.2"
-    progress "2.0.0"
-    proxy-from-env "^1.0.0"
-
 "@sentry/core@4.4.1":
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.4.1.tgz#8836813d9d309059913b464cee6d23da09cc4056"
@@ -1430,21 +1419,6 @@
   dependencies:
     "@sentry/types" "4.4.1"
     tslib "^1.9.3"
-
-"@sentry/wizard@^0.12.1":
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/@sentry/wizard/-/wizard-0.12.1.tgz#e63bb94c26479e958418dfdce6387ad39b31bdbc"
-  dependencies:
-    "@sentry/cli" "^1.36.1"
-    chalk "^2.4.1"
-    glob "^7.1.3"
-    inquirer "^6.2.0"
-    lodash "^4.17.11"
-    opn "^5.4.0"
-    r2 "^2.0.1"
-    read-env "^1.3.0"
-    xcode "https://github.com/apache/cordova-node-xcode#e7646f0680d509b590b839e567c217590451505b"
-    yargs "^12.0.2"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -2723,6 +2697,13 @@ apollo@^1.9.2:
     react-dom "^16.4.0"
     rimraf "^2.6.2"
 
+appcenter-analytics@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/appcenter-analytics/-/appcenter-analytics-1.11.0.tgz#a1ba900511ca7f6550cd52eb81aaf6fe9b56f19f"
+  integrity sha512-hmxD18Xn5voikK0vDrv0rrda99OssgizpFE84w/1QDroecm24erCfkgcM3n5H3LJr4myYHOp2rQKoA/GSKhl3A==
+  dependencies:
+    appcenter "1.11.0"
+
 appcenter-cli@^1.1.0:
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/appcenter-cli/-/appcenter-cli-1.1.9.tgz#1dcc0a7e627111042243a347d0ccda02ed07e09f"
@@ -2766,6 +2747,33 @@ appcenter-cli@^1.1.0:
     xml2js "^0.4.19"
     xmldom "^0.1.27"
     yazl "^2.4.3"
+
+appcenter-crashes@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/appcenter-crashes/-/appcenter-crashes-1.11.0.tgz#eb4b73b218181cd5ecdc3f54e5aa18acbcec77be"
+  integrity sha512-Ljsln6TDJ/OQkWSMNdLxuOrsT9uk5XyZR0DrMEP/XfgogykMKRxCrPOifXFJ0/dxD/7iD02fjxpaIEzbdhiy6A==
+  dependencies:
+    appcenter "1.11.0"
+
+appcenter-link-scripts@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/appcenter-link-scripts/-/appcenter-link-scripts-1.11.0.tgz#61ace5bd22d84182e7fc95aa836c0427e2287c93"
+  integrity sha512-6X0ZVoxnQPlLQxelQTkFZ2yhg6f0X7qMm/I1pfnw5h2o98Myv4CqBzKsUs3Az/070hoijEpe8ZbTQ4YSWZPnTA==
+  dependencies:
+    debug "^2.2.0"
+    glob "^5.0.15"
+    inquirer "6.2.0"
+    mkdirp "^0.5.1"
+    plist "^3.0.1"
+    which "^1.2.11"
+    xcode "^1.0.0"
+
+appcenter@1.11.0, appcenter@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/appcenter/-/appcenter-1.11.0.tgz#037083f63efd48a6c19ded5a27250f4deeb2e838"
+  integrity sha512-azX+gxs1dRFY2bxnqUncUEi8sNhcpnspecPsGjgGt3em9FrYtHqIiZl/GiGuN53l0mw8rJyNWpi3eKTHAjSspA==
+  dependencies:
+    appcenter-link-scripts "1.11.0"
 
 append-transform@^0.4.0:
   version "0.4.0"
@@ -4265,10 +4273,6 @@ camel-case@3.0.x, camel-case@^3.0.0:
     no-case "^2.2.0"
     upper-case "^1.1.1"
 
-camelcase@5.0.0, camelcase@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.0.0.tgz#03295527d58bd3cd4aa75363f35b2e8d97be2f42"
-
 camelcase@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
@@ -4276,6 +4280,10 @@ camelcase@^1.0.2:
 camelcase@^4.0.0, camelcase@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
+
+camelcase@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.0.0.tgz#03295527d58bd3cd4aa75363f35b2e8d97be2f42"
 
 caniuse-lite@^1.0.30000844:
   version "1.0.30000921"
@@ -4318,7 +4326,7 @@ case-sensitive-paths-webpack-plugin@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.1.2.tgz#c899b52175763689224571dad778742e133f0192"
 
-caseless@^0.12.0, caseless@~0.12.0:
+caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
 
@@ -6627,10 +6635,6 @@ from@~0:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/from/-/from-0.1.7.tgz#83c60afc58b9c56997007ed1a768b3ab303a44fe"
 
-fs-copy-file-sync@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/fs-copy-file-sync/-/fs-copy-file-sync-1.1.1.tgz#11bf32c096c10d126e5f6b36d06eece776062918"
-
 fs-extra@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-6.0.0.tgz#0f0afb290bb3deb87978da816fcd3c7797f3a817"
@@ -7837,24 +7841,6 @@ inquirer@^5.2.0:
     strip-ansi "^4.0.0"
     through "^2.3.6"
 
-inquirer@^6.2.0:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-6.2.1.tgz#9943fc4882161bdb0b0c9276769c75b32dbfcd52"
-  dependencies:
-    ansi-escapes "^3.0.0"
-    chalk "^2.0.0"
-    cli-cursor "^2.1.0"
-    cli-width "^2.0.0"
-    external-editor "^3.0.0"
-    figures "^2.0.0"
-    lodash "^4.17.10"
-    mute-stream "0.0.7"
-    run-async "^2.2.0"
-    rxjs "^6.1.0"
-    string-width "^2.1.0"
-    strip-ansi "^5.0.0"
-    through "^2.3.6"
-
 install@^0.12.1:
   version "0.12.2"
   resolved "https://registry.yarnpkg.com/install/-/install-0.12.2.tgz#ea10e9b2cbb5b0484f25080b24b5b34429d9f564"
@@ -8179,7 +8165,7 @@ is-touch-device@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-touch-device/-/is-touch-device-1.0.1.tgz#9a2fd59f689e9a9bf6ae9a86924c4ba805a42eab"
 
-is-typedarray@^1.0.0, is-typedarray@~1.0.0:
+is-typedarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
 
@@ -10333,7 +10319,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.0.0-alpha.8, node-fetch@^2.1.2, node-fetch@^2.2.0:
+node-fetch@^2.1.2, node-fetch@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
 
@@ -10661,7 +10647,7 @@ opener@^1.4.3, opener@^1.5.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/opener/-/opener-1.5.1.tgz#6d2f0e77f1a0af0032aca716c2c1fbb8e7e8abed"
 
-opn@5.4.0, opn@^5.4.0:
+opn@5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
   dependencies:
@@ -11134,7 +11120,7 @@ plist@2.0.1:
     xmlbuilder "8.2.2"
     xmldom "0.1.x"
 
-plist@3.0.1, plist@^3.0.0:
+plist@3.0.1, plist@^3.0.0, plist@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.1.tgz#a9b931d17c304e8912ef0ba3bdd6182baf2e1f8c"
   dependencies:
@@ -11320,10 +11306,6 @@ process@^0.11.10:
 process@~0.5.1:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/process/-/process-0.5.2.tgz#1638d8a8e34c2f440a91db95ab9aeb677fc185cf"
-
-progress@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.0.tgz#8a1be366bf8fc23db2bd23f10c6fe920b4389d1f"
 
 promise-inflight@^1.0.1:
   version "1.0.1"
@@ -11521,14 +11503,6 @@ quote-stream@^1.0.1, quote-stream@~1.0.2:
     minimist "^1.1.3"
     through2 "^2.0.0"
 
-r2@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/r2/-/r2-2.0.1.tgz#94cd802ecfce9a622549c8182032d8e4a2b2e612"
-  dependencies:
-    caseless "^0.12.0"
-    node-fetch "^2.0.0-alpha.8"
-    typedarray-to-buffer "^3.1.2"
-
 raf@^3.1.0, raf@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
@@ -11559,10 +11533,6 @@ randomfill@^1.0.3:
 range-parser@^1.0.3, range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
-
-raven-js@^3.24.2:
-  version "3.27.0"
-  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.27.0.tgz#9f47c03e17933ce756e189f3669d49c441c1ba6e"
 
 raw-body@2.3.3, raw-body@^2.2.0:
   version "2.3.3"
@@ -12167,10 +12137,6 @@ react-native-push-notification@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.1.tgz#99ce426e78e95788c298f73750cc4e68db04d7ab"
 
-react-native-reanimated@^1.0.0-alpha.6:
-  version "1.0.0-alpha.10"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.0.0-alpha.10.tgz#e9e6fb35a2cf52fdc912b9fbc76f34f80698e530"
-
 react-native-safe-module@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-module/-/react-native-safe-module-1.2.0.tgz#a23824ca24edc2901913694a76646475113d570d"
@@ -12182,13 +12148,6 @@ react-native-search-bar@^3.4.2:
   resolved "https://registry.yarnpkg.com/react-native-search-bar/-/react-native-search-bar-3.4.2.tgz#8606bb1d6b29a26dd5ee86cfae00f7253181736d"
   dependencies:
     prop-types "^15.5.10"
-
-react-native-sentry@^0.39.0:
-  version "0.39.1"
-  resolved "https://registry.yarnpkg.com/react-native-sentry/-/react-native-sentry-0.39.1.tgz#61fc1214515bea614f03aa9f76fee1b48aae3671"
-  dependencies:
-    "@sentry/wizard" "^0.12.1"
-    raven-js "^3.24.2"
 
 react-native-share@^1.1.1:
   version "1.1.3"
@@ -12471,12 +12430,6 @@ react@^16.4.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.11.2"
-
-read-env@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/read-env/-/read-env-1.3.0.tgz#e26e1e446992b3216e9a3c6f6ac51064fe91fdff"
-  dependencies:
-    camelcase "5.0.0"
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
@@ -14516,12 +14469,6 @@ type-is@~1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
-typedarray-to-buffer@^3.1.2:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/typedarray-to-buffer/-/typedarray-to-buffer-3.1.5.tgz#a97ee7a9ff42691b9f783ff1bc5112fe3fca9080"
-  dependencies:
-    is-typedarray "^1.0.0"
-
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
@@ -15143,7 +15090,7 @@ which-module@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
 
-which@^1.2.12, which@^1.2.14, which@^1.2.9, which@^1.3.0, which@^1.3.1:
+which@^1.2.11, which@^1.2.12, which@^1.2.14, which@^1.2.9, which@^1.3.0, which@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
   dependencies:
@@ -15317,13 +15264,6 @@ xcode@1.0.0, xcode@^1.0.0:
     simple-plist "^0.2.1"
     uuid "3.0.1"
 
-"xcode@https://github.com/apache/cordova-node-xcode#e7646f0680d509b590b839e567c217590451505b":
-  version "1.0.1-dev"
-  resolved "https://github.com/apache/cordova-node-xcode#e7646f0680d509b590b839e567c217590451505b"
-  dependencies:
-    simple-plist "^0.2.1"
-    uuid "3.0.1"
-
 xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
@@ -15432,7 +15372,7 @@ yargs@^11.0.0:
     y18n "^3.2.1"
     yargs-parser "^9.0.2"
 
-yargs@^12.0.2, yargs@^12.0.5:
+yargs@^12.0.5:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.5.tgz#05f5997b609647b64f66b81e3b4b10a368e7ad13"
   dependencies:

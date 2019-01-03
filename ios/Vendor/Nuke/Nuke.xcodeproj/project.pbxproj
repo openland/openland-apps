@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0C0128811D43E85100668A1F /* MockImagePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01287F1D43E85100668A1F /* MockImagePipeline.swift */; };
 		0C0128821D43E85100668A1F /* MockImagePipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01287F1D43E85100668A1F /* MockImagePipeline.swift */; };
@@ -780,50 +779,50 @@
 		0C9174871BAE99EE004A7905 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0800;
+				LastSwiftUpdateCheck = 800;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Alexander Grebenyuk";
 				TargetAttributes = {
 					0C22D9C41BCA9734006E1D3B = {
 						CreatedOnToolsVersion = 7.0.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 800;
 					};
 					0C22DA2B1BCAA220006E1D3B = {
 						CreatedOnToolsVersion = 7.0.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 800;
 					};
 					0C22DA371BCAA22A006E1D3B = {
 						CreatedOnToolsVersion = 7.0.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 800;
 					};
 					0C7C06761BCA882A00089D7F = {
 						CreatedOnToolsVersion = 7.0.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 900;
 					};
 					0C8D7BCF1D9DBF1600D12EB7 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = NR8DLKJ7E6;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 900;
 						ProvisioningStyle = Automatic;
 					};
 					0C8D7BE71D9DC02B00D12EB7 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = NR8DLKJ7E6;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 930;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 0C8D7BCF1D9DBF1600D12EB7;
 					};
 					0C91748F1BAE99EE004A7905 = {
 						CreatedOnToolsVersion = 7.0;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 900;
 					};
 					0CC345961BD96CFE005C2DD8 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 800;
 					};
 					0CC345A21BD96D2A005C2DD8 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 800;
 					};
 				};
 			};

@@ -1,45 +1,53 @@
 #import "AppDelegate.h"
 #import <CodePush/CodePush.h>
+#import <AppCenterReactNative/AppCenterReactNative.h>
+#import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 
 #import <React/RCTLinkingManager.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <React/RCTPushNotificationManager.h>
 
-#import <Fabric/Fabric.h>
-#import <Answers/Answers.h>
 #import "openland-Swift.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [Fabric with:@[[Answers class]]];
-
+  
+  /*
+   * Start App Center
+   */
+  
+  [AppCenterReactNative register];
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  
+  /*
+   * Bundle location
+   */
+  
   NSURL *jsCodeLocation;
-
   #if TARGET_IPHONE_SIMULATOR
     jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   #else
-  // #ifdef DEBUG
-  //       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  //   #else
-  //       jsCodeLocation = [CodePush bundleURL];
-  //   #endif
-      // jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
     #ifdef DEBUG
- //jsCodeLocation = [NSURL URLWithString:@"https://openland.eu.ngrok.io/index.bundle?platform=ios&dev=true&minify=false" ];
       jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
     #else
       jsCodeLocation = [CodePush bundleURL];
     #endif
   #endif
 
-  // jsCodeLocation = [CodePush bundleURL];
-  
-  // [RNAsyncKeyboardManager
+  /*
+   * Start Keyboard Manager
+   */
   
   [RNAsyncKeyboardManager.sharedInstance start];
+
+  /*
+   * Start App
+   */
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"openland"

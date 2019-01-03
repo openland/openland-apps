@@ -4,10 +4,12 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
+import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 
 import cl.json.RNSharePackage;
 
-import com.korshakov.testing.app.BuildConfig;
+import com.openlan.app.BuildConfig;
 import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
@@ -56,6 +58,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
+            new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
                     new RNSharePackage(),
                     new RCTImageCapInsetPackage(),
                     new RNGestureHandlerPackage(),

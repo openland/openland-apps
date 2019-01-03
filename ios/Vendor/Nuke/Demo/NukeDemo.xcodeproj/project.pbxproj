@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0C3ADAA32087D23C00FFA275 /* progressive.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0C3ADAA12087D23C00FFA275 /* progressive.jpeg */; };
 		0C3ADAA42087D23C00FFA275 /* baseline.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0C3ADAA22087D23C00FFA275 /* baseline.jpeg */; };
@@ -185,14 +184,14 @@
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 700;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = NR8DLKJ7E6;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 930;
 					};
 				};
 			};
