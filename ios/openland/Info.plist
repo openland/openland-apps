@@ -43,8 +43,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>108</string>
-	<key>CodePushDeploymentKey</key>
-	<string>TNsklumnHNeMxRjz3VClHfhoIdqZH1kRWpV47</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
