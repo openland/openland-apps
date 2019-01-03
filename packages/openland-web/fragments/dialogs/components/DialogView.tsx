@@ -9,7 +9,7 @@ import MentionIcon from 'openland-icons/ic-mention-2.svg';
 import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 
 export let iconClass = css`
     display: inline-block;

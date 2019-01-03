@@ -171,18 +171,18 @@ android {
     }
 
     flavorDimensions "version"
-    productFlavors {
-        staging {
-            versionCode appVersionCode
-            versionName "1.1."+appVersionCode+"-dev"
-            println("##teamcity[buildNumber '1.1.$appVersionCode-dev']")
-        }
-        production {
-            versionCode appVersionCode
-            versionName "1.1."+appVersionCode
-            println("##teamcity[buildNumber '1.1.$appVersionCode']")
-        }
-    }
+//    productFlavors {
+//        staging {
+//            versionCode appVersionCode
+//            versionName "1.1."+appVersionCode+"-dev"
+//            println("##teamcity[buildNumber '1.1.$appVersionCode-dev']")
+//        }
+//        production {
+//            versionCode appVersionCode
+//            versionName "1.1."+appVersionCode
+//            println("##teamcity[buildNumber '1.1.$appVersionCode']")
+//        }
+//    }
 }
 
 configurations.all {

@@ -5,7 +5,7 @@ import { UserShort } from 'openland-api/Types';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 
 export interface MessageContainerProps {
     compact: boolean;

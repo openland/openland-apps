@@ -6,7 +6,7 @@ import { css } from 'linaria';
 import { isEmoji } from '../../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 import { preprocessMentions } from './utils/preprocessMentions';
 import { MentionComponentInner } from 'openland-x/XRichTextInput';
 
