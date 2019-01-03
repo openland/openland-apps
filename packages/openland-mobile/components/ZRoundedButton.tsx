@@ -24,14 +24,12 @@ const styles = StyleSheet.create({
         lineHeight: 26,
         fontSize: 13,
         fontWeight: '600',
-        textTransform: 'uppercase'
     } as TextStyle,
     titleBig: {
         color: '#fff',
         lineHeight: 56,
         fontSize: 16,
         fontWeight: '600',
-        textTransform: 'uppercase',
         letterSpacing: 0.2
     } as TextStyle
 });
@@ -58,7 +56,7 @@ class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & 
             <View backgroundColor={'#000'} borderRadius={this.props.style === 'big' ? 18 : 13}>
                 <TouchableOpacity onPress={this.handlePress} activeOpacity={0.6}>
                     <View style={this.props.style === 'big' ? styles.containerBig : styles.container}>
-                        <Text style={[this.props.style === 'big' ? styles.titleBig : styles.title, this.props.uppercase === false ? { textTransform: 'none' } : {}]}>{this.props.title}</Text>
+                        <Text style={this.props.style === 'big' ? styles.titleBig : styles.title}>{this.props.uppercase !== false ? this.props.title.toUpperCase() : this.props.title}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
