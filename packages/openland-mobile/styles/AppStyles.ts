@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 export const AppStyles = {
     primaryColor: '#364AE3',
     primaryColorLight: '#BDBDE4',
@@ -12,7 +14,7 @@ export const TextStyles = {
         thin: '100',
         light: '300',
         regular: '400',
-        medium: '500',
+        medium: Platform.OS === 'ios' ? '600' : '500',
         bold: '700',
         black: '900',
     }
