@@ -12,7 +12,7 @@ export const TextStyles = {
         thin: '100',
         light: '300',
         regular: '400',
-        medium: '500',
+        medium: '600',
         bold: '700',
         black: '900',
     }
