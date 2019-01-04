@@ -20,7 +20,8 @@ export const Auth0Client = new Auth0({
 // App Root
 import { AppRegistry, UIManager } from 'react-native';
 // Enable layout animations on Android
-if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
+// disabled to fix random crash https://github.com/facebook/react-native/issues/13984#issuecomment-343826572
+// if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
 // import Routes from './routes';
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';

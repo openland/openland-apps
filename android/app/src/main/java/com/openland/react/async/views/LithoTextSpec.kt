@@ -1,5 +1,6 @@
 package com.openland.react.async.views
 
+import android.graphics.Typeface
 import android.text.*
 import android.view.View
 import com.facebook.litho.Component
@@ -68,6 +69,7 @@ object LithoTextSpec {
         val res = Text.create(context)
                 .key(spec.key)
                 .textSizeDip(spec.fontSize)
+                .typeface(resolveFont(context, spec.fontWeight))
                 .textColor(spec.color)
                 .shouldIncludeFontPadding(false)
         if(spec.touchableKey != null){
@@ -104,5 +106,17 @@ object LithoTextSpec {
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("async_on_press", map)
+    }
+
+    private fun resolveFont(context: ComponentContext, weight: String?): Typeface?{
+        return when (weight) {
+            "100" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Thin.ttf")
+            "300" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Light.ttf")
+            "400" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Regular.ttf")
+            "500" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Medium.ttf")
+            "700" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Bold.ttf")
+            "900" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Black.ttf")
+            else -> null
+        }
     }
 }
