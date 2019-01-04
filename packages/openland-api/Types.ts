@@ -3659,6 +3659,71 @@ export interface FeatureFlagDisableVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FeedHome
+// ====================================================
+
+export interface FeedHome_homeFeed_by_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface FeedHome_homeFeed_by {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: FeedHome_homeFeed_by_primaryOrganization | null;
+}
+
+export interface FeedHome_homeFeed {
+  __typename: "FeedItem";
+  id: string;
+  text: string;
+  date: any;
+  by: FeedHome_homeFeed_by;
+}
+
+export interface FeedHome {
+  homeFeed: FeedHome_homeFeed[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: FeedPost
+// ====================================================
+
+export interface FeedPost_alphaCreateFeedPost {
+  __typename: "FeedItem";
+  id: string;
+}
+
+export interface FeedPost {
+  alphaCreateFeedPost: FeedPost_alphaCreateFeedPost;
+}
+
+export interface FeedPostVariables {
+  message: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyOrganizations
 // ====================================================
 

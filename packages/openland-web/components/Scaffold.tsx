@@ -747,22 +747,6 @@ export class Scaffold extends React.PureComponent {
 
                         <NavigationDivider position="top" />
 
-                        <MessengerButton />
-
-                        <XPopper
-                            placement="right"
-                            showOnHoverContent={false}
-                            showOnHover={true}
-                            style="dark"
-                            padding={-2}
-                            groupId="scaffold_tooltip"
-                            content={<strong>{TextAppBar.items.directory}</strong>}
-                        >
-                            <NavigatorItem path="/directory">
-                                <DirecoryIcon />
-                            </NavigatorItem>
-                        </XPopper>
-
                         <XWithRole role="feature-non-production">
                             <XPopper
                                 placement="right"
@@ -778,6 +762,22 @@ export class Scaffold extends React.PureComponent {
                                 </NavigatorItem>
                             </XPopper>
                         </XWithRole>
+
+                        <MessengerButton />
+
+                        <XPopper
+                            placement="right"
+                            showOnHoverContent={false}
+                            showOnHover={true}
+                            style="dark"
+                            padding={-2}
+                            groupId="scaffold_tooltip"
+                            content={<strong>{TextAppBar.items.directory}</strong>}
+                        >
+                            <NavigatorItem path="/directory">
+                                <DirecoryIcon />
+                            </NavigatorItem>
+                        </XPopper>
 
                         <BottomNavigation>
                             <AddMenu />
