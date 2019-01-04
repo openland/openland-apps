@@ -4,10 +4,10 @@ import { XTitle } from 'openland-x/XTitle';
 import { XLink } from 'openland-x/XLink';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withFeed, withCreatePost } from 'openland-web/api/withFeed';
-import { withQueryLoader } from 'openland-web/components/withQueryLoader';
+import { withCreatePost } from 'openland-web/api/withFeed';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
+import { FeedListComponent } from './feed/FeedListComponent';
 
 const NewPostModal = withCreatePost((props) => {
     return (
@@ -30,7 +30,7 @@ const NewPostModal = withCreatePost((props) => {
     )
 });
 
-export const FeedFragment = withFeed(withQueryLoader((props) => {
+export const FeedFragment = React.memo(() => {
     return (
         <XView flexDirection="row" alignItems="stretch" justifyContent="center">
             <XView
@@ -71,11 +71,7 @@ export const FeedFragment = withFeed(withQueryLoader((props) => {
                     <XButton style="primary" text="New Post" query={{ field: 'new', value: 'true' }} />
 
                 </XView>
-                {props.data.homeFeed.map((v) => (
-                    <XView key={v.id}>
-                        {v.text}
-                    </XView>
-                ))}
+                <FeedListComponent />
                 {/* <Post
                     source="founders"
                     title="Need to hire a new CEO"
@@ -109,4 +105,4 @@ export const FeedFragment = withFeed(withQueryLoader((props) => {
             <NewPostModal />
         </XView>
     )
-}));
+});
