@@ -2,6 +2,7 @@ package com.openland.react.async.views
 
 import android.graphics.Typeface
 import android.text.*
+import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
@@ -56,7 +57,13 @@ object LithoTextSpec {
                         }
                     }
                     part.setSpan(span, 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+
                 }
+                if(s.fontSize !== null){
+                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
+
                 sb.append(part)
             }
         }
@@ -66,9 +73,10 @@ object LithoTextSpec {
 
     @OnCreateLayout
     internal fun onCreateLayout(context: ComponentContext, @Prop spec: AsyncTextSpec, @Prop reactContext: ReactContext): Component {
+        val fontSize = if (spec.fontSize !== null) spec.fontSize!! else 12f
         val res = Text.create(context)
                 .key(spec.key)
-                .textSizeDip(spec.fontSize)
+                .textSizeDip(fontSize)
                 .typeface(resolveFont(context, spec.fontWeight))
                 .textColor(spec.color)
                 .shouldIncludeFontPadding(false)
@@ -83,7 +91,7 @@ object LithoTextSpec {
 
         // Fix line height
         val text = SpannableString(resolveText(spec, reactContext))
-        var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else spec.fontSize * 1.6f
+        var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else fontSize * 1.6f
         actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
         text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         res.text(text)

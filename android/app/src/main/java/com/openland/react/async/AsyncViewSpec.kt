@@ -83,7 +83,7 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
 class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
 
-    var fontSize: Float = 12.0f
+    var fontSize: Float? = null
     var lineHeight: Float? = null
     var fontWeight: String? = null
     var color: Int = Color.BLACK
