@@ -1,6 +1,8 @@
 package com.openland.react.async.views
 
+import android.graphics.Typeface
 import android.text.*
+import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import com.facebook.litho.Component
 import com.facebook.litho.ComponentContext
@@ -55,7 +57,13 @@ object LithoTextSpec {
                         }
                     }
                     part.setSpan(span, 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+
                 }
+                if(s.fontSize !== null){
+                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
+
                 sb.append(part)
             }
         }
@@ -65,9 +73,11 @@ object LithoTextSpec {
 
     @OnCreateLayout
     internal fun onCreateLayout(context: ComponentContext, @Prop spec: AsyncTextSpec, @Prop reactContext: ReactContext): Component {
+        val fontSize = if (spec.fontSize !== null) spec.fontSize!! else 12f
         val res = Text.create(context)
                 .key(spec.key)
-                .textSizeDip(spec.fontSize)
+                .textSizeDip(fontSize)
+                .typeface(resolveFont(context, spec.fontWeight))
                 .textColor(spec.color)
                 .shouldIncludeFontPadding(false)
         if(spec.touchableKey != null){
@@ -81,7 +91,7 @@ object LithoTextSpec {
 
         // Fix line height
         val text = SpannableString(resolveText(spec, reactContext))
-        var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else spec.fontSize * 1.6f
+        var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else fontSize * 1.6f
         actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
         text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         res.text(text)
@@ -104,5 +114,17 @@ object LithoTextSpec {
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("async_on_press", map)
+    }
+
+    private fun resolveFont(context: ComponentContext, weight: String?): Typeface?{
+        return when (weight) {
+            "100" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Thin.ttf")
+            "300" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Light.ttf")
+            "400" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Regular.ttf")
+            "500" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Medium.ttf")
+            "700" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Bold.ttf")
+            "900" -> Typeface.createFromAsset(context.assets,"fonts/Roboto-Black.ttf")
+            else -> null
+        }
     }
 }

@@ -4,7 +4,7 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { AsyncStorage, View, Image, Dimensions, Text } from 'react-native';
-import { AppUpdateTracker } from '../../utils/UpdateTracker';
+import CodePush from 'react-native-code-push';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 
 export class WaitlistComponent extends React.PureComponent<PageProps> {
@@ -12,7 +12,7 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
     handleLogout = () => {
         (async () => {
             AsyncStorage.clear();
-            AppUpdateTracker.restartApp();
+            CodePush.restartApp();
         })();
     }
 

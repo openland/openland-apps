@@ -6,7 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZTextInput } from '../../components/ZTextInput';
 import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
-import { AppUpdateTracker } from '../../utils/UpdateTracker';
+import CodePush from 'react-native-code-push';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
 import { UserError } from 'openland-y-forms/errorHandling';
 
@@ -131,7 +131,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                         await AsyncStorage.setItem('openland-token', res2.accessToken);
 
                     }}
-                    onSuccess={() => AppUpdateTracker.restartApp()}
+                    onSuccess={() => CodePush.restartApp()}
                 >
 
                     <Text style={styles.hint}>Enter your activation code that was just sent to {email}</Text>

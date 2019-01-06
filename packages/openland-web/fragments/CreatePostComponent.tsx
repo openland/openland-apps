@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import UploadCare from 'uploadcare-widget';
 import { getConfig } from '../config';
@@ -8,19 +9,19 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
-import { XAvatar, XAvatarStyle } from 'openland-x/XAvatar';
+import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
-import { MessageUploadComponent } from '../components/messenger/components/view/content/MessageUploadComponent';
-import { niceBytes } from '../components/messenger/components/view/content/MessageFileComponent';
 import { withSendPostMessage, withEditPostMessage } from '../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
+import { DropZone } from './DropZone';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
-import UloadIc from 'openland-icons/file-upload.svg';
+import { MessageUploadComponent } from 'openland-web/components/messenger/message/content/MessageUploadComponent';
+import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 
 const postTexts = {
     BLANK: {
@@ -83,64 +84,11 @@ const postTexts = {
     },
 };
 
-const Wrapper = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'absolute',
-    backgroundColor: '#fff',
-    top: -56,
-    left: 0,
-    width: '100%',
-    height: 'calc(100% + 56px)',
-});
-
 const Header = Glamorous(XHorizontal)({
     height: 56,
     paddingLeft: 20,
     paddingRight: 20,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-    '& .dot': {
-        opacity: 0.3,
-        fontSize: 12,
-        fontWeight: 600,
-        color: '#000',
-    },
-});
-
-const CloseWrapper = Glamorous.div({
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 8,
-    width: 32,
-    height: 32,
-    borderRadius: 50,
-    '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    },
-});
-
-const ChatTitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 600,
-    color: '#000',
-});
-
-const PostTypeTitle = Glamorous.div({
-    fontSize: 14,
-    color: '#000',
-});
-
-const Body = Glamorous.div({
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 20,
-    paddingBottom: 12,
-    position: 'relative',
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
 });
 
 const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
@@ -295,66 +243,9 @@ const CoverDelButton = Glamorous.div({
     borderRadius: 6,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     cursor: 'pointer',
-    '& > img': {
-        display: 'block',
-    },
     '& > svg > g > path:last-child': {
         fill: '#fff',
     },
-});
-
-const DropArea = Glamorous.div<{ dragOn: boolean }>(props => ({
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 2,
-    padding: 24,
-    visibility: props.dragOn ? 'visible' : 'hidden',
-    backgroundColor: props.dragOn ? '#fff' : 'transparent',
-}));
-
-const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '2px dashed',
-    borderColor: props.dragUnder ? 'rgba(23, 144, 255, 0.2)' : 'rgba(51, 69, 98, 0.1)',
-    borderRadius: 8,
-    backgroundColor: props.dragUnder ? 'rgba(23, 144, 255, 0.02)' : '#fff',
-    '& > svg': {
-        pointerEvents: 'none',
-        '& > g': {
-            stroke: props.dragUnder ? '#1790FF' : '#BCC3CC',
-        },
-    },
-}));
-
-const DropAreaTitle = Glamorous.div({
-    fontSize: 16,
-    fontWeight: 600,
-    lineHeight: 1.5,
-    letterSpacing: -0.3,
-    textAlign: 'center',
-    color: '#334562',
-    marginTop: 23,
-    marginBottom: 4,
-});
-
-const DropAreaSubtitle = Glamorous.div({
-    fontSize: 14,
-    fontWeight: 500,
-    lineHeight: 1.71,
-    letterSpacing: -0.4,
-    textAlign: 'center',
-    color: '#5c6a81',
 });
 
 interface SendPostButtonProps {
@@ -365,9 +256,7 @@ interface SendPostButtonProps {
     files: Set<File> | null;
     postType: PostMessageType | null | string;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
-    checkTitleValue: () => void;
-    checkTextValue: () => void;
-    checkValue: () => void;
+    textValidation: (title: boolean, text: boolean) => void;
 }
 
 const SendPostButton = withSendPostMessage(props => {
@@ -397,23 +286,13 @@ const SendPostButton = withSendPostMessage(props => {
                                 : PostMessageType.BLANK,
                         },
                     });
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
-                } else {
-                    (props as any).checkTitleValue();
                 }
             }}
             onSuccess={() => {
                 if (checkTitleSend && checkTextSend) {
                     (props as any).handleHideChat(false, null);
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
                 } else {
-                    (props as any).checkTitleValue();
+                    (props as any).textValidation(!checkTitleSend, !checkTextSend);
                 }
             }}
         >
@@ -430,9 +309,7 @@ interface EditPostButtonProps {
     files: Set<File> | null;
     postType: PostMessageType | null | string;
     handleHideChat: (hide: boolean, postType: PostMessageType | null) => void;
-    checkTitleValue: () => void;
-    checkTextValue: () => void;
-    checkValue: () => void;
+    textValidation: (title: boolean, text: boolean) => void;
 }
 
 const EditPostButton = withEditPostMessage(props => {
@@ -462,23 +339,13 @@ const EditPostButton = withEditPostMessage(props => {
                                 : PostMessageType.BLANK,
                         },
                     });
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
-                } else {
-                    (props as any).checkTitleValue();
                 }
             }}
             onSuccess={() => {
                 if (checkTitleSend && checkTextSend) {
                     (props as any).handleHideChat(false, null);
-                } else if (!checkTitleSend && !checkTextSend) {
-                    (props as any).checkValue();
-                } else if (!checkTextSend) {
-                    (props as any).checkTextValue();
                 } else {
-                    (props as any).checkTitleValue();
+                    (props as any).textValidation(!checkTitleSend, !checkTextSend);
                 }
             }}
         >
@@ -507,8 +374,6 @@ interface File {
 interface CreatePostComponentState {
     title: string;
     text: string;
-    dragOn: boolean;
-    dragUnder: boolean;
     uploadProgress: number | null;
     files: Set<File> | null;
     cover: File | null;
@@ -519,7 +384,7 @@ interface CreatePostComponentState {
 export class CreatePostComponent extends React.Component<
     CreatePostComponentProps,
     CreatePostComponentState
-> {
+    > {
     constructor(props: CreatePostComponentProps) {
         super(props);
 
@@ -538,8 +403,6 @@ export class CreatePostComponent extends React.Component<
         this.state = {
             title: title,
             text: text,
-            dragOn: false,
-            dragUnder: false,
             uploadProgress: null,
             files: null,
             cover: null,
@@ -548,24 +411,13 @@ export class CreatePostComponent extends React.Component<
         };
     }
 
-    invalidTitleHandler = () => {
+    private validation = (title: boolean, text: boolean) => {
+        console.log(title, text);
         this.setState({
-            invalidTitle: true,
+            invalidTitle: title,
+            invalidText: text
         });
-    };
-
-    invalidTextHandler = () => {
-        this.setState({
-            invalidText: true,
-        });
-    };
-
-    invalidValue = () => {
-        this.setState({
-            invalidTitle: true,
-            invalidText: true,
-        });
-    };
+    }
 
     private titleChange = (src: string) => {
         this.setState({
@@ -652,19 +504,7 @@ export class CreatePostComponent extends React.Component<
         });
     };
 
-    private handleDrop = (e: any) => {
-        e.preventDefault();
-
-        this.setState({
-            dragOn: false,
-            dragUnder: false,
-        });
-
-        if (this.state.uploadProgress) {
-            return;
-        }
-
-        const file = e.dataTransfer.files[0];
+    private handleDrop = (file: any) => {
         const dialog = UploadCare.fileFrom('object', file);
 
         dialog.progress(r => {
@@ -680,48 +520,6 @@ export class CreatePostComponent extends React.Component<
                 isImage: r.isImage,
             };
             this.fileSaver(ucFile);
-        });
-    };
-
-    private handleWindowDragover = (e: any) => {
-        e.preventDefault();
-        if (this.state.uploadProgress) {
-            return;
-        }
-        this.setState({
-            dragOn: true,
-        });
-    };
-
-    private handleMouseOut = () => {
-        this.setState({
-            dragOn: false,
-            dragUnder: false,
-        });
-    };
-
-    private handleWindowDrop = (e: any) => {
-        e.preventDefault();
-        this.setState({
-            dragOn: false,
-        });
-    };
-
-    private handleDragOver = (e: any) => {
-        this.setState({
-            dragUnder: true,
-        });
-    };
-
-    private handleDragLeave = (e: any) => {
-        let file = e.dataTransfer.files[0];
-        if (file === undefined) {
-            this.setState({
-                dragOn: false,
-            });
-        }
-        this.setState({
-            dragUnder: false,
         });
     };
 
@@ -748,18 +546,10 @@ export class CreatePostComponent extends React.Component<
     };
 
     componentDidMount() {
-        window.addEventListener('dragover', this.handleWindowDragover);
-        window.addEventListener('drop', this.handleWindowDrop);
-
         const { editData } = this.props;
         if (editData && editData.files) {
             this.propsFileSaver(editData.files);
         }
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('dragover', this.handleWindowDragover);
-        window.removeEventListener('drop', this.handleWindowDrop);
     }
 
     render() {
@@ -777,7 +567,15 @@ export class CreatePostComponent extends React.Component<
         }
 
         return (
-            <Wrapper>
+            <XView
+                flexDirection="column"
+                position="absolute"
+                backgroundColor="#fff"
+                top={-56}
+                left={0}
+                width="100%"
+                height="calc(100% + 56px)"
+            >
                 <Header justifyContent="center">
                     <XHorizontal
                         alignItems="center"
@@ -786,27 +584,60 @@ export class CreatePostComponent extends React.Component<
                         flexGrow={1}
                     >
                         <XHorizontal alignItems="center">
-                            <XAvatar
-                                size="small"
-                                style="user"
-                                cloudImageUuid={props.cloudImageUuid}
-                                objectName={props.objectName}
-                                objectId={props.objectId}
+                            <XAvatar2
+                                size={36}
+                                src={props.cloudImageUuid}
+                                title={props.objectName}
+                                id={props.objectId || ''}
                             />
                             <XHorizontal alignItems="center" separator={3}>
-                                <ChatTitle>{props.objectName}</ChatTitle>
-                                <div className="dot">•</div>
-                                <PostTypeTitle>
+                                <XView
+                                    fontSize={14}
+                                    fontWeight="600"
+                                    color="#000"
+                                >
+                                    {props.objectName}
+                                </XView>
+                                <XView
+                                    opacity={0.3}
+                                    fontSize={12}
+                                    fontWeight="600"
+                                    color="#000"
+                                >
+                                    •
+                                </XView>
+                                <XView
+                                    fontSize={14}
+                                    color="#000"
+                                >
                                     {props.editData ? 'Post editing' : header}
-                                </PostTypeTitle>
+                                </XView>
                             </XHorizontal>
                         </XHorizontal>
-                        <CloseWrapper onClick={() => this.props.handleHideChat(false, null)}>
+                        <XView
+                            onClick={() => this.props.handleHideChat(false, null)}
+                            cursor="pointer"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding={8}
+                            width={32}
+                            height={32}
+                            borderRadius={50}
+                            hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                        >
                             <CloseIcon />
-                        </CloseWrapper>
+                        </XView>
                     </XHorizontal>
                 </Header>
-                <Body>
+                <XView
+                    flexDirection="row"
+                    flexGrow={1}
+                    justifyContent="center"
+                    paddingHorizontal={20}
+                    paddingTop={20}
+                    paddingBottom={12}
+                    position="relative"
+                >
                     <XVertical maxWidth={700} flexGrow={1}>
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
@@ -872,20 +703,11 @@ export class CreatePostComponent extends React.Component<
                             />
                         )}
                     </XVertical>
-                    <DropArea dragOn={this.state.dragOn}>
-                        <DropAreaContent
-                            onDrop={this.handleDrop}
-                            onDragOver={this.handleDragOver}
-                            onDragLeave={this.handleDragLeave}
-                            onMouseOut={this.handleMouseOut}
-                            dragUnder={this.state.dragUnder}
-                        >
-                            <UloadIc />
-                            <DropAreaTitle>Drop files here</DropAreaTitle>
-                            <DropAreaSubtitle>To send them as files</DropAreaSubtitle>
-                        </DropAreaContent>
-                    </DropArea>
-                </Body>
+                    <DropZone
+                        height="100%"
+                        onFileDrop={this.handleDrop}
+                    />
+                </XView>
                 <FooterWrapper justifyContent="center" alignItems="center">
                     <XHorizontal
                         justifyContent="space-between"
@@ -911,9 +733,7 @@ export class CreatePostComponent extends React.Component<
                                 text={state.text}
                                 files={state.files}
                                 handleHideChat={props.handleHideChat}
-                                checkTitleValue={this.invalidTitleHandler}
-                                checkTextValue={this.invalidTextHandler}
-                                checkValue={this.invalidValue}
+                                textValidation={this.validation}
                             >
                                 <XButton text="Send" style="primary" iconRight="send" />
                             </SendPostButton>
@@ -926,16 +746,14 @@ export class CreatePostComponent extends React.Component<
                                 text={state.text}
                                 files={state.files}
                                 handleHideChat={props.handleHideChat}
-                                checkTitleValue={this.invalidTitleHandler}
-                                checkTextValue={this.invalidTextHandler}
-                                checkValue={this.invalidValue}
+                                textValidation={this.validation}
                             >
                                 <XButton text="Save changes" style="primary" />
                             </EditPostButton>
                         )}
                     </XHorizontal>
                 </FooterWrapper>
-            </Wrapper>
+            </XView>
         );
     }
 }

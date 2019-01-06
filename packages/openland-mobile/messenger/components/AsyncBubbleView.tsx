@@ -28,9 +28,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 capInsets = { top: 12, left: 12, right: 12, bottom: 12 };
             } else {
                 if (this.props.isOut) {
-                    capInsets = { top: 5, left: 5, bottom: 5, right: 10 };
+                    capInsets = { top: 19, left: 19, right: 29, bottom: 19 };
                 } else {
-                    capInsets = { top: 5, left: 10, bottom: 5, right: 5 };
+                    capInsets = { top: 19, left: 29, right: 19, bottom: 19 };
                 }
             }
         }

@@ -625,7 +625,7 @@ export const CreateOrganization = withCreateOrganization(props => {
                             photoRef: data.input.photoRef,
                         },
                     },
-                });
+                }) as any;
                 let redirect =
                     (community ? '/directory/c/' : '/directory/o/') +
                     res.data.createOrganization.id;
@@ -688,7 +688,7 @@ export const CreateRoom = withCreateChannel(props => {
                         members: [],
                         kind: SharedRoomKind.PUBLIC,
                     },
-                });
+                }) as any;
                 delay(0).then(() => {
                     props.router.push('/mail/' + room.data.room.id);
                 });
@@ -747,22 +747,6 @@ export class Scaffold extends React.PureComponent {
 
                         <NavigationDivider position="top" />
 
-                        <MessengerButton />
-
-                        <XPopper
-                            placement="right"
-                            showOnHoverContent={false}
-                            showOnHover={true}
-                            style="dark"
-                            padding={-2}
-                            groupId="scaffold_tooltip"
-                            content={<strong>{TextAppBar.items.directory}</strong>}
-                        >
-                            <NavigatorItem path="/directory">
-                                <DirecoryIcon />
-                            </NavigatorItem>
-                        </XPopper>
-
                         <XWithRole role="feature-non-production">
                             <XPopper
                                 placement="right"
@@ -778,6 +762,22 @@ export class Scaffold extends React.PureComponent {
                                 </NavigatorItem>
                             </XPopper>
                         </XWithRole>
+
+                        <MessengerButton />
+
+                        <XPopper
+                            placement="right"
+                            showOnHoverContent={false}
+                            showOnHover={true}
+                            style="dark"
+                            padding={-2}
+                            groupId="scaffold_tooltip"
+                            content={<strong>{TextAppBar.items.directory}</strong>}
+                        >
+                            <NavigatorItem path="/directory">
+                                <DirecoryIcon />
+                            </NavigatorItem>
+                        </XPopper>
 
                         <BottomNavigation>
                             <AddMenu />

@@ -46,7 +46,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                         <Text
                             style={{
                                 color: '#000',
-                                fontSize: 21,
+                                fontSize: 20,
                                 fontWeight: '600',
                                 height: 20,
                                 lineHeight: 20,

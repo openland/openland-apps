@@ -11,9 +11,10 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { resolveInternalLink } from '../../components/ZText';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
+import { TextStyles } from '../../styles/AppStyles';
 
-const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
-const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
+const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
+const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }))}</ASText>;
 
 export class AsyncMessageTextView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
@@ -75,7 +76,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                         lineHeight={big ? 60 : 20}
                         letterSpacing={-0.3}
                         fontSize={big ? 52 : 16}
-                        fontWeight="400"
+                        fontWeight={TextStyles.weight.regular}
                     >
                         {parts}
                         {this.props.message.isOut ? paddedTextOut : paddedText}
@@ -99,7 +100,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                                 letterSpacing={-0.3}
                                 fontSize={18}
                                 marginTop={10}
-                                fontWeight="500"
+                                fontWeight={TextStyles.weight.medium}
                             >
                                 {this.props.message.urlAugmentation.title}
                                 {this.props.message.isOut ? paddedTextOut : paddedText}
@@ -111,7 +112,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
                                 fontSize={big ? 52 : 16}
-                                fontWeight="400"
+                                fontWeight={TextStyles.weight.regular}
                             >
                                 {this.props.message.urlAugmentation.description}
                             </ASText>}

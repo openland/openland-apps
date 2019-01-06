@@ -31,7 +31,6 @@ export const XLink2 = makeNavigable<XViewProps>(class XLink2Inner extends React.
 
 describe('parser', () => {
     it('should parse', () => {
-        let res = processFile(code);
-        console.log(res);
+        processFile(code);
     });
 });

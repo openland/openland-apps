@@ -4,10 +4,17 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
+import com.microsoft.appcenter.distribute.Distribute;
+import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPackage;
+import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 
 import cl.json.RNSharePackage;
 
-import com.korshakov.testing.app.BuildConfig;
+import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.openland.app.BuildConfig;
 import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
@@ -56,6 +63,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
+            new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
                     new RNSharePackage(),
                     new RCTImageCapInsetPackage(),
                     new RNGestureHandlerPackage(),
@@ -68,7 +77,7 @@ public class MainApplication extends Application implements ReactApplication {
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
                     new ExtraDimensionsPackage(),
-                    new CodePush("pwOAhR07wuxVFVhCvI4X8186_rrpHyrvdnSxE", getApplicationContext(), BuildConfig.DEBUG),
+                    new CodePush("", getApplicationContext(), true),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
                     new VectorIconsPackage(),
@@ -94,5 +103,14 @@ public class MainApplication extends Application implements ReactApplication {
         super.onCreate();
         SoLoader.init(this, /* native exopackage */ false);
         Fresco.initialize(this);
+
+        // App Center
+        AppCenterReactNativeShared.configureAppCenter(this);
+        AppCenter.setEnabled(!BuildConfig.DEBUG);
+        AppCenter.start(this,
+                "310cf1a8-0d5f-4a92-8308-60c7d8c24f94",
+                Distribute.class,
+                Analytics.class,
+                Crashes.class);
     }
 }

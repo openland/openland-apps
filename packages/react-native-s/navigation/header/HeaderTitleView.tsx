@@ -32,7 +32,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontSize: 20,
         fontWeight: '700',
-        lineHeight: 56,
+        // lineHeight: 20,
+        includeFontPadding: true,
+        textAlignVertical: 'center',
         height: 56,
     } as TextStyle,
     subtitle: {
@@ -94,11 +96,12 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                     >
                         <View
                             flexDirection="row"
+                            alignItems="center"
                             flexGrow={1}
                         >
                             {!v.config.searchActive && (!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
                             {(this.props.manager.parent || this.props.page.page.startIndex !== 0 || v.config.searchActive) && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                            {v.config.searchActive && <TextInput style={{ flexGrow: 1 }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" />}
+                            {v.config.searchActive && <TextInput style={{ flexGrow: 1, fontSize: 18 }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" />}
                             {!v.config.searchActive && title}
                         </View>
                         <View flexDirection="row" alignItems="center" alignSelf="flex-end">

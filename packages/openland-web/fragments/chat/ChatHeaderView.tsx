@@ -4,7 +4,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
-import { MessagesStateContext } from 'openland-web/components/messenger/components/MessagesStateContext';
+import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
 import { RoomAddMemberModal } from './RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';

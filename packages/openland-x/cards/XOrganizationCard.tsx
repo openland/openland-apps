@@ -4,7 +4,7 @@ import { XLink } from 'openland-x/XLink';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withOrganizationPublishedAlter } from '../../openland-web/api/withOrganizationPublishedAlter';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XOverflow } from '../../openland-web/components/Incubator/XOverflow';
+import { XOverflow } from '../../openland-web/components/XOverflow';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XButton } from 'openland-x/XButton';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';

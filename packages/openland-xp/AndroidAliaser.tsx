@@ -22,7 +22,6 @@ export class AndroidAliaser extends React.PureComponent<{ width: number, height:
                             left: 0,
                             width: this.props.width,
                             height: this.props.height,
-                            zIndex: 100
                         }}
                     >
                         <ART.Group x={0} y={0}>

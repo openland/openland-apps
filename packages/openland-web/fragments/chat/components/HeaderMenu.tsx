@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
 import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
-import { XOverflow } from 'openland-web/components/Incubator/XOverflow';
+import { XOverflow } from 'openland-web/components/XOverflow';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 
 export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (

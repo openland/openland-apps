@@ -8,8 +8,8 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MessageComposeComponentDraft } from '../components/messenger/components/view/MessageComposeComponent';
-import { ConversationMessagesComponent } from '../components/messenger/components/ConversationMessagesComponent';
+import { MessageComposeComponentDraft } from './MessageComposeComponent';
+import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
 import { withUserInfo } from '../components/UserInfo';
 import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';

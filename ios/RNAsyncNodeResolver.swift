@@ -247,6 +247,10 @@ private func resolveAttributedText(spec: AsyncTextSpec, attributes: [String: Any
   
   // innerAttributes[NSLinkAttributeName]
   
+  if spec.fontSize != nil {
+    innerAttributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize!), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
+  }
+  
   for v in spec.children {
     if let s = v as? String {
       res.append(NSAttributedString(string: s, attributes: innerAttributes))

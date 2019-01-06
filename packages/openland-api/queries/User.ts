@@ -31,6 +31,7 @@ export const UserQuery = gql`
             lastSeen
             linkedin
             twitter
+            shortname
             primaryOrganization {
                 ...OrganizationShort
             }

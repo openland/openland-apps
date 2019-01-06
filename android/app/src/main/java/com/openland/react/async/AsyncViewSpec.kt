@@ -83,9 +83,9 @@ class AsyncFlexSpec(key: String, val children: Array<AsyncViewSpec>) : AsyncView
 class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
 
-    var fontSize: Float = 12.0f
+    var fontSize: Float? = null
     var lineHeight: Float? = null
-    var fontWeight: Float? = null
+    var fontWeight: String? = null
     var color: Int = Color.BLACK
     var numberOfLines: Int? = null
     var touchableKey: String? = null
@@ -259,6 +259,7 @@ private fun resolveSpec(src: JsonObject, context: ReactContext): AsyncViewSpec {
         resolveStyle(src, res.style, context)
 
         (props["fontSize"] as? Number)?.let { res.fontSize = it.toFloat() }
+        (props["fontWeight"] as? String)?.let { res.fontWeight = it }
         (props["color"] as? Number)?.let { res.color = it.toInt() }
         (props["lineHeight"] as? Number)?.let { res.lineHeight = it.toFloat() }
         if (props["touchableKey"] is String) {

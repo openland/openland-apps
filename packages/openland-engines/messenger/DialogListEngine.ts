@@ -10,7 +10,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
 import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { emoji } from 'openland-web/utils/emoji';
+import { emoji } from 'openland-y-utils/emoji';
 
 export interface DialogDataSourceItem {
     key: string;
@@ -324,7 +324,7 @@ export class DialogListEngine {
             if (
                 event.message.serviceMetadata &&
                 event.message.serviceMetadata.__typename ===
-                    'KickServiceMetadata'
+                'KickServiceMetadata'
             ) {
                 return;
             }
@@ -356,14 +356,14 @@ export class DialogListEngine {
                     title: sharedRoom
                         ? sharedRoom.title
                         : privateRoom
-                        ? privateRoom.user.name
-                        : '',
+                            ? privateRoom.user.name
+                            : '',
                     photo:
                         (sharedRoom
                             ? sharedRoom.photo
                             : privateRoom
-                            ? privateRoom.user.photo
-                            : undefined) || undefined,
+                                ? privateRoom.user.photo
+                                : undefined) || undefined,
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,
