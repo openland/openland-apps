@@ -409,7 +409,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                         '100%',
                                                                                 }}
                                                                                 height={
-                                                                                    1
+                                                                                    0.5
                                                                                 }
                                                                                 flexGrow={
                                                                                     1
@@ -420,7 +420,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                 backgroundColor={
                                                                                     XPStyles
                                                                                         .colors
-                                                                                        .selectedListItem
+                                                                                        .separator
                                                                                 }
                                                                             />
                                                                         </View>

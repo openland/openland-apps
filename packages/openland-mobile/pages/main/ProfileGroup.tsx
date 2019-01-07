@@ -169,7 +169,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                             <Image source={require('assets/ic-add.png')} />
                                                         </View>
                                                         <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
-                                                        <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={1} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.selectedListItem} />
+                                                        <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} />
 
                                                     </View>
                                                 </TouchableHighlight>

@@ -166,7 +166,7 @@ class CountryPickerComponent extends React.Component<PageProps> {
                     <ASText color="#000">+{c.phone}</ASText>
                 </ASFlex>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.selectedListItem} />
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.separator} />
                 </ASFlex>
             </ASFlex>
         ));

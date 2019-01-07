@@ -56,7 +56,7 @@ export class ChannelViewAsync extends React.PureComponent<{ item: Organization_o
                         <ASText marginTop={5} fontSize={13} lineHeight={15} height={15} color="#8a8a8f" numberOfLines={1} opacity={0.8}>{membersCount + (membersCount > 1 ? ' members' : ' member')}</ASText>
                     </ASFlex>
                     <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                        <ASFlex height={0.5} flexGrow={1} marginLeft={60} backgroundColor={XPStyles.colors.selectedListItem} />
+                        <ASFlex height={0.5} flexGrow={1} marginLeft={60} backgroundColor={XPStyles.colors.separator} />
                     </ASFlex>
                 </ASFlex>
             </ASView>

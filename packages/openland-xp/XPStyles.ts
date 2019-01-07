@@ -19,6 +19,11 @@ export const XPStyles = {
             default: '#E0E0E0',
             ios: '#EFF1F3',
             macos: '#4747EC'
+        }),
+
+        separator: Platform.select({
+            default: '#EDEDED',
+            ios: '#EFF1F3',
         })
     },
     avatars: [{

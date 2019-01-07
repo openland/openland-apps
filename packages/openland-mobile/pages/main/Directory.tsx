@@ -26,7 +26,7 @@ export class DirectoryItemComponent extends React.PureComponent<{ item: Organiza
                     <ASText fontSize={16} lineHeight={19} height={19} color="#181818" numberOfLines={1}>{this.props.item.name}</ASText>
                 </ASFlex>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.selectedListItem} />
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.separator} />
                 </ASFlex>
             </ASFlex>
         );
