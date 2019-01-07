@@ -56,6 +56,34 @@ let homeTasksItemClass = css`
         margin: 0 0 50px;
     }
 
+    i {
+        background: center center no-repeat;
+        background-size: 100% 100%;
+        margin: 0 0 25px;
+        display: block;
+        width: 80px;
+        height: 80px;
+
+        &.tasks-icon-1 {
+            background-image: url(/static/landing/gradient-icons/ic-tasks-01@2x.png);
+        }
+        &.tasks-icon-2 {
+            background-image: url(/static/landing/gradient-icons/ic-tasks-02@2x.png);
+        }
+        &.tasks-icon-3 {
+            background-image: url(/static/landing/gradient-icons/ic-tasks-03@2x.png);
+        }
+        &.tasks-icon-4 {
+            background-image: url(/static/landing/gradient-icons/ic-tasks-04@2x.png);
+        }
+        &.tasks-icon-5 {
+            background-image: url(/static/landing/gradient-icons/ic-tasks-05@2x.png);
+        }
+        &.tasks-icon-6 {
+            background-image: url(/static/landing/gradient-icons/ic-tasks-06@2x.png);
+        }
+    }
+
     span {
         font-size: 16px;
         line-height: 19px;
@@ -79,6 +107,7 @@ export const HomeTasks = () => (
             <div className={homeTasksListClass}>
                 {TasksList.map((item, index) => (
                     <div className={homeTasksItemClass}>
+                        <i className={'tasks-icon-' + (index + 1)} />
                         <span>{item}</span>
                     </div>
                 ))}
