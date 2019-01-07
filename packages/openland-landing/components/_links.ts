@@ -14,7 +14,7 @@ export const LandingLinks = {
     careers: 'https://angel.co/openland/jobs',
 
     apple: 'https://oplnd.com/ios',
-    google: 'https://oplnd.com/android_beta',
+    google: 'https://oplnd.com/android',
 };
 
 export const LandingSocials = {
