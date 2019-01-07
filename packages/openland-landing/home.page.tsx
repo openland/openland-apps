@@ -6,7 +6,7 @@ export default class HomePage extends React.Component {
     render() {
         return (
             <Page>
-                <XDocumentHead title="Home" />
+                <XDocumentHead title="Modern Messenger for Work" titleWithoutReverse={true} />
                 Home
             </Page>
         );

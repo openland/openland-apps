@@ -11,7 +11,11 @@ export default class AboutPage extends React.Component {
     render() {
         return (
             <Page>
-                <XDocumentHead title="About" />
+                <XDocumentHead
+                    title="About"
+                    titleWithoutReverse={true}
+                    description="Openland is a professional messenger designed to support all communication needs of a modern business. It can be used for fundraising, sales, recruiting, customer service, and business operations. The company is backed by 30 prominent venture investors, including Y Combinator, Gagarin Capital, Sinai Ventures, Soma Capital, Liquid 2 Ventures, and Rainfall Ventures."
+                />
                 <Container>
                     <div className={AboutStyles.root}>
                         <div className={AboutStyles.row}>
