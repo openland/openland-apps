@@ -7,7 +7,6 @@ import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput, Alert, 
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
-import { ActionButtonAndroid } from '../buttons/ActionButtonAndroid';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { HeaderTitleViewProps } from './HeaderTitleView.ios';
 
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: SDevice.statusBarHeight + SDevice.safeArea.top,
         right: 0,
-        left: 0
+        left: 0,
     } as ViewStyle,
     rootFirst: {
         paddingLeft: 16
@@ -30,8 +29,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     title: {
         textAlign: 'left',
-        fontSize: 20,
-        fontWeight: '700',
+        fontSize: 22,
+        fontWeight: '600',
         // lineHeight: 20,
         includeFontPadding: true,
         textAlignVertical: 'center',

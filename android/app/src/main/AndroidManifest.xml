@@ -118,7 +118,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/primary" />
+            android:resource="@color/notification_color" />
 
     </application>
 
