@@ -25,7 +25,7 @@ export class SHeaderButton extends React.PureComponent<{ title?: string, icon?: 
         if (this.props.title) {
             if (Platform.OS === 'android') {
                 return (
-                    <ActionButtonAndroid icon={this.props.icon} title={this.props.title} onPress={this.handlePress} tintColor={style.accentColor} />
+                    <ActionButtonAndroid icon={this.props.icon} title={this.props.title} onPress={this.handlePress} tintColor={style.textColor} />
                 );
             } else if (Platform.OS === 'ios') {
                 return (
