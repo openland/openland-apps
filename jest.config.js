@@ -81,6 +81,8 @@ module.exports = {
         'openland-x': '<rootDir>/packages/openland-x',
         'openland-icons/(.*)': '<rootDir>/packages/openland-icons/$1',
         'openland-icons': '<rootDir>/packages/openland-icons',
+        'openland-landing/(.*)': '<rootDir>/packages/openland-landing/$1',
+        'openland-landing': '<rootDir>/packages/openland-landing',
         'openland-web/(.*)': '<rootDir>/packages/openland-web/$1',
         'openland-web': '<rootDir>/packages/openland-web',
     },

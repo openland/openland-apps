@@ -60,7 +60,8 @@
             "react-native-s": ["react-native-s"],
             "openland-xs": ["openland-xs"],
             "react-native-auth0-s": ["react-native-auth0-s"],
-            "openland-icons": ["openland-icons"]
+            "openland-icons": ["openland-icons"],
+            "openland-landing": ["openland-landing"]
         },
         "importHelpers": true
     },
@@ -115,6 +116,7 @@
         "./packages/openland-shared",
         "./packages/openland-xs",
         "./packages/openland-icons",
+        "./packages/openland-landing",
         "./packages/react-native-async-view",
         "./packages/react-native-fast-navigation",
         "./packages/react-native-s",
