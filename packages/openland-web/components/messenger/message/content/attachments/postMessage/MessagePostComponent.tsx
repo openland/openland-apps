@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import Glamorous from 'glamorous';
 import {
     MessageFull_alphaAttachments,
     MessageFull_alphaButtons,
@@ -11,7 +10,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { XButton } from 'openland-x/XButton';
-import { XLink } from 'openland-x/XLink';
 import { XMutation } from 'openland-x/XMutation';
 import { MessageTextComponent } from '../../MessageTextComponent';
 import { niceBytes } from '../../MessageFileComponent';
@@ -28,40 +26,33 @@ const PostTitle = css`
     overflow-wrap: break-word;
 `;
 
-const FilesWrapper = Glamorous(XVertical)({
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderTop: '1px solid #ececec',
-});
+const FileItem = css`
+    opacity: 0.5;
+    font-size: 13px;
+    line-height: 1.54;
+    font-weight: 500;
+    color: #000;
+    &:hover {
+        text-decoration: none;
+        & .icon {
+            opacity: 0.5;
+        }
+        opacity: 1;
+        color: #1790ff;
+    }
+    & span {
+        opacity: 0.6;
+    }
+`;
 
-const FileItem = Glamorous(XLink)({
-    opacity: 0.5,
-    fontSize: 13,
-    lineHeight: 1.54,
-    fontWeight: 500,
-    color: '#000',
-    '&:hover': {
-        '& .icon': {
-            opacity: 0.5,
-        },
-        opacity: 1,
-        color: '#1790ff',
-    },
-    '& span': {
-        opacity: 0.6,
-    },
-});
-
-const FileImage = Glamorous.div({
-    width: 11,
-    height: 14,
-    flexShrink: 0,
-    backgroundImage: "url('/static/X/file.svg')",
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-});
+const FileImage = css`
+    width: 11px;
+    height: 14px;
+    flex-shrink: 0;
+    background-image: url(/static/X/file.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+`;
 
 const CoverWrapper = css`
     border-radius: 6px;
@@ -73,6 +64,10 @@ const CoverWrapper = css`
     & > img {
         display: block;
     }
+`;
+
+const RevertIcon = css`
+    transform: rotate(180deg);
 `;
 
 const RespondPost = withRespondPostMessage(props => (
@@ -97,17 +92,6 @@ const RespondPost = withRespondPostMessage(props => (
     userId: string;
 }>;
 
-const ShowMore = Glamorous(XHorizontal)<{ active: boolean }>(props => ({
-    paddingTop: 12,
-    cursor: 'pointer',
-    fontSize: 13,
-    lineHeight: 1.54,
-    color: '#1790ff',
-    '& svg': {
-        transform: `rotate(${props.active ? '0' : '180deg'})`,
-    },
-}));
-
 interface MessagePostComponentProps {
     messageId: string;
     userId: string;
@@ -127,7 +111,7 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
 
     const textTrimmer = () => {
         trimText(!showMore);
-    }
+    };
 
     let { reactions } = props;
     let meRespond: any[] | boolean = reactions.filter(
@@ -211,16 +195,22 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                                 isService={false}
                             />
                             {moreButton && (
-                                <ShowMore
+                                <XView
                                     alignSelf="flex-start"
                                     alignItems="center"
-                                    separator={3}
+                                    flexDirection="row"
+                                    paddingTop={12}
+                                    cursor="pointer"
+                                    fontSize={12}
+                                    lineHeight={1.54}
+                                    color="#1790ff"
                                     onClick={textTrimmer}
-                                    active={showMore}
                                 >
-                                    <MoreIcon />
-                                    <div>{showMore ? 'Show more' : 'Show less'}</div>
-                                </ShowMore>
+                                    <MoreIcon className={showMore ? '' : RevertIcon}/>
+                                    <XView marginLeft={6}>
+                                        {showMore ? 'Show more' : 'Show less'}
+                                    </XView>
+                                </XView>
                             )}
                         </XVertical>
                         {cover && (cover as MessageFull_alphaAttachments).fileId && (
@@ -240,32 +230,46 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                     </XHorizontal>
                 </XView>
                 {moreFiles && moreFiles.length > 0 && (
-                    <FilesWrapper separator={3}>
-                        {moreFiles.map(
-                            i =>
-                                i.fileMetadata && (
-                                    <FileItem
-                                        key={'file' + i.fileId}
-                                        href={
-                                            'https://ucarecdn.com/' +
-                                            i.fileId +
-                                            '/' +
-                                            (i.fileMetadata.name ? i.fileMetadata.name!! : '')
-                                        }
-                                    >
-                                        <XHorizontal separator={4} alignItems="center">
-                                            <FileImage className="icon" />
-                                            <XHorizontal alignItems="center" separator={2}>
-                                                <div>
-                                                    {i.fileMetadata.name} <span>•</span>{' '}
-                                                    {niceBytes(Number(i.fileMetadata.size))}
-                                                </div>
-                                            </XHorizontal>
-                                        </XHorizontal>
-                                    </FileItem>
-                                ),
-                        )}
-                    </FilesWrapper>
+                    <XView>
+                        <XView
+                            height={1}
+                            backgroundColor="#ececec"
+                            flexDirection="column"
+                        />
+                        <XView
+                            paddingVertical={10}
+                            paddingHorizontal={20}
+                        >
+                            <XVertical separator={3}>
+                                {moreFiles.map(
+                                    i =>
+                                        i.fileMetadata && (
+                                            <a
+                                                className={FileItem}
+                                                key={'file' + i.fileId}
+                                                target="_blank"
+                                                href={
+                                                    'https://ucarecdn.com/' +
+                                                    i.fileId +
+                                                    '/' +
+                                                    (i.fileMetadata.name ? i.fileMetadata.name!! : '')
+                                                }
+                                            >
+                                                <XHorizontal separator={4} alignItems="center">
+                                                    <div className={`${FileImage} icon`}/>
+                                                    <XHorizontal alignItems="center" separator={2}>
+                                                        <div>
+                                                            {i.fileMetadata.name} <span>•</span>{' '}
+                                                            {niceBytes(Number(i.fileMetadata.size))}
+                                                        </div>
+                                                    </XHorizontal>
+                                                </XHorizontal>
+                                            </a>
+                                        ),
+                                )}
+                            </XVertical>
+                        </XView>
+                    </XView>
                 )}
             </XView>
             {!props.privateConversation && (
