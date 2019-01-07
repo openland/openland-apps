@@ -16,7 +16,7 @@ export const XPStyles = {
 
         /** Selected List Item color */
         selectedListItem: Platform.select({
-            default: '#f8f8fb',
+            default: '#E0E0E0',
             ios: '#EFF1F3',
             macos: '#4747EC'
         })
