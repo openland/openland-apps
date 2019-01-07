@@ -50,10 +50,10 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
         res.background(NinePatchBitmapFactory.createNinePathWithCapInsets(
                 context.resources,
                 style.backgroundPatch!!.source,
-                (scale * style.backgroundPatch!!.top).toInt(),
-                (scale * style.backgroundPatch!!.left).toInt(),
-                style.backgroundPatch!!.source!!.height - (scale * style.backgroundPatch!!.bottom).toInt(),
-                style.backgroundPatch!!.source!!.width - (scale * style.backgroundPatch!!.right).toInt(),
+                (style.backgroundPatch!!.top).toInt(),
+                (style.backgroundPatch!!.left).toInt(),
+                style.backgroundPatch!!.source!!.height - (style.backgroundPatch!!.bottom).toInt(),
+                style.backgroundPatch!!.source!!.width - (style.backgroundPatch!!.right).toInt(),
                 null))
     } else {
         style.backgroundColor?.let {
