@@ -14,7 +14,7 @@ export class HeaderTitleViewCoordinator {
         this.key = page.key;
         this.page = page;
         this.coordinator = coordinator;
-        this.headerView = new SAnimatedShadowView('header--' + this.key);
+        this.headerView = new SAnimatedShadowView('header--' + this.key, { opacity: 0 });
     }
 
     updateState = (progress: number) => {
