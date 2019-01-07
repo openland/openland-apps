@@ -256,7 +256,7 @@ const MobileApps = () => (
             </XView>
             <XView
                 as="a"
-                href="https://oplnd.com/android_beta"
+                href="https://oplnd.com/android"
                 target="_blank"
                 opacity={0.5}
                 hoverOpacity={0.8}
