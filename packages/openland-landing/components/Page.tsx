@@ -25,6 +25,7 @@ export const Page = (props: PageProps) => (
         width="100vw"
         minHeight="100vh"
         backgroundColor="#ffffff"
+        color="#1f3449"
     >
         <Header />
         {props.withBorder && <div className={pageBorderClass} />}

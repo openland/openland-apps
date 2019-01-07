@@ -140,7 +140,6 @@ let contentBoxClass = css`
     padding-bottom: 24px;
     font-size: 15px;
     line-height: 22px;
-    color: #1f3449;
     width: calc(100% - 248px);
 
     @media (max-width: 767px) {
