@@ -28,7 +28,7 @@ export class HeaderCoordinator {
         this.isModal = isModal;
         this.getSize = size;
         this.background = new SAnimatedShadowView('header-background-' + key, { translateX: -MAX_SIZE });
-        this.hairline = new SAnimatedShadowView('header-hairline-' + key);
+        this.hairline = new SAnimatedShadowView('header-hairline-' + key, { translateY: 0, opacity: 1 });
         this.container = new SAnimatedShadowView('header-container-' + key);
     }
 
@@ -227,7 +227,7 @@ export class HeaderCoordinator {
                 this.hairline.opacity = op;
             }
         } else {
-            this.hairline.translateX = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
+            this.hairline.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
             this.hairline.opacity = 1;
         }
 
