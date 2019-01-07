@@ -1,5 +1,4 @@
 #import "AppDelegate.h"
-#import <CodePush/CodePush.h>
 #import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
@@ -28,16 +27,7 @@
    * Bundle location
    */
   
-  NSURL *jsCodeLocation;
-  #if TARGET_IPHONE_SIMULATOR
-    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  #else
-    #ifdef DEBUG
-      jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-    #else
-      jsCodeLocation = [CodePush bundleURL];
-    #endif
-  #endif
+  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
   /*
    * Start Keyboard Manager

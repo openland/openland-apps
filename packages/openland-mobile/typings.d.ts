@@ -9,6 +9,14 @@ declare module 'rn-fetch-blob' {
     export default instance;
 }
 
+declare module 'react-native-restart' {
+    const instance: {
+        Restart: () => void;
+    }
+
+    export default instance;
+}
+
 declare module 'react-native-view-overflow' {
     class ViewOverflow extends React.Component<any> { }
     export default ViewOverflow;

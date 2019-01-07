@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
@@ -50,11 +51,6 @@ public class MainApplication extends Application implements ReactApplication {
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
         @Override
-        protected String getJSBundleFile() {
-            return CodePush.getJSBundleFile("main.jsbundle");
-        }
-
-        @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
         }
@@ -63,6 +59,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new ReactNativeRestartPackage(),
             new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
             new AppCenterReactNativeAnalyticsPackage(MainApplication.this, getResources().getString(R.string.appCenterAnalytics_whenToEnableAnalytics)),
                     new RNSharePackage(),
@@ -106,11 +103,6 @@ public class MainApplication extends Application implements ReactApplication {
 
         // App Center
         AppCenterReactNativeShared.configureAppCenter(this);
-        AppCenter.setEnabled(!BuildConfig.DEBUG);
-        AppCenter.start(this,
-                "310cf1a8-0d5f-4a92-8308-60c7d8c24f94",
-                Distribute.class,
-                Analytics.class,
-                Crashes.class);
+        AppCenter.start(Distribute.class);
     }
 }

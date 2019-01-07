@@ -183,6 +183,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-restart')
     def appCenterSdkVersion = '1.11.0'
     implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
     compile project(':appcenter-crashes')

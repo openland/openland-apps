@@ -11,12 +11,14 @@ import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { XPStyles } from 'openland-xp/XPStyles';
+import RNRestart from 'react-native-restart';
 
 class SettingsComponent extends React.Component<PageProps> {
 
     handleLogout = () => {
         (async () => {
             AsyncStorage.clear();
+            RNRestart.Restart();
         })();
     }
 

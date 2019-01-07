@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator, Dimensions } from 'react-native';
 import { Auth0Client } from '../../index';
-import CodePush from 'react-native-code-push';
+import RNRestart from 'react-native-restart';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
@@ -98,7 +98,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 let body = await uploaded.json();
                 if (body.ok) {
                     await AsyncStorage.setItem('openland-token', body.token);
-                    CodePush.restartApp();
+                    RNRestart.Restart();
                     // let client = buildNativeClient(body.token);
                     // let meq = await client.client.query<any>({
                     //     query: AccountQuery.document
