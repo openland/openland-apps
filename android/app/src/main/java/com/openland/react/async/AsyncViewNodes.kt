@@ -50,10 +50,10 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
         res.background(NinePatchBitmapFactory.createNinePathWithCapInsets(
                 context.resources,
                 style.backgroundPatch!!.source,
-                (style.backgroundPatch!!.top).toInt(),
-                (style.backgroundPatch!!.left).toInt(),
-                style.backgroundPatch!!.source!!.height - (style.backgroundPatch!!.bottom).toInt(),
-                style.backgroundPatch!!.source!!.width - (style.backgroundPatch!!.right).toInt(),
+                (scale * style.backgroundPatch!!.top).toInt(),
+                (scale * style.backgroundPatch!!.left).toInt(),
+                style.backgroundPatch!!.source!!.height - (scale * style.backgroundPatch!!.bottom).toInt(),
+                style.backgroundPatch!!.source!!.width - (scale * style.backgroundPatch!!.right).toInt(),
                 null))
     } else {
         style.backgroundColor?.let {
@@ -74,10 +74,11 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
                 .spec(spec)
                 .reactContext(reactContext)
                 .build()
-        is AsyncTextSpec -> { return LithoText.create(context)
-                .spec(spec)
-                .reactContext(reactContext)
-                .build()
+        is AsyncTextSpec -> {
+            return LithoText.create(context)
+                    .spec(spec)
+                    .reactContext(reactContext)
+                    .build()
         }
         is AsyncImageSpec -> {
             val controller = Fresco.newDraweeControllerBuilder()
