@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput, Alert } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput, Alert, BackHandler } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -74,6 +74,22 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                 nextProps.page.config.searchChanged(nextProps.page.config.searchContext!.value);
             }
         }
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        if (this.props.page.config.searchActive) {
+            this.props.page.config.searchClosed!();
+            return true;
+        }
+        return false;
     }
 
     render() {
