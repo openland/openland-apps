@@ -175,6 +175,7 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
         val patch = AsyncPatch()
         var bitmap: Bitmap? = null
         val url = it["source"] as String
+        var isResource = false
         try {
             var resUrl = ImageSource(context, url).uri.toString()
             Log.d("SView", "Image source: $resUrl, from $url")
@@ -182,6 +183,7 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
                 val loaded = URL(resUrl).openStream()
                 bitmap = BitmapFactory.decodeStream(loaded)
             } else {
+                isResource = true
                 bitmap = BitmapFactory.decodeResource(context.resources, helper.getResourceDrawableId(context, url))!!
             }
         } catch (e: IOException) {
@@ -189,8 +191,13 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
             e.printStackTrace()
         }
 
-        patch.scale = (it["scale"] as Number).toFloat()
+        if (isResource && bitmap != null) {
+            patch.scale = bitmap.density / 160.0f
+        } else {
+            patch.scale = (it["scale"] as Number).toFloat()
+        }
         patch.source = bitmap
+
         // res.background(BitmapDrawable(context.resources, bitmap))
         // patch.source = it["source"] as String
         patch.left = (it["left"] as Number).toFloat()
