@@ -45,7 +45,7 @@ export class AsyncMessageTextView extends React.PureComponent<{ message: DataSou
         let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
         let layout: { width: number, height: number } | undefined = undefined;
         let resolved: any;
-        let capInsets = { left: 2, right: 0, top: 1, bottom: 1 };
+        let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
         if (this.props.message.urlAugmentation) {
             let maxSize = Platform.select({
                 default: 400,
