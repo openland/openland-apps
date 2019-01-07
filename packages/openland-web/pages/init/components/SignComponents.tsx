@@ -673,7 +673,7 @@ export const InviteInfoInner = ({
             <SignInInviteTitle>Welcome to Openland</SignInInviteTitle>
             <SubTitle
                 style={{
-                    width: 535,
+                    maxWidth: 535,
                 }}
             >
                 <p>
