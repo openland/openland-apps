@@ -1,6 +1,7 @@
 package com.openland.react.async
 
 import android.content.res.Resources
+import android.net.Uri
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
@@ -18,9 +19,11 @@ import com.openland.react.async.views.CustomLineHeightSpan
 import com.openland.react.async.views.LithoFlex
 import com.openland.react.async.views.LithoText
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
+import dk.madslee.imageCapInsets.utils.RCTResourceDrawableIdHelper
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
     var res = component
+    val helper = RCTResourceDrawableIdHelper()
 
     style.width?.let { res.widthDip(it) }
     style.height?.let { res.heightDip(it) }
@@ -81,8 +84,12 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
                     .build()
         }
         is AsyncImageSpec -> {
+            var uri = spec.url
+            if(uri !== null && uri.startsWith("assets/")){
+                uri = helper.getResourceDrawableUri(context, spec.url).toString()
+            }
             val controller = Fresco.newDraweeControllerBuilder()
-                    .setUri(spec.url)
+                    .setUri(uri)
                     .build()
 
             var res = FrescoImage.create(context)
