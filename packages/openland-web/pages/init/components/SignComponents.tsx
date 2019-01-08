@@ -104,40 +104,40 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
     props =>
         props.rounded
             ? {
-                height: 44,
-                borderRadius: 20,
-                backgroundColor: props.primary ? '#1790ff' : '#ffffff',
-                color: props.primary ? '#ffffff' : '#334562',
-                border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
-                '&:hover': {
-                    color: props.primary ? '#ffffff' : '#334562',
-                    backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
-                },
-                '&:active': {
-                    color: props.primary ? '#ffffff' : '#1790ff',
-                    backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
-                },
-                '& span': {
-                    fontSize: 16,
-                    fontWeight: 500,
-                    letterSpacing: -0.4,
-                    lineHeight: '16px',
-                },
-                '& svg': {
-                    marginRight: 9,
-                    marginLeft: -2,
-                },
-                '&.email': {
-                    '& svg': {
-                        margin: '1px 7px -1px -2px',
-                    },
-                    '&:active': {
-                        '& svg path:first-child': {
-                            fill: '#1790ff',
-                        },
-                    },
-                },
-            }
+                  height: 44,
+                  borderRadius: 20,
+                  backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+                  color: props.primary ? '#ffffff !important' : '#334562 !important',
+                  border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
+                  '&:hover': {
+                      color: props.primary ? '#ffffff' : '#334562',
+                      backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
+                  },
+                  '&:active': {
+                      color: props.primary ? '#ffffff' : '#1790ff !important',
+                      backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
+                  },
+                  '& span': {
+                      fontSize: 16,
+                      fontWeight: 500,
+                      letterSpacing: -0.4,
+                      lineHeight: '16px',
+                  },
+                  '& svg': {
+                      marginRight: 9,
+                      marginLeft: -2,
+                  },
+                  '&.email': {
+                      '& svg': {
+                          margin: '1px 7px -1px -2px',
+                      },
+                      '&:active': {
+                          '& svg path:first-child': {
+                              fill: '#1790ff',
+                          },
+                      },
+                  },
+              }
             : {},
 ]);
 
@@ -615,11 +615,17 @@ const Separator = (props: { marginTop?: number; marginBottom?: number }) => (
     </SeparatorStyle>
 );
 
-const GoogleButton = (props: { onClick: any; rounded?: boolean; text: string }) => {
+export const GoogleButton = (props: {
+    onClick?: any;
+    path?: string;
+    rounded?: boolean;
+    text: string;
+}) => {
     return (
         <ImgButton
             dataTestId="google-button"
             onClick={props.onClick}
+            path={props.path}
             primary={true}
             rounded={props.rounded}
         >
@@ -642,11 +648,17 @@ const GoogleButton = (props: { onClick: any; rounded?: boolean; text: string }) 
     );
 };
 
-const EmailButton = (props: { onClick: any; rounded?: boolean; text: string }) => {
+export const EmailButton = (props: {
+    onClick?: any;
+    path?: string;
+    rounded?: boolean;
+    text: string;
+}) => {
     return (
         <ImgButton
             dataTestId="email-button"
             onClick={props.onClick}
+            path={props.path}
             className="email"
             rounded={props.rounded}
         >

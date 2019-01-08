@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Container } from '../Container';
 import { css } from 'linaria';
+import { HomeForm } from './HomeForm';
 
 let homeIntroRootClass = css`
     padding: 79px 0 0;
@@ -103,6 +104,7 @@ export const HomeIntro = () => (
                 <br className={homeIntroForDesktop} /> all communication needs of&nbsp;a&nbsp;modern
                 business
             </div>
+            <HomeForm />
             <div className={homeIntroLabelClass}>
                 Openland is&nbsp;in&nbsp;limited preview release.
                 <br className={homeIntroForMobile} /> Sign up&nbsp;to&nbsp;get your invitation.
