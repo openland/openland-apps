@@ -21,7 +21,7 @@ interface HeaderAppProps {
 export const HeaderApp = (props: HeaderAppProps) => (
     <XView
         as="a"
-        path={AppPaths[props.system]}
+        href={AppPaths[props.system]}
         target="_blank"
         alignItems="center"
         justifyContent="center"
