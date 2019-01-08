@@ -83,7 +83,7 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
         }
         is AsyncImageSpec -> {
             var uri = spec.url
-            if(uri !== null && uri.startsWith("assets/")){
+            if(uri !== null && !(uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://"))){
                 uri = helper.getResourceDrawableUri(context, spec.url).toString()
             }
             val controller = Fresco.newDraweeControllerBuilder()
