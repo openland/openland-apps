@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { StyleSheet, ViewStyle, TextStyle, View, Text, Image, TextInput, Alert, BackHandler } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -94,10 +94,10 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
     render() {
         let v = this.props.page;
         console.warn('fooo', this.props.manager.parent, this.props.page.page.startIndex);
-        let title = <Text style={[styles.title, { color: this.props.style.textColor }]}>{this.props.page.config.title}</Text>;
+        let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
         title = (v.config.titleView && v.config.titleView()) || title;
         return (
-            <SAnimated.View name={'header--' + this.props.page.page.key} style={[styles.root, this.props.page.page.startIndex === 0 && styles.rootFirst]} pointerEvents={this.props.current ? 'box-none' : 'none'}>
+            <SAnimated.View name={'header--' + this.props.page.page.key} style={styles.root} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                 <View style={styles.titleContainer} pointerEvents="box-none">
                     <View
                         style={{
