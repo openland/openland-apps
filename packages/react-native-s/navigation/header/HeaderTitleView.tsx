@@ -121,7 +121,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                         </View>
                         <View flexDirection="row" alignItems="center" alignSelf="flex-end">
                             {v.config.search && !v.config.searchActive && <SHeaderButton title="Search" icon={require('assets/ic-search-a.png')} onPress={v.config.searchPress} style={this.props.style} />}
-                            {v.config.buttons && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
+                            {v.config.buttons && !v.config.searchActive && v.config.buttons.map((b) => (<View key={'btn-' + b.id}>{b.render(this.props.style)}</View>))}
                         </View>
 
                     </View>
