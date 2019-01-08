@@ -13,11 +13,11 @@ import { InitTexts } from './_text';
 const Img = Glamorous.img({
     display: 'block',
     objectFit: 'contain',
-    width: 520,
+    maxWidth: 520,
     height: 216,
     marginBottom: 64,
     '@media (max-height: 700px)': {
-        width: 500,
+        maxWidth: 500,
     },
 });
 
@@ -25,17 +25,18 @@ const InfoText = Glamorous.div({
     maxWidth: 426,
     margin: 'auto',
     marginBottom: 12,
-    fontFamily: 'SFProText-Regular',
     fontSize: 14,
     lineHeight: 1.53,
     color: '#000',
     opacity: 0.8,
+    textAlign: 'center'
 });
 
 const MailText = Glamorous.span({
-    fontFamily: 'SFProText-Semibold',
     fontSize: 13,
     marginBottom: 32,
+    display: 'flex',
+    justifyContent: 'center'
 });
 
 const QuestionsSpan = Glamorous.span({

@@ -18,6 +18,8 @@ import IcInfo from 'openland-icons/ic-info.svg';
 import IcAdd from 'openland-icons/ic-add-medium-active.svg';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
+import { XAvatar } from 'openland-x/XAvatar';
+import { XText } from 'openland-x/XText';
 
 function validateEmail(email: string) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -25,7 +27,6 @@ function validateEmail(email: string) {
 }
 
 export const SubTitle = Glamorous.div({
-    fontFamily: 'SFProText-Regular',
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'normal',
@@ -36,14 +37,15 @@ export const SubTitle = Glamorous.div({
     marginTop: 0,
     letterSpacing: -0.1,
 });
+
 interface ButtonProps extends XLinkProps {
     primary?: boolean;
     children: any;
     rounded?: boolean;
     dataTestId?: string;
 }
+
 const ErrorText = Glamorous.div({
-    fontFamily: 'SFProText-Regular',
     fontSize: '12px',
     color: '#d75454',
     marginLeft: '17px',
@@ -102,40 +104,40 @@ const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>(
     props =>
         props.rounded
             ? {
-                  height: 44,
-                  borderRadius: 20,
-                  backgroundColor: props.primary ? '#1790ff' : '#ffffff',
-                  color: props.primary ? '#ffffff' : '#334562',
-                  border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
-                  '&:hover': {
-                      color: props.primary ? '#ffffff' : '#334562',
-                      backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
-                  },
-                  '&:active': {
-                      color: props.primary ? '#ffffff' : '#1790ff',
-                      backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
-                  },
-                  '& span': {
-                      fontSize: 16,
-                      fontWeight: 500,
-                      letterSpacing: -0.4,
-                      lineHeight: '16px',
-                  },
-                  '& svg': {
-                      marginRight: 9,
-                      marginLeft: -2,
-                  },
-                  '&.email': {
-                      '& svg': {
-                          margin: '1px 7px -1px -2px',
-                      },
-                      '&:active': {
-                          '& svg path:first-child': {
-                              fill: '#1790ff',
-                          },
-                      },
-                  },
-              }
+                height: 44,
+                borderRadius: 20,
+                backgroundColor: props.primary ? '#1790ff' : '#ffffff',
+                color: props.primary ? '#ffffff' : '#334562',
+                border: props.primary ? 'solid 1px transparent' : 'solid 1px #dcdee4',
+                '&:hover': {
+                    color: props.primary ? '#ffffff' : '#334562',
+                    backgroundColor: props.primary ? '#45a6ff' : '#f3f3f5',
+                },
+                '&:active': {
+                    color: props.primary ? '#ffffff' : '#1790ff',
+                    backgroundColor: props.primary ? '#117fe4' : 'rgba(23, 144, 255, 0.05)',
+                },
+                '& span': {
+                    fontSize: 16,
+                    fontWeight: 500,
+                    letterSpacing: -0.4,
+                    lineHeight: '16px',
+                },
+                '& svg': {
+                    marginRight: 9,
+                    marginLeft: -2,
+                },
+                '&.email': {
+                    '& svg': {
+                        margin: '1px 7px -1px -2px',
+                    },
+                    '&:active': {
+                        '& svg path:first-child': {
+                            fill: '#1790ff',
+                        },
+                    },
+                },
+            }
             : {},
 ]);
 
@@ -179,6 +181,12 @@ const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
         color: '#121e2b',
         paddingTop: roomView ? 64 : 0,
         paddingBottom: 9,
+        '@media(max-width: 1200px)': {
+            paddingTop: 40,
+        },
+        '@media(max-width: 500px)': {
+            paddingTop: roomView ? 25 : 0,
+        },
     };
 });
 
@@ -235,14 +243,14 @@ const FooterLink = Glamorous(XLink)({
     textAlign: 'center',
     color: '#334562',
     '&:hover': {
-        textDecoration: 'none'
-    }
+        textDecoration: 'none',
+    },
 });
 
 const Logo = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
-    backgroundImage: "url('/static/X/signup/logo-2.svg')",
+    backgroundImage: 'url(\'/static/X/signup/logo-2.svg\')',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     width: 145,
@@ -265,7 +273,7 @@ const SignupStyled = Glamorous.span({
     lineHeight: 1.5,
     letterSpacing: 0.5,
     color: '#1f3449',
-    '@media (max-width: 400px)': {
+    '@media (max-width: 500px)': {
         textAlign: 'center',
         marginBottom: 5,
     },
@@ -279,9 +287,9 @@ const SignupButton = Glamorous(XLink)({
     marginLeft: 5,
     '&:hover': {
         color: '#1f3449',
-        textDecoration: 'none'
+        textDecoration: 'none',
     },
-    '@media (max-width: 400px)': {
+    '@media (max-width: 500px)': {
         marginLeft: 0,
     },
 });
@@ -290,7 +298,7 @@ const SignupContainer = Glamorous.div({
     display: 'flex',
     alignItems: 'center',
     paddingTop: 10,
-    '@media (max-width: 400px)': {
+    '@media (max-width: 500px)': {
         flexDirection: 'column',
     },
 });
@@ -303,7 +311,7 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps) => (
     <HeaderStyled>
-        <Logo href="https://openland.com" />
+        <Logo href="https://openland.com"/>
         <SignupContainer>
             <SignupStyled>{props.text}</SignupStyled>
             <SignupButton path={props.path}>{props.linkText}</SignupButton>
@@ -333,11 +341,11 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
         ...(pageMode === 'CreateProfile'
             ? { margin: 'auto' }
             : {
-                  position: 'relative',
-                  marginRight: 'auto',
-                  marginLeft: 'auto',
-                  height: '100%',
-              }),
+                position: 'relative',
+                marginRight: 'auto',
+                marginLeft: 'auto',
+                height: '100%',
+            }),
         '@media(max-width: 530px)': {
             width: '100%',
             maxWidth: 442,
@@ -361,7 +369,7 @@ export const WebSignUpContainer = React.memo<SignContainerProps>(props => {
     return (
         <RootContainer>
             <LeftContainer>
-                <Header text={props.text} path={props.path} linkText={props.linkText} />
+                <Header text={props.text} path={props.path} linkText={props.linkText}/>
                 <MainContent pageMode={props.pageMode}>
                     <MainContentInner pageMode={props.pageMode}>{props.children}</MainContentInner>
                 </MainContent>
@@ -397,9 +405,15 @@ const ButtonsWrapper = Glamorous.div<{
 }>(props => ({
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
-    width: props.width,
+    maxWidth: props.width,
     marginLeft: props.width ? 'auto' : undefined,
     marginRight: props.width ? 'auto' : undefined,
+    '@media(max-width: 1300px)': {
+        marginBottom: props.marginBottom !== undefined ? 40 : undefined,
+    },
+    '@media(max-width: 500px)': {
+        marginBottom: props.marginBottom !== undefined ? 25 : undefined,
+    },
 }));
 
 const RoomSignupWrapper = Glamorous.div({
@@ -409,7 +423,14 @@ const RoomSignupWrapper = Glamorous.div({
     backgroundSize: 'cover',
     height: '100vh',
     width: '100%',
-    minWidth: 670,
+    // minWidth: 670,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    paddingLeft: 20,
+    paddingRight: 20,
+    '@media(max-width: 480px)': {},
 });
 
 const RoomToggler = Glamorous.div({
@@ -418,6 +439,10 @@ const RoomToggler = Glamorous.div({
     right: 37,
     display: 'flex',
     color: '#ffffff',
+    '@media(max-width: 500px)': {
+        top: 15,
+        right: 20,
+    },
 });
 
 const RoomTogglerText = Glamorous.div({
@@ -444,11 +469,8 @@ const RoomSignupBox = Glamorous.div({
     background: '#ffffff',
     borderRadius: 10,
     overflow: 'hidden',
-    width: 650,
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    maxWidth: 650,
+    width: '100%',
 });
 
 const RoomSignupHeader = Glamorous.div<{
@@ -465,54 +487,61 @@ const RoomSignupHeader = Glamorous.div<{
             bottom: 0,
             left: 0,
         },
+        '@media(max-width: 500px)': {
+            height: 80,
+        },
     },
     props =>
         props.headerStyle === 'signin'
             ? {
-                  backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                  },
-              }
+                backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
+                '&:before': {
+                    background: 'url(/static/X/signup/header-sign.png) no-repeat',
+                    backgroundImage:
+                        '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
+                    backgroundSize: '100% auto',
+                    backgroundPositionY: 'center',
+                },
+            }
             : {},
     props =>
         props.headerStyle === 'signup'
             ? {
-                  backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                  },
-              }
+                backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
+                '&:before': {
+                    background: 'url(/static/X/signup/header-sign.png) no-repeat',
+                    backgroundImage:
+                        '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
+                    backgroundSize: '100% auto',
+                    backgroundPositionY: 'center',
+                },
+            }
             : {},
     props =>
         props.headerStyle === 'profile'
             ? {
-                  backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-profile.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                  },
-              }
+                backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
+                '&:before': {
+                    background: 'url(/static/X/signup/header-profile.png) no-repeat',
+                    backgroundImage:
+                        '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
+                    backgroundSize: '100% auto',
+                    backgroundPositionY: 'center',
+                },
+            }
             : {},
     props =>
         props.headerStyle === 'organization'
             ? {
-                  backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
-                  '&:before': {
-                      background: 'url(/static/X/signup/header-organization.png) no-repeat',
-                      backgroundImage:
-                          '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
-                      backgroundSize: '100% auto',
-                  },
-              }
+                backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
+                '&:before': {
+                    background: 'url(/static/X/signup/header-organization.png) no-repeat',
+                    backgroundImage:
+                        '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
+                    backgroundSize: '100% auto',
+                    backgroundPositionY: 'center',
+                },
+            }
             : {},
 ]);
 
@@ -535,7 +564,7 @@ export const RoomSignupContainer = React.memo<RoomSignupContainerProps>(props =>
                 </RoomToggler>
             )}
             <RoomSignupBox>
-                <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
+                <RoomSignupHeader headerStyle={props.headerStyle || 'signin'}/>
                 {props.children}
             </RoomSignupBox>
         </RoomSignupWrapper>
@@ -627,7 +656,7 @@ const EmailButton = (props: { onClick: any; rounded?: boolean; text: string }) =
                         fill="#ADB5C0"
                         d="M11.409 9.23c-1.038 0-1.665.89-1.665 2.373 0 1.482.616 2.372 1.665 2.372s1.676-.901 1.676-2.372c0-1.472-.638-2.373-1.676-2.373zM11.762 2C17.225 2 21 5.41 21 10.508c0 3.57-1.745 5.816-4.585 5.816-1.47 0-2.531-.627-2.84-1.722h-.193c-.468 1.14-1.369 1.734-2.68 1.734-2.372 0-3.946-1.916-3.946-4.813 0-2.771 1.517-4.642 3.763-4.642 1.243 0 2.236.605 2.692 1.62h.194V7.155h2.611v5.793c0 .799.354 1.29.992 1.29.993 0 1.643-1.301 1.643-3.456 0-4.14-2.726-6.775-6.923-6.775-4.368 0-7.379 3.068-7.379 7.561 0 4.608 3.091 7.38 7.847 7.38 1.06 0 2.144-.138 2.737-.32v2.03c-.821.217-1.882.342-2.977.342C6.06 21 2 17.282 2 11.511 2 5.878 6.003 2 11.762 2z"
                     />
-                    <path d="M0 0h24v24H0z" />
+                    <path d="M0 0h24v24H0z"/>
                 </g>
             </svg>
             <span>{props.text}</span>
@@ -635,17 +664,14 @@ const EmailButton = (props: { onClick: any; rounded?: boolean; text: string }) =
     );
 };
 
-import { XAvatar } from 'openland-x/XAvatar';
-import { XText } from 'openland-x/XText';
-
 // InviteInfoInner start
 export const InviteInfoInner = ({
-    inviter,
-    signPath,
-    loginWithGoogle,
-    loginWithEmail,
-    signin,
-}: {
+                                    inviter,
+                                    signPath,
+                                    loginWithGoogle,
+                                    loginWithEmail,
+                                    signin,
+                                }: {
     loginWithGoogle: Function;
     loginWithEmail: Function;
     signPath: string;
@@ -677,14 +703,14 @@ export const InviteInfoInner = ({
                 }}
             >
                 <p>
-                    Openland is a professional messenger designed to support <br /> all
+                    Openland is a professional messenger designed to support <br/> all
                     communication needs of a modern business
                 </p>
             </SubTitle>
             <ButtonsWrapper marginTop={37} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
-                <Separator />
-                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText}/>
+                <Separator/>
+                <EmailButton rounded onClick={loginWithEmail} text={emailText}/>
             </ButtonsWrapper>
         </div>
     );
@@ -746,6 +772,11 @@ type AuthMechanism = {
     loginWithEmail: Function;
 };
 
+const ContentWrapper = Glamorous.div({
+    paddingLeft: 15,
+    paddingRight: 15,
+});
+
 export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: AuthMechanism) => {
     const auth = InitTexts.auth;
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
@@ -754,13 +785,13 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
     const emailText = signin ? auth.signinEmail : auth.signupEmail;
 
     return (
-        <div>
+        <ContentWrapper>
             <Title roomView={true}>{title}</Title>
             <RoomText>{subTitle}</RoomText>
             <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
-                <GoogleButton onClick={loginWithGoogle} text={googleButtonText} rounded={true} />
-                <Separator marginTop={10} marginBottom={10} />
-                <EmailButton onClick={loginWithEmail} text={emailText} rounded={true} />
+                <GoogleButton onClick={loginWithGoogle} text={googleButtonText} rounded={true}/>
+                <Separator marginTop={10} marginBottom={10}/>
+                <EmailButton onClick={loginWithEmail} text={emailText} rounded={true}/>
             </ButtonsWrapper>
 
             {!signin && (
@@ -770,15 +801,15 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
                     <XLink href="https://openland.com/privacy">Privacy Policy</XLink>.
                 </RoomTerms>
             )}
-        </div>
+        </ContentWrapper>
     );
 };
 
 export const WebSignUpAuthMechanism = ({
-    signin,
-    loginWithGoogle,
-    loginWithEmail,
-}: AuthMechanism) => {
+                                           signin,
+                                           loginWithGoogle,
+                                           loginWithEmail,
+                                       }: AuthMechanism) => {
     const auth = InitTexts.auth;
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
     const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
@@ -790,9 +821,9 @@ export const WebSignUpAuthMechanism = ({
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
-                <Separator />
-                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText}/>
+                <Separator/>
+                <EmailButton rounded onClick={loginWithEmail} text={emailText}/>
             </ButtonsWrapper>
         </div>
     );
@@ -819,7 +850,6 @@ const ResendButton = Glamorous(XButton)({
     '& .button-content': {
         paddingLeft: 4,
         paddingRight: 0,
-        fontFamily: 'SFProText-Regular',
         fontWeight: 'normal',
         fontSize: 13,
     },
@@ -839,17 +869,17 @@ type ActivationCodeProps = {
 };
 
 export const WebSignUpActivationCode = ({
-    backButtonClick,
-    resendCodeClick,
-    emailSendedTo,
-    emailSending,
-    emailWasResend,
-    codeSending,
-    loginCodeStart,
-    codeChanged,
-    codeValue,
-    codeError,
-}: ActivationCodeProps) => {
+                                            backButtonClick,
+                                            resendCodeClick,
+                                            emailSendedTo,
+                                            emailSending,
+                                            emailWasResend,
+                                            codeSending,
+                                            loginCodeStart,
+                                            codeChanged,
+                                            codeValue,
+                                            codeError,
+                                        }: ActivationCodeProps) => {
     return (
         <XForm
             defaultData={{
@@ -893,7 +923,7 @@ export const WebSignUpActivationCode = ({
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
                             />
-                            {showError && <XFormError field="input.code" />}
+                            {showError && <XFormError field="input.code"/>}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
@@ -946,17 +976,17 @@ export const WebSignUpActivationCode = ({
 };
 
 export const RoomActivationCode = ({
-    emailWasResend,
-    emailSending,
-    backButtonClick,
-    resendCodeClick,
-    emailSendedTo,
-    codeSending,
-    loginCodeStart,
-    codeError,
-    codeChanged,
-    codeValue,
-}: ActivationCodeProps) => {
+                                       emailWasResend,
+                                       emailSending,
+                                       backButtonClick,
+                                       resendCodeClick,
+                                       emailSendedTo,
+                                       codeSending,
+                                       loginCodeStart,
+                                       codeError,
+                                       codeChanged,
+                                       codeValue,
+                                   }: ActivationCodeProps) => {
     return (
         <XForm
             defaultData={{
@@ -1000,7 +1030,7 @@ export const RoomActivationCode = ({
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
                             />
-                            {showError && <XFormError field="input.code" />}
+                            {showError && <XFormError field="input.code"/>}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
@@ -1066,13 +1096,13 @@ type CreateWithEmailProps = {
 };
 
 export const RoomCreateWithEmail = ({
-    signin,
-    emailError,
-    emailChanged,
-    emailValue,
-    loginEmailStart,
-    emailSending,
-}: CreateWithEmailProps) => {
+                                        signin,
+                                        emailError,
+                                        emailChanged,
+                                        emailValue,
+                                        loginEmailStart,
+                                        emailSending,
+                                    }: CreateWithEmailProps) => {
     return (
         <XForm
             defaultData={{
@@ -1116,7 +1146,7 @@ export const RoomCreateWithEmail = ({
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
                             />
-                            {showError && <XFormError field="input.email" />}
+                            {showError && <XFormError field="input.email"/>}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
@@ -1139,13 +1169,13 @@ export const RoomCreateWithEmail = ({
 };
 
 export const WebSignUpCreateWithEmail = ({
-    signin,
-    emailError,
-    emailChanged,
-    emailValue,
-    loginEmailStart,
-    emailSending,
-}: CreateWithEmailProps) => {
+                                             signin,
+                                             emailError,
+                                             emailChanged,
+                                             emailValue,
+                                             loginEmailStart,
+                                             emailSending,
+                                         }: CreateWithEmailProps) => {
     return (
         <XForm
             defaultData={{
@@ -1187,7 +1217,7 @@ export const WebSignUpCreateWithEmail = ({
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
                             />
-                            {showError && <XFormError field="input.email" />}
+                            {showError && <XFormError field="input.email"/>}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
@@ -1214,6 +1244,9 @@ export const WebSignUpCreateWithEmail = ({
 
 const XInputWrapper = Glamorous(XInput)({
     minWidth: 330,
+    '@media(max-width: 450px)': {
+        minWidth: 200,
+    },
 });
 
 const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
@@ -1222,6 +1255,9 @@ const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
 
 const XFormSubmitWrapper = Glamorous(XFormSubmit)({
     marginTop: 50,
+    '@media(max-width: 500px)': {
+        marginTop: 25,
+    },
 });
 
 export const CreateProfileFormInner = (props: {
@@ -1233,7 +1269,7 @@ export const CreateProfileFormInner = (props: {
     const MyTitle = roomView ? Title : Title;
 
     return (
-        <div>
+        <ContentWrapper>
             <MyTitle roomView={roomView}>{InitTexts.create_profile.title}</MyTitle>
             <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280} marginBottom={80}>
@@ -1263,7 +1299,7 @@ export const CreateProfileFormInner = (props: {
                     defaultAction={defaultAction}
                     defaultLayout={false}
                 >
-                    <XFormError onlyGeneralErrors={true} width={472} />
+                    <XFormError onlyGeneralErrors={true} width={472}/>
                     <XFormLoadingContent>
                         <XVertical alignItems="center">
                             <XAvatarUploadWrapper
@@ -1285,7 +1321,7 @@ export const CreateProfileFormInner = (props: {
                                                 dataTestId="first-name"
                                             />
 
-                                            {showError && <XFormError field="input.firstName" />}
+                                            {showError && <XFormError field="input.firstName"/>}
                                         </>
                                     )}
                                 </XFormField2>
@@ -1302,7 +1338,7 @@ export const CreateProfileFormInner = (props: {
                                                 title="Last name"
                                                 dataTestId="last-name"
                                             />
-                                            {showError && <XFormError field="input.lastName" />}
+                                            {showError && <XFormError field="input.lastName"/>}
                                         </>
                                     )}
                                 </XFormField2>
@@ -1320,7 +1356,7 @@ export const CreateProfileFormInner = (props: {
                     </XFormLoadingContent>
                 </XForm>
             </ButtonsWrapper>
-        </div>
+        </ContentWrapper>
     );
 };
 
@@ -1333,25 +1369,24 @@ const InfoText = Glamorous.span({
 
 const OrganizationSelector = Glamorous(XSelect)({
     minWidth: 330,
+    '@media(max-width: 450px)': {
+        minWidth: 200,
+    },
 });
 
 const NewOrganizationButton = ({
-    onClick,
-}: {
+                                   onClick,
+                               }: {
     onClick?: (event: React.MouseEvent<any>) => void;
 }) => {
     return (
         <div onClick={onClick} data-test-id="new-organization-button">
             <XView flexDirection="row" alignItems="center">
                 <XView>
-                    <IcAdd />
+                    <IcAdd/>
                 </XView>
                 <XView color="#1790ff" marginLeft={6}>
-                    <span
-                        style={{
-                            fontFamily: 'SFProText-Regular',
-                        }}
-                    >
+                    <span>
                         New organization
                     </span>
                 </XView>
@@ -1363,7 +1398,6 @@ const NewOrganizationButton = ({
 const NEW_ORGANIZATION_BUTTON_VALUE = '____new organization button____';
 
 const OrganizationErrorText = Glamorous.div({
-    fontFamily: 'SFProText-Regular',
     fontSize: '12px',
     color: '#d75454',
     marginLeft: '17px',
@@ -1371,17 +1405,15 @@ const OrganizationErrorText = Glamorous.div({
     maxWidth: '249px',
 });
 
-export class CreateOrganizationFormInner extends React.Component<
-    {
-        onPrefixChanges: (prefix: string) => void;
-        roomView: boolean;
-        defaultAction: (data: any) => any;
-        organizations: any;
-    },
+export class CreateOrganizationFormInner extends React.Component<{
+    onPrefixChanges: (prefix: string) => void;
+    roomView: boolean;
+    defaultAction: (data: any) => any;
+    organizations: any;
+},
     {
         inputValue: string;
-    }
-> {
+    }> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -1393,7 +1425,7 @@ export class CreateOrganizationFormInner extends React.Component<
         return [
             {
                 value: NEW_ORGANIZATION_BUTTON_VALUE,
-                label: <NewOrganizationButton />,
+                label: <NewOrganizationButton/>,
             },
             ...this.props.organizations.data,
         ];
@@ -1489,8 +1521,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                         <XPopper
                                             content={
                                                 <InfoText>
-                                                    To register as an individual, simply enter your
-                                                    name
+                                                    To register as an individual, simply enter your name
                                                 </InfoText>
                                             }
                                             showOnHover={true}
@@ -1498,7 +1529,7 @@ export class CreateOrganizationFormInner extends React.Component<
                                             style="dark"
                                         >
                                             <XIconWrapper>
-                                                <IcInfo />
+                                                <IcInfo/>
                                             </XIconWrapper>
                                         </XPopper>
                                     </XHorizontal>
@@ -1535,7 +1566,7 @@ export class CreateOrganizationFormInner extends React.Component<
         const MyTitle = roomView ? Title : Title;
 
         return (
-            <div>
+            <ContentWrapper>
                 <MyTitle roomView={roomView}>{InitTexts.create_organization.title}</MyTitle>
                 <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
@@ -1566,7 +1597,7 @@ export class CreateOrganizationFormInner extends React.Component<
                     defaultLayout={false}
                 >
                     <XVertical separator="large">
-                        <XFormError width={472} />
+                        <XFormError width={472}/>
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
                                 <XStoreContext.Consumer>{this.renderSelect}</XStoreContext.Consumer>
@@ -1574,8 +1605,9 @@ export class CreateOrganizationFormInner extends React.Component<
                         </XFormLoadingContent>
                     </XVertical>
                 </XForm>
-            </div>
+            </ContentWrapper>
         );
     }
 }
+
 // CreateOrganization end
