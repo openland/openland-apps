@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -20,17 +21,21 @@ export const RootWrapper = Glamorous.div({
     display: 'flex',
 });
 
-export const Container = Glamorous.div({
-    width: 'calc(100% - 344px)',
-    height: '100%',
-    position: 'relative',
-    '@media (max-width: 1100px)': {
-        width: 'calc(100% - 300px)',
-    },
-    '@media (max-width: 950px)': {
-        width: 'calc(100% - 230px)',
-    },
-});
+const ContainerStyle = css`
+    width: calc(100% - 344px);
+    height: 100%;
+    position: relative;
+    @media (max-width: 1100px) {
+        width: calc(100% - 300px);
+    }
+    @media (max-width: 950px) {
+        width: calc(100% - 230px);
+    }
+`;
+
+export const Container = (props: { children: any }) => (
+    <div className={ContainerStyle}>{props.children}</div>
+);
 
 export const Results = Glamorous(XScrollView2)({
     height: 'calc(100vh - 61px)',
@@ -123,13 +128,13 @@ interface SidebarItemProps {
 const SidebarItem = (props: SidebarItemProps) => (
     <SidebarItemWrapper path={props.path} className={props.active ? 'is-active' : ''}>
         <div className="icon-wrapper">
-            {props.icon === 'rooms' && <RoomIcon />}
-            {props.icon === 'people' && <PeopleIcon />}
-            {props.icon === 'organizations' && <OrganizationsIcon />}
-            {props.icon === 'communities' && <CommunityIcon />}
+            {props.icon === 'rooms' && <RoomIcon/>}
+            {props.icon === 'people' && <PeopleIcon/>}
+            {props.icon === 'organizations' && <OrganizationsIcon/>}
+            {props.icon === 'communities' && <CommunityIcon/>}
         </div>
         <span>{TextDirectory.sidebar[props.icon]}</span>
-        <RightIcon className="right-icon" />
+        <RightIcon className="right-icon"/>
     </SidebarItemWrapper>
 );
 
@@ -166,7 +171,7 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
     render() {
         return (
             <XPopper
-                contentContainer={<XMenuVertical />}
+                contentContainer={<XMenuVertical/>}
                 placement="bottom-end"
                 show={this.state.show}
                 marginTop={10}
@@ -206,7 +211,7 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
                     onClick={this.switch}
                     style="light"
                     text={TextDirectory.create.title}
-                    icon={<PlusIcon />}
+                    icon={<PlusIcon/>}
                     size="small"
                 />
             </XPopper>
@@ -218,10 +223,10 @@ export const Sidebar = (props: { active?: string }) => (
     <SidebarWrapper>
         <SidebarHeader>
             <span>Directory</span>
-            <NewButton />
+            <NewButton/>
         </SidebarHeader>
         <XVertical separator={0}>
-            <SidebarItem path="/directory" icon="rooms" active={props.active === 'rooms'} />
+            <SidebarItem path="/directory" icon="rooms" active={props.active === 'rooms'}/>
             <SidebarItem
                 path="/directory/people"
                 icon="people"

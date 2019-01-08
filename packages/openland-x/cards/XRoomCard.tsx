@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/XOverflow';
@@ -7,13 +8,26 @@ import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
 
 const RoomTitleInner = css`
     height: 22px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+`;
+
+const ButtonWrapper = css`
+    opacity: 0;
+    pointer-events: none;
+    @media (max-width: 700px) {
+        opacity: 1;
+        pointer-events: auto;
+    }
+`;
+
+const ButtonHoverWrapper = css`
+    opacity: 1;
+    pointer-events: auto;
 `;
 
 interface XRoomCardProps {
@@ -40,7 +54,7 @@ export const XRoomCard = React.memo<XRoomCardProps>(props => {
         },
         [onHover],
     );
-    
+
     let { room, path, customButton, customMenu, extraMenu } = props;
     let title =
         (room.kind !== SharedRoomKind.INTERNAL && room.organization
@@ -53,26 +67,22 @@ export const XRoomCard = React.memo<XRoomCardProps>(props => {
         buttonPath = '/directory/r/' + room.id;
     }
 
-    let button = isHovered ? (
-        typeof customButton === 'undefined' ? (
-            <>
-                {room.membership && (
-                    <XButton
-                        text={TextProfiles.Room.status[room.membership]}
-                        path={buttonPath}
-                        style={
-                            ['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1
-                                ? 'primary'
-                                : 'ghost'
-                        }
-                    />
-                )}
-            </>
-        ) : (
-            customButton
-        )
+    let button = typeof customButton === 'undefined' ? (
+        <div className={isHovered ? ButtonHoverWrapper : ButtonWrapper}>
+            {room.membership && (
+                <XButton
+                    text={TextProfiles.Room.status[room.membership]}
+                    path={buttonPath}
+                    style={
+                        ['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1
+                            ? 'primary'
+                            : 'ghost'
+                    }
+                />
+            )}
+        </div>
     ) : (
-        undefined
+        customButton
     );
 
     let menu =
