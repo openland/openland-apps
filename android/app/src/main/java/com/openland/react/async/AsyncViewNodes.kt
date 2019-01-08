@@ -19,11 +19,9 @@ import com.openland.react.async.views.CustomLineHeightSpan
 import com.openland.react.async.views.LithoFlex
 import com.openland.react.async.views.LithoText
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
-import dk.madslee.imageCapInsets.utils.RCTResourceDrawableIdHelper
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
     var res = component
-    val helper = RCTResourceDrawableIdHelper()
 
     style.width?.let { res.widthDip(it) }
     style.height?.let { res.heightDip(it) }
@@ -99,7 +97,7 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
             if (spec.style.borderRadius != null) {
                 res = res.roundingParams(RoundingParams.fromCornersRadius(Resources.getSystem().displayMetrics.density * spec.style.borderRadius!!))
             }
-            resolveStyle(context, res, spec.style)
+            return resolveStyle(context, res, spec.style)
         }
 //        is AsyncListSpec -> {
 //            val res = RecyclerCollectionComponent.create(context)
