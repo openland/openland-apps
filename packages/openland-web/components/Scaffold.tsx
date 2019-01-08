@@ -796,7 +796,7 @@ export class Scaffold extends React.PureComponent {
         );
 
         return (
-            <XView flexDirection="row" minWidth={800} flexGrow={1} flexBasis={0}>
+            <XView flexDirection="row" flexGrow={1} flexBasis={0}>
                 {contentView}
                 {menuView}
 
