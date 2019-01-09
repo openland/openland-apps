@@ -223,7 +223,7 @@ export class MobileMessenger {
     private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
         if (this.modal.current) {
             this.modal.current!!.showModal({
-                url: event.path,
+                url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
                 width: document.file!!.imageSize!!.width,
                 height: document.file!!.imageSize!!.height,
                 isGif: false,
@@ -234,12 +234,14 @@ export class MobileMessenger {
                     height: event.h,
                     borderRadius: 10
                 },
-                onBegin: () => {
-                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
-                },
-                onEnd: () => {
-                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
-                }
+                ...Platform.OS === 'ios' ? {
+                    onBegin: () => {
+                        RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
+                    },
+                    onEnd: () => {
+                        RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
+                    }
+                } : {}
             });
         }
         //
