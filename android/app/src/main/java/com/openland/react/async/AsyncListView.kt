@@ -1,6 +1,5 @@
 package com.openland.react.async
 
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.FrameLayout
@@ -9,9 +8,14 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.litho.*
 import com.facebook.litho.sections.SectionContext
 import com.facebook.litho.sections.widget.*
-import com.facebook.react.bridge.*
+import com.facebook.react.uimanager.PixelUtil
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.openland.react.async.views.LithoSection
+import com.facebook.react.common.MapBuilder
+import com.facebook.react.bridge.ReactContext
+import com.facebook.react.uimanager.UIManagerModule
+import com.facebook.react.views.scroll.ScrollEvent
+import com.facebook.react.views.scroll.ScrollEventType
 
 
 class AsyncListView(context: ReactContext) : FrameLayout(context) {
@@ -24,6 +28,32 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var dataViewSubscription: (() -> Unit)? = null
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            val manager = (recyclerView.layoutManager as LinearLayoutManager)
+            val v = manager.findViewByPosition(1)
+            if (v != null) {
+                val offset = Math.round(v.top - PixelUtil.toPixelFromDIP(headerPadding))
+
+                context.getNativeModule(UIManagerModule::class.java)
+                        .eventDispatcher
+                        .dispatchEvent(
+                                ScrollEvent.obtain(
+                                        id,
+                                        ScrollEventType.SCROLL,
+                                        0,
+                                        offset,
+                                        0f,
+                                        0f,
+                                        0,
+                                        0,
+                                        0,
+                                        0))
+
+            }
+        }
+    }
 
     init {
         this.addView(this.lithoView,
@@ -70,6 +100,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
                         .loading(!this.state.competed)
                         .dataViewKey(this.dataViewKey!!))
                 .recyclerConfiguration(ListRecyclerConfiguration<SectionBinderTarget>(LinearLayoutManager.VERTICAL, this.inverted))
+                .onScrollListener(this.scrollListener)
                 .itemAnimator(null)
                 .build()
         lithoView.setComponentAsync(recycler)
@@ -109,5 +140,12 @@ class AsyncListViewManager : SimpleViewManager<AsyncListView>() {
     @ReactProp(name = "headerPadding")
     fun setHeaderPadding(view: AsyncListView, value: Float) {
         view.setHeaderPadding(value)
+    }
+
+    override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
+        return MapBuilder.builder<String, Any>()
+                .put("onScroll",
+                        MapBuilder.of("registrationName", "onScroll"))
+                .build()
     }
 }
