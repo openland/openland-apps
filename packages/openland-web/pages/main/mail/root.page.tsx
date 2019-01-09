@@ -50,11 +50,11 @@ export const ConversationContainer = Glamorous.div({
     maxWidth: 'calc(100% - 344px)',
     '@media (max-width: 1100px)': {
         width: 'calc(100% - 300px)',
-        maxWidth: 'calc(100% - 300px)'
+        maxWidth: 'calc(100% - 300px)',
     },
     '@media (max-width: 950px)': {
         width: 'calc(100% - 230px)',
-        maxWidth: 'calc(100% - 230px)'
+        maxWidth: 'calc(100% - 230px)',
     },
 });
 
@@ -82,10 +82,19 @@ export const RoomInviteFromLink = withChannelInviteInfo(props =>
     ),
 );
 
+interface MessagePageInnerProps {
+    router: XRouter;
+    userId?: string;
+    organizationId?: string;
+}
+
 interface MessagePageInnerState extends MessagesStateContextProps {}
 
-class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageInnerState> {
-    constructor(props: { router: XRouter }) {
+export class MessagePageInner extends React.Component<
+    MessagePageInnerProps,
+    MessagePageInnerState
+> {
+    constructor(props: MessagePageInnerProps) {
         super(props);
 
         this.state = {
@@ -109,7 +118,7 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         };
     }
 
-    componentWillReceiveProps(nextProps: { router: XRouter }) {
+    componentWillReceiveProps(nextProps: MessagePageInnerProps) {
         if (
             this.props.router.routeQuery.conversationId !==
                 nextProps.router.routeQuery.conversationId &&
@@ -212,8 +221,8 @@ class MessagePageInner extends React.Component<{ router: XRouter }, MessagePageI
         let isInvite = props.router.path.includes('joinChannel');
         let isChat = props.router.path.includes('/p/');
         let cid = props.router.routeQuery.conversationId;
-        let oid = props.router.routeQuery.organizationId;
-        let uid = props.router.routeQuery.userId;
+        let oid = props.organizationId || props.router.routeQuery.organizationId;
+        let uid = props.userId || props.router.routeQuery.userId;
 
         let tab:
             | 'empty'

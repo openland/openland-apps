@@ -122,3 +122,4 @@ export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.Use
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);
 export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.OnlineQuery);
 export const ExplorePeopleQuery = typedQuery<Types.ExplorePeople, Types.ExplorePeopleVariables>(User.ExplorePeopleQuery);
+export const ResolveShortNameQuery = typedQuery<Types.ResolveShortName, Types.ResolveShortNameVariables>(User.ResolveShortNameQuery);

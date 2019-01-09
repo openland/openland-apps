@@ -5172,6 +5172,57 @@ export interface ExplorePeopleVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: ResolveShortName
+// ====================================================
+
+export interface ResolveShortName_item_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ResolveShortName_item_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: ResolveShortName_item_User_primaryOrganization | null;
+}
+
+export interface ResolveShortName_item_Organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export type ResolveShortName_item = ResolveShortName_item_User | ResolveShortName_item_Organization;
+
+export interface ResolveShortName {
+  item: ResolveShortName_item | null;
+}
+
+export interface ResolveShortNameVariables {
+  shortname: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: ConferenceFull
 // ====================================================
 

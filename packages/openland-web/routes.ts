@@ -309,6 +309,13 @@ routes.add('auth/login');
 routes.add('auth/logout');
 routes.add('auth/complete');
 
+//
+// Shortnames
+//
+
+routes.add('/:shortname', '/main/mail/shortname');
+routes.add('/:shortname/', '/main/mail/shortname');
+
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);
 }

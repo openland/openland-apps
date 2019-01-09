@@ -91,3 +91,18 @@ export const ExplorePeopleQuery = gql`
     }
     ${UserShort}
 `;
+
+export const ResolveShortNameQuery = gql`
+    query ResolveShortName($shortname: String!) {
+        item: alphaResolveShortName(shortname: $shortname) {
+            ... on User {
+                ...UserShort
+            }
+            ... on Organization {
+                ...OrganizationShort
+            }
+        }
+    }
+    ${UserShort}
+    ${OrganizationShort}
+`;
