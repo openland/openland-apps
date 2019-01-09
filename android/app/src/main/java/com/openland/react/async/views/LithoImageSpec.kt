@@ -37,7 +37,7 @@ object LithoImageSpec {
         if(spec.touchableKey !== null){
             res = res.clickHandler(LithoImage.onClick(context))
         }
-        res = res.longClickHandler(LithoImage.onLongClick(context))
+//        res = res.longClickHandler(LithoImage.onLongClick(context))
 
 
         if (spec.style.borderRadius != null) {
