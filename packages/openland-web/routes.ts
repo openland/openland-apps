@@ -313,8 +313,8 @@ routes.add('auth/complete');
 // Shortnames
 //
 
-routes.add('/:shortname', '/main/mail/shortname');
-routes.add('/:shortname/', '/main/mail/shortname');
+routes.add('/:shortname', '/main/profile/shortname');
+routes.add('/:shortname/', '/main/profile/shortname');
 
 export function getRequestHandler(src: any): any {
     return routes.getRequestHandler(src);
