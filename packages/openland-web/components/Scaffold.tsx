@@ -22,7 +22,7 @@ import AddIcon from 'openland-icons/add-3.svg';
 import MessagesIcon from 'openland-icons/messages-4.svg';
 import RoomIcon from 'openland-icons/channel-2.svg';
 import DevToolsIcon from 'openland-icons/devtools-3.svg';
-import DirecoryIcon from 'openland-icons/directory-3.svg';
+import DirectoryIcon from 'openland-icons/directory-3.svg';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
@@ -35,6 +35,8 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XView, XImage } from 'react-mental';
+import { useIsMobile } from 'openland-web/hooks';
+import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import {
     SharedRoomKind,
     MyOrganizations_myOrganizations,
@@ -42,9 +44,12 @@ import {
 } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 
+import { css } from 'linaria';
+
 const NavigationContainer = (props: { children?: any }) => (
     <XView
         minHeight="100%"
+        width="100%"
         flexGrow={1}
         alignItems="center"
         flexDirection="column"
@@ -55,15 +60,32 @@ const NavigationContainer = (props: { children?: any }) => (
     </XView>
 );
 
-const NavigationScroller = Glamorous(XScrollView)({
-    minHeight: '100%',
-    height: '100%',
-    width: 64,
-    backgroundColor: '#f6f6f6',
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: XThemeDefault.separatorColor,
-    flexShrink: 0,
+const NavigationScrollerDiv = Glamorous(XScrollView)<{ mobile?: boolean }>(({ mobile }) => {
+    return {
+        minHeight: '100%',
+        height: '100%',
+        width: mobile ? '100%' : 64,
+        backgroundColor: '#f6f6f6',
+        borderRightWidth: '1px',
+        borderRightStyle: 'solid',
+        borderRightColor: XThemeDefault.separatorColor,
+        flexShrink: 0,
+    };
+});
+
+const NavigationScroller = React.memo<{ children: any }>(props => {
+    let theme = React.useContext(ThemeContext);
+    return (
+        <NavigationScrollerDiv
+            css={{
+                backgroundColor: theme.appBarBackgroundColor,
+                borderRightWidth: theme.appBarSeparatorColor !== undefined ? '1px' : '0px',
+                borderRightColor: theme.appBarSeparatorColor,
+            }}
+        >
+            {props.children}
+        </NavigationScrollerDiv>
+    );
 });
 
 const Logo = () => (
@@ -89,6 +111,7 @@ const Logo = () => (
 );
 
 const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
+    let theme = React.useContext(ThemeContext);
     if (props.position === 'top') {
         return (
             <XView
@@ -97,7 +120,7 @@ const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
                 marginTop={0}
                 marginBottom={16}
                 alignSelf="center"
-                backgroundColor="rgba(220, 222, 228, 0.6)"
+                backgroundColor={theme.appBarSeparatorInnerColor}
                 flexShrink={0}
             />
         );
@@ -109,7 +132,7 @@ const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
                 marginTop={10}
                 marginBottom={10}
                 alignSelf="center"
-                backgroundColor="rgba(220, 222, 228, 0.6)"
+                backgroundColor={theme.appBarSeparatorInnerColor}
                 flexShrink={0}
             />
         );
@@ -122,11 +145,9 @@ interface NavigatorItemProps {
     children?: any;
 }
 
-class NavigatorItem extends React.Component<NavigatorItemProps> {
-    // It uses class instead stateless function by reason:
-    // XPopper. Warning: Stateless function components cannot be given refs. Attempts to access this ref will fail.
-
+class DesktopNavigatorItem extends React.Component<NavigatorItemProps> {
     render() {
+        const { path, onClick, children } = this.props;
         return (
             <XView
                 as="a"
@@ -141,13 +162,13 @@ class NavigatorItem extends React.Component<NavigatorItemProps> {
                 color="#b4b8bd"
                 selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
                 hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
-                linkSelectable={this.props.path ? true : undefined}
-                linkStrict={this.props.path ? true : undefined}
-                path={this.props.path}
-                onClick={this.props.onClick}
+                linkSelectable={path ? true : undefined}
+                linkStrict={path ? true : undefined}
+                path={path}
+                onClick={onClick}
                 hoverTextDecoration="none"
             >
-                {this.props.children}
+                {children}
             </XView>
         );
     }
@@ -468,140 +489,40 @@ class ScaffoldContent extends React.Component<{
     }
 }
 
-class AddMenu extends React.Component<{}, { show?: boolean }> {
-    inner = 0;
-    constructor(props: any) {
-        super(props);
-        this.state = { show: false };
-    }
-    switch = () => {
-        this.setState({
-            show: !this.state.show,
-        });
+const MenuItemWithPopper = ({
+    menuItems,
+    targetElement,
+}: {
+    menuItems: any;
+    targetElement: any;
+}) => {
+    let [show, setShow] = React.useState<boolean>(false);
+
+    const onClick = () => {
+        setShow(!show);
     };
 
-    closer = () => {
-        if (!this.inner) {
-            this.setState({
-                show: false,
-            });
-        }
+    const onClickOutside = () => {
+        setShow(false);
     };
+    let AddListingContent = withUserInfo(() => {
+        return <>{menuItems}</>;
+    });
 
-    onInner = (ref: any) => {
-        this.inner += ref ? 1 : -1;
-    };
-
-    render() {
-        let AddListingContent = withUserInfo(props => {
-            return (
-                <>
-                    <XMenuItem query={{ field: 'createOrganization', value: 'true' }}>
-                        {TextGlobal.addOrganization}
-                    </XMenuItem>
-                    <XMenuItem
-                        query={{
-                            field: 'createOrganization',
-                            value: 'community',
-                        }}
-                    >
-                        {TextGlobal.addCommunity}
-                    </XMenuItem>
-                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>
-                        {TextGlobal.addRoom}
-                    </XMenuItem>
-                </>
-            );
-        });
-
-        return (
-            <XPopper
-                contentContainer={<XMenuVertical />}
-                placement="right-end"
-                show={this.state.show}
-                marginTop={5}
-                marginLeft={11}
-                content={<AddListingContent />}
-                onClickOutside={this.closer}
-            >
-                <NavigatorItem onClick={this.switch}>
-                    <AddIcon />
-                </NavigatorItem>
-            </XPopper>
-        );
-    }
-}
-
-class AdminMenu extends React.Component<{}, { show?: boolean }> {
-    constructor(props: any) {
-        super(props);
-        this.state = { show: false };
-    }
-    switch = () => {
-        this.setState({
-            show: !this.state.show,
-        });
-    };
-
-    closer = () => {
-        this.setState({
-            show: false,
-        });
-    };
-
-    render() {
-        let AddListingContent = withUserInfo(props => {
-            return (
-                <>
-                    <XMenuItem href="https://logs.openland.io/app/kibana#/dashboard/3ca91120-f946-11e8-aa74-4b89079261c0?_g=(filters%3A!(('%24state'%3A(store%3AglobalState)%2Cmeta%3A(alias%3A'test%20acccs%20(hl)'%2Cdisabled%3A!f%2Cindex%3Ab3bf80a0-db87-11e8-9410-7338f67f9eca%2Ckey%3Abody.uid%2Cnegate%3A!t%2Cparams%3A!('4'%2C'101'%2C'21'%2C'1002'%2C'31'%2C'40')%2Ctype%3Aphrases%2Cvalue%3A'4%2C%20101%2C%2021%2C%201%2C002%2C%2031%2C%2040')%2Cquery%3A(bool%3A(minimum_should_match%3A1%2Cshould%3A!((match_phrase%3A(body.uid%3A'4'))%2C(match_phrase%3A(body.uid%3A'101'))%2C(match_phrase%3A(body.uid%3A'21'))%2C(match_phrase%3A(body.uid%3A'1002'))%2C(match_phrase%3A(body.uid%3A'31'))%2C(match_phrase%3A(body.uid%3A'40'))))))%2C('%24state'%3A(store%3AglobalState)%2Cmeta%3A(alias%3A'test%20accs%20(msgs)'%2Cdisabled%3A!f%2Cindex%3Ac91953d0-f6f9-11e8-aa74-4b89079261c0%2Ckey%3Auid%2Cnegate%3A!t%2Cparams%3A!('5'%2C'101'%2C'21'%2C'1002'%2C'31'%2C'40')%2Ctype%3Aphrases%2Cvalue%3A'5%2C%20101%2C%2021%2C%201%2C002%2C%2031%2C%2040')%2Cquery%3A(bool%3A(minimum_should_match%3A1%2Cshould%3A!((match_phrase%3A(uid%3A'5'))%2C(match_phrase%3A(uid%3A'101'))%2C(match_phrase%3A(uid%3A'21'))%2C(match_phrase%3A(uid%3A'1002'))%2C(match_phrase%3A(uid%3A'31'))%2C(match_phrase%3A(uid%3A'40')))))))%2CrefreshInterval%3A(display%3AOff%2Cpause%3A!f%2Cvalue%3A0)%2Ctime%3A(from%3Anow-30d%2Cmode%3Aquick%2Cto%3Anow))">
-                        {TextAppBar.items.stats}
-                    </XMenuItem>
-                    <XMenuItem path="/super">{TextAppBar.items.adminMenu}</XMenuItem>
-                    <XMenuItem path="/ui">{TextAppBar.items.xFramework}</XMenuItem>
-                </>
-            );
-        });
-
-        return (
-            <XPopper
-                contentContainer={<XMenuVertical />}
-                placement="right-end"
-                show={this.state.show}
-                padding={0}
-                marginLeft={11}
-                marginBottom={5}
-                content={<AddListingContent />}
-                onClickOutside={this.closer}
-            >
-                <NavigatorItem onClick={this.switch}>
-                    <DevToolsIcon />
-                </NavigatorItem>
-            </XPopper>
-        );
-    }
-}
-
-export const MessengerButton = withNotificationCounter(props => {
     return (
         <XPopper
-            placement="right"
-            showOnHoverContent={false}
-            showOnHover={true}
-            style="dark"
-            padding={-2}
-            groupId="scaffold_tooltip"
-            content={<strong>{TextAppBar.items.mail}</strong>}
+            contentContainer={<XMenuVertical />}
+            placement="right-end"
+            show={show}
+            marginTop={5}
+            marginLeft={11}
+            content={<AddListingContent />}
+            onClickOutside={onClickOutside}
         >
-            <NavigatorItem path="/mail">
-                <MessagesIcon />
-
-                {props.data.counter && props.data.counter.unreadCount > 0 && (
-                    <CounterWrapper count={props.data.counter.unreadCount} />
-                )}
-            </NavigatorItem>
+            <DesktopNavigatorItem onClick={onClick}>{targetElement}</DesktopNavigatorItem>
         </XPopper>
     );
-});
+};
 
 export const CreateOrganization = withCreateOrganization(props => {
     let community = props.router.query.createOrganization === 'community';
@@ -615,7 +536,7 @@ export const CreateOrganization = withCreateOrganization(props => {
             title={texts.title}
             submitBtnText={texts.submit}
             defaultAction={async data => {
-                let res = await props.createOrganization({
+                let res = (await props.createOrganization({
                     variables: {
                         input: {
                             personal: false,
@@ -625,7 +546,7 @@ export const CreateOrganization = withCreateOrganization(props => {
                             photoRef: data.input.photoRef,
                         },
                     },
-                }) as any;
+                })) as any;
                 let redirect =
                     (community ? '/directory/c/' : '/directory/o/') +
                     res.data.createOrganization.id;
@@ -680,7 +601,7 @@ export const CreateRoom = withCreateChannel(props => {
             targetQuery="createRoom"
             defaultAction={async data => {
                 let oid = props.router.query.createRoom;
-                let room = await props.createChannel({
+                let room = (await props.createChannel({
                     variables: {
                         title: data.input.name,
                         description: data.input.description,
@@ -688,7 +609,7 @@ export const CreateRoom = withCreateChannel(props => {
                         members: [],
                         kind: SharedRoomKind.PUBLIC,
                     },
-                }) as any;
+                })) as any;
                 delay(0).then(() => {
                     props.router.push('/mail/' + room.data.room.id);
                 });
@@ -718,6 +639,290 @@ export const CreateRoom = withCreateChannel(props => {
     );
 });
 
+const DesktopScafoldMenuItem = ({
+    name,
+    path,
+    icon,
+}: {
+    name: string;
+    path: string;
+    icon: any;
+}) => {
+    return (
+        <XPopper
+            placement="right"
+            showOnHoverContent={false}
+            showOnHover={true}
+            style="dark"
+            padding={-2}
+            groupId="scaffold_tooltip"
+            content={<strong>{name}</strong>}
+        >
+            <DesktopNavigatorItem path={path}>{icon}</DesktopNavigatorItem>
+        </XPopper>
+    );
+};
+
+const MobileScafoldMenuItem = ({ name, path, icon }: { name: string; path: string; icon: any }) => {
+    return (
+        <XView
+            as="a"
+            position="relative"
+            flexDirection="row"
+            alignSelf="stretch"
+            alignItems="center"
+            justifyContent="center"
+            height={50}
+            width="100%"
+            flexShrink={0}
+            cursor="pointer"
+            selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
+            hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+            linkSelectable={!!path}
+            linkStrict={!!path}
+            path={path}
+            hoverTextDecoration="none"
+        >
+            <XView
+                flexDirection="column"
+                justifyContent="center"
+                height={50}
+                width={300 - 224}
+                alignItems="center"
+            >
+                {icon}
+            </XView>
+            <XView flexDirection="column" justifyContent="center" height={50} width={224}>
+                {name}
+            </XView>
+        </XView>
+    );
+};
+
+const NotificationCounter = withNotificationCounter(props => (
+    <>
+        {props.data.counter && props.data.counter.unreadCount > 0 && (
+            <CounterWrapper count={props.data.counter.unreadCount} />
+        )}
+    </>
+));
+
+const DesktopScaffold = ({
+    menu,
+    content,
+    topItems,
+}: {
+    menu: any;
+    content: any;
+    topItems: any;
+}) => {
+    let contentView = (
+        <XView
+            flexDirection="column"
+            backgroundColor={XThemeDefault.backgroundColor}
+            flexGrow={1}
+            flexBasis={0}
+            flexShrink={1}
+            minWidth={0}
+            marginLeft={menu ? 408 : 64}
+        >
+            {content}
+        </XView>
+    );
+    let menuView = (
+        <XView flexDirection="row" height="100%" position="fixed" backgroundColor="#ffffff">
+            <NavigationScroller>
+                <NavigationContainer>
+                    <Logo />
+                    <NavigationDivider position="top" />
+
+                    {topItems}
+                    <BottomNavigation>
+                        <MenuItemWithPopper
+                            targetElement={<AddIcon />}
+                            menuItems={
+                                <>
+                                    <XMenuItem
+                                        query={{ field: 'createOrganization', value: 'true' }}
+                                    >
+                                        {TextGlobal.addOrganization}
+                                    </XMenuItem>
+                                    <XMenuItem
+                                        query={{
+                                            field: 'createOrganization',
+                                            value: 'community',
+                                        }}
+                                    >
+                                        {TextGlobal.addCommunity}
+                                    </XMenuItem>
+                                    <XMenuItem query={{ field: 'createRoom', value: 'true' }}>
+                                        {TextGlobal.addRoom}
+                                    </XMenuItem>
+                                </>
+                            }
+                        />
+                        <XWithRole role={['super-admin', 'software-developer']}>
+                            <MenuItemWithPopper
+                                targetElement={<DevToolsIcon />}
+                                menuItems={
+                                    <>
+                                        <XMenuItem href="https://logs.openland.io/app/kibana#/dashboard/3ca91120-f946-11e8-aa74-4b89079261c0?_g=(filters%3A!(('%24state'%3A(store%3AglobalState)%2Cmeta%3A(alias%3A'test%20acccs%20(hl)'%2Cdisabled%3A!f%2Cindex%3Ab3bf80a0-db87-11e8-9410-7338f67f9eca%2Ckey%3Abody.uid%2Cnegate%3A!t%2Cparams%3A!('4'%2C'101'%2C'21'%2C'1002'%2C'31'%2C'40')%2Ctype%3Aphrases%2Cvalue%3A'4%2C%20101%2C%2021%2C%201%2C002%2C%2031%2C%2040')%2Cquery%3A(bool%3A(minimum_should_match%3A1%2Cshould%3A!((match_phrase%3A(body.uid%3A'4'))%2C(match_phrase%3A(body.uid%3A'101'))%2C(match_phrase%3A(body.uid%3A'21'))%2C(match_phrase%3A(body.uid%3A'1002'))%2C(match_phrase%3A(body.uid%3A'31'))%2C(match_phrase%3A(body.uid%3A'40'))))))%2C('%24state'%3A(store%3AglobalState)%2Cmeta%3A(alias%3A'test%20accs%20(msgs)'%2Cdisabled%3A!f%2Cindex%3Ac91953d0-f6f9-11e8-aa74-4b89079261c0%2Ckey%3Auid%2Cnegate%3A!t%2Cparams%3A!('5'%2C'101'%2C'21'%2C'1002'%2C'31'%2C'40')%2Ctype%3Aphrases%2Cvalue%3A'5%2C%20101%2C%2021%2C%201%2C002%2C%2031%2C%2040')%2Cquery%3A(bool%3A(minimum_should_match%3A1%2Cshould%3A!((match_phrase%3A(uid%3A'5'))%2C(match_phrase%3A(uid%3A'101'))%2C(match_phrase%3A(uid%3A'21'))%2C(match_phrase%3A(uid%3A'1002'))%2C(match_phrase%3A(uid%3A'31'))%2C(match_phrase%3A(uid%3A'40')))))))%2CrefreshInterval%3A(display%3AOff%2Cpause%3A!f%2Cvalue%3A0)%2Ctime%3A(from%3Anow-30d%2Cmode%3Aquick%2Cto%3Anow))">
+                                            {TextAppBar.items.stats}
+                                        </XMenuItem>
+                                        <XMenuItem path="/super">
+                                            {TextAppBar.items.adminMenu}
+                                        </XMenuItem>
+                                        <XMenuItem path="/ui">
+                                            {TextAppBar.items.xFramework}
+                                        </XMenuItem>
+                                    </>
+                                }
+                            />
+                        </XWithRole>
+                        <NavigationDivider position="bottom" />
+                        <DesktopNavigatorItem>
+                            <UserProfile />
+                        </DesktopNavigatorItem>
+                    </BottomNavigation>
+                </NavigationContainer>
+            </NavigationScroller>
+            {menu}
+        </XView>
+    );
+
+    return (
+        <XView flexDirection="row" flexGrow={1} flexBasis={0}>
+            {contentView}
+            {menuView}
+
+            <CreateOrganization />
+            <CreateRoom />
+        </XView>
+    );
+};
+
+const sideBarBackgroundClassName = css`
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 99;
+`;
+
+const sideBarClassName = css`
+    display: flex;
+    box-shadow: 0 0 44px 0 rgba(0, 0, 0, 0.15);
+    flex-direction: row;
+    height: 100%;
+    position: fixed;
+    width: 300px;
+    background-color: white;
+    z-index: 100;
+`;
+
+export const MobileSidebarContext = React.createContext<{
+    isMobile: boolean;
+    show: boolean;
+    setShow: Function;
+}>({
+    isMobile: false,
+    show: false,
+    setShow: () => {
+        //
+    },
+});
+
+const MobileScaffold = ({
+    menu,
+    content,
+    topItems,
+}: {
+    menu: any;
+    content: any;
+    topItems: any;
+}) => {
+    const { show, setShow } = React.useContext(MobileSidebarContext);
+    let contentView = (
+        <XView
+            flexDirection="column"
+            backgroundColor={XThemeDefault.backgroundColor}
+            flexGrow={1}
+            flexBasis={0}
+            flexShrink={1}
+            minWidth={0}
+        >
+            {content}
+        </XView>
+    );
+    let menuView = (
+        <div>
+            {show && <div onClick={() => setShow(!show)} className={sideBarBackgroundClassName} />}
+            <div className={sideBarClassName} style={{ left: show ? 0 : -300 }}>
+                <XView width="100%">
+                    <NavigationContainer>{topItems}</NavigationContainer>
+                </XView>
+                {menu}
+            </div>
+        </div>
+    );
+
+    return (
+        <XView flexDirection="row" flexGrow={1} flexBasis={0}>
+            {contentView}
+            {menuView}
+        </XView>
+    );
+};
+
+const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
+    const [isMobile] = useIsMobile();
+
+    const [show, setShow] = React.useState(true);
+    const UniversalScaffold = isMobile ? MobileScaffold : DesktopScaffold;
+    const UniversalScafoldMenuItem = isMobile ? MobileScafoldMenuItem : DesktopScafoldMenuItem;
+
+    return (
+        <MobileSidebarContext.Provider value={{ show, setShow, isMobile: !!isMobile }}>
+            <UniversalScaffold
+                topItems={
+                    <>
+                        {!isMobile && (
+                            <XWithRole role="feature-non-production">
+                                <UniversalScafoldMenuItem
+                                    name={TextAppBar.items.feed}
+                                    path="/feed"
+                                    icon={<RoomIcon />}
+                                />
+                            </XWithRole>
+                        )}
+
+                        <UniversalScafoldMenuItem
+                            name={TextAppBar.items.mail}
+                            path="/mail"
+                            icon={
+                                <>
+                                    <MessagesIcon />
+                                    <NotificationCounter />
+                                </>
+                            }
+                        />
+
+                        <UniversalScafoldMenuItem
+                            name={TextAppBar.items.directory}
+                            path="/directory"
+                            icon={<DirectoryIcon />}
+                        />
+                    </>
+                }
+                menu={menu}
+                content={content}
+            />
+        </MobileSidebarContext.Provider>
+    );
+};
+
 export class Scaffold extends React.PureComponent {
     static Menu = ScaffoldMenu;
     static Content = ScaffoldContent;
@@ -726,83 +931,6 @@ export class Scaffold extends React.PureComponent {
         let menu = findChild(this.props.children, '_isSidebarMenu');
         let content = findChild(this.props.children, '_isSidebarContent');
 
-        let contentView = (
-            <XView
-                flexDirection="column"
-                backgroundColor={XThemeDefault.backgroundColor}
-                flexGrow={1}
-                flexBasis={0}
-                flexShrink={1}
-                minWidth={0}
-                marginLeft={menu !== undefined ? 408 : 64}
-            >
-                {content}
-            </XView>
-        );
-        let menuView = (
-            <XView flexDirection="row" height="100%" position="fixed">
-                <NavigationScroller>
-                    <NavigationContainer>
-                        <Logo />
-
-                        <NavigationDivider position="top" />
-
-                        <XWithRole role="feature-non-production">
-                            <XPopper
-                                placement="right"
-                                showOnHoverContent={false}
-                                showOnHover={true}
-                                style="dark"
-                                padding={-2}
-                                groupId="scaffold_tooltip"
-                                content={<strong>{TextAppBar.items.feed}</strong>}
-                            >
-                                <NavigatorItem path="/feed">
-                                    <RoomIcon />
-                                </NavigatorItem>
-                            </XPopper>
-                        </XWithRole>
-
-                        <MessengerButton />
-
-                        <XPopper
-                            placement="right"
-                            showOnHoverContent={false}
-                            showOnHover={true}
-                            style="dark"
-                            padding={-2}
-                            groupId="scaffold_tooltip"
-                            content={<strong>{TextAppBar.items.directory}</strong>}
-                        >
-                            <NavigatorItem path="/directory">
-                                <DirecoryIcon />
-                            </NavigatorItem>
-                        </XPopper>
-
-                        <BottomNavigation>
-                            <AddMenu />
-                            <XWithRole role={['super-admin', 'software-developer']}>
-                                <AdminMenu />
-                            </XWithRole>
-                            <NavigationDivider position="bottom" />
-                            <NavigatorItem>
-                                <UserProfile />
-                            </NavigatorItem>
-                        </BottomNavigation>
-                    </NavigationContainer>
-                </NavigationScroller>
-                {menu}
-            </XView>
-        );
-
-        return (
-            <XView flexDirection="row" flexGrow={1} flexBasis={0}>
-                {contentView}
-                {menuView}
-
-                <CreateOrganization />
-                <CreateRoom />
-            </XView>
-        );
+        return <ScaffoldInner menu={menu} content={content} />;
     }
 }
