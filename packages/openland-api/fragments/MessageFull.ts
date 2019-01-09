@@ -34,7 +34,7 @@ export const MessageFull = gql`
                     ...UserShort
                 }
                 kickedBy {
-                    id
+                    ...UserShort
                 }
             }
         }
@@ -187,7 +187,7 @@ export const RoomMessageFull = gql`
                     ...UserShort
                 }
                 kickedBy {
-                    id
+                    ...UserShort
                 }
             }
         }

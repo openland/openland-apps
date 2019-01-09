@@ -99,6 +99,7 @@ const ServiceMessageComponentByTypes = ({
     } else if (typesObject.type === 'KICK') {
         return (
             <ServiceMessageLeft
+                kickedByUser={otherParams.serviceMetadata.kickedBy}
                 kickedUser={otherParams.serviceMetadata.user}
                 myUserId={otherParams.myUserId}
             />

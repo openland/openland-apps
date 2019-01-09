@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Container } from './views/Container';
 import { MentionedUser } from './views/MentionedUser';
 import { OthersPopper } from './views/OthersPopper';
+import { UserShort } from 'openland-api/Types';
 
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
@@ -10,14 +11,14 @@ const GetRandomJoinEmoji = () => joinEmojiList[Math.floor(Math.random() * joinEm
 const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
     return (serviceMetadata.users
         ? serviceMetadata.users
-        : alphaMentions.map(({ user }: any) => user)) as any[];
+        : alphaMentions.map(({ user }: { user: UserShort[] }) => user)) as any[];
 };
 
 const JoinOneServiceMessage = ({
     firstUser,
     myUserId,
 }: {
-    firstUser: any;
+    firstUser: UserShort;
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
@@ -34,8 +35,8 @@ const JoinTwoServiceMessage = ({
     secondUser,
     myUserId,
 }: {
-    firstUser: any;
-    secondUser: any;
+    firstUser: UserShort;
+    secondUser: UserShort;
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
@@ -53,8 +54,8 @@ const JoinManyServiceMessage = ({
     otherUsers,
     myUserId,
 }: {
-    firstUser: any;
-    otherUsers: any;
+    firstUser: UserShort;
+    otherUsers: UserShort[];
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
@@ -79,15 +80,14 @@ const JoinManyServiceMessage = ({
     );
 };
 
-export const ServiceMessageJoin = React.memo<{ serviceMetadata: any, alphaMentions: any, myUserId: string }>((props) => {
+export const ServiceMessageJoin = React.memo<{
+    serviceMetadata: any;
+    alphaMentions: any;
+    myUserId: string;
+}>(props => {
     const joinUsers = getJoinUsers(props);
     if (joinUsers.length === 1) {
-        return (
-            <JoinOneServiceMessage
-                myUserId={props.myUserId}
-                firstUser={joinUsers[0]}
-            />
-        );
+        return <JoinOneServiceMessage myUserId={props.myUserId} firstUser={joinUsers[0]} />;
     } else if (joinUsers.length === 2) {
         return (
             <JoinTwoServiceMessage

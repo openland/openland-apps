@@ -3,10 +3,11 @@ import { Container } from './views/Container';
 import { MentionedUser } from './views/MentionedUser';
 import { LinkToRoom } from './views/LinkToRoom';
 import { XView } from 'react-mental';
+import { UserShort } from 'openland-api/Types';
 
 type PostServiceMessageProps = {
-    postAuthorUser: any;
-    responderUser: any;
+    postAuthorUser: UserShort;
+    responderUser: UserShort;
     chat: {
         id: string;
         title: string;

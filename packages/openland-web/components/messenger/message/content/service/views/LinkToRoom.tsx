@@ -6,7 +6,7 @@ const roomLinkClassName = css`
     color: #1790ff;
 `;
 
-export const LinkToRoom = ({ children, roomId }: any) => {
+export const LinkToRoom = ({ children, roomId }: { children: any; roomId: string }) => {
     return (
         <XLink
             className={roomLinkClassName}
