@@ -965,9 +965,30 @@ export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_user {
   primaryOrganization: RoomHistory_messages_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
+export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata {
@@ -5268,9 +5289,30 @@ export interface ConversationShort_AnonymousConversation_topMessage_serviceMetad
   primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata {
@@ -5628,9 +5670,30 @@ export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_
   primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata {
@@ -6004,9 +6067,30 @@ export interface ConversationShort_ChannelConversation_topMessage_serviceMetadat
   primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata {
@@ -6392,9 +6476,30 @@ export interface MessageFull_serviceMetadata_KickServiceMetadata_user {
   primaryOrganization: MessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
+export interface MessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface MessageFull_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: MessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface MessageFull_serviceMetadata_KickServiceMetadata {
@@ -6772,9 +6877,30 @@ export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_user {
   primaryOrganization: RoomMessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization | null;
 }
 
+export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy {
   __typename: "User";
   id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy_primaryOrganization | null;
 }
 
 export interface RoomMessageFull_serviceMetadata_KickServiceMetadata {
