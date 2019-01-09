@@ -91,6 +91,7 @@ const ServiceMessageComponentByTypes = ({
     } else if (typesObject.type === 'JOIN') {
         return (
             <ServiceMessageJoin
+                joinedByUser={otherParams.senderUser}
                 myUserId={otherParams.myUserId}
                 serviceMetadata={otherParams.serviceMetadata}
                 alphaMentions={otherParams.alphaMentions}
@@ -99,7 +100,7 @@ const ServiceMessageComponentByTypes = ({
     } else if (typesObject.type === 'KICK') {
         return (
             <ServiceMessageLeft
-                kickedByUser={otherParams.serviceMetadata.kickedBy}
+                kickedByUser={otherParams.senderUser}
                 kickedUser={otherParams.serviceMetadata.user}
                 myUserId={otherParams.myUserId}
             />
@@ -158,7 +159,7 @@ const resolveServiceMessageType = ({
     message,
 }: {
     serviceMetadata: any;
-    message: any;
+    message: string;
 }) => {
     if (serviceMetadata) {
         if (serviceMetadata.__typename === 'InviteServiceMetadata') {
@@ -187,8 +188,9 @@ const resolveServiceMessageType = ({
 };
 
 export const ServiceMessageComponent = (params: {
+    senderUser: any;
     serviceMetadata: any;
-    message: any;
+    message: string;
     alphaMentions: any;
     myUserId: string;
 }) => {

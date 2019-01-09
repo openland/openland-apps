@@ -9,7 +9,6 @@ export interface ServiceMessageLeftProps {
 }
 
 export const ServiceMessageLeft = (props: ServiceMessageLeftProps) => {
-    console.log(props.kickedByUser);
     return (
         <Container>
             {props.kickedByUser.id === props.kickedUser.id ? (

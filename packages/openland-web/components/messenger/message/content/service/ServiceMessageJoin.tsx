@@ -15,17 +15,29 @@ const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
 };
 
 const JoinOneServiceMessage = ({
+    joinedByUser,
     firstUser,
     myUserId,
 }: {
+    joinedByUser: UserShort;
     firstUser: UserShort;
     myUserId: string;
 }) => {
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
     return (
         <Container>
-            {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
-            the room
+            {joinedByUser.id === firstUser.id ? (
+                <>
+                    {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
+                    joined the room
+                </>
+            ) : (
+                <>
+                    {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
+                    was invited by{' '}
+                    <MentionedUser user={joinedByUser} isYou={myUserId === firstUser.id} />
+                </>
+            )}
         </Container>
     );
 };
@@ -81,17 +93,25 @@ const JoinManyServiceMessage = ({
 };
 
 export const ServiceMessageJoin = React.memo<{
+    joinedByUser: UserShort;
     serviceMetadata: any;
     alphaMentions: any;
     myUserId: string;
 }>(props => {
     const joinUsers = getJoinUsers(props);
+    const { joinedByUser, myUserId } = props;
     if (joinUsers.length === 1) {
-        return <JoinOneServiceMessage myUserId={props.myUserId} firstUser={joinUsers[0]} />;
+        return (
+            <JoinOneServiceMessage
+                myUserId={myUserId}
+                firstUser={joinUsers[0]}
+                joinedByUser={joinedByUser}
+            />
+        );
     } else if (joinUsers.length === 2) {
         return (
             <JoinTwoServiceMessage
-                myUserId={props.myUserId}
+                myUserId={myUserId}
                 firstUser={joinUsers[0]}
                 secondUser={joinUsers[1]}
             />
@@ -99,7 +119,7 @@ export const ServiceMessageJoin = React.memo<{
     } else {
         return (
             <JoinManyServiceMessage
-                myUserId={props.myUserId}
+                myUserId={myUserId}
                 firstUser={joinUsers[0]}
                 otherUsers={joinUsers.slice(1)}
             />
