@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { HotKeys } from 'react-hotkeys';
 import { withEditMessage } from '../../../../api/withMessageState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
@@ -157,27 +158,19 @@ export class EditMessageInlineWrapper extends React.Component<{
         this.props.onClose();
     };
 
-    keydownHandler = (e: any) => {
-        if (e.code === 'Escape') {
-            this.onCloseHandler();
-        }
-    };
-
-    componentDidMount() {
-        document.addEventListener('keydown', this.keydownHandler);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.keydownHandler);
-    }
-
     render() {
         return (
-            <EditMessageInline
-                id={this.props.message.id}
-                text={this.props.message.message}
-                onClose={this.onCloseHandler}
-            />
+            <HotKeys
+                handlers={{
+                    esc: this.onCloseHandler,
+                }}
+            >
+                <EditMessageInline
+                    id={this.props.message.id}
+                    text={this.props.message.message}
+                    onClose={this.onCloseHandler}
+                />
+            </HotKeys>
         );
     }
 }
