@@ -29,6 +29,9 @@ export const DialogsQuery = gql`
             }
             cursor
         }
+        state: dialogsState {
+            state
+        }
         counter: alphaNotificationCounter {
             id
             unreadCount

@@ -517,6 +517,11 @@ export interface Dialogs_dialogs {
   cursor: string | null;
 }
 
+export interface Dialogs_state {
+  __typename: "DialogUpdateState";
+  state: string | null;
+}
+
 export interface Dialogs_counter {
   __typename: "NotificationCounter";
   id: string;
@@ -525,6 +530,7 @@ export interface Dialogs_counter {
 
 export interface Dialogs {
   dialogs: Dialogs_dialogs;
+  state: Dialogs_state;
   counter: Dialogs_counter;
 }
 
