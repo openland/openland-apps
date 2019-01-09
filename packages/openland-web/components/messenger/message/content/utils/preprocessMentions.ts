@@ -55,7 +55,7 @@ export function preprocessMentions(src: string, simpleMentions: any, alphaMentio
                     if (mentionStart > offset) {
                         res.push({
                             type: 'text',
-                            text: src.substring(offset, mentionStart - offset)
+                            text: src.substring(offset, mentionStart)
                         });
                     }
 
