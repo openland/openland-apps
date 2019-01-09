@@ -19,7 +19,9 @@ export const OrganizationProfileFull = gql`
         twitter
         facebook
         linkedin
-        
+
+        shortname
+
         featured: alphaFeatured
     }
 `;

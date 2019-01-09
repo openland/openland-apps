@@ -23,6 +23,12 @@ export const UpdateOrganizationMutation = gql`
     ${OrganizationProfileFull}
 `;
 
+export const SetOrgShortnameMutation = gql`
+    mutation SetOrgShortname($organizationId: ID!, $shortname: String!) {
+        alphaSetOrgShortName(id: $organizationId, shortname: $shortname)
+    }
+`;
+
 export const OrganizationQuery = gql`
     query Organization($organizationId: ID!) {
         organization(id: $organizationId) {
@@ -42,8 +48,23 @@ export const OrganizationProfileQuery = gql`
 `;
 
 export const ExploreOrganizationsQuery = gql`
-    query ExploreOrganizations($query: String, $prefix: String, $sort: String, $page: Int, $after: String, $all: Boolean) {
-        items: alphaOrganizations(query: $query, prefix: $prefix, sort: $sort, page: $page, first: 25, after: $after, all: $all) {
+    query ExploreOrganizations(
+        $query: String
+        $prefix: String
+        $sort: String
+        $page: Int
+        $after: String
+        $all: Boolean
+    ) {
+        items: alphaOrganizations(
+            query: $query
+            prefix: $prefix
+            sort: $sort
+            page: $page
+            first: 25
+            after: $after
+            all: $all
+        ) {
             edges {
                 node {
                     ...OrganizationSearch
@@ -86,8 +107,16 @@ export const ExploreComunityQuery = gql`
 `;
 
 export const OrganizationChangeMemberRoleMutation = gql`
-    mutation OrganizationChangeMemberRole($memberId: ID!, $newRole: OrganizationMemberRole!, $organizationId: ID!) {
-        alphaOrganizationChangeMemberRole(memberId: $memberId, newRole: $newRole, organizationId: $organizationId)
+    mutation OrganizationChangeMemberRole(
+        $memberId: ID!
+        $newRole: OrganizationMemberRole!
+        $organizationId: ID!
+    ) {
+        alphaOrganizationChangeMemberRole(
+            memberId: $memberId
+            newRole: $newRole
+            organizationId: $organizationId
+        )
     }
 `;
 
@@ -99,7 +128,10 @@ export const OrganizationRemoveMemberMutation = gql`
 
 export const OrganizationInviteMembersMutation = gql`
     mutation OrganizationInviteMembers($inviteRequests: [InviteRequest!]!, $organizationId: ID) {
-        alphaOrganizationInviteMembers(inviteRequests: $inviteRequests, organizationId: $organizationId)
+        alphaOrganizationInviteMembers(
+            inviteRequests: $inviteRequests
+            organizationId: $organizationId
+        )
     }
 `;
 
@@ -115,7 +147,10 @@ export const OrganizationPublicInviteQuery = gql`
 
 export const OrganizationCreatePublicInviteMutation = gql`
     mutation OrganizationCreatePublicInvite($expirationDays: Int, $organizationId: ID) {
-        alphaOrganizationRefreshInviteLink(expirationDays: $expirationDays, organizationId: $organizationId) {
+        alphaOrganizationRefreshInviteLink(
+            expirationDays: $expirationDays
+            organizationId: $organizationId
+        ) {
             id
             key
             ttl

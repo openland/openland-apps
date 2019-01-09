@@ -13,12 +13,14 @@ export const OrganizationFull = gql`
         name
         photo
 
+        shortname
+
         website
         about
         twitter
         facebook
         linkedin
-        
+
         members: alphaOrganizationMembers {
             role
             user {

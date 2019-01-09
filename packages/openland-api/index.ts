@@ -86,6 +86,7 @@ export const FeedHomeQuery = typedQuery<Types.FeedHome, {}>(Feed.FeedHomeQuery);
 export const FeedPostMutation = typedMutation<Types.FeedPost, Types.FeedPostVariables>(Feed.FeedPostMutation);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
+export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);
 export const OrganizationQuery = typedQuery<Types.Organization, Types.OrganizationVariables>(Organization.OrganizationQuery);
 export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Types.OrganizationProfileVariables>(Organization.OrganizationProfileQuery);
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);

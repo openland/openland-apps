@@ -16,6 +16,7 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
 import { DateFormater } from 'openland-x/XDate';
+import { XFormError } from 'openland-x-forms/XFormError';
 
 const Content = Glamorous(XContent)({
     paddingTop: 20,
@@ -166,7 +167,7 @@ const Separator = Glamorous.div({
     marginBottom: '24px !important',
 });
 
-export const OrganizationSettigs = ((props: any) => {
+export const OrganizationSettings = ((props: any) => {
     return (
         <Navigation title="Organization profile">
             <Content>
@@ -221,16 +222,16 @@ export const OrganizationSettigs = ((props: any) => {
                                             <XInput
                                                 field="input.name"
                                                 size="large"
-                                                placeholder="Organization name"
+                                                title="Organization name"
                                             />
                                             <XInput
                                                 field="input.about"
                                                 size="large"
-                                                placeholder="About"
+                                                title="About"
                                             />
                                             <XInput
                                                 flexGrow={1}
-                                                placeholder={
+                                                title={
                                                     TextOrganizationProfile.placeholderSocialInputPlaceholder
                                                 }
                                                 field="input.website"
@@ -238,17 +239,17 @@ export const OrganizationSettigs = ((props: any) => {
                                             />
                                             <XInput
                                                 field="input.twitter"
-                                                placeholder="Twitter"
+                                                title="Twitter"
                                                 size="large"
                                             />
                                             <XInput
                                                 field="input.facebook"
-                                                placeholder="Facebook"
+                                                title="Facebook"
                                                 size="large"
                                             />
                                             <XInput
                                                 field="input.linkedin"
-                                                placeholder="LinkedIn"
+                                                title="LinkedIn"
                                                 size="large"
                                             />
                                         </XVertical>
@@ -264,6 +265,38 @@ export const OrganizationSettigs = ((props: any) => {
                                     style="primary"
                                     succesText="Changes saved!"
                                 />
+                            </XVertical>
+                        </XForm>
+                        <XForm
+                            defaultData={{
+                                shortname: props.data.organizationProfile.shortname,
+                            }}
+                            defaultAction={async data => {
+                                await props.setShortname({
+                                    variables: { shortname: data.shortname },
+                                });
+                            }}
+                        >
+                            <XVertical separator={12}>
+                                <CategoryTitle>Organization shortname</CategoryTitle>
+                                <XFormError onlyGeneralErrors={true} />
+                                <XVertical width={480} separator={12}>
+                                    <XFormLoadingContent>
+                                        <XVertical separator={10}>
+                                            <XInput
+                                                field="shortname"
+                                                size="large"
+                                                title="Shortname"
+                                            />
+                                        </XVertical>
+                                    </XFormLoadingContent>
+                                    <XFormSubmit
+                                        text="Save changes"
+                                        alignSelf="flex-start"
+                                        style="primary"
+                                        succesText="Changes saved!"
+                                    />
+                                </XVertical>
                             </XVertical>
                         </XForm>
                     </XVertical>
@@ -293,6 +326,7 @@ export const OrganizationSettigs = ((props: any) => {
 }) as React.ComponentType<
     XWithRouter & {
         updateOrganizaton: any;
+        setShortname: any;
         data: { organizationProfile: any };
         orgId?: string;
         hideMembers?: boolean;

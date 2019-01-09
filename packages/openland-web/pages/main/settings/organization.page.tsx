@@ -2,14 +2,15 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withOrganizationProfile } from '../../../api/withOrganizationProfile';
 import { withQueryLoader } from '../../../components/withQueryLoader';
-import { OrganizationSettigs } from './organizationBase';
+import { OrganizationSettings } from './organizationBase';
 import { XLoader } from 'openland-x/XLoader';
 
 const Root = withOrganizationProfile(props =>
     props.data.organizationProfile ? (
-        <OrganizationSettigs
+        <OrganizationSettings
             data={{ organizationProfile: props.data.organizationProfile }}
             updateOrganizaton={props.updateOrganizaton}
+            setShortname={props.setShortname}
             router={props.router}
             hideMembers={true}
         />
