@@ -178,7 +178,7 @@ const Header = (props: { user: User_user }) => {
                                 flat={true}
                                 content={
                                     <>
-                                        <XMenuItem href="/settings/profile/">
+                                        <XMenuItem path="/settings/profile/">
                                             {TextProfiles.User.edit}
                                         </XMenuItem>
                                     </>

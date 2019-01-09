@@ -1,23 +1,11 @@
 package com.openland.react.async
 
 import android.content.res.Resources
-import android.net.Uri
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextUtils
-import com.facebook.drawee.backends.pipeline.Fresco
-import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
-import com.facebook.litho.fresco.FrescoImage
-import com.facebook.litho.widget.Text
 import com.facebook.react.bridge.ReactContext
-import com.facebook.react.uimanager.PixelUtil
 import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
-import com.openland.react.async.views.BackgroundSolidColorDrawable
-import com.openland.react.async.views.CustomLineHeightSpan
-import com.openland.react.async.views.LithoFlex
-import com.openland.react.async.views.LithoText
+import com.openland.react.async.views.*
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
@@ -82,22 +70,10 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
                     .build()
         }
         is AsyncImageSpec -> {
-            var uri = spec.url
-            if(uri !== null && !(uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://"))){
-                uri = helper.getResourceDrawableUri(context, spec.url).toString()
-            }
-            val controller = Fresco.newDraweeControllerBuilder()
-                    .setUri(uri)
+            return LithoImage.create(context)
+                    .spec(spec)
+                    .reactContext(reactContext)
                     .build()
-
-            var res = FrescoImage.create(context)
-                    .controller(controller)
-                    .fadeDuration(0)
-
-            if (spec.style.borderRadius != null) {
-                res = res.roundingParams(RoundingParams.fromCornersRadius(Resources.getSystem().displayMetrics.density * spec.style.borderRadius!!))
-            }
-            return resolveStyle(context, res, spec.style)
         }
 //        is AsyncListSpec -> {
 //            val res = RecyclerCollectionComponent.create(context)

@@ -35,7 +35,7 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
     display: 'flex',
     alignItems: 'center',
     height: 28,
-    padding: '6px 4px 2px',
+    padding: 2,
     cursor: 'pointer',
     fontSize: 13,
     fontWeight: 600,
