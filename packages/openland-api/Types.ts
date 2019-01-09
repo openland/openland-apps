@@ -5010,25 +5010,6 @@ export interface User_user_primaryOrganization {
   isCommunity: boolean;
 }
 
-export interface User_user_channels_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface User_user_channels {
-  __typename: "ChannelConversation";
-  id: string;
-  title: string;
-  hidden: boolean;
-  photos: string[];
-  photo: string | null;
-  membersCount: number;
-  organization: User_user_channels_organization | null;
-}
-
 export interface User_user {
   __typename: "User";
   id: string;
@@ -5052,10 +5033,6 @@ export interface User_user {
    */
   shortname: string | null;
   primaryOrganization: User_user_primaryOrganization | null;
-  /**
-   * TODO: Refactor
-   */
-  channels: User_user_channels[];
 }
 
 export interface User_conversation_settings {
@@ -5190,10 +5167,17 @@ export interface ResolveShortName_item_User {
   firstName: string;
   lastName: string | null;
   photo: string | null;
+  phone: string | null;
   email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
   online: boolean;
   lastSeen: string | null;
-  isYou: boolean;
+  linkedin: string | null;
+  twitter: string | null;
   /**
    * TODO: Move to extensions
    */
@@ -5201,12 +5185,115 @@ export interface ResolveShortName_item_User {
   primaryOrganization: ResolveShortName_item_User_primaryOrganization | null;
 }
 
-export interface ResolveShortName_item_Organization {
+export interface ResolveShortName_item_Organization_members_user_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
   photo: string | null;
   isCommunity: boolean;
+}
+
+export interface ResolveShortName_item_Organization_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_members_user_primaryOrganization | null;
+}
+
+export interface ResolveShortName_item_Organization_members {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: ResolveShortName_item_Organization_members_user;
+}
+
+export interface ResolveShortName_item_Organization_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ResolveShortName_item_Organization_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  /**
+   * TODO: Move to extensions
+   */
+  shortname: string | null;
+  primaryOrganization: ResolveShortName_item_Organization_requests_user_primaryOrganization | null;
+}
+
+export interface ResolveShortName_item_Organization_requests {
+  __typename: "OrganizationRequestedMember";
+  role: OrganizationMemberRole;
+  user: ResolveShortName_item_Organization_requests_user;
+}
+
+export interface ResolveShortName_item_Organization_rooms {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+}
+
+export interface ResolveShortName_item_Organization {
+  __typename: "Organization";
+  id: string;
+  /**
+   * # Refactor?
+   */
+  superAccountId: string;
+  isMine: boolean;
+  isOwner: boolean;
+  featured: boolean;
+  isCommunity: boolean;
+  name: string;
+  photo: string | null;
+  website: string | null;
+  about: string | null;
+  twitter: string | null;
+  facebook: string | null;
+  linkedin: string | null;
+  members: ResolveShortName_item_Organization_members[];
+  requests: ResolveShortName_item_Organization_requests[];
+  rooms: ResolveShortName_item_Organization_rooms[];
 }
 
 export type ResolveShortName_item = ResolveShortName_item_User | ResolveShortName_item_Organization;

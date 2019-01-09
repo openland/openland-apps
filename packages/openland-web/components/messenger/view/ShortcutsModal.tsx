@@ -32,48 +32,52 @@ const KeyboardShortcut = Glamorous.div({
 });
 
 export const ShortcutsModal = (props: { target: any }) => (
-    <XModal title="Keyboard shortcuts" useTopCloser={true} target={props.target}>
+    <XModal
+        title="Keyboard shortcuts"
+        useTopCloser={true}
+        target={props.target}
+    >
         <KeyboardShortcuts>
             <KeyboardShortcut>
                 <span>Ctrl + S</span> Search chats
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Esc</span> Close chat
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>
                     <strong>↑</strong>
                 </span>{' '}
                 Edit last message (works when the message box is in focus)
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Ctrl + E</span> Edit last message
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Option + ↑ (Mac)</span>
                 <span>Alt + ↑ (Windows)</span> Previous chat
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Option + ↓ (Mac)</span>
                 <span>Alt + ↓ (Windows)</span> Next chat
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Enter</span> Send message
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Shift + Enter</span> New line
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Cmd + Enter (Mac)</span>
                 <span>Ctrl + Enter (Windows)</span> Submit form
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)
-            </KeyboardShortcut>
+                </KeyboardShortcut>
             <KeyboardShortcut>
                 <span>Ctrl + Option + N (Mac)</span>
                 <span>Ctrl + Alt + N (Windows)</span> New chat
-            </KeyboardShortcut>
+                </KeyboardShortcut>
         </KeyboardShortcuts>
     </XModal>
 );

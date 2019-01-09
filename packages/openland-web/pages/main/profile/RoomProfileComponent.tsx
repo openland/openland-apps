@@ -19,7 +19,6 @@ import { XOverflow } from '../../../components/XOverflow';
 import { LeaveChatComponent } from '../../../fragments/MessengerRootComponent';
 import { RemoveMemberModal } from '../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
-
 import {
     HeaderAvatar,
     HeaderTitle,
@@ -29,7 +28,6 @@ import {
     Section,
     SectionContent,
     HeaderWrapper,
-    OrganizationInfoWrapper,
     EditButton,
 } from './OrganizationProfileComponent';
 import {
@@ -384,10 +382,10 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
     return (
         <>
             <XDocumentHead title={chat.title} />
-            <OrganizationInfoWrapper>
+            <XView height="100%">
                 <BackButton />
                 <Header chat={chat} />
-                <XScrollView2 height="calc(100% - 137px)">
+                <XScrollView2 flexGrow={1}>
                     <About chat={chat} />
                     <MembersProvider
                         kind={chat.kind}
@@ -399,7 +397,7 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
                         chatTitle={chat.title}
                     />
                 </XScrollView2>
-            </OrganizationInfoWrapper>
+            </XView>
         </>
     );
 };

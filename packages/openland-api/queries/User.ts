@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
-import { OrganizationShort } from '../fragments/OrganizationShort';
+import { OrganizationFull } from '../fragments/OrganizationFull';
 import { UserShort } from '../fragments/UserShort';
+import { UserFull } from '../fragments/UserFull';
 
 export const UsersQuery = gql`
     query Users($query: String!) {
@@ -15,37 +16,7 @@ export const UsersQuery = gql`
 export const UserQuery = gql`
     query User($userId: ID!) {
         user: user(id: $userId) {
-            id
-            name
-            firstName
-            lastName
-            photo
-            phone
-            email
-            website
-            about
-            location
-            isBot
-            isYou
-            online
-            lastSeen
-            linkedin
-            twitter
-            shortname
-            primaryOrganization {
-                ...OrganizationShort
-            }
-            channels: channelsJoined {
-                id
-                title
-                hidden
-                photos
-                photo
-                membersCount
-                organization {
-                    ...OrganizationShort
-                }
-            }
+            ...UserFull
         }
         conversation: alphaChat(conversationId: $userId) {
             id
@@ -56,7 +27,7 @@ export const UserQuery = gql`
             }
         }
     }
-    ${OrganizationShort}
+    ${UserFull}
 `;
 
 export const OnlineQuery = gql`
@@ -96,13 +67,13 @@ export const ResolveShortNameQuery = gql`
     query ResolveShortName($shortname: String!) {
         item: alphaResolveShortName(shortname: $shortname) {
             ... on User {
-                ...UserShort
+                ...UserFull
             }
             ... on Organization {
-                ...OrganizationShort
+                ...OrganizationFull
             }
         }
     }
-    ${UserShort}
-    ${OrganizationShort}
+    ${UserFull}
+    ${OrganizationFull}
 `;

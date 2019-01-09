@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { withOrganization } from '../../../api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import {
-    Organization,
     OrganizationMemberRole,
     Organization_organization,
     Organization_organization_members,
@@ -45,6 +44,7 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XView } from 'react-mental';
 
 const BackWrapper = Glamorous.div({
     background: '#f9f9f9',
@@ -798,31 +798,27 @@ const Rooms = (props: { organization: Organization_organization }) => {
     );
 };
 
-export const OrganizationInfoWrapper = Glamorous.div({
-    overflow: 'hidden',
-    height: '100%',
-});
-
 interface OrganizationProfileInnerProps extends XWithRouter {
-    organizationQuery: Organization;
+    organization: Organization_organization;
     onDirectory?: boolean;
+    hideBack?: boolean;
 }
 
-const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
-    let organization = props.organizationQuery.organization;
+export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) => {
+    let { organization } = props;
 
     return (
         <>
             <XDocumentHead title={organization.name} />
-            <OrganizationInfoWrapper>
-                <BackButton />
+            <XView height="100%">
+                {!props.hideBack && <BackButton />}
                 <Header organization={organization} />
-                <XScrollView2 height="calc(100% - 136px)">
+                <XScrollView2 flexGrow={1}>
                     <About organization={organization} />
                     <Members organization={organization} router={props.router} />
                     <Rooms organization={organization} />
                 </XScrollView2>
-            </OrganizationInfoWrapper>
+            </XView>
         </>
     );
 };
@@ -831,7 +827,7 @@ const OrganizationProvider = withOrganization(
     withRouter(props =>
         props.data.organization ? (
             <OrganizationProfileInner
-                organizationQuery={props.data}
+                organization={props.data.organization}
                 router={props.router}
                 onDirectory={(props as any).onDirectory}
             />
