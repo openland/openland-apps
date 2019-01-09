@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableWithoutFeedback, Image, Text } from 'react-native';
+import { View, TouchableWithoutFeedback, Image, Text, Platform } from 'react-native';
 import { SDevice } from 'react-native-s/SDevice';
 import { AppStyles } from '../styles/AppStyles';
 import { ZCounter } from './ZCounter';
@@ -14,6 +14,7 @@ export interface AppBarBottomItemProps {
 
 export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps> {
     render() {
+        let size = Platform.OS === 'android' ? 22 : 28;
         return (
             <TouchableWithoutFeedback onPressIn={this.props.onPress} delayPressIn={0}>
                 <View
@@ -36,10 +37,10 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                             source={this.props.icon}
                             resizeMode="contain"
                             style={{
-                                width: 28,
-                                height: 28,
-                                opacity: this.props.selected ? 1 : 1,
-                                tintColor: this.props.selected ? AppStyles.primaryColor : '#99a2b0'
+                                width: size,
+                                height: size,
+                                opacity: 1,
+                                tintColor: Platform.OS === 'android' ? (this.props.selected ? '#0284FE' : '#737373') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0')
                             }}
                         />
                         <View
@@ -54,12 +55,13 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                     </View>
                     <Text
                         style={{
-                            color: this.props.selected ? AppStyles.primaryColor : '#99a2b0',
-                            fontSize: 12,
-                            lineHeight: 16,
-                            height: 16,
+                            color: Platform.OS === 'android' ? (this.props.selected ? '#0284FE' : '#000000') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0'),
+                            fontSize: Platform.OS === 'android' ? 14 : 12,
+                            fontWeight: Platform.OS === 'android' ? '500' : '400',
+                            lineHeight: Platform.OS === 'android' ? 18 : 16,
+                            height: Platform.OS === 'android' ? 18 : 16,
                             overflow: 'visible',
-                            opacity: this.props.selected ? 1 : 1
+                            opacity: Platform.OS === 'android' ? (this.props.selected ? 1 : 0.5) : 1
                         }}
                     >
                         {this.props.title}
@@ -85,7 +87,7 @@ export class AppBarBottom extends React.PureComponent {
                 }}
             >
                 <View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />
-                <View style={{ flexDirection: 'row', height: 48 }}>
+                <View style={{ flexDirection: 'row', height: Platform.OS === 'android' ? 56 : 48 }}>
                     {this.props.children}
                 </View>
             </View>

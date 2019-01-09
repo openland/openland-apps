@@ -70,26 +70,26 @@ export class Home extends React.PureComponent<PageProps, { tab: number, counter?
                             <AppBarBottom>
                                 <AppBarBottomItem
                                     title="Directory"
-                                    icon={require('assets/ic-directory-ios.png')}
+                                    icon={Platform.OS === 'android' ? require('assets/ic-directory.png') : require('assets/ic-directory-ios.png')}
                                     selected={this.state.tab === 0}
                                     onPress={() => this.handleTabChange(0)}
                                 />
                                 <AppBarBottomItem
                                     title="Rooms"
-                                    icon={require('assets/ic-feed.png')}
+                                    icon={Platform.OS === 'android' ? require('assets/ic-rooms.png') : require('assets/ic-feed.png')}
                                     selected={this.state.tab === 1}
                                     onPress={() => this.handleTabChange(1)}
                                 />
                                 <AppBarBottomItem
                                     title="Messages"
-                                    icon={require('assets/ic-messages-ios.png')}
+                                    icon={Platform.OS === 'android' ? require('assets/ic-messages.png') : require('assets/ic-messages-ios.png')}
                                     selected={this.state.tab === 2}
                                     counter={this.state && this.state.counter ? this.state.counter.counter : resp.data!!.counter.unreadCount}
                                     onPress={() => this.handleTabChange(2)}
                                 />
                                 <AppBarBottomItem
                                     title="Settings"
-                                    icon={require('assets/ic-settings-ios.png')}
+                                    icon={Platform.OS === 'android' ? require('assets/ic-settings.png') : require('assets/ic-settings-ios.png')}
                                     selected={this.state.tab === 3}
                                     onPress={() => this.handleTabChange(3)}
                                 />
