@@ -16,6 +16,7 @@ import { ZLoader } from '../../components/ZLoader';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { RoomSearchTextQuery } from 'openland-api';
+import { CenteredHeader } from './components/CenteredHeader';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
@@ -88,7 +89,12 @@ class DialogsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Messages" />
+                {Platform.OS === 'ios' && (
+                    <SHeader title="Messages" />
+                )}
+                {Platform.OS === 'android' && (
+                    <CenteredHeader title="Messages" padding={98} />
+                )}
                 <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => this.props.router.push('ComposeInitial')} />
                 {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
                 <SSearchControler key={this.props.router.key + new Date().getTime()} searchRender={(props) => (<DialogsSearch query={props.query} />)}>

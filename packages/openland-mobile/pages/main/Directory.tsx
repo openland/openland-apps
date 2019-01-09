@@ -13,6 +13,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Platform } from 'react-native';
+import { CenteredHeader } from './components/CenteredHeader';
 
 export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {
     render() {
@@ -55,7 +56,12 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Organizations" />
+                {Platform.OS === 'ios' && (
+                    <SHeader title="Organizations" />
+                )}
+                {Platform.OS === 'android' && (
+                    <CenteredHeader title="Organizations" padding={98} />
+                )}
                 <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New" onPress={() => this.props.router.push('NewOrganization')} />
                 <SSearchControler searchRender={(props) => (<OrganizationSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList

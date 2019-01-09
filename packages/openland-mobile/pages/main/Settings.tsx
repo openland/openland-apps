@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, Share, TouchableHighlight, View, Image, Text } from 'react-native';
+import { AsyncStorage, Share, TouchableHighlight, View, Image, Text, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -12,6 +12,8 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { XPStyles } from 'openland-xp/XPStyles';
 import RNRestart from 'react-native-restart';
+import { SHeaderView } from 'react-native-s/SHeaderView';
+import { CenteredHeader } from './components/CenteredHeader';
 
 class SettingsComponent extends React.Component<PageProps> {
 
@@ -25,7 +27,13 @@ class SettingsComponent extends React.Component<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Settings" />
+                {Platform.OS === 'ios' && (
+                    <SHeader title="Settings" />
+                )}
+                {Platform.OS === 'android' && (
+                    <CenteredHeader title="Settings" /> 
+                )}
+
                 <ZQuery query={AccountSettingsQuery}>
                     {resp => {
                         let primary = resp.data.me!.primaryOrganization;

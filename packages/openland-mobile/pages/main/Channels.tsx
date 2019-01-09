@@ -9,6 +9,8 @@ import { extractDialog, extractDialogFRomRoom } from 'openland-engines/messenger
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { RoomSearchQuery } from 'openland-api';
+import { Platform } from 'react-native';
+import { CenteredHeader } from './components/CenteredHeader';
 
 class ChannelSearchComponent extends React.Component<PageProps & { query: string }> {
     render() {
@@ -31,7 +33,12 @@ class ChannelsComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Rooms" />
+                {Platform.OS === 'ios' && (
+                    <SHeader title="Rooms" />
+                )}
+                {Platform.OS === 'android' && (
+                    <CenteredHeader title="Rooms" padding={98} />
+                )}
                 <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New" onPress={() => this.props.router.push('CreateChannel')} />
                 <SSearchControler searchRender={(props) => (<ChannelSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
