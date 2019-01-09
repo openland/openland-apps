@@ -1,4 +1,15 @@
-patch-package
+diff --git a/node_modules/next/dist/bin/next b/node_modules/next/dist/bin/next
+index 1a8840c..b5f2d9e 100755
+--- a/node_modules/next/dist/bin/next
++++ b/node_modules/next/dist/bin/next
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env node
++#!/usr/bin/env node --max-old-space-size=8192
+ "use strict";
+ 
+ var _interopRequireDefault = require("@babel/runtime-corejs2/helpers/interopRequireDefault");
+diff --git a/node_modules/next/dist/server/document.js b/node_modules/next/dist/server/document.js
+index a792d81..b22c642 100644
 --- a/node_modules/next/dist/server/document.js
 +++ b/node_modules/next/dist/server/document.js
 @@ -190,7 +190,7 @@ function (_Component2) {
@@ -19,3 +30,419 @@ patch-package
      }
    }]);
    return Head;
+diff --git a/node_modules/next/node_modules/.bin/ansi-html b/node_modules/next/node_modules/.bin/ansi-html
+deleted file mode 120000
+index 262bec0..0000000
+--- a/node_modules/next/node_modules/.bin/ansi-html
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../ansi-html/bin/ansi-html
+\ No newline at end of file
+diff --git a/node_modules/next/node_modules/.bin/ansi-html b/node_modules/next/node_modules/.bin/ansi-html
+new file mode 100755
+index 0000000..e58f668
+--- /dev/null
++++ b/node_modules/next/node_modules/.bin/ansi-html
+@@ -0,0 +1,102 @@
++#!/usr/bin/env node
++
++var ansiHTML = require('../')
++var pkg = require('../package.json')
++var l = console.log
++var w = console.warn
++
++var stdoutFlushed = true
++var readingStdin = false
++
++function logLine (line) {
++  if (!line) {
++    return
++  }
++  line = ansiHTML(line)
++  try {
++    stdoutFlushed = process.stdout.write(line)
++  } catch (e) {}
++}
++
++function safeExit (code) {
++  l('')
++  process.exit(code)
++}
++
++function processStdin (finish) {
++  readingStdin = true
++  var chunks = ''
++  process.stdin.resume()
++  process.stdin.setEncoding('utf-8')
++  process.stdin.on('data', function (chunk) {
++    var lines = chunk.split(/[\r\n]+/g).filter(function (line) {
++      return line
++    })
++    var length = lines.length
++    if (length === 1) {
++      chunks += lines[0]
++      return
++    }
++    if (length > 1) {
++      logLine(chunks + (chunks ? '\n' : '') + lines[0] + '\n')
++    }
++    chunks = lines.pop()
++    length -= 1
++    for (var i = 1; i < length; i++) {
++      logLine(lines[i] + '\n')
++    }
++  })
++  process.stdin.on('end', function () {
++    if (chunks) {
++      logLine(chunks)
++    }
++    finish()
++  })
++}
++
++function stdoutDrain (code) {
++  process.stdout.on('drain', function () {
++    safeExit(code)
++  })
++  if (stdoutFlushed) {
++    safeExit(code)
++  }
++}
++
++function startup (args) {
++  if (args.indexOf('-h') > 0 || args.indexOf('--help') > 0) {
++    l(pkg.name + '@' + pkg.version)
++    l('Usage:')
++    l('   ansi-html [options]')
++    l('   ... | ansi-html [options]')
++    l('Options:')
++    l('   -h, --help print help information')
++    return
++  }
++
++  process.stdout.on('error', function (err) {
++    if (err.code === 'EPIPE') {
++      stdoutDrain(0)
++    } else {
++      w('stdout error:', err)
++      stdoutDrain(1)
++    }
++  })
++
++  processStdin(function () {
++    safeExit(0)
++  })
++}
++
++if (require.main === module) {
++  startup(process.argv)
++}
++
++process.on('SIGINT', function () {
++  if (!readingStdin) {
++    safeExit(1)
++  }
++})
++process.on('SIGQUIT', function () { safeExit(1) })
++process.on('SIGTERM', function () { safeExit(1) })
++process.on('SIGHUP', function () { safeExit(1) })
+diff --git a/node_modules/next/node_modules/.bin/webpack b/node_modules/next/node_modules/.bin/webpack
+deleted file mode 120000
+index 8a1900f..0000000
+--- a/node_modules/next/node_modules/.bin/webpack
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../webpack/bin/webpack.js
+\ No newline at end of file
+diff --git a/node_modules/next/node_modules/.bin/webpack b/node_modules/next/node_modules/.bin/webpack
+new file mode 100755
+index 0000000..a720974
+--- /dev/null
++++ b/node_modules/next/node_modules/.bin/webpack
+@@ -0,0 +1,168 @@
++#!/usr/bin/env node
++
++process.exitCode = 0;
++
++/**
++ * @param {string} command process to run
++ * @param {string[]} args commandline arguments
++ * @returns {Promise<void>} promise
++ */
++const runCommand = (command, args) => {
++	const cp = require("child_process");
++	return new Promise((resolve, reject) => {
++		const executedCommand = cp.spawn(command, args, {
++			stdio: "inherit",
++			shell: true
++		});
++
++		executedCommand.on("error", error => {
++			reject(error);
++		});
++
++		executedCommand.on("exit", code => {
++			if (code === 0) {
++				resolve();
++			} else {
++				reject();
++			}
++		});
++	});
++};
++
++/**
++ * @param {string} packageName name of the package
++ * @returns {boolean} is the package installed?
++ */
++const isInstalled = packageName => {
++	try {
++		require.resolve(packageName);
++
++		return true;
++	} catch (err) {
++		return false;
++	}
++};
++
++/**
++ * @typedef {Object} CliOption
++ * @property {string} name display name
++ * @property {string} package npm package name
++ * @property {string} binName name of the executable file
++ * @property {string} alias shortcut for choice
++ * @property {boolean} installed currently installed?
++ * @property {boolean} recommended is recommended
++ * @property {string} url homepage
++ * @property {string} description description
++ */
++
++/** @type {CliOption[]} */
++const CLIs = [
++	{
++		name: "webpack-cli",
++		package: "webpack-cli",
++		binName: "webpack-cli",
++		alias: "cli",
++		installed: isInstalled("webpack-cli"),
++		recommended: true,
++		url: "https://github.com/webpack/webpack-cli",
++		description: "The original webpack full-featured CLI."
++	},
++	{
++		name: "webpack-command",
++		package: "webpack-command",
++		binName: "webpack-command",
++		alias: "command",
++		installed: isInstalled("webpack-command"),
++		recommended: false,
++		url: "https://github.com/webpack-contrib/webpack-command",
++		description: "A lightweight, opinionated webpack CLI."
++	}
++];
++
++const installedClis = CLIs.filter(cli => cli.installed);
++
++if (installedClis.length === 0) {
++	const path = require("path");
++	const fs = require("fs");
++	const readLine = require("readline");
++
++	let notify =
++		"One CLI for webpack must be installed. These are recommended choices, delivered as separate packages:";
++
++	for (const item of CLIs) {
++		if (item.recommended) {
++			notify += `\n - ${item.name} (${item.url})\n   ${item.description}`;
++		}
++	}
++
++	console.error(notify);
++
++	const isYarn = fs.existsSync(path.resolve(process.cwd(), "yarn.lock"));
++
++	const packageManager = isYarn ? "yarn" : "npm";
++	const installOptions = [isYarn ? "add" : "install", "-D"];
++
++	console.error(
++		`We will use "${packageManager}" to install the CLI via "${packageManager} ${installOptions.join(
++			" "
++		)}".`
++	);
++
++	let question = `Do you want to install 'webpack-cli' (yes/no): `;
++
++	const questionInterface = readLine.createInterface({
++		input: process.stdin,
++		output: process.stderr
++	});
++	questionInterface.question(question, answer => {
++		questionInterface.close();
++
++		const normalizedAnswer = answer.toLowerCase().startsWith("y");
++
++		if (!normalizedAnswer) {
++			console.error(
++				"You need to install 'webpack-cli' to use webpack via CLI.\n" +
++					"You can also install the CLI manually."
++			);
++			process.exitCode = 1;
++
++			return;
++		}
++
++		const packageName = "webpack-cli";
++
++		console.log(
++			`Installing '${packageName}' (running '${packageManager} ${installOptions.join(
++				" "
++			)} ${packageName}')...`
++		);
++
++		runCommand(packageManager, installOptions.concat(packageName))
++			.then(() => {
++				require(packageName); //eslint-disable-line
++			})
++			.catch(error => {
++				console.error(error);
++				process.exitCode = 1;
++			});
++	});
++} else if (installedClis.length === 1) {
++	const path = require("path");
++	const pkgPath = require.resolve(`${installedClis[0].package}/package.json`);
++	// eslint-disable-next-line node/no-missing-require
++	const pkg = require(pkgPath);
++	// eslint-disable-next-line node/no-missing-require
++	require(path.resolve(
++		path.dirname(pkgPath),
++		pkg.bin[installedClis[0].binName]
++	));
++} else {
++	console.warn(
++		`You have installed ${installedClis
++			.map(item => item.name)
++			.join(
++				" and "
++			)} together. To work with the "webpack" command you need only one CLI package, please remove one of them or use them directly via their binary.`
++	);
++	process.exitCode = 1;
++}
+diff --git a/node_modules/next/node_modules/@babel/template/node_modules/.bin/parser b/node_modules/next/node_modules/@babel/template/node_modules/.bin/parser
+deleted file mode 120000
+index 97a06c3..0000000
+--- a/node_modules/next/node_modules/@babel/template/node_modules/.bin/parser
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../parser/bin/babel-parser.js
+\ No newline at end of file
+diff --git a/node_modules/next/node_modules/@babel/template/node_modules/.bin/parser b/node_modules/next/node_modules/@babel/template/node_modules/.bin/parser
+new file mode 100755
+index 0000000..58f00b8
+--- /dev/null
++++ b/node_modules/next/node_modules/@babel/template/node_modules/.bin/parser
+@@ -0,0 +1,16 @@
++#!/usr/bin/env node
++/* eslint no-var: 0 */
++
++var parser = require("..");
++var fs = require("fs");
++
++var filename = process.argv[2];
++if (!filename) {
++  console.error("no filename specified");
++  process.exit(0);
++}
++
++var file = fs.readFileSync(filename, "utf8");
++var ast = parser.parse(file);
++
++console.log(JSON.stringify(ast, null, "  "));
+diff --git a/node_modules/next/node_modules/cross-spawn/node_modules/.bin/which b/node_modules/next/node_modules/cross-spawn/node_modules/.bin/which
+deleted file mode 120000
+index 8bc48ab..0000000
+--- a/node_modules/next/node_modules/cross-spawn/node_modules/.bin/which
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../../../which/bin/which
+\ No newline at end of file
+diff --git a/node_modules/next/node_modules/cross-spawn/node_modules/.bin/which b/node_modules/next/node_modules/cross-spawn/node_modules/.bin/which
+new file mode 100755
+index 0000000..7cee372
+--- /dev/null
++++ b/node_modules/next/node_modules/cross-spawn/node_modules/.bin/which
+@@ -0,0 +1,52 @@
++#!/usr/bin/env node
++var which = require("../")
++if (process.argv.length < 3)
++  usage()
++
++function usage () {
++  console.error('usage: which [-as] program ...')
++  process.exit(1)
++}
++
++var all = false
++var silent = false
++var dashdash = false
++var args = process.argv.slice(2).filter(function (arg) {
++  if (dashdash || !/^-/.test(arg))
++    return true
++
++  if (arg === '--') {
++    dashdash = true
++    return false
++  }
++
++  var flags = arg.substr(1).split('')
++  for (var f = 0; f < flags.length; f++) {
++    var flag = flags[f]
++    switch (flag) {
++      case 's':
++        silent = true
++        break
++      case 'a':
++        all = true
++        break
++      default:
++        console.error('which: illegal option -- ' + flag)
++        usage()
++    }
++  }
++  return false
++})
++
++process.exit(args.reduce(function (pv, current) {
++  try {
++    var f = which.sync(current, { all: all })
++    if (all)
++      f = f.join('\n')
++    if (!silent)
++      console.log(f)
++    return pv;
++  } catch (e) {
++    return 1;
++  }
++}, 0))
+diff --git a/node_modules/next/node_modules/send/node_modules/.bin/mime b/node_modules/next/node_modules/send/node_modules/.bin/mime
+deleted file mode 120000
+index 0ddcac1..0000000
+--- a/node_modules/next/node_modules/send/node_modules/.bin/mime
++++ /dev/null
+@@ -1 +0,0 @@
+-../../../../../mime/cli.js
+\ No newline at end of file
+diff --git a/node_modules/next/node_modules/send/node_modules/.bin/mime b/node_modules/next/node_modules/send/node_modules/.bin/mime
+new file mode 100755
+index 0000000..20b1ffe
+--- /dev/null
++++ b/node_modules/next/node_modules/send/node_modules/.bin/mime
+@@ -0,0 +1,8 @@
++#!/usr/bin/env node
++
++var mime = require('./mime.js');
++var file = process.argv[2];
++var type = mime.lookup(file);
++
++process.stdout.write(type + '\n');
++

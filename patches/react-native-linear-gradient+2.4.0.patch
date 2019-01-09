@@ -1,4 +1,5 @@
-patch-package
+diff --git a/node_modules/react-native-linear-gradient/index.d.ts b/node_modules/react-native-linear-gradient/index.d.ts
+index 1380673..69106a0 100644
 --- a/node_modules/react-native-linear-gradient/index.d.ts
 +++ b/node_modules/react-native-linear-gradient/index.d.ts
 @@ -1,9 +1,9 @@
