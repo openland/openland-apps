@@ -250,7 +250,7 @@ const FooterLink = Glamorous(XLink)({
 const Logo = Glamorous(XLink)({
     display: 'flex',
     alignItems: 'center',
-    backgroundImage: 'url(\'/static/X/signup/logo-2.svg\')',
+    backgroundImage: "url('/static/X/signup/logo-2.svg')",
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'contain',
     width: 145,
@@ -311,7 +311,7 @@ interface HeaderProps {
 
 const Header = (props: HeaderProps) => (
     <HeaderStyled>
-        <Logo href="https://openland.com"/>
+        <Logo href="https://openland.com" />
         <SignupContainer>
             <SignupStyled>{props.text}</SignupStyled>
             <SignupButton path={props.path}>{props.linkText}</SignupButton>
@@ -341,11 +341,11 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
         ...(pageMode === 'CreateProfile'
             ? { margin: 'auto' }
             : {
-                position: 'relative',
-                marginRight: 'auto',
-                marginLeft: 'auto',
-                height: '100%',
-            }),
+                  position: 'relative',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  height: '100%',
+              }),
         '@media(max-width: 530px)': {
             width: '100%',
             maxWidth: 442,
@@ -369,7 +369,7 @@ export const WebSignUpContainer = React.memo<SignContainerProps>(props => {
     return (
         <RootContainer>
             <LeftContainer>
-                <Header text={props.text} path={props.path} linkText={props.linkText}/>
+                <Header text={props.text} path={props.path} linkText={props.linkText} />
                 <MainContent pageMode={props.pageMode}>
                     <MainContentInner pageMode={props.pageMode}>{props.children}</MainContentInner>
                 </MainContent>
@@ -494,54 +494,54 @@ const RoomSignupHeader = Glamorous.div<{
     props =>
         props.headerStyle === 'signin'
             ? {
-                backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                    backgroundPositionY: 'center',
-                },
-            }
+                  backgroundImage: 'linear-gradient(103deg, #7f30fd, #ff801b)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                      backgroundPositionY: 'center',
+                  },
+              }
             : {},
     props =>
         props.headerStyle === 'signup'
             ? {
-                backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-sign.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                    backgroundPositionY: 'center',
-                },
-            }
+                  backgroundImage: 'linear-gradient(103deg, #33c3ff, #1790ff)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-sign.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-sign.png) 1x, url(/static/X/signup/header-sign@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                      backgroundPositionY: 'center',
+                  },
+              }
             : {},
     props =>
         props.headerStyle === 'profile'
             ? {
-                backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-profile.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                    backgroundPositionY: 'center',
-                },
-            }
+                  backgroundImage: 'linear-gradient(102deg, #12ffe7, #8b17ff)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-profile.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-profile.png) 1x, url(/static/X/signup/header-profile@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                      backgroundPositionY: 'center',
+                  },
+              }
             : {},
     props =>
         props.headerStyle === 'organization'
             ? {
-                backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
-                '&:before': {
-                    background: 'url(/static/X/signup/header-organization.png) no-repeat',
-                    backgroundImage:
-                        '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
-                    backgroundSize: '100% auto',
-                    backgroundPositionY: 'center',
-                },
-            }
+                  backgroundImage: 'linear-gradient(103deg, #337eff, #b317ff)',
+                  '&:before': {
+                      background: 'url(/static/X/signup/header-organization.png) no-repeat',
+                      backgroundImage:
+                          '-webkit-image-set(url(/static/X/signup/header-organization.png) 1x, url(/static/X/signup/header-organization@2x.png) 2x)',
+                      backgroundSize: '100% auto',
+                      backgroundPositionY: 'center',
+                  },
+              }
             : {},
 ]);
 
@@ -564,7 +564,7 @@ export const RoomSignupContainer = React.memo<RoomSignupContainerProps>(props =>
                 </RoomToggler>
             )}
             <RoomSignupBox>
-                <RoomSignupHeader headerStyle={props.headerStyle || 'signin'}/>
+                <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
                 {props.children}
             </RoomSignupBox>
         </RoomSignupWrapper>
@@ -668,7 +668,7 @@ export const EmailButton = (props: {
                         fill="#ADB5C0"
                         d="M11.409 9.23c-1.038 0-1.665.89-1.665 2.373 0 1.482.616 2.372 1.665 2.372s1.676-.901 1.676-2.372c0-1.472-.638-2.373-1.676-2.373zM11.762 2C17.225 2 21 5.41 21 10.508c0 3.57-1.745 5.816-4.585 5.816-1.47 0-2.531-.627-2.84-1.722h-.193c-.468 1.14-1.369 1.734-2.68 1.734-2.372 0-3.946-1.916-3.946-4.813 0-2.771 1.517-4.642 3.763-4.642 1.243 0 2.236.605 2.692 1.62h.194V7.155h2.611v5.793c0 .799.354 1.29.992 1.29.993 0 1.643-1.301 1.643-3.456 0-4.14-2.726-6.775-6.923-6.775-4.368 0-7.379 3.068-7.379 7.561 0 4.608 3.091 7.38 7.847 7.38 1.06 0 2.144-.138 2.737-.32v2.03c-.821.217-1.882.342-2.977.342C6.06 21 2 17.282 2 11.511 2 5.878 6.003 2 11.762 2z"
                     />
-                    <path d="M0 0h24v24H0z"/>
+                    <path d="M0 0h24v24H0z" />
                 </g>
             </svg>
             <span>{props.text}</span>
@@ -678,12 +678,12 @@ export const EmailButton = (props: {
 
 // InviteInfoInner start
 export const InviteInfoInner = ({
-                                    inviter,
-                                    signPath,
-                                    loginWithGoogle,
-                                    loginWithEmail,
-                                    signin,
-                                }: {
+    inviter,
+    signPath,
+    loginWithGoogle,
+    loginWithEmail,
+    signin,
+}: {
     loginWithGoogle: Function;
     loginWithEmail: Function;
     signPath: string;
@@ -715,14 +715,14 @@ export const InviteInfoInner = ({
                 }}
             >
                 <p>
-                    Openland is a professional messenger designed to support <br/> all
+                    Openland is a professional messenger designed to support <br /> all
                     communication needs of a modern business
                 </p>
             </SubTitle>
             <ButtonsWrapper marginTop={37} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText}/>
-                <Separator/>
-                <EmailButton rounded onClick={loginWithEmail} text={emailText}/>
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
+                <Separator />
+                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>
         </div>
     );
@@ -801,9 +801,9 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
             <Title roomView={true}>{title}</Title>
             <RoomText>{subTitle}</RoomText>
             <ButtonsWrapper marginTop={42} width={260} marginBottom={91}>
-                <GoogleButton onClick={loginWithGoogle} text={googleButtonText} rounded={true}/>
-                <Separator marginTop={10} marginBottom={10}/>
-                <EmailButton onClick={loginWithEmail} text={emailText} rounded={true}/>
+                <GoogleButton onClick={loginWithGoogle} text={googleButtonText} rounded={true} />
+                <Separator marginTop={10} marginBottom={10} />
+                <EmailButton onClick={loginWithEmail} text={emailText} rounded={true} />
             </ButtonsWrapper>
 
             {!signin && (
@@ -818,10 +818,10 @@ export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: A
 };
 
 export const WebSignUpAuthMechanism = ({
-                                           signin,
-                                           loginWithGoogle,
-                                           loginWithEmail,
-                                       }: AuthMechanism) => {
+    signin,
+    loginWithGoogle,
+    loginWithEmail,
+}: AuthMechanism) => {
     const auth = InitTexts.auth;
     const title = signin ? auth.signinTitle : auth.signupRoomSignUpEmail;
     const subTitle = signin ? auth.signinSubtitle : auth.creatingAnAccountFree;
@@ -833,9 +833,9 @@ export const WebSignUpAuthMechanism = ({
             <Title roomView={false}>{title}</Title>
             <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={52} width={280}>
-                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText}/>
-                <Separator/>
-                <EmailButton rounded onClick={loginWithEmail} text={emailText}/>
+                <GoogleButton rounded onClick={loginWithGoogle} text={googleButtonText} />
+                <Separator />
+                <EmailButton rounded onClick={loginWithEmail} text={emailText} />
             </ButtonsWrapper>
         </div>
     );
@@ -881,17 +881,17 @@ type ActivationCodeProps = {
 };
 
 export const WebSignUpActivationCode = ({
-                                            backButtonClick,
-                                            resendCodeClick,
-                                            emailSendedTo,
-                                            emailSending,
-                                            emailWasResend,
-                                            codeSending,
-                                            loginCodeStart,
-                                            codeChanged,
-                                            codeValue,
-                                            codeError,
-                                        }: ActivationCodeProps) => {
+    backButtonClick,
+    resendCodeClick,
+    emailSendedTo,
+    emailSending,
+    emailWasResend,
+    codeSending,
+    loginCodeStart,
+    codeChanged,
+    codeValue,
+    codeError,
+}: ActivationCodeProps) => {
     return (
         <XForm
             defaultData={{
@@ -922,7 +922,7 @@ export const WebSignUpActivationCode = ({
                     We just sent it to <strong>{emailSendedTo}</strong>
                 </SubTitle>
             )}
-            <ButtonsWrapper marginTop={40} width={280}>
+            <ButtonsWrapper marginTop={40} width={330}>
                 <XFormField2 field="input.code">
                     {({ showError }: { showError: boolean }) => (
                         <>
@@ -934,8 +934,9 @@ export const WebSignUpActivationCode = ({
                                 autofocus={true}
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
+                                flexGrow={1}
                             />
-                            {showError && <XFormError field="input.code"/>}
+                            {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
@@ -988,17 +989,17 @@ export const WebSignUpActivationCode = ({
 };
 
 export const RoomActivationCode = ({
-                                       emailWasResend,
-                                       emailSending,
-                                       backButtonClick,
-                                       resendCodeClick,
-                                       emailSendedTo,
-                                       codeSending,
-                                       loginCodeStart,
-                                       codeError,
-                                       codeChanged,
-                                       codeValue,
-                                   }: ActivationCodeProps) => {
+    emailWasResend,
+    emailSending,
+    backButtonClick,
+    resendCodeClick,
+    emailSendedTo,
+    codeSending,
+    loginCodeStart,
+    codeError,
+    codeChanged,
+    codeValue,
+}: ActivationCodeProps) => {
     return (
         <XForm
             defaultData={{
@@ -1042,7 +1043,7 @@ export const RoomActivationCode = ({
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
                             />
-                            {showError && <XFormError field="input.code"/>}
+                            {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
@@ -1108,13 +1109,13 @@ type CreateWithEmailProps = {
 };
 
 export const RoomCreateWithEmail = ({
-                                        signin,
-                                        emailError,
-                                        emailChanged,
-                                        emailValue,
-                                        loginEmailStart,
-                                        emailSending,
-                                    }: CreateWithEmailProps) => {
+    signin,
+    emailError,
+    emailChanged,
+    emailValue,
+    loginEmailStart,
+    emailSending,
+}: CreateWithEmailProps) => {
     return (
         <XForm
             defaultData={{
@@ -1158,7 +1159,7 @@ export const RoomCreateWithEmail = ({
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
                             />
-                            {showError && <XFormError field="input.email"/>}
+                            {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
@@ -1180,14 +1181,21 @@ export const RoomCreateWithEmail = ({
     );
 };
 
+const XInputWrapper = Glamorous(XInput)({
+    minWidth: 330,
+    '@media(max-width: 450px)': {
+        minWidth: 200,
+    },
+});
+
 export const WebSignUpCreateWithEmail = ({
-                                             signin,
-                                             emailError,
-                                             emailChanged,
-                                             emailValue,
-                                             loginEmailStart,
-                                             emailSending,
-                                         }: CreateWithEmailProps) => {
+    signin,
+    emailError,
+    emailChanged,
+    emailValue,
+    loginEmailStart,
+    emailSending,
+}: CreateWithEmailProps) => {
     return (
         <XForm
             defaultData={{
@@ -1216,11 +1224,11 @@ export const WebSignUpCreateWithEmail = ({
                 {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
             </Title>
             <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={280}>
+            <ButtonsWrapper marginTop={40} width={330}>
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (
                         <>
-                            <XInput
+                            <XInputWrapper
                                 autofocus
                                 invalid={showError}
                                 dataTestId="email"
@@ -1228,8 +1236,9 @@ export const WebSignUpCreateWithEmail = ({
                                 type="email"
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
+                                flexGrow={1}
                             />
-                            {showError && <XFormError field="input.email"/>}
+                            {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
@@ -1253,13 +1262,6 @@ export const WebSignUpCreateWithEmail = ({
 
 // CreateWithEmail end
 // CreateProfile start
-
-const XInputWrapper = Glamorous(XInput)({
-    minWidth: 330,
-    '@media(max-width: 450px)': {
-        minWidth: 200,
-    },
-});
 
 const XAvatarUploadWrapper = Glamorous(XAvatarUpload)({
     marginBottom: 26,
@@ -1311,7 +1313,7 @@ export const CreateProfileFormInner = (props: {
                     defaultAction={defaultAction}
                     defaultLayout={false}
                 >
-                    <XFormError onlyGeneralErrors={true} width={472}/>
+                    <XFormError onlyGeneralErrors={true} width={472} />
                     <XFormLoadingContent>
                         <XVertical alignItems="center">
                             <XAvatarUploadWrapper
@@ -1333,7 +1335,7 @@ export const CreateProfileFormInner = (props: {
                                                 dataTestId="first-name"
                                             />
 
-                                            {showError && <XFormError field="input.firstName"/>}
+                                            {showError && <XFormError field="input.firstName" />}
                                         </>
                                     )}
                                 </XFormField2>
@@ -1350,7 +1352,7 @@ export const CreateProfileFormInner = (props: {
                                                 title="Last name"
                                                 dataTestId="last-name"
                                             />
-                                            {showError && <XFormError field="input.lastName"/>}
+                                            {showError && <XFormError field="input.lastName" />}
                                         </>
                                     )}
                                 </XFormField2>
@@ -1387,20 +1389,18 @@ const OrganizationSelector = Glamorous(XSelect)({
 });
 
 const NewOrganizationButton = ({
-                                   onClick,
-                               }: {
+    onClick,
+}: {
     onClick?: (event: React.MouseEvent<any>) => void;
 }) => {
     return (
         <div onClick={onClick} data-test-id="new-organization-button">
             <XView flexDirection="row" alignItems="center">
                 <XView>
-                    <IcAdd/>
+                    <IcAdd />
                 </XView>
                 <XView color="#1790ff" marginLeft={6}>
-                    <span>
-                        New organization
-                    </span>
+                    <span>New organization</span>
                 </XView>
             </XView>
         </div>
@@ -1417,15 +1417,17 @@ const OrganizationErrorText = Glamorous.div({
     maxWidth: '249px',
 });
 
-export class CreateOrganizationFormInner extends React.Component<{
-    onPrefixChanges: (prefix: string) => void;
-    roomView: boolean;
-    defaultAction: (data: any) => any;
-    organizations: any;
-},
+export class CreateOrganizationFormInner extends React.Component<
+    {
+        onPrefixChanges: (prefix: string) => void;
+        roomView: boolean;
+        defaultAction: (data: any) => any;
+        organizations: any;
+    },
     {
         inputValue: string;
-    }> {
+    }
+> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -1437,7 +1439,7 @@ export class CreateOrganizationFormInner extends React.Component<{
         return [
             {
                 value: NEW_ORGANIZATION_BUTTON_VALUE,
-                label: <NewOrganizationButton/>,
+                label: <NewOrganizationButton />,
             },
             ...this.props.organizations.data,
         ];
@@ -1533,7 +1535,8 @@ export class CreateOrganizationFormInner extends React.Component<{
                                         <XPopper
                                             content={
                                                 <InfoText>
-                                                    To register as an individual, simply enter your name
+                                                    To register as an individual, simply enter your
+                                                    name
                                                 </InfoText>
                                             }
                                             showOnHover={true}
@@ -1541,7 +1544,7 @@ export class CreateOrganizationFormInner extends React.Component<{
                                             style="dark"
                                         >
                                             <XIconWrapper>
-                                                <IcInfo/>
+                                                <IcInfo />
                                             </XIconWrapper>
                                         </XPopper>
                                     </XHorizontal>
@@ -1609,7 +1612,7 @@ export class CreateOrganizationFormInner extends React.Component<{
                     defaultLayout={false}
                 >
                     <XVertical separator="large">
-                        <XFormError width={472}/>
+                        <XFormError width={472} />
                         <XFormLoadingContent>
                             <ButtonsWrapper marginBottom={84} marginTop={34}>
                                 <XStoreContext.Consumer>{this.renderSelect}</XStoreContext.Consumer>

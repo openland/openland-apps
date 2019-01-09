@@ -36,7 +36,7 @@ export const TypingsView = React.memo<TypingsViewProps>(props => {
 
     if (typing) {
         return (
-            <XView marginLeft={55} alignItems="flex-start" marginTop={8} marginBottom={8}>
+            <XView marginLeft={53} alignItems="flex-start" marginTop={8} marginBottom={8}>
                 <div className={typingClassName}>{typing}</div>
             </XView>
         );

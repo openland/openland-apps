@@ -66,20 +66,21 @@ export const OrganizationProfileContainer = Glamorous.div({
     flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo(props =>
-    props.data && props.data.invite ? (
-        props.data.invite.room.membership === 'MEMBER' ? (
-            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+export const RoomInviteFromLink = withChannelInviteInfo(
+    props =>
+        props.data && props.data.invite ? (
+            props.data.invite.room.membership === 'MEMBER' ? (
+                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+            ) : (
+                <RoomsInviteComponent
+                    inviteLink={props.router.routeQuery.invite}
+                    room={props.data.invite.room as any}
+                    invite={props.data.invite}
+                />
+            )
         ) : (
-            <RoomsInviteComponent
-                inviteLink={props.router.routeQuery.invite}
-                room={props.data.invite.room as any}
-                invite={props.data.invite}
-            />
-        )
-    ) : (
-        <XLoader loading={true} />
-    ),
+            <XLoader loading={true} />
+        ),
 );
 
 interface MessagePageInnerProps {
@@ -233,7 +234,8 @@ export class MessagePageInner extends React.Component<
             | 'organization'
             | 'user'
             | 'conference'
-            | 'chat' = 'empty';
+            | 'chat' =
+            'empty';
 
         if (isCompose) {
             tab = 'compose';

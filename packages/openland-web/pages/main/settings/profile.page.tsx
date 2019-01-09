@@ -21,7 +21,7 @@ import { DateFormater } from 'openland-x/XDate';
 import { XView } from 'react-mental';
 
 const Content = (props: { children?: any }) => (
-    <XView paddingTop={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
+    <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
         {props.children}
     </XView>
 );
@@ -125,7 +125,7 @@ export default withApp(
                                                         <XHorizontal separator={13}>
                                                             <XVertical
                                                                 flexGrow={1}
-                                                                width={480}
+                                                                maxWidth={480}
                                                                 separator={10}
                                                             >
                                                                 <XInput
@@ -178,16 +178,18 @@ export default withApp(
                                         </XForm>
                                         <XForm
                                             defaultData={{
-                                                shortname: props.data.user!.shortname
+                                                shortname: props.data.user!.shortname,
                                             }}
-                                            defaultAction={async (data) => {
-                                                await props.setShortname({ variables: { shortname: data.shortname } });
+                                            defaultAction={async data => {
+                                                await props.setShortname({
+                                                    variables: { shortname: data.shortname },
+                                                });
                                             }}
                                         >
                                             <XVertical separator={12}>
                                                 <HeadTitle>Username</HeadTitle>
                                                 <XFormError onlyGeneralErrors={true} />
-                                                <XVertical width={480} separator={12}>
+                                                <XVertical maxWidth={480} separator={12}>
                                                     <XFormLoadingContent>
                                                         <XVertical separator={10}>
                                                             <XInput
@@ -234,7 +236,7 @@ export default withApp(
                                             <XVertical separator={12}>
                                                 <HeadTitle>Contacts</HeadTitle>
                                                 <XFormError onlyGeneralErrors={true} />
-                                                <XVertical width={480} separator={12}>
+                                                <XVertical maxWidth={480} separator={12}>
                                                     <XFormLoadingContent>
                                                         <XVertical separator={10}>
                                                             <XInput
@@ -275,30 +277,33 @@ export default withApp(
                                 <XWithRole role="super-admin">
                                     <HeadTitle>Super admin</HeadTitle>
                                     <XHorizontal separator={8}>
-                                        {props.data.profile && props.data.profile.joinedAt && (
-                                            <CardText>
-                                                Joined
-                                                <XView fontWeight="600" paddingLeft={4}>
-                                                    {DateFormater(props.data.profile.joinedAt)}
-                                                </XView>
-                                            </CardText>
-                                        )}
-                                        {props.data.profile && !props.data.profile.invitedBy && (
-                                            <CardText>Self-registered</CardText>
-                                        )}
-                                        {props.data.profile && props.data.profile.invitedBy && (
-                                            <CardText>
-                                                Invited by
-                                                <XView
-                                                    fontWeight="600"
-                                                    paddingLeft={4}
-                                                    color="#1790ff"
-                                                >
-                                                    {props.data.profile.invitedBy.name ||
-                                                        'First name Last name'}
-                                                </XView>
-                                            </CardText>
-                                        )}
+                                        {props.data.profile &&
+                                            props.data.profile.joinedAt && (
+                                                <CardText>
+                                                    Joined
+                                                    <XView fontWeight="600" paddingLeft={4}>
+                                                        {DateFormater(props.data.profile.joinedAt)}
+                                                    </XView>
+                                                </CardText>
+                                            )}
+                                        {props.data.profile &&
+                                            !props.data.profile.invitedBy && (
+                                                <CardText>Self-registered</CardText>
+                                            )}
+                                        {props.data.profile &&
+                                            props.data.profile.invitedBy && (
+                                                <CardText>
+                                                    Invited by
+                                                    <XView
+                                                        fontWeight="600"
+                                                        paddingLeft={4}
+                                                        color="#1790ff"
+                                                    >
+                                                        {props.data.profile.invitedBy.name ||
+                                                            'First name Last name'}
+                                                    </XView>
+                                                </CardText>
+                                            )}
                                     </XHorizontal>
                                 </XWithRole>
                             </XVertical>

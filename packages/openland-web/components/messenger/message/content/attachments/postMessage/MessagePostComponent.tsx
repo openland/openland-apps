@@ -157,13 +157,7 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
     }
 
     return (
-        <XView
-            flexGrow={1}
-            maxWidth={550}
-            flexDirection="column"
-            paddingTop={4}
-            paddingBottom={4}
-        >
+        <XView flexGrow={1} maxWidth={550} flexDirection="column" paddingTop={4} paddingBottom={4}>
             <XView
                 flexDirection="column"
                 borderWidth={1}
@@ -172,11 +166,7 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                 overflow="hidden"
                 position="relative"
             >
-                <XView
-                    paddingHorizontal={20}
-                    paddingVertical={20}
-                    flexDirection="column"
-                >
+                <XView paddingHorizontal={20} paddingVertical={20} flexDirection="column">
                     <XHorizontal justifyContent="space-between" separator={9}>
                         <XVertical
                             separator={3}
@@ -206,111 +196,111 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                                     color="#1790ff"
                                     onClick={textTrimmer}
                                 >
-                                    <MoreIcon className={showMore ? '' : RevertIcon}/>
+                                    <MoreIcon className={showMore ? '' : RevertIcon} />
                                     <XView marginLeft={6}>
                                         {showMore ? 'Show more' : 'Show less'}
                                     </XView>
                                 </XView>
                             )}
                         </XVertical>
-                        {cover && (cover as MessageFull_alphaAttachments).fileId && (
-                            <div className={CoverWrapper}>
-                                <XCloudImage
-                                    srcCloud={
-                                        'https://ucarecdn.com/' +
-                                        (cover as MessageFull_alphaAttachments).fileId +
-                                        '/'
-                                    }
-                                    resize={'fill'}
-                                    width={134}
-                                    height={134}
-                                />
-                            </div>
-                        )}
+                        {cover &&
+                            (cover as MessageFull_alphaAttachments).fileId && (
+                                <div className={CoverWrapper}>
+                                    <XCloudImage
+                                        srcCloud={
+                                            'https://ucarecdn.com/' +
+                                            (cover as MessageFull_alphaAttachments).fileId +
+                                            '/'
+                                        }
+                                        resize={'fill'}
+                                        width={134}
+                                        height={134}
+                                    />
+                                </div>
+                            )}
                     </XHorizontal>
                 </XView>
-                {moreFiles && moreFiles.length > 0 && (
-                    <XView>
-                        <XView
-                            height={1}
-                            backgroundColor="#ececec"
-                            flexDirection="column"
-                        />
-                        <XView
-                            paddingVertical={10}
-                            paddingHorizontal={20}
-                        >
-                            <XVertical separator={3}>
-                                {moreFiles.map(
-                                    i =>
-                                        i.fileMetadata && (
-                                            <a
-                                                className={FileItem}
-                                                key={'file' + i.fileId}
-                                                target="_blank"
-                                                href={
-                                                    'https://ucarecdn.com/' +
-                                                    i.fileId +
-                                                    '/' +
-                                                    (i.fileMetadata.name ? i.fileMetadata.name!! : '')
-                                                }
-                                            >
-                                                <XHorizontal separator={4} alignItems="center">
-                                                    <div className={`${FileImage} icon`}/>
-                                                    <XHorizontal alignItems="center" separator={2}>
-                                                        <div>
-                                                            {i.fileMetadata.name} <span>•</span>{' '}
-                                                            {niceBytes(Number(i.fileMetadata.size))}
-                                                        </div>
+                {moreFiles &&
+                    moreFiles.length > 0 && (
+                        <XView>
+                            <XView height={1} backgroundColor="#ececec" flexDirection="column" />
+                            <XView paddingVertical={10} paddingHorizontal={20}>
+                                <XVertical separator={3}>
+                                    {moreFiles.map(
+                                        i =>
+                                            i.fileMetadata && (
+                                                <a
+                                                    className={FileItem}
+                                                    key={'file' + i.fileId}
+                                                    target="_blank"
+                                                    href={
+                                                        'https://ucarecdn.com/' +
+                                                        i.fileId +
+                                                        '/' +
+                                                        (i.fileMetadata.name
+                                                            ? i.fileMetadata.name!!
+                                                            : '')
+                                                    }
+                                                >
+                                                    <XHorizontal separator={4} alignItems="center">
+                                                        <div className={`${FileImage} icon`} />
+                                                        <XHorizontal
+                                                            alignItems="center"
+                                                            separator={2}
+                                                        >
+                                                            <div>
+                                                                {i.fileMetadata.name} <span>•</span>{' '}
+                                                                {niceBytes(
+                                                                    Number(i.fileMetadata.size),
+                                                                )}
+                                                            </div>
+                                                        </XHorizontal>
                                                     </XHorizontal>
-                                                </XHorizontal>
-                                            </a>
-                                        ),
-                                )}
-                            </XVertical>
+                                                </a>
+                                            ),
+                                    )}
+                                </XVertical>
+                            </XView>
                         </XView>
-                    </XView>
-                )}
+                    )}
             </XView>
             {!props.privateConversation && (
-                <XView
-                    marginTop={12}
-                    justifyContent="space-between"
-                    flexDirection="row"
-                >
+                <XView marginTop={12} justifyContent="space-between" flexDirection="row">
                     {!meSender && (
                         <>
-                            {!meRespond && props.alphaButtons.map((i, j) =>
-                                i && (
-                                    <XHorizontal
-                                        key={'post_buttons_group' + j}
-                                        alignItems="center"
-                                        separator={6}
-                                    >
-                                        {i.map(k => (
+                            {!meRespond &&
+                                props.alphaButtons.map(
+                                    (i, j) =>
+                                        i && (
                                             <XHorizontal
-                                                key={'post_button' + k.id}
-                                                alignSelf="flex-start"
+                                                key={'post_buttons_group' + j}
+                                                alignItems="center"
+                                                separator={6}
                                             >
-                                                <RespondPost
-                                                    messageId={props.messageId}
-                                                    buttonId={k.id}
-                                                    userId={props.userId}
-                                                >
-                                                    <XButton
-                                                        text={k.title}
-                                                        style={
-                                                            k.style === 'DEFAULT'
-                                                                ? 'primary'
-                                                                : 'light'
-                                                        }
-                                                    />
-                                                </RespondPost>
+                                                {i.map(k => (
+                                                    <XHorizontal
+                                                        key={'post_button' + k.id}
+                                                        alignSelf="flex-start"
+                                                    >
+                                                        <RespondPost
+                                                            messageId={props.messageId}
+                                                            buttonId={k.id}
+                                                            userId={props.userId}
+                                                        >
+                                                            <XButton
+                                                                text={k.title}
+                                                                style={
+                                                                    k.style === 'DEFAULT'
+                                                                        ? 'primary'
+                                                                        : 'light'
+                                                                }
+                                                            />
+                                                        </RespondPost>
+                                                    </XHorizontal>
+                                                ))}
                                             </XHorizontal>
-                                        ))}
-                                    </XHorizontal>
-                                ),
-                            )}
+                                        ),
+                                )}
                             {meRespond && (
                                 <XView
                                     flexDirection="row"

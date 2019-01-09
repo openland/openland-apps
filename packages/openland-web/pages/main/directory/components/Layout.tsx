@@ -50,6 +50,9 @@ export const Container = (props: { children: any }) => (
 
 export const Results = Glamorous(XScrollView2)({
     height: 'calc(100vh - 61px)',
+    '@media (max-width: 700px)': {
+        height: 'calc(100vh - 114px)',
+    },
 });
 
 const SidebarWrapper = css`
@@ -101,6 +104,7 @@ const SidebarItemWrapper = Glamorous(XLink)({
     color: '#000000 !important',
     padding: '12px 15px 12px 46px',
     position: 'relative',
+    background: '#fff',
 
     '& .icon-wrapper': {
         position: 'absolute',
@@ -152,15 +156,19 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = (props: SidebarItemProps) => (
-    <SidebarItemWrapper path={props.path} className={props.active ? 'is-active' : ''} onClick={props.onClick}>
+    <SidebarItemWrapper
+        path={props.path}
+        className={props.active ? 'is-active' : ''}
+        onClick={props.onClick}
+    >
         <div className="icon-wrapper">
-            {props.icon === 'rooms' && <RoomIcon/>}
-            {props.icon === 'people' && <PeopleIcon/>}
-            {props.icon === 'organizations' && <OrganizationsIcon/>}
-            {props.icon === 'communities' && <CommunityIcon/>}
+            {props.icon === 'rooms' && <RoomIcon />}
+            {props.icon === 'people' && <PeopleIcon />}
+            {props.icon === 'organizations' && <OrganizationsIcon />}
+            {props.icon === 'communities' && <CommunityIcon />}
         </div>
         <span>{TextDirectory.sidebar[props.icon]}</span>
-        <RightIcon className="right-icon"/>
+        <RightIcon className="right-icon" />
     </SidebarItemWrapper>
 );
 
@@ -205,7 +213,7 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
     render() {
         return (
             <XPopper
-                contentContainer={<XMenuVertical/>}
+                contentContainer={<XMenuVertical />}
                 placement="bottom-end"
                 show={this.state.show}
                 marginTop={10}
@@ -245,7 +253,7 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
                     onClick={this.switch}
                     style="light"
                     text={TextDirectory.create.title}
-                    icon={<PlusIcon/>}
+                    icon={<PlusIcon />}
                     size="small"
                 />
             </XPopper>
@@ -288,14 +296,24 @@ const LinksWrapper = css`
         height: 0;
         top: 53px;
         width: 100%;
-        
+
         &.show {
             height: auto;
+            overflow: visible;
+
+            &::before {
+                content: '';
+                display: block;
+                position: absolute;
+                width: 100%;
+                height: calc(100vh - 53px);
+                background-color: rgba(0, 0, 0, 0.2);
+            }
         }
     }
 `;
 
-export const Sidebar = React.memo<{ active?: string }>((props) => {
+export const Sidebar = React.memo<{ active?: string }>(props => {
     let [showMenu, handler] = React.useState(false);
 
     const menuHandler = () => {
@@ -306,13 +324,13 @@ export const Sidebar = React.memo<{ active?: string }>((props) => {
         <div className={SidebarWrapper}>
             <div className={SidebarHeader}>
                 <span>Directory</span>
-                <NewButton/>
+                <NewButton />
             </div>
             <div className={MobileMenuButton} onClick={menuHandler}>
                 {props.active && (
                     <span>{props.active.charAt(0).toUpperCase() + props.active.slice(1)}</span>
                 )}
-                <RightIcon className="select-icon"/>
+                <RightIcon className="select-icon" />
             </div>
             <div className={`${LinksWrapper} ${showMenu ? 'show' : undefined}`}>
                 <SidebarItem
