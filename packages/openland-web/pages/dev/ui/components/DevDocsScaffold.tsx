@@ -102,7 +102,7 @@ export function DevDocsScaffold(props: {
                                 CreateOrganization
                             </Sidebar.Subitem>
                             <Sidebar.Subitem path="/waitlist-test/">WaitList</Sidebar.Subitem>
-                            <Sidebar.Item path="/ui/shortcuts">Shortcuts</Sidebar.Item>
+
                             <Sidebar.Item>Basic Styles</Sidebar.Item>
                             <Sidebar.Subitem path="/ui/links">Links</Sidebar.Subitem>
                             <Sidebar.Subitem path="/ui/typography">Typography</Sidebar.Subitem>

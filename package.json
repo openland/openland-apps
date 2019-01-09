@@ -120,7 +120,6 @@
         "react-form": "^2.14.1",
         "react-ga": "^2.3.5",
         "react-hot-loader": "4.0.1",
-        "react-hotkeys": "^1.1.4",
         "react-localstorage-hoc": "^0.0.2",
         "react-lorem-component": "^0.13.0",
         "react-lottie": "^1.1.0",
