@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { withUser } from '../../../api/withUserSimple';
-import { User, User_user } from 'openland-api/Types';
+import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { withRouter } from 'next/router';
@@ -91,8 +91,8 @@ const UserStatus = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     TextProfiles.User.status.momentsAgo
                 ) : (
-                        <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                    )}
+                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                )}
             </div>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -227,22 +227,24 @@ const About = (props: { user: User_user }) => {
 };
 
 interface UserProfileInnerProps extends XWithRouter {
-    userQuery: User;
+    user: User_user;
     onDirectory?: boolean;
+    hideBack?: boolean;
 }
 
-const UserProfileInner = (props: UserProfileInnerProps) => {
-    let { user } = props.userQuery;
+export const UserProfileInner = (props: UserProfileInnerProps) => {
+    let { user } = props;
 
     return (
         <>
             <XDocumentHead title={user.name} />
-
-            <BackButton />
-            <Header user={user} />
-            <XScrollView2 height="calc(100% - 137px)">
-                <About user={user} />
-            </XScrollView2>
+            <XView height="100%">
+                {!props.hideBack && <BackButton />}
+                <Header user={user} />
+                <XScrollView2 flexGrow={1}>
+                    <About user={user} />
+                </XScrollView2>
+            </XView>
         </>
     );
 };
@@ -251,13 +253,13 @@ const UserProvider = withUser(
     withRouter(props =>
         props.data.user ? (
             <UserProfileInner
-                userQuery={props.data}
+                user={props.data.user}
                 router={props.router}
                 onDirectory={(props as any).onDirectory}
             />
         ) : (
-                <XLoader loading={true} />
-            ),
+            <XLoader loading={true} />
+        ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };
