@@ -1,5 +1,4 @@
-diff --git a/node_modules/@types/react-native/globals.d.ts b/node_modules/@types/react-native/globals.d.ts
-index 2110ab7..195110c 100644
+patch-package
 --- a/node_modules/@types/react-native/globals.d.ts
 +++ b/node_modules/@types/react-native/globals.d.ts
 @@ -89,7 +89,7 @@ declare var Request: {
@@ -11,8 +10,6 @@ index 2110ab7..195110c 100644
  
  declare interface ResponseInit {
    headers?: HeadersInit_;
-diff --git a/node_modules/@types/react-native/index.d.ts b/node_modules/@types/react-native/index.d.ts
-index 2d3337c..3ccabb9 100644
 --- a/node_modules/@types/react-native/index.d.ts
 +++ b/node_modules/@types/react-native/index.d.ts
 @@ -8924,7 +8924,7 @@ export const PointPropType: React.Requireable<any>;

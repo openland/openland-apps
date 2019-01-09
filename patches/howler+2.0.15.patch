@@ -1,5 +1,4 @@
-diff --git a/node_modules/howler/src/howler.core.js b/node_modules/howler/src/howler.core.js
-index b998b5d..376d4e6 100644
+patch-package
 --- a/node_modules/howler/src/howler.core.js
 +++ b/node_modules/howler/src/howler.core.js
 @@ -279,7 +279,7 @@
