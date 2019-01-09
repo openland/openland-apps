@@ -12,6 +12,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { Platform } from 'react-native';
 
 export class DirectoryItemComponent extends React.PureComponent<{ item: OrganizationSearch, router: SRouter }> {
     render() {
@@ -75,4 +76,4 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
     }
 }
 
-export const Directory = withApp(DirectoryComponent);
+export const Directory = withApp(DirectoryComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });

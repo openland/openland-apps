@@ -34,7 +34,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
             val manager = (recyclerView.layoutManager as LinearLayoutManager)
             val v = manager.findViewByPosition(1)
             if (v != null) {
-                val offset = Math.round(v.top - PixelUtil.toPixelFromDIP(headerPadding))
+                val offset = -Math.round(v.top - PixelUtil.toPixelFromDIP(headerPadding))
 
                 context.getNativeModule(UIManagerModule::class.java)
                         .eventDispatcher

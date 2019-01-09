@@ -19,8 +19,6 @@ import { RoomSearchTextQuery } from 'openland-api';
 
 class DialogsSearch extends React.Component<{ query: string }> {
     render() {
-        console.log('dialogs');
-        console.log(this.props.query);
         return this.props.query.trim().length > 0 ? (
             <SRouterContext.Consumer>
                 {r => (
@@ -103,4 +101,4 @@ class DialogsComponent extends React.Component<PageProps> {
     }
 }
 
-export const Dialogs = withApp(DialogsComponent);
+export const Dialogs = withApp(DialogsComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });

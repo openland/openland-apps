@@ -227,8 +227,27 @@ export class HeaderCoordinator {
                 this.hairline.opacity = op;
             }
         } else {
+            let handled = false;
+            if (prev) {
+                if (prev.config.headerHidden && last.config.headerHidden) {
+                    this.hairline.opacity = 0;
+                    handled = true;
+                } else if (last.config.headerHidden) {
+                    this.hairline.opacity = this.resolveHairlineOpacityAndroid(prev.config);
+                    handled = true;
+                } else if (prev.config.headerHidden) {
+                    this.hairline.opacity = this.resolveHairlineOpacityAndroid(last.config);
+                    handled = true;
+                }
+            }
+            if (!handled) {
+                let op = Math.abs(1 - progress) * this.resolveHairlineOpacityAndroid(last.config);
+                if (prev) {
+                    op += Math.abs(progress) * this.resolveHairlineOpacityAndroid(prev.config);
+                }
+                this.hairline.opacity = op;
+            }
             this.hairline.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
-            this.hairline.opacity = 1;
         }
 
         // Pages
@@ -281,6 +300,18 @@ export class HeaderCoordinator {
                 res = config.contentOffset.offsetValue <= 44 ? 0 : 1;
             } else {
                 res = 0;
+            }
+        }
+        return res;
+    }
+
+    private resolveHairlineOpacityAndroid(config: HeaderConfig) {
+        let res: number = 1;
+        if (config.appearance === 'large' || config.appearance === undefined || config.appearance === 'small-hidden') {
+            if (config.contentOffset) {
+                res = config.contentOffset.offsetValue <= 0 ? 0 : 1;
+            } else {
+                res = 1;
             }
         }
         return res;
