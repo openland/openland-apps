@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll, Alert } from 'react-native';
+import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll, Alert, BackHandler } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { XPImage } from 'openland-xp/XPImage';
 import { SDevice } from 'react-native-s/SDevice';
@@ -153,9 +153,16 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     componentDidMount() {
-        // if (this.props.config.onBegin) {
-        //     this.props.config.onBegin();
-        // }
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+    }
+
+    handleBackPress = () => {
+        this.handleCloseClick();
+        return true;
     }
 
     handleTap = () => {
