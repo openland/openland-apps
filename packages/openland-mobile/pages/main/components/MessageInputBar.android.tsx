@@ -2,18 +2,19 @@ import * as React from 'react';
 import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
+import LinearGradient from 'react-native-linear-gradient';
 
 let styles = StyleSheet.create({
     textInputContainer: {
         borderColor: '#ebebeb',
         borderWidth: 1,
-        marginTop: 6,
-        marginBottom: 6,
+        marginTop: 5,
+        marginBottom: 9,
         backgroundColor: '#fff',
-        borderRadius: 42,
+        borderRadius: 21,
         elevation: 1,
         alignItems: 'center',
-        marginLeft: 12
+        marginHorizontal: 12
     },
     textInput: {
         paddingLeft: 16,
@@ -26,7 +27,7 @@ let styles = StyleSheet.create({
     } as ViewStyle
 });
 
-const iconAttach = require('assets/ic-attach-input.png');
+const iconAttach = require('assets/ic-add.png');
 const icon = require('assets/ic-send.png');
 
 export interface MessageInputBarProps {
@@ -47,70 +48,80 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
             <ZKeyboardAwareBar>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <LinearGradient colors={['#fff', '#fff', 'transparent']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                        {this.props.attachesEnabled === false && (
-                            <View width={15} />
-                        )}
-
-                        <View
-                            style={styles.textInputContainer}
-                            flexGrow={1}
-                            flexBasis={0}
-                            flexDirection="row"
-
-                        >
-                            <View
-                                zIndex={1}
-                                flexGrow={1}
-                            >
-                                <TextInput
-                                    flexGrow={1}
-                                    style={styles.textInput}
-                                    placeholder="Message"
-                                    placeholderTextColor="#aaaaaa"
-                                    onChangeText={this.props.onChangeText}
-                                    value={this.props.text}
-                                    editable={this.props.enabled !== false}
-                                    multiline={true}
-                                    zIndex={1}
-                                />
-                            </View>
-
-                            {this.props.attachesEnabled !== false && !hasText && (
-                                <TouchableOpacity onPress={this.props.onAttachPress} >
-                                    <Image source={iconAttach} marginHorizontal={16} />
+                            {this.props.attachesEnabled !== false && (
+                                <TouchableOpacity onPress={this.props.onAttachPress}>
+                                    <View
+                                        marginTop={1}
+                                        marginLeft={12}
+                                        width={30}
+                                        height={30}
+                                        borderRadius={15}
+                                        backgroundColor="#0084fe"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                    >
+                                        <Image source={iconAttach} style={{ width: 17, height: 17, tintColor: '#fff' }} />
+                                    </View>
                                 </TouchableOpacity>
-
+                            )}
+                            {this.props.attachesEnabled === false && (
+                                <View width={15} />
                             )}
 
-                        </View>
-
-                        <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
                             <View
-                                alignItems="center"
-                                justifyContent="center"
-                                width={30}
-                                height={30}
-                                borderRadius={30}
-                                backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
-                                marginLeft={10}
-                                marginRight={12}
+                                style={styles.textInputContainer}
+                                flexGrow={1}
+                                flexBasis={0}
+                                flexDirection="row"
+
                             >
-                                <Image
-                                    source={icon}
-                                    style={{
-                                        width: 17,
-                                        height: 17,
-                                        marginRight: -4,
-                                        tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
-                                    }}
-                                />
+                                <View
+                                    zIndex={1}
+                                    flexGrow={1}
+                                >
+                                    <TextInput
+                                        flexGrow={1}
+                                        style={styles.textInput}
+                                        placeholder="Message"
+                                        placeholderTextColor="#aaaaaa"
+                                        onChangeText={this.props.onChangeText}
+                                        value={this.props.text}
+                                        editable={this.props.enabled !== false}
+                                        multiline={true}
+                                        zIndex={1}
+                                    />
+                                </View>
+
+                                <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
+                                    <View
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        width={30}
+                                        height={30}
+                                        borderRadius={30}
+                                        backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
+                                        marginHorizontal={6}
+                                    >
+                                        <Image
+                                            source={icon}
+                                            style={{
+                                                width: 17,
+                                                height: 17,
+                                                marginRight: -4,
+                                                tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
+                                            }}
+                                        />
+                                    </View>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+
+                        </View>
+                    </LinearGradient>
                 </View>
-            </ZKeyboardAwareBar>
+            </ZKeyboardAwareBar >
         );
     }
 }

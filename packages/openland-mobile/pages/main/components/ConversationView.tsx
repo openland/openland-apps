@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ConversationEngine, ConversationStateHandler } from 'openland-engines/messenger/ConversationEngine';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { View, Image, Text, Dimensions } from 'react-native';
+import { View, Image, Text, Dimensions, Platform } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASView } from 'react-native-async-view/ASView';
@@ -59,7 +59,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
     render() {
         return (
-            <View flexBasis={0} flexGrow={1}>
+            <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -40 })}>
 
                 <ConversationMessagesView
                     ref={this.listRef}
