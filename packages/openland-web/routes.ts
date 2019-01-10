@@ -250,6 +250,8 @@ routes.add('/ui/mentions', '/dev/ui/mentions');
 routes.add('/ui/mentions/', '/dev/ui/mentions');
 routes.add('/ui/emoji', '/dev/ui/emoji');
 routes.add('/ui/emoji/', '/dev/ui/emoji');
+routes.add('/ui/rich', '/dev/ui/rich');
+routes.add('/ui/rich/', '/dev/ui/rich');
 
 routes.add('/ui/signin/signin-invite', '/dev/ui/signin/signin-invite');
 routes.add('/ui/signin/accept-invitation', '/dev/ui/signin/accept-invitation');
