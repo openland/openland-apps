@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Editor, EditorState, Modifier } from 'draft-js';
+import { Editor, EditorState, Modifier, SelectionState, ContentState, CompositeDecorator } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 function findActiveWordStart(state: EditorState): number {
@@ -27,9 +27,9 @@ function findActiveWord(state: EditorState): string | undefined {
     if (!selection.getHasFocus()) {
         return undefined;
     }
-    let startIndex = findActiveWordStart(state);
     let text = content.getBlockForKey(selection.getStartKey()).getText();
-    let res = text.substring(startIndex, selection.getStartOffset());
+    let startIndex = findActiveWordStart(state);
+    let res = text.substring(startIndex, selection.getEndOffset());
     if (res.length === 0) {
         return undefined;
     } else {
@@ -47,7 +47,9 @@ export class XRichTextInput2 extends React.PureComponent<XRichTextInput2Props, {
 
     constructor(props: XRichTextInput2Props) {
         super(props);
-        this.state = { editorState: EditorState.createEmpty() };
+        this.state = {
+            editorState: EditorState.createWithContent(ContentState.createFromText(''))
+        };
     }
 
     applyMention = (src: { name: string, id: string }) => {
@@ -57,11 +59,21 @@ export class XRichTextInput2 extends React.PureComponent<XRichTextInput2Props, {
             if (start < 0) {
                 return s;
             }
-            let s2 = selection.merge({
+            let content = s.editorState.getCurrentContent();
+            let text = content.getBlockForKey(selection.getStartKey()).getText();
+            let stext = src.name;
+            if (selection.getEndOffset() === text.length || text.charAt(selection.getEndOffset()) !== ' ') {
+                stext = src.name + ' ';
+            }
+
+            let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
                 anchorOffset: start,
-                focusOffset: selection.getFocusOffset()
+                focusOffset: selection.getEndOffset()
             }) as any;
-            let replace = Modifier.replaceText(s.editorState.getCurrentContent(), s2, src.name)
+
+            let entity = content.createEntity('mention', 'IMMUTABLE', { uid: src.id });
+
+            let replace = Modifier.replaceText(entity, s2, stext, undefined, entity.getLastCreatedEntityKey());
 
             let s3 = EditorState.push(
                 s.editorState,
