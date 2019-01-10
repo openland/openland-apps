@@ -28,7 +28,8 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                     <View
                         style={{
                             width: 28,
-                            height: 28,
+                            height: Platform.OS === 'android' ? 22 : 28,
+                            marginBottom: Platform.OS === 'android' ? -1 : 0,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}
@@ -40,13 +41,13 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                                 width: size,
                                 height: size,
                                 opacity: 1,
-                                tintColor: Platform.OS === 'android' ? (this.props.selected ? '#0284FE' : '#737373') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0')
+                                tintColor: Platform.OS === 'android' ? (this.props.selected ? '#0084fe' : '#737373') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0')
                             }}
                         />
                         <View
                             style={{
                                 position: 'absolute',
-                                top: -2,
+                                top: Platform.OS === 'android' ? -6 : -2,
                                 right: -5
                             }}
                         >
@@ -55,11 +56,10 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
                     </View>
                     <Text
                         style={{
-                            color: Platform.OS === 'android' ? (this.props.selected ? '#0284FE' : '#000000') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0'),
-                            fontSize: Platform.OS === 'android' ? 14 : 12,
+                            color: Platform.OS === 'android' ? (this.props.selected ? '#0084fe' : '#000000') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0'),
+                            fontSize: 12,
                             fontWeight: Platform.OS === 'android' ? '500' : '400',
-                            lineHeight: Platform.OS === 'android' ? 18 : 16,
-                            height: Platform.OS === 'android' ? 18 : 16,
+                            height: Platform.OS === 'android' ? 16 : 14,
                             overflow: 'visible',
                             opacity: Platform.OS === 'android' ? (this.props.selected ? 1 : 0.5) : 1
                         }}
@@ -86,8 +86,9 @@ export class AppBarBottom extends React.PureComponent {
                     // shadowOffset: { width: 0, height: 1 }
                 }}
             >
-                <View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />
-                <View style={{ flexDirection: 'row', height: Platform.OS === 'android' ? 56 : 48 }}>
+                {Platform.OS === 'ios' && (<View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />)}
+                {Platform.OS !== 'ios' && (<View style={{ height: 1, backgroundColor: '#f5f5f5' }} />)}
+                <View style={{ flexDirection: 'row', height: 48 }}>
                     {this.props.children}
                 </View>
             </View>
