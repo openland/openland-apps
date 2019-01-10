@@ -14,9 +14,14 @@ let styles = StyleSheet.create({
         borderRadius: 21,
         elevation: 1,
         alignItems: 'center',
-        marginHorizontal: 12
+        marginHorizontal: 12,
+        flexGrow: 1,
+        flexBasis: 0,
+        flexDirection: 'row'
+
     },
     textInput: {
+        flexGrow: 1,
         paddingLeft: 16,
         paddingRight: 40,
         paddingTop: 6,
@@ -74,50 +79,46 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             <View width={15} />
                         )}
 
-                        <View
-                            style={styles.textInputContainer}
-                            flexGrow={1}
-                            flexBasis={0}
-                            flexDirection="row"
-
-                        >
-                            <View
-                                flexGrow={1}
+                        <View style={styles.textInputContainer} >
+                            <TextInput
+                                style={styles.textInput}
+                                placeholder="Message"
+                                placeholderTextColor="#aaaaaa"
+                                onChangeText={this.props.onChangeText}
+                                value={this.props.text}
+                                editable={this.props.enabled !== false}
+                                multiline={true}
+                            />
+                            <TouchableOpacity
+                                disabled={!hasText}
+                                onPress={this.props.onSubmitPress}
+                                style={{
+                                    position: 'absolute',
+                                    right: 0,
+                                    bottom: 5,
+                                    zIndex: 2
+                                }}
                             >
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder="Message"
-                                    placeholderTextColor="#aaaaaa"
-                                    onChangeText={this.props.onChangeText}
-                                    value={this.props.text}
-                                    editable={this.props.enabled !== false}
-                                    multiline={true}
-                                    zIndex={1}
-                                />
-                            </View>
-
-                            <View
-                                position="absolute"
-                                right={0}
-                                bottom={5}
-                                alignItems="center"
-                                justifyContent="center"
-                                width={30}
-                                height={30}
-                                borderRadius={30}
-                                backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
-                                marginHorizontal={6}
-                            >
-                                <Image
-                                    source={icon}
-                                    style={{
-                                        width: 17,
-                                        height: 17,
-                                        marginRight: -4,
-                                        tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
-                                    }}
-                                />
-                            </View>
+                                <View
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    width={30}
+                                    height={30}
+                                    borderRadius={30}
+                                    backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
+                                    marginHorizontal={6}
+                                >
+                                    <Image
+                                        source={icon}
+                                        style={{
+                                            width: 17,
+                                            height: 17,
+                                            marginRight: -4,
+                                            tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
+                                        }}
+                                    />
+                                </View>
+                            </TouchableOpacity>
                         </View>
 
                     </View>
