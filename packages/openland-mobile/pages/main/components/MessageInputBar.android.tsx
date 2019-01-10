@@ -18,7 +18,7 @@ let styles = StyleSheet.create({
     },
     textInput: {
         paddingLeft: 16,
-        paddingRight: 16,
+        paddingRight: 40,
         paddingTop: 6,
 
         paddingBottom: 6,
@@ -53,10 +53,12 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                         {this.props.attachesEnabled !== false && (
-                            <TouchableOpacity onPress={this.props.onAttachPress}>
+                            <TouchableOpacity onPress={this.props.onAttachPress} style={{ alignSelf: "flex-end" }}>
                                 <View
+
                                     marginTop={1}
                                     marginLeft={12}
+                                    marginBottom={15}
                                     width={30}
                                     height={30}
                                     borderRadius={15}
@@ -80,11 +82,9 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
 
                         >
                             <View
-                                zIndex={1}
                                 flexGrow={1}
                             >
                                 <TextInput
-                                    flexGrow={1}
                                     style={styles.textInput}
                                     placeholder="Message"
                                     placeholderTextColor="#aaaaaa"
@@ -96,27 +96,28 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                 />
                             </View>
 
-                            <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
-                                <View
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    width={30}
-                                    height={30}
-                                    borderRadius={30}
-                                    backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
-                                    marginHorizontal={6}
-                                >
-                                    <Image
-                                        source={icon}
-                                        style={{
-                                            width: 17,
-                                            height: 17,
-                                            marginRight: -4,
-                                            tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
-                                        }}
-                                    />
-                                </View>
-                            </TouchableOpacity>
+                            <View
+                                position="absolute"
+                                right={0}
+                                bottom={5}
+                                alignItems="center"
+                                justifyContent="center"
+                                width={30}
+                                height={30}
+                                borderRadius={30}
+                                backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
+                                marginHorizontal={6}
+                            >
+                                <Image
+                                    source={icon}
+                                    style={{
+                                        width: 17,
+                                        height: 17,
+                                        marginRight: -4,
+                                        tintColor: hasText && this.props.enabled !== false ? '#fff' : '#b0b0b0'
+                                    }}
+                                />
+                            </View>
                         </View>
 
                     </View>
