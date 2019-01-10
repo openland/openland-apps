@@ -290,7 +290,7 @@ class InviteMembersModalRaw extends React.Component<
 
         this.state = {
             customTextAreaOpen: undefined,
-            showLink: undefined,
+            showLink: true,
         };
     }
 
