@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SNavigationViewStyle } from '../../SNavigationView';
-import { View, Dimensions, Platform } from 'react-native';
+import { View, Dimensions, Platform, Image } from 'react-native';
 import { SDevice } from '../../SDevice';
 import { SAnimated } from '../../SAnimated';
 import { NavigationManager } from '../NavigationManager';
@@ -29,9 +29,16 @@ export class HeaderComponent extends React.PureComponent<HeaderComponentProps> {
                     {!this.props.style.isOpaque && (<SBlurView style={{ width: '100%', height: Platform.OS === 'ios' ? MAX_SIZE : SDevice.statusBarHeight + SDevice.navigationBarHeight + SDevice.safeArea.top }} />)}
                 </SAnimated.View>
 
-                <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
-                    <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: SDevice.pixel }} />
-                </SAnimated.View>
+                {Platform.OS !== 'android' && (
+                    <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
+                        <View style={{ backgroundColor: '#e0e3e7', width: '100%', height: SDevice.pixel }} />
+                    </SAnimated.View>
+                )}
+                {Platform.OS === 'android' && (
+                    <SAnimated.View name={'header-hairline-' + this.props.manager.key} style={{ position: 'absolute', top: 0, right: 0, left: 0 }} pointerEvents="none">
+                        <Image resizeMode="stretch" source={require('assets-s/shadow.png')} style={{ width: '100%', height: 3 }} />
+                    </SAnimated.View>
+                )}
 
                 {/* Titles */}
                 <View
