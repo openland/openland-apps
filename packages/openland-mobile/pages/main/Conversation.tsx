@@ -94,6 +94,20 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
                 <Deferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
+                            <ASView
+                                style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                            >
+                                <ASFlex
+                                    width={Dimensions.get('window').width}
+                                    height={Dimensions.get('window').height}
+                                >
+                                    <ASImage
+                                        source={require('assets/img-chat-3.jpg')}
+                                        width={Dimensions.get('window').width}
+                                        height={Dimensions.get('window').height}
+                                    />
+                                </ASFlex>
+                            </ASView>
                             <ConversationView engine={this.engine} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}

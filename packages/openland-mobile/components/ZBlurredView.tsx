@@ -3,7 +3,7 @@ import { ViewProps, View } from 'react-native';
 import { BlurView } from 'react-native-blur';
 import { SDevice } from 'react-native-s/SDevice';
 
-export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 'normal' | 'high' }> {
+export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 'normal' | 'high', fallbackColor?: string }> {
     render() {
         let { intensity, ...other } = this.props;
         if (SDevice.renderBlurSupported) {
@@ -36,7 +36,7 @@ export class ZBlurredView extends React.PureComponent<ViewProps & { intensity?: 
             );
         } else {
             return (
-                <View {...this.props} backgroundColor="#fff">
+                <View {...this.props} backgroundColor={this.props.fallbackColor || '#fff'}>
                     {this.props.children}
                 </View>
             );
