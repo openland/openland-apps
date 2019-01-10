@@ -57,7 +57,7 @@ const SACreatedText = Glamorous.div({
 });
 
 const AdminTools = withSuperAccountActions(props => {
-    if (!props.data) {
+    if (!(props.data && props.data.superAccount)) {
         return null;
     }
     return (
