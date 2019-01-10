@@ -309,7 +309,7 @@ export const OrganizationSettings = ((props: any) => {
                     <XWithRole role={['super-admin', 'editor']}>
                         <XVertical separator={36}>
                             <XVertical separator={12}>
-                                <HeadTitle id="super-admin">Super admin</HeadTitle>
+                                <HeadTitle>Super admin</HeadTitle>
                                 <AdminTools
                                     variables={{
                                         accountId: props.data.organizationProfile!!.id,
