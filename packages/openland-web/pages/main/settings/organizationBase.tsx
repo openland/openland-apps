@@ -7,7 +7,6 @@ import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { XContent } from 'openland-x-layout/XContent';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { sanitizeIamgeRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
@@ -17,18 +16,19 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
 import { DateFormater } from 'openland-x/XDate';
 import { XFormError } from 'openland-x-forms/XFormError';
+import { XView } from 'react-mental';
 
-const Content = Glamorous(XContent)({
-    paddingTop: 20,
-    flexGrow: 1,
-});
+const Content = (props: { children?: any }) => (
+    <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
+        {props.children}
+    </XView>
+);
 
-const CategoryTitle = Glamorous.div({
-    fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: -0.2,
-    color: '#1f3449',
-});
+const HeadTitle = (props: { children?: any }) => (
+    <XView fontSize={18} fontWeight="600" color="#000000">
+        {props.children}
+    </XView>
+);
 
 let shiftArray = (array: any[]) => {
     let res = [...array];
@@ -173,122 +173,94 @@ export const OrganizationSettings = ((props: any) => {
             <Content>
                 <XVertical alignSelf="stretch" separator={30}>
                     <XVertical separator={12}>
-                        <CategoryTitle id="general">General</CategoryTitle>
-                        <XForm
-                            defaultData={{
-                                input: {
-                                    name: props.data.organizationProfile.name,
-                                    about: props.data.organizationProfile.about,
-                                    photo: props.data.organizationProfile.photoRef,
-                                    photoRef: sanitizeIamgeRef(
-                                        props.data.organizationProfile.photoRef,
-                                    ),
-                                    published: props.data.organizationProfile.published
-                                        ? 'published'
-                                        : 'unpublished',
-                                    editorial: props.data.organizationProfile.editorial
-                                        ? 'editorial'
-                                        : 'noneditorial',
+                        <HeadTitle>General</HeadTitle>
+                        <XVertical separator={25}>
+                            <XForm
+                                defaultData={{
+                                    input: {
+                                        name: props.data.organizationProfile.name,
+                                        about: props.data.organizationProfile.about,
+                                        photo: props.data.organizationProfile.photoRef,
+                                        photoRef: sanitizeIamgeRef(
+                                            props.data.organizationProfile.photoRef,
+                                        ),
+                                        published: props.data.organizationProfile.published
+                                            ? 'published'
+                                            : 'unpublished',
+                                        editorial: props.data.organizationProfile.editorial
+                                            ? 'editorial'
+                                            : 'noneditorial',
 
-                                    website: props.data.organizationProfile.website,
-                                    twitter: props.data.organizationProfile.twitter,
-                                    facebook: props.data.organizationProfile.facebook,
-                                    linkedin: props.data.organizationProfile.linkedin,
-                                },
-                            }}
-                            defaultAction={async data => {
-                                await props.updateOrganizaton({
-                                    variables: {
-                                        input: {
-                                            name: data.input.name,
-                                            about: data.input.about,
-                                            photoRef: data.input.photoRef,
-                                            alphaPublished: data.input.published === 'published',
-                                            alphaEditorial: data.input.editorial === 'editorial',
-                                            website: data.input.website,
-                                            twitter: data.input.twitter,
-                                            facebook: data.input.facebook,
-                                            linkedin: data.input.linkedin,
-                                        },
+                                        website: props.data.organizationProfile.website,
+                                        twitter: props.data.organizationProfile.twitter,
+                                        facebook: props.data.organizationProfile.facebook,
+                                        linkedin: props.data.organizationProfile.linkedin,
                                     },
-                                });
-                            }}
-                            defaultLayout={false}
-                        >
-                            <XVertical separator={12} maxWidth={660}>
-                                <XFormLoadingContent>
-                                    <XHorizontal separator={12}>
-                                        <XVertical flexGrow={1} maxWidth={480}>
-                                            <XInput
-                                                field="input.name"
-                                                size="large"
-                                                title="Organization name"
-                                            />
-                                            <XInput
-                                                field="input.about"
-                                                size="large"
-                                                title="About"
-                                            />
-                                            <XInput
-                                                flexGrow={1}
-                                                title={
-                                                    TextOrganizationProfile.placeholderSocialInputPlaceholder
-                                                }
-                                                field="input.website"
-                                                size="large"
-                                            />
-                                            <XInput
-                                                field="input.twitter"
-                                                title="Twitter"
-                                                size="large"
-                                            />
-                                            <XInput
-                                                field="input.facebook"
-                                                title="Facebook"
-                                                size="large"
-                                            />
-                                            <XInput
-                                                field="input.linkedin"
-                                                title="LinkedIn"
-                                                size="large"
-                                            />
-                                        </XVertical>
-                                        <XAvatarUpload
-                                            cropParams="1:1, free"
-                                            field="input.photoRef"
-                                        />
-                                    </XHorizontal>
-                                </XFormLoadingContent>
-                                <XFormSubmit
-                                    text="Save changes"
-                                    alignSelf="flex-start"
-                                    style="primary"
-                                    succesText="Changes saved!"
-                                />
-                            </XVertical>
-                        </XForm>
-                        <XForm
-                            defaultData={{
-                                shortname: props.data.organizationProfile.shortname,
-                            }}
-                            defaultAction={async data => {
-                                await props.setShortname({
-                                    variables: { shortname: data.shortname },
-                                });
-                            }}
-                        >
-                            <XVertical separator={12}>
-                                <CategoryTitle>Organization shortname</CategoryTitle>
-                                <XFormError onlyGeneralErrors={true} />
-                                <XVertical width={480} separator={12}>
+                                }}
+                                defaultAction={async data => {
+                                    await props.updateOrganizaton({
+                                        variables: {
+                                            input: {
+                                                name: data.input.name,
+                                                about: data.input.about,
+                                                photoRef: data.input.photoRef,
+                                                alphaPublished:
+                                                    data.input.published === 'published',
+                                                alphaEditorial:
+                                                    data.input.editorial === 'editorial',
+                                                website: data.input.website,
+                                                twitter: data.input.twitter,
+                                                facebook: data.input.facebook,
+                                                linkedin: data.input.linkedin,
+                                            },
+                                        },
+                                    });
+                                }}
+                                defaultLayout={false}
+                            >
+                                <XVertical separator={12} maxWidth={660}>
                                     <XFormLoadingContent>
-                                        <XVertical separator={10}>
-                                            <XInput
-                                                field="shortname"
-                                                size="large"
-                                                title="Shortname"
+                                        <XHorizontal separator={12}>
+                                            <XVertical flexGrow={1} maxWidth={480}>
+                                                <XInput
+                                                    field="input.name"
+                                                    size="large"
+                                                    title="Organization name"
+                                                />
+                                                <XInput
+                                                    field="input.about"
+                                                    size="large"
+                                                    title="About"
+                                                />
+                                                <XInput
+                                                    flexGrow={1}
+                                                    title={
+                                                        TextOrganizationProfile.placeholderSocialInputPlaceholder
+                                                    }
+                                                    field="input.website"
+                                                    size="large"
+                                                />
+                                                <XInput
+                                                    field="input.twitter"
+                                                    title="Twitter"
+                                                    size="large"
+                                                />
+                                                <XInput
+                                                    field="input.facebook"
+                                                    title="Facebook"
+                                                    size="large"
+                                                />
+                                                <XInput
+                                                    field="input.linkedin"
+                                                    title="LinkedIn"
+                                                    size="large"
+                                                />
+                                            </XVertical>
+                                            <XAvatarUpload
+                                                cropParams="1:1, free"
+                                                field="input.photoRef"
                                             />
-                                        </XVertical>
+                                        </XHorizontal>
                                     </XFormLoadingContent>
                                     <XFormSubmit
                                         text="Save changes"
@@ -297,15 +269,47 @@ export const OrganizationSettings = ((props: any) => {
                                         succesText="Changes saved!"
                                     />
                                 </XVertical>
-                            </XVertical>
-                        </XForm>
+                            </XForm>
+                            <XForm
+                                defaultData={{
+                                    shortname: props.data.organizationProfile.shortname,
+                                }}
+                                defaultAction={async data => {
+                                    await props.setShortname({
+                                        variables: { shortname: data.shortname },
+                                    });
+                                }}
+                            >
+                                <XVertical separator={12}>
+                                    <HeadTitle>Organization shortname</HeadTitle>
+                                    <XFormError onlyGeneralErrors={true} />
+                                    <XVertical width={480} separator={12}>
+                                        <XFormLoadingContent>
+                                            <XVertical separator={10}>
+                                                <XInput
+                                                    field="shortname"
+                                                    size="large"
+                                                    title="Shortname"
+                                                />
+                                            </XVertical>
+                                        </XFormLoadingContent>
+                                        <XFormSubmit
+                                            text="Save changes"
+                                            alignSelf="flex-start"
+                                            style="primary"
+                                            succesText="Changes saved!"
+                                        />
+                                    </XVertical>
+                                </XVertical>
+                            </XForm>
+                        </XVertical>
                     </XVertical>
 
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>
                         <XVertical separator={36}>
                             <XVertical separator={12}>
-                                <CategoryTitle id="super-admin">Super admin</CategoryTitle>
+                                <HeadTitle id="super-admin">Super admin</HeadTitle>
                                 <AdminTools
                                     variables={{
                                         accountId: props.data.organizationProfile!!.id,
