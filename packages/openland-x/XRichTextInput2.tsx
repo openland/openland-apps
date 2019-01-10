@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Editor, EditorState, Modifier, SelectionState, ContentState, CompositeDecorator } from 'draft-js';
+import { Editor, EditorState, Modifier, SelectionState, ContentState, CompositeDecorator, ContentBlock } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 function findActiveWordStart(state: EditorState): number {
@@ -41,6 +41,19 @@ export interface XRichTextInput2Props {
     onCurrentWordChanged?: (word: string | undefined) => void;
 }
 
+function findLinkMention(contentBlock: ContentBlock, callback: any, contentState: ContentState) {
+    contentBlock.findEntityRanges(
+        (character) => {
+            const entityKey = character.getEntity();
+            return (
+                entityKey !== null &&
+                contentState.getEntity(entityKey).getType() === 'MENTION'
+            );
+        },
+        callback
+    );
+}
+
 export class XRichTextInput2 extends React.PureComponent<XRichTextInput2Props, { editorState: EditorState }> {
 
     private ref = React.createRef<Editor>();
@@ -48,7 +61,10 @@ export class XRichTextInput2 extends React.PureComponent<XRichTextInput2Props, {
     constructor(props: XRichTextInput2Props) {
         super(props);
         this.state = {
-            editorState: EditorState.createWithContent(ContentState.createFromText(''))
+            editorState: EditorState.createWithContent(ContentState.createFromText(''), new CompositeDecorator([{
+                strategy: findLinkMention,
+                component: (p: any) => <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
+            }]))
         };
     }
 
@@ -61,19 +77,21 @@ export class XRichTextInput2 extends React.PureComponent<XRichTextInput2Props, {
             }
             let content = s.editorState.getCurrentContent();
             let text = content.getBlockForKey(selection.getStartKey()).getText();
-            let stext = src.name;
-            if (selection.getEndOffset() === text.length || text.charAt(selection.getEndOffset()) !== ' ') {
-                stext = src.name + ' ';
-            }
 
             let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
                 anchorOffset: start,
                 focusOffset: selection.getEndOffset()
             }) as any;
 
-            let entity = content.createEntity('mention', 'IMMUTABLE', { uid: src.id });
+            let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: src.id });
 
-            let replace = Modifier.replaceText(entity, s2, stext, undefined, entity.getLastCreatedEntityKey());
+            let replace = Modifier.replaceText(entity, s2, src.name, undefined, entity.getLastCreatedEntityKey());
+
+            // let stext = src.name;
+            if (selection.getEndOffset() === text.length || text.charAt(selection.getEndOffset()) !== ' ') {
+                // stext = src.name + ' ';
+                replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
+            }
 
             let s3 = EditorState.push(
                 s.editorState,
