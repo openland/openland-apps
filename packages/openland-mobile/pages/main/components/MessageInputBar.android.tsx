@@ -9,6 +9,12 @@ import { androidMessageInputListOverlap } from './ConversationView';
 let styles = StyleSheet.create({
     textInputContainer: {
 
+        borderColor: '#ebebeb',
+        borderWidth: 1,
+        backgroundColor: '#fff',
+        borderRadius: 21,
+        elevation: 1,
+
         marginTop: 15,
         marginBottom: 9,
 
@@ -79,26 +85,23 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         )}
 
                         <View style={styles.textInputContainer} >
-                            <ImageViewCapInsets
+                            {/* <ImageViewCapInsets
                                 source={require('assets/input.png')}
                                 capInsets={{
-                                    left: PixelRatio.getPixelSizeForLayoutSize(14),
-                                    top: PixelRatio.getPixelSizeForLayoutSize(14),
-                                    right: PixelRatio.getPixelSizeForLayoutSize(14),
-                                    bottom: PixelRatio.getPixelSizeForLayoutSize(14)
+                                    left: 21,
+                                    top: 21,
+                                    right: 21,
+                                    bottom: 21
 
                                 }}
                                 style={{
-                                    left: -PixelRatio.getPixelSizeForLayoutSize(2),
-                                    top: -PixelRatio.getPixelSizeForLayoutSize(3)
-                                    ,
-                                    right: -PixelRatio.getPixelSizeForLayoutSize(2),
-                                    bottom: -PixelRatio.getPixelSizeForLayoutSize(3),
-                                    // height: '100%',
+                                    left: -2,
+                                    top: -6,
+                                    right: -2,
+                                    bottom: -6,
                                     position: 'absolute',
-
                                 }}
-                            />
+                            /> */}
                             <TextInput
                                 style={styles.textInput
                                 }
@@ -126,7 +129,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                     height={30}
                                     borderRadius={30}
                                     backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
-                                    marginHorizontal={8}
+                                    marginHorizontal={6}
                                 >
                                     <Image
                                         source={icon}
