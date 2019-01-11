@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
@@ -41,6 +40,30 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
                     </XFormField>
                 </XFormLoadingContent>
             </XVertical>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ target?: any }>;
+
+export const RemoveOrganization = withMyOrganizationProfile(props => {
+    if (!(props.data && props.data.organizationProfile)) {
+        return null;
+    }
+    return (
+        <XModalForm
+            title={'RemoveOrganization'}
+            useTopCloser={true}
+            defaultData={{}}
+            defaultAction={async () => {
+                await props.deleteOrganization({});
+            }}
+            target={(props as any).target}
+            submitBtnText="Yes, I am sure"
+        >
+            <XFormLoadingContent>
+                <XVertical flexGrow={1} separator={8}>
+                    Are you sure you want to delete this organization?
+                </XVertical>
+            </XFormLoadingContent>
         </XModalForm>
     );
 }) as React.ComponentType<{ target?: any }>;

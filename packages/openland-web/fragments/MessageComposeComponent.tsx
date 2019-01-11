@@ -651,8 +651,6 @@ class MessageComposeComponentInner extends React.PureComponent<
             useForwardMessages,
         } = nextProps.messagesContext;
 
-        console.log(nextProps);
-
         if (nextProps.members && nextProps.members !== this.props.members) {
             this.listOfMembersNames = nextProps.members.map(
                 ({ user: { name } }: { user: { name: string } }) => `@${removeEmojiFromText(name)}`,
@@ -757,8 +755,6 @@ class MessageComposeComponentInner extends React.PureComponent<
             forwardMessageId,
             forwardMessageSender,
         } = this.state;
-
-        console.log(this.state);
 
         let stateMessage = undefined;
         if (floatingMessage) {
