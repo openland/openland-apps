@@ -2,7 +2,6 @@ import gql from 'graphql-tag';
 import { OrganizationFull } from '../fragments/OrganizationFull';
 import { OrganizationShort } from '../fragments/OrganizationShort';
 import { OrganizationProfileFull } from '../fragments/OrganizationProfileFull';
-import { UserShort } from '../fragments/UserShort';
 import { OrganizationSearch } from '../fragments/OrganizationSearch';
 
 export const MyOrganizationsQuery = gql`
@@ -158,7 +157,7 @@ export const OrganizationCreatePublicInviteMutation = gql`
     }
 `;
 
-export const OrganizationDelete = gql`
+export const DeleteOrganizationMutation = gql`
     mutation DeleteOrganization($organizationId: ID!) {
         deleteOrganization(id: $organizationId)
     }
