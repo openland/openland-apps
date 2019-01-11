@@ -37,7 +37,7 @@ const updateKeymap = () => {
         });
     }
 
-    console.log(JSON.stringify(finalKeymap, null, 2));
+    // console.log(JSON.stringify(finalKeymap, null, 2));
 
     shortcutManager.setKeymap({
         App: finalKeymap,
@@ -69,6 +69,7 @@ export class XShortcuts extends React.Component<{
         listOfIdKeymaps = listOfIdKeymaps.filter(
             ({ id }: { id: string }) => id !== this.componentId,
         );
+        updateKeymap();
     }
     handleActions = (action: any, event: any) => {
         const filteredIdKeymapsPairs = listOfIdKeymaps.filter(
@@ -80,7 +81,6 @@ export class XShortcuts extends React.Component<{
             filteredIdKeymapsPairs.length &&
             filteredIdKeymapsPairs[filteredIdKeymapsPairs.length - 1].id === this.componentId
         ) {
-            console.log('handle shortcut');
             this.props.handlerMap[action](event);
         }
     };
