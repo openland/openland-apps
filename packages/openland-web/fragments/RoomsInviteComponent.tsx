@@ -13,6 +13,7 @@ import { delayForewer } from 'openland-y-utils/timer';
 import { TextRoom } from 'openland-text/TextRoom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
+import { css } from 'linaria';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -64,7 +65,7 @@ const InfoCardWrapper = Glamorous.div({
     backgroundColor: '#fff',
     margin: 'auto',
     padding: '20px 20px 16px 28px',
-    marginBottom: 32,
+    marginBottom: 20,
     flexShrink: 0,
     overflow: 'hidden',
     position: 'relative',
@@ -211,6 +212,14 @@ const Image = Glamorous.div({
     },
 });
 
+const aboutTextClass = css`
+    text-align: center;
+    font-size: 14px;
+    line-height: 22px;
+    margin: 0 auto 32px;
+    max-width: 460px;
+`;
+
 const JoinButton = withChannelJoin(props => {
     return (
         <XButton
@@ -287,7 +296,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                 objectName={this.props.invite.invitedByUser.name}
                                 objectId={this.props.invite.invitedByUser.id}
                             />
-                            <Text>{this.props.invite.invitedByUser.name} has invited you</Text>
+                            <Text>{this.props.invite.invitedByUser.name} invites you to join</Text>
                         </UserInfoWrapper>
                     ) : (
                         <div style={{ height: 50 }} />
@@ -317,6 +326,10 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             {room.description || TextRoom.descriptionPlaceholder}
                         </InfoCardBody>
                     </InfoCardWrapper>
+                    <div className={aboutTextClass}>
+                        Openland is a professional messenger, built for productivity and speed.
+                        Currently it's in invite-only mode.
+                    </div>
                     {!this.props.signup && (
                         <>
                             {(room.membership === 'NONE' ||
