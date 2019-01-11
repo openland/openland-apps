@@ -9,7 +9,7 @@ import { DialogView } from './DialogView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
-import { XViewRouterContext } from 'react-mental';
+import { XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
 
 const LoadingWrapper = Glamorous.div({
@@ -26,6 +26,8 @@ export const DialogListView = React.memo<DialogListViewProps>(props => {
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
     let router = React.useContext(XViewRouterContext);
+    let route = React.useContext(XViewRouteContext);
+
     const renderLoading = React.useMemo(() => {
         return () => {
             return (
@@ -42,21 +44,23 @@ export const DialogListView = React.memo<DialogListViewProps>(props => {
         [props.onDialogClick],
     );
 
-    const getCurrentConversationId = () =>
-        (messenger as any).mountedConversations.keys().next().value;
+    const getCurrentConversationId = () => {
+        return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
+    };
 
     const getConversationId = (delta: number) => {
         const currentConversationId = getCurrentConversationId();
+        if (currentConversationId === null) {
+            return 0;
+        }
 
-        const currentDialogIndex = (messenger as any).dialogList.dataSource.findIndex(
-            currentConversationId,
-        );
+        const currentDialogIndex = messenger.dialogList.dataSource.findIndex(currentConversationId);
         const nextIndex = Math.min(
             Math.max(currentDialogIndex - delta, 0),
-            (messenger as any).dialogList.dataSource.getSize() - 1,
+            messenger.dialogList.dataSource.getSize() - 1,
         );
 
-        return (messenger as any).dialogList.dataSource.getItemByIndex(nextIndex).key;
+        return messenger.dialogList.dataSource.getItemByIndex(nextIndex).key;
     };
 
     const handleOptionUp = () => {
