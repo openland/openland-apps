@@ -4085,6 +4085,21 @@ export interface OrganizationCreatePublicInviteVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: DeleteOrganization
+// ====================================================
+
+export interface DeleteOrganization {
+  deleteOrganization: boolean;
+}
+
+export interface DeleteOrganizationVariables {
+  organizationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: OrganizationActivateByInvite
 // ====================================================
 

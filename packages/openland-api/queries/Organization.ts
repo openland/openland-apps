@@ -158,6 +158,12 @@ export const OrganizationCreatePublicInviteMutation = gql`
     }
 `;
 
+export const OrganizationDelete = gql`
+    mutation DeleteOrganization($organizationId: ID!) {
+        deleteOrganization(id: $organizationId)
+    }
+`;
+
 export const OrganizationActivateByInviteMutation = gql`
     mutation OrganizationActivateByInvite($inviteKey: String!) {
         joinAppInvite(key: $inviteKey)

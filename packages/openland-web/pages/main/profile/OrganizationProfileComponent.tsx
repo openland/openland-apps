@@ -502,6 +502,17 @@ export let extractHostname = (url: string) => {
 const Header = (props: { organization: Organization_organization }) => {
     let { organization } = props;
 
+    const editButton = (
+        <XMenuItem path={'/settings/organization/' + organization.id}>
+            {TextProfiles.Organization.edit}
+        </XMenuItem>
+    );
+
+    const deleteOrganizationButton = (
+        <XWithRole role="feature-non-production">
+            <XMenuItem>Delete organization</XMenuItem>
+        </XWithRole>
+    );
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -557,11 +568,8 @@ const Header = (props: { organization: Organization_organization }) => {
                                 flat={true}
                                 content={
                                     <>
-                                        <XMenuItem
-                                            path={'/settings/organization/' + organization.id}
-                                        >
-                                            {TextProfiles.Organization.edit}
-                                        </XMenuItem>
+                                        {editButton}
+                                        {deleteOrganizationButton}
                                     </>
                                 }
                             />
@@ -574,12 +582,11 @@ const Header = (props: { organization: Organization_organization }) => {
                             flat={true}
                             content={
                                 <>
-                                    <XMenuItem path={'/settings/organization/' + organization.id}>
-                                        {TextProfiles.Organization.edit}
-                                    </XMenuItem>
+                                    {editButton}
                                     <XMenuItem path={'/super/orgs/' + organization.superAccountId}>
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
+                                    {deleteOrganizationButton}
                                 </>
                             }
                         />
