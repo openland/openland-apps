@@ -245,6 +245,9 @@ export class HeaderCoordinator {
                 if (prev) {
                     op += Math.abs(progress) * this.resolveHairlineOpacityAndroid(prev.config);
                 }
+                if (last.config.headerHidden) {
+                    op = 0;
+                }
                 this.hairline.opacity = op;
             }
             this.hairline.translateY = SDevice.safeArea.top + SDevice.navigationBarHeight + SDevice.statusBarHeight;
