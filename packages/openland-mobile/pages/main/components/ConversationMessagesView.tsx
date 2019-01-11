@@ -4,6 +4,7 @@ import { ASListView } from 'react-native-async-view/ASListView';
 import { MobileMessengerContext } from '../../../messenger/MobileMessenger';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { Platform } from 'react-native';
+import { androidMessageInputListOverlap } from './ConversationView';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
@@ -28,7 +29,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                                 contentPaddingTop={area.top}
                                 contentPaddingBottom={0}
                                 style={{ flexGrow: 1 }}
-                                headerPadding={Platform.select({ ios: 6, android: 40 })}
+                                headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
                             />
                         )}
                     </MobileMessengerContext.Consumer>

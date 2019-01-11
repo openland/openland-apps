@@ -14,6 +14,8 @@ export interface MessagesListProps {
     engine: ConversationEngine;
 }
 
+export const androidMessageInputListOverlap = 50;
+
 class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
@@ -59,7 +61,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
     render() {
         return (
-            <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -40 })}>
+            <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
 
                 <ConversationMessagesView
                     ref={this.listRef}

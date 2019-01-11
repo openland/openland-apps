@@ -12101,9 +12101,10 @@ react-native-haptic-feedback@^1.2.0:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-1.4.2.tgz#e15ed66f2ffe9ec886b4098b792591136efd5ee2"
 
-react-native-image-capinsets@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-image-capinsets/-/react-native-image-capinsets-0.4.0.tgz#919f4ec15e573223f2b79660253c6deac69366ab"
+react-native-image-capinsets@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-image-capinsets/-/react-native-image-capinsets-0.5.0.tgz#577385772779f71b0ff1d7a96996a29add024b5d"
+  integrity sha512-cvJMldl0iju8bS1NAWL2Up1sBW4wlXdnlgmLhqom4hTOfhKqHdlDfuUmhixCR0vbb5pLgbEn/09T2X5IhQ9HYQ==
 
 react-native-image-crop-picker@^0.20.3:
   version "0.20.3"

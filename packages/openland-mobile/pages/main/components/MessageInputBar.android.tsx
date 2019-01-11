@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import LinearGradient from 'react-native-linear-gradient';
+import ImageViewCapInsets from 'react-native-image-capinsets';
+import { androidMessageInputListOverlap } from './ConversationView';
 
 let styles = StyleSheet.create({
     textInputContainer: {
-        borderColor: '#ebebeb',
-        borderWidth: 1,
-        marginTop: 5,
+
+        marginTop: 15,
         marginBottom: 9,
-        backgroundColor: '#fff',
-        borderRadius: 21,
-        elevation: 1,
+
         alignItems: 'center',
         marginHorizontal: 12,
         flexGrow: 1,
@@ -53,8 +52,8 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
             <ZKeyboardAwareBar>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
 
-                    <LinearGradient position="absolute" left={0} top={0} right={0} height={40} colors={['#fff', '#fff', 'transparent', 'transparent']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
-                    <View position="absolute" left={0} top={40} bottom={0} right={0} backgroundColor="#fff" />
+                    <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={['#fff', '#fff', 'transparent', 'transparent']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
+                    <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor="#fff" />
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                         {this.props.attachesEnabled !== false && (
@@ -80,8 +79,29 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         )}
 
                         <View style={styles.textInputContainer} >
+                            <ImageViewCapInsets
+                                source={require('assets/input.png')}
+                                capInsets={{
+                                    left: PixelRatio.getPixelSizeForLayoutSize(14),
+                                    top: PixelRatio.getPixelSizeForLayoutSize(14),
+                                    right: PixelRatio.getPixelSizeForLayoutSize(14),
+                                    bottom: PixelRatio.getPixelSizeForLayoutSize(14)
+
+                                }}
+                                style={{
+                                    left: -PixelRatio.getPixelSizeForLayoutSize(2),
+                                    top: -PixelRatio.getPixelSizeForLayoutSize(3)
+                                    ,
+                                    right: -PixelRatio.getPixelSizeForLayoutSize(2),
+                                    bottom: -PixelRatio.getPixelSizeForLayoutSize(3),
+                                    // height: '100%',
+                                    position: 'absolute',
+
+                                }}
+                            />
                             <TextInput
-                                style={styles.textInput}
+                                style={styles.textInput
+                                }
                                 placeholder="Message"
                                 placeholderTextColor="#aaaaaa"
                                 onChangeText={this.props.onChangeText}
@@ -106,7 +126,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                     height={30}
                                     borderRadius={30}
                                     backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
-                                    marginHorizontal={6}
+                                    marginHorizontal={8}
                                 >
                                     <Image
                                         source={icon}

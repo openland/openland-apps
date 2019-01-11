@@ -138,7 +138,7 @@
         "react-native-fast-image": "^4.0.14",
         "react-native-gesture-handler": "^1.0.7",
         "react-native-haptic-feedback": "^1.2.0",
-        "react-native-image-capinsets": "^0.4.0",
+        "react-native-image-capinsets": "^0.5.0",
         "react-native-image-crop-picker": "^0.20.3",
         "react-native-image-pan-zoom": "^2.1.7",
         "react-native-image-picker": "^0.26.10",
