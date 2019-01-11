@@ -37,6 +37,14 @@ export class DataSource<T extends DataSourceItem> {
         return this.dataByKey.has(key);
     }
 
+    findIndex(key: string) {
+        return this.data.findIndex(({ key: dataKey }: { key: string }) => dataKey === key);
+    }
+
+    getItemByIndex(index: number) {
+        return this.data[index];
+    }
+
     getItem(key: string) {
         return this.dataByKey.get(key);
     }
@@ -100,7 +108,7 @@ export class DataSource<T extends DataSourceItem> {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
-        let i = this.data.findIndex((v) => v.key === item.key);
+        let i = this.data.findIndex(v => v.key === item.key);
         if (i >= 0) {
             this.data[i] = item;
             this.dataByKey.set(item.key, item);
@@ -115,7 +123,7 @@ export class DataSource<T extends DataSourceItem> {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
-        let i = this.data.findIndex((v) => v.key === key);
+        let i = this.data.findIndex(v => v.key === key);
         if (i >= 0) {
             let removed = this.data[i];
             let res = [...this.data];
@@ -148,7 +156,7 @@ export class DataSource<T extends DataSourceItem> {
         if (this.destroyed) {
             throw Error('Datasource already destroyed');
         }
-        let i = this.data.findIndex((v) => v.key === key);
+        let i = this.data.findIndex(v => v.key === key);
         if (i >= 0) {
             if (i === index) {
                 return;
@@ -173,7 +181,7 @@ export class DataSource<T extends DataSourceItem> {
     }
 
     loadedMore(items: T[], completed: boolean) {
-        let filtered = items.filter((v) => !this.hasItem(v.key));
+        let filtered = items.filter(v => !this.hasItem(v.key));
         for (let v of filtered) {
             this.dataByKey.set(v.key, v);
         }

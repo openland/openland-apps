@@ -8,6 +8,9 @@ import { XButton } from 'openland-x/XButton';
 import { DialogView } from './DialogView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { DialogSearchResults } from './DialogSearchResults';
+import { XShortcuts } from 'openland-x/XShortcuts';
+import { XViewRouterContext } from 'react-mental';
+import { XInput } from 'openland-x/XInput';
 
 const LoadingWrapper = Glamorous.div({
     height: 60,
@@ -18,10 +21,11 @@ export interface DialogListViewProps {
 }
 
 export const DialogListView = React.memo<DialogListViewProps>(props => {
+    const ref = React.createRef<XInput>();
     let messenger = React.useContext(MessengerContext);
     let [query, setQuery] = React.useState('');
     let isSearching = query.trim().length > 0;
-
+    let router = React.useContext(XViewRouterContext);
     const renderLoading = React.useMemo(() => {
         return () => {
             return (
@@ -38,21 +42,79 @@ export const DialogListView = React.memo<DialogListViewProps>(props => {
         [props.onDialogClick],
     );
 
+    const getCurrentConversationId = () =>
+        (messenger as any).mountedConversations.keys().next().value;
+
+    const getConversationId = (delta: number) => {
+        const currentConversationId = getCurrentConversationId();
+
+        const currentDialogIndex = (messenger as any).dialogList.dataSource.findIndex(
+            currentConversationId,
+        );
+        const nextIndex = Math.min(
+            Math.max(currentDialogIndex - delta, 0),
+            (messenger as any).dialogList.dataSource.getSize() - 1,
+        );
+
+        return (messenger as any).dialogList.dataSource.getItemByIndex(nextIndex).key;
+    };
+
+    const handleOptionUp = () => {
+        const nextId = getConversationId(+1);
+        if (nextId !== getCurrentConversationId()) {
+            router!.navigate(`/mail/${nextId}`);
+        }
+    };
+
+    const handleOptionDown = () => {
+        const nextId = getConversationId(-1);
+        if (nextId !== getCurrentConversationId()) {
+            router!.navigate(`/mail/${nextId}`);
+        }
+    };
+
+    const handleCtrlS = () => {
+        if (ref.current) {
+            ref.current.focus();
+        }
+    };
+
     return (
-        <XView flexGrow={1} flexBasis={0} minHeight={0}>
-            <DialogSearchInput value={query} onChange={setQuery} />
+        <XShortcuts
+            handlerMap={{
+                OPTION_UP: handleOptionUp,
+                OPTION_DOWN: handleOptionDown,
+                CTRL_S: handleCtrlS,
+            }}
+            keymap={{
+                OPTION_UP: {
+                    osx: ['option+up'],
+                    windows: ['alt+up'],
+                },
+                OPTION_DOWN: {
+                    osx: ['option+down'],
+                    windows: ['alt+down'],
+                },
+                CTRL_S: {
+                    osx: ['ctrl+s'],
+                },
+            }}
+        >
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                {isSearching && <DialogSearchResults variables={{ query: query }} />}
-                {!isSearching && (
-                    <XListView
-                        dataSource={messenger.dialogList.dataSource}
-                        itemHeight={72}
-                        loadingHeight={60}
-                        renderItem={renderDialog}
-                        renderLoading={renderLoading}
-                    />
-                )}
+                <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
+                <XView flexGrow={1} flexBasis={0} minHeight={0}>
+                    {isSearching && <DialogSearchResults variables={{ query: query }} />}
+                    {!isSearching && (
+                        <XListView
+                            dataSource={messenger.dialogList.dataSource}
+                            itemHeight={72}
+                            loadingHeight={60}
+                            renderItem={renderDialog}
+                            renderLoading={renderLoading}
+                        />
+                    )}
+                </XView>
             </XView>
-        </XView>
+        </XShortcuts>
     );
 });

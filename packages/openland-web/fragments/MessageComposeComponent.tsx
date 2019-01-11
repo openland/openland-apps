@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { HotKeys } from 'react-hotkeys';
 import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -768,115 +767,102 @@ class MessageComposeComponentInner extends React.PureComponent<
         const mentionsData = convertChannelMembersDataToMentionsData(this.props.members);
 
         return (
-            <HotKeys
-                keyMap={{
-                    onEscape: 'esc',
-                }}
-                handlers={{
-                    onEscape: this.closeEditor,
-                }}
-            >
-                <SendMessageWrapper>
-                    <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
-                    <SendMessageContent separator={4} alignItems="center">
-                        <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                            {stateMessage && forwardMessageId && (
-                                <EditView
-                                    message={stateMessage}
-                                    title={
-                                        forwardMessageSender !== undefined
-                                            ? forwardMessageSender
-                                            : 'Edit message'
-                                    }
-                                    onCancel={this.closeEditor}
-                                />
-                            )}
-                            <TextInputWrapper>
-                                <XRichTextInput
-                                    mentionsData={mentionsData}
-                                    placeholder="Write a message..."
-                                    flexGrow={1}
-                                    onChange={this.handleChange}
-                                    onSubmit={this.handleSend}
-                                    ref={this.input}
-                                    value={floatingMessage}
-                                />
-                            </TextInputWrapper>
-                            <XHorizontal
-                                alignItems="center"
-                                justifyContent="space-between"
+            <SendMessageWrapper>
+                <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
+                <SendMessageContent separator={4} alignItems="center">
+                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                        {stateMessage && forwardMessageId && (
+                            <EditView
+                                message={stateMessage}
+                                title={
+                                    forwardMessageSender !== undefined
+                                        ? forwardMessageSender
+                                        : 'Edit message'
+                                }
+                                onCancel={this.closeEditor}
+                            />
+                        )}
+                        <TextInputWrapper>
+                            <XRichTextInput
+                                mentionsData={mentionsData}
+                                placeholder="Write a message..."
                                 flexGrow={1}
-                            >
-                                <XHorizontal separator="none">
-                                    <AttachmentButton
-                                        onClick={
-                                            this.props.enabled === false
-                                                ? undefined
-                                                : this.handleAttach
-                                        }
-                                        enabled={this.props.enabled === false}
-                                        disable={this.props.enabled === false}
-                                    >
-                                        <PhotoIcon />
-                                        <span>Photo</span>
-                                    </AttachmentButton>
-                                    <AttachmentButton
-                                        onClick={
-                                            this.props.enabled === false
-                                                ? undefined
-                                                : this.handleAttach
-                                        }
-                                        enabled={this.props.enabled === false}
-                                        disable={this.props.enabled === false}
-                                        className="document-button"
-                                    >
-                                        <FileIcon />
-                                        <span>Document</span>
-                                    </AttachmentButton>
-                                    <PostButton
-                                        enabled={this.props.enabled}
-                                        handleHideChat={this.props.handleHideChat}
-                                    />
-                                    <AttachmentButton
-                                        query={
-                                            this.props.enabled === false
-                                                ? undefined
-                                                : {
-                                                      field: 'addItro',
-                                                      value: 'true',
-                                                  }
-                                        }
-                                        className="intro-button"
-                                        disable={this.props.enabled === false}
-                                    >
-                                        <IntroIc />
-                                        <span>Intro</span>
-                                    </AttachmentButton>
-                                    <ShortcutsModal
-                                        target={
-                                            <AttachmentButton className="shortcuts-button">
-                                                <ShortcutsIcon />
-                                                <span>Shortcuts</span>
-                                            </AttachmentButton>
-                                        }
-                                    />
-                                </XHorizontal>
-                                <XButton
-                                    text="Send"
-                                    style="primary"
-                                    action={this.handleSend}
-                                    iconRight="send"
-                                    enabled={this.props.enabled !== false}
+                                onChange={this.handleChange}
+                                onSubmit={this.handleSend}
+                                ref={this.input}
+                                value={floatingMessage}
+                            />
+                        </TextInputWrapper>
+                        <XHorizontal
+                            alignItems="center"
+                            justifyContent="space-between"
+                            flexGrow={1}
+                        >
+                            <XHorizontal separator="none">
+                                <AttachmentButton
+                                    onClick={
+                                        this.props.enabled === false ? undefined : this.handleAttach
+                                    }
+                                    enabled={this.props.enabled === false}
+                                    disable={this.props.enabled === false}
+                                >
+                                    <PhotoIcon />
+                                    <span>Photo</span>
+                                </AttachmentButton>
+                                <AttachmentButton
+                                    onClick={
+                                        this.props.enabled === false ? undefined : this.handleAttach
+                                    }
+                                    enabled={this.props.enabled === false}
+                                    disable={this.props.enabled === false}
+                                    className="document-button"
+                                >
+                                    <FileIcon />
+                                    <span>Document</span>
+                                </AttachmentButton>
+                                <PostButton
+                                    enabled={this.props.enabled}
+                                    handleHideChat={this.props.handleHideChat}
+                                />
+                                <AttachmentButton
+                                    query={
+                                        this.props.enabled === false
+                                            ? undefined
+                                            : {
+                                                  field: 'addItro',
+                                                  value: 'true',
+                                              }
+                                    }
+                                    className="intro-button"
+                                    disable={this.props.enabled === false}
+                                >
+                                    <IntroIc />
+                                    <span>Intro</span>
+                                </AttachmentButton>
+                                <ShortcutsModal
+                                    target={
+                                        <AttachmentButton className="shortcuts-button">
+                                            <ShortcutsIcon />
+                                            <span>Shortcuts</span>
+                                        </AttachmentButton>
+                                    }
                                 />
                             </XHorizontal>
-                        </XVertical>
-                    </SendMessageContent>
-                    <PostIntroModal
-                        targetQuery="addItro"
-                        conversationId={this.props.conversationId || ''}
-                    />
-                </SendMessageWrapper>
-            </HotKeys>
+                            <XButton
+                                text="Send"
+                                style="primary"
+                                action={this.handleSend}
+                                iconRight="send"
+                                enabled={this.props.enabled !== false}
+                            />
+                        </XHorizontal>
+                    </XVertical>
+                </SendMessageContent>
+                <PostIntroModal
+                    targetQuery="addItro"
+                    conversationId={this.props.conversationId || ''}
+                />
+            </SendMessageWrapper>
         );
     }
 }

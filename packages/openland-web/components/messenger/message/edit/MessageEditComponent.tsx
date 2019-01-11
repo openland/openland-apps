@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { HotKeys } from 'react-hotkeys';
 import { withEditMessage } from '../../../../api/withMessageState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
 import { XForm } from 'openland-x-forms/XForm2';
+import { XShortcuts } from 'openland-x/XShortcuts';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { MessageFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
@@ -160,9 +160,13 @@ export class EditMessageInlineWrapper extends React.Component<{
 
     render() {
         return (
-            <HotKeys
-                handlers={{
-                    esc: this.onCloseHandler,
+            <XShortcuts
+                supressOtherShortcuts
+                handlerMap={{
+                    ESC: this.onCloseHandler,
+                }}
+                keymap={{
+                    ESC: 'esc',
                 }}
             >
                 <EditMessageInline
@@ -170,7 +174,7 @@ export class EditMessageInlineWrapper extends React.Component<{
                     text={this.props.message.message}
                     onClose={this.onCloseHandler}
                 />
-            </HotKeys>
+            </XShortcuts>
         );
     }
 }
