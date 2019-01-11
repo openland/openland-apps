@@ -651,6 +651,8 @@ class MessageComposeComponentInner extends React.PureComponent<
             useForwardMessages,
         } = nextProps.messagesContext;
 
+        console.log(nextProps);
+
         if (nextProps.members && nextProps.members !== this.props.members) {
             this.listOfMembersNames = nextProps.members.map(
                 ({ user: { name } }: { user: { name: string } }) => `@${removeEmojiFromText(name)}`,
@@ -660,6 +662,12 @@ class MessageComposeComponentInner extends React.PureComponent<
         let newState: any = {};
 
         if (this.props.conversationId !== nextProps.conversationId) {
+            newState = {
+                ...newState,
+                forwardMessageReply: '',
+                forwardMessageId: null,
+                forwardMessageSender: '',
+            };
             if (useForwardMessages && forwardMessagesId) {
                 this.props.messagesContext.changeForwardConverstion();
                 newState = {
@@ -749,6 +757,8 @@ class MessageComposeComponentInner extends React.PureComponent<
             forwardMessageId,
             forwardMessageSender,
         } = this.state;
+
+        console.log(this.state);
 
         let stateMessage = undefined;
         if (floatingMessage) {
