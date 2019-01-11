@@ -8,6 +8,7 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { XViewRouterContext } from 'react-mental';
 
 export const AboutPlaceholder = withMyOrganizationProfile(props => {
     if (!(props.data && props.data.organizationProfile)) {
@@ -45,6 +46,7 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
 }) as React.ComponentType<{ target?: any }>;
 
 export const RemoveOrganization = withMyOrganizationProfile(props => {
+    let router = React.useContext(XViewRouterContext);
     if (!(props.data && props.data.organizationProfile)) {
         return null;
     }
@@ -54,14 +56,19 @@ export const RemoveOrganization = withMyOrganizationProfile(props => {
             useTopCloser={true}
             defaultData={{}}
             defaultAction={async () => {
-                await props.deleteOrganization({});
+                await props.deleteOrganization({
+                    variables: {
+                        organizationId: props.data.organizationProfile.id,
+                    },
+                });
+                router!.navigate('/');
             }}
             target={(props as any).target}
             submitBtnText="Yes, I am sure"
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
-                    Are you sure you want to delete this organization?
+                    Are you sure you want to delete {props.data.organizationProfile.name}?
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>

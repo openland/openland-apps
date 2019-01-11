@@ -514,7 +514,7 @@ const Header = (props: { organization: Organization_organization }) => {
     );
 
     const deleteOrganizationButton = (
-        <XWithRole role={['editor', 'super-admin', 'feature-non-production']}>
+        <XWithRole role={['admin', 'feature-non-production']} orgPermission={organization.id}>
             <RemoveOrganization target={<XButton style="danger" text="Delete organization" />} />
         </XWithRole>
     );
