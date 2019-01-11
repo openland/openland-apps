@@ -664,7 +664,6 @@ class MessageComposeComponentInner extends React.PureComponent<
                 this.props.messagesContext.changeForwardConverstion();
                 newState = {
                     ...newState,
-                    // floatingMessage: '',
                     forwardMessageReply:
                         `Forward ${forwardMessagesId.size} ` +
                         (forwardMessagesId.size === 1 ? 'message' : 'messages'),
@@ -681,7 +680,6 @@ class MessageComposeComponentInner extends React.PureComponent<
                 const messageSender = [...replyMessagesSender!][0];
                 newState = {
                     ...newState,
-                    // floatingMessage: '',
                     forwardMessageReply: messageReply,
                     forwardMessageId: messageId,
                     forwardMessageSender: messageSender,
@@ -689,13 +687,15 @@ class MessageComposeComponentInner extends React.PureComponent<
             } else {
                 newState = {
                     ...newState,
-                    // floatingMessage: '',
                     forwardMessageReply:
                         `Reply ${replyMessagesId.size} ` +
                         (replyMessagesId.size === 1 ? 'message' : 'messages'),
                     forwardMessageId: replyMessagesId,
                     forwardMessageSender: 'Reply',
                 };
+            }
+            if (this.input.current) {
+                this.input.current!!.focus();
             }
         }
 
