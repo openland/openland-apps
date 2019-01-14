@@ -515,7 +515,7 @@ const Header = (props: { organization: Organization_organization }) => {
 
     const deleteOrganizationButton = (
         <XWithRole role={['feature-non-production']}>
-            <XMenuItem query={{ field: 'deleteOrganization', value: 'true' }}>
+            <XMenuItem style="danger" query={{ field: 'deleteOrganization', value: 'true' }}>
                 Delete organization
             </XMenuItem>
         </XWithRole>
