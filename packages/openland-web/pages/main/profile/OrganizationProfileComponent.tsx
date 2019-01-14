@@ -17,7 +17,7 @@ import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
-    RemoveOrganization,
+    RemoveOrganizationModal,
     AboutPlaceholder,
     SocialPlaceholder,
     WebsitePlaceholder,
@@ -514,8 +514,10 @@ const Header = (props: { organization: Organization_organization }) => {
     );
 
     const deleteOrganizationButton = (
-        <XWithRole role={['admin', 'feature-non-production']} orgPermission={organization.id}>
-            <RemoveOrganization target={<XButton style="danger" text="Delete organization" />} />
+        <XWithRole role={['feature-non-production']}>
+            <XMenuItem query={{ field: 'deleteOrganization', value: 'true' }}>
+                Delete organization
+            </XMenuItem>
         </XWithRole>
     );
     return (
@@ -530,6 +532,7 @@ const Header = (props: { organization: Organization_organization }) => {
                         objectId={organization.id}
                     />
                 </HeaderAvatar>
+                <RemoveOrganizationModal />
                 <HeaderInfo flexGrow={1} separator={0}>
                     <HeaderTitle>{organization.name}</HeaderTitle>
                     {organization.website && (
@@ -544,7 +547,6 @@ const Header = (props: { organization: Organization_organization }) => {
                             </HeaderAddWebsite>
                         </XWithRole>
                     )}
-                    <XView>{deleteOrganizationButton}</XView>
                 </HeaderInfo>
                 <HeaderTools separator={8}>
                     {organization.linkedin && (
@@ -572,7 +574,12 @@ const Header = (props: { organization: Organization_organization }) => {
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
-                                content={<>{editButton}</>}
+                                content={
+                                    <>
+                                        {editButton}
+                                        {deleteOrganizationButton}
+                                    </>
+                                }
                             />
                         </XWithRole>
                     </XWithRole>
@@ -587,6 +594,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                     <XMenuItem path={'/super/orgs/' + organization.superAccountId}>
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
+                                    {deleteOrganizationButton}
                                 </>
                             }
                         />
