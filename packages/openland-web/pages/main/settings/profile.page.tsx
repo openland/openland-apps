@@ -3,7 +3,7 @@ import { withApp } from '../../../components/withApp';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { withProfile } from '../../../api/withProfile';
-import { Navigation } from './_navigation';
+import { Navigation } from './Navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -76,7 +76,7 @@ export default withApp(
     withProfile(
         withQueryLoader(props => {
             return (
-                <Navigation title="Edit profile">
+                <Navigation title="Profile">
                     <Content>
                         <XVertical separator={21}>
                             <Query query={MyOrganizationsQuery.document}>

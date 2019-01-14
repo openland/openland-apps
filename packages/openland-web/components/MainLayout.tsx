@@ -6,12 +6,16 @@ import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
 
+const SidebarItemIcon = css`
+    padding: 12px 15px 12px 46px !important;
+`;
+
 const SidebarItemWrapper = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #000 !important;
-    padding: 12px 15px 12px 46px;
+    padding: 12px 15px 12px 16px;
     position: relative;
     background: #fff;
 
@@ -68,7 +72,11 @@ interface SidebarItemProps {
 }
 
 export const SidebarItem = (props: SidebarItemProps) => (
-    <XLink path={props.path} className={SidebarItemWrapper} onClick={props.onClick}>
+    <XLink
+        path={props.path}
+        className={`${SidebarItemWrapper} ${props.icon !== undefined && SidebarItemIcon}`}
+        onClick={props.onClick}
+    >
         {props.icon !== undefined && <div className="icon-wrapper">{props.icon}</div>}
         <span>{props.title}</span>
         <RightIcon className="right-icon" />

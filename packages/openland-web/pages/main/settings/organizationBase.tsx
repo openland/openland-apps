@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { Navigation } from './_navigation';
+import { Navigation } from './Navigation';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -169,7 +169,7 @@ const Separator = Glamorous.div({
 
 export const OrganizationSettings = ((props: any) => {
     return (
-        <Navigation title="Organization profile">
+        <Navigation title="Organization">
             <Content>
                 <XVertical alignSelf="stretch" separator={30}>
                     <XVertical separator={12}>
