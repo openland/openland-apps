@@ -703,7 +703,7 @@ export const InviteInfoInner = ({
                         objectName={inviter.name}
                         objectId={inviter.id}
                     />
-                    <XText letterSpacing={-0.2} fontSize={16} color="#61707e">
+                    <XText fontSize={16} color="#000000">
                         {inviter.name + ' invites you to join'}
                     </XText>
                 </XHorizontal>
@@ -715,8 +715,9 @@ export const InviteInfoInner = ({
                 }}
             >
                 <p>
-                    Openland is a professional messenger designed to support <br /> all
-                    communication needs of a modern business
+                    Openland is a professional messenger designed <br /> to support all
+                    communication needs of a modern business. <br /> Currently it&apos;s in
+                    invite-only mode.
                 </p>
             </SubTitle>
             <ButtonsWrapper marginTop={37} width={280}>
