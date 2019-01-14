@@ -9,7 +9,7 @@ import { PushEngineComponent } from 'openland-web/modules/push/PushEngineCompone
 import { TalkProviderComponent } from 'openland-web/modules/conference/TalkProviderComponent';
 import { withAccountQuery } from 'openland-web/api/withAccountQuery';
 
-export const AppContainer = withAccountQuery((props) => {
+export const AppContainer = withAccountQuery(props => {
     let apollo = React.useContext(YApolloContext)!;
     // let account = useQuery(AccountQuery);
     if (props.loading) {

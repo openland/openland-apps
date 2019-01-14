@@ -24,47 +24,64 @@ export interface UserInfoProps {
     roles: string[];
 }
 
-export class UserInfoProvider extends React.Component<UserInfoProps> {
-    ctx: UserInfo;
-    rolesCtx: { roles: string[]; currentOrganizatonId?: string };
+type RolesT = {
+    roles: any;
+    currentOrganizatonId: any;
+};
 
-    constructor(props: UserInfoProps) {
-        super(props);
+type CtxT = {
+    user: Types.UserShort | null;
+    organization: Types.OrganizationShort | null;
+    isLoggedIn: boolean;
+    isProfileCreated: boolean;
+    isAccountExists: boolean;
+    isAccountPicked: boolean;
+    isActivated: boolean;
+    isCompleted: boolean;
+    isBlocked: boolean;
+};
 
-        let hasUser = this.props.user !== null && this.props.user !== undefined;
-        let hasAccount = this.props.organization !== null && this.props.organization !== undefined;
-        // Where to put this?
-        if (this.props.user) {
-            trackProfile(
-                this.props.user.id!!,
-                this.props.user.firstName,
-                this.props.user.lastName,
-                this.props.user.email,
-            );
+type StateT = {
+    rolesCtx: RolesT;
+    ctx: CtxT;
+};
+
+export class UserInfoProvider extends React.Component<UserInfoProps, StateT> {
+    static getDerivedStateFromProps(props: UserInfoProps) {
+        let hasUser = props.user !== null && props.user !== undefined;
+        let hasAccount = props.organization !== null && props.organization !== undefined;
+
+        const { user, organization, sessionState, roles } = props;
+
+        if (user) {
+            trackProfile(user.id!!, user.firstName, user.lastName, user.email);
         }
 
-        this.ctx = {
-            user: hasUser ? this.props.user! : null,
-            organization: hasAccount ? this.props.organization! : null,
-            isLoggedIn: this.props.sessionState.isLoggedIn,
-            isProfileCreated: this.props.sessionState.isProfileCreated && hasUser,
-            isAccountExists: this.props.sessionState.isAccountExists,
-            isAccountPicked: this.props.sessionState.isAccountPicked,
-            isActivated: this.props.sessionState.isAccountActivated && hasUser,
-            isCompleted: this.props.sessionState.isCompleted && hasUser,
-            isBlocked: this.props.sessionState.isBlocked,
+        const ctx = {
+            user: hasUser ? user! : null,
+            organization: hasAccount ? organization! : null,
+            isLoggedIn: sessionState.isLoggedIn,
+            isProfileCreated: sessionState.isProfileCreated && hasUser,
+            isAccountExists: sessionState.isAccountExists,
+            isAccountPicked: sessionState.isAccountPicked,
+            isActivated: sessionState.isAccountActivated && hasUser,
+            isCompleted: sessionState.isCompleted && hasUser,
+            isBlocked: sessionState.isBlocked,
         };
 
-        this.rolesCtx = {
-            roles: this.props.roles,
-            currentOrganizatonId: this.props.organization ? this.props.organization.id : undefined,
+        const rolesCtx = {
+            roles,
+            currentOrganizatonId: organization ? organization.id : undefined,
         };
+        const state = { ctx, rolesCtx };
+
+        return state;
     }
 
     render() {
         return (
-            <XRoleContext.Provider value={this.rolesCtx}>
-                <UserInfoContext.Provider value={this.ctx}>
+            <XRoleContext.Provider value={this.state.rolesCtx}>
+                <UserInfoContext.Provider value={this.state.ctx}>
                     {this.props.children}
                 </UserInfoContext.Provider>
             </XRoleContext.Provider>

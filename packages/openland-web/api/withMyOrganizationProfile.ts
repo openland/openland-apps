@@ -7,6 +7,7 @@ import { UpdateOrganizationMutation } from 'openland-api/UpdateOrganizationMutat
 import { DeleteOrganizationMutation } from 'openland-api/DeleteOrganizationMutation';
 import { OrganizationProfileQuery } from 'openland-api';
 import { SetOrgShortnameMutation } from 'openland-api/SetOrgShortnameMutation';
+import { AccountQuery } from 'openland-api/AccountQuery';
 
 export const withMyOrganizationProfile = graphqlCompose4(
     graphqlRouted(OrganizationProfileQuery, { params: ['organizationId'] }),
@@ -20,7 +21,7 @@ export const withMyOrganizationProfile = graphqlCompose4(
         refetchQueries: [OrganizationQuery],
     }),
     graphqlMutation(DeleteOrganizationMutation, 'deleteOrganization', {
-        refetchQueries: [MyOrganizationsQuery],
+        refetchQueries: [MyOrganizationsQuery, AccountQuery],
         params: ['organizationId'],
     }),
 );
