@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { XView } from 'react-mental';
-import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { Scaffold } from '../../../components/Scaffold';
@@ -30,7 +28,7 @@ const Title = css`
     font-size: 22px;
     line-height: 24px;
     color: rgba(0, 0, 0, 0.9);
-     @media (max-width: 700px) {
+    @media (max-width: 700px) {
         padding-left: 30px;
         padding-top: 13px;
     }
@@ -62,10 +60,10 @@ const LinksWrapper = css`
     @media (max-width: 700px) {
         display: flex;
         flex-direction: row;
-        
+
         & > a {
             height: 100%;
-            
+
             & > svg {
                 display: none;
             }
@@ -80,9 +78,7 @@ export const Navigation = (props: { title: string; children?: any }) => (
             <Scaffold.Content padding={false} bottomOffset={false}>
                 <div className={RootWrapperStyle}>
                     <div className={SidebarWrapper}>
-                        <div className={Title}>
-                            Settings
-                        </div>
+                        <div className={Title}>Settings</div>
                         <div className={LinksWrapper}>
                             <Sidebar.Item path="/settings/profile" arrow={true}>
                                 Profile
@@ -95,9 +91,7 @@ export const Navigation = (props: { title: string; children?: any }) => (
                             </Sidebar.Item>
                         </div>
                     </div>
-                    <RoomsListWrapper>
-                        {props.children}
-                    </RoomsListWrapper>
+                    <RoomsListWrapper>{props.children}</RoomsListWrapper>
                 </div>
             </Scaffold.Content>
         </Scaffold>

@@ -3,13 +3,14 @@ import { withApp } from '../../../components/withApp';
 import { withExploreCommunities } from '../../../api/withExploreCommunities';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
+import { MainLayout } from '../../../components/MainLayout';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { RootWrapper, Sidebar, Container, Results } from './components/Layout';
+import { Navigation } from './components/Navigation';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -143,9 +144,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 <XDocumentHead title="Communities Directory" />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
-                        <RootWrapper>
-                            <Sidebar active="communities" />
-                            <Container>
+                        <MainLayout>
+                            <MainLayout.Menu>
+                                <Navigation route="Communities" />
+                            </MainLayout.Menu>
+                            <MainLayout.Content>
                                 {!oid && (
                                     <XVertical separator={0}>
                                         <SearchBox
@@ -153,10 +156,22 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             onChange={this.onQueryChange}
                                             placeholder="Search communities"
                                         />
-                                        <Results>
-                                            {this.state.query.length <= 0 && (
+                                        {this.state.query.length <= 0 && (
+                                            <XSubHeader
+                                                title="All communities"
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                    />
+                                                }
+                                            />
+                                        )}
+                                        {this.state.query.length > 0 &&
+                                            orgCount > 0 && (
                                                 <XSubHeader
-                                                    title="All communities"
+                                                    title="Communities"
+                                                    counter={orgCount}
                                                     right={
                                                         <SortPicker
                                                             sort={this.state.sort}
@@ -165,33 +180,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     }
                                                 />
                                             )}
-                                            {this.state.query.length > 0 &&
-                                                orgCount > 0 && (
-                                                    <XSubHeader
-                                                        title="Communities"
-                                                        counter={orgCount}
-                                                        right={
-                                                            <SortPicker
-                                                                sort={this.state.sort}
-                                                                onPick={this.changeSort}
-                                                            />
-                                                        }
-                                                    />
-                                                )}
-                                            <Communities
-                                                featuredFirst={this.state.sort.featured}
-                                                query={this.state.query}
-                                                orderBy={this.state.sort.orderBy}
-                                                tagsCount={this.tagsCount}
-                                            />
-                                        </Results>
+                                        <Communities
+                                            featuredFirst={this.state.sort.featured}
+                                            query={this.state.query}
+                                            orderBy={this.state.sort.orderBy}
+                                            tagsCount={this.tagsCount}
+                                        />
                                     </XVertical>
                                 )}
                                 {oid && (
                                     <OrganizationProfile organizationId={oid} onDirectory={true} />
                                 )}
-                            </Container>
-                        </RootWrapper>
+                            </MainLayout.Content>
+                        </MainLayout>
                     </Scaffold.Content>
                 </Scaffold>
             </>

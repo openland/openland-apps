@@ -3,16 +3,11 @@ import Glamorous from 'glamorous';
 import { withChatSearchChannels } from '../api/withChatSearchChannels';
 import { XLoader } from 'openland-x/XLoader';
 import { SortPicker } from '../pages/main/directory/sortPicker';
-import { XScrollView2 } from 'openland-x/XScrollView2';
 import { EmptyComponent } from './directory/RoomEmptyComponent';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { SearchBox } from '../pages/main/directory/components/SearchBox';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
-
-const RoomsListWrapper = Glamorous(XScrollView2)({
-    flexGrow: 1,
-});
 
 const Root = Glamorous.div({
     display: 'flex',
@@ -143,21 +138,19 @@ export class RoomsExploreComponent extends React.Component<
                     onChange={this.onQueryChange}
                     placeholder="Search rooms"
                 />
-                <RoomsListWrapper>
-                    {this.state.query.length <= 0 && (
-                        <XSubHeader title="Featured rooms" right={sortBox} />
-                    )}
-                    {this.state.query.length > 0 && this.state.count > 0 && (
-                        <XSubHeader title="Rooms" counter={this.state.count} right={sortBox} />
-                    )}
-                    <Rooms
-                        variables={{
-                            query: this.state.query.toLowerCase(),
-                            sort: JSON.stringify(sort),
-                        }}
-                        tagsCount={this.handleCount}
-                    />
-                </RoomsListWrapper>
+                {this.state.query.length <= 0 && (
+                    <XSubHeader title="Featured rooms" right={sortBox} />
+                )}
+                {this.state.query.length > 0 && this.state.count > 0 && (
+                    <XSubHeader title="Rooms" counter={this.state.count} right={sortBox} />
+                )}
+                <Rooms
+                    variables={{
+                        query: this.state.query.toLowerCase(),
+                        sort: JSON.stringify(sort),
+                    }}
+                    tagsCount={this.handleCount}
+                />
             </Root>
         );
     }

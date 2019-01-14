@@ -3,13 +3,14 @@ import { withApp } from '../../../components/withApp';
 import { withExplorePeople } from '../../../api/withExplorePeople';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
+import { MainLayout } from '../../../components/MainLayout';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { RootWrapper, Sidebar, Container, Results } from './components/Layout';
+import { Navigation } from './components/Navigation';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -133,15 +134,18 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     render() {
         const { orgCount } = this.state;
         let uid = this.props.router.routeQuery.userId;
+        console.log(this.props.router);
 
         return (
             <>
                 <XDocumentHead title="People Directory" />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
-                        <RootWrapper>
-                            <Sidebar active="people" />
-                            <Container>
+                        <MainLayout>
+                            <MainLayout.Menu>
+                                <Navigation route="People" />
+                            </MainLayout.Menu>
+                            <MainLayout.Content>
                                 {!uid && (
                                     <XVertical separator={0}>
                                         <SearchBox
@@ -149,20 +153,20 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             onChange={this.onQueryChange}
                                             placeholder="Search people"
                                         />
-                                        <Results>
-                                            {this.state.query.length <= 0 && (
-                                                <XSubHeader
-                                                    title="All people"
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                            withoutFeatured={true}
-                                                        />
-                                                    }
-                                                />
-                                            )}
-                                            {this.state.query.length > 0 && orgCount > 0 && (
+                                        {this.state.query.length <= 0 && (
+                                            <XSubHeader
+                                                title="All people"
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                        withoutFeatured={true}
+                                                    />
+                                                }
+                                            />
+                                        )}
+                                        {this.state.query.length > 0 &&
+                                            orgCount > 0 && (
                                                 <XSubHeader
                                                     title="People"
                                                     counter={orgCount}
@@ -175,18 +179,17 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     }
                                                 />
                                             )}
-                                            <Communities
-                                                featuredFirst={this.state.sort.featured}
-                                                searchText={this.state.query}
-                                                orderBy={this.state.sort.orderBy}
-                                                tagsCount={this.tagsCount}
-                                            />
-                                        </Results>
+                                        <Communities
+                                            featuredFirst={this.state.sort.featured}
+                                            searchText={this.state.query}
+                                            orderBy={this.state.sort.orderBy}
+                                            tagsCount={this.tagsCount}
+                                        />
                                     </XVertical>
                                 )}
                                 {uid && <UserProfile userId={uid} onDirectory={true} />}
-                            </Container>
-                        </RootWrapper>
+                            </MainLayout.Content>
+                        </MainLayout>
                     </Scaffold.Content>
                 </Scaffold>
             </>

@@ -13,19 +13,26 @@ interface NextRoutes {
         pushRoute(route: string): Promise<any>;
         replaceRoute(route: string): Promise<any>;
     };
-    findAndGetUrls(nameOrUrl?: string, params?: any): { route: any, urls: { as: string, href: string } };
+    findAndGetUrls(
+        nameOrUrl?: string,
+        params?: any,
+    ): { route: any; urls: { as: string; href: string } };
 }
 
-export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostName: string, protocol: string }> {
+export class XRouterProvider extends React.Component<{
+    routes: NextRoutes;
+    hostName: string;
+    protocol: string;
+}> {
     static contextTypes = {
-        router: PropTypes.object.isRequired
+        router: PropTypes.object.isRequired,
     };
 
     private xRouterState: XRouter;
     private xRouting: XRouting;
     private xViewRouter: XViewRouter;
 
-    constructor(props: { routes: NextRoutes, hostName: string, protocol: string }, context: any) {
+    constructor(props: { routes: NextRoutes; hostName: string; protocol: string }, context: any) {
         super(props, context);
         this.xRouterState = this.buildState(context);
         this.xRouting = {
@@ -35,16 +42,15 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
             replace: this.replace,
             replaceQuery: this.replaceQuery,
             replaceQueryParams: this.replaceQueryParams,
-            resolveLink: this.resolveLink
-        }
+            resolveLink: this.resolveLink,
+        };
         this.xViewRouter = {
-            navigate: (to) => {
+            navigate: to => {
                 if (typeof to === 'string') {
-                    this.props.routes.Router.pushRoute(to)
-                        .then(this.scrollToTop);
+                    this.props.routes.Router.pushRoute(to).then(this.scrollToTop);
                 }
-            }
-        }
+            },
+        };
     }
 
     buildState(context: any) {
@@ -55,7 +61,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         }
         let parts = nRouter.asPath!!.split('?');
         let path = parts[0];
-        let query = (parts[1] ? qs.parse(parts[1]) : {});
+        let query = parts[1] ? qs.parse(parts[1]) : {};
 
         let route = nRouter.route;
         let routeQuery = nRouter.query || {};
@@ -74,7 +80,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
             replace: this.replace,
             replaceQuery: this.replaceQuery,
             replaceQueryParams: this.replaceQueryParams,
-            resolveLink: this.resolveLink
+            resolveLink: this.resolveLink,
         };
         return res;
     }
@@ -82,24 +88,25 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
     scrollToTop = () => {
         window.scrollTo(0, 0);
         document.body.focus();
-    }
+    };
 
     resolveLink = (path: string) => {
         return this.props.routes.findAndGetUrls(path).urls.as;
-    }
+    };
 
     push = (path: string) => {
-        this.props.routes.Router.pushRoute(path)
-            .then(this.scrollToTop);
-    }
+        this.props.routes.Router.pushRoute(path).then(this.scrollToTop);
+    };
     pushQuery = (field: string, value?: string, clear?: boolean) => {
-        let q = qs.stringify(Object.assign({}, clear ? {} : this.xRouterState.query, { [field]: value }));
+        let q = qs.stringify(
+            Object.assign({}, clear ? {} : this.xRouterState.query, { [field]: value }),
+        );
         if (q !== '') {
             q = '?' + q;
         }
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.pushRoute(pathParts[0] + q);
-    }
+    };
 
     pushQueryParams = (params?: {}) => {
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
@@ -108,12 +115,11 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         }
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.pushRoute(pathParts[0] + q);
-    }
+    };
 
     replace = (path: string) => {
-        this.props.routes.Router.replaceRoute(path)
-            .then(this.scrollToTop);
-    }
+        this.props.routes.Router.replaceRoute(path).then(this.scrollToTop);
+    };
 
     replaceQuery = (field: string, value?: string) => {
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, { [field]: value }));
@@ -123,7 +129,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
 
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.replaceRoute(pathParts[0] + q);
-    }
+    };
 
     replaceQueryParams = (params?: {}) => {
         let q = qs.stringify(Object.assign({}, this.xRouterState.query, params));
@@ -132,8 +138,7 @@ export class XRouterProvider extends React.Component<{ routes: NextRoutes, hostN
         }
         let pathParts = this.xRouterState.path.split('#');
         this.props.routes.Router.replaceRoute(pathParts[0] + q);
-
-    }
+    };
 
     componentWillReceiveProps(nextProps: {}, nextContext: any) {
         this.xRouterState = this.buildState(nextContext);
