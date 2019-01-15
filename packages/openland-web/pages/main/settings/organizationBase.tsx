@@ -8,7 +8,7 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import { sanitizeImageRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -181,7 +181,7 @@ export const OrganizationSettings = ((props: any) => {
                                         name: props.data.organizationProfile.name,
                                         about: props.data.organizationProfile.about,
                                         photo: props.data.organizationProfile.photoRef,
-                                        photoRef: sanitizeIamgeRef(
+                                        photoRef: sanitizeImageRef(
                                             props.data.organizationProfile.photoRef,
                                         ),
                                         published: props.data.organizationProfile.published

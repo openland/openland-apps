@@ -29,7 +29,7 @@ import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { XOverflow } from '../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
@@ -331,7 +331,7 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
                 input: {
                     firstName: member.user.firstName,
                     lastName: member.user.lastName,
-                    photoRef: sanitizeIamgeRef(member.user.photoRef),
+                    photoRef: sanitizeImageRef(member.user.photoRef),
                 },
             }}
             defaultAction={async data => {
@@ -340,7 +340,7 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
                         input: {
                             firstName: data.input.firstName,
                             lastName: data.input.lastName,
-                            photoRef: sanitizeIamgeRef(data.input.photoRef),
+                            photoRef: sanitizeImageRef(data.input.photoRef),
                         },
                         uid: uid,
                     },

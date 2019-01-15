@@ -4,7 +4,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withAlterChat } from 'openland-web/api/withAlterChat';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { sanitizeIamgeRef } from 'openland-web/utils/sanitizer';
+import { sanitizeImageRef } from 'openland-web/utils/sanitizer';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
@@ -35,11 +35,11 @@ export const RoomEditModal = withAlterChat(props => {
                                 ? { description: newDescription }
                                 : {}),
                             ...(newPhoto && newPhoto.uuid !== editPhotoRef
-                                ? { photoRef: sanitizeIamgeRef(newPhoto) }
+                                ? { photoRef: sanitizeImageRef(newPhoto) }
                                 : {}),
                             ...(newSocialImage && newSocialImage.uuid !== editSocialImageRef
                                 ? {
-                                      socialImageRef: sanitizeIamgeRef(newSocialImage),
+                                      socialImageRef: sanitizeImageRef(newSocialImage),
                                   }
                                 : {}),
                         },

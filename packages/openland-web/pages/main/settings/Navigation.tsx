@@ -13,6 +13,7 @@ export const Navigation = (props: { title: string; children?: any }) => (
                         <Sidebar route={props.title} title="Settings">
                             <SidebarItem title="Profile" path="/settings/profile" />
                             <SidebarItem title="Notifications" path="/settings/notifications" />
+                            <SidebarItem title="Apps" path="/settings/apps" />
                             <SidebarItem title="Developer keys" path="/settings/dev" />
                         </Sidebar>
                     </MainLayout.Menu>

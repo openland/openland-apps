@@ -1,4 +1,4 @@
-export function sanitizeIamgeRef(
+export function sanitizeImageRef(
     src:
         | {
               uuid: string;

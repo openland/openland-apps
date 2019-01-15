@@ -4,6 +4,7 @@ import { typedQuery } from 'openland-y-graphql/typed';
 import { typedMutation } from 'openland-y-graphql/typed';
 import * as Types from './Types';
 import * as Account from './queries/Account';
+import * as App from './queries/App';
 import * as Chats from './queries/Chats';
 import * as Conferences from './queries/Conferences';
 import * as FeatureFlag from './queries/FeatureFlag';
@@ -26,6 +27,10 @@ export const AccountCreateInviteMutation = typedMutation<Types.AccountCreateInvi
 export const AccountDestroyInviteMutation = typedMutation<Types.AccountDestroyInvite, Types.AccountDestroyInviteVariables>(Account.AccountDestroyInviteMutation);
 export const ProfilePrefillQuery = typedQuery<Types.ProfilePrefill, {}>(Account.ProfilePrefillQuery);
 export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.CreateUserProfileAndOrganization, Types.CreateUserProfileAndOrganizationVariables>(Account.CreateUserProfileAndOrganizationMutation);
+export const MyAppsQuery = typedQuery<Types.MyApps, {}>(App.MyAppsQuery);
+export const CreateAppMutation = typedMutation<Types.CreateApp, Types.CreateAppVariables>(App.CreateAppMutation);
+export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppVariables>(App.UpdateAppMutation);
+export const RefreshAppTokenMutation = typedMutation<Types.RefreshAppToken, Types.RefreshAppTokenVariables>(App.RefreshAppTokenMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
 export const RoomSuperQuery = typedQuery<Types.RoomSuper, Types.RoomSuperVariables>(Chats.RoomSuperQuery);
