@@ -3,6 +3,17 @@ import * as NRoutes from 'next-routes';
 let routes = NRoutes();
 
 //
+// Landing
+//
+
+routes.add('/about', '/landing/about');
+routes.add('/about/', '/landing/about');
+routes.add('/terms', '/landing/terms');
+routes.add('/terms/', '/landing/terms');
+routes.add('/privacy', '/landing/privacy');
+routes.add('/privacy/', '/landing/privacy');
+
+//
 // App Root
 //
 
