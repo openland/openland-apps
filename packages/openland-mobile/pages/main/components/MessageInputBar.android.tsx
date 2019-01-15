@@ -5,15 +5,17 @@ import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar'
 import LinearGradient from 'react-native-linear-gradient';
 import ImageViewCapInsets from 'react-native-image-capinsets';
 import { androidMessageInputListOverlap } from './ConversationView';
+import { ASView } from 'react-native-async-view/ASView';
+import { ASFlex } from 'react-native-async-view/ASFlex';
 
 let styles = StyleSheet.create({
     textInputContainer: {
 
-        borderColor: '#ebebeb',
-        borderWidth: 1,
-        backgroundColor: '#fff',
-        borderRadius: 21,
-        elevation: 1,
+        // borderColor: '#ebebeb',
+        // borderWidth: 1,
+        // backgroundColor: '#fff',
+        // borderRadius: 21,
+        // elevation: 1,
 
         marginTop: 15,
         marginBottom: 9,
@@ -39,6 +41,7 @@ let styles = StyleSheet.create({
 
 const iconAttach = require('assets/ic-add.png');
 const icon = require('assets/ic-send.png');
+const inputShadow = require('assets/input.png');
 
 export interface MessageInputBarProps {
     onAttachPress?: () => void;
@@ -54,6 +57,8 @@ export interface MessageInputBarProps {
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
     render() {
         let hasText = this.props.text.trim().length > 0;
+        let resolved = Image.resolveAssetSource(inputShadow);
+
         return (
             <ZKeyboardAwareBar>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
@@ -85,15 +90,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         )}
 
                         <View style={styles.textInputContainer} >
-                            {/* <ImageViewCapInsets
-                                source={require('assets/input.png')}
-                                capInsets={{
-                                    left: 21,
-                                    top: 21,
-                                    right: 21,
-                                    bottom: 21
-
-                                }}
+                            <ASView
                                 style={{
                                     left: -2,
                                     top: -6,
@@ -101,7 +98,13 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                     bottom: -6,
                                     position: 'absolute',
                                 }}
-                            /> */}
+                            >
+                                <ASFlex
+                                    flexGrow={1}
+                                    backgroundPatch={{ source: resolved.uri, scale: resolved.scale, top: 21, left: 21, right: 21, bottom: 21 }}
+                                />
+
+                            </ASView>
                             <TextInput
                                 style={styles.textInput
                                 }
