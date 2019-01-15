@@ -16,12 +16,12 @@ import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 
-interface CommunitiesCardsProps {
+interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
 }
 
-const CommunitiesCards = withExplorePeople(props => {
+const PeopleCards = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
@@ -51,16 +51,16 @@ const CommunitiesCards = withExplorePeople(props => {
             {noData && <EmptySearchBlock text="No people matches your search" />}
         </>
     );
-}) as React.ComponentType<CommunitiesCardsProps>;
+}) as React.ComponentType<PeopleCardsProps>;
 
-interface CommunitiesProps {
+interface PeopleProps {
     featuredFirst: boolean;
     orderBy: string;
     tagsCount: (n: number) => void;
     searchText: string;
 }
 
-class Communities extends React.PureComponent<CommunitiesProps> {
+class People extends React.PureComponent<PeopleProps> {
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
     };
@@ -69,7 +69,7 @@ class Communities extends React.PureComponent<CommunitiesProps> {
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
 
         return (
-            <CommunitiesCards
+            <PeopleCards
                 tagsCount={this.tagsCount}
                 variables={{
                     query: this.props.searchText,
@@ -165,21 +165,20 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 }
                                             />
                                         )}
-                                        {this.state.query.length > 0 &&
-                                            orgCount > 0 && (
-                                                <XSubHeader
-                                                    title="People"
-                                                    counter={orgCount}
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                            withoutFeatured={true}
-                                                        />
-                                                    }
-                                                />
-                                            )}
-                                        <Communities
+                                        {this.state.query.length > 0 && orgCount > 0 && (
+                                            <XSubHeader
+                                                title="People"
+                                                counter={orgCount}
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                        withoutFeatured={true}
+                                                    />
+                                                }
+                                            />
+                                        )}
+                                        <People
                                             featuredFirst={this.state.sort.featured}
                                             searchText={this.state.query}
                                             orderBy={this.state.sort.orderBy}
