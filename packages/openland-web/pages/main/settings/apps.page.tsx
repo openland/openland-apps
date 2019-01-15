@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { Navigation } from './Navigation';
+import { MainNavigation } from './Navigation';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { withMyApps } from 'openland-web/api/withMyApps';
 import { XView } from 'react-mental';
@@ -102,7 +102,7 @@ export default withApp(
     'viewer',
     withMyApps(
         withQueryLoader(props => (
-            <Navigation title="My Apps">
+            <MainNavigation title="My Apps">
                 <XView
                     paddingTop={20}
                     paddingBottom={20}
@@ -144,7 +144,7 @@ export default withApp(
 
                 <CreateAppModal />
                 <EditAppModal apps={props.data.apps} />
-            </Navigation>
+            </MainNavigation>
         )),
     ),
 );

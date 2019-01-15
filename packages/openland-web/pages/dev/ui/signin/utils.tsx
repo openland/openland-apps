@@ -179,7 +179,8 @@ export const CreateWrapIntoState = (schema: any) => {
                                       left: 0,
                                       top: 0,
                                       width: '100%',
-                                      backgroundColor: 'white',
+                                      height: '100%',
+                                      backgroundColor: 'grey',
                                       zIndex: 99,
                                   }
                                 : {})}

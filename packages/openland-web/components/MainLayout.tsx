@@ -5,12 +5,13 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
+import { XView } from 'react-mental';
 
-const SidebarItemIcon = css`
+const MenuItemIcon = css`
     padding: 12px 15px 12px 46px !important;
 `;
 
-const SidebarItemWrapper = css`
+const MenuItemWrapper = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -64,21 +65,17 @@ const SidebarItemWrapper = css`
     }
 `;
 
-interface SidebarItemProps {
+interface MenuItemProps {
     title: string;
     path: string;
     icon?: any;
     onClick?: () => void;
 }
 
-export const SidebarItem = (props: SidebarItemProps) => (
-    <XLink
-        path={props.path}
-        className={`${SidebarItemWrapper} ${props.icon !== undefined && SidebarItemIcon}`}
-        onClick={props.onClick}
-    >
-        {props.icon !== undefined && <div className="icon-wrapper">{props.icon}</div>}
-        <span>{props.title}</span>
+export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
+    <XLink path={path} className={`${MenuItemWrapper} ${icon && MenuItemIcon}`} onClick={onClick}>
+        {icon && <div className="icon-wrapper">{icon}</div>}
+        <span>{title}</span>
         <RightIcon className="right-icon" />
     </XLink>
 );
@@ -132,7 +129,7 @@ const LinksWrapper = css`
     }
 `;
 
-const MenuWrapper = css`
+const menuWrapperClassName = css`
     width: 344px;
     height: 100%;
     border-right: 1px solid #ececec;
@@ -154,19 +151,10 @@ const MenuWrapper = css`
     }
 `;
 
-const SidebarHeader = css`
+const MenuHeader = css`
     display: flex;
     padding: 14px 15px 19px 17px;
 
-    & > span {
-        flex: 1;
-        font-size: 22px;
-        line-height: 28px;
-        letter-spacing: 0;
-        font-weight: 400;
-        color: #000;
-        opacity: 0.9;
-    }
     @media (max-width: 700px) {
         width: 100%;
         justify-content: space-between;
@@ -174,23 +162,34 @@ const SidebarHeader = css`
     }
 `;
 
-interface SidebarProps {
-    route: string;
-    title: string;
+interface MenuProps {
+    isMain?: boolean;
+    title?: string;
+    route?: string;
     rightContent?: any;
+    leftContent?: any;
 }
 
-export const Sidebar = React.memo<SidebarProps>(props => {
+const titleClassName = css`
+    flex: 1;
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: #000;
+    opacity: 0.9;
+`;
+
+const Title = ({ children }: { children: string }) => {
+    return <span className={titleClassName}>{children}</span>;
+};
+
+export const Menu = React.memo<MenuProps>(props => {
+    const [showMainMenu, setMainMenu] = React.useState(true);
+    const [showMenu, setShowMenu] = React.useState(false);
     if (!canUseDOM) {
         return null;
     }
-
-    const [showMenu, handler] = React.useState(false);
-
-    const menuHandler = () => {
-        handler(!showMenu);
-    };
-
     const [width, setWidth] = React.useState(window.innerWidth);
 
     React.useEffect(() => {
@@ -201,32 +200,50 @@ export const Sidebar = React.memo<SidebarProps>(props => {
         };
     });
 
-    const switcher = (
-        <div className={MobileMenuButton} onClick={menuHandler}>
-            <span>{props.route}</span>
-            <RightIcon className="select-icon" />
-        </div>
-    );
+    const isMobile = width <= 700;
+    const onClick = () => {
+        if (!isMobile) {
+            setShowMenu(!showMenu);
+        }
+    };
+
+    const { title, rightContent, children, isMain } = props;
+
+    if (isMain) {
+        return (
+            <XView position="fixed" zIndex={100} left={showMainMenu ? 0 : -300}>
+                {children}
+            </XView>
+        );
+    }
 
     return (
         <>
-            <div className={SidebarHeader}>
-                <span>{props.title}</span>
-                {props.rightContent !== undefined && props.rightContent}
+            <div className={isMobile ? MobileMenuButton : MenuHeader} onClick={onClick}>
+                <div
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        setMainMenu(!showMainMenu);
+                    }}
+                >
+                    ===
+                </div>
+                {title && <Title>{title}</Title>}
+                {rightContent && <RightIcon className="select-icon" />}
             </div>
-            {width <= 700 && switcher}
-            <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{props.children}</div>
+
+            <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>
         </>
     );
 });
 
-class Menu extends React.PureComponent {
+class MenuWrapper extends React.PureComponent {
     static defaultProps = {
-        _isSidebar: true,
+        _isMenu: true,
     };
 
     render() {
-        return <div className={MenuWrapper}>{this.props.children}</div>;
+        return <div className={menuWrapperClassName}>{this.props.children}</div>;
     }
 }
 
@@ -252,10 +269,10 @@ class Container extends React.PureComponent {
     };
 
     render() {
-        const { props } = this;
+        const { children } = this.props;
         return (
             <div className={ContainerStyle}>
-                <XScrollView2 height="100%">{props.children}</XScrollView2>
+                <XScrollView2 height="100%">{children}</XScrollView2>
             </div>
         );
     }
@@ -272,12 +289,12 @@ const RootWrapperStyle = css`
 `;
 
 export class MainLayout extends React.PureComponent {
-    static Menu = Menu;
+    static Menu = MenuWrapper;
     static Content = Container;
     render() {
-        const { props } = this;
-        const menu = findChild(props.children, '_isSidebar');
-        const content = findChild(props.children, '_isContainer');
+        const { children } = this.props;
+        const menu = findChild(children, '_isMenu');
+        const content = findChild(children, '_isContainer');
 
         return (
             <div className={RootWrapperStyle}>

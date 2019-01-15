@@ -10,7 +10,7 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { Navigation } from './components/Navigation';
+import { DirectoryNavigation } from './components/Navigation';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -144,7 +144,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MainLayout>
                             <MainLayout.Menu>
-                                <Navigation route="Organizations" />
+                                <DirectoryNavigation route="Organizations" />
                             </MainLayout.Menu>
                             <MainLayout.Content>
                                 {!oid && (
@@ -166,20 +166,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 paddingBottom={12}
                                             />
                                         )}
-                                        {query.length > 0 &&
-                                            orgCount > 0 && (
-                                                <XSubHeader
-                                                    title="Organizations"
-                                                    counter={orgCount}
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                        />
-                                                    }
-                                                    paddingBottom={12}
-                                                />
-                                            )}
+                                        {query.length > 0 && orgCount > 0 && (
+                                            <XSubHeader
+                                                title="Organizations"
+                                                counter={orgCount}
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                    />
+                                                }
+                                                paddingBottom={12}
+                                            />
+                                        )}
                                         <Organizations
                                             featuredFirst={this.state.sort.featured}
                                             orderBy={this.state.sort.orderBy}

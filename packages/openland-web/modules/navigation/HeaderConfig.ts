@@ -1,4 +1,3 @@
-import { STrackedValue } from './STrackedValue';
 import { SHeaderAppearance, SHeaderHairline } from './SHeader';
 
 export interface SNavigationViewStyle {
@@ -28,7 +27,6 @@ export interface HeaderConfig {
     titleView?: any;
     counter?: number;
 
-    contentOffset?: STrackedValue;
     buttons?: HeaderButtonDescription[];
     appearance?: SHeaderAppearance;
     hairline?: SHeaderHairline;
@@ -45,7 +43,6 @@ export interface HeaderConfig {
 export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     let title: string | undefined;
     let buttons: HeaderButtonDescription[] = [];
-    let contentOffset: STrackedValue | undefined;
     let appearance: SHeaderAppearance | undefined;
     let titleView: any | undefined;
     let hairline: SHeaderHairline | undefined;
@@ -63,9 +60,6 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
         }
         if (c.titleView) {
             titleView = c.titleView;
-        }
-        if (c.contentOffset) {
-            contentOffset = c.contentOffset;
         }
         if (c.appearance) {
             appearance = c.appearance;
@@ -104,7 +98,7 @@ export function mergeConfigs(configs: HeaderConfig[]): HeaderConfig {
     return {
         title,
         buttons,
-        contentOffset,
+
         appearance,
         titleView,
         hairline,
@@ -133,9 +127,6 @@ export function isConfigEquals(a: HeaderConfig, b: HeaderConfig) {
         return false;
     }
     if (!!a.buttons !== !!b.buttons) {
-        return false;
-    }
-    if (a.contentOffset !== b.contentOffset) {
         return false;
     }
     if (a.appearance !== b.appearance) {

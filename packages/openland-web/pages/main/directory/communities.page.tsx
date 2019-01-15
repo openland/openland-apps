@@ -10,7 +10,7 @@ import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { Navigation } from './components/Navigation';
+import { DirectoryNavigation } from './components/Navigation';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -146,7 +146,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MainLayout>
                             <MainLayout.Menu>
-                                <Navigation route="Communities" />
+                                <DirectoryNavigation route="Communities" />
                             </MainLayout.Menu>
                             <MainLayout.Content>
                                 {!oid && (
@@ -167,19 +167,18 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 }
                                             />
                                         )}
-                                        {this.state.query.length > 0 &&
-                                            orgCount > 0 && (
-                                                <XSubHeader
-                                                    title="Communities"
-                                                    counter={orgCount}
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                        />
-                                                    }
-                                                />
-                                            )}
+                                        {this.state.query.length > 0 && orgCount > 0 && (
+                                            <XSubHeader
+                                                title="Communities"
+                                                counter={orgCount}
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                    />
+                                                }
+                                            />
+                                        )}
                                         <Communities
                                             featuredFirst={this.state.sort.featured}
                                             query={this.state.query}

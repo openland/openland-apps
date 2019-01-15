@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Sidebar, SidebarItem } from '../../../../components/MainLayout';
+import { Menu, MenuItem } from '../../../../components/MainLayout';
 import Glamorous from 'glamorous';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
@@ -29,7 +29,7 @@ const NewButtonWrapper = Glamorous(XButton)({
     },
 });
 
-class NewButton extends React.Component<{}, { show?: boolean }> {
+export class NewButton extends React.Component<{}, { show?: boolean }> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -100,15 +100,15 @@ class NewButton extends React.Component<{}, { show?: boolean }> {
     }
 }
 
-export const Navigation = (props: { route: string }) => (
-    <Sidebar title="Directory" rightContent={<NewButton />} route={props.route}>
-        <SidebarItem path="/directory" title="Rooms" icon={<RoomIcon />} />
-        <SidebarItem path="/directory/people" title="People" icon={<PeopleIcon />} />
-        <SidebarItem
+export const DirectoryNavigation = (props: { route: string }) => (
+    <Menu title="Directory" rightContent={<NewButton />} route={props.route}>
+        <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
+        <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
+        <MenuItem
             path="/directory/organizations"
             title="Organizations"
             icon={<OrganizationsIcon />}
         />
-        <SidebarItem path="/directory/communities" title="Communities" icon={<CommunityIcon />} />
-    </Sidebar>
+        <MenuItem path="/directory/communities" title="Communities" icon={<CommunityIcon />} />
+    </Menu>
 );

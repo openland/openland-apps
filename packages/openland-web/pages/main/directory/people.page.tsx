@@ -10,7 +10,7 @@ import { XSubHeader } from 'openland-x/XSubHeader';
 import { SortPicker } from './sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { Navigation } from './components/Navigation';
+import { DirectoryNavigation } from './components/Navigation';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -143,7 +143,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MainLayout>
                             <MainLayout.Menu>
-                                <Navigation route="People" />
+                                <DirectoryNavigation route="People" />
                             </MainLayout.Menu>
                             <MainLayout.Content>
                                 {!uid && (
@@ -165,20 +165,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 }
                                             />
                                         )}
-                                        {this.state.query.length > 0 &&
-                                            orgCount > 0 && (
-                                                <XSubHeader
-                                                    title="People"
-                                                    counter={orgCount}
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                            withoutFeatured={true}
-                                                        />
-                                                    }
-                                                />
-                                            )}
+                                        {this.state.query.length > 0 && orgCount > 0 && (
+                                            <XSubHeader
+                                                title="People"
+                                                counter={orgCount}
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                        withoutFeatured={true}
+                                                    />
+                                                }
+                                            />
+                                        )}
                                         <Communities
                                             featuredFirst={this.state.sort.featured}
                                             searchText={this.state.query}

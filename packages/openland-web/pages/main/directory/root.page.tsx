@@ -6,7 +6,7 @@ import { Scaffold } from '../../../components/Scaffold';
 import { MainLayout } from '../../../components/MainLayout';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerFragment } from '../../../fragments/MessengerFragment';
-import { Navigation } from './components/Navigation';
+import { DirectoryNavigation } from './components/Navigation';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 
 class RootComponent extends React.Component<XWithRouter> {
@@ -25,7 +25,7 @@ class RootComponent extends React.Component<XWithRouter> {
         return (
             <MainLayout>
                 <MainLayout.Menu>
-                    <Navigation route="Rooms" />
+                    <DirectoryNavigation route="Rooms" />
                 </MainLayout.Menu>
                 <MainLayout.Content>
                     {tab === 'rooms' && <RoomsExploreComponent />}

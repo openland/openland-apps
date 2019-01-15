@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { withQueryLoader } from '../../../components/withQueryLoader';
-import { Navigation } from './Navigation';
+import { MainNavigation } from './Navigation';
 import { InvitesHistory } from './invitesHistory';
 import { XButton } from 'openland-x/XButton';
 import { InvitesGlobalModal } from './invites';
@@ -15,7 +15,7 @@ export default withApp(
     withQueryLoader(
         withMyOrganizationProfile(props => {
             return (
-                <Navigation title="My invites">
+                <MainNavigation title="My invites">
                     <XView paddingTop={20} paddingLeft={30} paddingRight={30}>
                         <XVertical separator={12}>
                             <XView fontSize={18} fontWeight="600" color="#1f3449">
@@ -33,7 +33,7 @@ export default withApp(
                             />
                         </XVertical>
                     </XView>
-                </Navigation>
+                </MainNavigation>
             );
         }),
     ),

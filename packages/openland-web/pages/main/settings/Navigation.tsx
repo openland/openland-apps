@@ -1,23 +1,23 @@
 import * as React from 'react';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
-import { MainLayout, Sidebar, SidebarItem } from '../../../components/MainLayout';
+import { MainLayout, Menu, MenuItem } from '../../../components/MainLayout';
 
-export const Navigation = (props: { title: string; children?: any }) => (
+export const MainNavigation = ({ title, children }: { title: string; children?: any }) => (
     <>
-        <XDocumentHead title={props.title} />
+        <XDocumentHead title={title} />
         <Scaffold>
             <Scaffold.Content padding={false} bottomOffset={false}>
                 <MainLayout>
                     <MainLayout.Menu>
-                        <Sidebar route={props.title} title="Settings">
-                            <SidebarItem title="Profile" path="/settings/profile" />
-                            <SidebarItem title="Notifications" path="/settings/notifications" />
-                            <SidebarItem title="Apps" path="/settings/apps" />
-                            <SidebarItem title="Developer keys" path="/settings/dev" />
-                        </Sidebar>
+                        <Menu route={title} title="Settings">
+                            <MenuItem title="Profile" path="/settings/profile" />
+                            <MenuItem title="Notifications" path="/settings/notifications" />
+                            <MenuItem title="Apps" path="/settings/apps" />
+                            <MenuItem title="Developer keys" path="/settings/dev" />
+                        </Menu>
                     </MainLayout.Menu>
-                    <MainLayout.Content>{props.children}</MainLayout.Content>
+                    <MainLayout.Content>{children}</MainLayout.Content>
                 </MainLayout>
             </Scaffold.Content>
         </Scaffold>
