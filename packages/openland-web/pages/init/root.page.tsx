@@ -16,7 +16,7 @@ export default withAppBase(
 
         return (
             <AuthRouter>
-                {env.isApp || props.isCompleted && (
+                {(env.isApp || props.isCompleted) && (
                     <>
                         <XDocumentHead
                             title={InitTexts.rootPageTitle}
@@ -25,7 +25,7 @@ export default withAppBase(
                         <XPageRedirect path={'/mail'} />
                     </>
                 )}
-                {!env.isApp && !props.isCompleted && (
+                {!(env.isApp || props.isCompleted) && (
                     <HomePage />
                 )}
             </AuthRouter>
