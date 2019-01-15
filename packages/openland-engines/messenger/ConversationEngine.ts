@@ -4,7 +4,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -93,6 +93,7 @@ export interface DataSourceMessageItem {
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
+    serviceMetaData?: MessageFull_serviceMetadata;
 }
 
 export interface DataSourceDateItem {
@@ -127,7 +128,8 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) : false,
         attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) : false,
         urlAugmentation: src.urlAugmentation || undefined,
-        reactions: src.reactions || undefined
+        reactions: src.reactions || undefined,
+        serviceMetaData: src.serviceMetadata || undefined,
     };
 }
 

@@ -22,6 +22,7 @@ import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessa
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { PromptBuilder } from '../components/Prompt';
 import { TextStyles } from '../styles/AppStyles';
+import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 
 interface ASAvatarProps {
     size: number;
@@ -211,7 +212,11 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
+                    if (!item.serviceMetaData) {
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
+                    } else {
+                        return (<AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} />);
+                    }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
                 }
