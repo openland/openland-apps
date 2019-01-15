@@ -446,7 +446,7 @@ export interface MyApps_apps {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: MyApps_apps_photoRef | null;
   about: string | null;
   token: MyApps_apps_token;
@@ -486,7 +486,7 @@ export interface CreateApp_createApp {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: CreateApp_createApp_photoRef | null;
   about: string | null;
   token: CreateApp_createApp_token;
@@ -498,7 +498,9 @@ export interface CreateApp {
 
 export interface CreateAppVariables {
   name: string;
-  shortname: string;
+  shortname?: string | null;
+  photoRef?: ImageRefInput | null;
+  about?: string | null;
 }
 
 /* tslint:disable */
@@ -531,7 +533,7 @@ export interface UpdateApp_updateAppProfile {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: UpdateApp_updateAppProfile_photoRef | null;
   about: string | null;
   token: UpdateApp_updateAppProfile_token;
@@ -576,7 +578,7 @@ export interface RefreshAppToken_refreshAppToken {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: RefreshAppToken_refreshAppToken_photoRef | null;
   about: string | null;
   token: RefreshAppToken_refreshAppToken_token;
@@ -5353,7 +5355,7 @@ export interface AppFull {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: AppFull_photoRef | null;
   about: string | null;
   token: AppFull_token;

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { XButton } from 'openland-x/XButton';
 import { AppFull } from 'openland-api/Types';
-import { TextProfiles } from 'openland-text/TextProfiles';
 import { XOverflow } from '../../openland-web/components/XOverflow';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { XMenuItem } from 'openland-x/XMenuItem';
-import { XAvatar } from 'openland-x/XAvatar';
+import { buildBaseImageUrl } from 'openland-x/XCloudImage';
 
 interface XUserCardProps {
     app: AppFull;
@@ -56,14 +53,9 @@ export class XAppCard extends React.Component<XUserCardProps, XUserCardState> {
                 onMouseLeave={() => this.setState({ isHovered: false })}
             >
                 <XView flexDirection="row" justifyContent="space-between">
-                    <XAvatar
-                        photoRef={app.photoRef || undefined}
-                        objectName={app.name}
-                        objectId={app.id}
-                        style="colorus"
-                    />
+                    <XAvatar2 src={buildBaseImageUrl(app.photoRef)} title={app.name} id={app.id} />
                     <XView flexDirection="row" flexGrow={1} marginLeft={16}>
-                        <XView flexGrow={1} marginRight={12}>
+                        <XView flexGrow={1} marginRight={12} justifyContent="center">
                             <XView
                                 flexDirection="row"
                                 fontSize={14}
@@ -75,9 +67,11 @@ export class XAppCard extends React.Component<XUserCardProps, XUserCardState> {
                             >
                                 {app.name}
                             </XView>
-                            <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
-                                /{app.shortname}
-                            </XView>
+                            {app.shortname && (
+                                <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
+                                    /{app.shortname}
+                                </XView>
+                            )}
                         </XView>
                         <XView flexDirection="row" alignItems="center">
                             {button}
