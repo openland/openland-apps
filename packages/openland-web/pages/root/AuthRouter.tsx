@@ -39,10 +39,18 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
         }
     }
 
+    ////////////////////////////////////////////////
+    //               Public Pages
+    ////////////////////////////////////////////////
+
     // Do not redirect for public paths
     if (!userInfo.isLoggedIn && isPublicPath(router.path)) {
         return defaultRoute;
     }
+
+    ////////////////////////////////////////////////
+    //                Sign In/Up
+    ////////////////////////////////////////////////
 
     // Redirect to Join prview before Signup/Signin if there are was redirect to join
     if (!userInfo.isLoggedIn && (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))) {
@@ -54,24 +62,31 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
         return redirectIfNeeded('/signin', { pages: ['/signin', '/signup'] });
     }
 
+    ////////////////////////////////////////////////
+    //                Suspend check
+    ////////////////////////////////////////////////
+
     // Redirect suspended accounts
     if (userInfo.isBlocked) {
         return redirectIfNeeded('/suspended');
     }
+
+    ////////////////////////////////////////////////
+    //              Profile creation
+    ////////////////////////////////////////////////
 
     // Redirect to profile and organization creation
     if (!userInfo.isProfileCreated) {
         return redirectIfNeeded('/createProfile');
     }
 
+    ////////////////////////////////////////////////
+    //            Organization handling
+    ////////////////////////////////////////////////
+
     // Trying to ask to join organization
     if (router.path.startsWith('/join/') || redirectPath.startsWith('/join/')) {
         return redirectJoin('/join');
-    }
-
-    // Activate user before organization creation
-    if (!userInfo.isCompleted && router.path.startsWith('/invite/') || redirectPath.startsWith('/invite/')) {
-        return redirectJoin('/invite');
     }
 
     // Redirect to organization add
@@ -79,15 +94,32 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
         return redirectIfNeeded('/createOrganization');
     }
 
+    ////////////////////////////////////////////////
+    //                Room Join
+    ////////////////////////////////////////////////
+
     // Handle channel joins
     if ((router.path.includes('joinChannel')) || router.path.includes('acceptChannelInvite')) {
         return defaultRoute;
+    }
+
+    ////////////////////////////////////////////////
+    //          Final activation steps
+    ////////////////////////////////////////////////
+
+    // Activate user if needed and possible
+    if (!userInfo.isCompleted && router.path.startsWith('/invite/') || redirectPath.startsWith('/invite/')) {
+        return redirectJoin('/invite');
     }
 
     // Redirect to generic 'need more info' page if signup is not completed
     if (!userInfo.isCompleted) {
         return redirectIfNeeded('/waitlist');
     }
+
+    ////////////////////////////////////////////////
+    //               Launch App
+    ////////////////////////////////////////////////
 
     // Redirect from service pages to the app root
     if (userInfo.isCompleted) {
