@@ -6,8 +6,10 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
+import { XViewRouterContext } from 'react-mental';
 
 export const AboutPlaceholder = withMyOrganizationProfile(props => {
     if (!(props.data && props.data.organizationProfile)) {
@@ -44,24 +46,34 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
     );
 }) as React.ComponentType<{ target?: any }>;
 
-export const RemoveOrganization = withMyOrganizationProfile(props => {
+export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
+    let router = React.useContext(XViewRouterContext);
     if (!(props.data && props.data.organizationProfile)) {
         return null;
     }
+
     return (
         <XModalForm
             title={'RemoveOrganization'}
             useTopCloser={true}
             defaultData={{}}
             defaultAction={async () => {
-                await props.deleteOrganization({});
+                await props.deleteOrganization({
+                    variables: {
+                        organizationId: props.data.organizationProfile.id,
+                    },
+                });
+                // hack to navigate after modal closing navigation
+                setTimeout(() => {
+                    router!.navigate('/');
+                });
             }}
-            target={(props as any).target}
+            targetQuery={'deleteOrganization'}
             submitBtnText="Yes, I am sure"
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
-                    Are you sure you want to delete this organization?
+                    Are you sure you want to delete {props.data.organizationProfile.name}?
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>

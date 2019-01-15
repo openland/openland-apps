@@ -4,7 +4,7 @@ import { withSettings } from '../../../api/withSettings';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
-import { Navigation } from './_navigation';
+import { Navigation } from './Navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XView, XImage } from 'react-mental';
@@ -328,7 +328,7 @@ class NotificationsSettingsPageInner extends React.Component<
         }
 
         return (
-            <Navigation title="Notifications settings">
+            <Navigation title="Notifications">
                 <Container>
                     <Header>Notifications</Header>
                     <XVertical separator={15}>

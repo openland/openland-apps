@@ -2087,6 +2087,30 @@
             "deprecationReason": null
           },
           {
+            "name": "betaAvailableRooms",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "UNION",
+                    "name": "Room",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "alphaResolveShortName",
             "description": "",
             "args": [
@@ -7728,6 +7752,12 @@
           },
           {
             "name": "SUSPENDED",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "DELETED",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null

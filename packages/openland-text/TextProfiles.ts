@@ -16,8 +16,8 @@ export const TextProfiles = {
         status: {
             online: 'online',
             lastSeen: 'last seen',
-            momentsAgo: 'moments ago'
-        }
+            momentsAgo: 'moments ago',
+        },
     },
 
     Organization: {
@@ -29,13 +29,13 @@ export const TextProfiles = {
 
         addSocialLinks: 'Add social links',
         addAbout: 'Add a short description',
-        addMembers: (isCommunity: boolean) => isCommunity ? 'Add admin' : 'Invite people',
+        addMembers: (isCommunity: boolean) => (isCommunity ? 'Add admin' : 'Invite people'),
 
         edit: 'Edit',
         superEdit: 'Super edit',
 
         aboutTitle: 'About',
-        membersTitle: (isCommunity: boolean) => isCommunity ? 'Admins' : 'Members',
+        membersTitle: (isCommunity: boolean) => (isCommunity ? 'Admins' : 'Members'),
         requestsTitle: 'Requests',
 
         hideFromSearch: 'Hide from search',
@@ -43,7 +43,7 @@ export const TextProfiles = {
 
         youOrganization: 'Your organization',
         view: 'View',
-        membersMore: (count: number) => count > 1 ? ' +' + (count - 1) + ' more' : '',
+        membersMore: (count: number) => (count > 1 ? ' +' + (count - 1) + ' more' : ''),
         roomsLabel: (count: number) => count + (count === 1 ? ' room' : ' rooms'),
 
         members: {
@@ -53,30 +53,38 @@ export const TextProfiles = {
             edit: 'Edit',
 
             changeRole: {
-                title: (userName: string, orgName: string) => 'Change role of ' + userName + ' in ' + orgName,
+                title: (userName: string, orgName: string) =>
+                    'Change role of ' + userName + ' in ' + orgName,
 
                 hints: {
-                    OWNER: 'Has full control over the organization account, can edit the profile, invite and confirm new members, assign and change roles.',
-                    MEMBER: 'Members can participate in the organization\'s internal chats.'
-                }
+                    OWNER:
+                        'Has full control over the organization account, can edit the profile, invite and confirm new members, assign and change roles.',
+                    MEMBER: "Members can participate in the organization's internal chats.",
+                },
             },
 
             remove: {
-                title: (userName: string, orgName: string) => 'Remove ' + userName + ' from ' + orgName,
-                text: (userName: string, orgName: string) => 'Are you sure you want to remove ' + userName + '? They will be removed from all internal chats at ' + orgName + '.',
+                title: (userName: string, orgName: string) =>
+                    'Remove ' + userName + ' from ' + orgName,
+                text: (userName: string, orgName: string) =>
+                    'Are you sure you want to remove ' +
+                    userName +
+                    '? They will be removed from all internal chats at ' +
+                    orgName +
+                    '.',
                 submit: 'Remove from organization',
-            }
+            },
         },
 
         roles: {
             OWNER: 'Admin',
-            MEMBER: 'Member'
+            MEMBER: 'Member',
         },
 
         inputs: {
             firstName: 'First name',
             lastName: 'Last name',
-        }
+        },
     },
 
     Room: {
@@ -87,6 +95,6 @@ export const TextProfiles = {
             REQUESTED: 'Pending',
             LEFT: 'Request invite',
             KICKED: 'Request invite',
-        }
-    }
+        },
+    },
 };

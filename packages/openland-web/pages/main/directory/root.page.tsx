@@ -3,9 +3,10 @@ import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
+import { MainLayout } from '../../../components/MainLayout';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerFragment } from '../../../fragments/MessengerFragment';
-import { RootWrapper, Sidebar, Container } from './components/Layout';
+import { Navigation } from './components/Navigation';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 
 class RootComponent extends React.Component<XWithRouter> {
@@ -22,9 +23,11 @@ class RootComponent extends React.Component<XWithRouter> {
         }
 
         return (
-            <RootWrapper>
-                <Sidebar active="rooms" />
-                <Container>
+            <MainLayout>
+                <MainLayout.Menu>
+                    <Navigation route="Rooms" />
+                </MainLayout.Menu>
+                <MainLayout.Content>
                     {tab === 'rooms' && <RoomsExploreComponent />}
                     {tab === 'invite' && (
                         <MessengerFragment id={router.routeQuery.conversationId} />
@@ -32,8 +35,8 @@ class RootComponent extends React.Component<XWithRouter> {
                     {tab === 'profile' && (
                         <RoomProfile conversationId={router.routeQuery.conversationId} />
                     )}
-                </Container>
-            </RootWrapper>
+                </MainLayout.Content>
+            </MainLayout>
         );
     }
 }

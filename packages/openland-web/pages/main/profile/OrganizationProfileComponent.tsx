@@ -17,7 +17,7 @@ import { withRouter } from 'next/router';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
-    RemoveOrganization,
+    RemoveOrganizationModal,
     AboutPlaceholder,
     SocialPlaceholder,
     WebsitePlaceholder,
@@ -29,7 +29,7 @@ import { XLink } from 'openland-x/XLink';
 import { InvitesToOrganizationModal } from '../settings/invites';
 import { XOverflow } from '../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
-import { sanitizeIamgeRef } from 'openland-y-utils/sanitizeImageRef';
+import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { withUserProfileUpdate } from '../../../api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
@@ -331,7 +331,7 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
                 input: {
                     firstName: member.user.firstName,
                     lastName: member.user.lastName,
-                    photoRef: sanitizeIamgeRef(member.user.photoRef),
+                    photoRef: sanitizeImageRef(member.user.photoRef),
                 },
             }}
             defaultAction={async data => {
@@ -340,7 +340,7 @@ const UpdateUserProfileModal = withUserProfileUpdate(props => {
                         input: {
                             firstName: data.input.firstName,
                             lastName: data.input.lastName,
-                            photoRef: sanitizeIamgeRef(data.input.photoRef),
+                            photoRef: sanitizeImageRef(data.input.photoRef),
                         },
                         uid: uid,
                     },
@@ -475,6 +475,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
 export const Section = Glamorous(XVertical)({
     paddingTop: 5,
     borderBottom: '1px solid #ececec',
+    flexShrink: 0,
     '&:last-child': {
         borderBottom: 'none',
     },
@@ -514,8 +515,10 @@ const Header = (props: { organization: Organization_organization }) => {
     );
 
     const deleteOrganizationButton = (
-        <XWithRole role={['editor', 'super-admin', 'feature-non-production']}>
-            <RemoveOrganization target={<XButton style="danger" text="Delete organization" />} />
+        <XWithRole role={['feature-non-production']}>
+            <XMenuItem style="danger" query={{ field: 'deleteOrganization', value: 'true' }}>
+                Delete organization
+            </XMenuItem>
         </XWithRole>
     );
     return (
@@ -530,6 +533,7 @@ const Header = (props: { organization: Organization_organization }) => {
                         objectId={organization.id}
                     />
                 </HeaderAvatar>
+                <RemoveOrganizationModal />
                 <HeaderInfo flexGrow={1} separator={0}>
                     <HeaderTitle>{organization.name}</HeaderTitle>
                     {organization.website && (
@@ -544,7 +548,6 @@ const Header = (props: { organization: Organization_organization }) => {
                             </HeaderAddWebsite>
                         </XWithRole>
                     )}
-                    <XView>{deleteOrganizationButton}</XView>
                 </HeaderInfo>
                 <HeaderTools separator={8}>
                     {organization.linkedin && (
@@ -572,7 +575,12 @@ const Header = (props: { organization: Organization_organization }) => {
                             <XOverflow
                                 placement="bottom-end"
                                 flat={true}
-                                content={<>{editButton}</>}
+                                content={
+                                    <>
+                                        {editButton}
+                                        {deleteOrganizationButton}
+                                    </>
+                                }
                             />
                         </XWithRole>
                     </XWithRole>
@@ -587,6 +595,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                     <XMenuItem path={'/super/orgs/' + organization.superAccountId}>
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
+                                    {deleteOrganizationButton}
                                 </>
                             }
                         />
@@ -820,7 +829,7 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
             <XView height="100%">
                 {!props.hideBack && <BackButton />}
                 <Header organization={organization} />
-                <XScrollView2 flexGrow={1}>
+                <XScrollView2 flexGrow={1} height="100%">
                     <About organization={organization} />
                     <Members organization={organization} router={props.router} />
                     <Rooms organization={organization} />

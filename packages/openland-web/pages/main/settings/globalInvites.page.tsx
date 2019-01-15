@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { withQueryLoader } from '../../../components/withQueryLoader';
-import { Navigation } from './_navigation';
+import { Navigation } from './Navigation';
 import { InvitesHistory } from './invitesHistory';
 import { XButton } from 'openland-x/XButton';
 import { InvitesGlobalModal } from './invites';

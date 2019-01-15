@@ -65,6 +65,8 @@ routes.add('/settings/notifications', '/main/settings/notifications');
 routes.add('/settings/notifications/', '/main/settings/notifications');
 routes.add('/settings/invites', '/main/settings/globalInvites');
 routes.add('/settings/invites/', '/main/settings/globalInvites/');
+routes.add('/settings/apps', '/main/settings/apps');
+routes.add('/settings/apps/', '/main/settings/apps');
 routes.add('/settings/dev', '/main/settings/developer');
 routes.add('/settings/dev/', '/main/settings/developer');
 routes.add('/settings/organization/:organizationId', '/main/settings/organization');
@@ -273,6 +275,8 @@ routes.add('/ui/signin/create-profile', '/dev/ui/signin/create-profile');
 routes.add('/ui/signin/create-organization', '/dev/ui/signin/create-organization');
 routes.add('/ui/shortcuts', '/dev/ui/shortcuts');
 routes.add('/ui/shortcuts/', '/dev/ui/shortcuts');
+routes.add('/ui/mobileNavigation', '/dev/ui/mobileNavigation');
+routes.add('/ui/mobileNavigation/', '/dev/ui/mobileNavigation');
 
 //
 // Dev Tools

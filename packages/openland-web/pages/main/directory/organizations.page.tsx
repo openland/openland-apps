@@ -3,13 +3,14 @@ import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
+import { MainLayout } from '../../../components/MainLayout';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SortPicker } from './sortPicker';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { RootWrapper, Sidebar, Container, Results } from './components/Layout';
+import { Navigation } from './components/Navigation';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -141,9 +142,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                 <XDocumentHead title="Organizations Directory" />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
-                        <RootWrapper>
-                            <Sidebar active="organizations" />
-                            <Container>
+                        <MainLayout>
+                            <MainLayout.Menu>
+                                <Navigation route="Organizations" />
+                            </MainLayout.Menu>
+                            <MainLayout.Content>
                                 {!oid && (
                                     <XVertical separator={0}>
                                         <SearchBox
@@ -151,20 +154,20 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                             onChange={this.onQueryChange}
                                             placeholder="Search organizations"
                                         />
-                                        <Results>
-                                            {query.length <= 0 && (
-                                                <XSubHeader
-                                                    title="All organizations"
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                        />
-                                                    }
-                                                    paddingBottom={12}
-                                                />
-                                            )}
-                                            {query.length > 0 && orgCount > 0 && (
+                                        {query.length <= 0 && (
+                                            <XSubHeader
+                                                title="All organizations"
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                    />
+                                                }
+                                                paddingBottom={12}
+                                            />
+                                        )}
+                                        {query.length > 0 &&
+                                            orgCount > 0 && (
                                                 <XSubHeader
                                                     title="Organizations"
                                                     counter={orgCount}
@@ -177,20 +180,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                     paddingBottom={12}
                                                 />
                                             )}
-                                            <Organizations
-                                                featuredFirst={this.state.sort.featured}
-                                                orderBy={this.state.sort.orderBy}
-                                                query={query}
-                                                tagsCount={this.tagsCount}
-                                            />
-                                        </Results>
+                                        <Organizations
+                                            featuredFirst={this.state.sort.featured}
+                                            orderBy={this.state.sort.orderBy}
+                                            query={query}
+                                            tagsCount={this.tagsCount}
+                                        />
                                     </XVertical>
                                 )}
                                 {oid && (
                                     <OrganizationProfile organizationId={oid} onDirectory={true} />
                                 )}
-                            </Container>
-                        </RootWrapper>
+                            </MainLayout.Content>
+                        </MainLayout>
                     </Scaffold.Content>
                 </Scaffold>
             </>

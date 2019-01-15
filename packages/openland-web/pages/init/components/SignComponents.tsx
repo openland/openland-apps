@@ -468,7 +468,6 @@ const RoomTogglerLink = Glamorous(XLink)({
 const RoomSignupBox = Glamorous.div({
     background: '#ffffff',
     borderRadius: 10,
-    overflow: 'hidden',
     maxWidth: 650,
     width: '100%',
 });
@@ -479,6 +478,8 @@ const RoomSignupHeader = Glamorous.div<{
     {
         height: 130,
         position: 'relative',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         '&:before': {
             content: ' ',
             position: 'absolute',
@@ -703,7 +704,7 @@ export const InviteInfoInner = ({
                         objectName={inviter.name}
                         objectId={inviter.id}
                     />
-                    <XText letterSpacing={-0.2} fontSize={16} color="#61707e">
+                    <XText fontSize={16} color="#000000">
                         {inviter.name + ' invites you to join'}
                     </XText>
                 </XHorizontal>
@@ -715,8 +716,9 @@ export const InviteInfoInner = ({
                 }}
             >
                 <p>
-                    Openland is a professional messenger designed to support <br /> all
-                    communication needs of a modern business
+                    Openland is a professional messenger designed <br /> to support all
+                    communication needs of a modern business. <br /> Currently it&apos;s in
+                    invite-only mode.
                 </p>
             </SubTitle>
             <ButtonsWrapper marginTop={37} width={280}>
@@ -1383,27 +1385,54 @@ const InfoText = Glamorous.span({
 
 const OrganizationSelector = Glamorous(XSelect)({
     minWidth: 330,
+    '& .Select-option:only-child .new-org::before': {
+        display: 'none',
+    },
     '@media(max-width: 450px)': {
         minWidth: 200,
     },
 });
 
+const NewOrganizationButtonWrapper = Glamorous.div({
+    position: 'relative',
+    '&::before': {
+        content: `''`,
+        position: 'absolute',
+        bottom: -8,
+        left: -16,
+        width: 'calc(100% + 32px)',
+        height: 1,
+        background: 'rgb(116, 188, 255)',
+        display: 'block',
+    },
+});
+
 const NewOrganizationButton = ({
     onClick,
+    title,
 }: {
     onClick?: (event: React.MouseEvent<any>) => void;
+    title: string;
 }) => {
+    let text = 'New organization';
+    if (title !== '') {
+        text = `${title} (New organization)`;
+    }
     return (
-        <div onClick={onClick} data-test-id="new-organization-button">
+        <NewOrganizationButtonWrapper
+            onClick={onClick}
+            data-test-id="new-organization-button"
+            className="new-org"
+        >
             <XView flexDirection="row" alignItems="center">
                 <XView>
                     <IcAdd />
                 </XView>
                 <XView color="#1790ff" marginLeft={6}>
-                    <span>New organization</span>
+                    <span>{text}</span>
                 </XView>
             </XView>
-        </div>
+        </NewOrganizationButtonWrapper>
     );
 };
 
@@ -1436,13 +1465,16 @@ export class CreateOrganizationFormInner extends React.Component<
     }
 
     getOrganizations = () => {
-        return [
-            {
-                value: NEW_ORGANIZATION_BUTTON_VALUE,
-                label: <NewOrganizationButton />,
-            },
-            ...this.props.organizations.data,
-        ];
+        if (this.state.inputValue !== '') {
+            return [
+                {
+                    value: NEW_ORGANIZATION_BUTTON_VALUE,
+                    label: <NewOrganizationButton title={this.state.inputValue} />,
+                },
+                ...this.props.organizations.data,
+            ];
+        }
+        return [...this.props.organizations.data];
     };
 
     handleOnChange = (src: any, store: any) => {

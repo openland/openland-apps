@@ -5,7 +5,9 @@ import { XRouterContext } from './XRouterContext';
 
 export type XWithRouter = { router: XRouter };
 
-export function withRouter<P = {}>(ComposedComponent: React.ComponentType<P & XWithRouter>): React.ComponentClass<P> {
+export function withRouter<P = {}>(
+    ComposedComponent: React.ComponentType<P & XWithRouter>,
+): React.ComponentClass<P> {
     return class WithRouter extends React.Component<P> {
         static displayName = `WithRouter(${getComponentDisplayName(ComposedComponent)})`;
         render() {

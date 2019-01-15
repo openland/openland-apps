@@ -2,13 +2,13 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { Navigation } from './_navigation';
+import { Navigation } from './Navigation';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import { sanitizeImageRef } from '../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
@@ -169,7 +169,7 @@ const Separator = Glamorous.div({
 
 export const OrganizationSettings = ((props: any) => {
     return (
-        <Navigation title="Organization profile">
+        <Navigation title="Organization">
             <Content>
                 <XVertical alignSelf="stretch" separator={30}>
                     <XVertical separator={12}>
@@ -181,7 +181,7 @@ export const OrganizationSettings = ((props: any) => {
                                         name: props.data.organizationProfile.name,
                                         about: props.data.organizationProfile.about,
                                         photo: props.data.organizationProfile.photoRef,
-                                        photoRef: sanitizeIamgeRef(
+                                        photoRef: sanitizeImageRef(
                                             props.data.organizationProfile.photoRef,
                                         ),
                                         published: props.data.organizationProfile.published

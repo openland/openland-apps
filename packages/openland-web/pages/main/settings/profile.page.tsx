@@ -3,12 +3,12 @@ import { withApp } from '../../../components/withApp';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { withProfile } from '../../../api/withProfile';
-import { Navigation } from './_navigation';
+import { Navigation } from './Navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { sanitizeIamgeRef } from '../../../utils/sanitizer';
+import { sanitizeImageRef } from '../../../utils/sanitizer';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XSelect } from 'openland-x/XSelect';
@@ -76,7 +76,7 @@ export default withApp(
     withProfile(
         withQueryLoader(props => {
             return (
-                <Navigation title="Edit profile">
+                <Navigation title="Profile">
                     <Content>
                         <XVertical separator={21}>
                             <Query query={MyOrganizationsQuery.document}>
@@ -93,7 +93,7 @@ export default withApp(
                                                             .id,
                                                     role: props.data.profile!!.role,
                                                     about: props.data.profile!!.about,
-                                                    photoRef: sanitizeIamgeRef(
+                                                    photoRef: sanitizeImageRef(
                                                         props.data.profile!!.photoRef,
                                                     ),
                                                 },
@@ -108,7 +108,7 @@ export default withApp(
                                                                 data.input.primaryOrganizationId,
                                                             alphaRole: data.input.role,
                                                             about: data.input.about,
-                                                            photoRef: sanitizeIamgeRef(
+                                                            photoRef: sanitizeImageRef(
                                                                 data.input.photoRef,
                                                             ),
                                                         },
@@ -277,33 +277,30 @@ export default withApp(
                                 <XWithRole role="super-admin">
                                     <HeadTitle>Super admin</HeadTitle>
                                     <XHorizontal separator={8}>
-                                        {props.data.profile &&
-                                            props.data.profile.joinedAt && (
-                                                <CardText>
-                                                    Joined
-                                                    <XView fontWeight="600" paddingLeft={4}>
-                                                        {DateFormater(props.data.profile.joinedAt)}
-                                                    </XView>
-                                                </CardText>
-                                            )}
-                                        {props.data.profile &&
-                                            !props.data.profile.invitedBy && (
-                                                <CardText>Self-registered</CardText>
-                                            )}
-                                        {props.data.profile &&
-                                            props.data.profile.invitedBy && (
-                                                <CardText>
-                                                    Invited by
-                                                    <XView
-                                                        fontWeight="600"
-                                                        paddingLeft={4}
-                                                        color="#1790ff"
-                                                    >
-                                                        {props.data.profile.invitedBy.name ||
-                                                            'First name Last name'}
-                                                    </XView>
-                                                </CardText>
-                                            )}
+                                        {props.data.profile && props.data.profile.joinedAt && (
+                                            <CardText>
+                                                Joined
+                                                <XView fontWeight="600" paddingLeft={4}>
+                                                    {DateFormater(props.data.profile.joinedAt)}
+                                                </XView>
+                                            </CardText>
+                                        )}
+                                        {props.data.profile && !props.data.profile.invitedBy && (
+                                            <CardText>Self-registered</CardText>
+                                        )}
+                                        {props.data.profile && props.data.profile.invitedBy && (
+                                            <CardText>
+                                                Invited by
+                                                <XView
+                                                    fontWeight="600"
+                                                    paddingLeft={4}
+                                                    color="#1790ff"
+                                                >
+                                                    {props.data.profile.invitedBy.name ||
+                                                        'First name Last name'}
+                                                </XView>
+                                            </CardText>
+                                        )}
                                     </XHorizontal>
                                 </XWithRole>
                             </XVertical>

@@ -420,6 +420,180 @@ export interface CreateUserProfileAndOrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: MyApps
+// ====================================================
+
+export interface MyApps_apps_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface MyApps_apps_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: MyApps_apps_photoRef_crop | null;
+}
+
+export interface MyApps_apps_token {
+  __typename: "AppToken";
+  salt: string;
+}
+
+export interface MyApps_apps {
+  __typename: "AppProfile";
+  id: string;
+  name: string;
+  shortname: string;
+  photoRef: MyApps_apps_photoRef | null;
+  about: string | null;
+  token: MyApps_apps_token;
+}
+
+export interface MyApps {
+  apps: MyApps_apps[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: CreateApp
+// ====================================================
+
+export interface CreateApp_createApp_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface CreateApp_createApp_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: CreateApp_createApp_photoRef_crop | null;
+}
+
+export interface CreateApp_createApp_token {
+  __typename: "AppToken";
+  salt: string;
+}
+
+export interface CreateApp_createApp {
+  __typename: "AppProfile";
+  id: string;
+  name: string;
+  shortname: string;
+  photoRef: CreateApp_createApp_photoRef | null;
+  about: string | null;
+  token: CreateApp_createApp_token;
+}
+
+export interface CreateApp {
+  createApp: CreateApp_createApp;
+}
+
+export interface CreateAppVariables {
+  name: string;
+  shortname: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpdateApp
+// ====================================================
+
+export interface UpdateApp_updateAppProfile_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface UpdateApp_updateAppProfile_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: UpdateApp_updateAppProfile_photoRef_crop | null;
+}
+
+export interface UpdateApp_updateAppProfile_token {
+  __typename: "AppToken";
+  salt: string;
+}
+
+export interface UpdateApp_updateAppProfile {
+  __typename: "AppProfile";
+  id: string;
+  name: string;
+  shortname: string;
+  photoRef: UpdateApp_updateAppProfile_photoRef | null;
+  about: string | null;
+  token: UpdateApp_updateAppProfile_token;
+}
+
+export interface UpdateApp {
+  updateAppProfile: UpdateApp_updateAppProfile;
+}
+
+export interface UpdateAppVariables {
+  appId: string;
+  input: AppProfileInput;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: RefreshAppToken
+// ====================================================
+
+export interface RefreshAppToken_refreshAppToken_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface RefreshAppToken_refreshAppToken_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: RefreshAppToken_refreshAppToken_photoRef_crop | null;
+}
+
+export interface RefreshAppToken_refreshAppToken_token {
+  __typename: "AppToken";
+  salt: string;
+}
+
+export interface RefreshAppToken_refreshAppToken {
+  __typename: "AppProfile";
+  id: string;
+  name: string;
+  shortname: string;
+  photoRef: RefreshAppToken_refreshAppToken_photoRef | null;
+  about: string | null;
+  token: RefreshAppToken_refreshAppToken_token;
+}
+
+export interface RefreshAppToken {
+  refreshAppToken: RefreshAppToken_refreshAppToken;
+}
+
+export interface RefreshAppTokenVariables {
+  appId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Dialogs
 // ====================================================
 
@@ -5153,6 +5327,42 @@ export interface ResolveShortNameVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: AppFull
+// ====================================================
+
+export interface AppFull_photoRef_crop {
+  __typename: "ImageCrop";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export interface AppFull_photoRef {
+  __typename: "ImageRef";
+  uuid: string;
+  crop: AppFull_photoRef_crop | null;
+}
+
+export interface AppFull_token {
+  __typename: "AppToken";
+  salt: string;
+}
+
+export interface AppFull {
+  __typename: "AppProfile";
+  id: string;
+  name: string;
+  shortname: string;
+  photoRef: AppFull_photoRef | null;
+  about: string | null;
+  token: AppFull_token;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: ConferenceFull
 // ====================================================
 
@@ -7791,6 +8001,7 @@ export enum SharedRoomMembershipStatus {
 
 export enum SuperAccountState {
   ACTIVATED = "ACTIVATED",
+  DELETED = "DELETED",
   PENDING = "PENDING",
   SUSPENDED = "SUSPENDED",
 }
@@ -7799,6 +8010,13 @@ export enum SuperAdminRole {
   EDITOR = "EDITOR",
   SOFTWARE_DEVELOPER = "SOFTWARE_DEVELOPER",
   SUPER_ADMIN = "SUPER_ADMIN",
+}
+
+export interface AppProfileInput {
+  name?: string | null;
+  shortname?: string | null;
+  photoRef?: ImageRefInput | null;
+  about?: string | null;
 }
 
 export interface ContactPersonInput {
