@@ -316,10 +316,12 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             {room.description || TextRoom.descriptionPlaceholder}
                         </InfoCardBody>
                     </InfoCardWrapper>
-                    <div className={aboutTextClass}>
-                        Openland is a professional messenger, built for productivity and speed.
-                        Currently it's in invite-only mode.
-                    </div>
+                    {this.props.signup && (
+                        <div className={aboutTextClass}>
+                            Openland is a professional messenger, built for productivity and speed.
+                            Currently it's in invite-only mode.
+                        </div>
+                    )}
                     {!this.props.signup && (
                         <>
                             {(room.membership === 'NONE' ||
