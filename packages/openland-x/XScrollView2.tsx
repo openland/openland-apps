@@ -141,6 +141,7 @@ const ScrollDiv = Glamorous.div<XFlexStyles>([{
 
 const ContentDiv = Glamorous.div<{ isCustom: boolean }>(props => ({
     width: props.isCustom ? 'calc(100% - 20px)' : '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch'

@@ -475,6 +475,7 @@ export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
 export const Section = Glamorous(XVertical)({
     paddingTop: 5,
     borderBottom: '1px solid #ececec',
+    flexShrink: 0,
     '&:last-child': {
         borderBottom: 'none',
     },
@@ -828,7 +829,7 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
             <XView height="100%">
                 {!props.hideBack && <BackButton />}
                 <Header organization={organization} />
-                <XScrollView2 flexGrow={1}>
+                <XScrollView2 flexGrow={1} height="100%">
                     <About organization={organization} />
                     <Members organization={organization} router={props.router} />
                     <Rooms organization={organization} />

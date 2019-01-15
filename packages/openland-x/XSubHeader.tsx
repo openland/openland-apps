@@ -18,6 +18,7 @@ const Wrapper = Glamorous.div<WrapperProps>((props) => ({
     marginTop: typeof props.marginTop === 'undefined' ? 0 : props.marginTop,
     marginBottom: typeof props.marginBottom === 'undefined' ? 0 : props.marginBottom,
     position: 'relative',
+    flexShrink: 0
 }));
 
 const Content = Glamorous(XContentWrapper)({

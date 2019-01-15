@@ -147,7 +147,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                             </MainLayout.Menu>
                             <MainLayout.Content>
                                 {!uid && (
-                                    <XVertical separator={0}>
+                                    <XVertical separator={0} height="100%">
                                         <SearchBox
                                             value={this.state.query}
                                             onChange={this.onQueryChange}
