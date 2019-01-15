@@ -13,7 +13,7 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 
 export default withApp(
     'My Apps',
-    'viewer',
+    'feature-non-production',
     withMyApps(
         withQueryLoader(props => (
             <Navigation title="My Apps">
