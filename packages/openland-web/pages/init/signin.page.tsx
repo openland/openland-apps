@@ -16,7 +16,7 @@ import {
     WebSignUpActivationCode,
     InviteInfoInner,
 } from './components/SignComponents';
-import { AuthRouter } from '../../components/AuthRouter';
+import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';

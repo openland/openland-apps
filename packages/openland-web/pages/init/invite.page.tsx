@@ -3,7 +3,7 @@ import { MessagePage } from '../../components/MessagePage';
 import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { AuthRouter } from '../../components/AuthRouter';
+import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
 import { withInviteActivation } from '../../api/withInviteActivation';
 import { XLoader } from 'openland-x/XLoader';

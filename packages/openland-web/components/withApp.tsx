@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withAppBase } from './withAppBase';
-import { AuthRouter } from './AuthRouter';
+import { AuthRouter } from '../pages/root/AuthRouter';
 import { XShortcutsRoot, XShortcuts } from 'openland-x/XShortcuts';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 

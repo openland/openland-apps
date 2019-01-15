@@ -4,7 +4,7 @@ import { MessagePageContent } from '../../components/MessagePageContent';
 import { withAppBase } from '../../components/withAppBase';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
-import { AuthRouter } from '../../components/AuthRouter';
+import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
 
 export default withAppBase('Suspended', props => {
