@@ -44,8 +44,8 @@ const OrganizationCards = withExploreOrganizations(props => {
                         <XOrganizationCard key={'_org_card_' + i.node.id} organization={i.node} />
                     ))}
                     <PagePagination
+                        currentRoute="/directory/organizations"
                         pageInfo={props.data.items.pageInfo}
-                        onPageChange={(props as any).onPageChange}
                     />
                 </XContentWrapper>
             )}
@@ -166,20 +166,19 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 paddingBottom={12}
                                             />
                                         )}
-                                        {query.length > 0 &&
-                                            orgCount > 0 && (
-                                                <XSubHeader
-                                                    title="Organizations"
-                                                    counter={orgCount}
-                                                    right={
-                                                        <SortPicker
-                                                            sort={this.state.sort}
-                                                            onPick={this.changeSort}
-                                                        />
-                                                    }
-                                                    paddingBottom={12}
-                                                />
-                                            )}
+                                        {query.length > 0 && orgCount > 0 && (
+                                            <XSubHeader
+                                                title="Organizations"
+                                                counter={orgCount}
+                                                right={
+                                                    <SortPicker
+                                                        sort={this.state.sort}
+                                                        onPick={this.changeSort}
+                                                    />
+                                                }
+                                                paddingBottom={12}
+                                            />
+                                        )}
                                         <Organizations
                                             featuredFirst={this.state.sort.featured}
                                             orderBy={this.state.sort.orderBy}
