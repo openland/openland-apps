@@ -1385,15 +1385,25 @@ const InfoText = Glamorous.span({
 
 const OrganizationSelector = Glamorous(XSelect)({
     minWidth: 330,
-    '& .Select-option:first-child': {
-        borderBottom: '1px solid rgb(116, 188, 255)',
-        borderRadius: 0,
-    },
-    '& .Select-option:only-child': {
-        borderBottom: 'none',
+    '& .Select-option:only-child .new-org::before': {
+        display: 'none',
     },
     '@media(max-width: 450px)': {
         minWidth: 200,
+    },
+});
+
+const NewOrganizationButtonWrapper = Glamorous.div({
+    position: 'relative',
+    '&::before': {
+        content: `''`,
+        position: 'absolute',
+        bottom: -8,
+        left: -16,
+        width: 'calc(100% + 32px)',
+        height: 1,
+        background: 'rgb(116, 188, 255)',
+        display: 'block',
     },
 });
 
@@ -1409,7 +1419,11 @@ const NewOrganizationButton = ({
         text = `${title} (New organization)`;
     }
     return (
-        <div onClick={onClick} data-test-id="new-organization-button">
+        <NewOrganizationButtonWrapper
+            onClick={onClick}
+            data-test-id="new-organization-button"
+            className="new-org"
+        >
             <XView flexDirection="row" alignItems="center">
                 <XView>
                     <IcAdd />
@@ -1418,7 +1432,7 @@ const NewOrganizationButton = ({
                     <span>{text}</span>
                 </XView>
             </XView>
-        </div>
+        </NewOrganizationButtonWrapper>
     );
 };
 
@@ -1451,13 +1465,16 @@ export class CreateOrganizationFormInner extends React.Component<
     }
 
     getOrganizations = () => {
-        return [
-            {
-                value: NEW_ORGANIZATION_BUTTON_VALUE,
-                label: <NewOrganizationButton title={this.state.inputValue} />,
-            },
-            ...this.props.organizations.data,
-        ];
+        if (this.state.inputValue !== '') {
+            return [
+                {
+                    value: NEW_ORGANIZATION_BUTTON_VALUE,
+                    label: <NewOrganizationButton title={this.state.inputValue} />,
+                },
+                ...this.props.organizations.data,
+            ];
+        }
+        return [...this.props.organizations.data];
     };
 
     handleOnChange = (src: any, store: any) => {
