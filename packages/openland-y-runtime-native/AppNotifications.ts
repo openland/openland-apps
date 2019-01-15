@@ -1,7 +1,5 @@
 import { AppNotificationsApi, AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import Push from 'react-native-push-notification';
-import { Platform } from 'react-native';
-import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 
 var token: string | null = null;
 var tokenListeners: ((token: string) => void)[] = [];
@@ -58,23 +56,7 @@ class AppNotiticationsIOS implements AppNotificationsApi {
     }
 
     displayNotification(content: { path: string, title: string, body: string, image?: string, id?: string }) {
-        // On android show only when app is visible?
-        if (Platform.OS === 'android') {
-            if (!AppVisibility.isVisible) {
-                return;
-            }
-        }
-        // Do not show local notifications since remove one is good enougth
-        if (Platform.OS === 'ios') {
-            return;
-        }
-        Push.localNotification({
-            title: content.title,
-            message: content.body,
-            group: 'conversation_message',
-            color: '#4747EC',
-            ...content.id ? { id: content.id } : {},
-        });
+        // Do not show local notifications since remote one is good enougth
     }
 }
 
