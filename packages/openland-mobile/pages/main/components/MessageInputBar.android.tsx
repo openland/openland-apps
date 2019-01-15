@@ -92,9 +92,9 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         <View style={styles.textInputContainer} >
                             <ASView
                                 style={{
-                                    left: -2,
+                                    left: -6,
                                     top: -6,
-                                    right: -2,
+                                    right: -6,
                                     bottom: -6,
                                     position: 'absolute',
                                 }}
