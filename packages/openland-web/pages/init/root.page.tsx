@@ -6,13 +6,17 @@ import { InitTexts } from './_text';
 import { withUserInfo } from '../../components/UserInfo';
 import { withAppBase } from '../../components/withAppBase';
 import HomePage from 'openland-landing/home.page';
+import { EnvironmentContext } from '../root/EnvironmentContext';
 
 export default withAppBase(
     'Root',
     withUserInfo(props => {
+
+        let env = React.useContext(EnvironmentContext);
+
         return (
             <AuthRouter>
-                {props.isCompleted && (
+                {env.isApp || props.isCompleted && (
                     <>
                         <XDocumentHead
                             title={InitTexts.rootPageTitle}
@@ -21,7 +25,7 @@ export default withAppBase(
                         <XPageRedirect path={'/mail'} />
                     </>
                 )}
-                {!props.isCompleted && (
+                {!env.isApp && !props.isCompleted && (
                     <HomePage />
                 )}
             </AuthRouter>

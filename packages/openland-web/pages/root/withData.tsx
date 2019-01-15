@@ -25,13 +25,17 @@ export function withData(App: React.ComponentType<any>) {
             let host: string;
             let protocol: string;
             let storage: SharedStorage;
+            let isApp: boolean;
             if (ctx.ctx.req) {
                 host = (ctx.ctx.req as any).get('host');
                 protocol = (ctx.ctx.req as any).protocol;
+                let useragent = (ctx.ctx.req as any).get('User-Agent') as string;
+                isApp = useragent ? useragent.indexOf('Electron') >= 0 : false;
                 storage = getServerStorage(ctx.ctx);
             } else {
                 host = window.location.host;
                 protocol = window.location.protocol.replace(':', '');
+                isApp = !!(global as any).require;
                 storage = getClientStorage();
             }
 
@@ -72,6 +76,7 @@ export function withData(App: React.ComponentType<any>) {
                 host,
                 protocol,
                 storage,
+                isApp,
             };
         }
 
