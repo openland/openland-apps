@@ -1,11 +1,9 @@
-const SUBFOLDER = '/landing';
-
 export const LandingLinks = {
-    home: SUBFOLDER,
+    home: '/',
 
-    about: SUBFOLDER + '/about',
-    privacy: SUBFOLDER + '/privacy',
-    terms: SUBFOLDER + '/terms',
+    about: '/about',
+    privacy: '/privacy',
+    terms: '/terms',
 
     signin: '/signin',
     signup: '/signup',
