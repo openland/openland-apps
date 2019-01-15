@@ -11,8 +11,13 @@ export const MyAppsQuery = gql`
 `;
 
 export const CreateAppMutation = gql`
-    mutation CreateApp($name: String!, $shortname: String!) {
-        createApp(name: $name, shortname: $shortname) {
+    mutation CreateApp(
+        $name: String!
+        $shortname: String
+        $photoRef: ImageRefInput
+        $about: String
+    ) {
+        createApp(name: $name, shortname: $shortname, photoRef: $photoRef, about: $about) {
             ...AppFull
         }
     }

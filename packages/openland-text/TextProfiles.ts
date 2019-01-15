@@ -3,6 +3,18 @@ export const TextProfiles = {
     showMore: 'Show more',
     showLess: 'Show less',
 
+    App: {
+        edit: 'Edit app',
+        create: 'Create app',
+
+        inputs: {
+            name: 'Name',
+            shortname: 'Shortname',
+            photo: 'Photo',
+            about: 'About',
+        },
+    },
+
     User: {
         you: 'You',
         message: 'Message',
