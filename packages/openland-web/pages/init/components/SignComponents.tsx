@@ -468,7 +468,6 @@ const RoomTogglerLink = Glamorous(XLink)({
 const RoomSignupBox = Glamorous.div({
     background: '#ffffff',
     borderRadius: 10,
-    overflow: 'hidden',
     maxWidth: 650,
     width: '100%',
 });
@@ -479,6 +478,8 @@ const RoomSignupHeader = Glamorous.div<{
     {
         height: 130,
         position: 'relative',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         '&:before': {
             content: ' ',
             position: 'absolute',
@@ -1384,6 +1385,13 @@ const InfoText = Glamorous.span({
 
 const OrganizationSelector = Glamorous(XSelect)({
     minWidth: 330,
+    '& .Select-option:first-child': {
+        borderBottom: '1px solid rgb(116, 188, 255)',
+        borderRadius: 0,
+    },
+    '& .Select-option:only-child': {
+        borderBottom: 'none',
+    },
     '@media(max-width: 450px)': {
         minWidth: 200,
     },
@@ -1391,9 +1399,15 @@ const OrganizationSelector = Glamorous(XSelect)({
 
 const NewOrganizationButton = ({
     onClick,
+    title,
 }: {
     onClick?: (event: React.MouseEvent<any>) => void;
+    title: string;
 }) => {
+    let text = 'New organization';
+    if (title !== '') {
+        text = `${title} (New organization)`;
+    }
     return (
         <div onClick={onClick} data-test-id="new-organization-button">
             <XView flexDirection="row" alignItems="center">
@@ -1401,7 +1415,7 @@ const NewOrganizationButton = ({
                     <IcAdd />
                 </XView>
                 <XView color="#1790ff" marginLeft={6}>
-                    <span>New organization</span>
+                    <span>{text}</span>
                 </XView>
             </XView>
         </div>
@@ -1440,7 +1454,7 @@ export class CreateOrganizationFormInner extends React.Component<
         return [
             {
                 value: NEW_ORGANIZATION_BUTTON_VALUE,
-                label: <NewOrganizationButton />,
+                label: <NewOrganizationButton title={this.state.inputValue} />,
             },
             ...this.props.organizations.data,
         ];
