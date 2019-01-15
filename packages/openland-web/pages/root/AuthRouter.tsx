@@ -74,13 +74,14 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
         return redirectJoin('/invite');
     }
 
-    if ((router.path.includes('joinChannel')) || router.path.includes('acceptChannelInvite')) {
-        return defaultRoute;
-    }
-
     // Redirect to organization add
     if (!userInfo.isAccountExists) {
         return redirectIfNeeded('/createOrganization');
+    }
+
+    // Handle channel joins
+    if ((router.path.includes('joinChannel')) || router.path.includes('acceptChannelInvite')) {
+        return defaultRoute;
     }
 
     // Redirect to generic 'need more info' page if signup is not completed
