@@ -72,6 +72,7 @@ const InfoCardWrapper = Glamorous.div({
     borderBottom: 'solid 1px #ececec',
     borderTop: 'solid 1px #ececec',
     borderRight: 'solid 1px #ececec',
+    maxWidth: 460,
     overflow: 'hidden',
     margin: 'auto',
     marginBottom: 20,
@@ -98,14 +99,12 @@ const InfoCardBody = Glamorous.div({
     fontSize: 16,
     lineHeight: '24px',
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.8)',
 });
 
 const Text = Glamorous.div<{ width?: number; autoMargin?: boolean }>(props => ({
     fontSize: 14,
     lineHeight: 1.43,
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.8)',
     textAlign: 'center',
     width: props.width,
     margin: props.autoMargin ? 'auto' : undefined,
@@ -116,7 +115,6 @@ const RoomTitle = Glamorous.div({
     fontWeight: 600,
     lineHeight: '24px',
     letterSpacing: 0,
-    color: 'rgba(0, 0, 0, 0.9)',
     margin: '2px 0 8px',
 });
 
