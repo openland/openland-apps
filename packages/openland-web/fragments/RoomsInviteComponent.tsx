@@ -312,9 +312,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                 </RoomCounter>
                             </div>
                         </InfoCardHeader>
-                        <InfoCardBody>
-                            {room.description || TextRoom.descriptionPlaceholder}
-                        </InfoCardBody>
+                        {room.description && <InfoCardBody>{room.description}</InfoCardBody>}
                     </InfoCardWrapper>
                     {this.props.signup && (
                         <div className={aboutTextClass}>

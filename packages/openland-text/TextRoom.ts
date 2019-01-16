@@ -6,6 +6,4 @@ export const TextRoom = {
 
     buttonRequestInvite: 'Request invite',
     buttonCreateRoom: 'Create room',
-
-    descriptionPlaceholder: 'Invitation-only room to connect with industry insiders, share market data, and discover opportunities.'
 };
