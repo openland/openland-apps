@@ -3,12 +3,11 @@ import { css } from 'linaria';
 import { XView } from 'react-mental';
 
 const spanWithWhiteSpacesClassName = css`
-    font-family: SFProText-Regular;
     white-space: pre-wrap;
     text-align: center;
     color: #7f7f7f;
     & > strong {
-        font-family: SFProText-Semibold;
+        fontweight: 600;
         color: #7f7f7f;
     }
 `;
