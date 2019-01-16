@@ -4,7 +4,7 @@ import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XRichTextInput, removeEmojiFromText } from 'openland-x/XRichTextInput';
+import { XRichTextInput } from 'openland-x/XRichTextInput';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XLink } from 'openland-x/XLink';
 import { XPopper } from 'openland-x/XPopper';
@@ -305,8 +305,8 @@ interface MessageComposeWithChannelMembers extends MessageComposeWithDraft {
 
 interface MessageComposeComponentInnerProps
     extends MessageComposeComponentProps,
-        XWithRouter,
-        UserInfo {
+    XWithRouter,
+    UserInfo {
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
@@ -335,7 +335,7 @@ const convertChannelMembersDataToMentionsData = (data: any) => {
         const { id, name, photo, online, isYou, primaryOrganization } = user;
         return {
             id,
-            name: removeEmojiFromText(name),
+            name: name,
             avatar: photo,
             title: primaryOrganization ? primaryOrganization.name : '',
             online,
@@ -448,7 +448,7 @@ class PostButton extends React.PureComponent<PostButtonProps> {
 class MessageComposeComponentInner extends React.PureComponent<
     MessageComposeComponentInnerProps,
     MessageComposeComponentInnerState
-> {
+    > {
     listOfMembersNames: string[];
     constructor(props: any) {
         super(props);
@@ -499,7 +499,7 @@ class MessageComposeComponentInner extends React.PureComponent<
         const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
         return this.props.members
             .filter(({ user: { name } }) => {
-                return mentionsNames.indexOf(`@${removeEmojiFromText(name)}`) !== -1;
+                return mentionsNames.indexOf(`@${name}`) !== -1;
             })
             .map(({ user }) => user);
     };
@@ -763,7 +763,7 @@ class MessageComposeComponentInner extends React.PureComponent<
 
         if (nextProps.members && nextProps.members !== this.props.members) {
             this.listOfMembersNames = nextProps.members.map(
-                ({ user: { name } }: { user: { name: string } }) => `@${removeEmojiFromText(name)}`,
+                ({ user: { name } }: { user: { name: string } }) => `@${name}`,
             );
         }
 
@@ -956,9 +956,9 @@ class MessageComposeComponentInner extends React.PureComponent<
                                         this.props.enabled === false
                                             ? undefined
                                             : {
-                                                  field: 'addItro',
-                                                  value: 'true',
-                                              }
+                                                field: 'addItro',
+                                                value: 'true',
+                                            }
                                     }
                                     className="intro-button"
                                     disable={this.props.enabled === false}

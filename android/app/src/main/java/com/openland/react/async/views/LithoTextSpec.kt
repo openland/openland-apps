@@ -1,5 +1,6 @@
 package com.openland.react.async.views
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
@@ -17,6 +18,7 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.WritableNativeMap
 import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import com.facebook.litho.widget.Text
 import com.facebook.react.uimanager.PixelUtil
 
@@ -50,6 +52,7 @@ object LithoTextSpec {
                         override fun updateDrawState(ds: TextPaint?) {
                             super.updateDrawState(ds)
                             if(ds!=null){
+//                                ds.isUnderlineText = spec.underline
                                 ds.isUnderlineText = true
                                 ds.color = spec.color
                             }
@@ -62,6 +65,10 @@ object LithoTextSpec {
                 }
                 if(s.fontSize !== null){
                     part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
+
+                if(s.color != Color.BLACK){
+                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length ,  Spannable.SPAN_INCLUSIVE_INCLUSIVE)
                 }
 
                 sb.append(part)

@@ -4,7 +4,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -130,6 +130,7 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         urlAugmentation: src.urlAugmentation || undefined,
         reactions: src.reactions || undefined,
         serviceMetaData: src.serviceMetadata || undefined,
+        mentions: src.mentions || undefined,
     };
 }
 

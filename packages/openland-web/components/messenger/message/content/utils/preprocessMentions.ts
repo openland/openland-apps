@@ -1,4 +1,3 @@
-import { removeEmojiFromText } from 'openland-x/XRichTextInput';
 
 export type MentionSpan =
     {
@@ -20,10 +19,10 @@ function extractMentions(mentions: any, alphaMentions: any): { user: any, match:
                 return __typename === 'UserMention';
             })
             .map((item: any) => {
-                return { user: item.user, match: removeEmojiFromText(item.user.name) };
+                return { user: item.user, match: item.user.name };
             });
     } else if (mentions) {
-        res = mentions.map((v: any) => ({ user: v, match: removeEmojiFromText(v.name) }));
+        res = mentions.map((v: any) => ({ user: v, match: v.name }));
     }
     return res;
 }
