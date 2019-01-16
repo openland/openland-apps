@@ -24,14 +24,14 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
                                 <ZListItemGroup footer="People can join channel by following this link. You can renew the link at any time">
                                     {data && data.data && data.data.link && (<ZListItem
                                         key="add"
-                                        text={`https://app.openland.com/joinChannel/${data.data!.link}`}
+                                        text={`https://openland.com/joinChannel/${data.data!.link}`}
                                         appearance="action"
-                                        onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/joinChannel/${data.data!.link}` })}
+                                        onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `https://openland.com/joinChannel/${data.data!.link}` })}
                                     />)}
                                 </ZListItemGroup>
                                 <ZListItemGroup >
-                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`Join Openland! - Messaging for smart people https://app.openland.com/joinChannel/${data.data!.link}`)} />
-                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/joinChannel/${data.data!.link}` })} />
+                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`Join Openland! - Messaging for smart people https://openland.com/joinChannel/${data.data!.link}`)} />
+                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `https://openland.com/joinChannel/${data.data!.link}` })} />
                                     <YMutation mutation={RoomRenewInviteLinkMutation} variables={{ roomId: this.props.router.params.id }} refetchQueriesVars={[{ query: RoomInviteLinkQuery, variables: { roomId: this.props.router.params.id } }]}>
                                         {renew => <ZListItem
                                             appearance="action"
