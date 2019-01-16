@@ -19,6 +19,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.bridge.WritableNativeMap
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.TypefaceSpan
 import com.facebook.litho.widget.Text
 import com.facebook.react.uimanager.PixelUtil
 
@@ -26,13 +27,13 @@ import com.facebook.react.uimanager.PixelUtil
 @LayoutSpec
 object LithoTextSpec {
 
-    private fun resolveText(spec: AsyncTextSpec, reactContext: ReactContext): SpannableStringBuilder {
+    private fun resolveText(spec: AsyncTextSpec, reactContext: ReactContext, context: ComponentContext): SpannableStringBuilder {
         val sb = SpannableStringBuilder()
         for (s in spec.children) {
             if (s is String) {
                 sb.append(s)
             } else if (s is AsyncTextSpec) {
-                val part = resolveText(s, reactContext)
+                val part = resolveText(s, reactContext, context)
                 if(s.touchableKey != null){
                     val span = object : ClickableSpan() {
                         override fun onClick(view: View){
@@ -52,8 +53,7 @@ object LithoTextSpec {
                         override fun updateDrawState(ds: TextPaint?) {
                             super.updateDrawState(ds)
                             if(ds!=null){
-//                                ds.isUnderlineText = spec.underline
-                                ds.isUnderlineText = true
+                                ds.isUnderlineText = s.underline
                                 ds.color = spec.color
                             }
 
@@ -64,11 +64,27 @@ object LithoTextSpec {
 
                 }
                 if(s.fontSize !== null){
-                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+
+                if(s.fontWeight !== null){
+
+                    val span = object : TypefaceSpan(s.fontWeight) {
+
+                        override fun updateDrawState(ds: TextPaint?) {
+                            super.updateDrawState(ds)
+                            if(ds!=null){
+                                ds.typeface = resolveFont(context, s.fontWeight)
+                            }
+
+                        }
+                    }
+
+                    part.setSpan(span, 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
 
                 if(s.color != Color.BLACK){
-                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length ,  Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVEw)
                 }
 
                 sb.append(part)
@@ -97,7 +113,7 @@ object LithoTextSpec {
         }
 
         // Fix line height
-        val text = SpannableString(resolveText(spec, reactContext))
+        val text = SpannableString(resolveText(spec, reactContext, context))
         var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else fontSize * 1.6f
         actualLineHeight = PixelUtil.toPixelFromDIP(actualLineHeight)
         text.setSpan(CustomLineHeightSpan(actualLineHeight), 0, text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
