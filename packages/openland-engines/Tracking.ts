@@ -60,8 +60,9 @@ class TrackingEngine {
 
         await this.initPromise;
 
+        let events = [...this.pending];
+        this.pending = [];
         await backoff(async () => {
-            let events = [...this.pending];
             let res = await this.client.mutate({
                 mutation: Persist, variables: {
                     did: this.deviceId,
