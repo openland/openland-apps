@@ -654,6 +654,9 @@ class MessageComposeComponentInner extends React.PureComponent<
     };
 
     private handleDrop = (file: any) => {
+        if (!file) {
+            return;
+        }
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
