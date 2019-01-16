@@ -44,6 +44,8 @@ import {
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { PostIntroModal } from '../components/messenger/message/content/attachments/introMessage/PostIntroModal';
+import RemoveIcon from 'openland-icons/ic-close.svg';
+import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -214,6 +216,73 @@ const EditView = (props: { title: string; message: string; onCancel: () => void 
     </EditWrapper>
 );
 
+const FileItem = Glamorous(XHorizontal)({
+    opacity: 0.5,
+    fontSize: 13,
+    lineHeight: 1.54,
+    fontWeight: 500,
+    color: '#000',
+    paddingLeft: 18,
+    '& .remove': {
+        marginTop: 1,
+        cursor: 'pointer',
+        '& > svg path': {
+            fill: '#C7C7C7',
+        },
+        '&:hover > svg path': {
+            fill: '#4a4a4a',
+        },
+    },
+    '& span': {
+        opacity: 0.6,
+    },
+});
+
+const FileImage = Glamorous.div({
+    width: 11,
+    height: 14,
+    flexShrink: 0,
+    backgroundImage: "url('/static/X/file.svg')",
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+});
+
+const CoverWrapper = Glamorous.div({
+    borderRadius: 6,
+    overflow: 'hidden',
+    position: 'relative',
+    alignSelf: 'flex-start',
+    display: 'flex',
+    width: 100,
+    height: 80,
+    '& > img': {
+        display: 'block',
+        minWidth: '100%',
+        minHeight: '100%',
+        objectFit: 'cover',
+    },
+});
+
+const CoverDelButton = Glamorous.div({
+    position: 'absolute',
+    right: -2,
+    top: -2,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    width: 20,
+    height: 20,
+    paddingTop: 2,
+    paddingRight: 2,
+    borderRadius: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    cursor: 'pointer',
+    '& > svg path': {
+        fill: '#fff',
+    },
+});
+
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
@@ -253,6 +322,9 @@ interface MessageComposeComponentInnerState {
     forwardMessageId?: Set<string> | string;
     forwardMessageSender?: string;
     beDrafted: boolean;
+    file: any | null;
+    fileSrc: string | null;
+    fileName: string | null;
 }
 
 const convertChannelMembersDataToMentionsData = (data: any) => {
@@ -300,8 +372,8 @@ class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                ? props.handleHideChat
-                : undefined;
+                    ? props.handleHideChat
+                    : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -396,6 +468,9 @@ class MessageComposeComponentInner extends React.PureComponent<
             forwardMessageId: undefined,
             forwardMessageSender: undefined,
             beDrafted: false,
+            file: null,
+            fileSrc: null,
+            fileName: null,
         };
         this.listOfMembersNames = [];
     }
@@ -430,7 +505,7 @@ class MessageComposeComponentInner extends React.PureComponent<
     };
 
     private handleSend = () => {
-        let { message, floatingMessage, forwardMessageReply, forwardMessageId } = this
+        let { message, floatingMessage, forwardMessageReply, forwardMessageId, file } = this
             .state as MessageComposeComponentInnerState;
 
         if (message.trim().length > 0) {
@@ -442,16 +517,36 @@ class MessageComposeComponentInner extends React.PureComponent<
                 this.setState({
                     beDrafted: false,
                 });
+
+                if (file) {
+                    const ucFile = UploadCare.fileFrom('object', file);
+                    if (this.props.onSendFile) {
+                        this.props.onSendFile(ucFile);
+                    }
+                }
             }
             if ((floatingMessage || forwardMessageReply) && forwardMessageId) {
                 this.replyMessages();
             }
         } else if (forwardMessageReply && forwardMessageId) {
             this.replyMessages();
+        } else if (file) {
+            const ucFile = UploadCare.fileFrom('object', file);
+            if (this.props.onSendFile) {
+                this.props.onSendFile(ucFile);
+            }
         }
         this.closeEditor();
         this.changeDraft('');
         this.localDraftCleaner();
+    };
+
+    private fileRemover = () => {
+        this.setState({
+            file: null,
+            fileName: null,
+            fileSrc: null,
+        });
     };
 
     private replyMessages = () => {
@@ -559,11 +654,23 @@ class MessageComposeComponentInner extends React.PureComponent<
     };
 
     private handleDrop = (file: any) => {
-        const ucFile = UploadCare.fileFrom('object', file);
-
-        if (this.props.onSendFile) {
-            this.props.onSendFile(ucFile);
-        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            if (file.type.match('image')) {
+                this.setState({
+                    file: file,
+                    fileSrc: reader.result,
+                    fileName: null,
+                });
+            } else {
+                this.setState({
+                    file: file,
+                    fileSrc: null,
+                    fileName: file.name,
+                });
+            }
+        };
     };
 
     private closeEditor = () => {
@@ -574,6 +681,9 @@ class MessageComposeComponentInner extends React.PureComponent<
             forwardMessageReply: undefined,
             forwardMessageId: undefined,
             forwardMessageSender: undefined,
+            file: null,
+            fileSrc: null,
+            fileName: null,
         });
         if (this.input.current) {
             this.input.current!!.resetAndFocus();
@@ -665,6 +775,9 @@ class MessageComposeComponentInner extends React.PureComponent<
                 forwardMessageReply: '',
                 forwardMessageId: null,
                 forwardMessageSender: '',
+                file: null,
+                fileName: null,
+                fileSrc: null,
             };
             if (useForwardMessages && forwardMessagesId) {
                 this.props.messagesContext.changeForwardConverstion();
@@ -675,6 +788,9 @@ class MessageComposeComponentInner extends React.PureComponent<
                         (forwardMessagesId.size === 1 ? 'message' : 'messages'),
                     forwardMessageId: forwardMessagesId,
                     forwardMessageSender: 'Forward',
+                    file: null,
+                    fileName: null,
+                    fileSrc: null,
                 };
             }
         }
@@ -689,6 +805,9 @@ class MessageComposeComponentInner extends React.PureComponent<
                     forwardMessageReply: messageReply,
                     forwardMessageId: messageId,
                     forwardMessageSender: messageSender,
+                    file: null,
+                    fileName: null,
+                    fileSrc: null,
                 };
             } else {
                 newState = {
@@ -698,6 +817,9 @@ class MessageComposeComponentInner extends React.PureComponent<
                         (replyMessagesId.size === 1 ? 'message' : 'messages'),
                     forwardMessageId: replyMessagesId,
                     forwardMessageSender: 'Reply',
+                    file: null,
+                    fileName: null,
+                    fileSrc: null,
                 };
             }
             if (this.input.current) {
@@ -754,6 +876,9 @@ class MessageComposeComponentInner extends React.PureComponent<
             forwardMessageReply,
             forwardMessageId,
             forwardMessageSender,
+            file,
+            fileName,
+            fileSrc,
         } = this.state;
 
         let stateMessage = undefined;
@@ -771,17 +896,18 @@ class MessageComposeComponentInner extends React.PureComponent<
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage && forwardMessageId && (
-                            <EditView
-                                message={stateMessage}
-                                title={
-                                    forwardMessageSender !== undefined
-                                        ? forwardMessageSender
-                                        : 'Edit message'
-                                }
-                                onCancel={this.closeEditor}
-                            />
-                        )}
+                        {stateMessage &&
+                            forwardMessageId && (
+                                <EditView
+                                    message={stateMessage}
+                                    title={
+                                        forwardMessageSender !== undefined
+                                            ? forwardMessageSender
+                                            : 'Edit message'
+                                    }
+                                    onCancel={this.closeEditor}
+                                />
+                            )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}
@@ -856,6 +982,33 @@ class MessageComposeComponentInner extends React.PureComponent<
                                 enabled={this.props.enabled !== false}
                             />
                         </XHorizontal>
+                        {file &&
+                            fileSrc && (
+                                <CoverWrapper>
+                                    <img src={fileSrc} />
+                                    <CoverDelButton onClick={this.fileRemover}>
+                                        <RemoveIcon />
+                                    </CoverDelButton>
+                                </CoverWrapper>
+                            )}
+                        {file &&
+                            fileName && (
+                                <FileItem key={'file' + fileName} separator={4} alignItems="center">
+                                    <FileImage />
+                                    <XHorizontal alignItems="center" separator={4}>
+                                        <div>
+                                            {fileName} <span>•</span> {niceBytes(Number(file.size))}
+                                        </div>
+                                        <XHorizontal
+                                            alignItems="center"
+                                            className="remove"
+                                            onClick={this.fileRemover}
+                                        >
+                                            <RemoveIcon />
+                                        </XHorizontal>
+                                    </XHorizontal>
+                                </FileItem>
+                            )}
                     </XVertical>
                 </SendMessageContent>
                 <PostIntroModal
