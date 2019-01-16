@@ -2,6 +2,7 @@ import * as Mixpanel from 'mixpanel-browser';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import * as Sentry from '@sentry/browser';
+import { Track } from 'openland-engines/Tracking';
 
 let MixpanelToken = canUseDOM && loadConfig().mixpanelKey;
 let sentryEndpoint = canUseDOM && loadConfig().sentryEndpoint && loadConfig().release;
@@ -20,6 +21,9 @@ export function trackEvent(event: string, params?: { [key: string]: any }) {
         if (MixpanelToken) {
             Mixpanel.track(event, params);
         }
+    }
+    if (canUseDOM) {
+        Track.track(event, params);
     }
 }
 
