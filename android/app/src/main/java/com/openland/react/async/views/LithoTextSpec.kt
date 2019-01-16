@@ -64,7 +64,7 @@ object LithoTextSpec {
 
                 }
                 if(s.fontSize !== null){
-                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    part.setSpan(AbsoluteSizeSpan(s.fontSize!!.toInt(), true), 0, part.length ,  Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
                 }
 
                 if(s.fontWeight !== null){
@@ -84,7 +84,7 @@ object LithoTextSpec {
                 }
 
                 if(s.color != Color.BLACK){
-                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVEw)
+                    part.setSpan(ForegroundColorSpan(s.color), 0, part.length ,  Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
 
                 sb.append(part)
