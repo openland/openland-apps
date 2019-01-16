@@ -654,9 +654,6 @@ class MessageComposeComponentInner extends React.PureComponent<
     };
 
     private handleDrop = (file: any) => {
-        if (!file) {
-            return;
-        }
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
@@ -701,8 +698,8 @@ class MessageComposeComponentInner extends React.PureComponent<
         }
 
         let { message, forwardMessageId } = this.state;
-        let hasFocus =
-            this.input.current && this.input.current.state.editorState.getSelection().getHasFocus();
+        const input = this.input.current;
+        let hasFocus = input && input.state.editorState.getSelection().getHasFocus();
 
         if (
             message.length === 0 &&
@@ -920,6 +917,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                                 onSubmit={this.handleSend}
                                 ref={this.input}
                                 value={floatingMessage}
+                                onPasteFile={this.handleDrop}
                             />
                         </TextInputWrapper>
                         <XHorizontal

@@ -348,6 +348,7 @@ export interface XRichTextInputProps extends XFlexStyles {
     placeholder?: string;
     autofocus?: boolean;
     mentionsData?: MentionDataT[];
+    onPasteFile?: (file: any) => void;
 }
 
 type XRichTextInputState = {
@@ -454,6 +455,19 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         );
     };
 
+    onPasteFiles = (data: any) => {
+        let file = data[0];
+        if (!file) {
+            return;
+        }
+
+        if (this.props.onPasteFile) {
+            this.props.onPasteFile(file);
+        }
+
+        this.resetAndFocus();
+    };
+
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
         if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
@@ -496,6 +510,7 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                         handleKeyCommand={this.onHandleKey}
                         ref={this.editorRef}
                         plugins={[emojiPlugin, mentionPlugin]}
+                        handlePastedFiles={this.onPasteFiles}
                     />
 
                     <EmojiSuggestions />

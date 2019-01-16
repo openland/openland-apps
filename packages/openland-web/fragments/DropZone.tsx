@@ -67,6 +67,10 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
 
         const file = e.dataTransfer.files[0];
 
+        if (!file) {
+            return;
+        }
+
         this.props.onFileDrop(file);
     };
 
