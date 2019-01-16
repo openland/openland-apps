@@ -41,6 +41,7 @@ import {
     UserShort_primaryOrganization,
 } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 
 const NavigationContainer = (props: { children?: any }) => (
     <XView
@@ -55,15 +56,29 @@ const NavigationContainer = (props: { children?: any }) => (
     </XView>
 );
 
-const NavigationScroller = Glamorous(XScrollView)({
+const NavigationScrollerDiv = Glamorous(XScrollView)({
     minHeight: '100%',
     height: '100%',
     width: 64,
-    backgroundColor: '#f6f6f6',
     borderRightWidth: '1px',
     borderRightStyle: 'solid',
     borderRightColor: XThemeDefault.separatorColor,
     flexShrink: 0,
+});
+
+const NavigationScroller = React.memo<{ children: any }>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return (
+        <NavigationScrollerDiv
+            css={{
+                backgroundColor: theme.appBarBackgroundColor,
+                borderRightWidth: theme.appBarSeparatorColor !== undefined ? '1px' : '0px',
+                borderRightColor: theme.appBarSeparatorColor
+            }}
+        >
+            {props.children}
+        </NavigationScrollerDiv>
+    )
 });
 
 const Logo = () => (
@@ -89,6 +104,7 @@ const Logo = () => (
 );
 
 const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
+    let theme = React.useContext(ThemeContext);
     if (props.position === 'top') {
         return (
             <XView
@@ -97,7 +113,7 @@ const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
                 marginTop={0}
                 marginBottom={16}
                 alignSelf="center"
-                backgroundColor="rgba(220, 222, 228, 0.6)"
+                backgroundColor={theme.appBarSeparatorInnerColor}
                 flexShrink={0}
             />
         );
@@ -109,7 +125,7 @@ const NavigationDivider = (props: { position: 'top' | 'bottom' }) => {
                 marginTop={10}
                 marginBottom={10}
                 alignSelf="center"
-                backgroundColor="rgba(220, 222, 228, 0.6)"
+                backgroundColor={theme.appBarSeparatorInnerColor}
                 flexShrink={0}
             />
         );
@@ -593,7 +609,7 @@ export const MessengerButton = withNotificationCounter(props => {
             content={<strong>{TextAppBar.items.mail}</strong>}
         >
             <NavigatorItem path="/mail">
-                <MessagesIcon />
+                <MessagesIcon fill="#f00" />
 
                 {props.data.counter && props.data.counter.unreadCount > 0 && (
                     <CounterWrapper count={props.data.counter.unreadCount} />
