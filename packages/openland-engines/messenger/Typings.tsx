@@ -74,7 +74,7 @@ export class TypingsWatcher {
                     let existingTimeouts = this.timeouts[cId] || {};
                     clearTimeout(existingTimeouts[event.data.typings.user.id]);
                     // schedule typing clear
-                    existingTimeouts[event.data.typings.user.id] = setTimeout(
+                    existingTimeouts[event.data.typings.user.id] = window.setTimeout(
                         () => {
                             existing[event.data.typings.user.id] = undefined;
                             onChange(cId, this.renderTypings(cId));
