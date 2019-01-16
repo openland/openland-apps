@@ -10,6 +10,7 @@ import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
 import { TextDirectory } from 'openland-text/TextDirectory';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
 
 const NewButtonWrapper = Glamorous(XButton)({
     '& svg > g > path': {
@@ -110,5 +111,8 @@ export const Navigation = (props: { route: string }) => (
             icon={<OrganizationsIcon />}
         />
         <SidebarItem path="/directory/communities" title="Communities" icon={<CommunityIcon />} />
+        <XWithRole role="feature-non-production">
+            <SidebarItem path="/directory/explore" title="Explore" icon={<CommunityIcon />} />
+        </XWithRole>
     </Sidebar>
 );

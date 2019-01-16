@@ -3610,6 +3610,33 @@ export interface ConferenceCandidateVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: AvailableRooms
+// ====================================================
+
+export interface AvailableRooms_rooms_PrivateRoom {
+  __typename: "PrivateRoom";
+}
+
+export interface AvailableRooms_rooms_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+}
+
+export type AvailableRooms_rooms = AvailableRooms_rooms_PrivateRoom | AvailableRooms_rooms_SharedRoom;
+
+export interface AvailableRooms {
+  rooms: AvailableRooms_rooms[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 
