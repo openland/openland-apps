@@ -10,6 +10,7 @@ import { XCounter } from 'openland-x/XCounter';
 import { XView, XViewSelectedContext } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { emoji } from 'openland-y-utils/emoji';
+import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 
 export let iconClass = css`
     display: inline-block;
@@ -56,6 +57,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                 ? <>{emoji(dialog.sender, 14)}: </>
                 : '';
     let message: any = undefined;
+    let theme = React.useContext(ThemeContext);
     if (dialog.typing) {
         message = dialog.typing;
     } else {
@@ -162,8 +164,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         fontSize={14}
                         fontWeight="600"
                         lineHeight="18px"
-                        color="#000"
-                        selectedColor="#fff"
+                        color={theme.textColor}
+                        selectedColor={theme.textColorSelected}
                         overflow="hidden"
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
@@ -173,13 +175,15 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     {dialog.date && (
                         <XView
                             height={18}
-                            color="rgba(0, 0, 0, 0.3)"
-                            selectedColor="rgba(255, 255, 255, 0.8)"
+                            color={theme.textColor}
+                            selectedColor={theme.textColorSelected}
                             marginLeft={5}
                             fontSize={12}
                             fontWeight="600"
                             lineHeight="18px"
                             whiteSpace="nowrap"
+                            opacity={0.3}
+                            selectedOpacity={0.8}
                         >
                             <XDate value={dialog.date.toString()} format="datetime_short" />
                         </XView>
@@ -190,8 +194,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     minWidth={0}
                     flexGrow={1}
                     flexShrink={1}
-                    color="rgba(0, 0, 0, 0.5)"
-                    selectedColor="#fff"
+                    color={theme.textColor}
+                    selectedColor={theme.textColorSelected}
+                    opacity={0.5}
+                    selectedOpacity={1}
                 >
                     <XView
                         height={34}

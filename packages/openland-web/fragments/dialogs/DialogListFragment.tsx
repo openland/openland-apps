@@ -8,6 +8,7 @@ import { XFont } from 'openland-x/XFont';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { css } from 'linaria';
+import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 
 const containerStyle = css`
     display: flex;
@@ -18,7 +19,6 @@ const containerStyle = css`
     border-right-width: 1px;
     border-right-style: solid;
     border-right-color: #ececec;
-    background-color: #fff;
     @media (max-width: 1100px) {
         width: 300px;
     }
@@ -51,9 +51,10 @@ const Title = Glamorous.div({
 });
 
 export const DialogListFragment = React.memo(() => {
+    let theme = React.useContext(ThemeContext);
     return (
         <div className={containerStyle}>
-            <XView flexGrow={1} flexBasis={0}>
+            <XView flexGrow={1} flexBasis={0} backgroundColor={theme.backgroundColor}>
                 <Header alignItems="center" justifyContent="space-between">
                     <Title data-test-id="messages-title">Messages</Title>
                     <AddButton
