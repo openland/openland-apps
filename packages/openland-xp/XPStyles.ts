@@ -20,10 +20,12 @@ export const XPStyles = {
             ios: '#EFF1F3',
             macos: '#4747EC'
         }),
+        inactiveCounter: '#c8c7cc',
 
         separator: Platform.select({
             default: '#EDEDED',
             ios: '#EFF1F3',
+            android: '#ebebeb',
         })
     },
     avatars: [{

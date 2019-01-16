@@ -26,12 +26,12 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
                                         key="add"
                                         text={`https://openland.com/joinChannel/${data.data!.link}`}
                                         appearance="action"
-                                        onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `https://openland.com/joinChannel/${data.data!.link}` })}
+                                        onPress={() => Share.share({ message: `https://openland.com/joinChannel/${data.data!.link}` })}
                                     />)}
                                 </ZListItemGroup>
                                 <ZListItemGroup >
-                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`Join Openland! - Messaging for smart people https://openland.com/joinChannel/${data.data!.link}`)} />
-                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `https://openland.com/joinChannel/${data.data!.link}` })} />
+                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/joinChannel/${data.data!.link}`)} />
+                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/joinChannel/${data.data!.link}` })} />
                                     <YMutation mutation={RoomRenewInviteLinkMutation} variables={{ roomId: this.props.router.params.id }} refetchQueriesVars={[{ query: RoomInviteLinkQuery, variables: { roomId: this.props.router.params.id } }]}>
                                         {renew => <ZListItem
                                             appearance="action"
