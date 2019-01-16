@@ -45,7 +45,7 @@ export default class OpenlandDocument extends Document {
                     <meta name="theme-color" content="#6400FF" />
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
-                    <meta name="apple-itunes-app" content="app-id=1435537685"/>
+                    <meta name="apple-itunes-app" content="app-id=1435537685" />
 
                     {/* ORDER IS IMPORTANT! */}
                     <link
@@ -123,7 +123,10 @@ export default class OpenlandDocument extends Document {
                         name="msapplication-TileImage"
                         content="/static/img/favicon/ms-icon-144x144.png"
                     />
-
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                    />
                     {/* Styles */}
                     <link rel="stylesheet" href="/static/css/draft.css" />
                     <link rel="stylesheet" href="/static/css/draft-emoji.css" />
