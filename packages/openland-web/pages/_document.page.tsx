@@ -123,7 +123,6 @@ export default class OpenlandDocument extends Document {
                         name="msapplication-TileImage"
                         content="/static/img/favicon/ms-icon-144x144.png"
                     />
-                    <meta name="theme-color" content="#ffffff" />
 
                     {/* Styles */}
                     <link rel="stylesheet" href="/static/css/draft.css" />
