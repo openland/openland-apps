@@ -16,7 +16,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { ZRoundedButton } from '../../components/ZRoundedButton';
 import { YMutation } from 'openland-y-graphql/YMutation';
-import { SetTypingMutation, RoomQuery, RoomJoinMutation } from 'openland-api';
+import { SetTypingMutation, RoomQuery, RoomJoinMutation, RoomJoinInviteLinkMutation } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
@@ -136,16 +136,17 @@ class ConversationComponent extends React.Component<PageProps> {
                                         {resp => {
                                             let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
                                             let privateRoom = resp.data.room!.__typename === 'PrivateRoom' ? resp.data.room! as Room_room_PrivateRoom : null;
+                                            let invite = this.props.router.params.invite;
 
                                             if (sharedRoom && sharedRoom.membership !== 'MEMBER' && sharedRoom.kind !== 'INTERNAL') {
-                                                if (sharedRoom.kind === 'PUBLIC') {
+                                                if (sharedRoom.kind === 'PUBLIC' || invite) {
                                                     return (
                                                         <>
                                                             <SHeaderView>
                                                                 <ChatHeader conversationId={sharedRoom.id} router={this.props.router} />
                                                             </SHeaderView>
                                                             <ASView
-                                                                style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+                                                                style={{ position: 'absolute', zIndex: -1, left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                                                             >
                                                                 <ASFlex
                                                                     width={Dimensions.get('window').width}
@@ -166,8 +167,9 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                         size={100}
                                                                         placeholderKey={sharedRoom.id}
                                                                         placeholderTitle={sharedRoom.title}
+
                                                                     />
-                                                                    <View flexDirection="column" zIndex={-1}>
+                                                                    <View flexDirection="column" zIndex={- 1}>
                                                                         <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} />
                                                                         <Text style={{ fontSize: 20, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
                                                                         <Text style={{ fontSize: 15, color: '#8a8a8f', textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
@@ -175,7 +177,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                     </View>
                                                                 </View>
                                                                 <View alignSelf="center" marginBottom={46}>
-                                                                    <YMutation mutation={RoomJoinMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
+                                                                    {!invite && <YMutation mutation={RoomJoinMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
                                                                         {(join) => (
                                                                             <ZRoundedButton
                                                                                 style="big"
@@ -193,7 +195,26 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                                 }}
                                                                             />
                                                                         )}
-                                                                    </YMutation>
+                                                                    </YMutation>}
+                                                                    {invite && <YMutation mutation={RoomJoinInviteLinkMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
+                                                                        {(join) => (
+                                                                            <ZRoundedButton
+                                                                                style="big"
+                                                                                uppercase={false}
+                                                                                title={'Accept invitation'}
+                                                                                onPress={async () => {
+                                                                                    startLoader();
+                                                                                    try {
+                                                                                        await join({ variables: { invite: invite } });
+                                                                                    } catch (e) {
+                                                                                        Alert.alert(e.message);
+                                                                                    }
+                                                                                    stopLoader();
+
+                                                                                }}
+                                                                            />
+                                                                        )}
+                                                                    </YMutation>}
                                                                 </View>
 
                                                             </ASSafeAreaView>

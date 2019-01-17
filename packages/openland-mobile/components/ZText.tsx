@@ -14,7 +14,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                 let info: any = await getMessenger().engine.client.client.query({ query: RoomInviteInfoQuery.document, variables: { invite: uuid } });
                 if (info.data && info.data.invite) {
                     let roomId = info.data.invite.room.id;
-                    getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId });
+                    getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
                 } else {
                     Alert.alert('Invite not found');
                 }
