@@ -5476,8 +5476,60 @@ export interface ConversationShort_AnonymousConversation_topMessage_alphaAttachm
   fileMetadata: ConversationShort_AnonymousConversation_topMessage_alphaAttachments_fileMetadata | null;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+  __typename: "InviteServiceMetadata";
+  users: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
@@ -5532,7 +5584,12 @@ export interface ConversationShort_AnonymousConversation_topMessage_serviceMetad
   kickedBy: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type ConversationShort_AnonymousConversation_topMessage_serviceMetadata = ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata;
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export type ConversationShort_AnonymousConversation_topMessage_serviceMetadata = ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_KickServiceMetadata | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata;
 
 export interface ConversationShort_AnonymousConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -5839,8 +5896,60 @@ export interface ConversationShort_GroupConversation_topMessage_alphaAttachments
   fileMetadata: ConversationShort_GroupConversation_topMessage_alphaAttachments_fileMetadata | null;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+  __typename: "InviteServiceMetadata";
+  users: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
@@ -5895,7 +6004,12 @@ export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_
   kickedBy: ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type ConversationShort_GroupConversation_topMessage_serviceMetadata = ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata;
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export type ConversationShort_GroupConversation_topMessage_serviceMetadata = ConversationShort_GroupConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_KickServiceMetadata | ConversationShort_GroupConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata;
 
 export interface ConversationShort_GroupConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -6218,8 +6332,60 @@ export interface ConversationShort_ChannelConversation_topMessage_alphaAttachmen
   fileMetadata: ConversationShort_ChannelConversation_topMessage_alphaAttachments_fileMetadata | null;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+  __typename: "InviteServiceMetadata";
+  users: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
@@ -6274,7 +6440,12 @@ export interface ConversationShort_ChannelConversation_topMessage_serviceMetadat
   kickedBy: ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type ConversationShort_ChannelConversation_topMessage_serviceMetadata = ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata;
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export type ConversationShort_ChannelConversation_topMessage_serviceMetadata = ConversationShort_ChannelConversation_topMessage_serviceMetadata_PhotoChangeServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_InviteServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_KickServiceMetadata | ConversationShort_ChannelConversation_topMessage_serviceMetadata_TitleChangeServiceMetadata;
 
 export interface ConversationShort_ChannelConversation_topMessage_fileMetadata {
   __typename: "FileMetadata";
@@ -6609,8 +6780,60 @@ export interface MessageFull_alphaAttachments {
   fileMetadata: MessageFull_alphaAttachments_fileMetadata | null;
 }
 
+export interface MessageFull_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+}
+
+export interface MessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageFull_serviceMetadata_InviteServiceMetadata_users {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
+}
+
+export interface MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
 export interface MessageFull_serviceMetadata_InviteServiceMetadata {
-  __typename: "InviteServiceMetadata" | "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+  __typename: "InviteServiceMetadata";
+  users: MessageFull_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: MessageFull_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
 export interface MessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
@@ -6665,7 +6888,12 @@ export interface MessageFull_serviceMetadata_KickServiceMetadata {
   kickedBy: MessageFull_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type MessageFull_serviceMetadata = MessageFull_serviceMetadata_InviteServiceMetadata | MessageFull_serviceMetadata_KickServiceMetadata;
+export interface MessageFull_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export type MessageFull_serviceMetadata = MessageFull_serviceMetadata_PhotoChangeServiceMetadata | MessageFull_serviceMetadata_InviteServiceMetadata | MessageFull_serviceMetadata_KickServiceMetadata | MessageFull_serviceMetadata_TitleChangeServiceMetadata;
 
 export interface MessageFull_fileMetadata {
   __typename: "FileMetadata";

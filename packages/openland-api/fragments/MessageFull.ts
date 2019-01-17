@@ -29,6 +29,14 @@ export const MessageFull = gql`
             }
         }
         serviceMetadata {
+            ... on InviteServiceMetadata {
+                users {
+                    ...UserShort
+                }
+                invitedBy {
+                    ...UserShort
+                }
+            }
             ... on KickServiceMetadata {
                 user {
                     ...UserShort
@@ -36,6 +44,9 @@ export const MessageFull = gql`
                 kickedBy {
                     ...UserShort
                 }
+            }
+            ... on TitleChangeServiceMetadata {
+                title
             }
         }
         fileMetadata {
