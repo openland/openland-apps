@@ -103,13 +103,7 @@ const DesktopDialogContainer = ({ children }: { children: any }) => {
 };
 
 const MobileDialogContainer = ({ children }: { children: any }) => {
-    return (
-        <XView width="100%">
-            123
-            <Menu title="Chats" leftContent={<div>+</div>} />
-            {children}
-        </XView>
-    );
+    return <XView width="100%">{children}</XView>;
 };
 
 const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {

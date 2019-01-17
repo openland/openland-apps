@@ -7,6 +7,10 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
 import { XView } from 'react-mental';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold';
+import BurgerIcon from 'openland-icons/landing/burger.svg';
+import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import Glamorous from 'glamorous';
+import { XButton } from 'openland-x/XButton';
 
 const MenuItemWrapper = css`
     display: flex;
@@ -72,6 +76,7 @@ interface MenuItemProps {
 const MenuItemIcon = css`
     padding: 12px 15px 12px 46px !important;
 `;
+
 export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
     <XLink path={path} className={`${MenuItemWrapper} ${icon && MenuItemIcon}`} onClick={onClick}>
         {icon && <div className="icon-wrapper">{icon}</div>}
@@ -172,7 +177,6 @@ interface MenuProps {
 }
 
 const titleClassName = css`
-    flex: 1;
     font-size: 22px;
     line-height: 28px;
     letter-spacing: 0;
@@ -181,11 +185,11 @@ const titleClassName = css`
     opacity: 0.9;
 `;
 
-const Title = ({ children, onClick }: { children: string; onClick: (event: any) => void }) => {
+const Title = ({ children, onClick }: { children: string; onClick?: (event: any) => void }) => {
     return (
-        <span onClick={onClick} className={titleClassName}>
+        <div onClick={onClick} className={titleClassName}>
             {children}
-        </span>
+        </div>
     );
 };
 
@@ -198,14 +202,46 @@ const SelectIcon = () => {
     return <RightIcon className={selectIconClassName} />;
 };
 
+const myBurgerIconClassName = css`
+    '& svg': {
+        '& *': {
+            fill: '#2196f3',
+        },
+    },
+`;
+
+export const BurgerButton = () => {
+    const { showSidebar, setShowSidebar } = React.useContext(MobileSidebarContext);
+
+    return (
+        <div
+            className={myBurgerIconClassName}
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+                setShowSidebar(!showSidebar);
+            }}
+        >
+            <BurgerIcon />
+        </div>
+    );
+};
+
+const AddButton = Glamorous(XButton)({
+    '& svg > g > path': {
+        transition: 'all .2s',
+    },
+    '& svg > g > path:last-child': {
+        fill: '#1790ff',
+        opacity: 0.5,
+    },
+});
+
 export const Menu = React.memo<MenuProps>(props => {
     if (!canUseDOM) {
         return null;
     }
 
-    const { showSidebar, setShowSidebar, showMenu, setShowMenu, isMobile } = React.useContext(
-        MobileSidebarContext,
-    );
+    const { showMenu, setShowMenu, isMobile } = React.useContext(MobileSidebarContext);
 
     const onClick = () => {
         if (isMobile) {
@@ -215,25 +251,53 @@ export const Menu = React.memo<MenuProps>(props => {
 
     const { title, rightContent, children } = props;
 
+    if (!children) {
+        return (
+            <XView
+                flexDirection="row"
+                width="100%"
+                height={48}
+                paddingLeft={16}
+                paddingRight={16}
+                marginTop={4}
+                marginBottom={3}
+                flexShrink={0}
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <BurgerButton />
+                {title && <Title data-test-id="messages-title">{title}</Title>}
+                <AddButton
+                    style="light"
+                    path="/mail/new"
+                    text="New"
+                    icon={<PlusIcon />}
+                    size="small"
+                />
+            </XView>
+        );
+    }
+
     return (
-        <>
-            <div className={isMobile ? menuMobileHeaderClassName : menuHeaderClassName}>
-                {isMobile && (
-                    <div
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                            setShowSidebar(!showSidebar);
-                        }}
-                    >
-                        burger
-                    </div>
-                )}
+        <XView width="100%">
+            <XView
+                flexDirection="row"
+                width="100%"
+                height={48}
+                paddingLeft={16}
+                paddingRight={16}
+                marginTop={4}
+                marginBottom={3}
+                flexShrink={0}
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                {isMobile && <BurgerButton />}
                 {title && <Title onClick={onClick}>{title}</Title>}
                 {rightContent && <SelectIcon />}
-            </div>
-
+            </XView>
             <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>
-        </>
+        </XView>
     );
 });
 
