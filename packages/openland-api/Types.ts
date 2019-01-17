@@ -446,7 +446,7 @@ export interface MyApps_apps {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: MyApps_apps_photoRef | null;
   about: string | null;
   token: MyApps_apps_token;
@@ -486,7 +486,7 @@ export interface CreateApp_createApp {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: CreateApp_createApp_photoRef | null;
   about: string | null;
   token: CreateApp_createApp_token;
@@ -498,7 +498,9 @@ export interface CreateApp {
 
 export interface CreateAppVariables {
   name: string;
-  shortname: string;
+  shortname?: string | null;
+  photoRef?: ImageRefInput | null;
+  about?: string | null;
 }
 
 /* tslint:disable */
@@ -531,7 +533,7 @@ export interface UpdateApp_updateAppProfile {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: UpdateApp_updateAppProfile_photoRef | null;
   about: string | null;
   token: UpdateApp_updateAppProfile_token;
@@ -576,7 +578,7 @@ export interface RefreshAppToken_refreshAppToken {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: RefreshAppToken_refreshAppToken_photoRef | null;
   about: string | null;
   token: RefreshAppToken_refreshAppToken_token;
@@ -3608,6 +3610,33 @@ export interface ConferenceCandidateVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: AvailableRooms
+// ====================================================
+
+export interface AvailableRooms_rooms_PrivateRoom {
+  __typename: "PrivateRoom";
+}
+
+export interface AvailableRooms_rooms_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+}
+
+export type AvailableRooms_rooms = AvailableRooms_rooms_PrivateRoom | AvailableRooms_rooms_SharedRoom;
+
+export interface AvailableRooms {
+  rooms: AvailableRooms_rooms[];
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 
@@ -5353,7 +5382,7 @@ export interface AppFull {
   __typename: "AppProfile";
   id: string;
   name: string;
-  shortname: string;
+  shortname: string | null;
   photoRef: AppFull_photoRef | null;
   about: string | null;
   token: AppFull_token;

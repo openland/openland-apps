@@ -128,7 +128,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         }
                                         }
                                     </YMutation>
-                                    {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER') &&
+                                    {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
                                         < ZListItem
                                             leftIcon={require('assets/ic-cell-link-ios.png')}
                                             text="Invite via Link"

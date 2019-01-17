@@ -7,6 +7,7 @@ import * as Account from './queries/Account';
 import * as App from './queries/App';
 import * as Chats from './queries/Chats';
 import * as Conferences from './queries/Conferences';
+import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as Feed from './queries/Feed';
 import * as Organization from './queries/Organization';
@@ -83,6 +84,7 @@ export const ConferenceWatchSubscription = typedQuery<Types.ConferenceWatch, Typ
 export const ConferenceOfferMutation = typedMutation<Types.ConferenceOffer, Types.ConferenceOfferVariables>(Conferences.ConferenceOfferMutation);
 export const ConferenceAnswerMutation = typedMutation<Types.ConferenceAnswer, Types.ConferenceAnswerVariables>(Conferences.ConferenceAnswerMutation);
 export const ConferenceCandidateMutation = typedMutation<Types.ConferenceCandidate, Types.ConferenceCandidateVariables>(Conferences.ConferenceCandidateMutation);
+export const AvailableRoomsQuery = typedQuery<Types.AvailableRooms, {}>(Explore.AvailableRoomsQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);

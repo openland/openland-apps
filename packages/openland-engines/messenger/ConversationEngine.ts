@@ -4,7 +4,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -125,11 +125,12 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
             imageSize: src.fileMetadata!!.isImage ? { width: src.fileMetadata!!.imageWidth!!, height: src.fileMetadata!!.imageHeight!! } : undefined
         } : undefined,
         isSending: false,
-        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) : false,
-        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) : false,
+        attachTop: next ? (next.sender.id === src.sender.id) && isSameDate(next.date, src.date) && (next.isService === src.isService) : false,
+        attachBottom: prev ? prev.sender.id === src.sender.id && isSameDate(prev.date, src.date) && (prev.isService === src.isService) : false,
         urlAugmentation: src.urlAugmentation || undefined,
         reactions: src.reactions || undefined,
         serviceMetaData: src.serviceMetadata || undefined,
+        mentions: src.mentions || undefined,
     };
 }
 
@@ -652,7 +653,7 @@ export class ConversationEngine implements MessageSendHandler {
         if (isServerMessage(src)) {
             conv = convertMessage(src, this.engine, undefined);
 
-            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id : false;
+            conv.attachTop = prev && prev.type === 'message' ? prev.senderId === src.sender.id && !!prev.serviceMetaData === !!src.isService : false;
         } else {
             let p = src as PendingMessage;
             conv = {
@@ -673,7 +674,7 @@ export class ConversationEngine implements MessageSendHandler {
                     isImage: false,
                     isGif: false
                 } : undefined,
-                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id : false
+                attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false
             };
         }
         if (this.dataSource.hasItem(conv.key)) {
@@ -685,7 +686,7 @@ export class ConversationEngine implements MessageSendHandler {
             };
             this.dataSource.updateItem(converted);
         } else {
-            if (prev && prev.type === 'message' && prev.senderId === conv.senderId) {
+            if (prev && prev.type === 'message' && prev.senderId === conv.senderId && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
                 this.dataSource.updateItem({ ...prev!!, attachBottom: true });
                 this.dataSource.addItem(conv, 0);
             } else {
@@ -702,6 +703,7 @@ export class ConversationEngine implements MessageSendHandler {
 
         let prevDate: string | undefined;
         let prevMessageDate: number | undefined = undefined;
+        let prevMessageIsService: boolean | undefined = undefined;
         let prevMessageSender: string | undefined = undefined;
         let currentCollapsed = 0;
 
@@ -727,7 +729,7 @@ export class ConversationEngine implements MessageSendHandler {
         //
         let prepareSenderIfNeeded = (sender: UserShortFragnemt, message: ModelMessage, date: number) => {
             let day = prepareDateIfNeeded(date);
-            if (prevMessageSender === sender.id && prevMessageDate !== undefined) {
+            if (prevMessageSender === sender.id && prevMessageDate !== undefined && message.isService === prevMessageIsService) {
                 // 10 sec
                 if (prevMessageDate - date < 10000 && currentCollapsed < 10) {
                     prevMessageDate = date;
@@ -736,12 +738,13 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             }
 
+            prevMessageIsService = message.isService;
             prevMessageDate = date;
             prevMessageSender = sender.id;
             currentCollapsed = 0;
             currentGroup = {
                 key: isServerMessage(message) ? 'msg-' + message.id : 'msg-pending-' + message.key,
-                sender,
+                sender: sender,
                 messages: []
             };
             day.messages.push(currentGroup);

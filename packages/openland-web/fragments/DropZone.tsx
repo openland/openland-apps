@@ -60,12 +60,16 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
     private handleDrop = (e: any) => {
         e.preventDefault();
 
+        const file = e.dataTransfer.files[0];
+
         this.setState({
             dragOn: false,
             dragUnder: false
         });
 
-        const file = e.dataTransfer.files[0];
+        if (!file) {
+            return;
+        }
 
         this.props.onFileDrop(file);
     };
@@ -99,7 +103,7 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
 
     private handleDragLeave = (e: any) => {
         let file = e.dataTransfer.files[0];
-        if (file === undefined) {
+        if (!file) {
             this.setState({
                 dragOn: false
             });

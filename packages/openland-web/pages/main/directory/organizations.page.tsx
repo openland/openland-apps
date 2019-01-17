@@ -44,8 +44,8 @@ const OrganizationCards = withExploreOrganizations(props => {
                         <XOrganizationCard key={'_org_card_' + i.node.id} organization={i.node} />
                     ))}
                     <PagePagination
+                        currentRoute="/directory/organizations"
                         pageInfo={props.data.items.pageInfo}
-                        onPageChange={(props as any).onPageChange}
                     />
                 </XContentWrapper>
             )}

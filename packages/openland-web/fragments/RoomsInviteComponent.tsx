@@ -89,11 +89,15 @@ const InfoCardWrapper = Glamorous.div({
     },
 });
 
-const InfoCardHeader = Glamorous(XHorizontal)({
-    borderBottom: '1px solid #ececec',
-    paddingBottom: 20,
-    marginBottom: 12,
-});
+const InfoCardHeader = Glamorous(XHorizontal)<{ haveDescription: boolean }>(
+    ({ haveDescription }) => {
+        return {
+            borderBottom: haveDescription ? '1px solid #ececec' : 'none',
+            paddingBottom: haveDescription ? 20 : 0,
+            marginBottom: 12,
+        };
+    },
+);
 
 const InfoCardBody = Glamorous.div({
     fontSize: 16,
@@ -292,7 +296,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                         <div style={{ height: 50 }} />
                     )}
                     <InfoCardWrapper>
-                        <InfoCardHeader separator={8}>
+                        <InfoCardHeader separator={8} haveDescription={!!room.description}>
                             <RoomAvatar
                                 cloudImageUuid={room.photo || undefined}
                                 style="room"
@@ -312,9 +316,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                                 </RoomCounter>
                             </div>
                         </InfoCardHeader>
-                        <InfoCardBody>
-                            {room.description || TextRoom.descriptionPlaceholder}
-                        </InfoCardBody>
+                        {room.description && <InfoCardBody>{room.description}</InfoCardBody>}
                     </InfoCardWrapper>
                     {this.props.signup && (
                         <div className={aboutTextClass}>

@@ -5,7 +5,6 @@ import { XServiceMessage } from 'openland-x/XServiceMessage';
 import Glamorous from 'glamorous';
 
 const ErrorText = Glamorous.div({
-    fontFamily: 'SFProText-Regular',
     fontSize: '12px',
     color: '#d75454',
     marginLeft: '17px',
@@ -37,10 +36,7 @@ export function XFormError(
                     return (
                         <>
                             {errors
-                                .filter(
-                                    ([first]: any) =>
-                                        form.touched.indexOf(first) !== -1,
-                                )
+                                .filter(([first]: any) => form.touched.indexOf(first) !== -1)
                                 .map(([first, second]: any) => second)
                                 .filter((id: any) => id)
                                 .map((errorText: string, key: number) => {

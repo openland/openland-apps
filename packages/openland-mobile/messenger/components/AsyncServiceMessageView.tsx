@@ -28,7 +28,7 @@ export class AsyncServiceMessageView extends React.PureComponent<{
             if (meta.kickedBy.id === meta.user.id) {
                 return (
                     <Container>
-                        <ASText color="#fff" fontWeight="600" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress((meta as any).user.id)}>{meta.user.name}</ASText>
+                        <ASText color="#fff" fontWeight="500" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress((meta as any).user.id)}>{meta.user.name}</ASText>
                         {' '}
                         has left the room
                     </Container>
@@ -36,18 +36,18 @@ export class AsyncServiceMessageView extends React.PureComponent<{
             } else {
                 return (
                     <Container>
-                        <ASText color="#fff" fontWeight="600" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress((meta as any).user.id)}>{meta.user.name}</ASText>
+                        <ASText color="#fff" fontWeight="500" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress((meta as any).user.id)}>{meta.user.name}</ASText>
                         {' '}
                         was kicked by
                         {' '}
-                        <ASText color="#fff" fontWeight="600" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress((meta as any).kickedBy.id)}>{this.userNameYouTransform(meta.kickedBy)}</ASText>
+                        <ASText color="#fff" fontWeight="500" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress((meta as any).kickedBy.id)}>{this.userNameYouTransform(meta.kickedBy)}</ASText>
                     </Container>
                 );
             }
         } else if (meta.__typename === 'PhotoChangeServiceMetadata') {
             return (
                 <Container>
-                    <ASText color="#fff" fontWeight="600" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress(this.props.message.senderId)}>{this.userNameYouTransform({ id: this.props.message.senderId, name: this.props.message.senderName })}</ASText>
+                    <ASText color="#fff" fontWeight="500" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6} onPress={() => this.props.onUserPress(this.props.message.senderId)}>{this.userNameYouTransform({ id: this.props.message.senderId, name: this.props.message.senderName })}</ASText>
                     {' '}
                     changed group photo
                     </Container>

@@ -95,6 +95,8 @@ routes.add('/directory/organizations', '/main/directory/organizations');
 routes.add('/directory/organizations/', '/main/directory/organizations');
 routes.add('/directory/communities', '/main/directory/communities');
 routes.add('/directory/communities/', '/main/directory/communities');
+routes.add('/directory/explore', '/main/directory/explore');
+routes.add('/directory/explore/', '/main/directory/explore');
 routes.add('/directory/r/:conversationId', '/main/directory/root');
 routes.add('/directory/r/:conversationId/', '/main/directory/root');
 routes.add('/directory/p/:conversationId', '/main/directory/root');

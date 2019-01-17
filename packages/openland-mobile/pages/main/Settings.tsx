@@ -31,7 +31,7 @@ class SettingsComponent extends React.Component<PageProps> {
                     <SHeader title="Settings" />
                 )}
                 {Platform.OS === 'android' && (
-                    <CenteredHeader title="Settings" /> 
+                    <CenteredHeader title="Settings" />
                 )}
 
                 <ZQuery query={AccountSettingsQuery}>
@@ -54,7 +54,7 @@ class SettingsComponent extends React.Component<PageProps> {
                                     action="Edit profile"
                                 />
                                 <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
-                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: 'Join Openland! - Messaging for smart people https://www.openland.com' })} />
+                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: 'https://www.openland.com' })} />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }}>
                                     {primary && <ZListItem

@@ -6,6 +6,7 @@ import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
 import { XView } from 'react-mental';
+import { MobileSidebarContext } from './Scaffold';
 
 const MenuItemIcon = css`
     padding: 12px 15px 12px 46px !important;
@@ -185,22 +186,13 @@ const Title = ({ children }: { children: string }) => {
 };
 
 export const Menu = React.memo<MenuProps>(props => {
-    const [showMainMenu, setMainMenu] = React.useState(true);
     const [showMenu, setShowMenu] = React.useState(false);
     if (!canUseDOM) {
         return null;
     }
-    const [width, setWidth] = React.useState(window.innerWidth);
 
-    React.useEffect(() => {
-        const handleResize = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    });
+    const { show, setShow, isMobile } = React.useContext(MobileSidebarContext);
 
-    const isMobile = width <= 700;
     const onClick = () => {
         if (!isMobile) {
             setShowMenu(!showMenu);
@@ -211,7 +203,7 @@ export const Menu = React.memo<MenuProps>(props => {
 
     if (isMain) {
         return (
-            <XView position="fixed" zIndex={100} left={showMainMenu ? 0 : -300}>
+            <XView position="fixed" zIndex={100} left={show ? 0 : -300}>
                 {children}
             </XView>
         );
@@ -223,10 +215,10 @@ export const Menu = React.memo<MenuProps>(props => {
                 <div
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
-                        setMainMenu(!showMainMenu);
+                        setShow(!show);
                     }}
                 >
-                    ===
+                    burger
                 </div>
                 {title && <Title>{title}</Title>}
                 {rightContent && <RightIcon className="select-icon" />}

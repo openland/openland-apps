@@ -89,6 +89,7 @@ class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
     var color: Int = Color.BLACK
     var numberOfLines: Int? = null
     var touchableKey: String? = null
+    var underline: Boolean = false
 //    var fontSize: Float = 12
 //    var lineHeight: Float?
 //    var fontWeight: UIFontWeight = UIFontWeightRegular
@@ -268,6 +269,8 @@ private fun resolveSpec(src: JsonObject, context: ReactContext): AsyncViewSpec {
         (props["fontSize"] as? Number)?.let { res.fontSize = it.toFloat() }
         (props["fontWeight"] as? String)?.let { res.fontWeight = it }
         (props["color"] as? Number)?.let { res.color = it.toInt() }
+        (props["textDecorationLine"] as? String)?.let { res.underline = it == "underline" }
+
         (props["lineHeight"] as? Number)?.let { res.lineHeight = it.toFloat() }
         if (props["touchableKey"] is String) {
             res.touchableKey = props["touchableKey"] as String

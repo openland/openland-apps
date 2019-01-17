@@ -121,9 +121,9 @@ export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: b
 class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
-            <ASFlex borderRadius={9} backgroundColor={XPStyles.colors.brand} height={18} minWidth={18} justifyContent="center">
-                <ASFlex justifyContent="center" marginLeft={4} marginRight={4}>
-                    <ASText color="#fff" lineHeight={Platform.OS === 'android' ? 17 : 16} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
+            <ASFlex borderRadius={9} backgroundColor={this.props.muted ? XPStyles.colors.inactiveCounter : XPStyles.colors.brand} height={18} minWidth={18} justifyContent="center">
+                <ASFlex justifyContent="center" marginLeft={Platform.select({ default: 4, android: 6 })} marginRight={Platform.select({ default: 4, android: 6 })}>
+                    <ASText color="#fff" lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
                 </ASFlex>
             </ASFlex >
         );
@@ -174,7 +174,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                         </ASFlex>}
                         {item.unread > 0 && (
                             <ASFlex marginTop={18} flexShrink={0}>
-                                <ASCounter value={item.unread} />
+                                <ASCounter value={item.unread} muted={item.isMuted} />
                             </ASFlex>
                         )}
                     </ASFlex>}

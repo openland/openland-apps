@@ -88,7 +88,7 @@ const Header = Glamorous(XHorizontal)({
     height: 56,
     paddingLeft: 20,
     paddingRight: 20,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)'
+    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
 });
 
 const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
@@ -384,7 +384,7 @@ interface CreatePostComponentState {
 export class CreatePostComponent extends React.Component<
     CreatePostComponentProps,
     CreatePostComponentState
-    > {
+> {
     constructor(props: CreatePostComponentProps) {
         super(props);
 
@@ -415,9 +415,9 @@ export class CreatePostComponent extends React.Component<
         console.log(title, text);
         this.setState({
             invalidTitle: title,
-            invalidText: text
+            invalidText: text,
         });
-    }
+    };
 
     private titleChange = (src: string) => {
         this.setState({
@@ -591,25 +591,13 @@ export class CreatePostComponent extends React.Component<
                                 id={props.objectId || ''}
                             />
                             <XHorizontal alignItems="center" separator={3}>
-                                <XView
-                                    fontSize={14}
-                                    fontWeight="600"
-                                    color="#000"
-                                >
+                                <XView fontSize={14} fontWeight="600" color="#000">
                                     {props.objectName}
                                 </XView>
-                                <XView
-                                    opacity={0.3}
-                                    fontSize={12}
-                                    fontWeight="600"
-                                    color="#000"
-                                >
+                                <XView opacity={0.3} fontSize={12} fontWeight="600" color="#000">
                                     •
                                 </XView>
-                                <XView
-                                    fontSize={14}
-                                    color="#000"
-                                >
+                                <XView fontSize={14} color="#000">
                                     {props.editData ? 'Post editing' : header}
                                 </XView>
                             </XHorizontal>
@@ -670,43 +658,43 @@ export class CreatePostComponent extends React.Component<
                                 </CoverWrapper>
                             )}
                         </XHorizontal>
-                        {moreFiles && moreFiles.length > 0 && (
-                            <FilesWrapper>
-                                {moreFiles.map(i => (
-                                    <FileItem
-                                        key={'file' + i.uuid}
-                                        separator={4}
-                                        alignItems="center"
-                                    >
-                                        <FileImage />
-                                        <XHorizontal alignItems="center" separator={4}>
-                                            <div>
-                                                {i.name} <span>•</span> {niceBytes(Number(i.size))}
-                                            </div>
-                                            <XHorizontal
-                                                alignItems="center"
-                                                className="remove"
-                                                onClick={() => this.fileRemover(i)}
-                                            >
-                                                <RemoveIcon />
+                        {moreFiles &&
+                            moreFiles.length > 0 && (
+                                <FilesWrapper>
+                                    {moreFiles.map(i => (
+                                        <FileItem
+                                            key={'file' + i.uuid}
+                                            separator={4}
+                                            alignItems="center"
+                                        >
+                                            <FileImage />
+                                            <XHorizontal alignItems="center" separator={4}>
+                                                <div>
+                                                    {i.name} <span>•</span>{' '}
+                                                    {niceBytes(Number(i.size))}
+                                                </div>
+                                                <XHorizontal
+                                                    alignItems="center"
+                                                    className="remove"
+                                                    onClick={() => this.fileRemover(i)}
+                                                >
+                                                    <RemoveIcon />
+                                                </XHorizontal>
                                             </XHorizontal>
-                                        </XHorizontal>
-                                    </FileItem>
-                                ))}
-                            </FilesWrapper>
-                        )}
-                        {!!uploadProgress && uploadProgress > 0 && (
-                            <MessageUploadComponent
-                                key={'file_uploading'}
-                                progress={Math.round(uploadProgress * 100)}
-                                title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
-                            />
-                        )}
+                                        </FileItem>
+                                    ))}
+                                </FilesWrapper>
+                            )}
+                        {!!uploadProgress &&
+                            uploadProgress > 0 && (
+                                <MessageUploadComponent
+                                    key={'file_uploading'}
+                                    progress={Math.round(uploadProgress * 100)}
+                                    title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
+                                />
+                            )}
                     </XVertical>
-                    <DropZone
-                        height="100%"
-                        onFileDrop={this.handleDrop}
-                    />
+                    <DropZone height="100%" onFileDrop={this.handleDrop} />
                 </XView>
                 <FooterWrapper justifyContent="center" alignItems="center">
                     <XHorizontal

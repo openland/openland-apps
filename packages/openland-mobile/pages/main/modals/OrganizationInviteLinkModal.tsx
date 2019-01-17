@@ -24,14 +24,14 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
                                 <ZListItemGroup footer="People can join organization by following this link. You can renew the link at any time">
                                     {data && data.data && data.data.publicInvite && (<ZListItem
                                         key="add"
-                                        text={`https://app.openland.com/join/${data.data!.publicInvite!.key}`}
+                                        text={`https://openland.com/join/${data.data!.publicInvite!.key}`}
                                         appearance="action"
-                                        onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/join/${data.data!.publicInvite!.key}` })}
+                                        onPress={() => Share.share({ message: `https://openland.com/join/${data.data!.publicInvite!.key}` })}
                                     />)}
                                 </ZListItemGroup>
                                 <ZListItemGroup >
-                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`Join Openland! - Messaging for smart people https://app.openland.com/join/${data.data!.publicInvite!.key}`)} />
-                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ title: 'Join Openland! - Messaging for smart people', message: `Join Openland! - Messaging for smart people https://app.openland.com/join/${data.data!.publicInvite!.key}` })} />
+                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/join/${data.data!.publicInvite!.key}`)} />
+                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/join/${data.data!.publicInvite!.key}` })} />
                                     <YMutation mutation={OrganizationCreatePublicInviteMutation} variables={{ organizationId: this.props.router.params.id }} refetchQueriesVars={[{ query: OrganizationPublicInviteQuery, variables: { organizationId: this.props.router.params.id } }]}>
                                         {renew => <ZListItem
                                             appearance="action"

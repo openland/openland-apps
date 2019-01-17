@@ -1,6 +1,7 @@
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import { OpenApolloClient, buildClient } from 'openland-y-graphql/apolloClient';
+import { Track } from 'openland-engines/Tracking';
 
 let cachedClient: OpenApolloClient | undefined = undefined;
 
@@ -20,6 +21,7 @@ export const apolloClient = (initialState?: any, token?: string) => {
     if (canUseDOM) {
         if (!cachedClient) {
             cachedClient = buildWebClient(initialState, token);
+            Track.setClient(cachedClient!.client);
         }
         return cachedClient!!;
     } else {

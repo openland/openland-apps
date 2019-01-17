@@ -1,9 +1,11 @@
 import { buildClient, OpenApolloClient } from 'openland-y-graphql/apolloClient';
+import { Track } from 'openland-engines/Tracking';
 
 let cachedClient: OpenApolloClient | null;
 
 export function saveClient(client: OpenApolloClient) {
     cachedClient = client;
+    Track.setClient(cachedClient!.client);
 }
 
 export function getClient(): OpenApolloClient {

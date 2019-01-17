@@ -11,7 +11,7 @@ export function extractRedirect(router: XRouter) {
     }
 
     // Try to set redirect path for current page
-    if (redirect === '/' && !isRootPath(router)) {
+    if (redirectPath === '/' && !isRootPath(router)) {
         redirectPath = router.path;
     }
 

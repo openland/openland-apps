@@ -58,7 +58,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                 <ZListItemGroup header="Contacts">
                                     {!!resp.data.user.about && <ZListItem title="About" multiline={true} text={resp.data.user.about} />}
                                     {!!resp.data.user.email && <ZListItem title="Email" text={resp.data.user.email} />}
-                                    {!!resp.data.user.phone && <ZListItem title="Phone" text={resp.data.user.phone} />}
+                                    {!!resp.data.user.phone && <ZListItem title="Phone" text={'tel:' + resp.data.user.phone} />}
                                     {!!resp.data.user.website && <ZListItem title="Website" text={resp.data.user.website} />}
                                     {!!resp.data.user.primaryOrganization && <ZListItem leftAvatar={{ photo: resp.data.user.primaryOrganization.photo, key: resp.data.user.primaryOrganization.id, title: resp.data.user.primaryOrganization.name }} multiline={true} text={resp.data.user.primaryOrganization.name} title="Organization" path="ProfileOrganization" pathParams={{ id: resp.data.user.primaryOrganization.id }} />}
                                     {!!resp.data.user.location && <ZListItem title="Location" text={resp.data.user.location} />}

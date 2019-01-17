@@ -27,7 +27,7 @@ const PaginationButton = Glamorous(XLink)<{
     lineHeight: '20px',
     letterSpacing: -0.2,
     textAlign: 'center',
-    color: props.current ? '#fff' : '#5c6a81',
+    color: props.current ? '#ffffff !important' : '#5c6a81',
     backgroundColor: props.current ? '#1790ff' : '#f3f3f5',
     cursor: props.disable || props.current ? 'default' : undefined,
     pointerEvents: props.disable || props.current ? 'none' : undefined,
@@ -73,6 +73,8 @@ export class PagePagination extends React.Component<PagePaginationProps> {
         super(props);
     }
     PaginationFunc = (pagesCount: number, currentPage: number) => {
+        let route = this.props.currentRoute || '/directory';
+
         let delta = 2;
         let left = currentPage - delta;
         let right = currentPage + delta + 1;
@@ -94,7 +96,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                             onClick={this.props.onPageChange}
                             key={'pag1_' + l + left}
                             current={l + 1 === currentPage}
-                            path={'/directory?page=' + (l + 1).toString() + '#'}
+                            path={route + '?page=' + (l + 1).toString() + '#'}
                         >
                             {l + 1}
                         </PaginationButton>,
@@ -110,12 +112,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                     onClick={this.props.onPageChange}
                     key={'pag2_' + i + right}
                     current={i === currentPage}
-                    path={
-                        (this.props.currentRoute ? this.props.currentRoute : '/directory') +
-                        '?page=' +
-                        i.toString() +
-                        '#'
-                    }
+                    path={route + '?page=' + i.toString() + '#'}
                 >
                     {i}
                 </PaginationButton>,
@@ -127,6 +124,8 @@ export class PagePagination extends React.Component<PagePaginationProps> {
     };
 
     render() {
+        let route = this.props.currentRoute || '/directory';
+
         const { hasNextPage, pagesCount, currentPage } = this.props.pageInfo;
         if (pagesCount < 2) {
             return null;
@@ -136,7 +135,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                 <PaginationButton
                     onClick={this.props.onPageChange}
                     className="arrow left"
-                    path={'/directory?page=' + (currentPage - 1).toString() + '#'}
+                    path={route + '?page=' + (currentPage - 1).toString() + '#'}
                     disable={currentPage === 1}
                 >
                     <XIcon icon="keyboard_arrow_left" />
@@ -145,7 +144,7 @@ export class PagePagination extends React.Component<PagePaginationProps> {
                 <PaginationButton
                     onClick={this.props.onPageChange}
                     className="arrow right"
-                    path={'/directory?page=' + (currentPage + 1).toString() + '#'}
+                    path={route + '?page=' + (currentPage + 1).toString() + '#'}
                     disable={hasNextPage === false}
                 >
                     <XIcon icon="keyboard_arrow_right" />

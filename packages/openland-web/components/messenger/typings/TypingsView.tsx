@@ -5,7 +5,6 @@ import { css } from 'linaria';
 
 const typingClassName = css`
     opacity: 0.5;
-    font-family: SFProText-Regular;
     font-size: 13px;
     font-weight: normal;
     font-style: normal;

@@ -29,6 +29,7 @@ import { XStorageProvider } from 'openland-x-routing/XStorageProvider';
 import { XRouterProvider } from 'openland-x-routing/XRouterProvider';
 import { Routes } from '../routes';
 import { AppContainer } from './root/AppContainer';
+import { EnvironmentContext } from './root/EnvironmentContext';
 
 export default withData(
     class MyApp extends App<{
@@ -36,6 +37,7 @@ export default withData(
         storage: SharedStorage;
         host: string;
         protocol: string;
+        isApp: boolean;
     }> {
         private isSentryEnabled = false;
 
@@ -45,6 +47,7 @@ export default withData(
                 storage: SharedStorage;
                 host: string;
                 protocol: string;
+                isApp: boolean;
             } & AppProps,
         ) {
             super(props);
@@ -84,21 +87,23 @@ export default withData(
             const { Component, pageProps } = this.props;
             return (
                 <Container>
-                    <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
-                        <XRouterProvider
-                            routes={Routes}
-                            hostName={this.props.host}
-                            protocol={this.props.protocol}
-                        >
-                            <YApolloProvider client={this.props.apollo}>
-                                <RootErrorBoundary>
-                                    <AppContainer>
-                                        <Component {...pageProps} />
-                                    </AppContainer>
-                                </RootErrorBoundary>
-                            </YApolloProvider>
-                        </XRouterProvider>
-                    </XStorageProvider>
+                    <EnvironmentContext.Provider value={{ isApp: this.props.isApp }}>
+                        <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
+                            <XRouterProvider
+                                routes={Routes}
+                                hostName={this.props.host}
+                                protocol={this.props.protocol}
+                            >
+                                <YApolloProvider client={this.props.apollo}>
+                                    <RootErrorBoundary>
+                                        <AppContainer>
+                                            <Component {...pageProps} />
+                                        </AppContainer>
+                                    </RootErrorBoundary>
+                                </YApolloProvider>
+                            </XRouterProvider>
+                        </XStorageProvider>
+                    </EnvironmentContext.Provider>
                 </Container>
             );
         }

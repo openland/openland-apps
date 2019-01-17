@@ -24,7 +24,7 @@ export const XFormSubmitWrapper = glamorous(XFormSubmit)({
 });
 
 export const Title = glamorous.div({
-    fontFamily: 'SFProText-Semibold',
+    fontWeight: 600,
     fontSize: 32,
     color: '#000',
     textAlign: 'center',
@@ -33,7 +33,6 @@ export const Title = glamorous.div({
 });
 
 export const SubTitle = glamorous.div({
-    fontFamily: 'SFProText-Regular',
     textAlign: 'center',
     fontSize: 16,
     fontWeight: 'normal',

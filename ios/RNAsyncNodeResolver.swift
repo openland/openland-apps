@@ -222,10 +222,10 @@ func resolveTextForTextSpec(spec: AsyncTextSpec) {
   if let v = spec.letterSpacing {
     attributes[NSKernAttributeName] = CGFloat(v)
   }
-  spec.attributedText = resolveAttributedText(spec: spec, attributes: attributes)
+  spec.attributedText = resolveAttributedText(spec: spec, parent: nil, attributes: attributes)
 }
 
-private func resolveAttributedText(spec: AsyncTextSpec, attributes: [String: Any]) -> NSAttributedString {
+private func resolveAttributedText(spec: AsyncTextSpec, parent: AsyncTextSpec?, attributes: [String: Any]) -> NSAttributedString {
   let res = NSMutableAttributedString(string: "", attributes: attributes)
   
   var innerAttributes = attributes
@@ -246,16 +246,17 @@ private func resolveAttributedText(spec: AsyncTextSpec, attributes: [String: Any
   }
   
   // innerAttributes[NSLinkAttributeName]
-  
-  if spec.fontSize != nil {
-    innerAttributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(spec.fontSize!), weight: spec.fontWeight != nil ? spec.fontWeight! : UIFontWeightRegular)
+    let fontSize = spec.fontSize != nil ?  spec.fontSize! : (parent != nil && parent!.fontSize != nil) ?  parent!.fontSize! : nil
+    let fontWeight = spec.fontWeight != nil ? spec.fontWeight! : (parent != nil && parent!.fontWeight != nil) ?  parent!.fontWeight! :nil
+    if fontSize != nil || fontWeight != nil {
+    innerAttributes[NSFontAttributeName] = UIFont.systemFont(ofSize: CGFloat(fontSize != nil ? fontSize! : 12), weight: fontWeight != nil ? fontWeight!  :UIFontWeightRegular)
   }
   
   for v in spec.children {
     if let s = v as? String {
       res.append(NSAttributedString(string: s, attributes: innerAttributes))
     } else if let s = v as? AsyncTextSpec {
-      res.append(resolveAttributedText(spec: s, attributes: innerAttributes))
+        res.append(resolveAttributedText(spec: s, parent: spec, attributes: innerAttributes))
     }
   }
   return res
