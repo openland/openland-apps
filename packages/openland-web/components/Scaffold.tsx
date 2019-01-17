@@ -823,15 +823,21 @@ const sideBarClassName = css`
 `;
 
 export const MobileSidebarContext = React.createContext<{
+    showSidebar: boolean;
+    setShowSidebar: Function;
+    showMenu: boolean;
+    setShowMenu: Function;
     isMobile: boolean;
-    show: boolean;
-    setShow: Function;
 }>({
-    isMobile: false,
-    show: false,
-    setShow: () => {
+    showSidebar: false,
+    setShowSidebar: () => {
         //
     },
+    showMenu: false,
+    setShowMenu: () => {
+        //
+    },
+    isMobile: false,
 });
 
 const MobileScaffold = ({
@@ -843,7 +849,7 @@ const MobileScaffold = ({
     content: any;
     topItems: any;
 }) => {
-    const { show, setShow } = React.useContext(MobileSidebarContext);
+    const { showSidebar, setShowSidebar } = React.useContext(MobileSidebarContext);
     let contentView = (
         <XView
             flexDirection="column"
@@ -858,8 +864,13 @@ const MobileScaffold = ({
     );
     let menuView = (
         <div>
-            {show && <div onClick={() => setShow(!show)} className={sideBarBackgroundClassName} />}
-            <div className={sideBarClassName} style={{ left: show ? 0 : -300 }}>
+            {showSidebar && (
+                <div
+                    onClick={() => setShowSidebar(!showSidebar)}
+                    className={sideBarBackgroundClassName}
+                />
+            )}
+            <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -300 }}>
                 <XView width="100%">
                     <NavigationContainer>{topItems}</NavigationContainer>
                 </XView>
@@ -879,12 +890,47 @@ const MobileScaffold = ({
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const [isMobile] = useIsMobile();
 
-    const [show, setShow] = React.useState(true);
+    const [showSidebar, setShowSidebar] = React.useState(true);
+    const [showMenu, setShowMenu] = React.useState(false);
     const UniversalScaffold = isMobile ? MobileScaffold : DesktopScaffold;
     const UniversalScafoldMenuItem = isMobile ? MobileScafoldMenuItem : DesktopScafoldMenuItem;
 
+    const setSidebarOrInnerMenu = ({
+        mode,
+        value,
+    }: {
+        mode: 'sidebar' | 'menu';
+        value: boolean;
+    }) => {
+        if (mode === 'menu') {
+            setShowMenu(value);
+            if (value) {
+                setShowSidebar(false);
+            }
+        }
+
+        if (mode === 'sidebar') {
+            setShowSidebar(value);
+            if (value) {
+                setShowMenu(false);
+            }
+        }
+    };
+
     return (
-        <MobileSidebarContext.Provider value={{ show, setShow, isMobile: !!isMobile }}>
+        <MobileSidebarContext.Provider
+            value={{
+                showSidebar,
+                setShowSidebar: (value: boolean) => {
+                    setSidebarOrInnerMenu({ mode: 'sidebar', value });
+                },
+                showMenu,
+                setShowMenu: (value: boolean) => {
+                    setSidebarOrInnerMenu({ mode: 'menu', value });
+                },
+                isMobile: !!isMobile,
+            }}
+        >
             <UniversalScaffold
                 topItems={
                     <>

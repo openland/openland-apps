@@ -181,20 +181,25 @@ const titleClassName = css`
     opacity: 0.9;
 `;
 
-const Title = ({ children }: { children: string }) => {
-    return <span className={titleClassName}>{children}</span>;
+const Title = ({ children, onClick }: { children: string; onClick: Function }) => {
+    return (
+        <span onClick={onClick} className={titleClassName}>
+            {children}
+        </span>
+    );
 };
 
 export const Menu = React.memo<MenuProps>(props => {
-    const [showMenu, setShowMenu] = React.useState(false);
     if (!canUseDOM) {
         return null;
     }
 
-    const { show, setShow, isMobile } = React.useContext(MobileSidebarContext);
+    const { show, setShow, showMenu, setShowMenu, isMobile } = React.useContext(
+        MobileSidebarContext,
+    );
 
     const onClick = () => {
-        if (!isMobile) {
+        if (isMobile) {
             setShowMenu(!showMenu);
         }
     };
@@ -211,7 +216,7 @@ export const Menu = React.memo<MenuProps>(props => {
 
     return (
         <>
-            <div className={isMobile ? MobileMenuButton : MenuHeader} onClick={onClick}>
+            <div className={isMobile ? MobileMenuButton : MenuHeader}>
                 <div
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
@@ -220,7 +225,7 @@ export const Menu = React.memo<MenuProps>(props => {
                 >
                     burger
                 </div>
-                {title && <Title>{title}</Title>}
+                {title && <Title onClick={onClick}>{title}</Title>}
                 {rightContent && <RightIcon className="select-icon" />}
             </div>
 
