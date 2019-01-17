@@ -8,10 +8,6 @@ import { findChild } from './utils';
 import { XView } from 'react-mental';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold';
 
-const MenuItemIcon = css`
-    padding: 12px 15px 12px 46px !important;
-`;
-
 const MenuItemWrapper = css`
     display: flex;
     align-items: center;
@@ -73,6 +69,9 @@ interface MenuItemProps {
     onClick?: () => void;
 }
 
+const MenuItemIcon = css`
+    padding: 12px 15px 12px 46px !important;
+`;
 export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
     <XLink path={path} className={`${MenuItemWrapper} ${icon && MenuItemIcon}`} onClick={onClick}>
         {icon && <div className="icon-wrapper">{icon}</div>}
@@ -81,7 +80,10 @@ export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
     </XLink>
 );
 
-const MobileMenuButton = css`
+// left: calc(50% - 70px);
+// top: calc(50% - 10px);
+
+const menuMobileHeaderClassName = css`
     display: flex;
     width: 140px;
     height: 20px;
@@ -93,8 +95,7 @@ const MobileMenuButton = css`
     font-weight: 600;
     color: #000000;
     position: absolute;
-    left: calc(50% - 70px);
-    top: calc(50% - 10px);
+
     & > .select-icon {
         transform: rotate(90deg);
         margin-left: 6px;
@@ -152,7 +153,7 @@ const menuWrapperClassName = css`
     }
 `;
 
-const MenuHeader = css`
+const menuHeaderClassName = css`
     display: flex;
     padding: 14px 15px 19px 17px;
 
@@ -164,7 +165,6 @@ const MenuHeader = css`
 `;
 
 interface MenuProps {
-    isMain?: boolean;
     title?: string;
     route?: string;
     rightContent?: any;
@@ -189,6 +189,15 @@ const Title = ({ children, onClick }: { children: string; onClick: (event: any) 
     );
 };
 
+const selectIconClassName = css`
+    transform: rotate(90deg);
+    margin-left: 6px;
+`;
+
+const SelectIcon = () => {
+    return <RightIcon className={selectIconClassName} />;
+};
+
 export const Menu = React.memo<MenuProps>(props => {
     if (!canUseDOM) {
         return null;
@@ -204,29 +213,23 @@ export const Menu = React.memo<MenuProps>(props => {
         }
     };
 
-    const { title, rightContent, children, isMain } = props;
-
-    if (isMain) {
-        return (
-            <XView position="fixed" zIndex={100} left={showSidebar ? 0 : -300}>
-                {children}
-            </XView>
-        );
-    }
+    const { title, rightContent, children } = props;
 
     return (
         <>
-            <div className={isMobile ? MobileMenuButton : MenuHeader}>
-                <div
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                        setShowSidebar(!showSidebar);
-                    }}
-                >
-                    burger
-                </div>
+            <div className={isMobile ? menuMobileHeaderClassName : menuHeaderClassName}>
+                {isMobile && (
+                    <div
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            setShowSidebar(!showSidebar);
+                        }}
+                    >
+                        burger
+                    </div>
+                )}
                 {title && <Title onClick={onClick}>{title}</Title>}
-                {rightContent && <RightIcon className="select-icon" />}
+                {rightContent && <SelectIcon />}
             </div>
 
             <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>

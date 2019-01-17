@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
+import { Menu } from 'openland-web/components/MainLayout';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
@@ -26,8 +29,6 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
-import { XView } from 'react-mental';
-import { css } from 'linaria';
 
 export const ConversationContainer = Glamorous.div({
     justifyContent: 'center',
@@ -102,7 +103,13 @@ const DesktopDialogContainer = ({ children }: { children: any }) => {
 };
 
 const MobileDialogContainer = ({ children }: { children: any }) => {
-    return <XView width="100%">{children}</XView>;
+    return (
+        <XView width="100%">
+            123
+            <Menu title="Chats" leftContent={<div>+</div>} />
+            {children}
+        </XView>
+    );
 };
 
 const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {

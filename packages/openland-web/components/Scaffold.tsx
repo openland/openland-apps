@@ -840,29 +840,9 @@ export const MobileSidebarContext = React.createContext<{
     isMobile: false,
 });
 
-const MobileScaffold = ({
-    menu,
-    content,
-    topItems,
-}: {
-    menu: any;
-    content: any;
-    topItems: any;
-}) => {
+export const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
     const { showSidebar, setShowSidebar } = React.useContext(MobileSidebarContext);
-    let contentView = (
-        <XView
-            flexDirection="column"
-            backgroundColor={XThemeDefault.backgroundColor}
-            flexGrow={1}
-            flexBasis={0}
-            flexShrink={1}
-            minWidth={0}
-        >
-            {content}
-        </XView>
-    );
-    let menuView = (
+    return (
         <div>
             {showSidebar && (
                 <div
@@ -878,11 +858,30 @@ const MobileScaffold = ({
             </div>
         </div>
     );
+};
 
+const MobileScaffold = ({
+    menu,
+    content,
+    topItems,
+}: {
+    menu: any;
+    content: any;
+    topItems: any;
+}) => {
     return (
         <XView flexDirection="row" flexGrow={1} flexBasis={0}>
-            {contentView}
-            {menuView}
+            <XView
+                flexDirection="column"
+                backgroundColor={XThemeDefault.backgroundColor}
+                flexGrow={1}
+                flexBasis={0}
+                flexShrink={1}
+                minWidth={0}
+            >
+                {content}
+            </XView>
+            <MobileSidebar topItems={topItems} menu={menu} />
         </XView>
     );
 };

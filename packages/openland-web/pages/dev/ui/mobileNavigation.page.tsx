@@ -104,7 +104,7 @@ const Layout = () => {
     const layoutBody = (
         <MainLayout>
             <MainLayout.Menu>
-                <Menu isMain={true} route="chats">
+                <Menu route="chats">
                     <MenuItem title="Feed" path="/feed" />
                     <MenuItem title="Chats" path="/chats" />
                     <MenuItem title="Directory" path="/directory" />
