@@ -1,41 +1,33 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withQueryLoader } from '../../../components/withQueryLoader';
-import { withApp } from '../../../components/withApp';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
+import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
-import { MessengerFragment } from '../../../fragments/MessengerFragment';
-import { DialogListFragment } from '../../../fragments/dialogs/DialogListFragment';
-import { ComposeFragment } from '../../../fragments/ComposeFragment';
-import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
-import { MessengerEmptyFragment } from '../../../fragments/MessengerEmptyFragment';
-import { RoomsInviteComponent } from '../../../fragments/RoomsInviteComponent';
+import { Scaffold } from 'openland-web/components/Scaffold';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from 'openland-web/components/messenger/MessagesStateContext';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold';
+import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
+import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
+import { ComposeFragment } from 'openland-web/fragments/ComposeFragment';
+import { RoomsExploreComponent } from 'openland-web/fragments/RoomsExploreComponent';
+import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
+import { RoomsInviteComponent } from 'openland-web/fragments/RoomsInviteComponent';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 import { UserProfile } from '../profile/UserProfileComponent';
-import { withChannelInviteInfo } from '../../../api/withChannelInviteInfo';
+import { withChannelInviteInfo } from 'openland-web/api/withChannelInviteInfo';
 import { XLoader } from 'openland-x/XLoader';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
-import {
-    MessagesStateContext,
-    MessagesStateContextProps,
-} from '../../../components/messenger/MessagesStateContext';
 import { MessageFull } from 'openland-api/Types';
-
-export const ChatContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'stretch',
-    height: '100vh',
-    width: '100%',
-    flexGrow: 1,
-    flexShrink: 0,
-    overflow: 'hidden',
-});
+import { XView } from 'react-mental';
+import { css } from 'linaria';
 
 export const ConversationContainer = Glamorous.div({
     justifyContent: 'center',
@@ -66,36 +58,100 @@ export const OrganizationProfileContainer = Glamorous.div({
     flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo(
-    props =>
-        props.data && props.data.invite ? (
-            props.data.invite.room.membership === 'MEMBER' ? (
-                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
-            ) : (
-                <RoomsInviteComponent
-                    inviteLink={props.router.routeQuery.invite}
-                    room={props.data.invite.room as any}
-                    invite={props.data.invite}
-                />
-            )
+export const RoomInviteFromLink = withChannelInviteInfo(props =>
+    props.data && props.data.invite ? (
+        props.data.invite.room.membership === 'MEMBER' ? (
+            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
         ) : (
-            <XLoader loading={true} />
-        ),
+            <RoomsInviteComponent
+                inviteLink={props.router.routeQuery.invite}
+                room={props.data.invite.room as any}
+                invite={props.data.invite}
+            />
+        )
+    ) : (
+        <XLoader loading={true} />
+    ),
 );
 
-interface MessagePageInnerProps {
+interface MessagePageProps {
     router: XRouter;
     userId?: string;
     organizationId?: string;
 }
 
-interface MessagePageInnerState extends MessagesStateContextProps {}
+const containerStyle = css`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 344px;
+    flex-shrink: 0;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #ececec;
+    @media (max-width: 1100px) {
+        width: 300px;
+    }
+    @media (max-width: 950px) {
+        width: 230px;
+    }
+`;
 
-export class MessagePageInner extends React.Component<
-    MessagePageInnerProps,
-    MessagePageInnerState
-> {
-    constructor(props: MessagePageInnerProps) {
+const DesktopDialogContainer = ({ children }: { children: any }) => {
+    return <div className={containerStyle}>{children}</div>;
+};
+
+const MobileDialogContainer = ({ children }: { children: any }) => {
+    return <XView width="100%">{children}</XView>;
+};
+
+const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+
+    const DialogContainer = isMobile ? MobileDialogContainer : DesktopDialogContainer;
+    return (
+        <XView
+            flexDirection="row"
+            flexGrow={1}
+            flexShrink={0}
+            overflow="hidden"
+            alignItems="stretch"
+            height="100vh"
+            width="100%"
+        >
+            <DialogContainer>
+                <DialogListFragment />
+            </DialogContainer>
+            {!isMobile && (
+                <ConversationContainer>
+                    {tab === 'compose' && <ComposeFragment />}
+                    {tab === 'empty' && <MessengerEmptyFragment />}
+                    {tab === 'conversation' && <MessengerFragment id={conversationId} />}
+                    {tab === 'rooms' && <RoomsExploreComponent />}
+                    {tab === 'invite' && <RoomInviteFromLink />}
+                    {tab === 'organization' && (
+                        <OrganizationProfileContainer>
+                            <OrganizationProfile organizationId={oid} />
+                        </OrganizationProfileContainer>
+                    )}
+                    {tab === 'user' && (
+                        <OrganizationProfileContainer>
+                            <UserProfile userId={uid} />
+                        </OrganizationProfileContainer>
+                    )}
+                    {tab === 'chat' && (
+                        <OrganizationProfileContainer>
+                            <RoomProfile conversationId={cid} />
+                        </OrganizationProfileContainer>
+                    )}
+                </ConversationContainer>
+            )}
+        </XView>
+    );
+};
+
+class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateContextProps> {
+    constructor(props: MessagePageProps) {
         super(props);
 
         this.state = {
@@ -119,7 +175,7 @@ export class MessagePageInner extends React.Component<
         };
     }
 
-    componentWillReceiveProps(nextProps: MessagePageInnerProps) {
+    componentWillReceiveProps(nextProps: MessagePageProps) {
         if (
             this.props.router.routeQuery.conversationId !==
                 nextProps.router.routeQuery.conversationId &&
@@ -234,8 +290,7 @@ export class MessagePageInner extends React.Component<
             | 'organization'
             | 'user'
             | 'conference'
-            | 'chat' =
-            'empty';
+            | 'chat' = 'empty';
 
         if (isCompose) {
             tab = 'compose';
@@ -283,36 +338,13 @@ export class MessagePageInner extends React.Component<
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <MessagesStateContext.Provider value={this.state}>
-                            <ChatContainer>
-                                <DialogListFragment />
-
-                                <ConversationContainer>
-                                    {tab === 'compose' && <ComposeFragment />}
-                                    {tab === 'empty' && <MessengerEmptyFragment />}
-                                    {tab === 'conversation' && (
-                                        <MessengerFragment
-                                            id={props.router.routeQuery.conversationId}
-                                        />
-                                    )}
-                                    {tab === 'rooms' && <RoomsExploreComponent />}
-                                    {tab === 'invite' && <RoomInviteFromLink />}
-                                    {tab === 'organization' && (
-                                        <OrganizationProfileContainer>
-                                            <OrganizationProfile organizationId={oid} />
-                                        </OrganizationProfileContainer>
-                                    )}
-                                    {tab === 'user' && (
-                                        <OrganizationProfileContainer>
-                                            <UserProfile userId={uid} />
-                                        </OrganizationProfileContainer>
-                                    )}
-                                    {tab === 'chat' && (
-                                        <OrganizationProfileContainer>
-                                            <RoomProfile conversationId={cid} />
-                                        </OrganizationProfileContainer>
-                                    )}
-                                </ConversationContainer>
-                            </ChatContainer>
+                            <MessagePageInner
+                                tab={tab}
+                                conversationId={props.router.routeQuery.conversationId}
+                                oid={oid}
+                                uid={uid}
+                                cid={cid}
+                            />
                         </MessagesStateContext.Provider>
                     </Scaffold.Content>
                 </Scaffold>
@@ -326,7 +358,7 @@ export default withApp(
     'viewer',
     withRouter(
         withQueryLoader(props => {
-            return <MessagePageInner router={props.router} />;
+            return <MessagePage router={props.router} />;
         }),
     ),
 );

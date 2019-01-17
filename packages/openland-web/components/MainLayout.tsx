@@ -6,7 +6,7 @@ import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
 import { XView } from 'react-mental';
-import { MobileSidebarContext } from './Scaffold';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold';
 
 const MenuItemIcon = css`
     padding: 12px 15px 12px 46px !important;
