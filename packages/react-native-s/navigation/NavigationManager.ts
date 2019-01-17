@@ -5,6 +5,7 @@ import { SRoutes } from '../SRoutes';
 import { PresentationManager } from './PresentationManager';
 import { randomKey } from '../utils/randomKey';
 import { Alert } from 'react-native';
+import { push } from 'react-burger-menu';
 
 export interface NavigationManagerListener {
     onPushed(page: NavigationPage, state: NavigationState): void;
@@ -37,6 +38,9 @@ export class NavigationManager {
     }
 
     pushAndReset = (route: string, params?: any) => {
+        if (this.state.history.length < 2) {
+            return this.push(route, params);
+        }
         if (this.customHandler) {
             if (this.customHandler(route, params)) {
                 return;

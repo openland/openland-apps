@@ -73,6 +73,7 @@ export const InviteInfoInner = (props: any) => {
                                     noLogin={true}
                                     room={props.data.invite.room as any}
                                     invite={props.data.invite}
+                                    inviteLink={props.variables.invite}
                                     signup={
                                         '/signup?redirect=' +
                                         encodeURIComponent((props as any).redirect)
@@ -120,8 +121,8 @@ export default withAppBase(
                             instantRedirect={
                                 props.isLoggedIn
                                     ? (props.isCompleted
-                                          ? '/mail/joinChannel/'
-                                          : '/acceptChannelInvite/') + invite
+                                        ? '/mail/joinChannel/'
+                                        : '/acceptChannelInvite/') + invite
                                     : undefined
                             }
                         />

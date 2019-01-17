@@ -6,15 +6,15 @@ import { getMessenger } from '../utils/messenger';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 
 export let resolveInternalLink = (link: string, fallback?: () => void) => {
-    if (link.includes('openland.com/joinChannel/')) {
+    if (link.includes('openland.com/joinChannel/') || link.includes('openland://deep/joinroom/')) {
         return async () => {
             startLoader();
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.client.query({ query: RoomInviteInfoQuery.document, variables: { uuid: uuid } });
+                let info: any = await getMessenger().engine.client.client.query({ query: RoomInviteInfoQuery.document, variables: { invite: uuid } });
                 if (info.data && info.data.invite) {
-                    let channelId = info.data.invite.channel.id;
-                    getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: channelId });
+                    let roomId = info.data.invite.room.id;
+                    getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId });
                 } else {
                     Alert.alert('Invite not found');
                 }

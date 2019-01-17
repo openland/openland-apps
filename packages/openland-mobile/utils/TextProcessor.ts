@@ -46,8 +46,6 @@ function preprocessMentions(text: string, mentions: MessageFull_mentions[]): Spa
 
         let mention: undefined | { str: string, type: 'mention_user' | 'mention_room' } = { str: m.name, type: 'mention_user' };
 
-        console.warn('boom', text, m);
-
         if (mention && text.includes('@' + mention.str)) {
             let split = text.split('@' + mention.str);
             for (let s of split) {

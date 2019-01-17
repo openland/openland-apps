@@ -270,6 +270,7 @@ interface RoomsInviteComponentProps {
 }
 
 export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
+
     render() {
         let room = this.props.room;
         return (
@@ -293,8 +294,8 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             <Text>{this.props.invite.invitedByUser.name} invites you to join</Text>
                         </UserInfoWrapper>
                     ) : (
-                        <div style={{ height: 50 }} />
-                    )}
+                            <div style={{ height: 50 }} />
+                        )}
                     <InfoCardWrapper>
                         <InfoCardHeader separator={8} haveDescription={!!room.description}>
                             <RoomAvatar
@@ -374,6 +375,9 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             alignSelf="center"
                             flexShrink={0}
                             path={this.props.signup}
+                            onClick={() => {
+                                window.location.href = 'openland://deep/joinroom/' + this.props.inviteLink;
+                            }}
                         />
                     )}
                     <ImageWrapper>
