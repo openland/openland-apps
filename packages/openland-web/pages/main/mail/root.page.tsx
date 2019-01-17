@@ -28,6 +28,7 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
+import { AdaptiveMediaSwitcher } from 'openland-web/components/AdaptiveMediaSwitcher';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -111,10 +112,11 @@ const MobileConversationContainer = ({ children }: { children: any }) => {
 };
 
 const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: any) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
-    const ConversationContainerInner = isMobile
-        ? MobileConversationContainer
-        : DesktopConversationContainer;
+    const ConversationContainerInner = AdaptiveMediaSwitcher({
+        DesktopComponent: DesktopConversationContainer,
+        MobileComponent: MobileConversationContainer,
+    });
+
     return (
         <ConversationContainerInner>
             {tab === 'compose' && <ComposeFragment />}
@@ -184,9 +186,11 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
 };
 
 const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const PageInner = AdaptiveMediaSwitcher({
+        DesktopComponent: DesktopPageInner,
+        MobileComponent: MobilePageInner,
+    });
 
-    const PageInner = isMobile ? MobilePageInner : DesktopPageInner;
     return (
         <XView
             flexDirection="row"

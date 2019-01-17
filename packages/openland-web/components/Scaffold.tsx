@@ -1,5 +1,9 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
+import { css } from 'linaria';
+import { XView, XImage } from 'react-mental';
+import * as Cookie from 'js-cookie';
+import { Query } from 'react-apollo';
 import { findChild } from './utils';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -11,12 +15,10 @@ import { XPopper } from 'openland-x/XPopper';
 import { XCounter } from 'openland-x/XCounter';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XMenuItem, XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import * as Cookie from 'js-cookie';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withNotificationCounter } from '../api/withNotificationCounter';
 import { InvitesToOrganizationModal, InvitesGlobalModal } from '../pages/main/settings/invites';
 import { XModalContext } from 'openland-x-modal/XModalContext';
-import { Query } from 'react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from 'openland-icons/add-3.svg';
 import MessagesIcon from 'openland-icons/messages-4.svg';
@@ -34,8 +36,8 @@ import { withCreateChannel } from '../api/withCreateChannel';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
-import { XView, XImage } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
+import { AdaptiveMediaSwitcher } from 'openland-web/components/AdaptiveMediaSwitcher';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import {
     SharedRoomKind,
@@ -43,8 +45,6 @@ import {
     UserShort_primaryOrganization,
 } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-
-import { css } from 'linaria';
 
 const NavigationContainer = (props: { children?: any }) => (
     <XView
@@ -891,8 +891,15 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
 
     const [showSidebar, setShowSidebar] = React.useState(true);
     const [showMenu, setShowMenu] = React.useState(false);
-    const UniversalScaffold = isMobile ? MobileScaffold : DesktopScaffold;
-    const UniversalScafoldMenuItem = isMobile ? MobileScafoldMenuItem : DesktopScafoldMenuItem;
+    const UniversalScaffold = AdaptiveMediaSwitcher({
+        DesktopComponent: DesktopScaffold,
+        MobileComponent: MobileScaffold,
+    });
+
+    const UniversalScafoldMenuItem = AdaptiveMediaSwitcher({
+        DesktopComponent: DesktopScafoldMenuItem,
+        MobileComponent: MobileScafoldMenuItem,
+    });
 
     const setSidebarOrInnerMenu = ({
         mode,
