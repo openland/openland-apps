@@ -173,7 +173,7 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                             flexGrow={1}
                             maxWidth={
                                 cover && (cover as MessageFull_alphaAttachments).fileId
-                                    ? 'calc(100% - 152px)'
+                                    ? '100%'
                                     : '100%'
                             }
                         >
@@ -203,66 +203,59 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                                 </XView>
                             )}
                         </XVertical>
-                        {cover &&
-                            (cover as MessageFull_alphaAttachments).fileId && (
-                                <div className={CoverWrapper}>
-                                    <XCloudImage
-                                        srcCloud={
-                                            'https://ucarecdn.com/' +
-                                            (cover as MessageFull_alphaAttachments).fileId +
-                                            '/'
-                                        }
-                                        resize={'fill'}
-                                        width={134}
-                                        height={134}
-                                    />
-                                </div>
-                            )}
+                        {cover && (cover as MessageFull_alphaAttachments).fileId && (
+                            <div className={CoverWrapper}>
+                                <XCloudImage
+                                    srcCloud={
+                                        'https://ucarecdn.com/' +
+                                        (cover as MessageFull_alphaAttachments).fileId +
+                                        '/'
+                                    }
+                                    resize={'fill'}
+                                    width={134}
+                                    height={134}
+                                />
+                            </div>
+                        )}
                     </XHorizontal>
                 </XView>
-                {moreFiles &&
-                    moreFiles.length > 0 && (
-                        <XView>
-                            <XView height={1} backgroundColor="#ececec" flexDirection="column" />
-                            <XView paddingVertical={10} paddingHorizontal={20}>
-                                <XVertical separator={3}>
-                                    {moreFiles.map(
-                                        i =>
-                                            i.fileMetadata && (
-                                                <a
-                                                    className={FileItem}
-                                                    key={'file' + i.fileId}
-                                                    target="_blank"
-                                                    href={
-                                                        'https://ucarecdn.com/' +
-                                                        i.fileId +
-                                                        '/' +
-                                                        (i.fileMetadata.name
-                                                            ? i.fileMetadata.name!!
-                                                            : '')
-                                                    }
-                                                >
-                                                    <XHorizontal separator={4} alignItems="center">
-                                                        <div className={`${FileImage} icon`} />
-                                                        <XHorizontal
-                                                            alignItems="center"
-                                                            separator={2}
-                                                        >
-                                                            <div>
-                                                                {i.fileMetadata.name} <span>•</span>{' '}
-                                                                {niceBytes(
-                                                                    Number(i.fileMetadata.size),
-                                                                )}
-                                                            </div>
-                                                        </XHorizontal>
+                {moreFiles && moreFiles.length > 0 && (
+                    <XView>
+                        <XView height={1} backgroundColor="#ececec" flexDirection="column" />
+                        <XView paddingVertical={10} paddingHorizontal={20}>
+                            <XVertical separator={3}>
+                                {moreFiles.map(
+                                    i =>
+                                        i.fileMetadata && (
+                                            <a
+                                                className={FileItem}
+                                                key={'file' + i.fileId}
+                                                target="_blank"
+                                                href={
+                                                    'https://ucarecdn.com/' +
+                                                    i.fileId +
+                                                    '/' +
+                                                    (i.fileMetadata.name
+                                                        ? i.fileMetadata.name!!
+                                                        : '')
+                                                }
+                                            >
+                                                <XHorizontal separator={4} alignItems="center">
+                                                    <div className={`${FileImage} icon`} />
+                                                    <XHorizontal alignItems="center" separator={2}>
+                                                        <div>
+                                                            {i.fileMetadata.name} <span>•</span>{' '}
+                                                            {niceBytes(Number(i.fileMetadata.size))}
+                                                        </div>
                                                     </XHorizontal>
-                                                </a>
-                                            ),
-                                    )}
-                                </XVertical>
-                            </XView>
+                                                </XHorizontal>
+                                            </a>
+                                        ),
+                                )}
+                            </XVertical>
                         </XView>
-                    )}
+                    </XView>
+                )}
             </XView>
             {!props.privateConversation && (
                 <XView marginTop={12} justifyContent="space-between" flexDirection="row">

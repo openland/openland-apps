@@ -113,7 +113,7 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
                             path={usrPath}
                         />
                     </XView>
-                    <XView flexGrow={1} width="calc(100% - 60px)" paddingTop={1}>
+                    <XView flexGrow={1} width="100%" paddingTop={1}>
                         <XView alignItems="center" flexDirection="row" marginBottom={4}>
                             <XView
                                 marginRight={props.sender!!.primaryOrganization ? 5 : 0}

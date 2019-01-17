@@ -77,13 +77,13 @@ export class MessageImageComponent extends React.PureComponent<
             >
                 <ModalCloseIcon />
             </XView>
-            <XCloudImage
+            {/* <XCloudImage
                 srcCloud={'https://ucarecdn.com/' + this.props.file + '/'}
                 resize={'fill'}
                 width={width}
                 height={height}
                 className={ModalImage}
-            />
+            /> */}
             <XView
                 as="a"
                 justifyContent="center"

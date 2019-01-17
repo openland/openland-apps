@@ -72,7 +72,7 @@ export const MessageFileComponent = React.memo<MessageFileComponentProps>(props 
             >
                 <IcFile />
             </XView>
-            <XView flexDirection="column" flexGrow={1} width="calc(100% - 52px)">
+            <XView flexDirection="column" flexGrow={1} width="100%">
                 <XView
                     width="100%"
                     whiteSpace="nowrap"

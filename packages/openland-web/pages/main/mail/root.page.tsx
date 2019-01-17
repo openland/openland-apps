@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
-import { Menu } from 'openland-web/components/MainLayout';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
@@ -29,27 +28,6 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
-
-export const ConversationContainer = Glamorous.div({
-    justifyContent: 'center',
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    flexShrink: 0,
-    minWidth: 0,
-    overflow: 'hidden',
-    backgroundColor: XThemeDefault.backgroundColor,
-    maxWidth: 'calc(100% - 344px)',
-    '@media (max-width: 1100px)': {
-        width: 'calc(100% - 300px)',
-        maxWidth: 'calc(100% - 300px)',
-    },
-    '@media (max-width: 950px)': {
-        width: 'calc(100% - 230px)',
-        maxWidth: 'calc(100% - 230px)',
-    },
-});
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -106,10 +84,64 @@ const MobileDialogContainer = ({ children }: { children: any }) => {
     return <XView width="100%">{children}</XView>;
 };
 
-const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+const DesktopConversationContainer = Glamorous.div({
+    justifyContent: 'center',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+    flexShrink: 0,
+    minWidth: 0,
+    overflow: 'hidden',
 
-    const DialogContainer = isMobile ? MobileDialogContainer : DesktopDialogContainer;
+    backgroundColor: XThemeDefault.backgroundColor,
+    maxWidth: 'calc(100% - 344px)',
+    '@media (max-width: 1100px)': {
+        width: 'calc(100% - 300px)',
+        maxWidth: 'calc(100% - 300px)',
+    },
+    '@media (max-width: 950px)': {
+        width: 'calc(100% - 230px)',
+        maxWidth: 'calc(100% - 230px)',
+    },
+});
+
+const MobileConversationContainer = ({ children }: { children: any }) => {
+    return <XView width="100%">{children}</XView>;
+};
+
+const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: any) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    const ConversationContainerInner = isMobile
+        ? MobileConversationContainer
+        : DesktopConversationContainer;
+    return (
+        <ConversationContainerInner>
+            {tab === 'compose' && <ComposeFragment />}
+            {tab === 'empty' && <MessengerEmptyFragment />}
+            {tab === 'conversation' && <MessengerFragment id={conversationId} />}
+            {tab === 'rooms' && <RoomsExploreComponent />}
+            {tab === 'invite' && <RoomInviteFromLink />}
+            {tab === 'organization' && (
+                <OrganizationProfileContainer>
+                    <OrganizationProfile organizationId={oid} />
+                </OrganizationProfileContainer>
+            )}
+            {tab === 'user' && (
+                <OrganizationProfileContainer>
+                    <UserProfile userId={uid} />
+                </OrganizationProfileContainer>
+            )}
+            {tab === 'chat' && (
+                <OrganizationProfileContainer>
+                    <RoomProfile conversationId={cid} />
+                </OrganizationProfileContainer>
+            )}
+        </ConversationContainerInner>
+    );
+};
+
+const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
     return (
         <XView
             flexDirection="row"
@@ -120,33 +152,52 @@ const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
             height="100vh"
             width="100%"
         >
-            <DialogContainer>
+            <DesktopDialogContainer>
                 <DialogListFragment />
-            </DialogContainer>
-            {!isMobile && (
-                <ConversationContainer>
-                    {tab === 'compose' && <ComposeFragment />}
-                    {tab === 'empty' && <MessengerEmptyFragment />}
-                    {tab === 'conversation' && <MessengerFragment id={conversationId} />}
-                    {tab === 'rooms' && <RoomsExploreComponent />}
-                    {tab === 'invite' && <RoomInviteFromLink />}
-                    {tab === 'organization' && (
-                        <OrganizationProfileContainer>
-                            <OrganizationProfile organizationId={oid} />
-                        </OrganizationProfileContainer>
-                    )}
-                    {tab === 'user' && (
-                        <OrganizationProfileContainer>
-                            <UserProfile userId={uid} />
-                        </OrganizationProfileContainer>
-                    )}
-                    {tab === 'chat' && (
-                        <OrganizationProfileContainer>
-                            <RoomProfile conversationId={cid} />
-                        </OrganizationProfileContainer>
-                    )}
-                </ConversationContainer>
+            </DesktopDialogContainer>
+
+            <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
+        </XView>
+    );
+};
+
+const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
+    return (
+        <XView
+            flexDirection="row"
+            flexGrow={1}
+            flexShrink={0}
+            overflow="hidden"
+            alignItems="stretch"
+            height="100vh"
+            width="100%"
+        >
+            {tab === 'empty' ? (
+                <MobileDialogContainer>
+                    <DialogListFragment />
+                </MobileDialogContainer>
+            ) : (
+                <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
             )}
+        </XView>
+    );
+};
+
+const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+
+    const PageInner = isMobile ? MobilePageInner : DesktopPageInner;
+    return (
+        <XView
+            flexDirection="row"
+            flexGrow={1}
+            flexShrink={0}
+            overflow="hidden"
+            alignItems="stretch"
+            height="100vh"
+            width="100%"
+        >
+            <PageInner {...{ tab, conversationId, oid, uid, cid }} />
         </XView>
     );
 };
@@ -260,9 +311,9 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
     };
 
     render() {
-        let { props } = this;
+        let { router, organizationId, userId } = this.props;
 
-        let isCompose = props.router.path.endsWith('/new');
+        let isCompose = router.path.endsWith('/new');
         let pageTitle = isCompose ? 'New chat' : undefined;
 
         if (!canUseDOM) {
@@ -274,13 +325,13 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
             );
         }
 
-        let isRooms = props.router.path.endsWith('/channels');
-        let isCall = props.router.path.endsWith('/call');
-        let isInvite = props.router.path.includes('joinChannel');
-        let isChat = props.router.path.includes('/p/');
-        let cid = props.router.routeQuery.conversationId;
-        let oid = props.organizationId || props.router.routeQuery.organizationId;
-        let uid = props.userId || props.router.routeQuery.userId;
+        let isRooms = router.path.endsWith('/channels');
+        let isCall = router.path.endsWith('/call');
+        let isInvite = router.path.includes('joinChannel');
+        let isChat = router.path.includes('/p/');
+        let cid = router.routeQuery.conversationId;
+        let oid = organizationId || router.routeQuery.organizationId;
+        let uid = userId || router.routeQuery.userId;
 
         let tab:
             | 'empty'
@@ -341,7 +392,7 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
                         <MessagesStateContext.Provider value={this.state}>
                             <MessagePageInner
                                 tab={tab}
-                                conversationId={props.router.routeQuery.conversationId}
+                                conversationId={router.routeQuery.conversationId}
                                 oid={oid}
                                 uid={uid}
                                 cid={cid}

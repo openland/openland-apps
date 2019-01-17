@@ -55,7 +55,6 @@ const DeleteButton = makeNavigable(
 const ContentWrapper = Glamorous.div({
     flex: 1,
     paddingRight: 15,
-    width: 'calc(100% - 94px)',
 });
 
 const Hostname = Glamorous.div({
@@ -142,7 +141,7 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
 
 export class MessageUrlAugmentationComponent extends React.Component<
     MessageUrlAugmentationComponentProps
-    > {
+> {
     private preprocessed: Span[];
     constructor(props: MessageUrlAugmentationComponentProps) {
         super(props);
@@ -165,9 +164,7 @@ export class MessageUrlAugmentationComponent extends React.Component<
                     />
                 );
             } else {
-                return (
-                    <span key={'text-' + i}>{emoji(v.text!!, 18)}</span>
-                );
+                return <span key={'text-' + i}>{emoji(v.text!!, 18)}</span>;
             }
         });
 

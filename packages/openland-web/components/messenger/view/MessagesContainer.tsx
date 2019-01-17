@@ -13,6 +13,7 @@ const styleContainer = css`
 
 const styleInner = css`
     display: flex;
+    word-break: break-word;
     flex-grow: 1;
     flex-basis: 100%;
     flex-direction: column;

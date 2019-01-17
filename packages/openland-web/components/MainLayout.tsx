@@ -100,11 +100,6 @@ const menuMobileHeaderClassName = css`
     font-weight: 600;
     color: #000000;
     position: absolute;
-
-    & > .select-icon {
-        transform: rotate(90deg);
-        margin-left: 6px;
-    }
 `;
 
 const LinksWrapper = css`

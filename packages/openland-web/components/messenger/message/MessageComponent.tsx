@@ -461,16 +461,16 @@ class MessageComponentInner extends React.PureComponent<
                                 />,
                             );
                         } else {
-                            content.push(
-                                <MessageImageComponent
-                                    key={'file'}
-                                    file={file}
-                                    fileName={name}
-                                    width={w}
-                                    height={h}
-                                    startSelected={hideMenu}
-                                />,
-                            );
+                            // content.push(
+                            //     <MessageImageComponent
+                            //         key={'file'}
+                            //         file={file}
+                            //         fileName={name}
+                            //         width={w}
+                            //         height={h}
+                            //         startSelected={hideMenu}
+                            //     />,
+                            // );
                         }
                     } else {
                         content.push(
@@ -509,18 +509,18 @@ class MessageComponentInner extends React.PureComponent<
                         ) {
                             content = [];
                         }
-                        content.push(
-                            <MessageUrlAugmentationComponent
-                                key="urlAugmentation"
-                                {...message.urlAugmentation}
-                                messageId={message.id}
-                                isMe={
-                                    this.props.sender && this.props.me
-                                        ? this.props.sender.id === this.props.me.id
-                                        : false
-                                }
-                            />,
-                        );
+                        // content.push(
+                        //     <MessageUrlAugmentationComponent
+                        //         key="urlAugmentation"
+                        //         {...message.urlAugmentation}
+                        //         messageId={message.id}
+                        //         isMe={
+                        //             this.props.sender && this.props.me
+                        //                 ? this.props.sender.id === this.props.me.id
+                        //                 : false
+                        //         }
+                        //     />,
+                        // );
                     }
                 }
                 if (message.reply && message.reply!.length > 0) {
