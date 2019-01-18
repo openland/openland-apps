@@ -1,6 +1,6 @@
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
-import { RoomInviteInfoQuery, AccountInviteInfoQuery, OrganizationActivateByInviteMutation, AccountInviteJoinMutation } from 'openland-api';
+import { RoomInviteInfoQuery, AccountInviteInfoQuery, OrganizationActivateByInviteMutation, AccountInviteJoinMutation, ResolveShortNameQuery } from 'openland-api';
 import { Alert } from 'react-native';
 
 export let resolveInternalLink = (link: string, fallback?: () => void) => {
@@ -81,6 +81,32 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             let uuid = link.split('/')[link.split('/').length - 1];
             getMessenger().history.navigationManager.push('ProfileUser', { id: uuid });
         };
+    }
+
+    //
+    // SHORT_NAME
+    //
+    if (link.includes('openland.com/')) {
+        let split = link.split('openland.com/');
+        let shortName = split[split.length - 1];
+        if (!shortName.includes('/')) {
+            return async () => {
+                startLoader();
+                try {
+                    let info: any = await getMessenger().engine.client.client.query({ query: ResolveShortNameQuery.document, variables: { shortname: shortName } });
+                    if (info.data) {
+                        if (info.data.item.__typename === 'User') {
+                            getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.data.item.id });
+                        } else if (info.data.item.__typename === 'Organization') {
+                            getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.data.item.id });
+                        }
+                    }
+                } catch (e) {
+                    Alert.alert(e.message);
+                }
+                stopLoader();
+            };
+        }
     }
 
     return fallback;
