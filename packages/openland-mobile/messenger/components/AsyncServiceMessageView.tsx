@@ -8,17 +8,28 @@ import { ServiceMessageJoin } from './service/ServiceMessageJoin';
 import { ServiceMessageKick } from './service/ServiceMessageKick';
 import { ServiceMessagePhotoChanged } from './service/ServiceMessagePhotoChanged';
 import { ServiceMessageTitleChanged } from './service/ServiceMessageTitleChanged';
+import { ServiceMessagePost } from './service/ServiceMessagePost';
 
 export class AsyncServiceMessageView extends React.PureComponent<{
     message: DataSourceMessageItem;
     engine: ConversationEngine;
     onUserPress: (id: string) => void;
+    onRoomPress: (id: string) => void;
 }> {
     render() {
         let meta = this.props.message.serviceMetaData!;
         let myUserId = this.props.engine.engine.user.id;
 
-        if (meta.__typename === 'InviteServiceMetadata') {
+        if (meta.__typename === 'PostRespondServiceMetadata') {
+            return (
+                <ServiceMessagePost
+                    serviceMetadata={meta}
+                    onUserPress={this.props.onUserPress}
+                    onRoomPress={this.props.onRoomPress}
+                    myUserId={myUserId}
+                />
+            );
+        } else if (meta.__typename === 'InviteServiceMetadata') {
             return (
                 <ServiceMessageJoin
                     serviceMetadata={meta}
