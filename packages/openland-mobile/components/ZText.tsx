@@ -1,31 +1,8 @@
 import * as React from 'react';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
-import { Text, Linking, StyleProp, TextStyle, Alert } from 'react-native';
-import { RoomInviteInfoQuery } from 'openland-api';
-import { getMessenger } from '../utils/messenger';
-import { startLoader, stopLoader } from './ZGlobalLoader';
+import { Text, Linking, StyleProp, TextStyle } from 'react-native';
+import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 
-export let resolveInternalLink = (link: string, fallback?: () => void) => {
-    if (link.includes('openland.com/joinChannel/') || link.includes('openland://deep/joinroom/')) {
-        return async () => {
-            startLoader();
-            try {
-                let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.client.query({ query: RoomInviteInfoQuery.document, variables: { invite: uuid } });
-                if (info.data && info.data.invite) {
-                    let roomId = info.data.invite.room.id;
-                    getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
-                } else {
-                    Alert.alert('Invite not found');
-                }
-            } catch (e) {
-                Alert.alert(e.message);
-            }
-            stopLoader();
-        };
-    }
-    return fallback;
-};
 export class ZText extends React.PureComponent<{ text?: string | null | undefined, numberOfLines?: number, style?: StyleProp<TextStyle>, linkify?: boolean }> {
     render() {
         if (this.props.text) {

@@ -9,7 +9,7 @@ import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { XPStyles } from 'openland-xp/XPStyles';
-import { resolveInternalLink } from '../../components/ZText';
+import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { TextStyles } from '../../styles/AppStyles';
 

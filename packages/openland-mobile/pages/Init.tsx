@@ -19,7 +19,7 @@ import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { prepareBottomSafeArea } from 'react-native-s/SDevice';
 import { EmailCode } from './auth/EmailAuth';
-import { resolveInternalLink } from '../components/ZText';
+import { resolveInternalLink } from '../utils/internalLnksResolver';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
