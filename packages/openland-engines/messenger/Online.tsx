@@ -50,7 +50,6 @@ export class OnlineWatcher {
                 let evData = event.data.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
 
-                this.client.client.writeFragment({ id: userId, fragment: USER_ONLINE, data: { __typename: 'User', id: userId, online: evData.type === 'online' } });
                 this.onlinesData.set(userId, evData.user.online);
                 this.singleChangeListeners.forEach(l => l(userId, evData.user.online));
 
