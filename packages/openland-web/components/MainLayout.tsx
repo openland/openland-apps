@@ -265,7 +265,6 @@ export const Menu = React.memo<MenuProps>(props => {
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <BurgerButton />
                 {title && <Title data-test-id="messages-title">{title}</Title>}
                 <AddButton
                     style="light"
