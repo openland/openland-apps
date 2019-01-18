@@ -25,6 +25,8 @@ import DevToolsIcon from 'openland-icons/devtools-3.svg';
 import DirectoryIcon from 'openland-icons/directory-3.svg';
 import MobileChatIcon from 'openland-icons/ic-chat.svg';
 import ToProfileIcon from 'openland-icons/ic-toprofile.svg';
+import AppstoreIcon from 'openland-icons/ic-appstore.svg';
+import GoogleplayIcon from 'openland-icons/ic-googleplay.svg';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
@@ -1027,6 +1029,39 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                             path="/directory"
                             icon={<DirectoryIcon />}
                         />
+                        {isMobile && (
+                            <XView
+                                alignSelf="flex-end"
+                                width="100%"
+                                flexDirection="column"
+                                justifyContent="flex-end"
+                                flexGrow={1}
+                            >
+                                <XView
+                                    paddingLeft={24}
+                                    alignSelf="flex-start"
+                                    flexDirection="column"
+                                >
+                                    <XView
+                                        as="a"
+                                        target="_blank"
+                                        href="https://oplnd.com/ios"
+                                        marginBottom={12}
+                                        alignSelf="flex-start"
+                                    >
+                                        <AppstoreIcon />
+                                    </XView>
+                                    <XView
+                                        as="a"
+                                        target="_blank"
+                                        href="https://oplnd.com/android"
+                                        alignSelf="flex-start"
+                                    >
+                                        <GoogleplayIcon />
+                                    </XView>
+                                </XView>
+                            </XView>
+                        )}
                     </>
                 }
                 menu={menu}
