@@ -35,8 +35,6 @@ type ServiceMessageType = 'JOIN' | 'POST' | 'KICK' | 'PHOTO_CHANGE' | 'TITLE_CHA
 type PostMessageType = 'BLANK' | 'JOB_OPPORTUNITY' | 'REQUEST_FOR_STARTUPS' | 'OFFICE_HOURS';
 type PostMessageSubType = 'APPLY_TEXT' | 'RECOMMEND_TEXT' | null;
 
-const hackToGetRoomName = (message: string) => message.slice('New room name: '.length);
-
 const ServiceMessageComponentByTypes = ({
     typesObject,
     otherParams,
@@ -108,8 +106,7 @@ const ServiceMessageComponentByTypes = ({
     } else if (typesObject.type === 'PHOTO_CHANGE') {
         return <ServiceMessagePhotoChanged />;
     } else if (typesObject.type === 'TITLE_CHANGE') {
-        const newRoomName = hackToGetRoomName(otherParams.message);
-        return <ServiceMessageTitleChanged newRoomName={newRoomName} />;
+        return <ServiceMessageTitleChanged newRoomName={otherParams.serviceMetadata.title} />;
     }
 
     return <ServiceMessageDefault message={otherParams.message} />;

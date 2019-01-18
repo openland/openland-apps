@@ -14,8 +14,8 @@ const KickServiceMessage = (props: KickDefaultProps) => {
 
     return (
         <Container>
-            <UserWrapper user={user} onUserPress={onUserPress} myUserId={myUserId} /> has left the
-            room
+            <UserWrapper user={user} onUserPress={onUserPress} myUserId={myUserId} />
+            {user.id === myUserId ? ' have' : ' has'} left the room
         </Container>
     );
 };

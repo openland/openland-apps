@@ -192,6 +192,9 @@ export const RoomMessageFull = gql`
                 users {
                     ...UserShort
                 }
+                invitedBy {
+                    ...UserShort
+                }
             }
             ... on KickServiceMetadata {
                 user {
@@ -200,6 +203,9 @@ export const RoomMessageFull = gql`
                 kickedBy {
                     ...UserShort
                 }
+            }
+            ... on TitleChangeServiceMetadata {
+                title
             }
         }
         fileMetadata {

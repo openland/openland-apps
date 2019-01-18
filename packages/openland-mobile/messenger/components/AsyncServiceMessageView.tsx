@@ -47,10 +47,7 @@ export class AsyncServiceMessageView extends React.PureComponent<{
             );
         } else if (meta.__typename === 'TitleChangeServiceMetadata') {
             if (this.props.message.text) {
-                // Need to be: meta.title
-                let newRoomName = this.props.message.text.slice('New room name: '.length + 1);
-
-                return <ServiceMessageTitleChanged title={newRoomName} />;
+                return <ServiceMessageTitleChanged title={meta.title} />;
             }
         }
 
