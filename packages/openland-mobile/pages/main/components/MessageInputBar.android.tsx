@@ -73,7 +73,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
 
                                     marginTop={1}
                                     marginLeft={12}
-                                    marginBottom={15}
+                                    marginBottom={14}
                                     width={30}
                                     height={30}
                                     borderRadius={15}

@@ -25,6 +25,10 @@ import MessagesIcon from 'openland-icons/messages-4.svg';
 import RoomIcon from 'openland-icons/channel-2.svg';
 import DevToolsIcon from 'openland-icons/devtools-3.svg';
 import DirectoryIcon from 'openland-icons/directory-3.svg';
+import MobileChatIcon from 'openland-icons/ic-chat.svg';
+import ToProfileIcon from 'openland-icons/ic-toprofile.svg';
+import AppstoreIcon from 'openland-icons/ic-appstore.svg';
+import GoogleplayIcon from 'openland-icons/ic-googleplay.svg';
 import { XInput } from 'openland-x/XInput';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { switchOrganization } from '../utils/switchOrganization';
@@ -46,14 +50,14 @@ import {
 } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 
-const NavigationContainer = (props: { children?: any }) => (
+const NavigationContainer = (props: { children?: any; isMobile: boolean }) => (
     <XView
         minHeight="100%"
         width="100%"
         flexGrow={1}
         alignItems="center"
         flexDirection="column"
-        paddingTop={11}
+        paddingTop={props.isMobile ? 0 : 11}
         paddingBottom={14}
     >
         {props.children}
@@ -397,7 +401,7 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
     }
 }
 
-let UserProfile = withUserInfo<{ onClick?: any }>(props => (
+const DesktopUserProfile = withUserInfo<{ onClick?: any }>(props => (
     <XVertical>
         <Query query={MyOrganizationsQuery.document}>
             {data => (
@@ -418,6 +422,62 @@ let UserProfile = withUserInfo<{ onClick?: any }>(props => (
         <InvitesGlobalModal targetQuery="invite_global" target={null} />
     </XVertical>
 ));
+
+const MobileUserProfile = withUserInfo(props => {
+    if (props.user) {
+        const { user } = props;
+        return (
+            <XView
+                as="a"
+                path={`/mail/u/${user.id}`}
+                height={70}
+                width="100%"
+                backgroundColor="#f9f9f9"
+                flexShrink={0}
+                flexDirection="column"
+                hoverTextDecoration="none"
+                color="#000"
+            >
+                <XView
+                    paddingHorizontal={20}
+                    paddingTop={16}
+                    paddingBottom={13}
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    height={69}
+                >
+                    <XView flexDirection="row" height="100%">
+                        <XAvatar2 size={40} src={user.photo} title={user.name} id={user.id} />
+                        <XView marginLeft={16}>
+                            <XView
+                                fontSize={15}
+                                fontWeight="600"
+                                lineHeight={1.33}
+                                color="#000"
+                                marginBottom={1}
+                            >
+                                {user.name}
+                            </XView>
+                            <XView
+                                fontSize={14}
+                                lineHeight={1.43}
+                                color="rgba(0, 0, 0, 0.5)"
+                                marginBottom={1}
+                            >
+                                View profile
+                            </XView>
+                        </XView>
+                    </XView>
+                    <ToProfileIcon />
+                </XView>
+                <XView height={1} backgroundColor="#ececec" width="100%" />
+            </XView>
+        );
+    } else {
+        return null;
+    }
+});
 
 //
 // Menu
@@ -668,7 +728,7 @@ const MobileScafoldMenuItem = ({ name, path, icon }: { name: string; path: strin
         <XView
             as="a"
             position="relative"
-            flexDirection="row"
+            flexDirection="column"
             alignSelf="stretch"
             alignItems="center"
             justifyContent="center"
@@ -676,25 +736,33 @@ const MobileScafoldMenuItem = ({ name, path, icon }: { name: string; path: strin
             width="100%"
             flexShrink={0}
             cursor="pointer"
-            selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
-            hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+            selectedBackgroundColor="#f9f9f9"
+            hoverBackgroundColor="#f9f9f9"
             linkSelectable={!!path}
             linkStrict={!!path}
             path={path}
             hoverTextDecoration="none"
+            fontSize={15}
+            fontWeight="600"
+            lineHeight={1.07}
+            color="#000"
+            hoverColor="#000"
         >
-            <XView
-                flexDirection="column"
-                justifyContent="center"
-                height={50}
-                width={300 - 224}
-                alignItems="center"
-            >
-                {icon}
+            <XView flexDirection="row">
+                <XView
+                    flexDirection="column"
+                    justifyContent="center"
+                    height={49}
+                    width={76}
+                    alignItems="center"
+                >
+                    {icon}
+                </XView>
+                <XView flexDirection="column" justifyContent="center" height={49} width={224}>
+                    {name}
+                </XView>
             </XView>
-            <XView flexDirection="column" justifyContent="center" height={50} width={224}>
-                {name}
-            </XView>
+            <XView height={1} backgroundColor="#ececec" width="100%" />
         </XView>
     );
 };
@@ -732,7 +800,7 @@ const DesktopScaffold = ({
     let menuView = (
         <XView flexDirection="row" height="100%" position="fixed" backgroundColor="#ffffff">
             <NavigationScroller>
-                <NavigationContainer>
+                <NavigationContainer isMobile={false}>
                     <Logo />
                     <NavigationDivider position="top" />
 
@@ -781,7 +849,7 @@ const DesktopScaffold = ({
                         </XWithRole>
                         <NavigationDivider position="bottom" />
                         <DesktopNavigatorItem>
-                            <UserProfile />
+                            <DesktopUserProfile />
                         </DesktopNavigatorItem>
                     </BottomNavigation>
                 </NavigationContainer>
@@ -852,7 +920,7 @@ export const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) 
             )}
             <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -300 }}>
                 <XView width="100%">
-                    <NavigationContainer>{topItems}</NavigationContainer>
+                    <NavigationContainer isMobile={true}>{topItems}</NavigationContainer>
                 </XView>
                 {menu}
             </div>
@@ -949,23 +1017,55 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                 />
                             </XWithRole>
                         )}
-
+                        {isMobile && <MobileUserProfile />}
                         <UniversalScafoldMenuItem
-                            name={TextAppBar.items.mail}
+                            name={isMobile ? 'Chats' : 'Messenger'}
                             path="/mail"
                             icon={
                                 <>
-                                    <MessagesIcon />
+                                    {isMobile ? <MobileChatIcon /> : <MessagesIcon />}
                                     <NotificationCounter />
                                 </>
                             }
                         />
-
                         <UniversalScafoldMenuItem
                             name={TextAppBar.items.directory}
                             path="/directory"
                             icon={<DirectoryIcon />}
                         />
+                        {isMobile && (
+                            <XView
+                                alignSelf="flex-end"
+                                width="100%"
+                                flexDirection="column"
+                                justifyContent="flex-end"
+                                flexGrow={1}
+                            >
+                                <XView
+                                    paddingLeft={24}
+                                    alignSelf="flex-start"
+                                    flexDirection="column"
+                                >
+                                    <XView
+                                        as="a"
+                                        target="_blank"
+                                        href="https://oplnd.com/ios"
+                                        marginBottom={12}
+                                        alignSelf="flex-start"
+                                    >
+                                        <AppstoreIcon />
+                                    </XView>
+                                    <XView
+                                        as="a"
+                                        target="_blank"
+                                        href="https://oplnd.com/android"
+                                        alignSelf="flex-start"
+                                    >
+                                        <GoogleplayIcon />
+                                    </XView>
+                                </XView>
+                            </XView>
+                        )}
                     </>
                 }
                 menu={menu}

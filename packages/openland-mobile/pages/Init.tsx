@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View, Alert } from 'react-native';
+import { AsyncStorage, View, Alert, Linking } from 'react-native';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
@@ -19,18 +19,39 @@ import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { prepareBottomSafeArea } from 'react-native-s/SDevice';
 import { EmailCode } from './auth/EmailAuth';
+import { resolveInternalLink } from '../components/ZText';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
     private ref = React.createRef<ZPictureModal>();
     history: any;
+    private pendingDeepLink?: string;
     constructor(props: PageProps) {
         super(props);
         this.state = {
             state: 'start'
         };
     }
+
+    componentWillUnmount() {
+        Linking.removeEventListener('url', this.handleOpenURL);
+    }
+
+    handleOpenURL = async (event: { url: string }) => {
+        this.pendingDeepLink = event.url;
+        await this.tryResolveLink();
+    }
+
+    tryResolveLink = async () => {
+        if (this.pendingDeepLink && this.state.state === 'app') {
+            await (await resolveInternalLink(this.pendingDeepLink, () => false))!();
+            this.pendingDeepLink = undefined;
+        }
+    }
     componentDidMount() {
+        Linking.addEventListener('url', this.handleOpenURL);
+        Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
+
         (async () => {
             await prepareBottomSafeArea;
             try {
@@ -67,6 +88,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                 if (userToken) {
                     if (res && res.data.me) {
                         this.setState({ state: 'app' });
+                        this.tryResolveLink();
                     } else {
                         this.setState({ state: 'signup' });
                     }
