@@ -673,6 +673,7 @@ const DesktopScafoldMenuItem = ({
 };
 
 const MobileScafoldMenuItem = ({ name, path, icon }: { name: string; path: string; icon: any }) => {
+    const { setShowSidebar } = React.useContext(MobileSidebarContext);
     return (
         <XView
             as="a"
@@ -694,6 +695,9 @@ const MobileScafoldMenuItem = ({ name, path, icon }: { name: string; path: strin
             fontSize={15}
             fontWeight="600"
             lineHeight={1.07}
+            onClick={() => {
+                setShowSidebar(false);
+            }}
             color="#000"
             hoverColor="#000"
         >
@@ -991,7 +995,7 @@ const MobileScaffold = ({
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const [isMobile] = useIsMobile();
 
-    const [showSidebar, setShowSidebar] = React.useState(true);
+    const [showSidebar, setShowSidebar] = React.useState(false);
     const [showMenu, setShowMenu] = React.useState(false);
     const UniversalScaffold = AdaptiveHOC({
         DesktopComponent: DesktopScaffold,
