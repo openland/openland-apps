@@ -28,7 +28,7 @@ import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
-import { AdaptiveMediaSwitcher } from 'openland-web/components/AdaptiveMediaSwitcher';
+import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
@@ -187,9 +187,10 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
 };
 
 const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
-    const PageInner = AdaptiveMediaSwitcher({
+    const PageInner = AdaptiveHOC({
         DesktopComponent: DesktopPageInner,
         MobileComponent: MobilePageInner,
+        fullWidth: true,
     });
 
     return (

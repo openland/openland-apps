@@ -41,7 +41,12 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { useIsMobile } from 'openland-web/hooks';
-import { AdaptiveMediaSwitcher } from 'openland-web/components/AdaptiveMediaSwitcher';
+import {
+    AdaptiveComponent,
+    AdaptiveHOC,
+    HideOnDesktop,
+    HideOnMobile,
+} from 'openland-web/components/Adaptive';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import {
     SharedRoomKind,
@@ -422,62 +427,6 @@ const DesktopUserProfile = withUserInfo<{ onClick?: any }>(props => (
         <InvitesGlobalModal targetQuery="invite_global" target={null} />
     </XVertical>
 ));
-
-const MobileUserProfile = withUserInfo(props => {
-    if (props.user) {
-        const { user } = props;
-        return (
-            <XView
-                as="a"
-                path={`/mail/u/${user.id}`}
-                height={70}
-                width="100%"
-                backgroundColor="#f9f9f9"
-                flexShrink={0}
-                flexDirection="column"
-                hoverTextDecoration="none"
-                color="#000"
-            >
-                <XView
-                    paddingHorizontal={20}
-                    paddingTop={16}
-                    paddingBottom={13}
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    height={69}
-                >
-                    <XView flexDirection="row" height="100%">
-                        <XAvatar2 size={40} src={user.photo} title={user.name} id={user.id} />
-                        <XView marginLeft={16}>
-                            <XView
-                                fontSize={15}
-                                fontWeight="600"
-                                lineHeight={1.33}
-                                color="#000"
-                                marginBottom={1}
-                            >
-                                {user.name}
-                            </XView>
-                            <XView
-                                fontSize={14}
-                                lineHeight={1.43}
-                                color="rgba(0, 0, 0, 0.5)"
-                                marginBottom={1}
-                            >
-                                View profile
-                            </XView>
-                        </XView>
-                    </XView>
-                    <ToProfileIcon />
-                </XView>
-                <XView height={1} backgroundColor="#ececec" width="100%" />
-            </XView>
-        );
-    } else {
-        return null;
-    }
-});
 
 //
 // Menu
@@ -908,6 +857,61 @@ export const MobileSidebarContext = React.createContext<{
     isMobile: false,
 });
 
+const MobileUserProfile = withUserInfo(({ user }) => {
+    if (user) {
+        return (
+            <XView
+                as="a"
+                path={`/mail/u/${user.id}`}
+                height={70}
+                width="100%"
+                backgroundColor="#f9f9f9"
+                flexShrink={0}
+                flexDirection="column"
+                hoverTextDecoration="none"
+                color="#000"
+            >
+                <XView
+                    paddingHorizontal={20}
+                    paddingTop={16}
+                    paddingBottom={13}
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    height={69}
+                >
+                    <XView flexDirection="row" height="100%">
+                        <XAvatar2 size={40} src={user.photo} title={user.name} id={user.id} />
+                        <XView marginLeft={16}>
+                            <XView
+                                fontSize={15}
+                                fontWeight="600"
+                                lineHeight={1.33}
+                                color="#000"
+                                marginBottom={1}
+                            >
+                                {user.name}
+                            </XView>
+                            <XView
+                                fontSize={14}
+                                lineHeight={1.43}
+                                color="rgba(0, 0, 0, 0.5)"
+                                marginBottom={1}
+                            >
+                                View profile
+                            </XView>
+                        </XView>
+                    </XView>
+                    <ToProfileIcon />
+                </XView>
+                <XView height={1} backgroundColor="#ececec" width="100%" />
+            </XView>
+        );
+    } else {
+        return null;
+    }
+});
+
 export const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
     const { showSidebar, setShowSidebar } = React.useContext(MobileSidebarContext);
     return (
@@ -920,7 +924,37 @@ export const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) 
             )}
             <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -300 }}>
                 <XView width="100%">
-                    <NavigationContainer isMobile={true}>{topItems}</NavigationContainer>
+                    <NavigationContainer isMobile={true}>
+                        <MobileUserProfile />
+                        {topItems}
+                        <XView
+                            alignSelf="flex-end"
+                            width="100%"
+                            flexDirection="column"
+                            justifyContent="flex-end"
+                            flexGrow={1}
+                        >
+                            <XView paddingLeft={24} alignSelf="flex-start" flexDirection="column">
+                                <XView
+                                    as="a"
+                                    target="_blank"
+                                    href="https://oplnd.com/ios"
+                                    marginBottom={12}
+                                    alignSelf="flex-start"
+                                >
+                                    <AppstoreIcon />
+                                </XView>
+                                <XView
+                                    as="a"
+                                    target="_blank"
+                                    href="https://oplnd.com/android"
+                                    alignSelf="flex-start"
+                                >
+                                    <GoogleplayIcon />
+                                </XView>
+                            </XView>
+                        </XView>
+                    </NavigationContainer>
                 </XView>
                 {menu}
             </div>
@@ -959,14 +993,16 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
 
     const [showSidebar, setShowSidebar] = React.useState(true);
     const [showMenu, setShowMenu] = React.useState(false);
-    const UniversalScaffold = AdaptiveMediaSwitcher({
+    const UniversalScaffold = AdaptiveHOC({
         DesktopComponent: DesktopScaffold,
         MobileComponent: MobileScaffold,
+        fullWidth: true,
     });
 
-    const UniversalScafoldMenuItem = AdaptiveMediaSwitcher({
+    const UniversalScafoldMenuItem = AdaptiveHOC({
         DesktopComponent: DesktopScafoldMenuItem,
         MobileComponent: MobileScafoldMenuItem,
+        fullWidth: true,
     });
 
     const setSidebarOrInnerMenu = ({
@@ -1008,7 +1044,7 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
             <UniversalScaffold
                 topItems={
                     <>
-                        {!isMobile && (
+                        <HideOnMobile fullWidth={true}>
                             <XWithRole role="feature-non-production">
                                 <UniversalScafoldMenuItem
                                     name={TextAppBar.items.feed}
@@ -1016,16 +1052,32 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                                     icon={<RoomIcon />}
                                 />
                             </XWithRole>
-                        )}
-                        {isMobile && <MobileUserProfile />}
-                        <UniversalScafoldMenuItem
-                            name={isMobile ? 'Chats' : 'Messenger'}
-                            path="/mail"
-                            icon={
-                                <>
-                                    {isMobile ? <MobileChatIcon /> : <MessagesIcon />}
-                                    <NotificationCounter />
-                                </>
+                        </HideOnMobile>
+                        <AdaptiveComponent
+                            fullWidth={true}
+                            mobile={
+                                <UniversalScafoldMenuItem
+                                    name={'Chats'}
+                                    path="/mail"
+                                    icon={
+                                        <>
+                                            <MobileChatIcon />
+                                            <NotificationCounter />
+                                        </>
+                                    }
+                                />
+                            }
+                            desktop={
+                                <UniversalScafoldMenuItem
+                                    name={'Messenger'}
+                                    path="/mail"
+                                    icon={
+                                        <>
+                                            <MessagesIcon />
+                                            <NotificationCounter />
+                                        </>
+                                    }
+                                />
                             }
                         />
                         <UniversalScafoldMenuItem
@@ -1033,39 +1085,6 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                             path="/directory"
                             icon={<DirectoryIcon />}
                         />
-                        {isMobile && (
-                            <XView
-                                alignSelf="flex-end"
-                                width="100%"
-                                flexDirection="column"
-                                justifyContent="flex-end"
-                                flexGrow={1}
-                            >
-                                <XView
-                                    paddingLeft={24}
-                                    alignSelf="flex-start"
-                                    flexDirection="column"
-                                >
-                                    <XView
-                                        as="a"
-                                        target="_blank"
-                                        href="https://oplnd.com/ios"
-                                        marginBottom={12}
-                                        alignSelf="flex-start"
-                                    >
-                                        <AppstoreIcon />
-                                    </XView>
-                                    <XView
-                                        as="a"
-                                        target="_blank"
-                                        href="https://oplnd.com/android"
-                                        alignSelf="flex-start"
-                                    >
-                                        <GoogleplayIcon />
-                                    </XView>
-                                </XView>
-                            </XView>
-                        )}
                     </>
                 }
                 menu={menu}

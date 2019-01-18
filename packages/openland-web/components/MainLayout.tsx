@@ -10,6 +10,7 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold';
 import BurgerIcon from 'openland-icons/landing/burger.svg';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import Glamorous from 'glamorous';
+import { HideOnDesktop } from 'openland-web/components/Adaptive';
 import { XButton } from 'openland-x/XButton';
 
 const MenuItemWrapper = css`
@@ -260,7 +261,9 @@ export const Menu = React.memo<MenuProps>(props => {
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <BurgerButton />
+                <HideOnDesktop fullWidth={false}>
+                    <BurgerButton />
+                </HideOnDesktop>
                 {title && <Title data-test-id="messages-title">{title}</Title>}
                 <AddButton
                     style="light"
