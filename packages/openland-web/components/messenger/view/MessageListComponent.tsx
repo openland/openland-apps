@@ -84,7 +84,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     constructor(props: MessageListProps) {
         super(props);
-        // this.checkEmptyState();
     }
 
     scrollToBottom = () => {
@@ -96,7 +95,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.updateDimensions();
             this.unshifted = true;
         }
-        // this.checkEmptyState();
     }
 
     componentDidMount() {
@@ -123,7 +121,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current!!.restorePreviousScroll();
             this.unshifted = false;
         }
-        // this.checkEmptyState();
     }
 
     isEmpty = () => {
@@ -139,11 +136,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
     };
 
-    // checkEmptyState = () => {
-    //     if (this.props.inputShower) {
-    //         this.props.inputShower(!(this.isEmpty() && this.props.conversationType === 'ChannelConversation'));
-    //     }
-    // }
     render() {
         let messages: any[] = [];
         let prevDate: string | undefined;

@@ -15,6 +15,8 @@ import { HeaderMuteButton } from './components/HeaderMuteButton';
 import { HeaderLastSeen } from './components/HeaderLastSeen';
 import { HeaderInviteButton } from './components/HeaderInviteButton';
 import { HeaderMenu } from './components/HeaderMenu';
+import { MobileSidebarContext } from '../../components/Scaffold/MobileSidebarContext';
+import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -23,6 +25,7 @@ export interface ChatHeaderViewProps {
 
 export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
     const state = React.useContext(MessagesStateContext);
+    const { isMobile } = React.useContext(MobileSidebarContext);
     let room = props.room;
 
     if (state.useForwardHeader) {
@@ -127,6 +130,17 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
                 flexShrink={1}
                 paddingRight={16}
             >
+                {isMobile && (
+                    <XView
+                        as="a"
+                        marginRight={20}
+                        alignItems="center"
+                        flexDirection="row"
+                        path="/mail"
+                    >
+                        <CloseChatIcon/>
+                    </XView>
+                )}
                 {avatar}
                 <XView marginLeft={16} minWidth={0} flexShrink={1}>
                     {title}
