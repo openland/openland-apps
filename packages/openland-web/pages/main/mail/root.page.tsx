@@ -112,10 +112,11 @@ const MobileConversationContainer = ({ children }: { children: any }) => {
 };
 
 const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: any) => {
-    const ConversationContainerInner = AdaptiveMediaSwitcher({
-        DesktopComponent: DesktopConversationContainer,
-        MobileComponent: MobileConversationContainer,
-    });
+    const { isMobile } = React.useContext(MobileSidebarContext);
+
+    const ConversationContainerInner = isMobile
+        ? MobileConversationContainer
+        : DesktopConversationContainer;
 
     return (
         <ConversationContainerInner>
