@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { preprocessText } from 'openland-y-utils/TextProcessor';
 import { Text, Linking, StyleProp, TextStyle } from 'react-native';
-import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
+import { resolveInternalLink } from '../utils/internalLnksResolver';
 
 export class ZText extends React.PureComponent<{ text?: string | null | undefined, numberOfLines?: number, style?: StyleProp<TextStyle>, linkify?: boolean }> {
     render() {
