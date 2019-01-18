@@ -1047,8 +1047,8 @@ export interface RoomHistory_messages_alphaAttachments {
   fileMetadata: RoomHistory_messages_alphaAttachments_fileMetadata | null;
 }
 
-export interface RoomHistory_messages_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+export interface RoomHistory_messages_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
 }
 
 export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
@@ -1074,9 +1074,33 @@ export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_user
   primaryOrganization: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
 }
 
+export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
 export interface RoomHistory_messages_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: RoomHistory_messages_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
 export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
@@ -1131,7 +1155,12 @@ export interface RoomHistory_messages_serviceMetadata_KickServiceMetadata {
   kickedBy: RoomHistory_messages_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type RoomHistory_messages_serviceMetadata = RoomHistory_messages_serviceMetadata_TitleChangeServiceMetadata | RoomHistory_messages_serviceMetadata_InviteServiceMetadata | RoomHistory_messages_serviceMetadata_KickServiceMetadata;
+export interface RoomHistory_messages_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export type RoomHistory_messages_serviceMetadata = RoomHistory_messages_serviceMetadata_PhotoChangeServiceMetadata | RoomHistory_messages_serviceMetadata_InviteServiceMetadata | RoomHistory_messages_serviceMetadata_KickServiceMetadata | RoomHistory_messages_serviceMetadata_TitleChangeServiceMetadata;
 
 export interface RoomHistory_messages_fileMetadata {
   __typename: "FileMetadata";
@@ -7189,8 +7218,8 @@ export interface RoomMessageFull_alphaAttachments {
   fileMetadata: RoomMessageFull_alphaAttachments_fileMetadata | null;
 }
 
-export interface RoomMessageFull_serviceMetadata_TitleChangeServiceMetadata {
-  __typename: "TitleChangeServiceMetadata" | "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
+export interface RoomMessageFull_serviceMetadata_PhotoChangeServiceMetadata {
+  __typename: "PhotoChangeServiceMetadata" | "PostRespondServiceMetadata";
 }
 
 export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization {
@@ -7216,9 +7245,33 @@ export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_users {
   primaryOrganization: RoomMessageFull_serviceMetadata_InviteServiceMetadata_users_primaryOrganization | null;
 }
 
+export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy_primaryOrganization | null;
+}
+
 export interface RoomMessageFull_serviceMetadata_InviteServiceMetadata {
   __typename: "InviteServiceMetadata";
   users: RoomMessageFull_serviceMetadata_InviteServiceMetadata_users[] | null;
+  invitedBy: RoomMessageFull_serviceMetadata_InviteServiceMetadata_invitedBy;
 }
 
 export interface RoomMessageFull_serviceMetadata_KickServiceMetadata_user_primaryOrganization {
@@ -7273,7 +7326,12 @@ export interface RoomMessageFull_serviceMetadata_KickServiceMetadata {
   kickedBy: RoomMessageFull_serviceMetadata_KickServiceMetadata_kickedBy;
 }
 
-export type RoomMessageFull_serviceMetadata = RoomMessageFull_serviceMetadata_TitleChangeServiceMetadata | RoomMessageFull_serviceMetadata_InviteServiceMetadata | RoomMessageFull_serviceMetadata_KickServiceMetadata;
+export interface RoomMessageFull_serviceMetadata_TitleChangeServiceMetadata {
+  __typename: "TitleChangeServiceMetadata";
+  title: string;
+}
+
+export type RoomMessageFull_serviceMetadata = RoomMessageFull_serviceMetadata_PhotoChangeServiceMetadata | RoomMessageFull_serviceMetadata_InviteServiceMetadata | RoomMessageFull_serviceMetadata_KickServiceMetadata | RoomMessageFull_serviceMetadata_TitleChangeServiceMetadata;
 
 export interface RoomMessageFull_fileMetadata {
   __typename: "FileMetadata";
