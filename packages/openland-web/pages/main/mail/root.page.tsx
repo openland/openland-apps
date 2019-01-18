@@ -38,20 +38,21 @@ export const OrganizationProfileContainer = Glamorous.div({
     flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo(props =>
-    props.data && props.data.invite ? (
-        props.data.invite.room.membership === 'MEMBER' ? (
-            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+export const RoomInviteFromLink = withChannelInviteInfo(
+    props =>
+        props.data && props.data.invite ? (
+            props.data.invite.room.membership === 'MEMBER' ? (
+                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
+            ) : (
+                <RoomsInviteComponent
+                    inviteLink={props.router.routeQuery.invite}
+                    room={props.data.invite.room as any}
+                    invite={props.data.invite}
+                />
+            )
         ) : (
-            <RoomsInviteComponent
-                inviteLink={props.router.routeQuery.invite}
-                room={props.data.invite.room as any}
-                invite={props.data.invite}
-            />
-        )
-    ) : (
-        <XLoader loading={true} />
-    ),
+            <XLoader loading={true} />
+        ),
 );
 
 interface MessagePageProps {
@@ -111,7 +112,15 @@ const MobileConversationContainer = ({ children }: { children: any }) => {
     return <XView width="100%">{children}</XView>;
 };
 
-const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: any) => {
+interface PageInnerProps {
+    tab: string;
+    conversationId: string | null | undefined;
+    oid: string | null | undefined;
+    uid: string | null | undefined;
+    cid: string | null | undefined;
+}
+
+const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
@@ -122,29 +131,32 @@ const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: an
         <ConversationContainerInner>
             {tab === 'compose' && <ComposeFragment />}
             {tab === 'empty' && <MessengerEmptyFragment />}
-            {tab === 'conversation' && <MessengerFragment id={conversationId} />}
+            {tab === 'conversation' && conversationId && <MessengerFragment id={conversationId} />}
             {tab === 'rooms' && <RoomsExploreComponent />}
             {tab === 'invite' && <RoomInviteFromLink />}
-            {tab === 'organization' && (
-                <OrganizationProfileContainer>
-                    <OrganizationProfile organizationId={oid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === 'user' && (
-                <OrganizationProfileContainer>
-                    <UserProfile userId={uid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === 'chat' && (
-                <OrganizationProfileContainer>
-                    <RoomProfile conversationId={cid} />
-                </OrganizationProfileContainer>
-            )}
+            {tab === 'organization' &&
+                oid && (
+                    <OrganizationProfileContainer>
+                        <OrganizationProfile organizationId={oid} />
+                    </OrganizationProfileContainer>
+                )}
+            {tab === 'user' &&
+                uid && (
+                    <OrganizationProfileContainer>
+                        <UserProfile userId={uid} />
+                    </OrganizationProfileContainer>
+                )}
+            {tab === 'chat' &&
+                cid && (
+                    <OrganizationProfileContainer>
+                        <RoomProfile conversationId={cid} />
+                    </OrganizationProfileContainer>
+                )}
         </ConversationContainerInner>
     );
 };
 
-const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
+const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
     return (
         <XView
             flexDirection="row"
@@ -164,7 +176,7 @@ const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
     );
 };
 
-const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
+const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
     return (
         <XView
             flexDirection="row"
@@ -186,7 +198,7 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
     );
 };
 
-const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: any) => {
+const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
     const PageInner = AdaptiveHOC({
         DesktopComponent: DesktopPageInner,
         MobileComponent: MobilePageInner,
@@ -348,7 +360,8 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
             | 'organization'
             | 'user'
             | 'conference'
-            | 'chat' = 'empty';
+            | 'chat' =
+            'empty';
 
         if (isCompose) {
             tab = 'compose';
