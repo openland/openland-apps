@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const fullWidthClassName = css`
     width: 100%;
@@ -15,6 +17,19 @@ const hideMobileClassName = css`
     }
 `;
 
+const shouldRenderForMobile = ({
+    renderedOnce,
+    isMobile,
+}: {
+    renderedOnce: boolean;
+    isMobile: boolean;
+}) => {
+    return (renderedOnce && isMobile) || !canUseDOM;
+};
+
+const shouldRenderForDesktop = (params: { renderedOnce: boolean; isMobile: boolean }) =>
+    !shouldRenderForMobile(params);
+
 export const HideOnMobile = ({
     children,
     fullWidth,
@@ -23,19 +38,22 @@ export const HideOnMobile = ({
     children: any;
     fullWidth: boolean;
     fullHeight: boolean;
-}) => (
-    <>
-        <div
-            className={cx(
-                hideMobileClassName,
-                fullWidth && fullWidthClassName,
-                fullHeight && fullHeightClassName,
-            )}
-        >
-            {children}
-        </div>
-    </>
-);
+}) => {
+    const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+    return (
+        <>
+            <div
+                className={cx(
+                    hideMobileClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                {!shouldRenderForMobile({ renderedOnce, isMobile }) && children}
+            </div>
+        </>
+    );
+};
 
 const hideDesktopClassName = css`
     @media (min-width: 700px) {
@@ -51,20 +69,22 @@ export const HideOnDesktop = ({
     children: any;
     fullWidth: boolean;
     fullHeight: boolean;
-}) => (
-    <>
-        <div
-            className={cx(
-                hideDesktopClassName,
-                fullWidth && fullWidthClassName,
-                fullHeight && fullHeightClassName,
-            )}
-        >
-            {children}
-        </div>
-    </>
-);
-
+}) => {
+    const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+    return (
+        <>
+            <div
+                className={cx(
+                    hideDesktopClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                {!shouldRenderForDesktop({ renderedOnce, isMobile }) && children}
+            </div>
+        </>
+    );
+};
 const showMobileClassName = css`
     @media (min-width: 700px) {
         display: none;
@@ -92,28 +112,31 @@ export const AdaptiveComponent = ({
     mobile: any;
     fullWidth: boolean;
     fullHeight: boolean;
-}) => (
-    <>
-        <div
-            className={cx(
-                showMobileClassName,
-                fullWidth && fullWidthClassName,
-                fullHeight && fullHeightClassName,
-            )}
-        >
-            {mobile}
-        </div>
-        <div
-            className={cx(
-                showDesktopClassName,
-                fullWidth && fullWidthClassName,
-                fullHeight && fullHeightClassName,
-            )}
-        >
-            {desktop}
-        </div>
-    </>
-);
+}) => {
+    const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+    return (
+        <>
+            <div
+                className={cx(
+                    showMobileClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                {shouldRenderForMobile({ renderedOnce, isMobile }) && mobile}
+            </div>
+            <div
+                className={cx(
+                    showDesktopClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                {shouldRenderForDesktop({ renderedOnce, isMobile }) && desktop}
+            </div>
+        </>
+    );
+};
 
 export const AdaptiveHOC = ({
     DesktopComponent,
@@ -126,28 +149,36 @@ export const AdaptiveHOC = ({
     fullWidth: boolean;
     fullHeight: boolean;
 }) => {
-    const Component: any = (props: any) => (
-        <>
-            <div
-                className={cx(
-                    showMobileClassName,
-                    fullWidth && fullWidthClassName,
-                    fullHeight && fullHeightClassName,
-                )}
-            >
-                <MobileComponent {...props} />
-            </div>
-            <div
-                className={cx(
-                    showDesktopClassName,
-                    fullWidth && fullWidthClassName,
-                    fullHeight && fullHeightClassName,
-                )}
-            >
-                <DesktopComponent {...props} />
-            </div>
-        </>
-    );
+    const Component: any = (props: any) => {
+        const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
+
+        return (
+            <>
+                <div
+                    className={cx(
+                        showMobileClassName,
+                        fullWidth && fullWidthClassName,
+                        fullHeight && fullHeightClassName,
+                    )}
+                >
+                    {shouldRenderForMobile({ renderedOnce, isMobile }) && (
+                        <MobileComponent {...props} />
+                    )}
+                </div>
+                <div
+                    className={cx(
+                        showDesktopClassName,
+                        fullWidth && fullWidthClassName,
+                        fullHeight && fullHeightClassName,
+                    )}
+                >
+                    {shouldRenderForDesktop({ renderedOnce, isMobile }) && (
+                        <DesktopComponent {...props} />
+                    )}
+                </div>
+            </>
+        );
+    };
 
     Component.displayName = `AdaptiveHOC(${DesktopComponent.displayName},
     ${MobileComponent.displayName})`;

@@ -6,6 +6,7 @@ export const MobileSidebarContext = React.createContext<{
     showMenu: boolean;
     setShowMenu: Function;
     isMobile: boolean;
+    renderedOnce: boolean;
 }>({
     showSidebar: false,
     setShowSidebar: () => {
@@ -16,4 +17,5 @@ export const MobileSidebarContext = React.createContext<{
         //
     },
     isMobile: false,
+    renderedOnce: false,
 });

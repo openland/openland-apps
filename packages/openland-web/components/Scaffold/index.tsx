@@ -116,6 +116,7 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
 
     const [showSidebar, setShowSidebar] = React.useState(false);
     const [showMenu, setShowMenu] = React.useState(false);
+    const [renderedOnce, setRenderedOnce] = React.useState(false);
     const UniversalScaffold = AdaptiveHOC({
         DesktopComponent: DesktopScaffold,
         MobileComponent: MobileScaffold,
@@ -128,6 +129,12 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
         MobileComponent: MobileScafoldMenuItem,
         fullWidth: true,
         fullHeight: false,
+    });
+
+    React.useEffect(() => {
+        if (!renderedOnce) {
+            setRenderedOnce(true);
+        }
     });
 
     const setSidebarOrInnerMenu = ({
@@ -155,6 +162,7 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     return (
         <MobileSidebarContext.Provider
             value={{
+                renderedOnce,
                 showSidebar,
                 setShowSidebar: (value: boolean) => {
                     setSidebarOrInnerMenu({ mode: 'sidebar', value });
