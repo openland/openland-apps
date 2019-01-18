@@ -10,7 +10,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { ComposeFragment } from 'openland-web/fragments/ComposeFragment';
@@ -203,6 +203,7 @@ const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps
         DesktopComponent: DesktopPageInner,
         MobileComponent: MobilePageInner,
         fullWidth: true,
+        fullHeight: false,
     });
 
     return (

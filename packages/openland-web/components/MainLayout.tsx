@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { XView } from 'react-mental';
+import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
-import { XView } from 'react-mental';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import BurgerIcon from 'openland-icons/landing/burger.svg';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
-import Glamorous from 'glamorous';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
 import { XButton } from 'openland-x/XButton';
 
@@ -86,23 +86,6 @@ export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
     </XLink>
 );
 
-// left: calc(50% - 70px);
-// top: calc(50% - 10px);
-
-const menuMobileHeaderClassName = css`
-    display: flex;
-    width: 140px;
-    height: 20px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.9;
-    font-size: 18px;
-    font-weight: 600;
-    color: #000000;
-    position: absolute;
-`;
-
 const LinksWrapper = css`
     display: flex;
     flex-direction: column;
@@ -153,24 +136,6 @@ const menuWrapperClassName = css`
         border-bottom: 1px solid #ececec;
     }
 `;
-
-const menuHeaderClassName = css`
-    display: flex;
-    padding: 14px 15px 19px 17px;
-
-    @media (max-width: 700px) {
-        width: 100%;
-        justify-content: space-between;
-        padding: 10px 15px 19px 17px;
-    }
-`;
-
-interface MenuProps {
-    title?: string;
-    route?: string;
-    rightContent?: any;
-    leftContent?: any;
-}
 
 const titleClassName = css`
     font-size: 22px;
@@ -232,6 +197,13 @@ const AddButton = Glamorous(XButton)({
     },
 });
 
+interface MenuProps {
+    title?: string;
+    route?: string;
+    rightContent?: any;
+    leftContent?: any;
+}
+
 export const Menu = React.memo<MenuProps>(props => {
     if (!canUseDOM) {
         return null;
@@ -261,7 +233,7 @@ export const Menu = React.memo<MenuProps>(props => {
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <HideOnDesktop fullWidth={false}>
+                <HideOnDesktop fullWidth={false} fullHeight={false}>
                     <BurgerButton />
                 </HideOnDesktop>
                 {title && <Title data-test-id="messages-title">{title}</Title>}

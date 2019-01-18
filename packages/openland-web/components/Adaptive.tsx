@@ -5,15 +5,35 @@ const fullWidthClassName = css`
     width: 100%;
 `;
 
+const fullHeightClassName = css`
+    height: 100%;
+`;
+
 const hideMobileClassName = css`
     @media (max-width: 700px) {
         display: none;
     }
 `;
 
-export const HideOnMobile = ({ children, fullWidth }: { children: any; fullWidth: boolean }) => (
+export const HideOnMobile = ({
+    children,
+    fullWidth,
+    fullHeight,
+}: {
+    children: any;
+    fullWidth: boolean;
+    fullHeight: boolean;
+}) => (
     <>
-        <div className={cx(hideMobileClassName, fullWidth && fullWidthClassName)}>{children}</div>
+        <div
+            className={cx(
+                hideMobileClassName,
+                fullWidth && fullWidthClassName,
+                fullHeight && fullHeightClassName,
+            )}
+        >
+            {children}
+        </div>
     </>
 );
 
@@ -23,9 +43,25 @@ const hideDesktopClassName = css`
     }
 `;
 
-export const HideOnDesktop = ({ children, fullWidth }: { children: any; fullWidth: boolean }) => (
+export const HideOnDesktop = ({
+    children,
+    fullWidth,
+    fullHeight,
+}: {
+    children: any;
+    fullWidth: boolean;
+    fullHeight: boolean;
+}) => (
     <>
-        <div className={cx(hideDesktopClassName, fullWidth && fullWidthClassName)}>{children}</div>
+        <div
+            className={cx(
+                hideDesktopClassName,
+                fullWidth && fullWidthClassName,
+                fullHeight && fullHeightClassName,
+            )}
+        >
+            {children}
+        </div>
     </>
 );
 
@@ -50,14 +86,32 @@ export const AdaptiveComponent = ({
     desktop,
     mobile,
     fullWidth,
+    fullHeight,
 }: {
     desktop: any;
     mobile: any;
     fullWidth: boolean;
+    fullHeight: boolean;
 }) => (
     <>
-        <div className={cx(showMobileClassName, fullWidth && fullWidthClassName)}>{mobile}</div>
-        <div className={cx(showDesktopClassName, fullWidth && fullWidthClassName)}>{desktop}</div>
+        <div
+            className={cx(
+                showMobileClassName,
+                fullWidth && fullWidthClassName,
+                fullHeight && fullHeightClassName,
+            )}
+        >
+            {mobile}
+        </div>
+        <div
+            className={cx(
+                showDesktopClassName,
+                fullWidth && fullWidthClassName,
+                fullHeight && fullHeightClassName,
+            )}
+        >
+            {desktop}
+        </div>
     </>
 );
 
@@ -65,17 +119,37 @@ export const AdaptiveHOC = ({
     DesktopComponent,
     MobileComponent,
     fullWidth,
+    fullHeight,
 }: {
     DesktopComponent: any;
     MobileComponent: any;
     fullWidth: boolean;
-}) => (props: any) => (
-    <>
-        <div className={cx(showMobileClassName, fullWidth && fullWidthClassName)}>
-            <MobileComponent {...props} />
-        </div>
-        <div className={cx(showDesktopClassName, fullWidth && fullWidthClassName)}>
-            <DesktopComponent {...props} />
-        </div>
-    </>
-);
+    fullHeight: boolean;
+}) => {
+    const Component: any = (props: any) => (
+        <>
+            <div
+                className={cx(
+                    showMobileClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                <MobileComponent {...props} />
+            </div>
+            <div
+                className={cx(
+                    showDesktopClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                <DesktopComponent {...props} />
+            </div>
+        </>
+    );
+
+    Component.displayName = `AdaptiveHOC(${DesktopComponent.displayName},
+    ${MobileComponent.displayName})`;
+    return Component;
+};
