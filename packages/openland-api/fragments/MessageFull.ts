@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { RoomShort } from './RoomShort';
 
 export const MessageFull = gql`
     fragment MessageFull on ConversationMessage {
@@ -47,6 +48,24 @@ export const MessageFull = gql`
             }
             ... on TitleChangeServiceMetadata {
                 title
+            }
+            ... on PostRespondServiceMetadata {
+                post {
+                    id
+                    message
+                    postType: alphaPostType
+                    title: alphaTitle
+                    sender {
+                        ...UserShort
+                    }
+                }
+                postRoom {
+                    ...RoomShort
+                }
+                responder {
+                    ...UserShort
+                }
+                respondType
             }
         }
         fileMetadata {
@@ -156,6 +175,8 @@ export const MessageFull = gql`
             }
         }
     }
+
+    ${RoomShort}
 `;
 
 export const RoomMessageFull = gql`
@@ -207,6 +228,24 @@ export const RoomMessageFull = gql`
             ... on TitleChangeServiceMetadata {
                 title
             }
+            ... on PostRespondServiceMetadata {
+                post {
+                    id
+                    message
+                    postType: alphaPostType
+                    title: alphaTitle
+                    sender {
+                        ...UserShort
+                    }
+                }
+                postRoom {
+                    ...RoomShort
+                }
+                responder {
+                    ...UserShort
+                }
+                respondType
+            }
         }
         fileMetadata {
             name
@@ -315,4 +354,6 @@ export const RoomMessageFull = gql`
             }
         }
     }
+
+    ${RoomShort}
 `;

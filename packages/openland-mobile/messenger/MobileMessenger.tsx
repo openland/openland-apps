@@ -215,7 +215,7 @@ export class MobileMessenger {
                     if (!item.serviceMetaData) {
                         return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
                     } else {
-                        return (<AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} />);
+                        return (<AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);

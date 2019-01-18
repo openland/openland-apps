@@ -112,6 +112,12 @@ object LithoTextSpec {
             res.ellipsize(TextUtils.TruncateAt.END)
         }
 
+        when (spec.textAlign) {
+            "center" -> res.textAlignment(Layout.Alignment.ALIGN_CENTER)
+            "left" -> res.textAlignment(Layout.Alignment.ALIGN_NORMAL)
+            "right" -> res.textAlignment(Layout.Alignment.ALIGN_OPPOSITE)
+        }
+
         // Fix line height
         val text = SpannableString(resolveText(spec, reactContext, context))
         var actualLineHeight = if (spec.lineHeight != null) spec.lineHeight!! else fontSize * 1.6f
