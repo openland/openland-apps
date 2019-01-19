@@ -43,38 +43,25 @@ interface MessageImageComponentProps {
     startSelected: boolean;
 }
 
-export class MessageImageComponent extends React.PureComponent<
-    MessageImageComponentProps,
-    { isOpen: boolean }
-> {
-    constructor(props: MessageImageComponentProps) {
-        super(props);
+export const MessageImageComponent = React.memo<MessageImageComponentProps>(props => {
+    let [isOpen, handleOpen] = React.useState(false);
 
-        this.state = {
-            isOpen: false,
-        };
-    }
-
-    handleOpen = (e: any) => {
-        if (this.props.startSelected) {
+    const openView = (e: any) => {
+        if (props.startSelected) {
             return;
         }
         e.stopPropagation();
-        this.setState({
-            isOpen: true,
-        });
+        handleOpen(true);
     };
 
-    handleClose = () => {
-        this.setState({
-            isOpen: false,
-        });
+    const closeView = () => {
+        handleOpen(false);
     };
 
-    private modalBody = (width: number, height: number) => (
+    const modalBody = (width: number, height: number) => (
         <div className={ModalBody}>
             <XView
-                onClick={this.handleClose}
+                onClick={closeView}
                 cursor="pointer"
                 position="fixed"
                 right={20}
@@ -89,7 +76,7 @@ export class MessageImageComponent extends React.PureComponent<
                 <ModalCloseIcon />
             </XView>
             <XCloudImage
-                srcCloud={'https://ucarecdn.com/' + this.props.file + '/'}
+                srcCloud={'https://ucarecdn.com/' + props.file + '/'}
                 resize={'fill'}
                 width={width}
                 height={height}
@@ -107,7 +94,7 @@ export class MessageImageComponent extends React.PureComponent<
                 position="absolute"
                 top={20}
                 right={20}
-                href={'https://ucarecdn.com/' + this.props.file + '/-/preview/-/inline/no/'}
+                href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
                 hoverTextDecoration="none"
             >
                 <DownloadButtonIcon />
@@ -115,32 +102,29 @@ export class MessageImageComponent extends React.PureComponent<
         </div>
     );
 
-    render() {
-        const { props } = this;
-        let dimensions = layoutMedia(props.width, props.height);
-        let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
-        return (
-            <>
-                <XModal
-                    useTopCloser={true}
-                    width={dimensions2.width}
-                    heading={null}
-                    transparent={true}
-                    isOpen={this.state.isOpen}
-                    onClosed={this.handleClose}
-                    body={this.modalBody(dimensions2.width, dimensions2.height)}
-                />
-                <XView onClick={this.handleOpen} cursor="pointer" paddingBottom={5}>
-                    <div className={ImageWrapper}>
-                        <XCloudImage
-                            srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                            resize={'fill'}
-                            width={dimensions.width}
-                            height={dimensions.height}
-                        />
-                    </div>
-                </XView>
-            </>
-        );
-    }
-}
+    let dimensions = layoutMedia(props.width, props.height);
+    let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
+    return (
+        <>
+            <XModal
+                useTopCloser={true}
+                width={dimensions2.width}
+                heading={null}
+                transparent={true}
+                isOpen={isOpen}
+                onClosed={closeView}
+                body={modalBody(dimensions2.width, dimensions2.height)}
+            />
+            <XView onClick={openView} cursor="pointer" paddingBottom={5}>
+                <div className={ImageWrapper}>
+                    <XCloudImage
+                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                        resize={'fill'}
+                        width={dimensions.width}
+                        height={dimensions.height}
+                    />
+                </div>
+            </XView>
+        </>
+    );
+});
