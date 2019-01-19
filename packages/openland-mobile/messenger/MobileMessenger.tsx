@@ -212,10 +212,10 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    if (!item.serviceMetaData) {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
-                    } else {
+                    if (item.serviceMetaData || item.isService) {
                         return (<AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} />);
+                    } else {
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);

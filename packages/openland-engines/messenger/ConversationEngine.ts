@@ -94,6 +94,7 @@ export interface DataSourceMessageItem {
     attachTop: boolean;
     attachBottom: boolean;
     serviceMetaData?: MessageFull_serviceMetadata;
+    isService?: boolean;
 }
 
 export interface DataSourceDateItem {
@@ -130,6 +131,7 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         urlAugmentation: src.urlAugmentation || undefined,
         reactions: src.reactions || undefined,
         serviceMetaData: src.serviceMetadata || undefined,
+        isService: src.isService || undefined,
         mentions: src.mentions || undefined,
     };
 }
