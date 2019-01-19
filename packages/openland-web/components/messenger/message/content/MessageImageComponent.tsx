@@ -6,6 +6,7 @@ import { XModal } from 'openland-x-modal/XModal';
 import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
+import { MobileSidebarContext } from '../../../Scaffold/MobileSidebarContext';
 
 const ModalBody = css`
     display: flex;
@@ -45,7 +46,7 @@ interface MessageImageComponentProps {
 
 export const MessageImageComponent = React.memo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
-
+    const { isMobile } = React.useContext(MobileSidebarContext);
     const openView = (e: any) => {
         if (props.startSelected) {
             return;
@@ -106,15 +107,17 @@ export const MessageImageComponent = React.memo<MessageImageComponentProps>(prop
     let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
     return (
         <>
-            <XModal
-                useTopCloser={true}
-                width={dimensions2.width}
-                heading={null}
-                transparent={true}
-                isOpen={isOpen}
-                onClosed={closeView}
-                body={modalBody(dimensions2.width, dimensions2.height)}
-            />
+            {!isMobile && (
+                <XModal
+                    useTopCloser={true}
+                    width={dimensions2.width}
+                    heading={null}
+                    transparent={true}
+                    isOpen={isOpen}
+                    onClosed={closeView}
+                    body={modalBody(dimensions2.width, dimensions2.height)}
+                />
+            )}
             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
                 <div className={ImageWrapper}>
                     <XCloudImage
