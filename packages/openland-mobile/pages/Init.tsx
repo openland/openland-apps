@@ -32,24 +32,24 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         };
     }
 
-    // componentWillUnmount() {
-    //     Linking.removeEventListener('url', this.handleOpenURL);
-    // }
+    componentWillUnmount() {
+        Linking.removeEventListener('url', this.handleOpenURL);
+    }
 
-    // handleOpenURL = async (event: { url: string }) => {
-    //     this.pendingDeepLink = event.url;
-    //     await this.tryResolveLink();
-    // }
+    handleOpenURL = async (event: { url: string }) => {
+        this.pendingDeepLink = event.url;
+        await this.tryResolveLink();
+    }
 
-    // tryResolveLink = async () => {
-    //     if (this.pendingDeepLink && this.state.state === 'app') {
-    //         await (await resolveInternalLink(this.pendingDeepLink, () => false))!();
-    //         this.pendingDeepLink = undefined;
-    //     }
-    // }
+    tryResolveLink = async () => {
+        if (this.pendingDeepLink && this.state.state === 'app') {
+            await (await resolveInternalLink(this.pendingDeepLink, () => false))!();
+            this.pendingDeepLink = undefined;
+        }
+    }
     componentDidMount() {
-        // Linking.addEventListener('url', this.handleOpenURL);
-        // Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
+        Linking.addEventListener('url', this.handleOpenURL);
+        Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
 
         (async () => {
             await prepareBottomSafeArea;
