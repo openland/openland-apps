@@ -24,14 +24,14 @@ import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
 import { UserPopper } from '../../UserPopper';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
-import { XDate } from 'openland-x/XDate';
 import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
 import EditIcon from 'openland-icons/ic-edit.svg';
-import { MessageContainer } from './MessageContainer';
+import { DesktopMessageContainer, MobileMessageContainer } from './MessageContainer';
 import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { MessageIntroComponent } from './content/attachments/introMessage/MessageIntroComponent';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -136,7 +136,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
     messagesContext: MessagesStateContextProps;
 }
 
-class MessageComponentInner extends React.PureComponent<
+class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
 > {
@@ -309,13 +309,14 @@ class MessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out && message.message && (
-                            <IconButton
-                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        )}
+                        {out &&
+                            message.message && (
+                                <IconButton
+                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -461,16 +462,16 @@ class MessageComponentInner extends React.PureComponent<
                                 />,
                             );
                         } else {
-                            // content.push(
-                            //     <MessageImageComponent
-                            //         key={'file'}
-                            //         file={file}
-                            //         fileName={name}
-                            //         width={w}
-                            //         height={h}
-                            //         startSelected={hideMenu}
-                            //     />,
-                            // );
+                            content.push(
+                                <MessageImageComponent
+                                    key={'file'}
+                                    file={file}
+                                    fileName={name}
+                                    width={w}
+                                    height={h}
+                                    startSelected={hideMenu}
+                                />,
+                            );
                         }
                     } else {
                         content.push(
@@ -509,18 +510,18 @@ class MessageComponentInner extends React.PureComponent<
                         ) {
                             content = [];
                         }
-                        // content.push(
-                        //     <MessageUrlAugmentationComponent
-                        //         key="urlAugmentation"
-                        //         {...message.urlAugmentation}
-                        //         messageId={message.id}
-                        //         isMe={
-                        //             this.props.sender && this.props.me
-                        //                 ? this.props.sender.id === this.props.me.id
-                        //                 : false
-                        //         }
-                        //     />,
-                        // );
+                        content.push(
+                            <MessageUrlAugmentationComponent
+                                key="urlAugmentation"
+                                {...message.urlAugmentation}
+                                messageId={message.id}
+                                isMe={
+                                    this.props.sender && this.props.me
+                                        ? this.props.sender.id === this.props.me.id
+                                        : false
+                                }
+                            />,
+                        );
                     }
                 }
                 if (message.reply && message.reply!.length > 0) {
@@ -532,8 +533,6 @@ class MessageComponentInner extends React.PureComponent<
                                     let isCompact =
                                         index > 0
                                             ? array[index - 1].sender.id === item.sender.id
-                                                ? true
-                                                : false
                                             : false;
 
                                     return (
@@ -555,7 +554,6 @@ class MessageComponentInner extends React.PureComponent<
                         </ReplyMessageWrapper>,
                     );
                 }
-                date = <XDate value={message.date} format="time" />;
             }
         } else {
             if (message.message && message.message.length > 0) {
@@ -576,9 +574,7 @@ class MessageComponentInner extends React.PureComponent<
                     <MessageUploadComponent key={'file'} progress={progress} title={title} />,
                 );
             }
-            date = 'Sending...';
             if (message.failed) {
-                date = 'Failed';
                 let key = message.key;
                 content.push(
                     <XHorizontal>
@@ -610,7 +606,7 @@ class MessageComponentInner extends React.PureComponent<
 
         if (!message.isService) {
             return (
-                <MessageContainer
+                <DesktopMessageContainer
                     compact={compact}
                     selecting={hideMenu}
                     sender={this.props.sender!}
@@ -621,7 +617,7 @@ class MessageComponentInner extends React.PureComponent<
                 >
                     {content}
                     {!isPost && this.reactionsRender()}
-                </MessageContainer>
+                </DesktopMessageContainer>
             );
         }
 
@@ -657,14 +653,269 @@ class MessageComponentInner extends React.PureComponent<
     }
 }
 
-export class MessageComponent extends React.Component<MessageComponentProps> {
-    render() {
-        return (
-            <MessagesStateContext.Consumer>
-                {(state: MessagesStateContextProps) => (
-                    <MessageComponentInner {...this.props} messagesContext={state} />
-                )}
-            </MessagesStateContext.Consumer>
+interface MobileMessageComponentInnerProps {
+    sender?: UserShort;
+    message: MessageFull | PendingMessage;
+    conversation: ConversationEngine;
+    out: boolean;
+    me?: UserShort | null;
+    conversationType?: SharedRoomKind | 'PRIVATE';
+    conversationId: string;
+    editPostHandler?: (data: EditPostProps) => void;
+}
+
+const MobileMessageComponentInner = (props: MobileMessageComponentInnerProps) => {
+    let { message } = props;
+
+    let content: any[] = [];
+    let edited = isServerMessage(message) && message.edited;
+    let hideMenu = false;
+    let isIntro = false;
+    let isPost = false;
+
+    if (isServerMessage(message)) {
+        message = message as MessageFull;
+
+        if (message.urlAugmentation && message.urlAugmentation!.type === 'intro') {
+            isIntro = true;
+        }
+
+        if (message.message && message.alphaTitle && message.alphaType === 'POST') {
+            isPost = true;
+            let meId = props.me ? props.me.id : '';
+
+            content.push(
+                <MessagePostComponent
+                    key={'post_message' + message.id}
+                    messageId={message.id}
+                    senderName={message.sender.firstName}
+                    userId={message.sender.id}
+                    message={message.message}
+                    alphaTitle={message.alphaTitle}
+                    alphaButtons={message.alphaButtons}
+                    alphaAttachments={message.alphaAttachments}
+                    reactions={message.reactions}
+                    edited={edited}
+                    meId={meId}
+                    privateConversation={props.conversationType === 'PRIVATE'}
+                />,
+            );
+        }
+        if (message.message && message.message.length > 0 && !isIntro && !isPost) {
+            if (message.isService) {
+                content.push(
+                    <ServiceMessageComponent
+                        senderUser={message.sender}
+                        myUserId={props.me ? props.me.id : ''}
+                        serviceMetadata={message.serviceMetadata}
+                        message={message.message || ''}
+                        alphaMentions={(message as any).alphaMentions}
+                        key={'service_message'}
+                    />,
+                );
+            } else {
+                content.push(
+                    <MessageTextComponent
+                        message={message.message || ''}
+                        mentions={message.mentions}
+                        alphaMentions={(message as any).alphaMentions}
+                        key={'text'}
+                        isEdited={edited}
+                    />,
+                );
+            }
+        }
+
+        const { file, fileMetadata } = message;
+        if (file && !message.urlAugmentation) {
+            let w = fileMetadata!!.imageWidth ? fileMetadata!!.imageWidth!! : undefined;
+            let h = fileMetadata!!.imageHeight ? fileMetadata!!.imageHeight!! : undefined;
+            let name = fileMetadata!!.name ? fileMetadata!!.name!! : undefined;
+            let size = fileMetadata!!.size ? fileMetadata!!.size!! : undefined;
+
+            if (message.fileMetadata!!.isImage && !!w && !!h) {
+                if (message.fileMetadata!!.imageFormat === 'GIF') {
+                    content.push(
+                        <MessageAnimationComponent
+                            key={'file'}
+                            file={file}
+                            fileName={name}
+                            width={w}
+                            height={h}
+                        />,
+                    );
+                } else {
+                    content.push(
+                        <MessageImageComponent
+                            key={'file'}
+                            file={file}
+                            fileName={name}
+                            width={w}
+                            height={h}
+                            startSelected={hideMenu}
+                        />,
+                    );
+                }
+            } else {
+                content.push(
+                    <MessageFileComponent
+                        key={'file'}
+                        file={file}
+                        fileName={name}
+                        fileSize={size}
+                    />,
+                );
+            }
+        }
+        if (message.urlAugmentation && !isPost) {
+            if (isIntro) {
+                content.push(
+                    <MessageIntroComponent
+                        key="intro"
+                        urlAugmentation={message.urlAugmentation}
+                        file={message.file}
+                        fileMetadata={message.fileMetadata}
+                        user={message.urlAugmentation.user as MessageFull_urlAugmentation_user_User}
+                        messageId={message.id}
+                        reactions={message.reactions}
+                        meId={(props.me as UserShort).id}
+                        senderId={message.sender.id}
+                        conversationType={props.conversationType}
+                    />,
+                );
+            } else {
+                if (
+                    message.urlAugmentation.url.startsWith('https://app.openland.com/o') &&
+                    message.urlAugmentation.url.includes('listings#')
+                ) {
+                    content = [];
+                }
+                content.push(
+                    <MessageUrlAugmentationComponent
+                        key="urlAugmentation"
+                        {...message.urlAugmentation}
+                        messageId={message.id}
+                        isMe={props.sender && props.me ? props.sender.id === props.me.id : false}
+                    />,
+                );
+            }
+        }
+        if (message.reply && message.reply!.length > 0) {
+            content.push(
+                <ReplyMessageWrapper key={'reply_message' + message.id}>
+                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
+                        let isCompact =
+                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+
+                        return (
+                            <MessageReplyComponent
+                                mentions={message.mentions}
+                                sender={item.sender}
+                                date={item.date}
+                                message={item.message}
+                                id={item.id}
+                                key={'reply_message' + item.id + index}
+                                edited={item.edited}
+                                file={item.file}
+                                fileMetadata={item.fileMetadata}
+                                startSelected={hideMenu}
+                                compact={isCompact || undefined}
+                            />
+                        );
+                    })}
+                </ReplyMessageWrapper>,
+            );
+        }
+    } else {
+        if (message.message && message.message.length > 0) {
+            content.push(
+                <MessageTextComponent
+                    message={message.message}
+                    mentions={message.mentions}
+                    key={'text'}
+                    isService={false}
+                    isEdited={edited}
+                />,
+            );
+        }
+        if (message.file) {
+            let progress = Math.round(message.progress * 100);
+            let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+            content.push(<MessageUploadComponent key={'file'} progress={progress} title={title} />);
+        }
+        if (message.failed) {
+            let key = message.key;
+            content.push(
+                <XHorizontal>
+                    <XButton onClick={() => props.conversation.cancelMessage(key)} text="Cancel" />
+                    <XButton
+                        onClick={() => props.conversation.retryMessage(key)}
+                        text="Try Again"
+                    />
+                </XHorizontal>,
+            );
+        }
+    }
+
+    // Handle unknown messages: display empty message
+    if (content.length === 0) {
+        content.push(
+            <MessageTextComponent
+                message={''}
+                mentions={null}
+                key={'text'}
+                isService={false}
+                isEdited={edited}
+            />,
         );
     }
-}
+
+    if (!message.isService) {
+        return (
+            <MobileMessageContainer
+                sender={props.sender!}
+                date={props.message.date}
+            >
+                {content}
+            </MobileMessageContainer>
+        );
+    }
+
+    return (
+        <MessageWrapper
+            compact={false}
+            isEditView={false}
+            separator={6}
+            alignItems="center"
+            startSelected={hideMenu}
+        >
+            <XVertical
+                separator={0}
+                className="message-container"
+                flexGrow={1}
+                maxWidth={!message.isService ? 'calc(100% - 125px)' : '100%'}
+            >
+                <XHorizontal alignSelf="stretch">
+                    <XVertical
+                        separator={2}
+                        flexGrow={1}
+                        maxWidth={!message.isService ? 'calc(100% - 52px)' : 'calc(100% - 25px)'}
+                    >
+                        {content}
+                    </XVertical>
+                </XHorizontal>
+            </XVertical>
+        </MessageWrapper>
+    );
+};
+
+export const MessageComponent = React.memo<MessageComponentProps>(props => {
+    const messagesContextProps = React.useContext(MessagesStateContext);
+    const { isMobile } = React.useContext(MobileSidebarContext);
+
+    return isMobile ? (
+        <MobileMessageComponentInner {...props} />
+    ) : (
+        <DesktopMessageComponentInner {...props} messagesContext={messagesContextProps} />
+    );
+});

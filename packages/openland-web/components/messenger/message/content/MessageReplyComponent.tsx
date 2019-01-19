@@ -100,6 +100,7 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
             width="100%"
             marginTop={props.compact ? 6 : 12}
             borderRadius={6}
+            overflow="hidden"
         >
             {!props.compact && (
                 <XView alignSelf="stretch" flexDirection="row" marginBottom={4}>

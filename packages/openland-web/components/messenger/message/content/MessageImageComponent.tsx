@@ -24,6 +24,17 @@ const ModalImage = css`
     max-height: 90vh;
 `;
 
+const ImageWrapper = css`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    & img {
+        max-width: 100%;
+        object-fit: contain;
+    }
+`;
+
 interface MessageImageComponentProps {
     file: string;
     fileName?: string;
@@ -77,13 +88,13 @@ export class MessageImageComponent extends React.PureComponent<
             >
                 <ModalCloseIcon />
             </XView>
-            {/* <XCloudImage
+            <XCloudImage
                 srcCloud={'https://ucarecdn.com/' + this.props.file + '/'}
                 resize={'fill'}
                 width={width}
                 height={height}
                 className={ModalImage}
-            /> */}
+            />
             <XView
                 as="a"
                 justifyContent="center"
@@ -120,12 +131,14 @@ export class MessageImageComponent extends React.PureComponent<
                     body={this.modalBody(dimensions2.width, dimensions2.height)}
                 />
                 <XView onClick={this.handleOpen} cursor="pointer" paddingBottom={5}>
-                    <XCloudImage
-                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                        resize={'fill'}
-                        width={dimensions.width}
-                        height={dimensions.height}
-                    />
+                    <div className={ImageWrapper}>
+                        <XCloudImage
+                            srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                            resize={'fill'}
+                            width={dimensions.width}
+                            height={dimensions.height}
+                        />
+                    </div>
                 </XView>
             </>
         );
