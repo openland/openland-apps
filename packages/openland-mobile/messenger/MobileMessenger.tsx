@@ -121,7 +121,7 @@ export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: b
 class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
-            <ASFlex borderRadius={9} backgroundColor={this.props.muted ? XPStyles.colors.inactiveCounter : XPStyles.colors.brand} height={18} minWidth={18} justifyContent="center">
+            <ASFlex borderRadius={9} backgroundColor={this.props.muted ? '#c8c7cc' : '#0084fe'} height={18} minWidth={18} justifyContent="center">
                 <ASFlex justifyContent="center" marginLeft={Platform.select({ default: 4, android: 6 })} marginRight={Platform.select({ default: 4, android: 6 })}>
                     <ASText color="#fff" lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
                 </ASFlex>
@@ -161,13 +161,13 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                 </ASFlex>
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
-                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={Platform.OS === 'android' ? '#000' : '#181818'} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                         {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
                     </ASFlex>
                     {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{item.sender}</ASText>)}
-                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
+                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             <ASText fontSize={14} height={36} lineHeight={18} color={XPStyles.colors.brand} numberOfLines={2}>{item.typing}</ASText>
