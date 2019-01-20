@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { View, ScrollView, SafeAreaView } from 'react-native';
+import { View, ScrollView, SafeAreaView, Text } from 'react-native';
 import { ZListItem } from '../../components/ZListItem';
 import { AppStyles } from '../../styles/AppStyles';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { showSheetModal } from 'openland-mobile/components/showSheetModal';
+import { withApp } from 'openland-mobile/components/withApp';
+import { PageProps } from 'openland-mobile/components/PageProps';
 
-export class Components extends React.PureComponent {
+class ComponentsComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <ScrollView width="100%" height="100%" backgroundColor={AppStyles.backyardColor}>
@@ -17,6 +20,7 @@ export class Components extends React.PureComponent {
                             <ZListItem text="List Item 4" toggle={true} toggleDisabled={true} onToggle={() => { /**/ }} />
                             <ZListItem text="List Item 5" toggle={false} toggleDisabled={true} onToggle={() => { /**/ }} />
                             <ZListItem text="List Item 6" path="DevTypography" />
+                            <ZListItem text="Modal" onPress={() => showSheetModal(() => <View><Text>{123}</Text></View>)} />
                         </ZListItemGroup>
                     </View>
                 </SafeAreaView>
@@ -24,3 +28,5 @@ export class Components extends React.PureComponent {
         );
     }
 }
+
+export const Components = withApp(ComponentsComponent);

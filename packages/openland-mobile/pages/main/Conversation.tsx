@@ -25,6 +25,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -54,13 +55,26 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
     }
 
     handleAttach = () => {
-        Picker.showImagePicker({ title: 'Send file' }, (response) => {
-            if (response.didCancel) {
-                return;
-            }
+        let builder = new ActionSheetBuilder();
+        builder.action('Take Photo...', () => {
+            Picker.launchCamera({ title: 'Take Photo' }, (response) => {
+                if (response.didCancel) {
+                    return;
+                }
 
-            UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+                UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+            });
         });
+        builder.action('Choose from Library...', () => {
+            Picker.launchImageLibrary({ title: 'Take Photo' }, (response) => {
+                if (response.didCancel) {
+                    return;
+                }
+
+                UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+            });
+        });
+        builder.show();
     }
 
     render() {

@@ -1,18 +1,23 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { randomKey } from 'react-native-s/utils/randomKey';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
+import { SDevice } from 'react-native-s/SDevice';
+import { SSafeAreaContext, SSafeAreaProvider } from 'react-native-s/SSafeArea';
 
 export interface ZModalController {
     hide(): void;
 }
 
+export type ZModal = (modal: ZModalController) => React.ReactElement<{}>;
+
 interface ZModalProviderInt {
-    showModal(modal: (modal: ZModalController) => React.ReactElement<{}>): void;
+    showModal(modal: ZModal): void;
 }
 
 let provider: ZModalProviderInt | undefined;
 
-export function showModal(modal: (modal: ZModalController) => React.ReactElement<{}>) {
+export function showModal(modal: ZModal) {
     if (provider) {
         provider.showModal(modal);
     }
@@ -25,7 +30,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
         this.state = { modals: [] };
     }
 
-    showModal(modal: (modal: ZModalController) => React.ReactElement<{}>) {
+    showModal(modal: ZModal) {
         let key = randomKey();
         let cont: ZModalController = {
             hide: () => {
@@ -47,7 +52,9 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
                     {this.props.children}
                     {this.state.modals.map((v) => (
                         <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
-                            {v.element}
+                            <SSafeAreaProvider bottom={SDevice.safeArea.bottom} top={SDevice.safeArea.top}>
+                                {v.element}
+                            </SSafeAreaProvider>
                         </View>
                     ))}
                 </View>
