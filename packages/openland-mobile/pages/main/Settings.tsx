@@ -77,7 +77,7 @@ class SettingsComponent extends React.Component<PageProps> {
                                 <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
                                     <ZListItem text="Notifications" path="SettingsNotifications" />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }}>
+                                <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }} divider={false}>
                                     {primary && <ZListItem
                                         text={primary.name}
                                         leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
