@@ -1,9 +1,9 @@
 import { Platform } from 'react-native';
 
 export const AppStyles = {
-    primaryColor: '#364AE3',
+    primaryColor: '#0084fe',
     primaryColorLight: '#BDBDE4',
-    separatorColor: '#eaeaea',
+    separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
     backyardColor: '#f3f3f3',
     backgroundColor: '#fff',
     dangerColor: '#d75454',

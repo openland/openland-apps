@@ -42,7 +42,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
     }
 
     render() {
-        let height = this.props.height === null ? undefined : (this.props.height ? this.props.height : 44);
+        let height = this.props.height === null ? undefined : (this.props.height ? this.props.height : Platform.OS === 'android' ? 48 : 44);
 
         const content = (
             <View style={{ height: height ? (height + (this.props.separator !== false ? 1 : 0)) : undefined, flexDirection: 'column', width: '100%', alignItems: 'stretch' }}>

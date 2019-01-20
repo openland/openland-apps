@@ -30,13 +30,15 @@ const styles = StyleSheet.create({
         color: Platform.OS === 'android' ? '#000000' : '#1c2e4a',
         fontSize: 22,
         fontWeight: Platform.OS === 'android' ? '500' : '600',
-        height: 26,
+        height: 30,
+        textAlignVertical: 'center'
     } as TextStyle,
     subtitle: {
         color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
-        fontSize: 13,
+        fontSize: Platform.OS === 'android' ? 15 : 13,
         fontWeight: 'normal',
-        height: 18,
+        height: Platform.OS === 'android' ? 20 : 18,
+        textAlignVertical: 'center'
     } as TextStyle
 });
 

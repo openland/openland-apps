@@ -4,7 +4,6 @@ import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZQuery } from '../../components/ZQuery';
-import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { PageProps } from '../../components/PageProps';
 import { AccountSettingsQuery } from 'openland-api/AccountSettingsQuery';
@@ -14,7 +13,6 @@ import { XPStyles } from 'openland-xp/XPStyles';
 import RNRestart from 'react-native-restart';
 import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
-import { resolveInternalLink } from '../../utils/internalLnksResolver';
 
 class SettingsComponent extends React.Component<PageProps> {
 
@@ -115,8 +113,8 @@ class SettingsComponent extends React.Component<PageProps> {
                                         <ZListItem text="Log out" onPress={this.handleLogout} />
                                     </ZListItemGroup>
                                 )}
-                                <ZListItemFooter />
-                                <ZListItemFooter />
+                                {/* <ZListItemFooter />
+                                <ZListItemFooter /> */}
                             </SScrollView>
                         );
                     }}
