@@ -131,8 +131,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     };
 
     resizeHandler = (width: number, height: number) => {
-        if (canUseDOM) {
-            this.scroller.current!!.restorePreviousScroll();
+        if (canUseDOM && this.scroller && this.scroller.current) {
+            this.scroller.current.restorePreviousScroll();
         }
     };
 
