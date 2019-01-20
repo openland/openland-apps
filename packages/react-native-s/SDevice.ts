@@ -1,4 +1,4 @@
-import { Platform, Dimensions, PixelRatio } from 'react-native';
+import { Platform, Dimensions, PixelRatio, StatusBar } from 'react-native';
 import { NativeModules } from 'react-native';
 
 // Detect iPhoneX
@@ -26,7 +26,7 @@ const navigationBarHeightExpanded = Platform.OS === 'ios' ? 96 : 96; // Size of 
 //
 // Sizes of Status Bars
 //
-const statusBarHeight = Platform.OS === 'ios' ? 22 : 0;
+const statusBarHeight = Platform.OS === 'ios' ? 22 : StatusBar.currentHeight!;
 
 //
 // Rendering properties

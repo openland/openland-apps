@@ -53,7 +53,7 @@ object LithoImageSpec {
     internal fun onClick(c: ComponentContext, @FromEvent view: View, @Prop spec: AsyncImageSpec, @Prop reactContext: ReactContext) {
 
         val displayMetrics = Resources.getSystem().displayMetrics
-        val statusBarHeight = reactContext.statusBarHeight
+        // val statusBarHeight = reactContext.statusBarHeight
 
         // Key
         val map = WritableNativeMap()
@@ -63,7 +63,7 @@ object LithoImageSpec {
         val loc = IntArray(2)
         view.getLocationInWindow(loc)
         map.putInt("x", Math.round(loc[0] / displayMetrics.density))
-        map.putInt("y", Math.round((loc[1] - statusBarHeight) / displayMetrics.density))
+        map.putInt("y", Math.round(loc[1] / displayMetrics.density))
         map.putInt("w", Math.round(view.width / displayMetrics.density))
         map.putInt("h", Math.round(view.height / displayMetrics.density))
 
