@@ -70,7 +70,7 @@ export const SearchBox = React.memo<SearchBoxProps>(props => {
                             onChange={onChange}
                             flexGrow={1}
                             placeholder={props.placeholder}
-                            autofocus={isMobile ? false : true}
+                            autofocus={!isMobile}
                         />
                     </XHorizontal>
                     {props.value.length > 0 && <XButton text="Clear" onClick={onClear} />}
