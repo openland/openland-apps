@@ -16,6 +16,8 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     containerBig: {
         backgroundColor: '#0084fe',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 18,
         height: 56,
         paddingLeft: 19,
@@ -30,6 +32,9 @@ const styles = StyleSheet.create({
     titleBig: {
         color: '#fff',
         fontSize: 16,
+        height: 56,
+        lineHeight: 56,
+        textAlignVertical: 'center',
         fontWeight: '600',
         letterSpacing: 0.2
     } as TextStyle

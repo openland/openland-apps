@@ -178,6 +178,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                     </ZListItemGroup>
                                                 )}
                                             <ZListItemGroup
+                                                divider={false}
                                                 header="Information"
                                                 actionRight={
                                                     resp.data.organization
@@ -400,8 +401,9 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                 >
                                                                                     Add
                                                                                     members
-                                                                            </Text>
-                                                                                <View
+                                                                                </Text>
+                                                                                
+                                                                                {/* <View
                                                                                     style={{
                                                                                         position:
                                                                                             'absolute',
@@ -423,7 +425,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                             .colors
                                                                                             .separator
                                                                                     }
-                                                                                />
+                                                                                /> */}
                                                                             </View>
                                                                         </TouchableHighlight>
                                                                     )}
