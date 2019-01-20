@@ -7,7 +7,7 @@ import GoogleplayIcon from 'openland-icons/ic-googleplay.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
-import { MobileSidebarContext } from './MobileSidebarContext';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 export const MobileScafoldMenuItem = ({
     name,
