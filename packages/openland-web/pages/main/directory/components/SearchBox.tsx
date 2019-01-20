@@ -5,6 +5,7 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 const SearchWrapper = Glamorous.div({
     borderBottom: '1px solid #ececec',
@@ -49,41 +50,39 @@ interface SearchBoxProps {
     onChange: (e: any) => void;
 }
 
-export class SearchBox extends React.Component<SearchBoxProps> {
-    onChange = (value: string) => {
-        this.props.onChange(value);
+export const SearchBox = React.memo<SearchBoxProps>((props) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    const onChange = (value: string) => {
+        props.onChange(value);
     };
 
-    onClear = () => {
-        this.props.onChange('');
+    const onClear = () => {
+        props.onChange('');
     };
-
-    render() {
-        return (
-            <SearchWrapper>
-                <XContentWrapper>
-                    <SearchInner justifyContent="space-between" alignItems="center" flexShrink={0}>
-                        <XHorizontal separator={0} alignItems="center" flexGrow={1}>
-                            <SearchIcon className="search-icon" />
-                            <SearchInput
-                                value={this.props.value}
-                                onChange={this.onChange}
-                                flexGrow={1}
-                                placeholder={this.props.placeholder}
-                                autofocus={true}
-                            />
-                        </XHorizontal>
-                        {this.props.value.length > 0 && (
-                            <XButton text="Clear" onClick={this.onClear} />
-                        )}
-                        <XButton
-                            text="Search"
-                            style="primary"
-                            enabled={this.props.value.length > 0}
+    return (
+        <SearchWrapper>
+            <XContentWrapper>
+                <SearchInner justifyContent="space-between" alignItems="center" flexShrink={0}>
+                    <XHorizontal separator={0} alignItems="center" flexGrow={1}>
+                        <SearchIcon className="search-icon" />
+                        <SearchInput
+                            value={props.value}
+                            onChange={onChange}
+                            flexGrow={1}
+                            placeholder={props.placeholder}
+                            autofocus={isMobile ? false : true}
                         />
-                    </SearchInner>
-                </XContentWrapper>
-            </SearchWrapper>
-        );
-    }
-}
+                    </XHorizontal>
+                    {props.value.length > 0 && (
+                        <XButton text="Clear" onClick={onClear} />
+                    )}
+                    <XButton
+                        text="Search"
+                        style="primary"
+                        enabled={props.value.length > 0}
+                    />
+                </SearchInner>
+            </XContentWrapper>
+        </SearchWrapper>
+    );
+})
