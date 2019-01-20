@@ -10,7 +10,6 @@ import { Routes } from '../routes';
 import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
-import { ZPictureModal } from '../components/modal/ZPictureModal';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
@@ -18,11 +17,13 @@ import { PageProps } from '../components/PageProps';
 import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
+import { ZModalProvider } from 'openland-mobile/components/ZModal';
+
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
-    private ref = React.createRef<ZPictureModal>();
     history: any;
     private pendingDeepLink?: string;
+
     constructor(props: PageProps) {
         super(props);
         this.state = {
@@ -65,7 +66,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
                     if (res.data.me) {
                         let messenger = buildMessenger(getClient(), res.data.me);
-                        setMessenger(new MobileMessenger(messenger, this.history, this.ref));
+                        setMessenger(new MobileMessenger(messenger, this.history));
                         await messenger.awaitLoading();
                     }
 
@@ -108,20 +109,32 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     <MobileMessengerContext.Provider value={getMessenger()}>
                         <MessengerContext.Provider value={getMessenger().engine}>
                             <View style={{ width: '100%', height: '100%' }}>
-                                <ZPictureModal ref={this.ref}>
+                                <ZModalProvider>
                                     <Root routing={getMessenger().history} />
-                                </ZPictureModal>
+                                </ZModalProvider>
                             </View>
                         </MessengerContext.Provider>
                     </MobileMessengerContext.Provider>
                 </YApolloProvider>
             );
         } else if (this.state.state === 'initial') {
-            return <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />;
+            return (
+                <YApolloProvider client={getClient()}>
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <ZModalProvider>
+                            <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                        </ZModalProvider>
+                    </View>
+                </YApolloProvider>
+            );
         } else if (this.state.state === 'signup') {
             return (
                 <YApolloProvider client={getClient()}>
-                    <Root routing={this.history} />
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <ZModalProvider>
+                            <Root routing={this.history} />
+                        </ZModalProvider>
+                    </View>
                 </YApolloProvider>
             );
         }

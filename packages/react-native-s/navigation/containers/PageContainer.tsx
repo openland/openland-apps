@@ -33,7 +33,7 @@ export class PageContainer extends React.PureComponent<PageContainerProps> {
             <View style={[styles.root, !this.props.mounted && styles.rootUnmounted]} collapsable={false}>
                 <SRouterContext.Provider value={this.props.router}>
                     <HeaderContextDirect router={this.props.router}>
-                        <PageKeyboard contextKey={this.props.router.key} style={this.props.style}>
+                        <PageKeyboard contextKey={this.props.router.key}>
                             <PageImmutableContainer component={this.props.component} />
                         </PageKeyboard>
                     </HeaderContextDirect>

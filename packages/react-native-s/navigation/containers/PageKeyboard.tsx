@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
 import { NativeSyntheticEvent, Platform, View, Keyboard } from 'react-native';
-import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
 import { SSafeAreaProvider } from 'react-native-s/SSafeArea';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface PageKeyboardProps {
     contextKey: string;
-    style: SNavigationViewStyle;
 }
 
 export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keyboardHeight: number, acessoryHeight: number }> {

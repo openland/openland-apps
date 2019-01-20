@@ -11,11 +11,11 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
-import { ZPictureModal } from '../components/modal/ZPictureModal';
+import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Alert, AlertIOS, Platform } from 'react-native';
+import { Clipboard, Alert, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
@@ -194,12 +194,10 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
-    private readonly modal: React.RefObject<ZPictureModal>;
 
-    constructor(engine: MessengerEngine, history: SRouting, modal: React.RefObject<ZPictureModal>) {
+    constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
         this.history = history;
-        this.modal = modal;
         this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
             return (
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
@@ -226,30 +224,27 @@ export class MobileMessenger {
     }
 
     private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
-        if (this.modal.current) {
-            this.modal.current!!.showModal({
-                url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
-                width: document.file!!.imageSize!!.width,
-                height: document.file!!.imageSize!!.height,
-                isGif: false,
-                animate: {
-                    x: event.x,
-                    y: event.y,
-                    width: event.w,
-                    height: event.h,
-                    borderRadius: 10
+        showPictureModal({
+            url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
+            width: document.file!!.imageSize!!.width,
+            height: document.file!!.imageSize!!.height,
+            isGif: false,
+            animate: {
+                x: event.x,
+                y: event.y,
+                width: event.w,
+                height: event.h,
+                borderRadius: 10
+            },
+            ...Platform.OS === 'ios' ? {
+                onBegin: () => {
+                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
                 },
-                ...Platform.OS === 'ios' ? {
-                    onBegin: () => {
-                        RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
-                    },
-                    onEnd: () => {
-                        RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
-                    }
-                } : {}
-            });
-        }
-        //
+                onEnd: () => {
+                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
+                }
+            } : {}
+        });
     }
 
     private handleDocumentClick = (document: DataSourceMessageItem) => {
