@@ -164,11 +164,13 @@ const SelectIcon = () => {
 };
 
 const myBurgerIconClassName = css`
-    '& svg': {
-        '& *': {
-            fill: '#2196f3',
-        },
-    },
+    display: flex;
+    align-items: center;
+    & svg {
+        & * {
+            fill: #2196f3;
+        }
+    }
 `;
 
 export const BurgerButton = () => {
@@ -260,11 +262,26 @@ export const Menu = React.memo<MenuProps>(props => {
                 marginBottom={3}
                 flexShrink={0}
                 alignItems="center"
-                justifyContent="space-between"
             >
                 {isMobile && <BurgerButton />}
-                {title && <Title onClick={onClick}>{title}</Title>}
-                {rightContent && <SelectIcon />}
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        margin: 'auto',
+                        cursor: isMobile ? 'pointer' : 'default',
+                    }}
+                    onClick={onClick}
+                >
+                    {title && <Title>{title}</Title>}
+                    {rightContent &&
+                        isMobile && (
+                            <XView marginLeft={5} alignItems="center" flexDirection="row">
+                                <SelectIcon />
+                            </XView>
+                        )}
+                </div>
             </XView>
             <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>
         </XView>
