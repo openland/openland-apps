@@ -164,7 +164,7 @@ const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps
             flexShrink={0}
             overflow="hidden"
             alignItems="stretch"
-            height="100vh"
+            height="100%"
             width="100%"
         >
             <DesktopDialogContainer>
@@ -184,7 +184,7 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
             flexShrink={0}
             overflow="hidden"
             alignItems="stretch"
-            height="100vh"
+            height="100%"
             width="100%"
         >
             {tab === 'empty' ? (
@@ -213,7 +213,7 @@ const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps
             flexShrink={0}
             overflow="hidden"
             alignItems="stretch"
-            height="100vh"
+            height="100%"
             width="100%"
         >
             <PageInner {...{ tab, conversationId, oid, uid, cid }} />

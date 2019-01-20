@@ -507,7 +507,7 @@ export const DesktopScaffold = ({
     );
 
     return (
-        <XView flexDirection="row" flexGrow={1} flexBasis={0}>
+        <XView flexDirection="row" flexGrow={1} flexBasis={0} height="100%">
             {contentView}
             {menuView}
 
