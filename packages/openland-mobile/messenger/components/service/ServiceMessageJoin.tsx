@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Container } from './views/Container';
 import { MessageFull_serviceMetadata_InviteServiceMetadata, UserShort } from 'openland-api/Types';
 import { UserWrapper } from './views/UserWrapper';
+import { OthersUsersWrapper } from './views/OthersUsersWrapper';
 
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
@@ -57,7 +58,7 @@ const JoinManyServiceMessage = (props: JoinDefaultProps & { otherUsers: UserShor
         <Container>
             {handEmoji}{' '}
             <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
-            the room along with {otherUsers.length} others
+            the room along with <OthersUsersWrapper users={otherUsers} onUserPress={onUserPress} />
         </Container>
     );
 };
