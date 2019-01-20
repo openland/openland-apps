@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, Share, TouchableHighlight, View, Image, Text, Platform } from 'react-native';
+import { AsyncStorage, Share, TouchableHighlight, View, Image, Text, Platform, Linking } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -12,8 +12,9 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { XPStyles } from 'openland-xp/XPStyles';
 import RNRestart from 'react-native-restart';
-import { SHeaderView } from 'react-native-s/SHeaderView';
+import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
+import { resolveInternalLink } from '../../utils/internalLnksResolver';
 
 class SettingsComponent extends React.Component<PageProps> {
 
@@ -53,8 +54,30 @@ class SettingsComponent extends React.Component<PageProps> {
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
-                                <ZListItemGroup header="Invite someone" footer="Help us grow Openland community">
-                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: 'https://www.openland.com' })} />
+                                <ZListItemGroup header={null} footer="Send your personal link to friends in any messenger to stay connected in Openland">
+                                    <ZListItem
+                                        appearance="default"
+                                        text="Ask for help"
+                                        onPress={() => this.props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
+                                    />
+                                    <ZListItem
+                                        appearance="default"
+                                        text="Rate the App"
+                                        onPress={() => {
+                                            Rate.rate({
+                                                AppleAppID: '1435537685',
+                                                GooglePackageName: 'com.openland.app'
+                                            }, () => { /**/ });
+                                        }}
+                                    />
+                                    <ZListItem
+                                        appearance="default"
+                                        text="Invite friends"
+                                        onPress={() => Share.share({ message: 'https://openland.com' })}
+                                    />
+                                </ZListItemGroup>
+                                <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
+                                    <ZListItem text="Notifications" path="SettingsNotifications" />
                                 </ZListItemGroup>
                                 <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }}>
                                     {primary && <ZListItem
@@ -83,15 +106,6 @@ class SettingsComponent extends React.Component<PageProps> {
                                         </View>
                                     </TouchableHighlight>
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
-                                    <ZListItem text="Notifications" path="SettingsNotifications" />
-                                    {__DEV__ && <ZListItem text="Phone" description={'verify phone'} path="PhoneVerify" />}
-                                </ZListItemGroup>
-                                {/* <ZListItemGroup header="Application">
-                                    <ZListItem text="Engine" description={AppUpdateTracker.status.bundleVersion} />
-                                    {this.state.status.status === UpdateStatusCode.UPDATED && <ZListItem text="Update downloaded. Press to restart app." onPress={this.handleRestart} />}
-                                    {this.state.status.status !== UpdateStatusCode.UPDATED && <ZListItem text="Updates" description={convertStatus(this.state.status)} />}
-                                </ZListItemGroup> */}
                                 {__DEV__ && (
                                     <ZListItemGroup header="Dev Tools">
                                         <ZListItem text="Typography" path="DevTypography" />
