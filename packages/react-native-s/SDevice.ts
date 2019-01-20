@@ -49,9 +49,3 @@ export let SDevice = {
     renderBlurSupported: renderBlurSupported,
     pixel: pixel
 };
-
-export let prepareBottomSafeArea: Promise<number> = Platform.OS === 'ios' ? Promise.resolve() : NativeModules.RNBottomSafeAreaProvider.bottomSafeArea().then((r: number) => {
-    // wtf it's x2 ?
-    safeAreaBottom = r / PixelRatio.get() / 2;
-    SDevice = { ...SDevice, safeArea: { ...SDevice.safeArea, bottom: safeAreaBottom } };
-});

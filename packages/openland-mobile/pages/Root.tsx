@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SRouting } from 'react-native-s/SRouting';
-import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
+import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation, StatusBar } from 'react-native';
 import { SNavigationView } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
@@ -19,7 +19,7 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
         super(props);
         this.state = {
             width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height
+            height: Dimensions.get('window').height - StatusBar.currentHeight!,
         };
 
         isPad = isPad && this.props.padLayout !== false;
@@ -37,7 +37,7 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
 
     private handleLayoutChange = (e: LayoutChangeEvent) => {
         let w = Dimensions.get('window').width;
-        let h = Dimensions.get('window').height;
+        let h = Dimensions.get('window').height - StatusBar.currentHeight!;
         if (Platform.OS === 'ios') {
             if (this.state.width !== w || this.state.height !== h) {
                 LayoutAnimation.configureNext({
