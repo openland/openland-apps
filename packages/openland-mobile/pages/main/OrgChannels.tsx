@@ -5,7 +5,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASAvatar } from '../../messenger/MobileMessenger';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { ASText } from 'react-native-async-view/ASText';
-import { View, Image } from 'react-native';
+import { View, Image, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -22,10 +22,11 @@ export class ArrowWrapper extends React.PureComponent {
                 <View flexGrow={1}>
                     {this.props.children}
                 </View>
-                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} >
-                    <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" />
-                </View>
-
+                {Platform.OS !== 'android' && (
+                    <View position="absolute" pointerEvents="none" alignSelf="center" right={16} >
+                        <Image source={require('assets/ic-arrow-cell.png')} alignSelf="center" />
+                    </View>
+                )}
             </View>
         );
     }
@@ -69,16 +70,18 @@ class ChannelsList extends React.PureComponent<{ channels: (Organization_organiz
         return (
             <SScrollView>
                 <ZListItemGroup divider={false}>
-                    {this.props.channels.map((v) => (
-                        <ArrowWrapper>
-                            <ChannelViewAsync
-                                key={v!!.id}
-                                item={v!}
-                                onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
-                            />
+                    {this.props.channels
+                        .sort((a, b) => (b!.membersCount || 0) - (a!.membersCount || 0))
+                        .map((v) => (
+                            <ArrowWrapper>
+                                <ChannelViewAsync
+                                    key={v!!.id}
+                                    item={v!}
+                                    onPress={() => this.props.router.push('Conversation', { flexibleId: v!!.id })}
+                                />
 
-                        </ArrowWrapper>
-                    ))}
+                            </ArrowWrapper>
+                        ))}
                 </ZListItemGroup>
             </SScrollView>
         );
