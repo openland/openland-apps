@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MessengerRootComponent } from './MessengerRootComponent';
 import { RoomsInviteComponent } from './RoomsInviteComponent';
-import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, Room, UserShort } from 'openland-api/Types';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import {
     MessagesStateContext,
@@ -21,12 +21,19 @@ export interface MessengerComponentProps {
     id: string;
 }
 
+interface MessengerComponentLoaderProps {
+    state: MessagesStateContextProps;
+    user: UserShort;
+    loading: boolean;
+    data: Room;
+}
+
 const MessengerComponentLoader = withRoom(withQueryLoader(
-    withUserInfo((props: { state: any; user: any; loading: boolean; data: any }) => {
+    withUserInfo((props: MessengerComponentLoaderProps) => {
         const state = props.state;
         const user = props.user;
 
-        if (!props.data || props.loading) {
+        if (!props.data || !props.data.room || props.loading) {
             if (props.loading) {
                 return <XLoader loading={true} />;
             }
@@ -34,9 +41,9 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
         }
 
         let sharedRoom: Room_room_SharedRoom | null =
-            props.data.room!.__typename === 'SharedRoom' ? (props.data.room as any) : null;
+            props.data.room.__typename === 'SharedRoom' ? props.data.room : null;
         let privateRoom: Room_room_PrivateRoom | null =
-            props.data.room!.__typename === 'PrivateRoom' ? (props.data.room as any) : null;
+            props.data.room.__typename === 'PrivateRoom' ? props.data.room : null;
 
         // WTF?
         if (sharedRoom && sharedRoom.kind !== 'INTERNAL' && sharedRoom.membership !== 'MEMBER') {
@@ -70,10 +77,10 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
                         paddingLeft={20}
                         paddingRight={20}
                     >
-                        <ChatHeaderView room={props.data.room!} me={user!} />
+                        <ChatHeaderView room={props.data.room} me={user} />
                     </XView>
                     <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                    <TalkBarComponent conversationId={props.data.room!.id} />
+                    <TalkBarComponent conversationId={props.data.room.id} />
 
                     <XView
                         alignItems="center"
@@ -90,8 +97,8 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
                                         ? sharedRoom.organization.id
                                         : sharedRoom.id
                                     : privateRoom
-                                    ? privateRoom.user.id
-                                    : undefined
+                                        ? privateRoom.user.id
+                                        : undefined
                             }
                             cloudImageUuid={
                                 (sharedRoom && sharedRoom.photo) ||
