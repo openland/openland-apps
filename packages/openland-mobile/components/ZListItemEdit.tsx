@@ -10,7 +10,7 @@ export class ZListItemEdit extends React.PureComponent<{ autoFocus?: boolean, ti
                     value={this.props.value}
                     onChangeText={this.props.onChange}
                     placeholder={this.props.title}
-                    style={{ paddingLeft: 15, paddingRight: 15 }}
+                    style={{ paddingLeft: 16, paddingRight: 16 }}
                     flexGrow={1}
                     flexBasis={0}
                     field={this.props.field}

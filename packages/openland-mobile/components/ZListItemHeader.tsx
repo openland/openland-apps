@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         height: 96,
-        paddingLeft: 13,
+        paddingLeft: Platform.OS === 'android' ? 16 : 13,
         paddingRight: 16
     } as ViewStyle,
     body: {
@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     } as ViewStyle,
     title: {
-        color: '#1c2e4a',
+        color: Platform.OS === 'android' ? '#000000' : '#1c2e4a',
         fontSize: 22,
-        fontWeight: '600',
+        fontWeight: Platform.OS === 'android' ? '500' : '600',
         height: 26,
     } as TextStyle,
     subtitle: {
-        color: '#5c6a81',
+        color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
         fontSize: 13,
         fontWeight: 'normal',
         height: 18,

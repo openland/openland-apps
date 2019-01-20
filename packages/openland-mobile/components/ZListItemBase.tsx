@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableHighlight, Alert } from 'react-native';
+import { View, Image, TouchableHighlight, Alert, Platform, TouchableNativeFeedback } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { isAndroid } from '../utils/isAndroid';
 import { RectButton } from 'react-native-gesture-handler';
@@ -57,6 +57,21 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
         );
 
         if (!!this.props.onPress || !!this.props.onLongPress || !!this.props.path) {
+            if (this.props.enabled !== false) {
+                if (Platform.OS === 'android') {
+                    return (
+                        <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple('rgba(0, 0, 0, .24)', false)} delayPressIn={20}>
+                            {content}
+                        </TouchableNativeFeedback>
+                    );
+                } else {
+                    return (
+                        <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                            {content}
+                        </TouchableHighlight>
+                    )
+                }
+            }
             return (this.props.enabled !== false ? (
                 <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                     {content}

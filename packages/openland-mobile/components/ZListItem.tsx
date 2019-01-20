@@ -70,7 +70,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
 
         return (
             <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} pathParams={this.props.pathParams} pathRemove={this.props.pathRemove} height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : 44)} navigationIcon={this.props.navigationIcon}>
-                <View paddingLeft={15} paddingRight={15} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
+                <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         {this.props.leftIcon && <Image source={this.props.leftIcon} style={{ marginRight: 15, alignSelf: 'center' }} />}

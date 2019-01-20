@@ -50,8 +50,8 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                 fontWeight: '600',
                                 height: 20,
                                 lineHeight: 20,
-                                paddingLeft: 15,
-                                paddingRight: 15,
+                                paddingLeft: 16,
+                                paddingRight: 16,
                                 flexGrow: 1
                             }}
                             numberOfLines={1}
@@ -87,7 +87,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                 </View>
                 {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
                 {this.props.footer !== null && this.props.footer !== undefined && (
-                    <Text style={{ color: '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 15, paddingRight: 15, paddingBottom: 15, paddingTop: 6 }} >{this.props.footer}</Text>
+                    <Text style={{ color: '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, paddingTop: 6 }} >{this.props.footer}</Text>
                 )}
             </View>
         );
