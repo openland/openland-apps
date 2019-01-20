@@ -50,7 +50,7 @@ interface SearchBoxProps {
     onChange: (e: any) => void;
 }
 
-export const SearchBox = React.memo<SearchBoxProps>((props) => {
+export const SearchBox = React.memo<SearchBoxProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     const onChange = (value: string) => {
         props.onChange(value);
@@ -73,16 +73,10 @@ export const SearchBox = React.memo<SearchBoxProps>((props) => {
                             autofocus={isMobile ? false : true}
                         />
                     </XHorizontal>
-                    {props.value.length > 0 && (
-                        <XButton text="Clear" onClick={onClear} />
-                    )}
-                    <XButton
-                        text="Search"
-                        style="primary"
-                        enabled={props.value.length > 0}
-                    />
+                    {props.value.length > 0 && <XButton text="Clear" onClick={onClear} />}
+                    <XButton text="Search" style="primary" enabled={props.value.length > 0} />
                 </SearchInner>
             </XContentWrapper>
         </SearchWrapper>
     );
-})
+});
