@@ -165,7 +165,7 @@ const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
                     className={sideBarBackgroundClassName}
                 />
             )}
-            <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -300 }}>
+            <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -350 }}>
                 <XView width="100%">
                     <MobileNavigationContainer>
                         <MobileUserProfile />
