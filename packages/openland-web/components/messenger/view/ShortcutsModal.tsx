@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XModal } from 'openland-x-modal/XModal';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 const KeyboardShortcuts = Glamorous.div({
     padding: '7px 0 19px',
@@ -31,49 +32,55 @@ const KeyboardShortcut = Glamorous.div({
     },
 });
 
-export const ShortcutsModal = (props: { target: any }) => (
-    <XModal title="Keyboard shortcuts" useTopCloser={true} target={props.target}>
-        <KeyboardShortcuts>
-            <KeyboardShortcut>
-                <span>Ctrl + S</span> Search chats
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Esc</span> Close chat
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>
-                    <strong>↑</strong>
-                </span>{' '}
-                Edit last message (works when the message box is in focus)
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Ctrl + E</span> Edit last message
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Option + ↑ (Mac)</span>
-                <span>Alt + ↑ (Windows)</span> Previous chat
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Option + ↓ (Mac)</span>
-                <span>Alt + ↓ (Windows)</span> Next chat
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Enter</span> Send message
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Shift + Enter</span> New line
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Cmd + Enter (Mac)</span>
-                <span>Ctrl + Enter (Windows)</span> Submit form
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)
-            </KeyboardShortcut>
-            <KeyboardShortcut>
-                <span>Ctrl + Option + N (Mac)</span>
-                <span>Ctrl + Alt + N (Windows)</span> New chat
-            </KeyboardShortcut>
-        </KeyboardShortcuts>
-    </XModal>
-);
+export const ShortcutsModal = (props: { target: any }) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    if (isMobile) {
+        return null;
+    }
+    return (
+        <XModal title="Keyboard shortcuts" useTopCloser={true} target={props.target}>
+            <KeyboardShortcuts>
+                <KeyboardShortcut>
+                    <span>Ctrl + S</span> Search chats
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Esc</span> Close chat
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>
+                        <strong>↑</strong>
+                    </span>{' '}
+                    Edit last message (works when the message box is in focus)
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + E</span> Edit last message
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Option + ↑ (Mac)</span>
+                    <span>Alt + ↑ (Windows)</span> Previous chat
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Option + ↓ (Mac)</span>
+                    <span>Alt + ↓ (Windows)</span> Next chat
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Enter</span> Send message
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Shift + Enter</span> New line
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Cmd + Enter (Mac)</span>
+                    <span>Ctrl + Enter (Windows)</span> Submit form
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + Cmd + Space (Mac)</span> Emojis (standard Mac shortcut)
+                </KeyboardShortcut>
+                <KeyboardShortcut>
+                    <span>Ctrl + Option + N (Mac)</span>
+                    <span>Ctrl + Alt + N (Windows)</span> New chat
+                </KeyboardShortcut>
+            </KeyboardShortcuts>
+        </XModal>
+    );
+};
