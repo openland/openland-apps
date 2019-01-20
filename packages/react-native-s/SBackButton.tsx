@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, Text, Platform, StyleSheet, ViewStyle } from 'react-native';
+import { Image, View, Text, Platform, StyleSheet, ImageStyle } from 'react-native';
 import { STouchable } from './STouchable';
 
 let styles = StyleSheet.create({
@@ -9,14 +9,14 @@ let styles = StyleSheet.create({
             width: 24,
             margin: 3,
             resizeMode: 'center'
-        } as ViewStyle,
+        } as ImageStyle,
         ios: {
             height: 21,
             width: 13,
             marginLeft: 9,
             marginVertical: 12,
             resizeMode: 'contain',
-        } as ViewStyle
+        } as ImageStyle
     })
 });
 

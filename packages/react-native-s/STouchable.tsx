@@ -5,7 +5,7 @@ export class STouchable extends React.PureComponent<{ onPress?: () => void, styl
     render() {
         if (Platform.OS === 'android' && Platform.Version >= 21) {
             return (
-                <TouchableNativeFeedback onPress={this.props.onPress} hitSlop={this.props.hitSlop} background={TouchableNativeFeedback.Ripple('rgba(0, 0, 0, .32)', true)} delayPressIn={0} style={{ padding: 13 }}>
+                <TouchableNativeFeedback onPress={this.props.onPress} hitSlop={this.props.hitSlop} background={TouchableNativeFeedback.Ripple('rgba(0, 0, 0, .24)', true)} delayPressIn={0}>
                     <View style={this.props.style}>
                         {this.props.children}
                     </View>

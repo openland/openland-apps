@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, Platform } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
     } as ViewStyle,
     title: {
         textAlign: 'left',
