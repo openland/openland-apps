@@ -138,7 +138,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
                         flexDirection="row"
                         path="/mail"
                     >
-                        <CloseChatIcon/>
+                        <CloseChatIcon />
                     </XView>
                 )}
                 {avatar}
@@ -149,8 +149,12 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
             </XView>
 
             <XHorizontal alignItems="center" separator={8}>
-                {callButton}
-                {inviteButton}
+                {!isMobile && (
+                    <>
+                        {callButton}
+                        {inviteButton}
+                    </>
+                )}
                 <XHorizontal alignItems="center" separator={3}>
                     {muteButton}
                     {menu}

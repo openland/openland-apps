@@ -22,7 +22,6 @@ import {
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import { UserPopper } from '../../UserPopper';
 import { EditMessageInlineWrapper } from './edit/MessageEditComponent';
 import { File, EditPostProps } from '../../../fragments/MessengerRootComponent';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
@@ -155,8 +154,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
 
         return null;
     };
-
-    userPopperRef = React.createRef<UserPopper>();
 
     componentDidUpdate() {
         if (this.state.isEditView) {
@@ -346,18 +343,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         return null;
-    };
-
-    showUserPopper = () => {
-        if (this.userPopperRef.current) {
-            this.userPopperRef.current.showPopper();
-        }
-    };
-
-    hideUserPopper = () => {
-        if (this.userPopperRef.current) {
-            this.userPopperRef.current.hidePopper();
-        }
     };
 
     render() {

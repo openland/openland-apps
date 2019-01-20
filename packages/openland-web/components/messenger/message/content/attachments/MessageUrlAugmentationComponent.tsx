@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { preprocessText, Span } from '../../../../../utils/TextProcessor';
+import { preprocessText } from '../../../../../utils/TextProcessor';
 import { XLinkExternal } from 'openland-x/XLinkExternal';
 import { XLink } from 'openland-x/XLink';
 import WebsiteIcon from 'openland-icons/website-2.svg';
@@ -11,9 +11,10 @@ import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { emoji } from 'openland-y-utils/emoji';
 
-const Container = Glamorous(XLink)({
+const Container = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
     display: 'flex',
     flexDirection: 'row',
     position: 'relative',
@@ -25,14 +26,16 @@ const Container = Glamorous(XLink)({
     maxWidth: 620,
     color: '#121e2b !important',
     width: '100%',
+    '& .delete-button': {
+        opacity: props.isMobile ? 1 : 0,
+    },
     '&:hover .delete-button': {
         opacity: 1,
     },
-});
+}));
 
 const DeleteButton = makeNavigable(
-    Glamorous.div<NavigableChildProps>(() => ({
-        opacity: 0,
+    Glamorous.div<NavigableChildProps>(props => ({
         position: 'absolute',
         right: 0,
         top: 0,
@@ -55,6 +58,7 @@ const DeleteButton = makeNavigable(
 const ContentWrapper = Glamorous.div({
     flex: 1,
     paddingRight: 15,
+    overflow: 'hidden',
 });
 
 const Hostname = Glamorous.div({
@@ -139,88 +143,85 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
     isMe: boolean;
 }
 
-export class MessageUrlAugmentationComponent extends React.Component<
-    MessageUrlAugmentationComponentProps
-> {
-    private preprocessed: Span[];
-    constructor(props: MessageUrlAugmentationComponentProps) {
-        super(props);
-        this.preprocessed = props.description ? preprocessText(props.description) : [];
+export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationComponentProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    let { hostname, title, photo, imageInfo } = props;
+
+    const preprocessed = props.description ? preprocessText(props.description) : [];
+
+    let parts = preprocessed.map((v, i) => {
+        if (v.type === 'new_line') {
+            return <br key={'br-' + i} />;
+        } else if (v.type === 'link') {
+            return (
+                <XLinkExternal
+                    className="link"
+                    key={'link-' + i}
+                    href={v.link!!}
+                    content={v.text!!}
+                    showIcon={false}
+                />
+            );
+        } else {
+            return <span key={'text-' + i}>{emoji(v.text!!, 18)}</span>;
+        }
+    });
+
+    let dimensions = undefined;
+    if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
+        dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
     }
-    render() {
-        let { hostname, title, photo, imageInfo } = this.props;
 
-        let parts = this.preprocessed.map((v, i) => {
-            if (v.type === 'new_line') {
-                return <br key={'br-' + i} />;
-            } else if (v.type === 'link') {
-                return (
-                    <XLinkExternal
-                        className="link"
-                        key={'link-' + i}
-                        href={v.link!!}
-                        content={v.text!!}
-                        showIcon={false}
-                    />
-                );
-            } else {
-                return <span key={'text-' + i}>{emoji(v.text!!, 18)}</span>;
-            }
-        });
+    let href: string | undefined = props.url;
+    let path: string | undefined = undefined;
 
-        let dimensions = undefined;
-        if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
-            dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
-        }
+    if (isInternalLink(href)) {
+        path = makeInternalLinkRelative(href);
+        href = undefined;
+    }
 
-        let href: string | undefined = this.props.url;
-        let path: string | undefined = undefined;
-
-        if (isInternalLink(href)) {
-            path = makeInternalLinkRelative(href);
-            href = undefined;
-        }
-
-        return (
-            <Container href={href} path={path} onClick={(e: any) => e.stopPropagation()}>
-                <ContentWrapper>
-                    {hostname && (
-                        <Hostname>
-                            {this.props.iconRef && (
-                                <Favicon
-                                    src={'https://ucarecdn.com/' + this.props.iconRef.uuid + '/'}
-                                />
-                            )}
-                            {!this.props.iconRef && <WebsiteIcon />}
-                            <span>{hostname}</span>
-                        </Hostname>
-                    )}
-                    {title && <Title>{title}</Title>}
-                    {parts && <Description>{parts}</Description>}
-                </ContentWrapper>
-                {photo &&
-                    dimensions && (
-                        <ImageWrapper>
-                            <XCloudImage
-                                srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
-                                resize="fill"
-                                width={dimensions.width}
-                                height={dimensions.height}
-                            />
-                        </ImageWrapper>
-                    )}
-                {this.props.isMe && (
-                    <DeleteButton
-                        query={{
-                            field: 'deleteUrlAugmentation',
-                            value: this.props.messageId,
-                        }}
-                        className="delete-button"
-                    >
-                        <DeleteIcon />
-                    </DeleteButton>
+    return (
+        <Container
+            isMobile={isMobile}
+            href={href}
+            path={path}
+            onClick={(e: any) => e.stopPropagation()}
+        >
+            <ContentWrapper>
+                {hostname && (
+                    <Hostname>
+                        {props.iconRef && (
+                            <Favicon src={'https://ucarecdn.com/' + props.iconRef.uuid + '/'} />
+                        )}
+                        {!props.iconRef && <WebsiteIcon />}
+                        <span>{hostname}</span>
+                    </Hostname>
                 )}
-            </Container>
-        );
-    }
-}
+                {title && <Title>{title}</Title>}
+                {parts && <Description>{parts}</Description>}
+            </ContentWrapper>
+            {photo &&
+                dimensions && (
+                    <ImageWrapper>
+                        <XCloudImage
+                            srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
+                            resize="fill"
+                            width={dimensions.width}
+                            height={dimensions.height}
+                        />
+                    </ImageWrapper>
+                )}
+            {props.isMe && (
+                <DeleteButton
+                    query={{
+                        field: 'deleteUrlAugmentation',
+                        value: props.messageId,
+                    }}
+                    className="delete-button"
+                >
+                    <DeleteIcon />
+                </DeleteButton>
+            )}
+        </Container>
+    );
+};
