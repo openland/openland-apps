@@ -84,35 +84,6 @@ export const MenuItem = ({ path, icon, onClick, title }: MenuItemProps) => (
     </XLink>
 );
 
-const LinksWrapper = css`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    background-color: #fff;
-    @media (max-width: 700px) {
-        position: absolute;
-        z-index: 1;
-        overflow: hidden;
-        height: 0;
-        top: 53px;
-        width: 100%;
-
-        &.show {
-            height: auto;
-            overflow: visible;
-
-            &::before {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 100%;
-                height: calc(100vh - 53px);
-                background-color: rgba(0, 0, 0, 0.2);
-            }
-        }
-    }
-`;
-
 const menuWrapperClassName = css`
     width: 344px;
     height: 100%;
@@ -204,6 +175,48 @@ interface MenuProps {
     leftContent?: any;
 }
 
+const backgroundClassName = css`
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+`;
+
+const ShowMenuItems = ({ children }: { children: any }) => (
+    <XView
+        position="absolute"
+        width="100%"
+        zIndex={1}
+        flexDirection="column"
+        alignItems="stretch"
+        backgroundColor="#fff"
+        top={53}
+        height="auto"
+    >
+        <div className={backgroundClassName}>{children}</div>
+    </XView>
+);
+
+const HideMenuItems = ({ children }: { children: any }) => (
+    <XView
+        position="absolute"
+        width="100%"
+        zIndex={1}
+        flexDirection="column"
+        alignItems="stretch"
+        backgroundColor="#fff"
+        top={53}
+        height={0}
+        overflow="hidden"
+    >
+        <div className={backgroundClassName}>{children}</div>
+    </XView>
+);
+
 export const Menu = React.memo<MenuProps>(props => {
     const { showMenu, setShowMenu, isMobile } = React.useContext(MobileSidebarContext);
 
@@ -214,6 +227,7 @@ export const Menu = React.memo<MenuProps>(props => {
     };
 
     const { title, rightContent, children } = props;
+    const MenuItems = showMenu ? ShowMenuItems : HideMenuItems;
 
     return (
         <XView width="100%">
@@ -233,7 +247,7 @@ export const Menu = React.memo<MenuProps>(props => {
                     mobile={
                         <XView flexDirection="row" width="100%" justifyContent="space-between">
                             <BurgerButton />
-                            <XView flexDirection="row" onClick={onClick}>
+                            <XView flexDirection="row" cursor="pointer" onClick={onClick}>
                                 <Title>{title}</Title>
                                 <XView marginLeft={5} flexDirection="row" alignSelf="center">
                                     <SelectIcon />
@@ -252,7 +266,16 @@ export const Menu = React.memo<MenuProps>(props => {
                     }
                 />
             </XView>
-            <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>
+
+            <AdaptiveComponent
+                fullWidth={true}
+                mobile={<MenuItems>{children}</MenuItems>}
+                desktop={
+                    <XView flexDirection="column" alignItems="stretch" backgroundColor="#fff">
+                        {children}
+                    </XView>
+                }
+            />
         </XView>
     );
 });
