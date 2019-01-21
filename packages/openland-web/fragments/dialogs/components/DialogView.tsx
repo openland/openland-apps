@@ -166,8 +166,8 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         fontSize={14}
                         fontWeight="600"
                         lineHeight="18px"
-                        color={theme.textColor}
-                        selectedColor={theme.textColorSelected}
+                        color={theme.dialogTitleTextColor}
+                        selectedColor={theme.dialogTitleTextColorSelected}
                         overflow="hidden"
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
@@ -177,15 +177,13 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                     {dialog.date && (
                         <XView
                             height={18}
-                            color={theme.textColor}
-                            selectedColor={theme.textColorSelected}
+                            color={theme.dialogDateTextColor}
+                            selectedColor={theme.dialogDateTextColorSelected}
                             marginLeft={5}
                             fontSize={12}
                             fontWeight="600"
                             lineHeight="18px"
                             whiteSpace="nowrap"
-                            opacity={0.3}
-                            selectedOpacity={0.8}
                         >
                             <XDate value={dialog.date.toString()} format="datetime_short" />
                         </XView>
@@ -202,10 +200,9 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         fontWeight="400"
                         lineHeight="17px"
                         overflow="hidden"
-                        opacity={0.5}
                         selectedOpacity={1}
-                        color={theme.textColor}
-                        selectedColor={theme.textColorSelected}
+                        color={theme.dialogMessageTextColor}
+                        selectedColor={theme.dialogMessageTextColorSelected}
                     >
                         {message}
                     </XView>
