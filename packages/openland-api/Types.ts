@@ -722,6 +722,7 @@ export interface Room_room_PrivateRoom_user {
 
 export interface Room_room_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -1748,6 +1749,7 @@ export interface RoomAddMember_betaRoomInvite_PrivateRoom_user {
 
 export interface RoomAddMember_betaRoomInvite_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -1893,6 +1895,7 @@ export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_us
 
 export interface RoomDeclineJoinReuest_betaRoomDeclineJoinRequest_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -2035,6 +2038,7 @@ export interface RoomAddMembers_betaRoomInvite_PrivateRoom_user {
 
 export interface RoomAddMembers_betaRoomInvite_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -2180,6 +2184,7 @@ export interface RoomKick_betaRoomKick_PrivateRoom_user {
 
 export interface RoomKick_betaRoomKick_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -2322,6 +2327,7 @@ export interface RoomLeave_betaRoomLeave_PrivateRoom_user {
 
 export interface RoomLeave_betaRoomLeave_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -2734,6 +2740,7 @@ export interface RoomJoin_join_PrivateRoom_user {
 
 export interface RoomJoin_join_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -2894,6 +2901,7 @@ export interface RoomJoinInviteLink_join_PrivateRoom_user {
 
 export interface RoomJoinInviteLink_join_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 
@@ -5225,22 +5233,27 @@ export interface User_user {
   primaryOrganization: User_user_primaryOrganization | null;
 }
 
-export interface User_conversation_settings {
-  __typename: "ConversationSettings";
-  id: string;
-  mobileNotifications: NotificationMessages;
-  mute: boolean;
+export interface User_conversation_SharedRoom {
+  __typename: "SharedRoom";
 }
 
-export interface User_conversation {
-  __typename: "ChannelConversation" | "AnonymousConversation" | "SharedConversation" | "PrivateConversation" | "GroupConversation";
+export interface User_conversation_PrivateRoom_settings {
+  __typename: "RoomUserNotificaionSettings";
   id: string;
-  settings: User_conversation_settings;
+  mute: boolean | null;
 }
+
+export interface User_conversation_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  settings: User_conversation_PrivateRoom_settings;
+}
+
+export type User_conversation = User_conversation_SharedRoom | User_conversation_PrivateRoom;
 
 export interface User {
   user: User_user;
-  conversation: User_conversation;
+  conversation: User_conversation | null;
 }
 
 export interface UserVariables {
@@ -6095,7 +6108,6 @@ export interface ConversationShort_AnonymousConversation_topMessage {
 export interface ConversationShort_AnonymousConversation_settings {
   __typename: "ConversationSettings";
   id: string;
-  mobileNotifications: NotificationMessages;
   mute: boolean;
 }
 
@@ -6619,7 +6631,6 @@ export interface ConversationShort_GroupConversation_topMessage {
 export interface ConversationShort_GroupConversation_settings {
   __typename: "ConversationSettings";
   id: string;
-  mobileNotifications: NotificationMessages;
   mute: boolean;
 }
 
@@ -7159,7 +7170,6 @@ export interface ConversationShort_ChannelConversation_topMessage {
 export interface ConversationShort_ChannelConversation_settings {
   __typename: "ConversationSettings";
   id: string;
-  mobileNotifications: NotificationMessages;
   mute: boolean;
 }
 
@@ -8558,6 +8568,7 @@ export interface RoomFull_PrivateRoom_user {
 
 export interface RoomFull_PrivateRoom_settings {
   __typename: "RoomUserNotificaionSettings";
+  id: string;
   mute: boolean | null;
 }
 

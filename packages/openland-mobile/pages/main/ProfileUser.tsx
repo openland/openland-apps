@@ -14,7 +14,7 @@ import { formatDate } from '../../utils/formatDate';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { Platform } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { User } from 'openland-api/Types';
+import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
 class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
@@ -23,9 +23,8 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
     }
     handleMute = async () => {
         startLoader();
-        getClient().mutate(RoomSettingsUpdateMutation)
         try {
-            await getClient().mutate(RoomSettingsUpdateMutation, { roomId: this.props.resp.conversation.id, settings: { mute: !this.props.resp.conversation.settings.mute } });
+            await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: !(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute } });
         } catch (e) {
             new AlertBlanketBuilder().alert(e.message);
         }
@@ -90,7 +89,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                         text="Notifications"
-                        toggle={!this.props.resp.conversation.settings.mute}
+                        toggle={!(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute}
                         onToggle={this.handleMute}
                     />
                 </ZListItemGroup>

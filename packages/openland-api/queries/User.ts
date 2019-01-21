@@ -18,12 +18,13 @@ export const UserQuery = gql`
         user: user(id: $userId) {
             ...UserFull
         }
-        conversation: alphaChat(conversationId: $userId) {
-            id
-            settings {
+        conversation: room(id: $userId) {
+            ... on PrivateRoom {
                 id
-                mobileNotifications
-                mute
+                settings {
+                    id
+                    mute
+                }
             }
         }
     }

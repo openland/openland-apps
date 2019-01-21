@@ -8,6 +8,7 @@ export const RoomFull = gql`
                 ...UserShort
             }
             settings {
+                id
                 mute
             }
         } 

@@ -12,7 +12,6 @@ export const ConversationShort = gql`
         }
         settings {
             id
-            mobileNotifications
             mute
         }
         ... on GroupConversation {
