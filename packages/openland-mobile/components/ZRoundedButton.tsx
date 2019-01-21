@@ -6,14 +6,18 @@ import { SRouter } from 'react-native-s/SRouter';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: AppStyles.primaryColor,
+        backgroundColor: '#0084fe',
         borderRadius: 13,
         height: 26,
+        alignItems: 'center',
+        justifyContent: 'center',
         paddingLeft: 12,
         paddingRight: 12
     } as ViewStyle,
     containerBig: {
-        backgroundColor: AppStyles.primaryColor,
+        backgroundColor: '#0084fe',
+        alignItems: 'center',
+        justifyContent: 'center',
         borderRadius: 18,
         height: 56,
         paddingLeft: 19,
@@ -21,14 +25,16 @@ const styles = StyleSheet.create({
     } as ViewStyle,
     title: {
         color: '#fff',
-        lineHeight: 26,
-        fontSize: 13,
+        fontSize: 14,
         fontWeight: '600',
+        textAlignVertical: 'center'
     } as TextStyle,
     titleBig: {
         color: '#fff',
-        lineHeight: 56,
         fontSize: 16,
+        height: 56,
+        lineHeight: 56,
+        textAlignVertical: 'center',
         fontWeight: '600',
         letterSpacing: 0.2
     } as TextStyle

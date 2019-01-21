@@ -11,11 +11,11 @@ import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncDateSeparator } from './components/AsyncDateSeparator';
-import { ZPictureModal } from '../components/modal/ZPictureModal';
+import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Alert, AlertIOS, Platform } from 'react-native';
+import { Clipboard, Alert, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
@@ -121,7 +121,7 @@ export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: b
 class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
     render() {
         return (
-            <ASFlex borderRadius={9} backgroundColor={this.props.muted ? XPStyles.colors.inactiveCounter : XPStyles.colors.brand} height={18} minWidth={18} justifyContent="center">
+            <ASFlex borderRadius={9} backgroundColor={this.props.muted ? '#c8c7cc' : '#0084fe'} height={18} minWidth={18} justifyContent="center">
                 <ASFlex justifyContent="center" marginLeft={Platform.select({ default: 4, android: 6 })} marginRight={Platform.select({ default: 4, android: 6 })}>
                     <ASText color="#fff" lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
                 </ASFlex>
@@ -161,13 +161,13 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                 </ASFlex>
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
-                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color="#181818" flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={Platform.OS === 'android' ? '#000' : '#181818'} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                         {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
                     </ASFlex>
                     {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{item.sender}</ASText>)}
-                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color="#7b7b7b" numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
+                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             <ASText fontSize={14} height={36} lineHeight={18} color={XPStyles.colors.brand} numberOfLines={2}>{item.typing}</ASText>
@@ -194,12 +194,10 @@ export class MobileMessenger {
     readonly history: SRouting;
     readonly dialogs: ASDataView<DialogDataSourceItem>;
     private readonly conversations = new Map<string, ASDataView<DataSourceMessageItem | DataSourceDateItem>>();
-    private readonly modal: React.RefObject<ZPictureModal>;
 
-    constructor(engine: MessengerEngine, history: SRouting, modal: React.RefObject<ZPictureModal>) {
+    constructor(engine: MessengerEngine, history: SRouting) {
         this.engine = engine;
         this.history = history;
-        this.modal = modal;
         this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
             return (
                 <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
@@ -212,10 +210,10 @@ export class MobileMessenger {
             let eng = this.engine.getConversation(id);
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
-                    if (!item.serviceMetaData) {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
-                    } else {
+                    if (item.serviceMetaData || item.isService) {
                         return (<AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} />);
+                    } else {
+                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
                     }
                 } else {
                     return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
@@ -226,30 +224,27 @@ export class MobileMessenger {
     }
 
     private handleMediaClick = (document: DataSourceMessageItem, event: { path: string } & ASPressEvent) => {
-        if (this.modal.current) {
-            this.modal.current!!.showModal({
-                url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
-                width: document.file!!.imageSize!!.width,
-                height: document.file!!.imageSize!!.height,
-                isGif: false,
-                animate: {
-                    x: event.x,
-                    y: event.y,
-                    width: event.w,
-                    height: event.h,
-                    borderRadius: 10
+        showPictureModal({
+            url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
+            width: document.file!!.imageSize!!.width,
+            height: document.file!!.imageSize!!.height,
+            isGif: false,
+            animate: {
+                x: event.x,
+                y: event.y,
+                width: event.w,
+                height: event.h,
+                borderRadius: 10
+            },
+            ...Platform.OS === 'ios' ? {
+                onBegin: () => {
+                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
                 },
-                ...Platform.OS === 'ios' ? {
-                    onBegin: () => {
-                        RNAsyncConfigManager.setSuspended(event.instanceKey!!, true);
-                    },
-                    onEnd: () => {
-                        RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
-                    }
-                } : {}
-            });
-        }
-        //
+                onEnd: () => {
+                    RNAsyncConfigManager.setSuspended(event.instanceKey!!, false);
+                }
+            } : {}
+        });
     }
 
     private handleDocumentClick = (document: DataSourceMessageItem) => {

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { XPAvatarProps, XPAvatar } from 'openland-xp/XPAvatar';
-import { ZPictureModalContext, ZPictureModalProvider } from './modal/ZPictureModalContext';
 import { View, TouchableWithoutFeedback } from 'react-native';
+import { showPictureModal } from './modal/ZPictureModal';
 
-class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps & { modal: ZPictureModalProvider }> {
+class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps> {
 
     ref = React.createRef<View>();
     handleLayout = () => {
@@ -21,7 +21,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps & {
         // url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
         // console.log(url);
         view.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-            this.props.modal.showModal({
+            showPictureModal({
                 url,
                 width: 256,
                 height: 256,
@@ -46,7 +46,7 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps & {
         //
     }
     render() {
-        let { modal, ...other } = this.props;
+        let { ...other } = this.props;
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
                 <View onLayout={this.handleLayout} ref={this.ref}>
@@ -59,8 +59,6 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps & {
 
 export const XPAvatarWithPreview = (props: XPAvatarProps) => {
     return (
-        <ZPictureModalContext.Consumer>
-            {modal => <XPAvatarWithPreviewComponent {...props} modal={modal!!} />}
-        </ZPictureModalContext.Consumer>
+        <XPAvatarWithPreviewComponent {...props} />
     );
 };

@@ -1,0 +1,11 @@
+patch-package
+--- a/node_modules/react-native-rate/index.d.ts
++++ b/node_modules/react-native-rate/index.d.ts
+@@ -9,7 +9,6 @@ declare module 'react-native-rate' {
+ 		openAppStoreIfInAppFails?: boolean,
+ 		inAppDelay?: number,
+ 		fallbackPlatformURL?: string,
+-		openAppStoreIfInAppFails?: boolean,
+ 	}
+ 
+ 	export enum AndroidMarket {

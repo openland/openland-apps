@@ -12159,6 +12159,11 @@ react-native-push-notification@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.1.tgz#99ce426e78e95788c298f73750cc4e68db04d7ab"
 
+react-native-rate@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-rate/-/react-native-rate-1.1.6.tgz#55f087a8376fc6e5bdca02698c03662b450e3d12"
+  integrity sha512-/vnGkMTsxI+5y1togItXd2l/6JZzlUjsvQjCj9RWsOja9mVJxWdDacCrVHTf041k83fwX2Nw6ru6xxOWyU8Y+w==
+
 react-native-restart@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/react-native-restart/-/react-native-restart-0.0.8.tgz#b19e99b6f0cb9820a3a900e57a564c69d2b0b1e2"

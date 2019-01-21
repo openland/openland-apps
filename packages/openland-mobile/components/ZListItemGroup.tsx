@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
 export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
@@ -38,7 +38,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                 {this.props.header !== null && this.props.header !== undefined &&
                     <View
                         style={{
-                            paddingTop: 35,
+                            paddingTop: 30,
                             paddingBottom: 10,
                             flexDirection: 'row'
                         }}
@@ -47,11 +47,11 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                             style={{
                                 color: '#000',
                                 fontSize: 20,
-                                fontWeight: '600',
+                                fontWeight: Platform.OS === 'android' ? '500' : '600',
                                 height: 20,
                                 lineHeight: 20,
-                                paddingLeft: 15,
-                                paddingRight: 15,
+                                paddingLeft: 16,
+                                paddingRight: 16,
                                 flexGrow: 1
                             }}
                             numberOfLines={1}
@@ -64,7 +64,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                             <Text
                                 onPress={this.props.actionRight.onPress}
                                 style={{
-                                    color: '#4747ec',
+                                    color: '#0084fe',
                                     fontSize: 15,
                                     fontWeight: '500',
                                     height: 18,
@@ -87,7 +87,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                 </View>
                 {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
                 {this.props.footer !== null && this.props.footer !== undefined && (
-                    <Text style={{ color: '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 15, paddingRight: 15, paddingBottom: 15, paddingTop: 6 }} >{this.props.footer}</Text>
+                    <Text style={{ color: Platform.OS === 'android' ? '#939393' : '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, paddingTop: 6 }} >{this.props.footer}</Text>
                 )}
             </View>
         );

@@ -49,13 +49,15 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     let isService = dialog.isService;
     let haveMention = dialog.haveMention;
     let isPrivate = props.item.kind === 'PRIVATE';
-    let sender = dialog.isOut
-        ? 'You: '
-        : isPrivate
-            ? ''
-            : dialog.sender
-                ? <>{emoji(dialog.sender, 14)}: </>
-                : '';
+    let sender = dialog.isOut ? (
+        'You: '
+    ) : isPrivate ? (
+        ''
+    ) : dialog.sender ? (
+        <>{emoji(dialog.sender, 14)}: </>
+    ) : (
+        ''
+    );
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
     if (dialog.typing) {
@@ -189,16 +191,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         </XView>
                     )}
                 </XView>
-                <XView
-                    flexDirection="row"
-                    minWidth={0}
-                    flexGrow={1}
-                    flexShrink={1}
-                    color={theme.textColor}
-                    selectedColor={theme.textColorSelected}
-                    opacity={0.5}
-                    selectedOpacity={1}
-                >
+                <XView flexDirection="row" minWidth={0} flexGrow={1} flexShrink={1}>
                     <XView
                         height={34}
                         flexGrow={1}
@@ -209,6 +202,10 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         fontWeight="400"
                         lineHeight="17px"
                         overflow="hidden"
+                        opacity={0.5}
+                        selectedOpacity={1}
+                        color={theme.textColor}
+                        selectedColor={theme.textColorSelected}
                     >
                         {message}
                     </XView>

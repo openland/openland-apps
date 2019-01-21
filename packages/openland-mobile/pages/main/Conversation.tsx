@@ -5,7 +5,6 @@ import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEng
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
-import { ZPictureModalContext, ZPictureModalProvider } from '../../components/modal/ZPictureModalContext';
 import { ConversationView } from './components/ConversationView';
 import { PageProps } from '../../components/PageProps';
 import { ZQuery } from '../../components/ZQuery';
@@ -26,12 +25,13 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 
-class ConversationRoot extends React.Component<PageProps & { provider: ZPictureModalProvider, engine: MessengerEngine, chat: Room_room }, { text: string }> {
+class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
 
-    constructor(props: { provider: ZPictureModalProvider, router: any, engine: MessengerEngine, chat: Room_room }) {
+    constructor(props: { router: any, engine: MessengerEngine, chat: Room_room }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.chat.id);
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -55,13 +55,26 @@ class ConversationRoot extends React.Component<PageProps & { provider: ZPictureM
     }
 
     handleAttach = () => {
-        Picker.showImagePicker({ title: 'Send file' }, (response) => {
-            if (response.didCancel) {
-                return;
-            }
+        let builder = new ActionSheetBuilder();
+        builder.action('Take Photo...', () => {
+            Picker.launchCamera({ title: 'Take Photo' }, (response) => {
+                if (response.didCancel) {
+                    return;
+                }
 
-            UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+                UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+            });
         });
+        builder.action('Choose from Library...', () => {
+            Picker.launchImageLibrary({ title: 'Take Photo' }, (response) => {
+                if (response.didCancel) {
+                    return;
+                }
+
+                UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+            });
+        });
+        builder.show();
     }
 
     render() {
@@ -224,16 +237,13 @@ class ConversationComponent extends React.Component<PageProps> {
 
                             } else {
                                 // member - show chat
-                                return <ZPictureModalContext.Consumer>
-                                    {modal => (
-                                        <MessengerContext.Consumer>
-                                            {messenger => (
-                                                <ConversationRoot provider={modal!!} key={(sharedRoom || privateRoom)!.id} router={this.props.router} engine={messenger!!} chat={(sharedRoom || privateRoom)!} />
-                                            )}
-                                        </MessengerContext.Consumer>
-                                    )}
-                                </ZPictureModalContext.Consumer>;
-
+                                return (
+                                    <MessengerContext.Consumer>
+                                        {messenger => (
+                                            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={this.props.router} engine={messenger!!} chat={(sharedRoom || privateRoom)!} />
+                                        )}
+                                    </MessengerContext.Consumer>
+                                );
                             }
                         }}
 

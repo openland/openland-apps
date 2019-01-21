@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Alert } from 'react-native';
+import { View, Text, Switch, Image, Alert, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
@@ -69,21 +69,48 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         let enabled = !!this.props.onPress || !!this.props.onToggle || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
 
         return (
-            <ZListItemBase onPress={this.handleOnPress} onLongPress={this.handleOnLongPress} enabled={enabled} backgroundColor="#fff" separator={this.props.separator === true} path={this.props.path} pathParams={this.props.pathParams} pathRemove={this.props.pathRemove} height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : 44)} navigationIcon={this.props.navigationIcon}>
-                <View paddingLeft={15} paddingRight={15} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
+            <ZListItemBase
+                onPress={this.handleOnPress}
+                onLongPress={this.handleOnLongPress}
+                enabled={enabled}
+                backgroundColor="#fff"
+                separator={this.props.separator === true}
+                path={this.props.path}
+                pathParams={this.props.pathParams}
+                pathRemove={this.props.pathRemove}
+                height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : (Platform.OS === 'android' ? 48 : 44))}
+                navigationIcon={this.props.navigationIcon}
+            >
+                <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         {this.props.leftIcon && <Image source={this.props.leftIcon} style={{ marginRight: 15, alignSelf: 'center' }} />}
                         {this.props.leftAvatar && <View paddingRight={15}><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
-                        <ZText linkify={this.props.linkify === true || !this.props.onPress} style={{ fontSize: 15, fontWeight: '500', color: this.props.appearance === 'action' ? AppStyles.primaryColor : this.props.appearance === 'danger' ? AppStyles.dangerColor : '#181818', lineHeight: 22, textAlignVertical: 'center', flexGrow: 1, flexBasis: 0, alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start' }} numberOfLines={this.props.multiline ? undefined : 1} text={this.props.text} />
+                        <ZText
+                            linkify={this.props.linkify === true || !this.props.onPress}
+                            style={{
+                                fontSize: Platform.OS === 'android' ? 16 : 15,
+                                fontWeight: '400',
+                                color: this.props.appearance === 'action' ? AppStyles.primaryColor
+                                    : this.props.appearance === 'danger' ? AppStyles.dangerColor
+                                        : '#181818',
+                                lineHeight: 22,
+                                textAlignVertical: 'center',
+                                flexGrow: 1,
+                                flexBasis: 0,
+                                alignSelf: !this.props.title || this.props.leftAvatar ? 'center' : 'flex-start'
+                            }}
+                            numberOfLines={this.props.multiline ? undefined : 1}
+                            text={this.props.text}
+                        />
                         {this.props.description && (
-                            <ZText linkify={this.props.linkify === true || !this.props.onPress} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
+                            <ZText linkify={this.props.linkify === true || !this.props.onPress} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: Platform.OS === 'android' ? '#9B9B9B' : 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined) || (this.props.toggleField)) && (
-                            <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor="#ddd" thumbTintColor={XPStyles.colors.brand} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
+                            <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor={Platform.OS === 'android' ? '#80C0FE' : '#0084fe'} tintColor="#ddd" thumbTintColor={Platform.OS === 'android' ? '#0084fe' : undefined} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
                         )}
                         {showCheckmark && (
-                            <Image source={require('assets/ic-checkmark-cell.png')} style={{ opacity: checkmarkEnabled ? 1 : 0 }} />
+                            <Image source={require('assets/ic-checkmark-cell.png')} style={{ tintColor: '#0084fe', opacity: checkmarkEnabled ? 1 : 0 }} />
                         )}
                     </View>
                 </View>

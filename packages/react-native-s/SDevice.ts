@@ -1,4 +1,4 @@
-import { Platform, Dimensions, PixelRatio } from 'react-native';
+import { Platform, Dimensions, PixelRatio, StatusBar } from 'react-native';
 import { NativeModules } from 'react-native';
 
 // Detect iPhoneX
@@ -26,7 +26,7 @@ const navigationBarHeightExpanded = Platform.OS === 'ios' ? 96 : 96; // Size of 
 //
 // Sizes of Status Bars
 //
-const statusBarHeight = Platform.OS === 'ios' ? 22 : 0;
+const statusBarHeight = Platform.OS === 'ios' ? 22 : StatusBar.currentHeight!;
 
 //
 // Rendering properties
@@ -49,9 +49,3 @@ export let SDevice = {
     renderBlurSupported: renderBlurSupported,
     pixel: pixel
 };
-
-export let prepareBottomSafeArea: Promise<number> = Platform.OS === 'ios' ? Promise.resolve() : NativeModules.RNBottomSafeAreaProvider.bottomSafeArea().then((r: number) => {
-    // wtf it's x2 ?
-    safeAreaBottom = r / PixelRatio.get() / 2;
-    SDevice = { ...SDevice, safeArea: { ...SDevice.safeArea, bottom: safeAreaBottom } };
-});

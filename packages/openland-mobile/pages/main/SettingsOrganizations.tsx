@@ -5,7 +5,6 @@ import { ZQuery } from '../../components/ZQuery';
 import { AccountSettingsQuery } from 'openland-api';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
-import { ZListItemFooter } from '../../components/ZListItemFooter';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 
@@ -39,7 +38,7 @@ class SettingsOrganizatonsComponent extends React.Component<PageProps> {
                                             />
                                         ))}
                                     </ZListItemGroup>
-                                    <ZListItemFooter />
+                                    {/* <ZListItemFooter /> */}
                                 </>
                             );
                         }}

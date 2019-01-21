@@ -28,7 +28,6 @@ export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPres
 
     render() {
         let item = this.props.item;
-        console.warn(JSON.stringify(item));
         return (
             <ASView style={{ height: 60, opacity: this.props.disabled ? 0.5 : 1 }}>
                 <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
@@ -44,9 +43,9 @@ export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPres
                         <ASText fontSize={16} fontWeight="500" lineHeight={19} height={19} color="#181818" numberOfLines={1}>{item.name}</ASText>
                         {!!item.primaryOrganization && <ASText marginTop={5} fontSize={13} lineHeight={15} height={15} color="#8a8a8f" numberOfLines={1} opacity={0.8}>{item.primaryOrganization.name}</ASText>}
                     </ASFlex>
-                    <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+                    {/* <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
                         <ASFlex height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} />
-                    </ASFlex>
+                    </ASFlex> */}
                 </ASFlex>
             </ASView>
         );

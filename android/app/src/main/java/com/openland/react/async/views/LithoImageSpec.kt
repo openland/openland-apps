@@ -15,6 +15,7 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
+import com.openland.react.statusBarHeight
 
 
 @LayoutSpec
@@ -23,7 +24,7 @@ object LithoImageSpec {
     @OnCreateLayout
     internal fun onCreateLayout(context: ComponentContext, @Prop spec: AsyncImageSpec, @Prop reactContext: ReactContext): Component {
         var uri = spec.url
-        if(uri !== null && !(uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://"))){
+        if (uri !== null && !(uri.startsWith("http://") || uri.startsWith("https://") || uri.startsWith("file://"))) {
             uri = helper.getResourceDrawableUri(context, spec.url).toString()
         }
         val controller = Fresco.newDraweeControllerBuilder()
@@ -34,7 +35,7 @@ object LithoImageSpec {
                 .controller(controller)
                 .fadeDuration(0)
 
-        if(spec.touchableKey !== null){
+        if (spec.touchableKey !== null) {
             res = res.clickHandler(LithoImage.onClick(context))
         }
 //        res = res.longClickHandler(LithoImage.onLongClick(context))
@@ -50,14 +51,23 @@ object LithoImageSpec {
     @OnEvent(ClickEvent::class)
     @JvmName("onClick")
     internal fun onClick(c: ComponentContext, @FromEvent view: View, @Prop spec: AsyncImageSpec, @Prop reactContext: ReactContext) {
+
+        val displayMetrics = Resources.getSystem().displayMetrics
+        // val statusBarHeight = reactContext.statusBarHeight
+
+        // Key
         val map = WritableNativeMap()
         map.putString("key", spec.touchableKey)
+
+        // Location
         val loc = IntArray(2)
         view.getLocationInWindow(loc)
-        map.putInt("x", Math.round(loc[0] / Resources.getSystem().displayMetrics.density ))
-        map.putInt("y", Math.round(loc[1]/ Resources.getSystem().displayMetrics.density ) - 24)
-        map.putInt("w", Math.round(view.width/ Resources.getSystem().displayMetrics.density ))
-        map.putInt("h", Math.round(view.height/ Resources.getSystem().displayMetrics.density ))
+        map.putInt("x", Math.round(loc[0] / displayMetrics.density))
+        map.putInt("y", Math.round(loc[1] / displayMetrics.density))
+        map.putInt("w", Math.round(view.width / displayMetrics.density))
+        map.putInt("h", Math.round(view.height / displayMetrics.density))
+
+        // Emit
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
                 .emit("async_on_press", map)

@@ -1,5 +1,8 @@
 export let makeInternalLinkRelative = (url: string) => {
     let rel = url
+        .replace('http://openland.com/', '/')
+        .replace('https://openland.com/', '/')
+        .replace('//openland.com/', '/')
         .replace('http://app.openland.com/', '/')
         .replace('https://app.openland.com/', '/')
         .replace('//app.openland.com/', '/')
