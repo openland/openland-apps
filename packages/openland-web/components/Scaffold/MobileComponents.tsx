@@ -64,11 +64,12 @@ export const MobileScafoldMenuItem = ({
     );
 };
 
-const MobileUserProfile = withUserInfo(({ user }) => {
+const MobileUserProfile = withUserInfo(({ user, onClick }: any) => {
     if (user) {
         return (
             <XView
                 as="a"
+                onClick={onClick}
                 path={`/mail/u/${user.id}`}
                 height={70}
                 width="100%"
@@ -156,18 +157,16 @@ const MobileNavigationContainer = (props: { children?: any }) => (
 
 const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
     const { showSidebar, setShowSidebar } = React.useContext(MobileSidebarContext);
+
+    const toggle = () => setShowSidebar(!showSidebar);
+    const close = () => setShowSidebar(false);
     return (
         <div>
-            {showSidebar && (
-                <div
-                    onClick={() => setShowSidebar(!showSidebar)}
-                    className={sideBarBackgroundClassName}
-                />
-            )}
+            {showSidebar && <div onClick={toggle} className={sideBarBackgroundClassName} />}
             <div className={sideBarClassName} style={{ left: showSidebar ? 0 : -350 }}>
                 <XView width="100%">
                     <MobileNavigationContainer>
-                        <MobileUserProfile />
+                        <MobileUserProfile onClick={close} />
                         {topItems}
                         <XView
                             alignSelf="flex-end"

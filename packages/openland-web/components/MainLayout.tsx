@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
-import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { findChild } from './utils';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import BurgerIcon from 'openland-icons/landing/burger.svg';
-import { XButton } from 'openland-x/XButton';
 import { AdaptiveComponent } from 'openland-web/components/Adaptive';
 
 const MenuItemWrapper = css`
@@ -158,23 +156,6 @@ export const BurgerButton = () => {
     );
 };
 
-const AddButton = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s',
-    },
-    '& svg > g > path:last-child': {
-        fill: '#1790ff',
-        opacity: 0.5,
-    },
-});
-
-interface MenuProps {
-    title?: string;
-    route?: string;
-    rightContent?: any;
-    leftContent?: any;
-}
-
 const backgroundClassName = css`
     &::before {
         content: '';
@@ -217,7 +198,42 @@ const HideMenuItems = ({ children }: { children: any }) => (
     </XView>
 );
 
-export const Menu = React.memo<MenuProps>(props => {
+type MenuPropsT = {
+    title: string;
+    rightContent?: any;
+    children?: any;
+    leftContent?: any;
+};
+const DesktopMenu = ({ title, rightContent, children }: MenuPropsT) => {
+    return (
+        <XView width="100%">
+            <XView
+                flexDirection="row"
+                width="100%"
+                height={48}
+                paddingLeft={16}
+                paddingRight={16}
+                marginTop={4}
+                marginBottom={3}
+                flexShrink={0}
+                alignItems="center"
+            >
+                <XView flexDirection="row" width="100%" justifyContent="space-between">
+                    <Title>{title}</Title>
+                    <XView marginLeft={5} flexDirection="row">
+                        {rightContent}
+                    </XView>
+                </XView>
+            </XView>
+
+            <XView flexDirection="column" alignItems="stretch" backgroundColor="#fff">
+                {children}
+            </XView>
+        </XView>
+    );
+};
+
+const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
     const { showMenu, setShowMenu, isMobile } = React.useContext(MobileSidebarContext);
 
     const onClick = () => {
@@ -226,7 +242,6 @@ export const Menu = React.memo<MenuProps>(props => {
         }
     };
 
-    const { title, rightContent, children } = props;
     const MenuItems = showMenu ? ShowMenuItems : HideMenuItems;
 
     return (
@@ -242,41 +257,36 @@ export const Menu = React.memo<MenuProps>(props => {
                 flexShrink={0}
                 alignItems="center"
             >
-                <AdaptiveComponent
-                    fullWidth={true}
-                    mobile={
-                        <XView flexDirection="row" width="100%" justifyContent="space-between">
-                            <BurgerButton />
-                            <XView flexDirection="row" cursor="pointer" onClick={onClick}>
-                                <Title>{title}</Title>
-                                <XView marginLeft={5} flexDirection="row" alignSelf="center">
-                                    <SelectIcon />
-                                </XView>
+                <XView flexDirection="row" width="100%" justifyContent="space-between">
+                    <BurgerButton />
+                    <XView
+                        flexDirection="row"
+                        cursor={children ? 'pointer' : undefined}
+                        onClick={onClick}
+                    >
+                        <Title>{title}</Title>
+                        {children && (
+                            <XView marginLeft={5} flexDirection="row" alignSelf="center">
+                                <SelectIcon />
                             </XView>
-                            <XView />
-                        </XView>
-                    }
-                    desktop={
-                        <XView flexDirection="row" width="100%" justifyContent="space-between">
-                            <Title>{title}</Title>
-                            <XView marginLeft={5} flexDirection="row">
-                                {rightContent}
-                            </XView>
-                        </XView>
-                    }
-                />
+                        )}
+                    </XView>
+                    <XView />
+                </XView>
             </XView>
 
-            <AdaptiveComponent
-                fullWidth={true}
-                mobile={<MenuItems>{children}</MenuItems>}
-                desktop={
-                    <XView flexDirection="column" alignItems="stretch" backgroundColor="#fff">
-                        {children}
-                    </XView>
-                }
-            />
+            {children && <MenuItems>{children}</MenuItems>}
         </XView>
+    );
+};
+
+export const Menu = React.memo<MenuPropsT>(props => {
+    return (
+        <AdaptiveComponent
+            fullWidth={true}
+            mobile={<MobileMenu {...props} />}
+            desktop={<DesktopMenu {...props} />}
+        />
     );
 });
 
