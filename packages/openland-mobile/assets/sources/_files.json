@@ -4,6 +4,18 @@
         "src": "ic-link.svg",
         "sizes": [24]
     }, {
+        "name": "ic-leave",
+        "src": "ic-leave.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-star-admin",
+        "src": "ic-star.svg",
+        "sizes": [24, 13]
+    }, {
+        "name": "ic-info",
+        "src": "ic-info.svg",
+        "sizes": [24]
+    }, {
         "name": "ic-link-fill",
         "src": "ic-cell-link-ios.svg",
         "sizes": [24]
@@ -33,7 +45,7 @@
         "sizes": [24]
     }, {
         "name": "ic-notifications-fill",
-        "src": "ic-cell-nofif-ios.svg",
+        "src": "ic-cell-notif-ios.svg",
         "sizes": [24]
     }, {
         "name": "ic-photo",

@@ -49,7 +49,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 subtitle="Organization"
                                             />
                                             {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
-                                                <ZListItemGroup header={null}>
+                                                <ZListItemGroup header={null} divider={false}>
                                                     {this.props.router.params.conversationId && (
                                                         <YQuery
                                                             query={RoomQuery}
@@ -124,7 +124,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             )}
                                             <ZListItemGroup
                                                 divider={false}
-                                                header="Information"
+                                                header={null}
                                                 actionRight={
                                                     resp.data.organization.isOwner
                                                         ? {
@@ -215,63 +215,11 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                         {remove => (
                                                             <ZListItemGroup header="Members" divider={false} >
                                                                 {resp.data.organization.isMine && (
-                                                                    <TouchableHighlight
-                                                                        underlayColor={XPStyles.colors.selectedListItem}
-                                                                        onPress={() => this.props.router.push('OrganizationInviteLinkModal')}
-                                                                    >
-                                                                        <View
-                                                                            flexDirection="row"
-                                                                            height={60}
-                                                                            alignItems="center"
-                                                                        >
-                                                                            <View
-                                                                                marginLeft={16}
-                                                                                marginRight={16}
-                                                                                width={40}
-                                                                                height={40}
-                                                                                borderRadius={20}
-                                                                                borderWidth={1}
-                                                                                borderColor={XPStyles.colors.brand}
-                                                                                justifyContent="center"
-                                                                                alignItems="center"
-                                                                            >
-                                                                                <Image source={require('assets/ic-add.png')} />
-                                                                            </View>
-                                                                            <Text
-                                                                                style={{
-                                                                                    color: '#4747ec',
-                                                                                    fontWeight: '500',
-                                                                                    fontSize: 16,
-                                                                                }}
-                                                                            >
-                                                                                Add members
-                                                                            </Text>
-
-                                                                            {/* <View
-                                                                                    style={{
-                                                                                        position:
-                                                                                            'absolute',
-                                                                                        bottom: 0,
-                                                                                        width:
-                                                                                            '100%',
-                                                                                    }}
-                                                                                    height={
-                                                                                        0.5
-                                                                                    }
-                                                                                    flexGrow={
-                                                                                        1
-                                                                                    }
-                                                                                    marginLeft={
-                                                                                        70
-                                                                                    }
-                                                                                    backgroundColor={
-                                                                                        XPStyles
-                                                                                            .colors
-                                                                                            .separator
-                                                                                    }
-                                                                                /> */}
-                                                                        </View>
-                                                                    </TouchableHighlight>
+                                                                    <ZListItem
+                                                                        leftIcon={require('assets/ic-add-24.png')}
+                                                                        text="Add Members"
+                                                                        path="OrganizationInviteLinkModal"
+                                                                    />
                                                                 )}
 
                                                                 {resp.data.organization.members.map(

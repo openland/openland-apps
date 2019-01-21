@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { View, Text, Alert, Image, TouchableHighlight } from 'react-native';
+import { View, Text, Alert, Image, TouchableHighlight, Platform } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
@@ -41,6 +41,10 @@ class ProfileGroupComponent extends React.Component<PageProps> {
         this.props.router.push('UserPicker');
     }
 
+    handleSend = () => {
+        this.props.router.pushAndReset('Conversation', { 'flexibleId': this.props.router.params.id });
+    }
+
     render() {
         return (
             <>
@@ -56,12 +60,20 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                             <SScrollView>
                                 <ZListItemHeader
                                     title={sharedRoom.title}
-                                    subtitle={sharedRoom.members.length + (sharedRoom.members.length === 1 ? ' member' : ' members')}
+                                    subtitle={sharedRoom.kind === 'GROUP' ? 'Private Group' : 'Public Room'}
                                     photo={sharedRoom.photo}
                                     id={sharedRoom.id}
+                                    action="Send message"
+                                    onPress={this.handleSend}
                                 />
 
-                                <ZListItemGroup header={'Settings'} divider={false}>
+                                {!!sharedRoom.description && (
+                                    <ZListItemGroup header={null} divider={false}>
+                                        <ZListItem text={sharedRoom.description} multiline={true} title="About" />
+                                    </ZListItemGroup>
+                                )}
+
+                                <ZListItemGroup header={null} divider={false}>
                                     <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZAvatarPicker
@@ -70,9 +82,8 @@ class ProfileGroupComponent extends React.Component<PageProps> {
 
                                                     return <ZListItem
                                                         onPress={props.showPicker}
-                                                        leftIcon={require('assets/ic-cell-photo-ios.png')}
+                                                        leftIcon={Platform.OS === 'android' ? require('assets/ic-photo-24.png') : require('assets/ic-photo-fill-24.png')}
                                                         text={`${setOrChange} room photo`}
-                                                        navigationIcon
                                                     />;
                                                 }}
                                                 onChanged={(val) => {
@@ -93,9 +104,8 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                     <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZListItem
-                                                leftIcon={require('assets/ic-cell-name-ios.png')}
+                                                leftIcon={Platform.OS === 'android' ? require('assets/ic-edit-text-24.png') : require('assets/ic-edit-text-fill-24.png')}
                                                 text="Change name"
-                                                navigationIcon
                                                 onPress={() =>
                                                     Modals.showTextEdit(
                                                         this.props.router,
@@ -119,7 +129,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             };
                                             return (
                                                 <ZListItem
-                                                    leftIcon={require('assets/ic-cell-notif-ios.png')}
+                                                    leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                                                     text="Notifications"
                                                     toggle={!sharedRoom!.settings.mute}
                                                     onToggle={toggle}
@@ -130,21 +140,23 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                         }
                                     </YMutation>
                                     {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
-                                        < ZListItem
-                                            leftIcon={require('assets/ic-cell-link-ios.png')}
+                                        <ZListItem
+                                            leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                                             text="Invite via Link"
                                             path="ChannelInviteLinkModal"
+                                            navigationIcon={false}
                                             pathParams={{ id: sharedRoom.id }}
                                         />}
                                 </ZListItemGroup>
 
-                                <ZListItemGroup header="Members" divider={false}>
+                                <ZListItemGroup header="Members" divider={false} counter={sharedRoom.membersCount}>
 
                                     <SDeferred>
                                         <YMutation mutation={RoomAddMembersMutation} >
                                             {(add) => (
-                                                <TouchableHighlight
-                                                    underlayColor={XPStyles.colors.selectedListItem}
+                                                <ZListItem
+                                                    text="Add members"
+                                                    leftIcon={require('assets/ic-add-24.png')}
                                                     onPress={() => {
                                                         Modals.showUserMuptiplePicker(
                                                             this.props.router,
@@ -164,19 +176,41 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                             sharedRoom!.members.map(m => m.user.id)
                                                         );
                                                     }}
-                                                >
-                                                    <View flexDirection="row" height={60} alignItems="center" >
-                                                        <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
-                                                            <Image source={require('assets/ic-add.png')} />
-                                                        </View>
-                                                        <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
-                                                        {/* <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} /> */}
+                                                />
+                                                // <TouchableHighlight
+                                                //     underlayColor={XPStyles.colors.selectedListItem}
+                                                //     onPress={() => {
+                                                //         Modals.showUserMuptiplePicker(
+                                                //             this.props.router,
+                                                //             {
+                                                //                 title: 'Add', action: async (users) => {
+                                                //                     startLoader();
+                                                //                     try {
+                                                //                         await add({ variables: { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: sharedRoom!.id } });
+                                                //                         this.props.router.back();
+                                                //                     } catch (e) {
+                                                //                         new AlertBlanketBuilder().alert(e.message);
+                                                //                     }
+                                                //                     stopLoader();
+                                                //                 }
+                                                //             },
+                                                //             'Add members',
+                                                //             sharedRoom!.members.map(m => m.user.id)
+                                                //         );
+                                                //     }}
+                                                // >
+                                                //     <View flexDirection="row" height={60} alignItems="center" >
+                                                //         <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
+                                                //             <Image source={require('assets/ic-add.png')} />
+                                                //         </View>
+                                                //         <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
+                                                //         {/* <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} /> */}
 
-                                                    </View>
-                                                </TouchableHighlight>
+                                                //     </View>
+                                                // </TouchableHighlight>
                                             )}
                                         </YMutation>
-                                        {sharedRoom.members.map((v) => (
+                                        {sharedRoom.members.sort((a, b) => a.user.name.localeCompare(b.user.name)).map((v) => (
                                             <YMutation mutation={RoomKickMutation} refetchQueriesVars={[{ query: RoomInviteInfoQuery, variables: { roomId: this.props.router.params.id } }]}>
                                                 {(kick) => (
                                                     <View>
@@ -209,7 +243,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                             onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
 
                                                         />
-                                                        <Text style={{ position: 'absolute', right: 16, height: 60, lineHeight: 60, fontSize: 15, color: '#99a2b0' }}>{v.role}</Text>
+                                                        {/* <Text style={{ position: 'absolute', right: 16, height: 60, lineHeight: 60, fontSize: 15, color: '#99a2b0' }}>{v.role}</Text> */}
                                                     </View>
                                                 )}
                                             </YMutation>
@@ -218,6 +252,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
 
                                     <YMutation mutation={RoomLeaveMutation}>
                                         {leave => <ZListItem
+                                            leftIcon={require('assets/ic-leave-24.png')}
                                             text="Leave"
                                             appearance="danger"
                                             onPress={() => {

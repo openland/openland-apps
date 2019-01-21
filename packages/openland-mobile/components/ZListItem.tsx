@@ -32,6 +32,19 @@ export interface ZListItemProps {
     linkify?: boolean;
 }
 
+function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger' }) {
+    if (Platform.OS === 'ios') {
+        return (
+            <View style={{ width: 38, height: 38, borderRadius: 19, alignContent: 'center', justifyContent: 'center', backgroundColor: '#ddd', marginRight: 16 }}>
+                <Image source={props.src} style={{ width: 24, height: 24, alignSelf: 'center' }} />
+            </View>
+        );
+    }
+    return (
+        <Image source={props.src} style={{ tintColor: props.appearance === 'danger' ? '#f6564e' : undefined, width: 24, height: 24, marginRight: 7, marginLeft: 23, alignSelf: 'center' }} />
+    );
+}
+
 class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: XStoreState }> {
 
     handleOnPress = () => {
@@ -81,18 +94,18 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : (Platform.OS === 'android' ? 48 : 44))}
                 navigationIcon={this.props.navigationIcon}
             >
+                {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} appearance={this.props.appearance} />}
+                {this.props.leftAvatar && <View paddingLeft={16}><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
-                    {this.props.title && <Text style={{ color: '#000', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
+                    {this.props.title && Platform.OS !== 'android' && <Text style={{ color: '#0084fe', opacity: 0.8, fontSize: 14, height: 22 }}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
-                        {this.props.leftIcon && <Image source={this.props.leftIcon} style={{ marginRight: 15, alignSelf: 'center' }} />}
-                        {this.props.leftAvatar && <View paddingRight={15}><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                         <ZText
                             linkify={this.props.linkify === true || !this.props.onPress}
                             style={{
                                 fontSize: Platform.OS === 'android' ? 16 : 15,
-                                fontWeight: '400',
+                                fontWeight: Platform.OS === 'android' ? '400' : '500',
                                 color: this.props.appearance === 'action' ? AppStyles.primaryColor
-                                    : this.props.appearance === 'danger' ? AppStyles.dangerColor
+                                    : this.props.appearance === 'danger' ? '#f6564e'
                                         : '#181818',
                                 lineHeight: 22,
                                 textAlignVertical: 'center',
@@ -113,6 +126,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             <Image source={require('assets/ic-checkmark-cell.png')} style={{ tintColor: '#0084fe', opacity: checkmarkEnabled ? 1 : 0 }} />
                         )}
                     </View>
+                    {this.props.title && Platform.OS === 'android' && <Text style={{ color: '#000', opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                 </View>
             </ZListItemBase>
         );

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
-export class ZListItemGroup extends React.PureComponent<{ header?: string | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
+export class ZListItemGroup extends React.PureComponent<{ header?: string | null, counter?: number | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
     render() {
         let components: any[] = [];
         React.Children.forEach(this.props.children, (c) => {
@@ -51,14 +51,30 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                 height: 20,
                                 lineHeight: 20,
                                 paddingLeft: 16,
-                                paddingRight: 16,
-                                flexGrow: 1
+                                flexShrink: 1
                             }}
                             numberOfLines={1}
                             ellipsizeMode="tail"
                         >
                             {this.props.header}
                         </Text>
+
+                        {this.props.counter !== undefined && this.props.counter !== null && (
+                            <Text
+                                style={{
+                                    color: '#b9c1cd',
+                                    fontSize: 18,
+                                    fontWeight: Platform.OS === 'android' ? '500' : '600',
+                                    height: 20,
+                                    lineHeight: 20,
+                                    paddingLeft: 8,
+                                }}
+                            >
+                                {this.props.counter.toString()}
+                            </Text>
+                        )}
+
+                        <View flexGrow={1} paddingRight={16} />
 
                         {this.props.actionRight && (
                             <Text
