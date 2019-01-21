@@ -5,13 +5,11 @@ import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { findChild } from './utils';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import BurgerIcon from 'openland-icons/landing/burger.svg';
-import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
-import { HideOnDesktop } from 'openland-web/components/Adaptive';
 import { XButton } from 'openland-x/XButton';
+import { AdaptiveComponent } from 'openland-web/components/Adaptive';
 
 const MenuItemWrapper = css`
     display: flex;
@@ -146,7 +144,7 @@ const titleClassName = css`
     opacity: 0.9;
 `;
 
-const Title = ({ children, onClick }: { children: string; onClick?: (event: any) => void }) => {
+const Title = ({ children, onClick }: { children: any; onClick?: (event: any) => void }) => {
     return (
         <div onClick={onClick} className={titleClassName}>
             {children}
@@ -207,10 +205,6 @@ interface MenuProps {
 }
 
 export const Menu = React.memo<MenuProps>(props => {
-    if (!canUseDOM) {
-        return null;
-    }
-
     const { showMenu, setShowMenu, isMobile } = React.useContext(MobileSidebarContext);
 
     const onClick = () => {
@@ -220,35 +214,6 @@ export const Menu = React.memo<MenuProps>(props => {
     };
 
     const { title, rightContent, children } = props;
-
-    if (!children) {
-        return (
-            <XView
-                flexDirection="row"
-                width="100%"
-                height={48}
-                paddingLeft={16}
-                paddingRight={16}
-                marginTop={4}
-                marginBottom={3}
-                flexShrink={0}
-                alignItems="center"
-                justifyContent="space-between"
-            >
-                <HideOnDesktop>
-                    <BurgerButton />
-                </HideOnDesktop>
-                {title && <Title data-test-id="messages-title">{title}</Title>}
-                <AddButton
-                    style="light"
-                    path="/mail/new"
-                    text="New"
-                    icon={<PlusIcon />}
-                    size="small"
-                />
-            </XView>
-        );
-    }
 
     return (
         <XView width="100%">
@@ -263,24 +228,29 @@ export const Menu = React.memo<MenuProps>(props => {
                 flexShrink={0}
                 alignItems="center"
             >
-                {isMobile && <BurgerButton />}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        margin: 'auto',
-                        cursor: isMobile ? 'pointer' : 'default',
-                    }}
-                    onClick={onClick}
-                >
-                    {title && <Title>{title}</Title>}
-                    {rightContent && isMobile && (
-                        <XView marginLeft={5} alignItems="center" flexDirection="row">
-                            <SelectIcon />
+                <AdaptiveComponent
+                    fullWidth={true}
+                    mobile={
+                        <XView flexDirection="row" width="100%" justifyContent="space-between">
+                            <BurgerButton />
+                            <XView flexDirection="row" onClick={onClick}>
+                                <Title>{title}</Title>
+                                <XView marginLeft={5} flexDirection="row" alignSelf="center">
+                                    <SelectIcon />
+                                </XView>
+                            </XView>
+                            <XView />
                         </XView>
-                    )}
-                </div>
+                    }
+                    desktop={
+                        <XView flexDirection="row" width="100%" justifyContent="space-between">
+                            <Title>{title}</Title>
+                            <XView marginLeft={5} flexDirection="row">
+                                {rightContent}
+                            </XView>
+                        </XView>
+                    }
+                />
             </XView>
             <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>
         </XView>
