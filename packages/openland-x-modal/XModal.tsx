@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactModal from 'react-modal';
 import Glamorous from 'glamorous';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { XButton } from 'openland-x/XButton';
 import { XLink, XLinkProps } from 'openland-x/XLink';
@@ -20,68 +21,80 @@ interface ModalRenderProps {
     transparent?: boolean;
 }
 
-class ModalRender extends React.PureComponent<ModalRenderProps> {
-    render() {
-        let width = 570;
-        if (this.props.sWidth !== undefined) {
-            width = this.props.sWidth;
-        } else if (this.props.size === 'large') {
-            width = 870;
-        } else if (this.props.size === 's-large') {
-            width = 1200;
-        } else if (this.props.size === 'small') {
-            width = 460;
-        }
+const ModalRender = React.memo<ModalRenderProps>(props => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    let width = 570;
+    if (props.sWidth !== undefined) {
+        width = props.sWidth;
+    } else if (props.size === 'large') {
+        width = 870;
+    } else if (props.size === 's-large') {
+        width = 1200;
+    } else if (props.size === 'small') {
+        width = 460;
+    }
 
-        return (
-            <ReactModal
-                isOpen={this.props.isOpen === true}
-                onRequestClose={this.props.onCloseRequest}
-                shouldCloseOnOverlayClick={this.props.closeOnClick !== undefined ? this.props.closeOnClick : true}
-                shouldCloseOnEsc={true}
-                ariaHideApp={false}
-                closeTimeoutMS={300}
-                style={{
-                    overlay: {
-                        zIndex: 100,
-                        backgroundColor: (this.props.size !== 'x-large' && this.props.size !== 'large') ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.3)'
-                    },
-                    content: {
-                        display: 'block',
-                        background: this.props.transparent ? 'transparent' : '#ffffff',
-                        margin: 'auto',
-                        padding: 0,
-                        overflow: 'visible',
+    return (
+        <ReactModal
+            isOpen={props.isOpen}
+            onRequestClose={props.onCloseRequest}
+            shouldCloseOnOverlayClick={props.closeOnClick !== undefined ? props.closeOnClick : true}
+            shouldCloseOnEsc={true}
+            ariaHideApp={false}
+            closeTimeoutMS={300}
+            style={{
+                overlay: {
+                    zIndex: 100,
+                    backgroundColor:
+                        props.size !== 'x-large' && props.size !== 'large'
+                            ? 'rgba(0, 0, 0, 0.4)'
+                            : 'rgba(0, 0, 0, 0.3)',
+                },
+                content: {
+                    display: 'block',
+                    background: props.transparent ? 'transparent' : '#ffffff',
+                    margin: 'auto',
+                    padding: 0,
+                    overflow: 'visible',
 
-                        // Border/shadow
-                        border: 'none',
-                        boxShadow: this.props.transparent ? 'none' : '0px 2px 2px 0px #777',
-                        borderRadius: 6,
+                    // Border/shadow
+                    border: 'none',
+                    boxShadow: props.transparent ? 'none' : '0px 2px 2px 0px #777',
+                    borderRadius: isMobile ? 0 : 6,
 
-                        // Sizes
-                        width: this.props.size !== 'x-large' ? width : 'calc(100% - 128px)',
-                        top: (this.props.size !== 'x-large' && !this.props.scrollableContent) ? 96 : 64,
-                        left: this.props.size !== 'x-large'
+                    // Sizes
+                    width: isMobile
+                        ? '100%'
+                        : props.size !== 'x-large'
+                            ? width
+                            : 'calc(100% - 128px)',
+                    top: isMobile
+                        ? 0
+                        : props.size !== 'x-large' && !props.scrollableContent
+                            ? 96
+                            : 64,
+                    left: isMobile
+                        ? 0
+                        : props.size !== 'x-large'
                             ? `calc(50% - ${width / 2}px)`
                             : 64,
-                        right: this.props.size !== 'x-large' ? 'auto' : 64,
-                        bottom: this.props.size !== 'x-large' ? 'auto' : 64
-                    }
-                }}
-            >
-                <XModalContext.Provider value={{ close: this.props.onCloseRequest }}>
-                    {this.props.children}
-                </XModalContext.Provider>
-            </ReactModal>
-        );
-    }
-}
+                    right: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
+                    bottom: isMobile ? 0 : props.size !== 'x-large' ? 'auto' : 64,
+                },
+            }}
+        >
+            <XModalContext.Provider value={{ close: props.onCloseRequest }}>
+                {props.children}
+            </XModalContext.Provider>
+        </ReactModal>
+    );
+});
 
 let Root = Glamorous.div({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    height: '100%'
+    height: '100%',
 });
 
 export const XModalBody = Glamorous.div({
@@ -90,7 +103,7 @@ export const XModalBody = Glamorous.div({
     paddingLeft: 24,
     paddingRight: 24,
     flexGrow: 1,
-    position: 'relative'
+    position: 'relative',
 });
 
 export const XModalTitle = Glamorous.div({
@@ -98,13 +111,13 @@ export const XModalTitle = Glamorous.div({
     fontWeight: 600,
     letterSpacing: 0,
     lineHeight: '20px',
-    color: 'rgba(0, 0, 0, 0.9)'
+    color: 'rgba(0, 0, 0, 0.9)',
 });
 
 export const XModalHeader = Glamorous(XHorizontal)({
     paddingLeft: 24,
     paddingRight: 24,
-    height: 64
+    height: 64,
 });
 
 export const XModalFooter = Glamorous.div({
@@ -119,7 +132,7 @@ export const XModalFooter = Glamorous.div({
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
     borderTop: '1px solid',
-    borderTopColor: XThemeDefault.separatorColor
+    borderTopColor: XThemeDefault.separatorColor,
 });
 
 const XModalCloserStyles = Glamorous(XLink)({
@@ -134,14 +147,14 @@ const XModalCloserStyles = Glamorous(XLink)({
     marginLeft: 'auto',
     marginTop: -2,
     '& > svg > g > path:last-child': {
-        fill: 'rgba(0, 0, 0, 0.3)'
+        fill: 'rgba(0, 0, 0, 0.3)',
     },
     '&:hover': {
         // border: 'solid 1px #dcdee4'
         '& > svg > g > path:last-child': {
-            fill: 'rgba(0, 0, 0, 0.4)'
-        }
-    }
+            fill: 'rgba(0, 0, 0, 0.4)',
+        },
+    },
 });
 
 export const XModalCloser = (props: XLinkProps) => (
@@ -152,7 +165,7 @@ export const XModalCloser = (props: XLinkProps) => (
 
 export const XModalBodyScrollableContent = Glamorous.div({
     maxHeight: '70vh',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
 });
 
 interface ModalContentRenderProps {
@@ -169,11 +182,7 @@ interface ModalContentRenderProps {
 class ModalContentRender extends React.Component<ModalContentRenderProps> {
     render() {
         if (this.props.customContent) {
-            return (
-                <Root>
-                    {this.props.children}
-                </Root>
-            );
+            return <Root>{this.props.children}</Root>;
         }
         let body = (
             <>
@@ -182,29 +191,28 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
             </>
         );
         if (this.props.scrollableContent) {
-            body = (
-                <XModalBodyScrollableContent>
-                    {body}
-                </XModalBodyScrollableContent>
-            );
+            body = <XModalBodyScrollableContent>{body}</XModalBodyScrollableContent>;
         }
         return (
             <Root>
-                {(this.props.heading === undefined && (this.props.title || this.props.useTopCloser)) && (
-                    <XModalHeader
-                        alignItems="center"
-                        justifyContent="space-between"
-                    >
-                        <XHorizontal alignItems="center" separator={4}>
-                            <XModalTitle>{this.props.title}</XModalTitle>
-                            {this.props.titleChildren !== undefined && this.props.titleChildren}
-                        </XHorizontal>
-                        {this.props.useTopCloser && <XModalCloser autoClose={true} />}
-                    </XModalHeader>
-                )}
+                {this.props.heading === undefined &&
+                    (this.props.title || this.props.useTopCloser) && (
+                        <XModalHeader alignItems="center" justifyContent="space-between">
+                            <XHorizontal alignItems="center" separator={4}>
+                                <XModalTitle>{this.props.title}</XModalTitle>
+                                {this.props.titleChildren !== undefined && this.props.titleChildren}
+                            </XHorizontal>
+                            {this.props.useTopCloser && <XModalCloser autoClose={true} />}
+                        </XModalHeader>
+                    )}
                 {this.props.heading !== undefined && this.props.heading}
                 {body}
-                {this.props.footer === undefined && !this.props.useTopCloser && <XModalFooter><XButton text="Close" autoClose={true} /></XModalFooter>}
+                {this.props.footer === undefined &&
+                    !this.props.useTopCloser && (
+                        <XModalFooter>
+                            <XButton text="Close" autoClose={true} />
+                        </XModalFooter>
+                    )}
                 {this.props.footer !== undefined && this.props.footer}
             </Root>
         );
@@ -212,7 +220,6 @@ class ModalContentRender extends React.Component<ModalContentRenderProps> {
 }
 
 export interface XModalProps extends ModalContentRenderProps {
-
     // Style
     size?: 'x-large' | 's-large' | 'large' | 'default' | 'small';
     transparent?: boolean;
@@ -229,7 +236,6 @@ export interface XModalProps extends ModalContentRenderProps {
 }
 
 export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }> {
-
     static Footer = XModalFooter;
 
     // TODO: Better perissting of router
@@ -241,28 +247,30 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
     }
 
     onTargetClick = () => {
-        this.setState({ 
-            isOpen: true 
+        this.setState({
+            isOpen: true,
         });
-    }
+    };
 
     onModalCloseRequest = () => {
         if (this.props.onClosed) {
             this.props.onClosed();
         }
         if (this.props.target) {
-            this.setState((state) => ({ isOpen: false }));
+            this.setState(state => ({ isOpen: false }));
         } else if (this.props.targetQuery) {
             if (this.lastRouter) {
                 this.lastRouter!!.replaceQuery(this.props.targetQuery!!, undefined); // this will delete targetQuery
             }
         }
-    }
+    };
 
     render() {
         let size = this.props.size || 'default';
         if (this.props.target) {
-            let TargetClone = React.cloneElement(this.props.target, { onClick: this.onTargetClick });
+            let TargetClone = React.cloneElement(this.props.target, {
+                onClick: this.onTargetClick,
+            });
             return (
                 <>
                     {TargetClone}
@@ -294,7 +302,7 @@ export class XModal extends React.PureComponent<XModalProps, { isOpen: boolean }
             let q = this.props.targetQuery;
             return (
                 <XRouterContext.Consumer>
-                    {(router) => {
+                    {router => {
                         this.lastRouter = router;
                         return (
                             <ModalRender
