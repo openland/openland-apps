@@ -18,6 +18,7 @@ import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -93,7 +94,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     this.setState({ state: 'initial' });
                 }
             } catch (e) {
-                Alert.alert(e.message);
+                new AlertBlanketBuilder().alert(e.message);
             }
 
         })();
@@ -119,13 +120,11 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             );
         } else if (this.state.state === 'initial') {
             return (
-                <YApolloProvider client={getClient()}>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <ZModalProvider>
-                            <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
-                        </ZModalProvider>
-                    </View>
-                </YApolloProvider>
+                <View style={{ width: '100%', height: '100%' }}>
+                    <ZModalProvider>
+                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                    </ZModalProvider>
+                </View>
             );
         } else if (this.state.state === 'signup') {
             return (

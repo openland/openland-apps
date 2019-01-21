@@ -13,6 +13,7 @@ import { YMutation } from 'openland-y-graphql/YMutation';
 import { next } from './signup';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -72,7 +73,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                             action={async (src) => {
                                 // await delay(1000);
                                 if (!src.input.firstName) {
-                                    Alert.alert('Name can\'t be empty');
+                                    new AlertBlanketBuilder().alert('Name can\'t be empty');
                                     return;
                                 }
                                 await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });

@@ -4,38 +4,37 @@ import { AppStyles } from '../styles/AppStyles';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 
+type ZRoundedButtonStyle = 'default' | 'flat' | 'danger' | 'flat-danger';
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#0084fe',
-        borderRadius: 13,
-        height: 26,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 12,
-        paddingRight: 12
+        borderRadius: 13,
+        height: 26,
+        paddingHorizontal: 12,
     } as ViewStyle,
     containerBig: {
         backgroundColor: '#0084fe',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 18,
-        height: 56,
-        paddingLeft: 19,
-        paddingRight: 19,
+        height: 35,
+        paddingHorizontal: 19,
     } as ViewStyle,
     title: {
         color: '#fff',
-        fontSize: 14,
+        textAlignVertical: 'center',
         fontWeight: '600',
-        textAlignVertical: 'center'
+        fontSize: 14,
     } as TextStyle,
     titleBig: {
         color: '#fff',
+        textAlignVertical: 'center',
+        fontWeight: '600',
         fontSize: 16,
         height: 56,
         lineHeight: 56,
-        textAlignVertical: 'center',
-        fontWeight: '600',
         letterSpacing: 0.2
     } as TextStyle
 });
@@ -44,7 +43,8 @@ export interface ZRoundedButtonProps {
     title: string;
     onPress?: () => void;
     path?: string;
-    style?: 'big';
+    size?: 'big';
+    style?: ZRoundedButtonStyle
     uppercase?: boolean;
 }
 
@@ -59,13 +59,35 @@ class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & 
     }
     render() {
         return (
-            <View backgroundColor={'#000'} borderRadius={this.props.style === 'big' ? 18 : 13}>
+            <View borderRadius={this.props.size === 'big' ? 18 : 13}>
                 <TouchableOpacity onPress={this.handlePress} activeOpacity={0.6}>
-                    <View style={this.props.style === 'big' ? styles.containerBig : styles.container}>
-                        <Text style={this.props.style === 'big' ? styles.titleBig : styles.title}>{this.props.uppercase !== false ? this.props.title.toUpperCase() : this.props.title}</Text>
+                    <View
+                        style={[
+                            this.props.size === 'big' ? styles.containerBig : styles.container,
+                            {
+                                ...this.props.style === 'flat' ? { backgroundColor: 'transparent' } :
+                                    this.props.style === 'danger' ? { backgroundColor: '#ff3b30' } :
+                                        this.props.style === 'flat-danger' ? { backgroundColor: 'transparent' } : {}
+                            }
+                        ]}
+
+                    >
+                        <Text
+                            style={[
+                                this.props.size === 'big' ? styles.titleBig : styles.title,
+                                {
+                                    ...this.props.style === 'flat' ? { color: '#0084fe' } :
+                                        this.props.style === 'danger' ? { color: '#fff' } :
+                                            this.props.style === 'flat-danger' ? { color: '#ff3b30' } : {}
+                                }
+                            ]}
+
+                        >
+                            {this.props.uppercase !== false ? this.props.title.toUpperCase() : this.props.title}
+                        </Text>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View >
         );
     }
 }

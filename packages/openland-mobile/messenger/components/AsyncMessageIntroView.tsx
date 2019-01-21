@@ -12,6 +12,7 @@ import { formatBytes } from '../../utils/formatBytes';
 import { MessageSetReactionMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -96,7 +97,7 @@ export let renderButtons = (message: DataSourceMessageItem, navigationManager: N
                             await getMessenger().engine.client.client.mutate({ mutation: MessageSetReactionMutation.document, variables: { messageId: message.key, reaction: 'accept' } });
                             navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
                         } catch (e) {
-                            Alert.alert(e.message);
+                            new AlertBlanketBuilder().alert(e.message);
                         }
                         stopLoader();
                     }}

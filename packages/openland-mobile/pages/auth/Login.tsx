@@ -7,6 +7,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SDevice } from 'react-native-s/SDevice';
 import { SHeader } from 'react-native-s/SHeader';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     container: {
@@ -117,7 +118,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             console.log(uploaded);
 
             // TODO: Better error
-            Alert.alert('Unable to authenticate');
+            new AlertBlanketBuilder().alert('Unable to authenticate');
 
         } catch (e) {
             if (e.error) {
@@ -126,7 +127,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 }
             }
 
-            Alert.alert(e.message + '\n' + JSON.stringify(e));
+            new AlertBlanketBuilder().alert(e.message + '\n' + JSON.stringify(e));
         } finally {
             this.setState({ loading: false });
         }

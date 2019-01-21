@@ -25,6 +25,7 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
 import { XPStyles } from 'openland-xp/XPStyles';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
     render() {
@@ -35,242 +36,132 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                     {settings => (
                         <ZQuery
                             query={OrganizationQuery}
-                            variables={{
-                                organizationId: this.props.router.params.id,
-                            }}
+                            variables={{ organizationId: this.props.router.params.id }}
                         >
                             {resp => {
                                 return (
                                     <>
                                         <SScrollView backgroundColor={'#fff'}>
                                             <ZListItemHeader
-                                                photo={
-                                                    resp.data.organization.photo
-                                                }
+                                                photo={resp.data.organization.photo}
                                                 id={resp.data.organization.id}
-                                                title={
-                                                    resp.data.organization.name
-                                                }
+                                                title={resp.data.organization.name}
                                                 subtitle="Organization"
                                             />
-                                            {(resp.data.organization.isMine ||
-                                                resp.data.organization
-                                                    .isOwner ||
-                                                this.props.router.params
-                                                    .conversationId) && (
-                                                    <ZListItemGroup header={null}>
-                                                        {this.props.router.params
-                                                            .conversationId && (
-                                                                <YQuery
-                                                                    query={RoomQuery}
-                                                                    variables={{
-                                                                        id: this.props
-                                                                            .router
-                                                                            .params
-                                                                            .conversationId,
-                                                                    }}
-                                                                    {...{
-                                                                        leftIcon: true,
-                                                                    }}
-                                                                >
-                                                                    {conv =>
-                                                                        conv.data ? (
-                                                                            <YMutation
-                                                                                mutation={
-                                                                                    RoomSettingsUpdateMutation
-                                                                                }
-                                                                            >
-                                                                                {update => {
-                                                                                    let toggle = async () => {
-                                                                                        startLoader();
-                                                                                        try {
-                                                                                            await update(
-                                                                                                {
-                                                                                                    variables: {
-                                                                                                        roomId: conv.data!
-                                                                                                            .room!
-                                                                                                            .id,
-                                                                                                        settings: {
-                                                                                                            mute: !conv.data!
-                                                                                                                .room!
-                                                                                                                .settings
-                                                                                                                .mute,
-                                                                                                        },
-                                                                                                    },
-                                                                                                },
-                                                                                            );
-                                                                                        } catch (e) {
-                                                                                            Alert.alert(
-                                                                                                e.message,
-                                                                                            );
-                                                                                        }
-                                                                                        stopLoader();
-                                                                                    };
-                                                                                    return (
-                                                                                        <ZListItem
-                                                                                            leftIcon={require('assets/ic-cell-notif-ios.png')}
-                                                                                            text="Notifications"
-                                                                                            toggle={
-                                                                                                !conv.data!
-                                                                                                    .room!
-                                                                                                    .settings
-                                                                                                    .mute
-                                                                                            }
-                                                                                            onToggle={
-                                                                                                toggle
-                                                                                            }
-                                                                                            onPress={
-                                                                                                toggle
-                                                                                            }
-                                                                                        />
-                                                                                    );
-                                                                                }}
-                                                                            </YMutation>
-                                                                        ) : null
-                                                                    }
-                                                                </YQuery>
-                                                            )}
-                                                        {resp.data.organization
-                                                            .isMine &&
-                                                            resp.data.organization
-                                                                .id !==
-                                                            (settings.data &&
-                                                                settings.data
-                                                                    .me!
-                                                                    .primaryOrganization &&
-                                                                settings.data
-                                                                    .me!
-                                                                    .primaryOrganization!
-                                                                    .id) && (
+                                            {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
+                                                <ZListItemGroup header={null}>
+                                                    {this.props.router.params.conversationId && (
+                                                        <YQuery
+                                                            query={RoomQuery}
+                                                            variables={{
+                                                                id: this.props.router.params.conversationId,
+                                                            }}
+                                                            {...{ leftIcon: true }}
+                                                        >
+                                                            {conv => conv.data ? (
                                                                 <YMutation
-                                                                    mutation={
-                                                                        ProfileUpdateMutation
-                                                                    }
-                                                                    refetchQueries={[
-                                                                        AccountSettingsQuery,
-                                                                    ]}
+                                                                    mutation={RoomSettingsUpdateMutation}
                                                                 >
-                                                                    {updateProfile => (
-                                                                        <ZListItem
-                                                                            text="Make primary"
-                                                                            appearance="action"
-                                                                            onPress={async () => {
-                                                                                startLoader();
-                                                                                await updateProfile(
-                                                                                    {
-                                                                                        variables: {
-                                                                                            input: {
-                                                                                                alphaPrimaryOrganizationId:
-                                                                                                    resp
-                                                                                                        .data
-                                                                                                        .organization
-                                                                                                        .id,
-                                                                                            },
+                                                                    {update => {
+                                                                        let toggle = async () => {
+                                                                            startLoader();
+                                                                            try {
+                                                                                await update({
+                                                                                    variables: {
+                                                                                        roomId: conv.data!.room!.id,
+                                                                                        settings: {
+                                                                                            mute: !conv.data!.room!.settings.mute,
                                                                                         },
                                                                                     },
-                                                                                );
-                                                                                stopLoader();
-                                                                            }}
-                                                                        />
-                                                                    )}
+                                                                                });
+                                                                            } catch (e) {
+                                                                                new AlertBlanketBuilder().alert(e.message);
+                                                                            }
+                                                                            stopLoader();
+                                                                        };
+                                                                        return (
+                                                                            <ZListItem
+                                                                                leftIcon={require('assets/ic-cell-notif-ios.png')}
+                                                                                text="Notifications"
+                                                                                toggle={!conv.data!.room!.settings.mute}
+                                                                                onToggle={toggle}
+                                                                                onPress={toggle}
+                                                                            />
+                                                                        );
+                                                                    }}
                                                                 </YMutation>
+                                                            ) : null
+                                                            }
+                                                        </YQuery>
+                                                    )}
+                                                    {resp.data.organization.isMine && resp.data.organization.id !== (settings.data && settings.data.me!.primaryOrganization && settings.data.me!.primaryOrganization!.id) && (
+                                                        <YMutation
+                                                            mutation={ProfileUpdateMutation}
+                                                            refetchQueries={[AccountSettingsQuery]}
+                                                        >
+                                                            {updateProfile => (
+                                                                <ZListItem
+                                                                    text="Make primary"
+                                                                    appearance="action"
+                                                                    onPress={async () => {
+                                                                        startLoader();
+                                                                        await updateProfile(
+                                                                            {
+                                                                                variables: {
+                                                                                    input: {
+                                                                                        alphaPrimaryOrganizationId: resp.data.organization.id,
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        );
+                                                                        stopLoader();
+                                                                    }}
+                                                                />
                                                             )}
-                                                    </ZListItemGroup>
-                                                )}
+                                                        </YMutation>
+                                                    )}
+                                                </ZListItemGroup>
+                                            )}
                                             <ZListItemGroup
                                                 divider={false}
                                                 header="Information"
                                                 actionRight={
-                                                    resp.data.organization
-                                                        .isOwner
+                                                    resp.data.organization.isOwner
                                                         ? {
-                                                            title:
-                                                                'Edit info',
+                                                            title: 'Edit info',
                                                             onPress: () =>
-                                                                this.props.router.push(
-                                                                    'EditOrganization',
-                                                                    {
-                                                                        id: this
-                                                                            .props
-                                                                            .router
-                                                                            .params
-                                                                            .id,
-                                                                    },
-                                                                ),
+                                                                this.props.router.push('EditOrganization', { id: this.props.router.params.id }),
                                                         }
                                                         : undefined
                                                 }
                                             >
-                                                {resp.data.organization
-                                                    .about && (
-                                                        <ZListItem
-                                                            multiline={true}
-                                                            title="about"
-                                                            text={
-                                                                resp.data
-                                                                    .organization
-                                                                    .about
-                                                            }
-                                                        />
-                                                    )}
-                                                {resp.data.organization
-                                                    .website && (
-                                                        <ZListItem
-                                                            title="website"
-                                                            text={
-                                                                resp.data
-                                                                    .organization
-                                                                    .website
-                                                            }
-                                                        />
-                                                    )}
-                                                {resp.data.organization
-                                                    .facebook && (
-                                                        <ZListItem
-                                                            title="facebook"
-                                                            text={
-                                                                resp.data
-                                                                    .organization
-                                                                    .facebook
-                                                            }
-                                                        />
-                                                    )}
-                                                {resp.data.organization
-                                                    .twitter && (
-                                                        <ZListItem
-                                                            title="twitter"
-                                                            text={
-                                                                resp.data
-                                                                    .organization
-                                                                    .twitter
-                                                            }
-                                                        />
-                                                    )}
+                                                {resp.data.organization.about && (
+                                                    <ZListItem multiline={true} title="about" text={resp.data.organization.about} />
+                                                )}
+                                                {resp.data.organization.website && (
+                                                    <ZListItem title="website" text={resp.data.organization.website} />
+                                                )}
+                                                {resp.data.organization.facebook && (
+                                                    <ZListItem title="facebook" text={resp.data.organization.facebook} />
+                                                )}
+                                                {resp.data.organization.twitter && (
+                                                    <ZListItem title="twitter" text={resp.data.organization.twitter} />
+                                                )}
                                             </ZListItemGroup>
 
                                             <ZListItemGroup
                                                 header="Rooms"
                                                 divider={false}
                                                 actionRight={
-                                                    resp.data.organization.rooms
-                                                        .length > 3
+                                                    resp.data.organization.rooms.length > 3
                                                         ? {
                                                             title: 'Show all',
                                                             onPress: () =>
                                                                 this.props.router.push(
                                                                     'OrgChannels',
                                                                     {
-                                                                        organizationId:
-                                                                            resp
-                                                                                .data
-                                                                                .organization
-                                                                                .id,
-                                                                        title:
-                                                                            resp
-                                                                                .data
-                                                                                .organization
-                                                                                .name +
-                                                                            ' rooms',
+                                                                        organizationId: resp.data.organization.id,
+                                                                        title: resp.data.organization.name + ' rooms',
                                                                     },
                                                                 ),
                                                         }
@@ -289,8 +180,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                     this.props.router.push(
                                                                         'Conversation',
                                                                         {
-                                                                            flexibleId: v!!
-                                                                                .id,
+                                                                            flexibleId: v!!.id,
                                                                         },
                                                                     )
                                                                 }
@@ -300,110 +190,64 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             </ZListItemGroup>
 
                                             <YMutation
-                                                mutation={
-                                                    OrganizationChangeMemberRoleMutation
-                                                }
+                                                mutation={OrganizationChangeMemberRoleMutation}
                                                 refetchQueriesVars={[
                                                     {
                                                         query: OrganizationQuery,
                                                         variables: {
-                                                            organizationId: this
-                                                                .props.router
-                                                                .params.id,
+                                                            organizationId: this.props.router.params.id,
                                                         },
                                                     },
                                                 ]}
                                             >
                                                 {changeRole => (
                                                     <YMutation
-                                                        mutation={
-                                                            OrganizationRemoveMemberMutation
-                                                        }
+                                                        mutation={OrganizationRemoveMemberMutation}
                                                         refetchQueriesVars={[
                                                             {
                                                                 query: OrganizationQuery,
                                                                 variables: {
-                                                                    organizationId: this
-                                                                        .props
-                                                                        .router
-                                                                        .params
-                                                                        .id,
+                                                                    organizationId: this.props.router.params.id,
                                                                 },
                                                             },
                                                         ]}
                                                     >
                                                         {remove => (
-                                                            <ZListItemGroup
-                                                                header="Members"
-                                                                divider={false}
-                                                            >
-                                                                {resp.data
-                                                                    .organization
-                                                                    .isMine && (
-                                                                        <TouchableHighlight
-                                                                            underlayColor={
-                                                                                XPStyles
-                                                                                    .colors
-                                                                                    .selectedListItem
-                                                                            }
-                                                                            onPress={() =>
-                                                                                this.props.router.push(
-                                                                                    'OrganizationInviteLinkModal',
-                                                                                )
-                                                                            }
+                                                            <ZListItemGroup header="Members" divider={false} >
+                                                                {resp.data.organization.isMine && (
+                                                                    <TouchableHighlight
+                                                                        underlayColor={XPStyles.colors.selectedListItem}
+                                                                        onPress={() => this.props.router.push('OrganizationInviteLinkModal')}
+                                                                    >
+                                                                        <View
+                                                                            flexDirection="row"
+                                                                            height={60}
+                                                                            alignItems="center"
                                                                         >
                                                                             <View
-                                                                                flexDirection="row"
-                                                                                height={
-                                                                                    60
-                                                                                }
+                                                                                marginLeft={16}
+                                                                                marginRight={16}
+                                                                                width={40}
+                                                                                height={40}
+                                                                                borderRadius={20}
+                                                                                borderWidth={1}
+                                                                                borderColor={XPStyles.colors.brand}
+                                                                                justifyContent="center"
                                                                                 alignItems="center"
                                                                             >
-                                                                                <View
-                                                                                    marginLeft={
-                                                                                        16
-                                                                                    }
-                                                                                    marginRight={
-                                                                                        16
-                                                                                    }
-                                                                                    width={
-                                                                                        40
-                                                                                    }
-                                                                                    height={
-                                                                                        40
-                                                                                    }
-                                                                                    borderRadius={
-                                                                                        20
-                                                                                    }
-                                                                                    borderWidth={
-                                                                                        1
-                                                                                    }
-                                                                                    borderColor={
-                                                                                        XPStyles
-                                                                                            .colors
-                                                                                            .brand
-                                                                                    }
-                                                                                    justifyContent="center"
-                                                                                    alignItems="center"
-                                                                                >
-                                                                                    <Image
-                                                                                        source={require('assets/ic-add.png')}
-                                                                                    />
-                                                                                </View>
-                                                                                <Text
-                                                                                    style={{
-                                                                                        color:
-                                                                                            '#4747ec',
-                                                                                        fontWeight:
-                                                                                            '500',
-                                                                                        fontSize: 16,
-                                                                                    }}
-                                                                                >
-                                                                                    Add
-                                                                                    members
-                                                                                </Text>
-                                                                                
-                                                                                {/* <View
+                                                                                <Image source={require('assets/ic-add.png')} />
+                                                                            </View>
+                                                                            <Text
+                                                                                style={{
+                                                                                    color: '#4747ec',
+                                                                                    fontWeight: '500',
+                                                                                    fontSize: 16,
+                                                                                }}
+                                                                            >
+                                                                                Add members
+                                                                            </Text>
+
+                                                                            {/* <View
                                                                                     style={{
                                                                                         position:
                                                                                             'absolute',
@@ -426,9 +270,9 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                             .separator
                                                                                     }
                                                                                 /> */}
-                                                                            </View>
-                                                                        </TouchableHighlight>
-                                                                    )}
+                                                                        </View>
+                                                                    </TouchableHighlight>
+                                                                )}
 
                                                                 {resp.data.organization.members.map(
                                                                     v => (
@@ -444,168 +288,74 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                 item={
                                                                                     v.user
                                                                                 }
-                                                                                onPress={() =>
-                                                                                    this.props.router.push(
-                                                                                        'ProfileUser',
-                                                                                        {
-                                                                                            id:
-                                                                                                v
-                                                                                                    .user
-                                                                                                    .id,
-                                                                                        },
-                                                                                    )
-                                                                                }
-                                                                                onLongPress={
-                                                                                    v
-                                                                                        .user
-                                                                                        .id !==
-                                                                                        getMessenger()
-                                                                                            .engine
-                                                                                            .user
-                                                                                            .id
-                                                                                        ? async () => {
-                                                                                            let builder = new ActionSheetBuilder();
+                                                                                onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
+                                                                                onLongPress={v.user.id !== getMessenger().engine.user.id ?
+                                                                                    async () => {
+                                                                                        let builder = new ActionSheetBuilder();
 
-                                                                                            builder.action(
-                                                                                                v.role ===
-                                                                                                    'MEMBER'
-                                                                                                    ? 'Make owner'
-                                                                                                    : 'Make member',
-                                                                                                () => {
-                                                                                                    Alert.alert(
-                                                                                                        `Are you sure you want to make ${
-                                                                                                        v
-                                                                                                            .user
-                                                                                                            .name
-                                                                                                        } ${
-                                                                                                        v.role ===
-                                                                                                            'MEMBER'
-                                                                                                            ? 'owner'
-                                                                                                            : 'member'
-                                                                                                        }?`,
-                                                                                                        undefined,
-                                                                                                        [
-                                                                                                            {
-                                                                                                                onPress: async () => {
-                                                                                                                    startLoader();
-                                                                                                                    try {
-                                                                                                                        await changeRole(
-                                                                                                                            {
-                                                                                                                                variables: {
-                                                                                                                                    memberId:
-                                                                                                                                        v
-                                                                                                                                            .user
-                                                                                                                                            .id,
-                                                                                                                                    organizationId: this
-                                                                                                                                        .props
-                                                                                                                                        .router
-                                                                                                                                        .params
-                                                                                                                                        .id,
-                                                                                                                                    newRole: (v.role ===
-                                                                                                                                        'MEMBER'
-                                                                                                                                        ? 'OWNER'
-                                                                                                                                        : 'MEMBER') as any,
-                                                                                                                                },
-                                                                                                                            },
-                                                                                                                        );
-                                                                                                                    } catch (e) {
-                                                                                                                        Alert.alert(
-                                                                                                                            e.message,
-                                                                                                                        );
-                                                                                                                    }
-                                                                                                                    stopLoader();
+                                                                                        builder.action(v.role === 'MEMBER' ? 'Make owner' : 'Make member',
+                                                                                            () => {
+                                                                                                new AlertBlanketBuilder()
+                                                                                                    .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'owner' : 'member'}?`)
+                                                                                                    .button('Cancel', 'cancel')
+                                                                                                    .button('Make owner', 'default', async () => {
+                                                                                                        startLoader();
+                                                                                                        try {
+                                                                                                            await changeRole({
+                                                                                                                variables: {
+                                                                                                                    memberId: v.user.id,
+                                                                                                                    organizationId: this.props.router.params.id,
+                                                                                                                    newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
                                                                                                                 },
-                                                                                                                text:
-                                                                                                                    v.role ===
-                                                                                                                        'MEMBER'
-                                                                                                                        ? 'Make owner'
-                                                                                                                        : 'Make member',
-                                                                                                            },
-                                                                                                            {
-                                                                                                                text:
-                                                                                                                    'Cancel',
-                                                                                                                style:
-                                                                                                                    'cancel',
-                                                                                                            },
-                                                                                                        ],
-                                                                                                    );
-                                                                                                },
-                                                                                            );
+                                                                                                            });
+                                                                                                        } catch (e) {
+                                                                                                            new AlertBlanketBuilder().alert(e.message);
+                                                                                                        }
+                                                                                                        stopLoader();
+                                                                                                    }).show();
+                                                                                            },
+                                                                                        );
 
-                                                                                            builder.action(
-                                                                                                'Remove',
-                                                                                                () => {
-                                                                                                    Alert.alert(
-                                                                                                        `Are you sure you want to remove ${
-                                                                                                        v
-                                                                                                            .user
-                                                                                                            .name
-                                                                                                        }?`,
-                                                                                                        undefined,
-                                                                                                        [
-                                                                                                            {
-                                                                                                                onPress: async () => {
-                                                                                                                    startLoader();
-                                                                                                                    try {
-                                                                                                                        await remove(
-                                                                                                                            {
-                                                                                                                                variables: {
-                                                                                                                                    memberId:
-                                                                                                                                        v
-                                                                                                                                            .user
-                                                                                                                                            .id,
-                                                                                                                                    organizationId: this
-                                                                                                                                        .props
-                                                                                                                                        .router
-                                                                                                                                        .params
-                                                                                                                                        .id,
-                                                                                                                                },
-                                                                                                                            },
-                                                                                                                        );
-                                                                                                                    } catch (e) {
-                                                                                                                        Alert.alert(
-                                                                                                                            e.message,
-                                                                                                                        );
-                                                                                                                    }
-                                                                                                                    stopLoader();
+                                                                                        builder.action('Remove',
+                                                                                            () => {
+                                                                                                new AlertBlanketBuilder()
+                                                                                                    .title(`Are you sure you want to remove ${v.user.name}?`)
+                                                                                                    .button('Cancel', 'cancel')
+                                                                                                    .button('Remove', 'destructive', async () => {
+                                                                                                        startLoader();
+                                                                                                        try {
+                                                                                                            await remove({
+                                                                                                                variables: {
+                                                                                                                    memberId: v.user.id,
+                                                                                                                    organizationId: this.props.router.params.id,
                                                                                                                 },
-                                                                                                                text:
-                                                                                                                    'Remove',
-                                                                                                                style:
-                                                                                                                    'destructive',
-                                                                                                            },
-                                                                                                            {
-                                                                                                                text:
-                                                                                                                    'Cancel',
-                                                                                                                style:
-                                                                                                                    'cancel',
-                                                                                                            },
-                                                                                                        ],
-                                                                                                    );
-                                                                                                },
-                                                                                                true,
-                                                                                            );
-                                                                                            builder.show();
-                                                                                        }
-                                                                                        : undefined
+                                                                                                            });
+                                                                                                        } catch (e) {
+                                                                                                            new AlertBlanketBuilder().alert(e.message);
+                                                                                                        }
+                                                                                                        stopLoader();
+                                                                                                    })
+                                                                                                    .show()
+
+                                                                                            },
+                                                                                            true,
+                                                                                        );
+                                                                                        builder.show();
+                                                                                    }
+                                                                                    : undefined
                                                                                 }
                                                                             />
                                                                             <Text
                                                                                 style={{
-                                                                                    position:
-                                                                                        'absolute',
+                                                                                    position: 'absolute',
                                                                                     right: 16,
                                                                                     height: 60,
                                                                                     lineHeight: 60,
                                                                                     fontSize: 15,
-                                                                                    color:
-                                                                                        '#99a2b0',
+                                                                                    color: '#99a2b0',
                                                                                 }}
                                                                             >
-                                                                                {v.role ===
-                                                                                    'OWNER'
-                                                                                    ? 'Owner'
-                                                                                    : undefined}
+                                                                                {v.role === 'OWNER' ? 'Owner' : undefined}
                                                                             </Text>
                                                                         </View>
                                                                     ),

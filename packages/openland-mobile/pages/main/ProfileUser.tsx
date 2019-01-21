@@ -14,6 +14,7 @@ import { formatDate } from '../../utils/formatDate';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { Alert, View } from 'react-native';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
@@ -70,7 +71,7 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                                 try {
                                                     await update({ variables: { roomId: resp.data.conversation.id, settings: { mute: !resp.data.conversation.settings.mute } } });
                                                 } catch (e) {
-                                                    Alert.alert(e.message);
+                                                    new AlertBlanketBuilder().alert(e.message);
                                                 }
                                                 stopLoader();
                                             };

@@ -26,6 +26,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -190,7 +191,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                     {!invite && <YMutation mutation={RoomJoinMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
                                                         {(join) => (
                                                             <ZRoundedButton
-                                                                style="big"
+                                                                size="big"
                                                                 uppercase={false}
                                                                 title={sharedRoom!.membership === 'REQUESTED' ? 'Invite requested' : 'Request invite'}
                                                                 onPress={async () => {
@@ -198,7 +199,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                     try {
                                                                         await join({ variables: { roomId: sharedRoom!.id } });
                                                                     } catch (e) {
-                                                                        Alert.alert(e.message);
+                                                                        new AlertBlanketBuilder().alert(e.message);
                                                                     }
                                                                     stopLoader();
 
@@ -209,7 +210,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                     {invite && <YMutation mutation={RoomJoinInviteLinkMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
                                                         {(join) => (
                                                             <ZRoundedButton
-                                                                style="big"
+                                                                size="big"
                                                                 uppercase={false}
                                                                 title={'Accept invitation'}
                                                                 onPress={async () => {
@@ -217,7 +218,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                     try {
                                                                         await join({ variables: { invite: invite } });
                                                                     } catch (e) {
-                                                                        Alert.alert(e.message);
+                                                                        new AlertBlanketBuilder().alert(e.message);
                                                                     }
                                                                     stopLoader();
 

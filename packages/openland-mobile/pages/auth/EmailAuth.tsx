@@ -8,7 +8,8 @@ import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
-import { UserError } from 'openland-y-forms/errorHandling';
+import { UserError, formatError } from 'openland-y-forms/errorHandling';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     hint: {
@@ -130,6 +131,9 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
                         await AsyncStorage.setItem('openland-token', res2.accessToken);
 
+                    }}
+                    onError={e => {
+                        new AlertBlanketBuilder().title('Activation').message(formatError(e)).button('Try again').show();
                     }}
                     onSuccess={() => RNRestart.Restart()}
                 >

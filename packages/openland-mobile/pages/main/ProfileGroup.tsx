@@ -21,6 +21,7 @@ import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -112,7 +113,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                 try {
                                                     await update({ variables: { roomId: sharedRoom!.id, settings: { mute: !sharedRoom!.settings.mute } } });
                                                 } catch (e) {
-                                                    Alert.alert(e.message);
+                                                    new AlertBlanketBuilder().alert(e.message);
                                                 }
                                                 stopLoader();
                                             };
@@ -154,7 +155,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                         await add({ variables: { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: sharedRoom!.id } });
                                                                         this.props.router.back();
                                                                     } catch (e) {
-                                                                        Alert.alert(e.message);
+                                                                        new AlertBlanketBuilder().alert(e.message);
                                                                     }
                                                                     stopLoader();
                                                                 }
@@ -187,23 +188,18 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                                 builder.action(
                                                                     'Kick',
                                                                     () => {
-                                                                        Alert.alert(`Are you sure you want to kick ${v.user.name}?`, undefined, [{
-                                                                            onPress: async () => {
+                                                                        new AlertBlanketBuilder().title(`Are you sure you want to kick ${v.user.name}?`)
+                                                                            .button('Cancel', 'cancel')
+                                                                            .button('Kick', 'destructive', async () => {
                                                                                 startLoader();
                                                                                 try {
                                                                                     await kick({ variables: { userId: v.user.id, roomId: this.props.router.params.id } });
                                                                                 } catch (e) {
-                                                                                    Alert.alert(e.message);
+                                                                                    new AlertBlanketBuilder().alert(e.message);
                                                                                 }
                                                                                 stopLoader();
-                                                                            },
-                                                                            text: 'Kick',
-                                                                            style: 'destructive'
-                                                                        },
-                                                                        {
-                                                                            text: 'Cancel',
-                                                                            style: 'cancel'
-                                                                        }]);
+                                                                            })
+                                                                            .show();
                                                                     },
                                                                     true
                                                                 );
@@ -225,25 +221,20 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                             text="Leave"
                                             appearance="danger"
                                             onPress={() => {
-                                                Alert.alert(`Are you sure you want to leave ${sharedRoom!.title}?`, undefined, [{
-                                                    onPress: async () => {
+                                                new AlertBlanketBuilder().title(`Are you sure you want to leave ${sharedRoom!.title}?`)
+                                                    .button('Cancel', 'cancel')
+                                                    .button('Leave', 'destructive', async () => {
                                                         startLoader();
                                                         try {
                                                             await leave({ variables: { roomId: this.props.router.params.id } });
 
                                                             this.props.router.pushAndResetRoot('Home');
                                                         } catch (e) {
-                                                            Alert.alert(e.message);
+                                                            new AlertBlanketBuilder().alert(e.message);
                                                         }
                                                         stopLoader();
-                                                    },
-                                                    text: 'Leave',
-                                                    style: 'destructive'
-                                                },
-                                                {
-                                                    text: 'Cancel',
-                                                    style: 'cancel'
-                                                }]);
+                                                    })
+                                                    .show();
                                             }}
                                         />}
                                     </YMutation>

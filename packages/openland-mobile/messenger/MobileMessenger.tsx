@@ -23,6 +23,7 @@ import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { PromptBuilder } from '../components/Prompt';
 import { TextStyles } from '../styles/AppStyles';
 import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 interface ASAvatarProps {
     size: number;
@@ -275,7 +276,7 @@ export class MobileMessenger {
                             try {
                                 await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
                             } catch (e) {
-                                Alert.alert(e.message);
+                                new AlertBlanketBuilder().alert(e.message);
                             }
                             stopLoader();
                         })
@@ -286,26 +287,21 @@ export class MobileMessenger {
         if (message.senderId === this.engine.user.id) {
             builder.action('Delete', async () => {
                 try {
-                    Alert.alert(
-                        'Delete message',
-                        'Are you sure you want to delete this message?',
-                        [
-                            { text: 'Cancel', style: 'cancel' },
-                            {
-                                text: 'Delete', style: 'destructive', onPress: async () => {
-                                    startLoader();
-                                    try {
-                                        await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
-                                    } catch (e) {
-                                        Alert.alert(e.message);
-                                    }
-                                    stopLoader();
-                                }
-                            },
-                        ]
-                    );
+                    new AlertBlanketBuilder()
+                        .title('Delete message')
+                        .message('Are you sure you want to delete this message?')
+                        .button('Cancel', 'cancel')
+                        .button('Delete', 'destructive', async () => {
+                            startLoader();
+                            try {
+                                await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
+                            } catch (e) {
+                                new AlertBlanketBuilder().alert(e.message);
+                            }
+                            stopLoader();
+                        }).show();
                 } catch (e) {
-                    Alert.alert(e.message);
+                    new AlertBlanketBuilder().alert(e.message);
                 }
             });
         }
@@ -318,7 +314,7 @@ export class MobileMessenger {
                         let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
                         await this.engine.client.client.mutate({ mutation: remove ? MessageUnsetReactionMutation.document : MessageSetReactionMutation.document, variables: { messageId: message.id, reaction: r } });
                     } catch (e) {
-                        Alert.alert(e.message);
+                        new AlertBlanketBuilder().alert(e.message);
                     }
                     stopLoader();
                 });

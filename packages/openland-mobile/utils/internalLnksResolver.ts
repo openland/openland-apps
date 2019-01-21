@@ -2,6 +2,7 @@ import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
 import { RoomInviteInfoQuery, AccountInviteInfoQuery, OrganizationActivateByInviteMutation, AccountInviteJoinMutation, ResolveShortNameQuery } from 'openland-api';
 import { Alert } from 'react-native';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 export let resolveInternalLink = (link: string, fallback?: () => void) => {
     // 
@@ -17,10 +18,10 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                     let roomId = info.data.invite.room.id;
                     getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
                 } else {
-                    Alert.alert('Invite not found');
+                    new AlertBlanketBuilder().alert('Invite not found');
                 }
             } catch (e) {
-                Alert.alert(e.message);
+                new AlertBlanketBuilder().alert(e.message);
             }
             stopLoader();
         };
@@ -39,25 +40,22 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                 if (info.data && info.data.invite) {
                     let orgId = info.data.invite.orgId;
                     stopLoader();
-                    Alert.alert(
-                        'Invite to ' + info.data.invite.title,
-                        info.data.invite.creator.name + ' invites you to join ' + info.data.invite.title,
-                        [
-                            { text: 'Cancel', style: 'cancel' },
-                            {
-                                text: 'Accept invitation', onPress: async () => {
-                                    startLoader();
-                                    let res = await getMessenger().engine.client.client.mutate({ mutation: AccountInviteJoinMutation.document, variables: { inviteKey: uuid } });
-                                    getMessenger().history.navigationManager.push('ProfileOrganization', { id: orgId });
-                                    stopLoader();
-                                }
-                            }
-                        ]);
+                    new AlertBlanketBuilder()
+                        .title('Invite to ' + info.data.invite.title)
+                        .message(info.data.invite.creator.name + ' invites you to join ' + info.data.invite.title)
+                        .button('Cancel', 'cancel')
+                        .button('Accept invitation', 'default', async () => {
+                            startLoader();
+                            let res = await getMessenger().engine.client.client.mutate({ mutation: AccountInviteJoinMutation.document, variables: { inviteKey: uuid } });
+                            getMessenger().history.navigationManager.push('ProfileOrganization', { id: orgId });
+                            stopLoader();
+                        })
+                        .show();
                 } else {
-                    Alert.alert('Invite not found');
+                    new AlertBlanketBuilder().alert('Invite not found');
                 }
             } catch (e) {
-                Alert.alert(e.message);
+                new AlertBlanketBuilder().alert(e.message);
             }
             stopLoader();
         };
@@ -102,7 +100,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                         }
                     }
                 } catch (e) {
-                    Alert.alert(e.message);
+                    new AlertBlanketBuilder().alert(e.message);
                 }
                 stopLoader();
             };

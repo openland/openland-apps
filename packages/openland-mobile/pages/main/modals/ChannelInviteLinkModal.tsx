@@ -10,6 +10,7 @@ import { ZListItem } from '../../../components/ZListItem';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { RoomInviteLinkQuery, RoomRenewInviteLinkMutation } from 'openland-api';
+import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -41,7 +42,7 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
                                                 try {
                                                     await renew({ variables: { roomId: this.props.router.params.id } });
                                                 } catch (e) {
-                                                    Alert.alert(e);
+                                                    new AlertBlanketBuilder().alert(e);
                                                 }
                                                 stopLoader();
 
