@@ -198,7 +198,6 @@ const PageInner = AdaptiveHOC({
     DesktopComponent: DesktopPageInner,
     MobileComponent: MobilePageInner,
     fullWidth: true,
-    fullHeight: false,
 });
 const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
     return (

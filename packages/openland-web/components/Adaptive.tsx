@@ -36,8 +36,8 @@ export const HideOnMobile = ({
     fullHeight,
 }: {
     children: any;
-    fullWidth: boolean;
-    fullHeight: boolean;
+    fullWidth?: boolean;
+    fullHeight?: boolean;
 }) => {
     const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
     return (
@@ -67,8 +67,8 @@ export const HideOnDesktop = ({
     fullHeight,
 }: {
     children: any;
-    fullWidth: boolean;
-    fullHeight: boolean;
+    fullWidth?: boolean;
+    fullHeight?: boolean;
 }) => {
     const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
     return (
@@ -110,8 +110,8 @@ export const AdaptiveComponent = ({
 }: {
     desktop: any;
     mobile: any;
-    fullWidth: boolean;
-    fullHeight: boolean;
+    fullWidth?: boolean;
+    fullHeight?: boolean;
 }) => {
     const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
     return (
@@ -146,8 +146,8 @@ export const AdaptiveHOC = ({
 }: {
     DesktopComponent: any;
     MobileComponent: any;
-    fullWidth: boolean;
-    fullHeight: boolean;
+    fullWidth?: boolean;
+    fullHeight?: boolean;
 }) => {
     const Component: any = (props: any) => {
         const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);

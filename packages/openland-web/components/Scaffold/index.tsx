@@ -115,14 +115,12 @@ const UniversalScaffold = AdaptiveHOC({
     DesktopComponent: DesktopScaffold,
     MobileComponent: MobileScaffold,
     fullWidth: true,
-    fullHeight: false,
 });
 
 const UniversalScafoldMenuItem = AdaptiveHOC({
     DesktopComponent: DesktopScafoldMenuItem,
     MobileComponent: MobileScafoldMenuItem,
     fullWidth: true,
-    fullHeight: false,
 });
 
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
@@ -178,7 +176,7 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
             <UniversalScaffold
                 topItems={
                     <>
-                        <HideOnMobile fullWidth={true} fullHeight={false}>
+                        <HideOnMobile fullWidth={true}>
                             <XWithRole role="feature-non-production">
                                 <UniversalScafoldMenuItem
                                     name={TextAppBar.items.feed}
@@ -189,7 +187,6 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                         </HideOnMobile>
                         <AdaptiveComponent
                             fullWidth={true}
-                            fullHeight={false}
                             mobile={
                                 <UniversalScafoldMenuItem
                                     name={'Chats'}

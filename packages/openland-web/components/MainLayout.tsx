@@ -235,7 +235,7 @@ export const Menu = React.memo<MenuProps>(props => {
                 alignItems="center"
                 justifyContent="space-between"
             >
-                <HideOnDesktop fullWidth={false} fullHeight={false}>
+                <HideOnDesktop>
                     <BurgerButton />
                 </HideOnDesktop>
                 {title && <Title data-test-id="messages-title">{title}</Title>}
@@ -275,12 +275,11 @@ export const Menu = React.memo<MenuProps>(props => {
                     onClick={onClick}
                 >
                     {title && <Title>{title}</Title>}
-                    {rightContent &&
-                        isMobile && (
-                            <XView marginLeft={5} alignItems="center" flexDirection="row">
-                                <SelectIcon />
-                            </XView>
-                        )}
+                    {rightContent && isMobile && (
+                        <XView marginLeft={5} alignItems="center" flexDirection="row">
+                            <SelectIcon />
+                        </XView>
+                    )}
                 </div>
             </XView>
             <div className={`${LinksWrapper} ${showMenu && 'show'}`}>{children}</div>
