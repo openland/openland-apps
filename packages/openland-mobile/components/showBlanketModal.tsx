@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, Platform, Animated, LayoutChangeEvent, BackHandler } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler } from 'react-native';
 import { SSafeAreaContext, SSafeArea } from 'react-native-s/SSafeArea';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
@@ -115,7 +115,10 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
 
                 <SAnimated.View
                     name={this.key + '--ctns'}
-                    style={{ opacity: 0 }}
+                    style={{
+                        opacity: 0,
+                        marginBottom: this.props.safe.bottom + 8
+                    }}
                 >
                     <View
                         backgroundColor="#fff"

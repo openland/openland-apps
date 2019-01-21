@@ -1,47 +1,53 @@
 import * as React from 'react';
-import { Platform, View, Alert, Text } from 'react-native';
-import { ZRoundedButton } from './ZRoundedButton';
+import { Platform, AlertIOS, View, Text, KeyboardAvoidingView } from 'react-native';
+import DialogAndroid from 'react-native-dialogs';
 import { showBlanketModal } from './showBlanketModal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { TextInput } from 'react-native-gesture-handler';
+import { ZRoundedButton } from './ZRoundedButton';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 
-export class AlertBlanketBuilder {
+export class PromptBuilder {
     private _title?: string;
-    private _message?: string;
-    private _cancalable?: boolean;
-    private _actions: { name: string, callback?: () => void, style?: BlanketButtonsStyle }[] = [];
+    private _callback?: (text: string) => void;
+    private _value?: string;
+    private _actions: { name: string, callback?: (value?: string) => void, style?: BlanketButtonsStyle }[] = [];
 
-    alert(message: string) {
-        this._title = message;
-        this._actions = [{ name: 'Cancel' }]
-        this.show();
-    }
-
-    title(title: string): AlertBlanketBuilder {
+    title(title: string): PromptBuilder {
         this._title = title;
         return this;
     }
 
-    cancalable(cancalable: boolean): AlertBlanketBuilder {
-        this._cancalable = cancalable;
+    value(value: string): PromptBuilder {
+        this._value = value;
         return this;
     }
 
-    message(message: string): AlertBlanketBuilder {
-        this._message = message;
+    callback(callback: (text: string) => void): PromptBuilder {
+        this._callback = callback;
         return this;
     }
 
-    button(name: string, style?: BlanketButtonsStyle, callback?: () => void): AlertBlanketBuilder {
-        this._actions.push({ name, callback, style });
-        return this;
+    onTextChange = (value: string) => {
+        this._value = value;
     }
 
     show() {
         if (Platform.OS === 'ios') {
-            Alert.alert(this._title || '', this._message, this._actions.map(a => ({ text: a.name, onPress: a.callback, style: a.style })))
+            AlertIOS.prompt(
+                this._title || '',
+                undefined,
+                this._callback,
+                undefined,
+                this._value);
         } else if (Platform.OS === 'android') {
+
+            if (this._actions.length === 0) {
+                this._actions.push({ name: 'Cancel', style: 'cancel' });
+                this._actions.push({ name: 'Ok', callback: this._callback });
+            }
+
             showBlanketModal((ctx) => {
                 return (
                     <View
@@ -50,8 +56,8 @@ export class AlertBlanketBuilder {
                         paddingHorizontal={24}
                         paddingVertical={20}
                     >
-                        {this._title && <Text style={{ marginBottom: this._message ? 12 : 16, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this._title}</Text>}
-                        {this._message && <Text style={{ marginBottom: 16, color: '#000', fontSize: 16 }}>{this._message}</Text>}
+                        {this._title && <Text style={{ marginBottom: 12, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this._title}</Text>}
+                        <TextInput defaultValue={this._value} onChangeText={this.onTextChange} autoFocus={true} multiline={true} maxHeight={100} />
                         <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                             {this._actions.map((a, i) => (
                                 <>
@@ -64,7 +70,7 @@ export class AlertBlanketBuilder {
                                         onPress={() => {
                                             ctx.hide();
                                             if (a.callback) {
-                                                a.callback();
+                                                a.callback(this._value);
                                             }
                                         }}
                                     />
@@ -74,7 +80,7 @@ export class AlertBlanketBuilder {
                     </View>
 
                 )
-            }, this._cancalable);
+            });
         }
     }
 }
