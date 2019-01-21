@@ -17,6 +17,7 @@ import { HeaderInviteButton } from './components/HeaderInviteButton';
 import { HeaderMenu } from './components/HeaderMenu';
 import { MobileSidebarContext } from '../../components/Scaffold/MobileSidebarContext';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
+import { HideOnMobile } from 'openland-web/components/Adaptive';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -155,9 +156,10 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
                         {inviteButton}
                     </>
                 )}
+
                 <XHorizontal alignItems="center" separator={3}>
                     {muteButton}
-                    {menu}
+                    <HideOnMobile>{menu}</HideOnMobile>
                 </XHorizontal>
             </XHorizontal>
 

@@ -109,7 +109,6 @@ export class UserPopper extends React.PureComponent<
     render() {
         let { user, isMe, noCardOnMe, children, startSelected } = this.props;
 
-        console.log(UserPopperContent);
         return (
             <XPopper
                 ref={this.xPopperRef}
