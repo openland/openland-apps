@@ -142,7 +142,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                     {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
                                         <ZListItem
                                             leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                                            text="Invite via Link"
+                                            text="Invite with a link"
                                             path="ChannelInviteLinkModal"
                                             navigationIcon={false}
                                             pathParams={{ id: sharedRoom.id }}

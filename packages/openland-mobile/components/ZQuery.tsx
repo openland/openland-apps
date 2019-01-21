@@ -3,7 +3,6 @@ import { Query, QueryResult } from 'react-apollo';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { ZLoader } from './ZLoader';
 import { FetchPolicy } from 'apollo-client';
-import { Alert } from 'react-native';
 import { AlertBlanketBuilder } from './AlertBlanket';
 
 export interface ZQueryProps<QUERY, VARIABLES> {
