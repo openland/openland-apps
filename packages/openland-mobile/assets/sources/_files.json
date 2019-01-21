@@ -1,0 +1,47 @@
+{
+    "icons": [{
+        "name": "ic-link",
+        "src": "ic-link.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-link-fill",
+        "src": "ic-cell-link-ios.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-add",
+        "src": "ic-add.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-message",
+        "src": "ic-message.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-message-fill",
+        "src": "ic-cell-message-ios.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-edit-text",
+        "src": "ic-name.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-edit-text-fill",
+        "src": "ic-cell-name-ios.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-notifications",
+        "src": "ic-notifications.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-notifications-fill",
+        "src": "ic-cell-nofif-ios.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-photo",
+        "src": "ic-photo.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-photo-fill",
+        "src": "ic-cell-photo-ios.svg",
+        "sizes": [24]
+    }]
+}
