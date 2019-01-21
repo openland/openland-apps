@@ -1,14 +1,10 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import * as glamor from 'glamor';
+import Loadable from 'react-loadable';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
 import { MessageFull_sender } from 'openland-api/Types';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XButton } from 'openland-x/XButton';
-import { withOnline } from '../api/withOnline';
-import { XDate } from 'openland-x/XDate';
-import { XView } from 'react-mental';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -49,68 +45,6 @@ const Container = Glamorous(XPopper.Content)({
     },
 });
 
-const Wrapper = Glamorous.div({
-    maxWidth: 400,
-    paddingTop: 20,
-    paddingBottom: 24,
-    paddingLeft: 24,
-    paddingRight: 24,
-    position: 'relative',
-});
-
-const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
-    flex: 1,
-    textAlign: 'right',
-    color: props.online ? '#1790ff' : 'rgba(0, 0, 0, 0.4)',
-    fontSize: 13,
-    fontWeight: 400,
-    lineHeight: '17px',
-}));
-
-const Name = Glamorous.div({
-    marginTop: 12,
-    fontSize: 16,
-    fontWeight: 600,
-    color: 'rgba(0, 0, 0, 0.9)',
-    lineHeight: '19px',
-});
-
-const OrgTitle = Glamorous.div({
-    marginTop: 6,
-    fontSize: 14,
-    opacity: 0.5,
-    color: '#000000',
-});
-
-const Buttons = Glamorous(XHorizontal)({
-    marginTop: 20,
-    width: 224,
-});
-
-const Status = withOnline(props => {
-    if (
-        props.data.user &&
-        (props.data.user.lastSeen &&
-            props.data.user.lastSeen !== 'online' &&
-            !props.data.user.online)
-    ) {
-        return (
-            <StatusWrapper online={false}>
-                last seen{' '}
-                {props.data.user.lastSeen === 'never_online' ? (
-                    'moments ago'
-                ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                )}
-            </StatusWrapper>
-        );
-    } else if (props.data.user && props.data.user.online) {
-        return <StatusWrapper online={true}>Online</StatusWrapper>;
-    } else {
-        return null;
-    }
-}) as React.ComponentType<{ variables: { userId: string } }>;
-
 export class UserAvatar extends React.PureComponent<{
     user: MessageFull_sender;
     startSelected: boolean;
@@ -132,6 +66,15 @@ export class UserAvatar extends React.PureComponent<{
         );
     }
 }
+
+const Loading = () => {
+    return <div />;
+};
+
+const UserPopperContent = Loadable({
+    loader: () => import('./UserPopperContent'),
+    loading: Loading,
+});
 
 export class UserPopper extends React.PureComponent<
     {
@@ -164,66 +107,9 @@ export class UserPopper extends React.PureComponent<
     };
 
     render() {
-        const props = this.props;
-        let { user, isMe, noCardOnMe, children } = this.props;
+        let { user, isMe, noCardOnMe, children, startSelected } = this.props;
 
-        let usrPath: string | undefined = undefined;
-        if (!props.startSelected) {
-            usrPath = '/mail/u/' + user.id;
-        }
-        let content;
-        if (noCardOnMe && isMe) {
-            content = (
-                <XView
-                    width={78}
-                    justifyContent="center"
-                    alignItems="center"
-                    height={30}
-                    color={'white'}
-                    borderRadius={15}
-                    backgroundColor={'#6e7588'}
-                >
-                    It&apos;s you
-                </XView>
-            );
-        } else {
-            const organizationName = user.primaryOrganization ? user.primaryOrganization.name : '';
-            content = (
-                <Wrapper>
-                    <XHorizontal>
-                        <XAvatar
-                            online={false}
-                            size="l-medium"
-                            style="user"
-                            objectName={user.name}
-                            objectId={user.id}
-                            cloudImageUuid={user.photo || undefined}
-                            path={usrPath}
-                        />
-                        <Status variables={{ userId: user.id }} />
-                    </XHorizontal>
-                    <Name>{user.name}</Name>
-                    <OrgTitle>{organizationName}</OrgTitle>
-                    <Buttons separator={6}>
-                        {!isMe && (
-                            <XButton
-                                path={'/mail/' + user.id}
-                                style="primary"
-                                text="Direct chat"
-                                size="small"
-                            />
-                        )}
-                        <XButton
-                            path={'/mail/u/' + user.id}
-                            style="electric"
-                            text={isMe ? 'My profile' : 'View profile'}
-                            size="small"
-                        />
-                    </Buttons>
-                </Wrapper>
-            );
-        }
-
+        console.log(UserPopperContent);
         return (
             <XPopper
                 ref={this.xPopperRef}
@@ -231,7 +117,12 @@ export class UserPopper extends React.PureComponent<
                 style={noCardOnMe && isMe ? 'dark' : 'default'}
                 content={
                     <div onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
-                        {content}
+                        <UserPopperContent
+                            noCardOnMe={noCardOnMe}
+                            isMe={isMe}
+                            user={user}
+                            startSelected={startSelected}
+                        />
                     </div>
                 }
                 contentContainer={<Container />}
@@ -239,11 +130,7 @@ export class UserPopper extends React.PureComponent<
                 marginLeft={-2}
             >
                 <span onMouseEnter={this.showPopper} onMouseLeave={this.hidePopper}>
-                    {children ? (
-                        children
-                    ) : (
-                        <UserAvatar user={user} startSelected={props.startSelected} />
-                    )}
+                    {children ? children : <UserAvatar user={user} startSelected={startSelected} />}
                 </span>
             </XPopper>
         );
