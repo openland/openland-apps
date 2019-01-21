@@ -241,8 +241,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                             flexGrow={1}
                             ref={this.handleRef}
                             value={
-                                this.props.router.protocol +
-                                '://openland.com' +
+                                'https://openland.com' +
                                 (this.props.organization ? '/invite/' : '/join/') +
                                 (this.props.appInvite || this.props.invite!.key)
                             }

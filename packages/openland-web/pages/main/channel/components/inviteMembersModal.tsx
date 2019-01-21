@@ -90,12 +90,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                             size="large"
                             flexGrow={1}
                             ref={this.handleRef}
-                            value={
-                                this.props.router.protocol +
-                                '://openland.com' +
-                                '/joinChannel/' +
-                                this.props.invite
-                            }
+                            value={'https://openland.com' + '/joinChannel/' + this.props.invite}
                         />
                         <InviteText>Anyone with the link will be able to join</InviteText>
                     </LinkHolder>
