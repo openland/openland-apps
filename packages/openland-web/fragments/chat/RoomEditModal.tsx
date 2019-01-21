@@ -10,8 +10,6 @@ import { XInput } from 'openland-x/XInput';
 import { XTextArea } from 'openland-x/XTextArea';
 
 export const RoomEditModal = withAlterChat(props => {
-    let editTitle = (props as any).title;
-    let editDescription = (props as any).description;
     let editPhotoRef = (props as any).photo;
     let editSocialImageRef = (props as any).socialImage;
     return (
@@ -30,10 +28,8 @@ export const RoomEditModal = withAlterChat(props => {
                     variables: {
                         roomId: (props as any).roomId,
                         input: {
-                            ...(newTitle !== editTitle ? { title: newTitle } : {}),
-                            ...(newDescription !== editDescription
-                                ? { description: newDescription }
-                                : {}),
+                            ...{ title: newTitle },
+                            ...{ description: newDescription },
                             ...(newPhoto && newPhoto.uuid !== editPhotoRef
                                 ? { photoRef: sanitizeImageRef(newPhoto) }
                                 : {}),

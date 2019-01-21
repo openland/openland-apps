@@ -107,7 +107,6 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
 }
 
 const OwnerLink = withChannelnviteLink(props => {
-    console.warn(props);
     return (
         <OwnerLinkComponent
             ref={(props as any).innerRef}
