@@ -46,6 +46,7 @@ import { ModelMessage } from 'openland-engines/messenger/types';
 import { PostIntroModal } from '../components/messenger/message/content/attachments/introMessage/PostIntroModal';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
+import { HideOnMobile } from 'openland-web/components/Adaptive';
 
 const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -954,21 +955,23 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     enabled={this.props.enabled}
                                     handleHideChat={this.props.handleHideChat}
                                 />
-                                <AttachmentButton
-                                    query={
-                                        this.props.enabled === false
-                                            ? undefined
-                                            : {
-                                                  field: 'addItro',
-                                                  value: 'true',
-                                              }
-                                    }
-                                    className="intro-button"
-                                    disable={this.props.enabled === false}
-                                >
-                                    <IntroIc />
-                                    <span>Intro</span>
-                                </AttachmentButton>
+                                <HideOnMobile>
+                                    <AttachmentButton
+                                        query={
+                                            this.props.enabled === false
+                                                ? undefined
+                                                : {
+                                                      field: 'addItro',
+                                                      value: 'true',
+                                                  }
+                                        }
+                                        className="intro-button"
+                                        disable={this.props.enabled === false}
+                                    >
+                                        <IntroIc />
+                                        <span>Intro</span>
+                                    </AttachmentButton>
+                                </HideOnMobile>
                                 <ShortcutsModal
                                     target={
                                         <AttachmentButton className="shortcuts-button">
