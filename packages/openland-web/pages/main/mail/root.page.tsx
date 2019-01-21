@@ -38,21 +38,20 @@ export const OrganizationProfileContainer = Glamorous.div({
     flexShrink: 0,
 });
 
-export const RoomInviteFromLink = withChannelInviteInfo(
-    props =>
-        props.data && props.data.invite ? (
-            props.data.invite.room.membership === 'MEMBER' ? (
-                <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
-            ) : (
-                <RoomsInviteComponent
-                    inviteLink={props.router.routeQuery.invite}
-                    room={props.data.invite.room as any}
-                    invite={props.data.invite}
-                />
-            )
+export const RoomInviteFromLink = withChannelInviteInfo(props =>
+    props.data && props.data.invite ? (
+        props.data.invite.room.membership === 'MEMBER' ? (
+            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
         ) : (
-            <XLoader loading={true} />
-        ),
+            <RoomsInviteComponent
+                inviteLink={props.router.routeQuery.invite}
+                room={props.data.invite.room as any}
+                invite={props.data.invite}
+            />
+        )
+    ) : (
+        <XLoader loading={true} />
+    ),
 );
 
 interface MessagePageProps {
@@ -134,24 +133,21 @@ const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: Pa
             {tab === 'conversation' && conversationId && <MessengerFragment id={conversationId} />}
             {tab === 'rooms' && <RoomsExploreComponent />}
             {tab === 'invite' && <RoomInviteFromLink />}
-            {tab === 'organization' &&
-                oid && (
-                    <OrganizationProfileContainer>
-                        <OrganizationProfile organizationId={oid} />
-                    </OrganizationProfileContainer>
-                )}
-            {tab === 'user' &&
-                uid && (
-                    <OrganizationProfileContainer>
-                        <UserProfile userId={uid} />
-                    </OrganizationProfileContainer>
-                )}
-            {tab === 'chat' &&
-                cid && (
-                    <OrganizationProfileContainer>
-                        <RoomProfile conversationId={cid} />
-                    </OrganizationProfileContainer>
-                )}
+            {tab === 'organization' && oid && (
+                <OrganizationProfileContainer>
+                    <OrganizationProfile organizationId={oid} />
+                </OrganizationProfileContainer>
+            )}
+            {tab === 'user' && uid && (
+                <OrganizationProfileContainer>
+                    <UserProfile userId={uid} />
+                </OrganizationProfileContainer>
+            )}
+            {tab === 'chat' && cid && (
+                <OrganizationProfileContainer>
+                    <RoomProfile conversationId={cid} />
+                </OrganizationProfileContainer>
+            )}
         </ConversationContainerInner>
     );
 };
@@ -198,14 +194,13 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
     );
 };
 
+const PageInner = AdaptiveHOC({
+    DesktopComponent: DesktopPageInner,
+    MobileComponent: MobilePageInner,
+    fullWidth: true,
+    fullHeight: false,
+});
 const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    const PageInner = AdaptiveHOC({
-        DesktopComponent: DesktopPageInner,
-        MobileComponent: MobilePageInner,
-        fullWidth: true,
-        fullHeight: false,
-    });
-
     return (
         <XView
             flexDirection="row"
@@ -361,8 +356,7 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
             | 'organization'
             | 'user'
             | 'conference'
-            | 'chat' =
-            'empty';
+            | 'chat' = 'empty';
 
         if (isCompose) {
             tab = 'compose';

@@ -111,25 +111,26 @@ const NotificationCounter = withNotificationCounter(props => (
     </>
 ));
 
+const UniversalScaffold = AdaptiveHOC({
+    DesktopComponent: DesktopScaffold,
+    MobileComponent: MobileScaffold,
+    fullWidth: true,
+    fullHeight: false,
+});
+
+const UniversalScafoldMenuItem = AdaptiveHOC({
+    DesktopComponent: DesktopScafoldMenuItem,
+    MobileComponent: MobileScafoldMenuItem,
+    fullWidth: true,
+    fullHeight: false,
+});
+
 const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
     const [isMobile] = useIsMobile();
 
     const [showSidebar, setShowSidebar] = React.useState(false);
     const [showMenu, setShowMenu] = React.useState(false);
     const [renderedOnce, setRenderedOnce] = React.useState(false);
-    const UniversalScaffold = AdaptiveHOC({
-        DesktopComponent: DesktopScaffold,
-        MobileComponent: MobileScaffold,
-        fullWidth: true,
-        fullHeight: false,
-    });
-
-    const UniversalScafoldMenuItem = AdaptiveHOC({
-        DesktopComponent: DesktopScafoldMenuItem,
-        MobileComponent: MobileScafoldMenuItem,
-        fullWidth: true,
-        fullHeight: false,
-    });
 
     React.useEffect(() => {
         if (!renderedOnce) {
