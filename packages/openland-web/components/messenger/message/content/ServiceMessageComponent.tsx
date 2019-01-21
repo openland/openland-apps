@@ -9,27 +9,6 @@ import { ServiceMessageReplyJobApply } from './service/ServiceMessageReplyJobApp
 import { ServiceMessageReplyJobRecommend } from './service/ServiceMessageReplyJobRecommend';
 import { ServiceMessageReplyStartupRecommend } from './service/ServiceMessageReplyStartupRecommend';
 
-const isRespondToPostServiceMessage = (message: string) => {
-    return message.includes('is responding to your post') && message.includes('Now you can chat!');
-};
-const isOfficeHourseServiceMessage = isRespondToPostServiceMessage;
-const isJobOpportunityApplyTextServiceMessage = (message: string) => {
-    return (
-        message.includes('is interested in your job opportunity') &&
-        message.includes('as the next step, please, tell')
-    );
-};
-const isJobOpportunityRecomendTextServiceMessage = (message: string) => {
-    return (
-        message.includes('is looking to recommend a candidate in response to your post') &&
-        message.includes('please, describe your recommended candidate, how well do you know')
-    );
-};
-const isRequestForStartupsApplyTextServiceMessage = isRespondToPostServiceMessage;
-const isRequestForStartupsRecomendTextServiceMessage = (message: string) => {
-    return message.includes('is interested to make a recommendation following up to your post');
-};
-
 type ServiceMessageType = 'JOIN' | 'POST' | 'KICK' | 'PHOTO_CHANGE' | 'TITLE_CHANGE';
 
 type PostMessageType = 'BLANK' | 'JOB_OPPORTUNITY' | 'REQUEST_FOR_STARTUPS' | 'OFFICE_HOURS';
@@ -112,52 +91,7 @@ const ServiceMessageComponentByTypes = ({
     return <ServiceMessageDefault message={otherParams.message} />;
 };
 
-const hackToGuessPostMessageType = (message: string) => {
-    if (isRespondToPostServiceMessage(message)) {
-        return {
-            type: 'POST',
-            postMessageType: 'BLANK',
-        };
-    } else if (isOfficeHourseServiceMessage(message)) {
-        return {
-            type: 'POST',
-            postMessageType: 'OFFICE_HOURS',
-        };
-    } else if (isJobOpportunityApplyTextServiceMessage(message)) {
-        return {
-            type: 'POST',
-            postMessageType: 'JOB_OPPORTUNITY',
-            postMessageSubType: 'APPLY_TEXT',
-        };
-    } else if (isJobOpportunityRecomendTextServiceMessage(message)) {
-        return {
-            type: 'POST',
-            postMessageType: 'JOB_OPPORTUNITY',
-            postMessageSubType: 'RECOMMEND_TEXT',
-        };
-    } else if (isRequestForStartupsApplyTextServiceMessage(message)) {
-        return {
-            type: 'POST',
-            postMessageType: 'REQUEST_FOR_STARTUPS',
-            postMessageSubType: 'APPLY_TEXT',
-        };
-    } else if (isRequestForStartupsRecomendTextServiceMessage(message)) {
-        return {
-            type: 'POST',
-            postMessageType: 'REQUEST_FOR_STARTUPS',
-            postMessageSubType: 'RECOMMEND_TEXT',
-        };
-    }
-    return null;
-};
-
-const resolveServiceMessageType = ({
-    serviceMetadata,
-    message,
-}: {
-    serviceMetadata: any;
-    message: string;
-}) => {
+const resolveServiceMessageType = ({ serviceMetadata }: { serviceMetadata: any }) => {
     if (serviceMetadata) {
         if (serviceMetadata.__typename === 'InviteServiceMetadata') {
             return {
@@ -175,13 +109,16 @@ const resolveServiceMessageType = ({
             return {
                 type: 'TITLE_CHANGE',
             };
-        } else {
-            return null;
-            // throw `service message is unresolved ${serviceMetadata.__typename}`;
+        } else if (serviceMetadata.__typename === 'PostRespondServiceMetadata') {
+            return {
+                type: 'POST',
+                postMessageType: serviceMetadata.post.postType,
+                postMessageSubType: `${serviceMetadata.respondType}_TEXT`,
+            };
         }
     }
-    // Post Service Messages does not pass serviceMetadata so I try to guess
-    return hackToGuessPostMessageType(message);
+
+    return null;
 };
 
 export const ServiceMessageComponent = (params: {
@@ -193,7 +130,6 @@ export const ServiceMessageComponent = (params: {
 }) => {
     const typesObject = resolveServiceMessageType({
         serviceMetadata: params.serviceMetadata,
-        message: params.message,
     }) as any;
 
     if (typesObject === null) {
