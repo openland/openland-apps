@@ -104,7 +104,7 @@ const Layout = () => {
     const layoutBody = (
         <MainLayout>
             <MainLayout.Menu>
-                <Menu route="chats">
+                <Menu title="chats">
                     <MenuItem title="Feed" path="/feed" />
                     <MenuItem title="Chats" path="/chats" />
                     <MenuItem title="Directory" path="/directory" />
@@ -128,7 +128,6 @@ const Layout = () => {
                 )}
                 <Menu
                     title="Directory"
-                    route="Rooms"
                     leftContent={<div>burger</div>}
                     rightContent={<NewButton />}
                 >

@@ -11,7 +11,7 @@ export const MainNavigation = ({ title, children }: { title: string; children?: 
             <Scaffold.Content padding={false} bottomOffset={false}>
                 <MainLayout>
                     <MainLayout.Menu>
-                        <Menu route={title} title="Settings">
+                        <Menu title={title}>
                             <MenuItem title="Profile" path="/settings/profile" />
                             <MenuItem title="Notifications" path="/settings/notifications" />
                             <XWithRole role={['feature-non-production']}>

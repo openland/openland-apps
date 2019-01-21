@@ -102,7 +102,7 @@ export class NewButton extends React.Component<{}, { show?: boolean }> {
 }
 
 export const DirectoryNavigation = (props: { route: string }) => (
-    <Menu title="Directory" rightContent={<NewButton />} route={props.route}>
+    <Menu title={props.route} rightContent={<NewButton />}>
         <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
         <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
         <MenuItem
