@@ -2,8 +2,7 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import ToProfileIcon from 'openland-icons/ic-toprofile.svg';
-import AppstoreIcon from 'openland-icons/ic-appstore.svg';
-import GoogleplayIcon from 'openland-icons/ic-googleplay.svg';
+import LogoutIcon from 'openland-icons/ic-logout.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
@@ -179,21 +178,22 @@ const MobileSidebar = ({ topItems, menu }: { topItems: any; menu: any }) => {
                         >
                             <XView paddingLeft={24} alignSelf="flex-start" flexDirection="column">
                                 <XView
-                                    as="a"
-                                    target="_blank"
-                                    href="https://oplnd.com/ios"
+                                    path="/auth/logout"
                                     marginBottom={12}
+                                    flexDirection="row"
                                     alignSelf="flex-start"
+                                    cursor="pointer"
                                 >
-                                    <AppstoreIcon />
-                                </XView>
-                                <XView
-                                    as="a"
-                                    target="_blank"
-                                    href="https://oplnd.com/android"
-                                    alignSelf="flex-start"
-                                >
-                                    <GoogleplayIcon />
+                                    <LogoutIcon />
+                                    <XView
+                                        color="#000"
+                                        marginLeft={26}
+                                        fontSize={15}
+                                        fontWeight="600"
+                                        opacity={0.5}
+                                    >
+                                        Log out
+                                    </XView>
                                 </XView>
                             </XView>
                         </XView>
