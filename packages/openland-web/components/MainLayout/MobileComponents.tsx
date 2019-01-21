@@ -16,17 +16,20 @@ const SelectIcon = () => {
 };
 
 const backgroundClassName = css`
-    &::before {
-        content: '';
-        display: block;
-        position: absolute;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.2);
-    }
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
 `;
 
-const ShowMenuItems = ({ children }: { children: any }) => (
+const ShowMenuItems = ({
+    children,
+    onBackgroundClick,
+}: {
+    children: any;
+    onBackgroundClick: (event: React.MouseEvent<any>) => void;
+}) => (
     <XView
         position="absolute"
         width="100%"
@@ -37,11 +40,18 @@ const ShowMenuItems = ({ children }: { children: any }) => (
         top={53}
         height="auto"
     >
-        <div className={backgroundClassName}>{children}</div>
+        <div className={backgroundClassName} onClick={onBackgroundClick} />
+        <div>{children}</div>
     </XView>
 );
 
-const HideMenuItems = ({ children }: { children: any }) => (
+const HideMenuItems = ({
+    children,
+    onBackgroundClick,
+}: {
+    children: any;
+    onBackgroundClick: (event: React.MouseEvent<any>) => void;
+}) => (
     <XView
         position="absolute"
         width="100%"
@@ -53,7 +63,8 @@ const HideMenuItems = ({ children }: { children: any }) => (
         height={0}
         overflow="hidden"
     >
-        <div className={backgroundClassName}>{children}</div>
+        <div className={backgroundClassName} onClick={onBackgroundClick} />
+        <div>{children}</div>
     </XView>
 );
 
@@ -84,12 +95,14 @@ const BurgerButton = () => {
 };
 
 export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
-    const { showMenu, setShowMenu, isMobile } = React.useContext(MobileSidebarContext);
+    const { showMenu, setShowMenu } = React.useContext(MobileSidebarContext);
 
-    const onClick = () => {
-        if (isMobile) {
-            setShowMenu(!showMenu);
-        }
+    const toggle = () => {
+        setShowMenu(!showMenu);
+    };
+
+    const close = () => {
+        setShowMenu(false);
     };
 
     const MenuItems = showMenu ? ShowMenuItems : HideMenuItems;
@@ -112,7 +125,7 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                     <XView
                         flexDirection="row"
                         cursor={children ? 'pointer' : undefined}
-                        onClick={onClick}
+                        onClick={toggle}
                     >
                         <Title>{title}</Title>
                         {children && (
@@ -125,7 +138,7 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                 </XView>
             </XView>
 
-            {children && <MenuItems>{children}</MenuItems>}
+            {children && <MenuItems onBackgroundClick={close}>{children}</MenuItems>}
         </XView>
     );
 };
