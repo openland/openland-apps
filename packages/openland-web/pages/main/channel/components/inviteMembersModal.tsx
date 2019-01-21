@@ -92,8 +92,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                             ref={this.handleRef}
                             value={
                                 this.props.router.protocol +
-                                '://' +
-                                this.props.router.hostName +
+                                '://openland.com' +
                                 '/joinChannel/' +
                                 this.props.invite
                             }
