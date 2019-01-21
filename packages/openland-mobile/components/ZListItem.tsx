@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Alert, Platform } from 'react-native';
+import { View, Text, Switch, Image, Alert, Platform, Clipboard } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { XPStyles } from 'openland-xp/XPStyles';
+import { ActionSheetBuilder } from './ActionSheet';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -30,12 +31,13 @@ export interface ZListItemProps {
     multiline?: boolean;
     navigationIcon?: boolean;
     linkify?: boolean;
+    copy?: boolean;
 }
 
 function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger' }) {
     if (Platform.OS === 'ios') {
         return (
-            <View style={{ width: 38, height: 38, borderRadius: 19, alignContent: 'center', justifyContent: 'center', backgroundColor: '#ddd', marginRight: 16 }}>
+            <View style={{ width: 38, height: 38, borderRadius: 19, alignContent: 'center', justifyContent: 'center', backgroundColor: '#ddd', marginLeft: 16, alignSelf: 'center' }}>
                 <Image source={props.src} style={{ width: 24, height: 24, alignSelf: 'center' }} />
             </View>
         );
@@ -65,6 +67,11 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         if (this.props.onLongPress) {
             this.props.onLongPress();
         }
+        if (this.props.copy && this.props.text) {
+            new ActionSheetBuilder()
+                .action('Copy', () => Clipboard.setString(this.props.text!))
+                .show();
+        }
     }
 
     render() {
@@ -79,7 +86,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             toggleValue = this.props.store!!.readValue('fields.' + this.props.toggleField.key);
         }
 
-        let enabled = !!this.props.onPress || !!this.props.onToggle || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
+        let enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
 
         return (
             <ZListItemBase

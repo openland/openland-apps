@@ -13,8 +13,9 @@ import * as humanize from 'humanize';
 import { formatDate } from '../../utils/formatDate';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
-import { Alert, View, Platform } from 'react-native';
+import { Alert, View, Platform, Clipboard } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 class ProfileUserComponent extends React.Component<PageProps> {
 
     handleSend = () => {
@@ -59,12 +60,12 @@ class ProfileUserComponent extends React.Component<PageProps> {
                                 </YQuery>
 
                                 <ZListItemGroup header={null} divider={false}>
-                                    {!!resp.data.user.about && <ZListItem title="About" multiline={true} text={resp.data.user.about} />}
-                                    {!!resp.data.user.shortname && <ZListItem title="Username" multiline={true} text={'@' + resp.data.user.shortname} />}
-                                    {!!resp.data.user.email && <ZListItem title="Email" text={resp.data.user.email} />}
-                                    {!!resp.data.user.phone && <ZListItem title="Phone" text={'tel:' + resp.data.user.phone} />}
-                                    {!!resp.data.user.website && <ZListItem title="Website" text={resp.data.user.website} />}
-                                    {!!resp.data.user.location && <ZListItem title="Location" text={resp.data.user.location} />}
+                                    {!!resp.data.user.about && <ZListItem title="About" multiline={true} text={resp.data.user.about} copy={true} />}
+                                    {!!resp.data.user.shortname && <ZListItem title="Username" multiline={true} text={'@' + resp.data.user.shortname} copy={true} />}
+                                    {!!resp.data.user.email && <ZListItem title="Email" text={resp.data.user.email} copy={true} />}
+                                    {!!resp.data.user.phone && <ZListItem title="Phone" text={'tel:' + resp.data.user.phone} copy={true} />}
+                                    {!!resp.data.user.website && <ZListItem title="Website" text={resp.data.user.website} copy={true} />}
+                                    {!!resp.data.user.location && <ZListItem title="Location" text={resp.data.user.location} copy={true} />}
                                 </ZListItemGroup>
                                 {!!resp.data.user.primaryOrganization && (
                                     <ZListItemGroup header={null} divider={false}>

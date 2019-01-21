@@ -19,15 +19,15 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { Alert, View, Text, Image, TouchableHighlight } from 'react-native';
+import { View, Text, Clipboard } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
+
     render() {
         return (
             <>
@@ -136,16 +136,19 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 }
                                             >
                                                 {resp.data.organization.about && (
-                                                    <ZListItem multiline={true} title="about" text={resp.data.organization.about} />
+                                                    <ZListItem multiline={true} title="About" text={resp.data.organization.about} copy={true} />
+                                                )}
+                                                {resp.data.organization.shortname && (
+                                                    <ZListItem multiline={true} title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />
                                                 )}
                                                 {resp.data.organization.website && (
-                                                    <ZListItem title="website" text={resp.data.organization.website} />
+                                                    <ZListItem title="Website" text={resp.data.organization.website} copy={true} />
                                                 )}
                                                 {resp.data.organization.facebook && (
-                                                    <ZListItem title="facebook" text={resp.data.organization.facebook} />
+                                                    <ZListItem title="Facebook" text={resp.data.organization.facebook} copy={true} />
                                                 )}
                                                 {resp.data.organization.twitter && (
-                                                    <ZListItem title="twitter" text={resp.data.organization.twitter} />
+                                                    <ZListItem title="Twitter" text={resp.data.organization.twitter} copy={true} />
                                                 )}
                                             </ZListItemGroup>
 
