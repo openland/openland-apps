@@ -17,18 +17,19 @@ import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
-class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
+class ProfileUserComponent extends React.Component<PageProps & { resp: User }, { notificationsValueCahed?: boolean }> {
     handleSend = () => {
         this.props.router.pushAndReset('Conversation', { 'flexibleId': this.props.router.params.id });
     }
+
     handleMute = async () => {
-        startLoader();
         try {
-            await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: !(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute } });
+            let target = !(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute);
+            this.setState({ notificationsValueCahed: target });
+            await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: target } });
         } catch (e) {
             new AlertBlanketBuilder().alert(e.message);
         }
-        stopLoader();
     }
     render() {
         return (
@@ -89,8 +90,9 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                         text="Notifications"
-                        toggle={!(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute}
+                        toggle={!(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute)}
                         onToggle={this.handleMute}
+                        onPress={this.handleMute}
                     />
                 </ZListItemGroup>
             </>
