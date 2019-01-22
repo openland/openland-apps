@@ -184,33 +184,17 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                             />
                         </XWithRole>
 
-                        <AdaptiveComponent
-                            fullWidth={true}
-                            mobile={
-                                <UniversalScafoldMenuItem
-                                    name={'Chats'}
-                                    path="/mail"
-                                    icon={
-                                        <>
-                                            <MobileChatIcon />
-                                            <NotificationCounter />
-                                        </>
-                                    }
-                                />
-                            }
-                            desktop={
-                                <UniversalScafoldMenuItem
-                                    name={'Messenger'}
-                                    path="/mail"
-                                    icon={
-                                        <>
-                                            <MessagesIcon />
-                                            <NotificationCounter />
-                                        </>
-                                    }
-                                />
+                        <UniversalScafoldMenuItem
+                            name={'Messages'}
+                            path="/mail"
+                            icon={
+                                <>
+                                    <MobileChatIcon />
+                                    <NotificationCounter />
+                                </>
                             }
                         />
+
                         <UniversalScafoldMenuItem
                             name={TextAppBar.items.directory}
                             path="/directory"

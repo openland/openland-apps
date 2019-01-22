@@ -178,12 +178,12 @@ export const MentionComponentInnerText = Glamorous.span(
     ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
         const paddings = inCompose
             ? {
-                paddingTop: 1,
-                paddingBottom: 1,
-                paddingLeft: 4,
-                paddingRight: 4,
-                borderRadius: 5,
-            }
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  borderRadius: 5,
+              }
             : {};
 
         if (isYou) {
@@ -217,10 +217,13 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
     }
 }
 
+
 const mentionPlugin = createMentionPlugin({
     mentionPrefix: '@',
+    mentionTrigger: '@',
     entityMutability: 'IMMUTABLE',
     positionSuggestions,
+
     mentionComponent: (props: any) => {
         return (
             <MentionComponentInner

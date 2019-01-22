@@ -501,7 +501,9 @@ class MessageComposeComponentInner extends React.PureComponent<
             return null;
         }
 
-        const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
+        const mentionsNames = this.getListOfMembersNames().filter((name: string) =>
+            str.includes(name),
+        );
         return this.props.members
             .filter(({ user: { name } }) => {
                 return mentionsNames.indexOf(`@${name}`) !== -1;
@@ -693,7 +695,6 @@ class MessageComposeComponentInner extends React.PureComponent<
         if (this.input.current) {
             this.input.current!!.resetAndFocus();
         }
-        this.listOfMembersNames = [];
     };
 
     keydownHandler = (e: any) => {
@@ -727,6 +728,14 @@ class MessageComposeComponentInner extends React.PureComponent<
                 this.props.messagesContext.setEditMessage(messageData.id, messageData.message);
             }
         }
+    };
+
+    setListOfMembersNames = (newListOfMembersNames: any) => {
+        this.listOfMembersNames = newListOfMembersNames;
+    };
+
+    getListOfMembersNames = () => {
+        return this.listOfMembersNames;
     };
 
     componentDidMount() {
@@ -767,8 +776,10 @@ class MessageComposeComponentInner extends React.PureComponent<
         } = nextProps.messagesContext;
 
         if (nextProps.members && nextProps.members !== this.props.members) {
-            this.listOfMembersNames = nextProps.members.map(
-                ({ user: { name } }: { user: { name: string } }) => `@${name}`,
+            this.setListOfMembersNames(
+                nextProps.members.map(
+                    ({ user: { name } }: { user: { name: string } }) => `@${name}`,
+                ),
             );
         }
 
