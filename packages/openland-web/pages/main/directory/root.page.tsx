@@ -11,13 +11,18 @@ import { RoomProfile } from '../profile/RoomProfileComponent';
 
 class RootComponent extends React.Component<XWithRouter> {
     render() {
-        const router = this.props.router;
+        const { router } = this.props;
+        const {
+            routeQuery: { conversationId },
+            path,
+        } = router;
+
         let tab = 'rooms';
 
-        if (router.routeQuery.conversationId) {
-            if (router.path.includes('/r/')) {
+        if (conversationId) {
+            if (path.includes('/r/')) {
                 tab = 'invite';
-            } else if (router.path.includes('/p/')) {
+            } else if (path.includes('/p/')) {
                 tab = 'profile';
             }
         }
@@ -28,13 +33,9 @@ class RootComponent extends React.Component<XWithRouter> {
                     <DirectoryNavigation route="Rooms" />
                 </MainLayout.Menu>
                 <MainLayout.Content>
+                    {tab === 'invite' && <MessengerFragment id={conversationId} />}
                     {tab === 'rooms' && <RoomsExploreComponent />}
-                    {tab === 'invite' && (
-                        <MessengerFragment id={router.routeQuery.conversationId} />
-                    )}
-                    {tab === 'profile' && (
-                        <RoomProfile conversationId={router.routeQuery.conversationId} />
-                    )}
+                    {tab === 'profile' && <RoomProfile conversationId={conversationId} />}
                 </MainLayout.Content>
             </MainLayout>
         );

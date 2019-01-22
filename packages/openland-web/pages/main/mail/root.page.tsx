@@ -1,7 +1,4 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
-import { XView } from 'react-mental';
-import { css } from 'linaria';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withApp } from 'openland-web/components/withApp';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
@@ -10,209 +7,16 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
-import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
-import { ComposeFragment } from 'openland-web/fragments/ComposeFragment';
-import { RoomsExploreComponent } from 'openland-web/fragments/RoomsExploreComponent';
-import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
-import { RoomsInviteComponent } from 'openland-web/fragments/RoomsInviteComponent';
-import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
-import { RoomProfile } from '../profile/RoomProfileComponent';
-import { UserProfile } from '../profile/UserProfileComponent';
-import { withChannelInviteInfo } from 'openland-web/api/withChannelInviteInfo';
-import { XLoader } from 'openland-x/XLoader';
-import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { XThemeDefault } from 'openland-x/XTheme';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
-import { AdaptiveHOC } from 'openland-web/components/Adaptive';
+import { MessagePageInner } from './Components';
 
-export const OrganizationProfileContainer = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
-    flexShrink: 0,
-});
-
-export const RoomInviteFromLink = withChannelInviteInfo(props =>
-    props.data && props.data.invite ? (
-        props.data.invite.room.membership === 'MEMBER' ? (
-            <XPageRedirect path={'/mail/' + props.data.invite.room.id} />
-        ) : (
-            <RoomsInviteComponent
-                inviteLink={props.router.routeQuery.invite}
-                room={props.data.invite.room as any}
-                invite={props.data.invite}
-            />
-        )
-    ) : (
-        <XLoader loading={true} />
-    ),
-);
-
-interface MessagePageProps {
+type MessagePageProps = {
     router: XRouter;
     userId?: string;
     organizationId?: string;
-}
-
-const containerStyle = css`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 344px;
-    flex-shrink: 0;
-    border-right-width: 1px;
-    border-right-style: solid;
-    border-right-color: #ececec;
-    @media (max-width: 1100px) {
-        width: 300px;
-    }
-    @media (max-width: 950px) {
-        width: 230px;
-    }
-`;
-
-const DesktopDialogContainer = ({ children }: { children: any }) => {
-    return <div className={containerStyle}>{children}</div>;
-};
-
-const MobileDialogContainer = ({ children }: { children: any }) => {
-    return <XView width="100%">{children}</XView>;
-};
-
-const DesktopConversationContainer = Glamorous.div({
-    justifyContent: 'center',
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    flexShrink: 0,
-    minWidth: 0,
-    overflow: 'hidden',
-
-    backgroundColor: XThemeDefault.backgroundColor,
-    maxWidth: 'calc(100% - 344px)',
-    '@media (max-width: 1100px)': {
-        width: 'calc(100% - 300px)',
-        maxWidth: 'calc(100% - 300px)',
-    },
-    '@media (max-width: 950px)': {
-        width: 'calc(100% - 230px)',
-        maxWidth: 'calc(100% - 230px)',
-    },
-});
-
-const MobileConversationContainer = ({ children }: { children: any }) => {
-    return <XView width="100%">{children}</XView>;
-};
-
-interface PageInnerProps {
-    tab: string;
-    conversationId: string | null | undefined;
-    oid: string | null | undefined;
-    uid: string | null | undefined;
-    cid: string | null | undefined;
-}
-
-const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
-
-    const ConversationContainerInner = isMobile
-        ? MobileConversationContainer
-        : DesktopConversationContainer;
-
-    return (
-        <ConversationContainerInner>
-            {tab === 'compose' && <ComposeFragment />}
-            {tab === 'empty' && <MessengerEmptyFragment />}
-            {tab === 'conversation' && conversationId && <MessengerFragment id={conversationId} />}
-            {tab === 'rooms' && <RoomsExploreComponent />}
-            {tab === 'invite' && <RoomInviteFromLink />}
-            {tab === 'organization' && oid && (
-                <OrganizationProfileContainer>
-                    <OrganizationProfile organizationId={oid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === 'user' && uid && (
-                <OrganizationProfileContainer>
-                    <UserProfile userId={uid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === 'chat' && cid && (
-                <OrganizationProfileContainer>
-                    <RoomProfile conversationId={cid} />
-                </OrganizationProfileContainer>
-            )}
-        </ConversationContainerInner>
-    );
-};
-
-const DesktopPageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            <DesktopDialogContainer>
-                <DialogListFragment />
-            </DesktopDialogContainer>
-
-            <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-        </XView>
-    );
-};
-
-const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            {tab === 'empty' ? (
-                <MobileDialogContainer>
-                    <DialogListFragment />
-                </MobileDialogContainer>
-            ) : (
-                <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-            )}
-        </XView>
-    );
-};
-
-const PageInner = AdaptiveHOC({
-    DesktopComponent: DesktopPageInner,
-    MobileComponent: MobilePageInner,
-    fullWidth: true,
-});
-const MessagePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            <PageInner {...{ tab, conversationId, oid, uid, cid }} />
-        </XView>
-    );
 };
 
 class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateContextProps> {
@@ -325,8 +129,9 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
 
     render() {
         let { router, organizationId, userId } = this.props;
+        const { path, routeQuery } = router;
 
-        let isCompose = router.path.endsWith('/new');
+        let isCompose = path.endsWith('/new');
         let pageTitle = isCompose ? 'New chat' : undefined;
 
         if (!canUseDOM) {
@@ -338,13 +143,13 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
             );
         }
 
-        let isRooms = router.path.endsWith('/channels');
-        let isCall = router.path.endsWith('/call');
-        let isInvite = router.path.includes('joinChannel');
-        let isChat = router.path.includes('/p/');
-        let cid = router.routeQuery.conversationId;
-        let oid = organizationId || router.routeQuery.organizationId;
-        let uid = userId || router.routeQuery.userId;
+        let isRooms = path.endsWith('/channels');
+        let isCall = path.endsWith('/call');
+        let isInvite = path.includes('joinChannel');
+        let isChat = path.includes('/p/');
+        let cid = routeQuery.conversationId;
+        let oid = organizationId || routeQuery.organizationId;
+        let uid = userId || routeQuery.userId;
 
         let tab:
             | 'empty'
@@ -405,7 +210,7 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
                         <MessagesStateContext.Provider value={this.state}>
                             <MessagePageInner
                                 tab={tab}
-                                conversationId={router.routeQuery.conversationId}
+                                conversationId={routeQuery.conversationId}
                                 oid={oid}
                                 uid={uid}
                                 cid={cid}
@@ -422,8 +227,8 @@ export default withApp(
     'Mail',
     'viewer',
     withRouter(
-        withQueryLoader(props => {
-            return <MessagePage router={props.router} />;
+        withQueryLoader(({ router }) => {
+            return <MessagePage router={router} />;
         }),
     ),
 );

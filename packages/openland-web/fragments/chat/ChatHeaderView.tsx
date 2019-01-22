@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
@@ -15,48 +14,90 @@ import { HeaderMuteButton } from './components/HeaderMuteButton';
 import { HeaderLastSeen } from './components/HeaderLastSeen';
 import { HeaderInviteButton } from './components/HeaderInviteButton';
 import { HeaderMenu } from './components/HeaderMenu';
-import { MobileSidebarContext } from '../../components/Scaffold/MobileSidebarContext';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
-import { HideOnMobile } from 'openland-web/components/Adaptive';
+import { HideOnMobile, HideOnDesktop } from 'openland-web/components/Adaptive';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
     me: UserShort;
 }
 
-export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
+const ChatHeaderViewAbstract = React.memo(
+    ({
+        modals,
+        headerPath,
+        avatar,
+        title,
+        subtitle,
+        rightButtons,
+    }: {
+        modals?: any;
+        headerPath?: string;
+        avatar?: any;
+        title?: any;
+        subtitle?: any;
+        rightButtons?: any;
+    }) => {
+        return (
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                maxWidth={950}
+                width="100%"
+                justifyContent="space-between"
+                minWidth={0}
+                flexShrink={1}
+            >
+                <HideOnDesktop>
+                    <XView
+                        as="a"
+                        marginRight={20}
+                        alignItems="center"
+                        flexDirection="row"
+                        path="/mail"
+                    >
+                        <CloseChatIcon />
+                    </XView>
+                </HideOnDesktop>
+                <XView
+                    flexDirection="row"
+                    path={headerPath}
+                    flexGrow={1}
+                    minWidth={0}
+                    flexShrink={1}
+                    paddingRight={16}
+                >
+                    {avatar}
+                    <XView marginLeft={16} minWidth={0} flexShrink={1}>
+                        {title}
+                        <XView marginTop={4}>{subtitle}</XView>
+                    </XView>
+                </XView>
+                {rightButtons}
+
+                {modals}
+            </XView>
+        );
+    },
+);
+
+export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => {
     const state = React.useContext(MessagesStateContext);
-    const { isMobile } = React.useContext(MobileSidebarContext);
-    let room = props.room;
 
     if (state.useForwardHeader) {
-        return <ChatForwardHeaderView roomId={room.id} me={props.me} />;
+        return <ChatForwardHeaderView roomId={room.id} me={me} />;
     }
 
     let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
     let privateRoom = room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;
 
     let headerPath: string | undefined = undefined;
-    let avatar = undefined;
-    let title = undefined;
     let subtitle = undefined;
-    let callButton = undefined;
     let inviteButton = undefined;
-    let muteButton = undefined;
     let menu = undefined;
+    let modals = undefined;
 
     if (sharedRoom) {
-        avatar = (
-            <XAvatar2
-                size={36}
-                src={sharedRoom.photo}
-                title={sharedRoom.title}
-                id={sharedRoom.id}
-            />
-        );
-
-        title = <HeaderTitle value={sharedRoom.title} />;
-
         if (sharedRoom.kind === 'INTERNAL') {
             headerPath = '/mail/o/' + sharedRoom.organization!.id;
             subtitle = <HeaderSubtitle value="Organization" />;
@@ -77,104 +118,71 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
                 inviteButton = <HeaderInviteButton room={sharedRoom} />;
             }
         }
+        modals = (
+            <>
+                <RoomAddMemberModal roomId={room.id} />
+                <RoomEditModal
+                    title={sharedRoom.title}
+                    description={sharedRoom.description}
+                    photo={sharedRoom.photo}
+                    socialImage={sharedRoom.socialImage}
+                    roomId={sharedRoom.id}
+                />
+            </>
+        );
     }
 
     if (privateRoom) {
         headerPath = '/mail/u/' + privateRoom.user.id;
-        avatar = (
-            <XAvatar2
-                size={36}
-                src={privateRoom.user.photo}
-                title={privateRoom.user.name}
-                id={privateRoom.user.id}
-            />
-        );
-        title = (
-            <HeaderTitle
-                value={privateRoom.user.name}
-                path={'/mail/u/' + privateRoom.user.id}
-                organization={privateRoom.user.primaryOrganization}
-            />
-        );
+
         subtitle = <HeaderLastSeen variables={{ userId: privateRoom.user.id }} />;
     }
 
-    callButton = (
-        <TalkContext.Consumer>
-            {ctx =>
-                ctx.cid !== room.id && (
-                    <XView>
-                        <XButton text="Call" onClick={() => ctx.joinCall(room.id)} />
-                    </XView>
-                )
-            }
-        </TalkContext.Consumer>
+    const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;
+    const avatarTitle = sharedRoom ? sharedRoom.title : privateRoom!!.user.name;
+    const id = sharedRoom ? sharedRoom.id : privateRoom!!.user.id;
+
+    const avatar = <XAvatar2 size={36} src={photo} title={avatarTitle} id={id} />;
+    const title = sharedRoom ? (
+        <HeaderTitle value={sharedRoom.title} />
+    ) : (
+        <HeaderTitle
+            value={privateRoom!!.user.name}
+            path={'/mail/u/' + privateRoom!!.user.id}
+            organization={privateRoom!!.user.primaryOrganization}
+        />
     );
 
-    muteButton = <HeaderMuteButton settings={room.settings} roomId={room.id} />;
-
     return (
-        <XView
-            flexDirection="row"
-            alignItems="center"
-            maxWidth={950}
-            width="100%"
-            justifyContent="space-between"
-            minWidth={0}
-            flexShrink={1}
-        >
-            <XView
-                flexDirection="row"
-                path={headerPath}
-                flexGrow={1}
-                minWidth={0}
-                flexShrink={1}
-                paddingRight={16}
-            >
-                {isMobile && (
-                    <XView
-                        as="a"
-                        marginRight={20}
-                        alignItems="center"
-                        flexDirection="row"
-                        path="/mail"
-                    >
-                        <CloseChatIcon />
-                    </XView>
-                )}
-                {avatar}
-                <XView marginLeft={16} minWidth={0} flexShrink={1}>
-                    {title}
-                    <XView marginTop={4}>{subtitle}</XView>
-                </XView>
-            </XView>
-
-            <XHorizontal alignItems="center" separator={8}>
-                {!isMobile && (
-                    <>
-                        {callButton}
-                        {inviteButton}
-                    </>
-                )}
-
-                <XHorizontal alignItems="center" separator={3}>
-                    {muteButton}
+        <ChatHeaderViewAbstract
+            headerPath={headerPath}
+            avatar={avatar}
+            title={title}
+            subtitle={subtitle}
+            modals={modals}
+            rightButtons={
+                <XView flexDirection="row" alignItems="center">
+                    <HideOnMobile>
+                        <TalkContext.Consumer>
+                            {ctx =>
+                                ctx.cid !== room.id && (
+                                    <XView>
+                                        <XButton
+                                            text="Call"
+                                            onClick={() => ctx.joinCall(room.id)}
+                                        />
+                                    </XView>
+                                )
+                            }
+                        </TalkContext.Consumer>
+                    </HideOnMobile>
+                    <HideOnMobile>{inviteButton}</HideOnMobile>
+                    <HeaderMuteButton settings={room.settings} roomId={room.id} />
                     <HideOnMobile>{menu}</HideOnMobile>
-                </XHorizontal>
-            </XHorizontal>
-
-            {sharedRoom && (
-                <>
-                    <RoomAddMemberModal roomId={room.id} />
-                    <RoomEditModal
-                        title={sharedRoom.title}
-                        description={sharedRoom.description}
-                        photo={sharedRoom.photo}
-                        socialImage={sharedRoom.socialImage}
-                        roomId={sharedRoom.id}
-                    />
-                </>
-            )}
-        </XView>
+                </XView>
+            }
+        >
+            {modals}
+        </ChatHeaderViewAbstract>
     );
 });
