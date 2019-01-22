@@ -34,11 +34,12 @@ export class MessengerEngine {
     private onlineWatcher: OnlineWatcher;
 
     constructor(client: OpenApolloClient, user: UserShort) {
-        // Onlines
-        this.onlineWatcher = new OnlineWatcher(client);
 
         this.client = new ApolloGraphqlClient(client);
         this.user = user;
+
+        // Onlines
+        this.onlineWatcher = new OnlineWatcher(this.client);
 
         this.dialogList = new DialogListEngine(this, (data) => {
             this.onlineWatcher.onDialogListChange(data);

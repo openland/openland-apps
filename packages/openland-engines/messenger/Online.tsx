@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
+import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 
 const SUBSCRIBE_ONLINES = gql`
     subscription SubscribeOnlines($conversations: [ID!]!) {
@@ -24,28 +25,25 @@ const USER_ONLINE = gql`
 
 export class OnlineWatcher {
     private onlinesData = new Map<string, boolean>();
-    private sub?: ZenObservable.Subscription = undefined;
+    private sub?: GraphqlActiveSubscription = undefined;
 
     private listeners: ((data: {}) => void)[] = [];
     private singleChangeListeners: ((user: string, online: boolean) => void)[] = [];
-    private client: OpenApolloClient;
-    constructor(client: OpenApolloClient) {
+    private client: GraphqlClient;
+    constructor(client: GraphqlClient) {
         this.client = client;
     }
 
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        let onlineSubscription = this.client.client.subscribe({
-            query: SUBSCRIBE_ONLINES,
-            variables: { conversations }
-        });
+        this.sub = this.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
 
-        this.sub = onlineSubscription.subscribe({
-            next: (event) => {
-
+        (async () => {
+            while (true) {
+                let event = await this.sub!.get();
                 if (!event || !event.data) {
-                    return;
+                    continue;
                 }
                 let evData = event.data.alphaSubscribeChatOnline;
                 let userId = evData.user.id;
@@ -54,9 +52,8 @@ export class OnlineWatcher {
                 this.singleChangeListeners.forEach(l => l(userId, evData.user.online));
 
                 this.listeners.forEach(l => l(this.onlinesData));
-            },
-            error: () => this.onDialogListChange(conversations)
-        });
+            }
+        })();
     }
 
     onChange(cb: (onlines: Map<string, boolean>) => void) {
@@ -83,7 +80,7 @@ export class OnlineWatcher {
 
     destroy = () => {
         if (this.sub) {
-            this.sub.unsubscribe();
+            this.sub.destroy();
         }
     }
 }
