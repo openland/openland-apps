@@ -176,15 +176,14 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
             <UniversalScaffold
                 topItems={
                     <>
-                        <HideOnMobile fullWidth={true}>
-                            <XWithRole role="feature-non-production">
-                                <UniversalScafoldMenuItem
-                                    name={TextAppBar.items.feed}
-                                    path="/feed"
-                                    icon={<RoomIcon />}
-                                />
-                            </XWithRole>
-                        </HideOnMobile>
+                        <XWithRole role="feature-non-production">
+                            <UniversalScafoldMenuItem
+                                name={TextAppBar.items.feed}
+                                path="/feed"
+                                icon={<RoomIcon />}
+                            />
+                        </XWithRole>
+
                         <AdaptiveComponent
                             fullWidth={true}
                             mobile={
