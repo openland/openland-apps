@@ -46,6 +46,8 @@ routes.add('/invite/:inviteKey', '/init/invite');
 routes.add('/invite/:inviteKey/', '/init/invite');
 routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
+routes.add('/universalNavigation', '/main/universalNavigation');
+routes.add('/universalNavigation/', '/main/universalNavigation');
 routes.add('/404', '/404');
 
 //
