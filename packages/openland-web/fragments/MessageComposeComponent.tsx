@@ -46,9 +46,8 @@ import { ModelMessage } from 'openland-engines/messenger/types';
 import { PostIntroModal } from '../components/messenger/message/content/attachments/introMessage/PostIntroModal';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
-import { HideOnMobile } from 'openland-web/components/Adaptive';
 
-const SendMessageWrapper = Glamorous.div({
+export const SendMessageWrapper = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'stretch',
@@ -66,7 +65,7 @@ const SendMessageWrapper = Glamorous.div({
     borderTopColor: XThemeDefault.separatorColor,
 });
 
-const SendMessageContent = Glamorous(XHorizontal)({
+export const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
     maxWidth: 930,
     flexBasis: '100%',
@@ -78,7 +77,7 @@ const SendMessageContent = Glamorous(XHorizontal)({
     },
 });
 
-const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
+export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
     paddingLeft: 12,
     paddingRight: 12,
     height: 32,
@@ -124,7 +123,7 @@ const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
     },
 }));
 
-const TextInputWrapper = Glamorous.div({
+export const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
     maxHeight: '100%',
     maxWidth: '100%',
@@ -221,7 +220,7 @@ const EditView = (props: { title: string; message: string; onCancel: () => void 
     </EditWrapper>
 );
 
-const FileItem = Glamorous(XHorizontal)({
+export const FileItem = Glamorous(XHorizontal)({
     opacity: 0.5,
     fontSize: 13,
     lineHeight: 1.54,
@@ -243,7 +242,7 @@ const FileItem = Glamorous(XHorizontal)({
     },
 });
 
-const FileImage = Glamorous.div({
+export const FileImage = Glamorous.div({
     width: 11,
     height: 14,
     flexShrink: 0,
@@ -252,7 +251,7 @@ const FileImage = Glamorous.div({
     backgroundPosition: 'center',
 });
 
-const CoverWrapper = Glamorous.div({
+export const CoverWrapper = Glamorous.div({
     borderRadius: 6,
     overflow: 'hidden',
     position: 'relative',
@@ -268,7 +267,7 @@ const CoverWrapper = Glamorous.div({
     },
 });
 
-const CoverDelButton = Glamorous.div({
+export const CoverDelButton = Glamorous.div({
     position: 'absolute',
     right: -2,
     top: -2,
@@ -297,6 +296,7 @@ export interface MessageComposeComponentProps {
     onSendFile?: (file: UploadCare.File) => void;
     onChange?: (text: string) => void;
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
+    getMessages?: () => ModelMessage[];
 }
 
 interface MessageComposeWithDraft extends MessageComposeComponentProps {
@@ -312,7 +312,6 @@ interface MessageComposeComponentInnerProps
     extends MessageComposeComponentProps,
         XWithRouter,
         UserInfo {
-    getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
@@ -332,7 +331,7 @@ interface MessageComposeComponentInnerState {
     fileName: string | null;
 }
 
-const convertChannelMembersDataToMentionsData = (data: any) => {
+export const convertChannelMembersDataToMentionsData = (data: any) => {
     if (!data) {
         return [];
     }
@@ -354,7 +353,7 @@ interface PostButtonProps {
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
 }
 
-class PostButton extends React.PureComponent<PostButtonProps> {
+export class PostButton extends React.PureComponent<PostButtonProps> {
     state = {
         show: false,
     };
@@ -377,8 +376,8 @@ class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                ? props.handleHideChat
-                : undefined;
+                    ? props.handleHideChat
+                    : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -912,17 +911,18 @@ class MessageComposeComponentInner extends React.PureComponent<
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage && forwardMessageId && (
-                            <EditView
-                                message={stateMessage}
-                                title={
-                                    forwardMessageSender !== undefined
-                                        ? forwardMessageSender
-                                        : 'Edit message'
-                                }
-                                onCancel={this.closeEditor}
-                            />
-                        )}
+                        {stateMessage &&
+                            forwardMessageId && (
+                                <EditView
+                                    message={stateMessage}
+                                    title={
+                                        forwardMessageSender !== undefined
+                                            ? forwardMessageSender
+                                            : 'Edit message'
+                                    }
+                                    onCancel={this.closeEditor}
+                                />
+                            )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}
@@ -966,23 +966,21 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     enabled={this.props.enabled}
                                     handleHideChat={this.props.handleHideChat}
                                 />
-                                <HideOnMobile>
-                                    <AttachmentButton
-                                        query={
-                                            this.props.enabled === false
-                                                ? undefined
-                                                : {
-                                                      field: 'addItro',
-                                                      value: 'true',
-                                                  }
-                                        }
-                                        className="intro-button"
-                                        disable={this.props.enabled === false}
-                                    >
-                                        <IntroIc />
-                                        <span>Intro</span>
-                                    </AttachmentButton>
-                                </HideOnMobile>
+                                <AttachmentButton
+                                    query={
+                                        this.props.enabled === false
+                                            ? undefined
+                                            : {
+                                                  field: 'addItro',
+                                                  value: 'true',
+                                              }
+                                    }
+                                    className="intro-button"
+                                    disable={this.props.enabled === false}
+                                >
+                                    <IntroIc />
+                                    <span>Intro</span>
+                                </AttachmentButton>
                                 <ShortcutsModal
                                     target={
                                         <AttachmentButton className="shortcuts-button">
@@ -1000,31 +998,33 @@ class MessageComposeComponentInner extends React.PureComponent<
                                 enabled={this.props.enabled !== false}
                             />
                         </XHorizontal>
-                        {file && fileSrc && (
-                            <CoverWrapper>
-                                <img src={fileSrc} />
-                                <CoverDelButton onClick={this.fileRemover}>
-                                    <RemoveIcon />
-                                </CoverDelButton>
-                            </CoverWrapper>
-                        )}
-                        {file && fileName && (
-                            <FileItem key={'file' + fileName} separator={4} alignItems="center">
-                                <FileImage />
-                                <XHorizontal alignItems="center" separator={4}>
-                                    <div>
-                                        {fileName} <span>•</span> {niceBytes(Number(file.size))}
-                                    </div>
-                                    <XHorizontal
-                                        alignItems="center"
-                                        className="remove"
-                                        onClick={this.fileRemover}
-                                    >
+                        {file &&
+                            fileSrc && (
+                                <CoverWrapper>
+                                    <img src={fileSrc} />
+                                    <CoverDelButton onClick={this.fileRemover}>
                                         <RemoveIcon />
+                                    </CoverDelButton>
+                                </CoverWrapper>
+                            )}
+                        {file &&
+                            fileName && (
+                                <FileItem key={'file' + fileName} separator={4} alignItems="center">
+                                    <FileImage />
+                                    <XHorizontal alignItems="center" separator={4}>
+                                        <div>
+                                            {fileName} <span>•</span> {niceBytes(Number(file.size))}
+                                        </div>
+                                        <XHorizontal
+                                            alignItems="center"
+                                            className="remove"
+                                            onClick={this.fileRemover}
+                                        >
+                                            <RemoveIcon />
+                                        </XHorizontal>
                                     </XHorizontal>
-                                </XHorizontal>
-                            </FileItem>
-                        )}
+                                </FileItem>
+                            )}
                     </XVertical>
                 </SendMessageContent>
                 <PostIntroModal
