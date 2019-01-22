@@ -19,7 +19,6 @@ import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
@@ -253,10 +252,10 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                     <YMutation mutation={RoomLeaveMutation}>
                                         {leave => <ZListItem
                                             leftIcon={require('assets/ic-leave-24.png')}
-                                            text="Leave"
+                                            text={`Leave ${sharedRoom!.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
                                             appearance="danger"
                                             onPress={() => {
-                                                new AlertBlanketBuilder().title(`Are you sure you want to leave ${sharedRoom!.title}?`)
+                                                new AlertBlanketBuilder().title(`Are you sure you want to leave ${sharedRoom!.kind === 'GROUP' ? 'and delete' : ''} ${sharedRoom!.title}?`)
                                                     .button('Cancel', 'cancel')
                                                     .button('Leave', 'destructive', async () => {
                                                         startLoader();
