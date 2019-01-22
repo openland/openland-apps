@@ -116,7 +116,7 @@ export class GlobalStateEngine {
         console.info('[global] Loading initial state');
 
         // Loading settings
-        await backoff(async () => {
+        let settings = backoff(async () => {
             return await this.engine.client.query(SettingsQuery);
         });
 
@@ -125,6 +125,7 @@ export class GlobalStateEngine {
         let res = (await backoff(async () => {
             return await this.engine.client.query(DialogsQuery);
         }));
+        await settings;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
