@@ -9,19 +9,19 @@ import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
-import { CallEngine } from './messenger/CallEngine';
 import { OnlineReportEngine } from './OnlineReportEngine';
+import { GraphqlClient } from 'openland-graphql/GraphqlClient';
+import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
 
 export class MessengerEngine {
 
-    readonly client: OpenApolloClient;
+    readonly client: GraphqlClient;
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly global: GlobalStateEngine;
     readonly onlineReporter: OnlineReportEngine;
     readonly user: UserShort;
     readonly notifications: NotificationsEngine;
-    readonly calls: CallEngine;
     private readonly activeConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number, unread: number }>();
     private readonly activeTypings = new Map<string, TypingEngine>();
@@ -37,7 +37,7 @@ export class MessengerEngine {
         // Onlines
         this.onlineWatcher = new OnlineWatcher(client);
 
-        this.client = client;
+        this.client = new ApolloGraphqlClient(client);
         this.user = user;
 
         this.dialogList = new DialogListEngine(this, (data) => {
@@ -60,9 +60,6 @@ export class MessengerEngine {
         // Online reporter
         this.onlineReporter = new OnlineReportEngine(this);
 
-        // Calls
-        this.calls = new CallEngine(this);
-
         // Starting
         this.loadingPromise = this.loadingSequence();
         console.info('MessengerEngine started');
@@ -70,7 +67,6 @@ export class MessengerEngine {
 
     private loadingSequence = async () => {
         await this.global.start();
-        await this.calls.start();
     }
 
     handleTyping = (conversationId: string, data?: { typing: string, users: { userName: string, userPic: string | null, userId: string }[] }) => {

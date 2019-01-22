@@ -60,11 +60,9 @@ export class NotificationsEngine {
     };
 
     handleIncomingMessage = async (cid: string, msg: any) => {
-        let settings = this.engine.client.client.readQuery<SettingsQueryType>({
-            query: SettingsQuery.document,
-        })!!.settings;
+        let settings = this.engine.client.readQuery(SettingsQuery)!.settings;
 
-        let room = (await this.engine.client.query(RoomQuery, { id: cid })).data.room!;
+        let room = (await this.engine.client.query(RoomQuery, { id: cid })).room!;
         let sharedRoom = room.__typename === 'SharedRoom' ? (room as Room_room_SharedRoom) : null;
         let privateRoom =
             room.__typename === 'PrivateRoom' ? (room as Room_room_PrivateRoom) : null;

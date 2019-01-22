@@ -1,12 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
-import { backoff, delay, delayBreakable } from 'openland-y-utils/timer';
-import gql from 'graphql-tag';
-
-const OnlineMutation = gql`
-    mutation ReportOnline($active: Boolean) {
-        presenceReportOnline(timeout: 5000, active: $active)
-    }
-`;
+import { backoff, delayBreakable } from 'openland-y-utils/timer';
+import { ReportOnlineMutation } from 'openland-api/ReportOnlineMutation';
 
 export class OnlineReportEngine {
     readonly engine: MessengerEngine;
@@ -20,12 +14,7 @@ export class OnlineReportEngine {
         (async () => {
             while (this.alive) {
                 let active = this.visible;
-                await backoff(async () => engine.client.client.mutate({
-                    mutation: OnlineMutation,
-                    variables: {
-                        active: active
-                    }
-                }));
+                await backoff(async () => engine.client.mutate(ReportOnlineMutation, { active: active }));
                 if (this.visible !== active) {
                     continue;
                 }

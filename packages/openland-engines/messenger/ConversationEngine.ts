@@ -188,18 +188,18 @@ export class ConversationEngine implements MessageSendHandler {
         if (!this.isStarted) {
             return;
         }
-        this.messages = [...(initialChat.data as any).messages];
+        this.messages = [...(initialChat as any).messages];
         this.messages.reverse();
 
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.data.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source
         let dsItems: (DataSourceMessageItem | DataSourceDateItem)[] = [];
-        let sourceFragments = [...(initialChat.data as any).messages as MessageFullFragment[]];
+        let sourceFragments = [...(initialChat as any).messages as MessageFullFragment[]];
         let prevDate: string | undefined;
         for (let i = 0; i < sourceFragments.length; i++) {
 
@@ -261,13 +261,9 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadingHistory = id;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.client.query({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId, before: id },
-                fetchPolicy: 'network-only'
-            }));
+            let loaded = await backoff(() => this.engine.client.query(RoomHistoryQuery, { roomId: this.conversationId, before: id }));
 
-            let history = [...(loaded.data as any).messages].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
+            let history = [...(loaded.messages as any as MessageFullFragment[])].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
             history.reverse();
 
             this.messages = [...history, ...this.messages];
@@ -282,7 +278,7 @@ export class ConversationEngine implements MessageSendHandler {
             if (this.dataSource.getSize() > 0) {
                 prevDate = (this.dataSource.getAt(this.dataSource.getSize() - 1) as DataSourceMessageItem).date + '';
             }
-            let sourceFragments = [...(loaded.data as any).messages as MessageFullFragment[]];
+            let sourceFragments = [...loaded.messages];
             for (let i = 0; i < sourceFragments.length; i++) {
                 if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                     let d = new Date(parseInt(prevDate, 10));
@@ -295,7 +291,7 @@ export class ConversationEngine implements MessageSendHandler {
                     });
                 }
 
-                dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
+                dsItems.push(convertMessage(sourceFragments[i] as any, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
                 prevDate = sourceFragments[i].date;
             }
             if (this.historyFullyLoaded && prevDate) {
@@ -453,56 +449,24 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handleMuteUpdated = async (mute: boolean) => {
-        let info = await this.engine.client.client.readQuery(
-            {
-                query: RoomQuery.document,
-                variables: {
-                    id: this.conversationId,
-                }
-            }
-        );
+        let info = await this.engine.client.readQuery(RoomQuery, { id: this.conversationId });
         (info as any).room.settings.mute = mute;
-        this.engine.client.client.writeQuery({
-            query: RoomQuery.document,
-            variables: { roomId: this.conversationId },
-            data: info
-        });
+        this.engine.client.writeQuery(info, RoomQuery, { id: this.conversationId });
         console.warn(info);
     }
 
     handleTitleUpdated = async (title: string) => {
-        let info = await this.engine.client.client.readQuery(
-            {
-                query: RoomQuery.document,
-                variables: {
-                    id: this.conversationId,
-                }
-            }
-        );
+        let info = await this.engine.client.readQuery(RoomQuery, { id: this.conversationId });
         (info as any).room.title = title;
-        this.engine.client.client.writeQuery({
-            query: RoomQuery.document,
-            variables: { roomId: this.conversationId },
-            data: info
-        });
+        this.engine.client.writeQuery(info, RoomQuery, { id: this.conversationId });
+
         console.warn(info);
     }
 
     handlePhotoUpdated = async (photo: string) => {
-        let info = await this.engine.client.client.readQuery(
-            {
-                query: RoomQuery.document,
-                variables: {
-                    id: this.conversationId,
-                }
-            }
-        );
+        let info = await this.engine.client.readQuery(RoomQuery, { id: this.conversationId });
         (info as any).room.photo = photo;
-        this.engine.client.client.writeQuery({
-            query: RoomQuery.document,
-            variables: { roomId: this.conversationId },
-            data: info
-        });
+        this.engine.client.writeQuery(info, RoomQuery, { id: this.conversationId });
     }
 
     private onMessagesUpdated = () => {
@@ -526,12 +490,9 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (id !== null && id !== this.lastTopMessageRead) {
             this.lastTopMessageRead = id;
-            this.engine.client.client.mutate({
-                mutation: RoomReadMutation.document,
-                variables: {
-                    id: this.conversationId,
-                    mid: id
-                }
+            this.engine.client.mutate(RoomReadMutation, {
+                id: this.conversationId,
+                mid: id
             });
         }
     }
@@ -542,16 +503,9 @@ export class ConversationEngine implements MessageSendHandler {
             // Handle message
             console.info('Received new message');
             // Write message to store
-            let data = this.engine.client.client.readQuery({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId }
-            });
+            let data = this.engine.client.readQuery(RoomHistoryQuery, { roomId: this.conversationId });
             (data as any).messages = [event.message, ...(data as any).messages];
-            this.engine.client.client.writeQuery({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId },
-                data: data
-            });
+            this.engine.client.writeQuery(data, RoomHistoryQuery, { roomId: this.conversationId });
             if (event.message.repeatKey) {
                 // Try to replace message inplace
                 let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.message.repeatKey);
@@ -578,24 +532,17 @@ export class ConversationEngine implements MessageSendHandler {
 
             // some fun
             if (event.message.message === '/insane') {
-                let account: any = this.engine.client.client.readQuery({ query: AccountQuery.document });
+                let account: any = this.engine.client.readQuery(AccountQuery);
                 console.warn(account);
-                this.engine.client.client.writeQuery({ query: AccountQuery.document, data: { ...account, permissions: { ...account.permissions, roles: [...account.permissions.roles, 'feature-insane-buttons'] } } });
+                this.engine.client.writeQuery({ ...account, permissions: { ...account.permissions, roles: [...account.permissions.roles, 'feature-insane-buttons'] } }, AccountQuery);
             }
         } else if (event.__typename === 'ConversationMessageDeleted') {
             // Handle message
             console.info('Received delete message');
             // Write message to store
-            let data = this.engine.client.client.readQuery({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId }
-            });
+            let data = this.engine.client.readQuery(RoomHistoryQuery, { roomId: this.conversationId });
             (data as any).messages = (data as any).messages.filter((m: any) => m.id !== event.message.id);
-            this.engine.client.client.writeQuery({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId },
-                data: data
-            });
+            this.engine.client.writeQuery(data, RoomHistoryQuery, { roomId: this.conversationId });
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
@@ -611,17 +558,10 @@ export class ConversationEngine implements MessageSendHandler {
             // Handle message
             console.info('Received edit message');
             // Write message to store
-            let data = this.engine.client.client.readQuery({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId }
-            });
+            let data = this.engine.client.readQuery(RoomHistoryQuery, { roomId: this.conversationId });
             (data as any).messages.seq = event.seq;
             (data as any).messages = (data as any).messages.map((m: any) => m.id !== event.message.id ? m : event.message);
-            this.engine.client.client.writeQuery({
-                query: RoomHistoryQuery.document,
-                variables: { roomId: this.conversationId },
-                data: data
-            });
+            this.engine.client.writeQuery(data, RoomHistoryQuery, { roomId: this.conversationId });
             this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);

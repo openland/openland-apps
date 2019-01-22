@@ -6,7 +6,7 @@ import { AppStyles } from '../../../styles/AppStyles';
 import { MessageInputBar } from '../components/MessageInputBar';
 import { ZQuery } from '../../../components/ZQuery';
 import { ZUserListItem } from '../components/ZUserListItem';
-import { UserShort, MessageFull } from 'openland-api/Types';
+import { UserShort, MessageFull, SharedRoomKind } from 'openland-api/Types';
 import { ZTagView } from '../../../components/ZTagView';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ZLoader } from '../../../components/ZLoader';
@@ -57,7 +57,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                             mentions: null
                         });
                         // this.props.navigation.replace('Conversation', { id: id.id });
-                } else {
+                    } else {
                         let id = await this.props.messenger.global.resolveGroup(ids);
                         if (id) {
                             await this.props.messenger.sender.sendMessageAsync({
@@ -67,13 +67,10 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                             });
                             // this.props.navigation.replace('Conversation', { id: id.id });
                         } else {
-                            let res = await this.props.messenger.client.client.mutate({
-                                mutation: RoomCreateMutation.document,
-                                variables: {
-                                    kind: 'GROUP',
-                                    message: msg,
-                                    members: ids
-                                }
+                            let res = await this.props.messenger.client.mutate(RoomCreateMutation, {
+                                kind: SharedRoomKind.GROUP,
+                                message: msg,
+                                members: ids
                             });
                             // this.props.navigation.replace('Conversation', { id: (res.data as any).group.id });
                         }

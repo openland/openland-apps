@@ -1,5 +1,6 @@
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import gql from 'graphql-tag';
+import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 
 const SUBSCRIBE_TYPINGS = gql`
     subscription SubscribeTypings {
@@ -38,27 +39,30 @@ export class TypingsWatcher {
             [userId: string]: number | undefined
         } | undefined
     } = {};
-    private sub?: ZenObservable.Subscription = undefined;
+    private subscription: GraphqlActiveSubscription;
     private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
 
-    constructor(client: OpenApolloClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
+    constructor(client: GraphqlClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
-        let typingSubscription = client.client.subscribe({
-            query: SUBSCRIBE_TYPINGS
-        });
+        this.subscription = client.subscribe(SUBSCRIBE_TYPINGS);
 
-        this.sub = typingSubscription.subscribe({
-            next: (event) => {
+        this.start(currentuserId);
+    }
+
+    private start(currentuserId: string) {
+        (async () => {
+            while (true) {
+                let event = await this.subscription.get();
                 if (event.data) {
                     if (event.data.typings.user.id === currentuserId) {
                         return;
                     }
                     let cId: string = event.data.typings.conversation.id;
                     let type: string = event.data.typings.conversation.__typename;
-    
+
                     // add new typings
                     let existing = this.typings[cId] || {};
-    
+
                     if (!event.data.typings.cancel) {
                         existing[event.data.typings.user.id] = {
                             userName: event.data.typings.user.name,
@@ -66,10 +70,10 @@ export class TypingsWatcher {
                             userId: event.data.typings.user.id
                         };
                         this.typings[cId] = existing;
-    
+
                         this.onChange(cId, this.renderTypings(cId, type));
                     }
-    
+
                     // clear scehduled typing clear
                     let existingTimeouts = this.timeouts[cId] || {};
                     clearTimeout(existingTimeouts[event.data.typings.user.id]);
@@ -77,14 +81,13 @@ export class TypingsWatcher {
                     existingTimeouts[event.data.typings.user.id] = window.setTimeout(
                         () => {
                             existing[event.data.typings.user.id] = undefined;
-                            onChange(cId, this.renderTypings(cId));
+                            this.onChange(cId, this.renderTypings(cId));
                         },
                         event.data.typings.cancel ? 0 : 4000);
                     this.timeouts[cId] = existingTimeouts;
                 }
             }
-        });
-
+        })();
     }
 
     renderTypings = (cId: string, type?: string) => {
@@ -110,9 +113,7 @@ export class TypingsWatcher {
     }
 
     destroy = () => {
-        if (this.sub) {
-            this.sub.unsubscribe();
-        }
+        this.subscription.destroy();
     }
 }
 

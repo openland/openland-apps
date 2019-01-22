@@ -274,7 +274,7 @@ export class MobileMessenger {
                         .callback(async (text) => {
                             startLoader();
                             try {
-                                await this.engine.client.client.mutate({ mutation: RoomEditMessageMutation.document, variables: { messageId: message.id, message: text } });
+                                await this.engine.client.mutate(RoomEditMessageMutation, { messageId: message.id!, message: text });
                             } catch (e) {
                                 new AlertBlanketBuilder().alert(e.message);
                             }
@@ -294,7 +294,7 @@ export class MobileMessenger {
                         .button('Delete', 'destructive', async () => {
                             startLoader();
                             try {
-                                await this.engine.client.client.mutate({ mutation: RoomDeleteMessageMutation.document, variables: { messageId: message.id } });
+                                await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
                             } catch (e) {
                                 new AlertBlanketBuilder().alert(e.message);
                             }
@@ -312,7 +312,11 @@ export class MobileMessenger {
                     startLoader();
                     try {
                         let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
-                        await this.engine.client.client.mutate({ mutation: remove ? MessageUnsetReactionMutation.document : MessageSetReactionMutation.document, variables: { messageId: message.id, reaction: r } });
+                        if (remove) {
+                            this.engine.client.mutate(MessageUnsetReactionMutation, { messageId: message.id!, reaction: r });
+                        } else {
+                            this.engine.client.mutate(MessageSetReactionMutation, { messageId: message.id!, reaction: r });
+                        }
                     } catch (e) {
                         new AlertBlanketBuilder().alert(e.message);
                     }

@@ -94,7 +94,7 @@ export let renderButtons = (message: DataSourceMessageItem, navigationManager: N
                     onPress={async () => {
                         startLoader();
                         try {
-                            await getMessenger().engine.client.client.mutate({ mutation: MessageSetReactionMutation.document, variables: { messageId: message.key, reaction: 'accept' } });
+                            await getMessenger().engine.client.mutate(MessageSetReactionMutation, { messageId: message.key, reaction: 'accept' });
                             navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
                         } catch (e) {
                             new AlertBlanketBuilder().alert(e.message);

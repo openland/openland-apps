@@ -151,3 +151,9 @@ export const CreateUserProfileAndOrganizationMutation = gql`
     }
     ${UserFull}
 `;
+
+export const ReportOnlineMutation = gql`
+    mutation ReportOnline($active: Boolean) {
+        presenceReportOnline(timeout: 5000, active: $active)
+    }
+`;

@@ -420,6 +420,21 @@ export interface CreateUserProfileAndOrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: ReportOnline
+// ====================================================
+
+export interface ReportOnline {
+  presenceReportOnline: string;
+}
+
+export interface ReportOnlineVariables {
+  active?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyApps
 // ====================================================
 
@@ -3200,6 +3215,21 @@ export interface RoomEditMessage {
 export interface RoomEditMessageVariables {
   messageId: string;
   message?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MarkSequenceRead
+// ====================================================
+
+export interface MarkSequenceRead {
+  alphaGlobalRead: string;
+}
+
+export interface MarkSequenceReadVariables {
+  seq: number;
 }
 
 /* tslint:disable */

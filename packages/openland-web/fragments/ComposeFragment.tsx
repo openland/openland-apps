@@ -14,7 +14,7 @@ import RoomIcon from 'openland-icons/ic-channel-2.svg';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { withUserInfo } from '../components/UserInfo';
-import { UserShort } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { TextCompose } from 'openland-text/TextCompose';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { withExplorePeople } from '../api/withExplorePeople';
@@ -256,16 +256,14 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                 });
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
-                let res = await this.props.messenger.client.client.mutate({
-                    mutation: RoomCreateMutation.document,
-                    variables: {
-                        kind: 'GROUP',
+                let res = await this.props.messenger.client.mutate(
+                    RoomCreateMutation, {
+                        kind: SharedRoomKind.GROUP,
                         message: msg,
                         title: this.state.values.map(v => v.label).join(', '),
-                        members: this.state.values.map(v => v.value),
-                    },
-                });
-                Router.replaceRoute('/mail/' + (res.data as any).room.id);
+                        members: this.state.values.map(v => v.value as string),
+                    });
+                Router.replaceRoute('/mail/' + res.room.id);
             }
         }
     };

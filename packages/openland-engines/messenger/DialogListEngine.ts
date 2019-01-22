@@ -8,7 +8,6 @@ import {
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery } from 'openland-api';
-import { ConversationRepository } from './repositories/ConversationRepository';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 
@@ -122,7 +121,7 @@ export class DialogListEngine {
     private dialogs: Dialogs_dialogs_items[] = [];
     readonly dataSource: DataSource<DialogDataSourceItem>;
     // private dataSourceLogger: DataSourceLogger<DialogDataSourceItem>;
-    private next?: string;
+    private next?: string | null;
     private loading: boolean = true;
     private dialogListCallback: (convs: string[]) => void;
     private userConversationMap = new Map<string, string>();
@@ -173,12 +172,12 @@ export class DialogListEngine {
         this.dialogListCallback(this.dialogs.map(i => i.cid));
 
         // Improve conversation resolving
-        for (let c of this.dialogs) {
-            ConversationRepository.improveRoomResolving(
-                this.engine.client,
-                c.cid,
-            );
-        }
+        // for (let c of this.dialogs) {
+        //     ConversationRepository.improveRoomResolving(
+        //         this.engine.client,
+        //         c.cid,
+        //     );
+        // }
 
         // Update data source
         this.dataSource.initialize(
@@ -334,12 +333,12 @@ export class DialogListEngine {
             });
 
             let sharedRoom =
-                info.data.room!.__typename === 'SharedRoom'
-                    ? (info.data.room as Room_room_SharedRoom)
+                info.room!.__typename === 'SharedRoom'
+                    ? (info.room as Room_room_SharedRoom)
                     : null;
             let privateRoom =
-                info.data.room!.__typename === 'PrivateRoom'
-                    ? (info.data.room as Room_room_PrivateRoom)
+                info.room!.__typename === 'PrivateRoom'
+                    ? (info.room as Room_room_PrivateRoom)
                     : null;
             let room = (sharedRoom || privateRoom)!;
 
@@ -385,16 +384,13 @@ export class DialogListEngine {
         if (!this.loading && this.next !== null) {
             this.loading = true;
             let start = Date.now();
-            let res: any = await backoff(async () => {
+            let res = await backoff(async () => {
                 try {
                     return await backoff(async () => {
-                        return await this.engine.client.client.query({
-                            query: DialogsQuery.document,
-                            variables: {
-                                ...(this.next !== undefined
-                                    ? { after: this.next }
-                                    : {}),
-                            },
+                        return await this.engine.client.query(DialogsQuery, {
+                            ...(this.next !== undefined
+                                ? { after: this.next }
+                                : {}),
                         });
                     });
                 } catch (e) {
@@ -404,12 +400,12 @@ export class DialogListEngine {
             });
             console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
-            this.next = res.data.dialogs.cursor;
-            this.dialogs = [...this.dialogs, ...res.data.dialogs.items];
+            this.next = res.dialogs.cursor;
+            this.dialogs = [...this.dialogs, ...res.dialogs.items];
             this.dialogListCallback(this.dialogs.map(i => i.cid));
 
             // Write to datasource
-            let converted = res.data.dialogs.items.map((c: any) =>
+            let converted = res.dialogs.items.map((c: any) =>
                 extractDialog(c, this.engine.user.id),
             );
             this.dataSource.loadedMore(converted, !this.next);

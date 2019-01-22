@@ -9,6 +9,7 @@ import { MessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { DialogsQuery } from 'openland-api/DialogsQuery';
 import { RoomQuery } from 'openland-api';
+import { MarkSequenceReadMutation } from 'openland-api/MarkSequenceReadMutation';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($state: String) {
@@ -90,12 +91,6 @@ let GLOBAL_SUBSCRIPTION = gql`
     ${UserTiny}
 `;
 
-const MARK_SEQ_READ = gql`
-    mutation MarkSequenceRead($seq: Int!) {
-        alphaGlobalRead(toSeq: $seq)
-    }
-`;
-
 const SUBSCRIBE_SETTINGS = gql`
     subscription SubscribeSettings {
         watchSettings {
@@ -122,18 +117,14 @@ export class GlobalStateEngine {
 
         // Loading settings
         await backoff(async () => {
-            return await this.engine.client.client.query({
-                query: SettingsQuery.document
-            });
+            return await this.engine.client.query(SettingsQuery);
         });
 
         // Loading initial chat state
         let start = Date.now();
         let res = (await backoff(async () => {
-            return await this.engine.client.client.query({
-                query: DialogsQuery.document
-            });
-        })).data;
+            return await this.engine.client.query(DialogsQuery);
+        }));
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
 
         this.engine.notifications.handleGlobalCounterChanged((res as any).counter.unreadCount);
@@ -143,42 +134,31 @@ export class GlobalStateEngine {
         this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
 
         // Subscribe for settings update
-        let settingsSubscription = this.engine.client.client.subscribe({
-            query: SUBSCRIBE_SETTINGS
-        });
-        settingsSubscription.subscribe({
-            next: (event) => {
+        let settingsSubscription = this.engine.client.subscribe(SUBSCRIBE_SETTINGS);
+        (async () => {
+            while (true) {
+                await settingsSubscription.get();
                 console.info('New settings received');
             }
-        });
+        })();
     }
 
     resolvePrivateConversation = async (uid: string) => {
-        let res = await this.engine.client.client.query({
-            query: RoomQuery.document,
-            variables: {
-                id: uid
-            }
-        });
+        let res = await this.engine.client.query(RoomQuery, { id: uid });
         return {
-            id: (res.data as any).room.id as string,
+            id: (res as any).room.id as string,
             flexibleId: uid
         };
     }
 
     resolveGroup = async (uids: string[]) => {
-        let res = await this.engine.client.client.query({
-            query: ChatSearchGroupQuery.document,
-            variables: {
-                members: uids
-            }
-        });
-        if (!(res.data as any).group) {
+        let res = await this.engine.client.query(ChatSearchGroupQuery, { members: uids });
+        if (!(res as any).group) {
             return null;
         }
         return {
-            id: (res.data as any).group.id as string,
-            flexibleId: (res.data as any).group.flexibleId as string
+            id: (res as any).group.id as string,
+            flexibleId: (res as any).group.flexibleId as string
         };
     }
 
@@ -217,12 +197,7 @@ export class GlobalStateEngine {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.client.mutate({
-                    mutation: MARK_SEQ_READ,
-                    variables: {
-                        seq
-                    }
-                }));
+                backoff(() => this.engine.client.mutate(MarkSequenceReadMutation, { seq }));
             })();
         }
     }
@@ -323,9 +298,7 @@ export class GlobalStateEngine {
         // Update counter anywhere in the app
         //
 
-        let existing = this.engine.client.client.readQuery({
-            query: GlobalCounterQuery.document
-        });
+        let existing = this.engine.client.readQuery(GlobalCounterQuery);
         if (existing) {
             if (visible) {
                 // Do not increment unread count
@@ -334,10 +307,7 @@ export class GlobalStateEngine {
                 }
             }
             (existing as any).counter.unreadCount = counter;
-            this.engine.client.client.writeQuery({
-                query: GlobalCounterQuery.document,
-                data: existing
-            });
+            this.engine.client.writeQuery(existing, GlobalCounterQuery);
         }
 
         for (let l of this.counterListeners) {

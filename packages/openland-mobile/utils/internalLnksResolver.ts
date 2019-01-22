@@ -1,7 +1,6 @@
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
 import { RoomInviteInfoQuery, AccountInviteInfoQuery, OrganizationActivateByInviteMutation, AccountInviteJoinMutation, ResolveShortNameQuery } from 'openland-api';
-import { Alert } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 
 export let resolveInternalLink = (link: string, fallback?: () => void) => {
@@ -13,7 +12,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             startLoader();
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.client.query({ query: RoomInviteInfoQuery.document, variables: { invite: uuid } });
+                let info: any = await getMessenger().engine.client.query(RoomInviteInfoQuery, { invite: uuid });
                 if (info.data && info.data.invite) {
                     let roomId = info.data.invite.room.id;
                     getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
@@ -36,7 +35,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             startLoader();
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.client.query({ query: AccountInviteInfoQuery.document, variables: { inviteKey: uuid } });
+                let info: any = await getMessenger().engine.client.query(AccountInviteInfoQuery, { inviteKey: uuid });
                 if (info.data && info.data.invite) {
                     let orgId = info.data.invite.orgId;
                     stopLoader();
@@ -46,7 +45,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                         .button('Cancel', 'cancel')
                         .button('Accept invitation', 'default', async () => {
                             startLoader();
-                            let res = await getMessenger().engine.client.client.mutate({ mutation: AccountInviteJoinMutation.document, variables: { inviteKey: uuid } });
+                            let res = await getMessenger().engine.client.mutate(AccountInviteJoinMutation, { inviteKey: uuid });
                             getMessenger().history.navigationManager.push('ProfileOrganization', { id: orgId });
                             stopLoader();
                         })
@@ -91,7 +90,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             return async () => {
                 startLoader();
                 try {
-                    let info: any = await getMessenger().engine.client.client.query({ query: ResolveShortNameQuery.document, variables: { shortname: shortName } });
+                    let info: any = await getMessenger().engine.client.query(ResolveShortNameQuery, { shortname: shortName });
                     if (info.data) {
                         if (info.data.item.__typename === 'User') {
                             getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.data.item.id });

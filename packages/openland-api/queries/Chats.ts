@@ -442,3 +442,9 @@ export const RoomEditMessageMutation = gql`
         betaMessageEdit(mid: $messageId, message: $message)
     }
 `;
+
+export const MarkSequenceReadMutation = gql`
+    mutation MarkSequenceRead($seq: Int!) {
+        alphaGlobalRead(toSeq: $seq)
+    }
+`;

@@ -40,7 +40,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
     }
 
     handleTextChange = (src: string) => {
-        getMessenger().engine.client.client.mutate({ mutation: SetTypingMutation.document, variables: { conversationId: this.props.chat.id } });
+        getMessenger().engine.client.mutate(SetTypingMutation, { conversationId: this.props.chat.id });
         this.setState({ text: src });
         AsyncStorage.setItem('compose_draft_' + this.props.chat.id, src);
     }

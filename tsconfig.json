@@ -61,7 +61,8 @@
             "openland-xs": ["openland-xs"],
             "react-native-auth0-s": ["react-native-auth0-s"],
             "openland-icons": ["openland-icons"],
-            "openland-landing": ["openland-landing"]
+            "openland-landing": ["openland-landing"],
+            "openland-graphql": ["openland-graphql"]
         },
         "importHelpers": true
     },
@@ -117,6 +118,7 @@
         "./packages/openland-xs",
         "./packages/openland-icons",
         "./packages/openland-landing",
+        "./packages/openland-graphql",
         "./packages/react-native-async-view",
         "./packages/react-native-fast-navigation",
         "./packages/react-native-s",
