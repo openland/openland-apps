@@ -17,7 +17,7 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
-class ListItemEdit extends React.PureComponent<{
+export class ListItemEdit extends React.PureComponent<{
     autoFocus?: boolean;
     title: string;
     value?: string;

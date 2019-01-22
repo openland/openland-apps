@@ -47,6 +47,8 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 id={resp.data.organization.id}
                                                 title={resp.data.organization.name}
                                                 subtitle="Organization"
+                                                action={resp.data.organization.isOwner ? 'Edit profile' : undefined}
+                                                onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })}
                                             />
                                             {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
                                                 <ZListItemGroup header={null} divider={false}>
@@ -125,15 +127,6 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             <ZListItemGroup
                                                 divider={false}
                                                 header={null}
-                                                actionRight={
-                                                    resp.data.organization.isOwner
-                                                        ? {
-                                                            title: 'Edit info',
-                                                            onPress: () =>
-                                                                this.props.router.push('EditOrganization', { id: this.props.router.params.id }),
-                                                        }
-                                                        : undefined
-                                                }
                                             >
                                                 {resp.data.organization.about && (
                                                     <ZListItem multiline={true} title="About" text={resp.data.organization.about} copy={true} />
@@ -144,12 +137,16 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 {resp.data.organization.website && (
                                                     <ZListItem title="Website" text={resp.data.organization.website} copy={true} />
                                                 )}
-                                                {resp.data.organization.facebook && (
-                                                    <ZListItem title="Facebook" text={resp.data.organization.facebook} copy={true} />
-                                                )}
                                                 {resp.data.organization.twitter && (
                                                     <ZListItem title="Twitter" text={resp.data.organization.twitter} copy={true} />
                                                 )}
+                                                {resp.data.organization.facebook && (
+                                                    <ZListItem title="Facebook" text={resp.data.organization.facebook} copy={true} />
+                                                )}
+                                                {resp.data.organization.linkedin && (
+                                                    <ZListItem title="Linkedin" text={resp.data.organization.linkedin} copy={true} />
+                                                )}
+
                                             </ZListItemGroup>
 
                                             <ZListItemGroup
@@ -244,12 +241,12 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     async () => {
                                                                                         let builder = new ActionSheetBuilder();
 
-                                                                                        builder.action(v.role === 'MEMBER' ? 'Make owner' : 'Make member',
+                                                                                        builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
                                                                                             () => {
                                                                                                 new AlertBlanketBuilder()
-                                                                                                    .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'owner' : 'member'}?`)
+                                                                                                    .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button('Make owner', 'default', async () => {
+                                                                                                    .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
                                                                                                         startLoader();
                                                                                                         try {
                                                                                                             await changeRole({
@@ -272,7 +269,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                                 new AlertBlanketBuilder()
                                                                                                     .title(`Are you sure you want to remove ${v.user.name}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button('Remove', 'destructive', async () => {
+                                                                                                    .button('Remove from organization', 'destructive', async () => {
                                                                                                         startLoader();
                                                                                                         try {
                                                                                                             await remove({

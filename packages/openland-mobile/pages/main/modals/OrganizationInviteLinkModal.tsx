@@ -11,6 +11,7 @@ import { ZListItem } from '../../../components/ZListItem';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { formatError } from 'openland-y-forms/errorHandling';
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -42,7 +43,7 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
                                                 try {
                                                     await renew({ variables: { organizationId: this.props.router.params.id } });
                                                 } catch (e) {
-                                                    new AlertBlanketBuilder().alert(e);
+                                                    new AlertBlanketBuilder().alert(formatError(e));
                                                 }
                                                 stopLoader();
 

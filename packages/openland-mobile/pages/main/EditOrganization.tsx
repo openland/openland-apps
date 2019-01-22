@@ -17,9 +17,11 @@ import {
     OrganizationProfileQuery,
     ProfileQuery,
     AccountSettingsQuery,
+    OrganizationQuery,
 } from 'openland-api';
 import { ZQuery } from '../../components/ZQuery';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
+import { ListItemEdit } from './SettingsProfile';
 
 class EditOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
@@ -35,7 +37,10 @@ class EditOrganizationComponent extends React.PureComponent<PageProps> {
                 />
                 <YMutation
                     mutation={UpdateOrganizationMutation}
-                    refetchQueries={[AccountSettingsQuery]}
+                    refetchQueriesVars={[
+                        { query: OrganizationProfileQuery, variables: { organizationId: this.props.router.params.id } },
+                        { query: OrganizationQuery, variables: { organizationId: this.props.router.params.id } },
+                    ]}
                 >
                     {save => (
                         <ZQuery
@@ -55,6 +60,11 @@ class EditOrganizationComponent extends React.PureComponent<PageProps> {
                                                 photoRef: sanitizeImageRef(
                                                     resp.data!!.organizationProfile.photoRef,
                                                 ),
+                                                about: resp.data!!.organizationProfile.about,
+                                                website: resp.data!!.organizationProfile.website,
+                                                twitter: resp.data!!.organizationProfile.twitter,
+                                                facebook: resp.data!!.organizationProfile.facebook,
+                                                linkedin: resp.data!!.organizationProfile.linkedin,
                                             },
                                         }}
                                         staticData={{
@@ -86,6 +96,28 @@ class EditOrganizationComponent extends React.PureComponent<PageProps> {
                                                 alignSelf="stretch"
                                                 backgroundColor={AppStyles.separatorColor}
                                             />
+                                            <ZListItemGroup>
+                                                <ListItemEdit
+                                                    title="About"
+                                                    field="input.about"
+                                                />
+                                                <ListItemEdit
+                                                    title="Link"
+                                                    field="input.website"
+                                                />
+                                                <ListItemEdit
+                                                    title="Twitter"
+                                                    field="input.twitter"
+                                                />
+                                                <ListItemEdit
+                                                    title="Facebook"
+                                                    field="input.facebook"
+                                                />
+                                                <ListItemEdit
+                                                    title="Linkedin"
+                                                    field="input.linkedin"
+                                                />
+                                            </ZListItemGroup>
                                         </View>
                                     </ZForm>
                                 );

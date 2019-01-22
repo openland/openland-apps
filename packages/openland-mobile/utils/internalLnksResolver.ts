@@ -13,8 +13,8 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
                 let info: any = await getMessenger().engine.client.query(RoomInviteInfoQuery, { invite: uuid });
-                if (info.data && info.data.invite) {
-                    let roomId = info.data.invite.room.id;
+                if (info && info.invite) {
+                    let roomId = info.invite.room.id;
                     getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
                 } else {
                     new AlertBlanketBuilder().alert('Invite not found');
@@ -36,12 +36,12 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
                 let info: any = await getMessenger().engine.client.query(AccountInviteInfoQuery, { inviteKey: uuid });
-                if (info.data && info.data.invite) {
-                    let orgId = info.data.invite.orgId;
+                if (info && info.invite) {
+                    let orgId = info.invite.orgId;
                     stopLoader();
                     new AlertBlanketBuilder()
-                        .title('Invite to ' + info.data.invite.title)
-                        .message(info.data.invite.creator.name + ' invites you to join ' + info.data.invite.title)
+                        .title('Invite to ' + info.invite.title)
+                        .message(info.invite.creator.name + ' invites you to join ' + info.invite.title)
                         .button('Cancel', 'cancel')
                         .button('Accept invitation', 'default', async () => {
                             startLoader();
@@ -91,11 +91,11 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                 startLoader();
                 try {
                     let info: any = await getMessenger().engine.client.query(ResolveShortNameQuery, { shortname: shortName });
-                    if (info.data) {
-                        if (info.data.item.__typename === 'User') {
-                            getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.data.item.id });
-                        } else if (info.data.item.__typename === 'Organization') {
-                            getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.data.item.id });
+                    if (info) {
+                        if (info.item.__typename === 'User') {
+                            getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.item.id });
+                        } else if (info.item.__typename === 'Organization') {
+                            getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
                         }
                     }
                 } catch (e) {
