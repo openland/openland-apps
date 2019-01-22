@@ -12,6 +12,7 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
 import { MessagePageInner } from './Components';
+import { tabs, tabsT } from './tabs';
 
 type MessagePageProps = {
     router: XRouter;
@@ -151,54 +152,45 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
         let oid = organizationId || routeQuery.organizationId;
         let uid = userId || routeQuery.userId;
 
-        let tab:
-            | 'empty'
-            | 'conversation'
-            | 'compose'
-            | 'rooms'
-            | 'invite'
-            | 'organization'
-            | 'user'
-            | 'conference'
-            | 'chat' = 'empty';
+        let tab: tabsT = tabs.empty;
 
         if (isCompose) {
-            tab = 'compose';
+            tab = tabs.compose;
         }
 
         if (!isCompose && !cid) {
-            tab = 'empty';
+            tab = tabs.empty;
         }
 
         if (!isCompose && cid) {
-            tab = 'conversation';
+            tab = tabs.conversation;
         }
 
         if (isInvite) {
-            tab = 'invite';
+            tab = tabs.invite;
         }
 
         if (isRooms) {
-            tab = 'rooms';
+            tab = tabs.rooms;
         }
 
         if (isCall) {
-            tab = 'conference';
+            tab = tabs.conference;
         }
 
         if (oid) {
-            tab = 'organization';
+            tab = tabs.organization;
         }
 
         if (uid) {
-            tab = 'user';
+            tab = tabs.user;
         }
 
         if (cid && isChat) {
-            tab = 'chat';
+            tab = tabs.chat;
         }
 
-        if (tab === 'empty') {
+        if (tab === tabs.empty) {
             pageTitle = undefined;
         }
 

@@ -50,6 +50,7 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { RoomSetFeatured, RoomSetHidden } from 'openland-web/pages/main/profile/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
+import { tabs, tabsT } from './tabs';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -293,41 +294,45 @@ interface MembersProviderProps {
     kind: SharedRoomKind;
 }
 
-const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
-    let members = props.members;
+const MembersProvider = ({
+    members,
+    router,
+    requests,
+    meOwner,
+    chatTitle,
+    chatId,
+    kind,
+}: MembersProviderProps & XWithRouter) => {
     if (members && members.length > 0) {
-        let tab: 'requests' | 'members' =
-            props.router.query.requests === '1' && (props.requests || []).length > 0
-                ? 'requests'
-                : 'members';
+        let tab: tabsT =
+            router.query.requests === '1' && (requests || []).length > 0
+                ? tabs.requests
+                : tabs.members;
         return (
             <Section separator={0}>
-                {props.meOwner && (props.requests || []).length > 0 && (
+                {meOwner && (requests || []).length > 0 && (
                     <XSwitcher style="button">
-                        <XSwitcher.Item
-                            query={{ field: 'requests' }}
-                            counter={props.members.length}
-                        >
+                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
                             Members
                         </XSwitcher.Item>
                         <XSwitcher.Item
                             query={{ field: 'requests', value: '1' }}
-                            counter={props.requests!.length}
+                            counter={requests!.length}
                         >
                             Requests
                         </XSwitcher.Item>
                     </XSwitcher>
                 )}
-                {((props.requests || []).length === 0 || !props.meOwner) && (
+                {((requests || []).length === 0 || !meOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
 
                 <SectionContent>
-                    {tab === 'members' && (
+                    {tab === tabs.members && (
                         <>
                             <InviteMembersModal
-                                channelTitle={props.chatTitle}
-                                roomId={props.chatId}
+                                channelTitle={chatTitle}
+                                roomId={chatId}
                                 target={<XCreateCard text="Invite people" />}
                             />
 
@@ -335,32 +340,27 @@ const MembersProvider = (props: MembersProviderProps & XWithRouter) => {
                                 <MemberCard
                                     key={i}
                                     member={member}
-                                    meOwner={props.meOwner}
-                                    isGroup={props.kind === 'GROUP'}
+                                    meOwner={meOwner}
+                                    isGroup={kind === 'GROUP'}
                                 />
                             ))}
                         </>
                     )}
 
-                    {props.meOwner &&
-                        tab === 'requests' &&
-                        props.requests &&
-                        props.requests.map((req, i) => (
-                            <RequestCard
-                                key={i}
-                                member={req}
-                                meOwner={props.meOwner}
-                                roomId={props.chatId}
-                            />
+                    {meOwner &&
+                        tab === tabs.requests &&
+                        requests &&
+                        requests.map((req, i) => (
+                            <RequestCard key={i} member={req} meOwner={meOwner} roomId={chatId} />
                         ))}
                 </SectionContent>
-                {props.meOwner && (
+                {meOwner && (
                     <>
-                        <RoomAddMemberModal roomId={props.chatId} />
+                        <RoomAddMemberModal roomId={chatId} />
                         <RemoveMemberModal
                             members={members}
-                            roomId={props.chatId}
-                            roomTitle={props.chatTitle}
+                            roomId={chatId}
+                            roomTitle={chatTitle}
                         />
                     </>
                 )}

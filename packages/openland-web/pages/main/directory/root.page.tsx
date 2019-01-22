@@ -8,6 +8,7 @@ import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent'
 import { MessengerFragment } from '../../../fragments/MessengerFragment';
 import { DirectoryNavigation } from './components/Navigation';
 import { RoomProfile } from '../profile/RoomProfileComponent';
+import { tabs } from './tabs';
 
 class RootComponent extends React.Component<XWithRouter> {
     render() {
@@ -17,13 +18,13 @@ class RootComponent extends React.Component<XWithRouter> {
             path,
         } = router;
 
-        let tab = 'rooms';
+        let tab = tabs.rooms;
 
         if (conversationId) {
             if (path.includes('/r/')) {
-                tab = 'invite';
+                tab = tabs.invite;
             } else if (path.includes('/p/')) {
-                tab = 'profile';
+                tab = tabs.profile;
             }
         }
 
@@ -33,9 +34,9 @@ class RootComponent extends React.Component<XWithRouter> {
                     <DirectoryNavigation route="Rooms" />
                 </MainLayout.Menu>
                 <MainLayout.Content>
-                    {tab === 'invite' && <MessengerFragment id={conversationId} />}
-                    {tab === 'rooms' && <RoomsExploreComponent />}
-                    {tab === 'profile' && <RoomProfile conversationId={conversationId} />}
+                    {tab === tabs.invite && <MessengerFragment id={conversationId} />}
+                    {tab === tabs.rooms && <RoomsExploreComponent />}
+                    {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
                 </MainLayout.Content>
             </MainLayout>
         );

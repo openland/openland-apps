@@ -642,19 +642,24 @@ const About = (props: { organization: Organization_organization }) => {
     );
 };
 
+type tabsT = 'requests' | 'members';
+
+const tabs: { [K in tabsT]: tabsT } = {
+    requests: 'requests',
+    members: 'members',
+};
+
 interface MembersProps {
     organization: Organization_organization;
     router: XRouter;
 }
 
-const Members = (props: MembersProps) => {
-    let tab: 'members' | 'requests' = 'members';
+const Members = ({ organization, router }: MembersProps) => {
+    let tab: tabsT = tabs.members;
 
-    if (props.router.query.tab === 'requests') {
-        tab = 'requests';
+    if (router.query.tab === tabs.requests) {
+        tab = tabs.requests;
     }
-
-    let { organization } = props;
 
     let joinedMembers = organization.members || [];
     let requestMembers = organization.requests || [];
@@ -710,8 +715,8 @@ const Members = (props: MembersProps) => {
                             </XSwitcher.Item>
                         </XSwitcher>
 
-                        {tab === 'members' && joinedMembersBox(false)}
-                        {tab === 'requests' && (
+                        {tab === tabs.members && joinedMembersBox(false)}
+                        {tab === tabs.requests && (
                             <SectionContent>
                                 {requestMembers.map((member, i) => (
                                     <MemberRequestCard
