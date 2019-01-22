@@ -139,7 +139,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
 
     render() {
         let item = this.props.item;
-        let showSenderName = !!(item.message && ((item.isOut || item.kind !== 'PRIVATE')) && item.sender);
+        let showSenderName = !!(item.message && ((item.isOut || item.kind !== 'PRIVATE')) && item.sender) && !item.isService;
         let isUser = item.kind === 'PRIVATE';
         let height = this.props.compact ? 48 : 80;
         let avatarSize = this.props.compact ? 30 : 60;
