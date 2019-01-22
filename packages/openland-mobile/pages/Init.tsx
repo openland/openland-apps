@@ -54,24 +54,33 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         (async () => {
             try {
                 let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+                let userAccount: string | undefined = await AsyncStorage.getItem('openland-account-3');
                 let res;
                 if (userToken) {
                     this.setState({ state: 'loading' });
                     let client = buildNativeClient(userToken);
                     saveClient(client);
-                    res = await backoff(async () => await getClient().client.query<any>({
+                    res = userAccount ? JSON.parse(userAccount) : (await backoff(async () => await getClient().client.query<any>({
                         query: AccountQuery.document
-                    }));
+                    }))).data;
 
-                    let defaultPage = !res.data.sessionState.isCompleted ? resolveNextPage(res.data.sessionState, 'SignupUser') : undefined;
+                    // Refresh
+                    if (userAccount) {
+                        getClient().client.writeQuery({ query: AccountQuery.document, data: res });
+                        backoff(async () => await getClient().client.query<any>({
+                            query: AccountQuery.document
+                        }))
+                    }
+
+                    let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState, 'SignupUser') : undefined;
                     this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
-                    if (res.data.me) {
-                        let messenger = buildMessenger(getClient(), res.data.me);
+                    if (res.me) {
+                        let messenger = buildMessenger(getClient(), res.me);
                         setMessenger(new MobileMessenger(messenger, this.history));
                         await messenger.awaitLoading();
                     }
 
-                    if (!res.data.sessionState.isLoggedIn) {
+                    if (!res.sessionState.isLoggedIn) {
                         userToken = undefined;
                     }
 
@@ -84,7 +93,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
                 // Launch app or login sequence
                 if (userToken) {
-                    if (res && res.data.me) {
+                    if (res && res.me) {
+                        await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                         this.setState({ state: 'app' });
                         // this.tryResolveLink();
                     } else {

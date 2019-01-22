@@ -14,6 +14,8 @@ import { getMainDefinition } from 'apollo-utilities';
 export class ApolloClientStatus {
     isConnected: boolean = false;
     listeners: ((isConnected: boolean) => void)[] = [];
+    private isFirst = true;
+    private start = Date.now();
 
     markDisconected = () => {
         if (this.isConnected) {
@@ -31,6 +33,10 @@ export class ApolloClientStatus {
     }
 
     markConnected = () => {
+        if (this.isFirst) {
+            this.isFirst = false;
+            console.log('Connected in ' + (Date.now() - this.start) + ' ms');
+        }
         if (!this.isConnected) {
             console.info('Connection Started');
             this.isConnected = true;
