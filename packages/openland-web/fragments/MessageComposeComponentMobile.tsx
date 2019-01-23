@@ -213,7 +213,6 @@ export class MobileMessageCompose extends React.PureComponent<
 
     render() {
         let { message, file, fileName, fileSrc } = this.state;
-        console.log(message);
         return (
             <SendMessageWrapper>
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
