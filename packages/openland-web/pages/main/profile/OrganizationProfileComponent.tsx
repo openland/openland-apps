@@ -786,7 +786,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
             {privateRooms && privateRooms.length > 0 && (
                 <Section separator={0}>
                     <XSubHeader
-                        title={TextProfiles.Organization.privateRooms}
+                        title={TextProfiles.Organization.publicRooms}
                         counter={privateRooms.length}
                         paddingBottom={0}
                     />
@@ -798,7 +798,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
                                         field: 'createRoom',
                                         value: 'true',
                                     }}
-                                    text={TextProfiles.Organization.createPrivateRoom}
+                                    text={TextProfiles.Organization.createPublicRoom}
                                 />
                             </XWithRole>
                         )}
