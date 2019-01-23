@@ -28,7 +28,7 @@ import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { CreateChannel } from './pages/compose/CreateChannel';
 import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
-import { ChannelInviteLinkModal } from './pages/main/modals/ChannelInviteLinkModal';
+import { ChannelInviteLinkModal } from './pages/main/RoomInviteLink';
 import { OrgChannels } from './pages/main/OrgChannels';
 
 export const Routes = new SRoutesBuilder()

@@ -147,19 +147,18 @@ class ProfileGroupComponent extends React.Component<PageProps, { notificationsCa
                                             );
                                         }}
                                     </YMutation>
-                                    {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
-                                        <ZListItem
-                                            leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                                            text="Invite with a link"
-                                            path="ChannelInviteLinkModal"
-                                            navigationIcon={false}
-                                            pathParams={{ id: sharedRoom.id }}
-                                        />}
                                 </ZListItemGroup>
 
                                 <ZListItemGroup header="Members" divider={false} counter={sharedRoom.membersCount}>
 
                                     <SDeferred>
+                                        {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
+                                            <ZListItem
+                                                leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                                                text="Invite with a link"
+                                                onPress={() => this.props.router.present('ChannelInviteLinkModal', { id: sharedRoom!.id })}
+                                                navigationIcon={false}
+                                            />}
                                         <YMutation mutation={RoomAddMembersMutation} >
                                             {(add) => (
                                                 <ZListItem
