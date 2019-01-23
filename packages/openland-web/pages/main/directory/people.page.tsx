@@ -21,29 +21,29 @@ interface PeopleCardsProps {
     tagsCount: (n: number) => void;
 }
 
-const PeopleCards = withExplorePeople(props => {
-    if (!(props.data && props.data.items)) {
+export const PeopleCards = withExplorePeople(({ data, error, tagsCount }: any) => {
+    if (!(data && data.items)) {
         return null;
     }
 
     let noData =
-        props.error ||
-        props.data === undefined ||
-        props.data.items === undefined ||
-        props.data.items === null ||
-        props.data.items.edges.length === 0;
+        error ||
+        data === undefined ||
+        data.items === undefined ||
+        data.items === null ||
+        data.items.edges.length === 0;
 
-    (props as any).tagsCount(noData ? 0 : props.data.items.pageInfo.itemsCount);
+    tagsCount(noData ? 0 : data.items.pageInfo.itemsCount);
 
     return (
         <>
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
-                    {props.data.items.edges.map((i, j) => (
+                    {data.items.edges.map((i, j) => (
                         <XUserCard key={'_org_card_' + i.node.id} user={i.node} />
                     ))}
                     <PagePagination
-                        pageInfo={props.data.items.pageInfo}
+                        pageInfo={data.items.pageInfo}
                         currentRoute="/directory/people"
                     />
                 </XContentWrapper>
@@ -58,25 +58,6 @@ interface PeopleProps {
     orderBy: string;
     tagsCount: (n: number) => void;
     searchText: string;
-}
-
-class People extends React.PureComponent<PeopleProps> {
-    tagsCount = (n: number) => {
-        this.props.tagsCount(n);
-    };
-
-    render() {
-        let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
-
-        return (
-            <PeopleCards
-                tagsCount={this.tagsCount}
-                variables={{
-                    query: this.props.searchText,
-                }}
-            />
-        );
-    }
 }
 
 interface RootComponentState {
@@ -134,7 +115,7 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
     render() {
         const { orgCount } = this.state;
         let uid = this.props.router.routeQuery.userId;
-        console.log(this.props.router);
+        console.log(this.props.router.routeQuery.userId);
 
         return (
             <>
@@ -178,11 +159,11 @@ class RootComponent extends React.Component<XWithRouter, RootComponentState> {
                                                 }
                                             />
                                         )}
-                                        <People
-                                            featuredFirst={this.state.sort.featured}
-                                            searchText={this.state.query}
-                                            orderBy={this.state.sort.orderBy}
+                                        <PeopleCards
                                             tagsCount={this.tagsCount}
+                                            variables={{
+                                                query: this.state.query,
+                                            }}
                                         />
                                     </XVertical>
                                 )}

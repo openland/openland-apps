@@ -27,6 +27,12 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { TextDirectory } from 'openland-text/TextDirectory';
+import { UserProfile } from 'openland-web/pages/main/profile/UserProfileComponent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
+import { SortPicker } from 'openland-web/pages/main/directory/sortPicker';
+import { XSubHeader } from 'openland-x/XSubHeader';
+import { PeopleCards } from 'openland-web/pages/main/directory/people.page';
 
 // 1) directory navigation
 // 2) tabs navigation, espessally empty/non empty tab
@@ -237,6 +243,57 @@ const DirectoryNavigation = ({ route }: { route: string }) => (
     </Menu>
 );
 
+const DirectoryContent = () => {
+    let uid = false ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
+
+    const [orgCount, setOrgCount] = React.useState(0);
+    const [query, setQuery] = React.useState('');
+    const [sort, setSort] = React.useState({
+        orderBy: 'createdAt',
+        featured: true,
+    });
+
+    const tagsCount = (n: number) => {
+        if (orgCount !== n) {
+            setOrgCount(n);
+        }
+    };
+
+    return (
+        <>
+            {!uid && (
+                <XVertical separator={0} height="100%">
+                    <SearchBox value={query} onChange={setQuery} placeholder="Search people" />
+                    {query.length <= 0 && (
+                        <XSubHeader
+                            title="All people"
+                            right={
+                                <SortPicker sort={sort} onPick={setSort} withoutFeatured={true} />
+                            }
+                        />
+                    )}
+                    {query.length > 0 && orgCount > 0 && (
+                        <XSubHeader
+                            title="People"
+                            counter={orgCount}
+                            right={
+                                <SortPicker sort={sort} onPick={setSort} withoutFeatured={true} />
+                            }
+                        />
+                    )}
+                    <PeopleCards
+                        tagsCount={tagsCount}
+                        variables={{
+                            query,
+                        }}
+                    />
+                </XVertical>
+            )}
+            {uid && <UserProfile userId={uid} onDirectory={true} />}
+        </>
+    );
+};
+
 export default withApp(
     'Mail',
     'viewer',
@@ -244,6 +301,7 @@ export default withApp(
         withQueryLoader(() => {
             const isChat = false;
             const tab = tabs.chat;
+
             return (
                 <>
                     <XDocumentHead title={'pageTitle'} />
@@ -270,7 +328,9 @@ export default withApp(
                                             <DirectoryNavigation route="Rooms" />
                                         </MainLayout.Menu>
                                         <MainLayout.Content>
-                                            <XView color="green">content</XView>
+                                            <MainLayout.Content>
+                                                <DirectoryContent />
+                                            </MainLayout.Content>
                                         </MainLayout.Content>
                                     </MainLayout>
                                 )}

@@ -7,6 +7,7 @@ import { findChild } from '../utils';
 import { AdaptiveComponent } from 'openland-web/components/Adaptive';
 import { DesktopMenu } from './DesktopComponents';
 import { MobileMenu } from './MobileComponents';
+import { XView } from 'react-mental';
 
 const MenuItemWrapper = css`
     display: flex;
@@ -147,22 +148,6 @@ class MenuWrapper extends React.PureComponent {
     }
 }
 
-const ContainerStyle = css`
-    width: calc(100% - 344px);
-    height: 100%;
-    position: relative;
-    @media (max-width: 1100px) {
-        width: calc(100% - 300px);
-    }
-    @media (max-width: 950px) {
-        width: calc(100% - 230px);
-    }
-    @media (max-width: 700px) {
-        width: 100%;
-        height: calc(100% - 53px);
-    }
-`;
-
 class Container extends React.PureComponent {
     static defaultProps = {
         _isContainer: true,
@@ -171,9 +156,9 @@ class Container extends React.PureComponent {
     render() {
         const { children } = this.props;
         return (
-            <div className={ContainerStyle}>
+            <XView flexGrow={1} height="100%" position="relative">
                 <XScrollView2 height="100%">{children}</XScrollView2>
-            </div>
+            </XView>
         );
     }
 }
