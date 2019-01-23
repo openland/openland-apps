@@ -6,7 +6,7 @@ import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withApp } from 'openland-web/components/withApp';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { Menu } from 'openland-web/components/MainLayout';
+import { Menu, MenuItem } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { tabs } from './mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
@@ -17,7 +17,20 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { ChatHeaderView } from 'openland-web/fragments/chat/ChatHeaderView';
 import { XLoader } from 'openland-x/XLoader';
+import { MainLayout } from 'openland-web/components/MainLayout';
 import { Room, UserShort } from 'openland-api/Types';
+import RoomIcon from 'openland-icons/dir-rooms.svg';
+import PeopleIcon from 'openland-icons/dir-people.svg';
+import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
+import CommunityIcon from 'openland-icons/dir-communities.svg';
+import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
+import { XMenuItem } from 'openland-x/XMenuItem';
+import { TextDirectory } from 'openland-text/TextDirectory';
+
+// 1) directory navigation
+// 2) tabs navigation, espessally empty/non empty tab
+// 3) search
 
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -131,7 +144,7 @@ const MobilePageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps)
     );
 };
 
-const DesktopPageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps) => {
+const DesktopPageInner = ({ firstFragment, secondFragment }: PageInnerProps) => {
     return (
         <XView
             flexDirection="row"
@@ -172,11 +185,65 @@ const PageInner = AdaptiveHOC({
     fullWidth: true,
 });
 
+const DirectoryNavigation = ({ route }: { route: string }) => (
+    <Menu
+        title={route}
+        rightContent={
+            <PopperOptionsButton
+                icon={<PlusIcon />}
+                title={TextDirectory.create.title}
+                content={
+                    <>
+                        <XMenuItem
+                            query={{
+                                field: 'createOrganization',
+                                value: 'true',
+                            }}
+                            icon="x-dropdown-organization"
+                        >
+                            {TextDirectory.create.organization}
+                        </XMenuItem>
+                        <XMenuItem
+                            query={{ field: 'createRoom', value: 'true' }}
+                            icon="x-dropdown-room"
+                        >
+                            {TextDirectory.create.room}
+                        </XMenuItem>
+                        <XMenuItem
+                            query={{
+                                field: 'createOrganization',
+                                value: 'community',
+                            }}
+                            icon="x-dropdown-community"
+                        >
+                            {TextDirectory.create.community}
+                        </XMenuItem>
+                    </>
+                }
+            />
+        }
+    >
+        <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
+        <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
+        <MenuItem
+            path="/directory/organizations"
+            title="Organizations"
+            icon={<OrganizationsIcon />}
+        />
+        <MenuItem path="/directory/communities" title="Communities" icon={<CommunityIcon />} />
+        <XWithRole role="feature-non-production">
+            <MenuItem path="/directory/explore" title="Explore" icon={<CommunityIcon />} />
+        </XWithRole>
+    </Menu>
+);
+
 export default withApp(
     'Mail',
     'viewer',
     withRouter(
         withQueryLoader(() => {
+            const isChat = false;
+            const tab = tabs.chat;
             return (
                 <>
                     <XDocumentHead title={'pageTitle'} />
@@ -191,11 +258,22 @@ export default withApp(
                                 height="100%"
                                 width="100%"
                             >
-                                <PageInner
-                                    tab={tabs.chat}
-                                    firstFragment={<XView color="red">firstFragment</XView>}
-                                    secondFragment={<XView color="blue">secondFragment</XView>}
-                                />
+                                {isChat ? (
+                                    <PageInner
+                                        tab={tab}
+                                        firstFragment={<XView color="red">firstFragment</XView>}
+                                        secondFragment={<XView color="blue">secondFragment</XView>}
+                                    />
+                                ) : (
+                                    <MainLayout>
+                                        <MainLayout.Menu>
+                                            <DirectoryNavigation route="Rooms" />
+                                        </MainLayout.Menu>
+                                        <MainLayout.Content>
+                                            <XView color="green">content</XView>
+                                        </MainLayout.Content>
+                                    </MainLayout>
+                                )}
                             </XView>
                         </Scaffold.Content>
                     </Scaffold>

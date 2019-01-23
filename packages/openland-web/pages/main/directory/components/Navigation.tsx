@@ -1,63 +1,22 @@
 import * as React from 'react';
-import { Menu, MenuItem } from '../../../../components/MainLayout';
-import Glamorous from 'glamorous';
+import { Menu, MenuItem } from 'openland-web/components/MainLayout';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
 import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
 import CommunityIcon from 'openland-icons/dir-communities.svg';
 import PlusIcon from 'openland-icons/dir-new.svg';
-import { XButton } from 'openland-x/XButton';
-import { XPopper } from 'openland-x/XPopper';
-import { XMenuVertical, XMenuItem } from 'openland-x/XMenuItem';
+import { XMenuItem } from 'openland-x/XMenuItem';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { PopperOptionsButton } from './PopperOptionsButton';
 
-const NewButtonWrapper = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s',
-    },
-    '& svg > g > path:last-child': {
-        fill: '#1790ff',
-        opacity: 0.5,
-    },
-    '@media (max-width: 700px)': {
-        '& span': {
-            display: 'none',
-        },
-        '& svg': {
-            margin: '0 !important',
-        },
-    },
-});
-
-export class NewButton extends React.Component<{}, { show?: boolean }> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            show: false,
-        };
-    }
-
-    switch = () => {
-        this.setState({
-            show: !this.state.show,
-        });
-    };
-
-    closer = () => {
-        this.setState({
-            show: false,
-        });
-    };
-
-    render() {
-        return (
-            <XPopper
-                contentContainer={<XMenuVertical />}
-                placement="bottom-end"
-                show={this.state.show}
-                marginTop={10}
-                marginRight={-5}
+export const DirectoryNavigation = ({ route }: { route: string }) => (
+    <Menu
+        title={route}
+        rightContent={
+            <PopperOptionsButton
+                icon={<PlusIcon />}
+                title={TextDirectory.create.title}
                 content={
                     <>
                         <XMenuItem
@@ -86,23 +45,9 @@ export class NewButton extends React.Component<{}, { show?: boolean }> {
                         </XMenuItem>
                     </>
                 }
-                arrow={null}
-                onClickOutside={this.closer}
-            >
-                <NewButtonWrapper
-                    onClick={this.switch}
-                    style="light"
-                    text={TextDirectory.create.title}
-                    icon={<PlusIcon />}
-                    size="small"
-                />
-            </XPopper>
-        );
-    }
-}
-
-export const DirectoryNavigation = (props: { route: string }) => (
-    <Menu title={props.route} rightContent={<NewButton />}>
+            />
+        }
+    >
         <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
         <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
         <MenuItem
