@@ -34,7 +34,7 @@ export const UserView = (props: { user: UserShort, role?: string, onPress: () =>
     </ZListItemBase>
 );
 
-class ProfileGroupComponent extends React.Component<PageProps> {
+class ProfileGroupComponent extends React.Component<PageProps, { notificationsCached?: boolean }> {
 
     handleAddMember = () => {
         this.props.router.push('UserPicker');
@@ -118,19 +118,20 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                     <YMutation mutation={RoomSettingsUpdateMutation} {...{ leftIcon: true }}>
                                         {(update) => {
                                             let toggle = async () => {
-                                                startLoader();
+                                                let target = !(this.state && this.state.notificationsCached !== undefined ? this.state.notificationsCached : sharedRoom!.settings.mute);
                                                 try {
-                                                    await update({ variables: { roomId: sharedRoom!.id, settings: { mute: !sharedRoom!.settings.mute } } });
+                                                    await update({ variables: { roomId: sharedRoom!.id, settings: { mute: target } } });
+                                                    this.setState({ notificationsCached: target });
                                                 } catch (e) {
                                                     new AlertBlanketBuilder().alert(e.message);
+                                                    this.setState({ notificationsCached: !target });
                                                 }
-                                                stopLoader();
                                             };
                                             return (
                                                 <ZListItem
                                                     leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                                                     text="Notifications"
-                                                    toggle={!sharedRoom!.settings.mute}
+                                                    toggle={!(this.state && this.state.notificationsCached !== undefined ? this.state.notificationsCached : sharedRoom!.settings.mute)}
                                                     onToggle={toggle}
                                                     onPress={toggle}
                                                 />

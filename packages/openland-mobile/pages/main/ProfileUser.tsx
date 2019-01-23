@@ -23,12 +23,12 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
     }
 
     handleMute = async () => {
+        let target = !(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute);
         try {
-            let target = !(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute);
-            this.setState({ notificationsValueCahed: target });
             await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: target } });
         } catch (e) {
             new AlertBlanketBuilder().alert(e.message);
+            this.setState({ notificationsValueCahed: !target });
         }
     }
     render() {
