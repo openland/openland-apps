@@ -40,6 +40,14 @@ const TextArea = css`
     word-wrap: break-word;
 `;
 
+const InputPlaceholder = css`
+    position: absolute;
+    top: 10px;
+    left: 17px;
+    pointer-events: none;
+    color: rgba(0, 0, 0, 0.5);
+`;
+
 interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
     conversationId?: string;
@@ -204,8 +212,8 @@ export class MobileMessageCompose extends React.PureComponent<
     }
 
     render() {
-        let { file, fileName, fileSrc } = this.state;
-
+        let { message, file, fileName, fileSrc } = this.state;
+        console.log(message);
         return (
             <SendMessageWrapper>
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
@@ -219,6 +227,7 @@ export class MobileMessageCompose extends React.PureComponent<
                                 onPaste={this.onPaste}
                                 ref={this.inputRef}
                             />
+                            {message === '' && <div className={InputPlaceholder}>Write a message...</div>}
                         </XView>
                         <XHorizontal
                             alignItems="center"
