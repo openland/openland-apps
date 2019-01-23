@@ -89,7 +89,8 @@ export const TextProfiles = {
         },
 
         roles: {
-            OWNER: 'Admin',
+            ADMIN: 'Admin',
+            OWNER: 'Owner',
             MEMBER: 'Member',
         },
 

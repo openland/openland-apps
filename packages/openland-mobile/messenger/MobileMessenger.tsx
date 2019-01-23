@@ -167,8 +167,10 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                     </ASFlex>
                     {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{item.sender}</ASText>)}
-                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
+                            <ASText fontSize={14} lineHeight={18} height={36} color="#181818" numberOfLines={2}>
+                                {showSenderName && `${item.sender}: `}
+                                <ASText fontSize={14} height={36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={2}>{item.message}</ASText>
+                            </ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             <ASText fontSize={14} height={36} lineHeight={18} color={XPStyles.colors.brand} numberOfLines={2}>{item.typing}</ASText>

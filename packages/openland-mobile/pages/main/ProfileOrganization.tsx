@@ -236,6 +236,8 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                 item={
                                                                                     v.user
                                                                                 }
+                                                                                isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
+
                                                                                 onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
                                                                                 onLongPress={v.user.id === getMessenger().engine.user.id || (resp.data.organization.isOwner || resp.data.organization.isAdmin) ?
                                                                                     async () => {
@@ -266,48 +268,39 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                                 },
                                                                                             );
                                                                                         }
+                                                                                        if (resp.data.organization.isOwner || resp.data.organization.isAdmin || v.user.id !== getMessenger().engine.user.id) {
+                                                                                            builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
+                                                                                                () => {
+                                                                                                    new AlertBlanketBuilder()
+                                                                                                        .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
+                                                                                                        .button('Cancel', 'cancel')
+                                                                                                        .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
+                                                                                                            startLoader();
+                                                                                                            try {
+                                                                                                                await remove({
+                                                                                                                    variables: {
+                                                                                                                        memberId: v.user.id,
+                                                                                                                        organizationId: this.props.router.params.id,
+                                                                                                                    },
+                                                                                                                });
+                                                                                                            } catch (e) {
+                                                                                                                new AlertBlanketBuilder().alert(e.message);
+                                                                                                            }
+                                                                                                            stopLoader();
+                                                                                                        })
+                                                                                                        .show()
 
-                                                                                        builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
-                                                                                            () => {
-                                                                                                new AlertBlanketBuilder()
-                                                                                                    .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
-                                                                                                    .button('Cancel', 'cancel')
-                                                                                                    .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
-                                                                                                        startLoader();
-                                                                                                        try {
-                                                                                                            await remove({
-                                                                                                                variables: {
-                                                                                                                    memberId: v.user.id,
-                                                                                                                    organizationId: this.props.router.params.id,
-                                                                                                                },
-                                                                                                            });
-                                                                                                        } catch (e) {
-                                                                                                            new AlertBlanketBuilder().alert(e.message);
-                                                                                                        }
-                                                                                                        stopLoader();
-                                                                                                    })
-                                                                                                    .show()
+                                                                                                },
+                                                                                                true,
+                                                                                            );
+                                                                                        }
 
-                                                                                            },
-                                                                                            true,
-                                                                                        );
                                                                                         builder.show();
                                                                                     }
                                                                                     : undefined
                                                                                 }
                                                                             />
-                                                                            <Text
-                                                                                style={{
-                                                                                    position: 'absolute',
-                                                                                    right: 16,
-                                                                                    height: 60,
-                                                                                    lineHeight: 60,
-                                                                                    fontSize: 15,
-                                                                                    color: '#99a2b0',
-                                                                                }}
-                                                                            >
-                                                                                {v.role === 'OWNER' ? 'owner' : (v.role === 'ADMIN' ? 'admin' : undefined)}
-                                                                            </Text>
+
                                                                         </View>
                                                                     ),
                                                                 )}

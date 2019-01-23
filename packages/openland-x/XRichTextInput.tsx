@@ -217,7 +217,6 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
     }
 }
 
-
 const mentionPlugin = createMentionPlugin({
     mentionPrefix: '@',
     mentionTrigger: '@',

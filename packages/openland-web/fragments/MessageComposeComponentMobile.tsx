@@ -1,23 +1,16 @@
 import * as React from 'react';
+import { css } from 'linaria';
+import { XView } from 'react-mental';
 import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XRichTextInput } from 'openland-x/XRichTextInput';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { XWithRouter } from 'openland-x-routing/withRouter';
 import { getConfig } from '../config';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import { DropZone } from './DropZone';
-import { withUserInfo } from '../components/UserInfo';
-import { withChannelMembers } from '../api/withChannelMembers';
-import {
-    MessageFull_mentions,
-    SharedRoomKind,
-    RoomMembers_members,
-    PostMessageType,
-} from 'openland-api/Types';
+import { MessageFull_mentions, SharedRoomKind, PostMessageType } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
@@ -25,14 +18,35 @@ import {
     SendMessageWrapper,
     SendMessageContent,
     AttachmentButton,
-    TextInputWrapper,
     FileItem,
     FileImage,
     CoverWrapper,
     CoverDelButton,
     PostButton,
-    convertChannelMembersDataToMentionsData,
 } from './MessageComposeComponent';
+
+const TextArea = css`
+    border-radius: 10px;
+    background-color: #fff;
+    border: solid 1px #ececec;
+    min-height: 40px;
+    max-height: 255px;
+    overflow: auto;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 16px;
+    padding-right: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+`;
+
+const InputPlaceholder = css`
+    position: absolute;
+    top: 10px;
+    left: 17px;
+    pointer-events: none;
+    color: rgba(0, 0, 0, 0.5);
+`;
 
 interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
@@ -53,15 +67,30 @@ interface MessageComposeComponentInnerState {
     fileName: string | null;
 }
 
-interface MessageComposeComponentInnerProps extends MessageComposeComponentProps {
-    members?: RoomMembers_members[];
+const entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;',
+    '\n': '<br>',
+};
+
+function escapeHtml(str: string) {
+    return String(str).replace(/[&<>"'`=\/\n]/g, function(s: string) {
+        return entityMap[s];
+    });
 }
 
-class MessageComposeComponentInner extends React.PureComponent<
-    MessageComposeComponentInnerProps,
+export class MobileMessageCompose extends React.PureComponent<
+    MessageComposeComponentProps,
     MessageComposeComponentInnerState
 > {
-    listOfMembersNames: string[];
+    inputRef = React.createRef<HTMLDivElement>();
+
     constructor(props: any) {
         super(props);
 
@@ -71,11 +100,7 @@ class MessageComposeComponentInner extends React.PureComponent<
             fileSrc: null,
             fileName: null,
         };
-        this.listOfMembersNames = [];
     }
-
-    private input = React.createRef<XRichTextInput>();
-    private wasFocused = false;
 
     private handleAttach = () => {
         let dialog = UploadCare.openDialog(null, {
@@ -90,28 +115,13 @@ class MessageComposeComponentInner extends React.PureComponent<
         });
     };
 
-    getMentions = (str: string) => {
-        if (!this.props.members) {
-            return null;
-        }
-
-        const mentionsNames = this.listOfMembersNames.filter((name: string) => str.includes(name));
-        return this.props.members
-            .filter(({ user: { name } }) => {
-                return mentionsNames.indexOf(`@${name}`) !== -1;
-            })
-            .map(({ user }) => user);
-    };
-
     private handleSend = () => {
-        let { message, file } = this.state as MessageComposeComponentInnerState;
+        let { message, file } = this.state;
 
         if (message.trim().length > 0) {
             let msg = message.trim();
             if (this.props.onSend) {
-                let mentions = this.getMentions(msg);
-
-                this.props.onSend(msg, mentions);
+                this.props.onSend(msg, null);
 
                 if (file) {
                     const ucFile = UploadCare.fileFrom('object', file);
@@ -137,22 +147,19 @@ class MessageComposeComponentInner extends React.PureComponent<
         });
     };
 
-    private handleChange = (src: string) => {
+    private handleChange = () => {
+        if (!this.inputRef.current) {
+            return;
+        }
+
+        const msg = this.inputRef.current.innerText;
+
         this.setState({
-            message: src,
+            message: msg,
         });
 
         if (this.props.onChange) {
-            this.props.onChange(src);
-        }
-    };
-
-    private focusIfNeeded = () => {
-        if (this.props.enabled !== false && !this.wasFocused) {
-            this.wasFocused = true;
-            if (this.input.current) {
-                this.input.current.focus();
-            }
+            this.props.onChange(msg);
         }
     };
 
@@ -183,41 +190,44 @@ class MessageComposeComponentInner extends React.PureComponent<
             fileSrc: null,
             fileName: null,
         });
-        if (this.input.current) {
-            this.input.current!!.resetAndFocus();
+
+        if (this.inputRef.current) {
+            this.inputRef.current.innerText = '';
         }
-        this.listOfMembersNames = [];
+    };
+
+    private onPaste = (e: any) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData('text/plain');
+        document.execCommand('insertHTML', false, escapeHtml(text));
+        if (this.inputRef.current) {
+            this.inputRef.current.scrollTop = this.inputRef.current.scrollHeight;
+        }
     };
 
     componentDidMount() {
-        this.focusIfNeeded();
-    }
-
-    componentDidUpdate() {
-        this.focusIfNeeded();
+        if (this.inputRef.current) {
+            this.inputRef.current.innerText = this.state.message;
+        }
     }
 
     render() {
         let { message, file, fileName, fileSrc } = this.state;
-        const mentionsData = convertChannelMembersDataToMentionsData(this.props.members);
-
         return (
             <SendMessageWrapper>
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        <TextInputWrapper>
-                            <XRichTextInput
-                                mentionsData={mentionsData}
-                                placeholder="Write a message..."
-                                flexGrow={1}
-                                onChange={this.handleChange}
-                                onSubmit={this.handleSend}
-                                ref={this.input}
-                                value={message}
-                                onPasteFile={this.handleDrop}
+                        <XView flexGrow={1} maxHeight="100%" maxWidth="100%">
+                            <div
+                                contentEditable={true}
+                                className={TextArea}
+                                onInput={this.handleChange}
+                                onPaste={this.onPaste}
+                                ref={this.inputRef}
                             />
-                        </TextInputWrapper>
+                            {message === '' && <div className={InputPlaceholder}>Write a message...</div>}
+                        </XView>
                         <XHorizontal
                             alignItems="center"
                             justifyContent="space-between"
@@ -291,15 +301,3 @@ class MessageComposeComponentInner extends React.PureComponent<
         );
     }
 }
-
-interface MessageComposeProps extends MessageComposeComponentProps, XWithRouter {
-    members?: RoomMembers_members[];
-}
-
-const MessageCompose = withUserInfo(props => (
-    <MessageComposeComponentInner {...props} />
-)) as React.ComponentType<MessageComposeProps>;
-
-export const MobileMessageCompose = withChannelMembers(props => (
-    <MessageCompose {...props} members={props.data.members} />
-)) as React.ComponentType<MessageComposeComponentProps>;

@@ -123,7 +123,7 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
     },
 }));
 
-export const TextInputWrapper = Glamorous.div({
+const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
     maxHeight: '100%',
     maxWidth: '100%',
