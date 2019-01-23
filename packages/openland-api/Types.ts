@@ -4143,6 +4143,7 @@ export interface Organization_organization {
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
+  isAdmin: boolean;
   featured: boolean;
   isCommunity: boolean;
   name: string;
@@ -5503,6 +5504,7 @@ export interface ResolveShortName_item_Organization {
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
+  isAdmin: boolean;
   featured: boolean;
   isCommunity: boolean;
   name: string;
@@ -8458,6 +8460,7 @@ export interface OrganizationFull {
   superAccountId: string;
   isMine: boolean;
   isOwner: boolean;
+  isAdmin: boolean;
   featured: boolean;
   isCommunity: boolean;
   name: string;
@@ -8948,6 +8951,7 @@ export enum NotificationsDelay {
 }
 
 export enum OrganizationMemberRole {
+  ADMIN = "ADMIN",
   MEMBER = "MEMBER",
   OWNER = "OWNER",
 }

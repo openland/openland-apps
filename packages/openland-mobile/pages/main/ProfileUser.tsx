@@ -11,7 +11,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import * as humanize from 'humanize';
 import { formatDate } from '../../utils/formatDate';
-import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { Platform } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
@@ -80,13 +79,14 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                             }}
                             text={this.props.resp.user.primaryOrganization.name}
                             description="Organization"
+                            // title="Organization"
                             multiline={true}
                             path="ProfileOrganization"
                             pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
                         />
                     </ZListItemGroup>
                 )}
-                <ZListItemGroup header={null} divider={false}>
+                <ZListItemGroup header={null} footer={null} divider={false}>
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                         text="Notifications"

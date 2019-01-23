@@ -9,7 +9,7 @@ import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
-import { DownloadState } from '../../utils/DownloadManagerInterface';
+import { DownloadState } from '../../files/DownloadManagerInterface';
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;

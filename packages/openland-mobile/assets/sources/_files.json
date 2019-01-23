@@ -8,6 +8,18 @@
         "src": "ic-leave.svg",
         "sizes": [24]
     }, {
+        "name": "ic-more",
+        "src": "ic-more.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-help",
+        "src": "ic-notifications-copy.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-rate",
+        "src": "ic-rate.svg",
+        "sizes": [24]
+    }, {
         "name": "ic-star-admin",
         "src": "ic-star.svg",
         "sizes": [24, 13]

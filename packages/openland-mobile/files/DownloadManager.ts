@@ -1,6 +1,6 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import RNFetchBlob from 'rn-fetch-blob';
-import { DownloadState, DownloadManagerInterface } from '../utils/DownloadManagerInterface';
+import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
 
 export class DownloadManager implements DownloadManagerInterface {
 

@@ -50,7 +50,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 action={resp.data.organization.isOwner ? 'Edit profile' : undefined}
                                                 onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })}
                                             />
-                                            {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
+                                            {(resp.data.organization.isMine || resp.data.organization.isOwner || resp.data.organization.isAdmin || this.props.router.params.conversationId) && (
                                                 <ZListItemGroup header={null} divider={false}>
                                                     {this.props.router.params.conversationId && (
                                                         <YQuery
@@ -237,39 +237,43 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     v.user
                                                                                 }
                                                                                 onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
-                                                                                onLongPress={v.user.id !== getMessenger().engine.user.id ?
+                                                                                onLongPress={v.user.id === getMessenger().engine.user.id || (resp.data.organization.isOwner || resp.data.organization.isAdmin) ?
                                                                                     async () => {
+
                                                                                         let builder = new ActionSheetBuilder();
 
-                                                                                        builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
-                                                                                            () => {
-                                                                                                new AlertBlanketBuilder()
-                                                                                                    .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
-                                                                                                    .button('Cancel', 'cancel')
-                                                                                                    .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
-                                                                                                        startLoader();
-                                                                                                        try {
-                                                                                                            await changeRole({
-                                                                                                                variables: {
-                                                                                                                    memberId: v.user.id,
-                                                                                                                    organizationId: this.props.router.params.id,
-                                                                                                                    newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
-                                                                                                                },
-                                                                                                            });
-                                                                                                        } catch (e) {
-                                                                                                            new AlertBlanketBuilder().alert(e.message);
-                                                                                                        }
-                                                                                                        stopLoader();
-                                                                                                    }).show();
-                                                                                            },
-                                                                                        );
+                                                                                        if (v.user.id !== getMessenger().engine.user.id && resp.data.organization.isOwner) {
+                                                                                            builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
+                                                                                                () => {
+                                                                                                    new AlertBlanketBuilder()
+                                                                                                        .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
+                                                                                                        .button('Cancel', 'cancel')
+                                                                                                        .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
+                                                                                                            startLoader();
+                                                                                                            try {
+                                                                                                                await changeRole({
+                                                                                                                    variables: {
+                                                                                                                        memberId: v.user.id,
+                                                                                                                        organizationId: this.props.router.params.id,
+                                                                                                                        newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
+                                                                                                                    },
+                                                                                                                });
+                                                                                                            } catch (e) {
+                                                                                                                new AlertBlanketBuilder().alert(e.message);
+                                                                                                            }
+                                                                                                            stopLoader();
+                                                                                                        }).show();
+                                                                                                },
+                                                                                            );
+                                                                                        }
 
-                                                                                        builder.action('Remove',
+
+                                                                                        builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
                                                                                             () => {
                                                                                                 new AlertBlanketBuilder()
-                                                                                                    .title(`Are you sure you want to remove ${v.user.name}?`)
+                                                                                                    .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button('Remove from organization', 'destructive', async () => {
+                                                                                                    .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
                                                                                                         startLoader();
                                                                                                         try {
                                                                                                             await remove({
@@ -303,7 +307,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     color: '#99a2b0',
                                                                                 }}
                                                                             >
-                                                                                {v.role === 'OWNER' ? 'Owner' : undefined}
+                                                                                {v.role === 'OWNER' ? 'owner' : (v.role === 'ADMIN' ? 'admin' : undefined)}
                                                                             </Text>
                                                                         </View>
                                                                     ),

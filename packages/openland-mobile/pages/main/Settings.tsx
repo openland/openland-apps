@@ -52,13 +52,22 @@ class SettingsComponent extends React.Component<PageProps> {
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
-                                <ZListItemGroup header={null} footer="Send your personal link to friends in any messenger to stay connected in Openland">
+                                <ZListItemGroup header="Settings" divider={false}>
                                     <ZListItem
+                                        leftIcon={require('assets/ic-notifications-24.png')}
+                                        text="Notifications"
+                                        path="SettingsNotifications"
+                                    />
+                                </ZListItemGroup>
+                                <ZListItemGroup header="Support" divider={false}>
+                                    <ZListItem
+                                        leftIcon={require('assets/ic-help-24.png')}
                                         appearance="default"
                                         text="Ask for help"
                                         onPress={() => this.props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
                                     />
                                     <ZListItem
+                                        leftIcon={require('assets/ic-rate-24.png')}
                                         appearance="default"
                                         text="Rate the App"
                                         onPress={() => {
@@ -69,15 +78,14 @@ class SettingsComponent extends React.Component<PageProps> {
                                         }}
                                     />
                                     <ZListItem
+                                        leftIcon={require('assets/ic-link-24.png')}
                                         appearance="default"
                                         text="Invite friends"
                                         onPress={() => Share.share({ message: 'https://openland.com' })}
                                     />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Settings" footer="Adjust sound and vibration settings for notifications that you get when you’re using the app">
-                                    <ZListItem text="Notifications" path="SettingsNotifications" />
-                                </ZListItemGroup>
-                                <ZListItemGroup header="Organizations" actionRight={{ title: 'Show all', onPress: () => this.props.router.push('SettingsOrganizations') }} divider={false}>
+                                <ZListItemGroup header="Organizations" divider={false}>
+                                    {/* <ZListItem leftIcon={require('assets/ic-add-24.png')} text="Create new" path="SettingsOrganizations" /> */}
                                     {primary && <ZListItem
                                         text={primary.name}
                                         leftAvatar={{ photo: primary.photo, key: primary.id, title: primary.name }}
@@ -85,7 +93,7 @@ class SettingsComponent extends React.Component<PageProps> {
                                         onPress={() => this.props.router.push('ProfileOrganization', { id: primary!.id })}
                                         navigationIcon={true}
                                     />}
-                                    {secondaryFiltered.map((v) => (
+                                    {secondary.map((v) => (
                                         <ZListItem
                                             key={v.id}
                                             text={v.name}
@@ -94,17 +102,11 @@ class SettingsComponent extends React.Component<PageProps> {
                                             navigationIcon={true}
                                         />
                                     ))}
-                                    <TouchableHighlight underlayColor={XPStyles.colors.selectedListItem} onPress={() => this.props.router.push('NewOrganization')}>
-                                        <View flexDirection="row" height={60} alignItems="center" >
-                                            <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
-                                                <Image source={require('assets/ic-add.png')} />
-                                            </View>
-                                            <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>New organization</Text>
-
-                                        </View>
-                                    </TouchableHighlight>
+                                    {/* {secondary.length > secondaryFiltered.length && (
+                                        <ZListItem leftIcon={require('assets/ic-more-24.png')} text="View all" path="SettingsOrganizations" />
+                                    )} */}
                                 </ZListItemGroup>
-                                {__DEV__ && (
+                                {/* {__DEV__ && (
                                     <ZListItemGroup header="Dev Tools">
                                         <ZListItem text="Typography" path="DevTypography" />
                                         <ZListItem text="Components" path="DevComponents" />
@@ -112,7 +114,7 @@ class SettingsComponent extends React.Component<PageProps> {
                                         <ZListItem text="Loader" path="DevLoader" />
                                         <ZListItem text="Log out" onPress={this.handleLogout} />
                                     </ZListItemGroup>
-                                )}
+                                )} */}
                                 {/* <ZListItemFooter />
                                 <ZListItemFooter /> */}
                             </SScrollView>
