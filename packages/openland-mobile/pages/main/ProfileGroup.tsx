@@ -17,21 +17,20 @@ import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
+import { RoomQuery, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { PresenceComponent } from './components/PresenceComponent';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YQuery } from 'openland-y-graphql/YQuery';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
-    <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
-        <View paddingTop={12} paddingLeft={15} paddingRight={15}>
-            <XPAvatar size={32} src={props.user.photo} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
+    <ZListItemBase key={props.user.id} separator={false} height={60} onPress={props.onPress} onLongPress={props.onLongPress}>
+        <View paddingLeft={15} paddingRight={15} alignSelf="center">
+            <XPAvatar size={42} src={props.user.photo} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
         </View>
-        <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
-            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.user.name}</Text>
-            <PresenceComponent uid={props.user.id} styles={{ fontSize: 16, color: '#181818' }} />
+        <View alignSelf="center" flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
+            <Text numberOfLines={1} style={{ fontSize: 16, fontWeight: '500', color: '#181818', height: 19, marginBottom: 4 }}>{props.user.name}{props.user.primaryOrganization && <Text style={{ fontSize: 15, color: '#99a2b0'}}>  {props.user.primaryOrganization.name}</Text>}</Text>
+            <PresenceComponent uid={props.user.id} style={{ fontSize: 14, color: '#99a2b0', height: 16 }} onlineStyle={{ color: '#0084fe' }} />
             {/* <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.role}</Text> */}
         </View>
     </ZListItemBase>
@@ -142,7 +141,6 @@ class ProfileGroupComponent extends React.Component<PageProps, { notificationsCa
                                                     text="Notifications"
                                                     toggle={!(this.state && this.state.notificationsCached !== undefined ? this.state.notificationsCached : sharedRoom!.settings.mute)}
                                                     onToggle={toggle}
-                                                    onPress={toggle}
                                                 />
                                             );
                                         }}
@@ -152,13 +150,6 @@ class ProfileGroupComponent extends React.Component<PageProps, { notificationsCa
                                 <ZListItemGroup header="Members" divider={false} counter={sharedRoom.membersCount}>
 
                                     <SDeferred>
-                                        {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
-                                            <ZListItem
-                                                leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                                                text="Invite with a link"
-                                                onPress={() => this.props.router.present('ChannelInviteLinkModal', { id: sharedRoom!.id })}
-                                                navigationIcon={false}
-                                            />}
                                         <YMutation mutation={RoomAddMembersMutation} >
                                             {(add) => (
                                                 <ZListItem
@@ -186,6 +177,13 @@ class ProfileGroupComponent extends React.Component<PageProps, { notificationsCa
                                                 />
                                             )}
                                         </YMutation>
+                                        {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
+                                            <ZListItem
+                                                leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                                                text="Invite to room with a link"
+                                                onPress={() => this.props.router.present('ChannelInviteLinkModal', { id: sharedRoom!.id })}
+                                                navigationIcon={false}
+                                            />}
                                         {sharedRoom.members.sort((a, b) => a.user.name.localeCompare(b.user.name)).map((v) => (
                                             <YMutation mutation={RoomKickMutation} refetchQueriesVars={[{ query: RoomInviteInfoQuery, variables: { roomId: this.props.router.params.id } }]}>
                                                 {(kick) => (

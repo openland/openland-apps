@@ -5,11 +5,12 @@ import { TextStyle, Text } from 'react-native';
 import { formatDate } from 'openland-mobile/utils/formatDate';
 import * as humanize from 'humanize';
 
-export class PresenceComponent extends React.PureComponent<{ uid: string, styles?: TextStyle }> {
+export class PresenceComponent extends React.PureComponent<{ uid: string, style?: TextStyle, onlineStyle?: TextStyle }> {
     render() {
         return (<YQuery query={OnlineQuery} variables={{ userId: this.props.uid }}>
             {online => {
                 let sub = undefined;
+                let isOnline = false;
                 if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
                     let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
                     if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
@@ -22,9 +23,10 @@ export class PresenceComponent extends React.PureComponent<{ uid: string, styles
                     // 
                 } else if (online.data && online.data.user && online.data.user.online) {
                     sub = 'online';
+                    isOnline = true;
                 }
                 return (
-                    <Text style={this.props.styles}>{sub}</Text>
+                    <Text style={[this.props.style, isOnline && this.props.onlineStyle]}>{sub}</Text>
                 );
             }}
         </YQuery>);
