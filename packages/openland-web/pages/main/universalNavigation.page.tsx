@@ -8,6 +8,10 @@ import { withApp } from 'openland-web/components/withApp';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { Menu } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
+import { tabs } from './mail/tabs';
+import { AdaptiveHOC } from 'openland-web/components/Adaptive';
+import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { Scaffold } from 'openland-web/components/Scaffold';
 
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -36,11 +40,55 @@ const containerStyle = css`
     }
 `;
 
-const DesktopDialogContainer = ({ children }: { children: any }) => {
-    return <div className={containerStyle}>{children}</div>;
+const DesktopDialogContainer = ({ children }: { children: any }) => (
+    <div className={containerStyle}>{children}</div>
+);
+
+type PageInnerProps = {
+    firstFragment: any;
+    secondFragment: any;
+    tab: string;
+    conversationId: string | null | undefined;
+    oid: string | null | undefined;
+    uid: string | null | undefined;
+    cid: string | null | undefined;
 };
 
-const DesktopPageInner = () => {
+const MobilePageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps) => {
+    return (
+        <XView
+            flexDirection="row"
+            flexGrow={1}
+            flexShrink={0}
+            overflow="hidden"
+            alignItems="stretch"
+            height="100%"
+            width="100%"
+        >
+            {tab === tabs.empty ? (
+                <XView width="100%">
+                    <Menu
+                        title={'Messages'}
+                        rightContent={
+                            <AddButton
+                                style="light"
+                                path="/mail/new"
+                                text="New"
+                                icon={<PlusIcon />}
+                                size="small"
+                            />
+                        }
+                    />
+                    {firstFragment}
+                </XView>
+            ) : (
+                secondFragment
+            )}
+        </XView>
+    );
+};
+
+const DesktopPageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps) => {
     return (
         <XView
             flexDirection="row"
@@ -64,13 +112,18 @@ const DesktopPageInner = () => {
                         />
                     }
                 />
-                <div>123</div>
+                {firstFragment}
             </DesktopDialogContainer>
-
-            <div>123</div>
+            {secondFragment}
         </XView>
     );
 };
+
+const PageInner = AdaptiveHOC({
+    DesktopComponent: DesktopPageInner,
+    MobileComponent: MobilePageInner,
+    fullWidth: true,
+});
 
 export default withApp(
     'Mail',
@@ -78,17 +131,28 @@ export default withApp(
     withRouter(
         withQueryLoader(() => {
             return (
-                <XView
-                    flexDirection="row"
-                    flexGrow={1}
-                    flexShrink={0}
-                    overflow="hidden"
-                    alignItems="stretch"
-                    height="100%"
-                    width="100%"
-                >
-                    <DesktopPageInner />
-                </XView>
+                <>
+                    <XDocumentHead title={'pageTitle'} />
+                    <Scaffold>
+                        <Scaffold.Content padding={false} bottomOffset={false}>
+                            <XView
+                                flexDirection="row"
+                                flexGrow={1}
+                                flexShrink={0}
+                                overflow="hidden"
+                                alignItems="stretch"
+                                height="100%"
+                                width="100%"
+                            >
+                                <PageInner
+                                    tab={tabs.chat}
+                                    firstFragment={<XView color="red">firstFragment</XView>}
+                                    secondFragment={<XView color="blue">secondFragment</XView>}
+                                />
+                            </XView>
+                        </Scaffold.Content>
+                    </Scaffold>
+                </>
             );
         }),
     ),
