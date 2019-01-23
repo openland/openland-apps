@@ -9,10 +9,10 @@ let searchStyle = css`
     margin-top: 5px;
     margin-bottom: 12px;
     height: 36px !important;
-    & svg > g > path:last-child {
+    & svg > path {
         fill: #c8c8c8;
     }
-    &:focus-within svg > g > path:last-child {
+    &:focus-within svg > path {
         fill: rgba(23, 144, 255, 0.5);
     }
     & .input-placeholder,

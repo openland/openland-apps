@@ -46,10 +46,10 @@ const DeleteButton = makeNavigable(
         justifyContent: 'center',
         borderRadius: 10,
         background: '#ffffff',
-        '& > svg > g > path:last-child': {
+        '& > svg > path': {
             fill: 'rgba(0, 0, 0, 0.3)',
         },
-        '&:hover & > svg > g > path:last-child': {
+        '&:hover & > svg > path': {
             fill: 'rgba(0, 0, 0, 0.4)',
         },
     })),
