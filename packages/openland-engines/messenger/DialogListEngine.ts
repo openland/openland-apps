@@ -20,7 +20,7 @@ export interface DialogDataSourceItem {
     unread: number;
     online?: boolean;
     typing?: string;
-    isService?: string;
+    isService?: boolean;
     isMuted?: boolean;
     haveMention?: boolean;
     messageId?: string;
@@ -103,6 +103,7 @@ export const extractDialog = (
         messageEmojified: msg
             ? emoji(msg, 13)
             : undefined,
+        isService: betaTopMessage && betaTopMessage.isService || undefined
     };
 };
 
