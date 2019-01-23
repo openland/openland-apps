@@ -175,13 +175,6 @@ export class MobileMessageCompose extends React.PureComponent<
         };
     };
 
-    private onEnterPress = (e: any) => {
-        if (e.keyCode === 13 && e.shiftKey === false) {
-            e.preventDefault();
-            this.handleSend();
-        }
-    };
-
     private closeEditor = () => {
         this.setState({
             message: '',
@@ -223,7 +216,6 @@ export class MobileMessageCompose extends React.PureComponent<
                                 contentEditable={true}
                                 className={TextArea}
                                 onInput={this.handleChange}
-                                onKeyDown={this.onEnterPress}
                                 onPaste={this.onPaste}
                                 ref={this.inputRef}
                             />
