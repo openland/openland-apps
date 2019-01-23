@@ -57,7 +57,6 @@ interface MessageComposeComponentInnerState {
     file: any | null;
     fileSrc: string | null;
     fileName: string | null;
-    inputHeight: number;
 }
 
 const entityMap = {
@@ -69,11 +68,11 @@ const entityMap = {
     '/': '&#x2F;',
     '`': '&#x60;',
     '=': '&#x3D;',
-    '\n': '<br>'
+    '\n': '<br>',
 };
 
-function escapeHtml (str: string) {
-    return String(str).replace(/[&<>"'`=\/\n]/g, function (s: string) {
+function escapeHtml(str: string) {
+    return String(str).replace(/[&<>"'`=\/\n]/g, function(s: string) {
         return entityMap[s];
     });
 }
@@ -92,7 +91,6 @@ export class MobileMessageCompose extends React.PureComponent<
             file: null,
             fileSrc: null,
             fileName: null,
-            inputHeight: 40,
         };
     }
 
@@ -200,7 +198,7 @@ export class MobileMessageCompose extends React.PureComponent<
     private onPaste = (e: any) => {
         e.preventDefault();
         const text = e.clipboardData.getData('text/plain');
-        document.execCommand("insertHTML", false, escapeHtml(text));
+        document.execCommand('insertHTML', false, escapeHtml(text));
         if (this.inputRef.current) {
             this.inputRef.current.scrollTop = this.inputRef.current.scrollHeight;
         }
