@@ -61,7 +61,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                     }}
                 </YQuery>
 
-                <ZListItemGroup header={null} divider={false}>
+                <ZListItemGroup header="Info" divider={false}>
                     {!!this.props.resp.user.about && <ZListItem title="About" multiline={true} text={this.props.resp.user.about} copy={true} />}
                     {!!this.props.resp.user.shortname && <ZListItem title="Username" multiline={true} text={'@' + this.props.resp.user.shortname} copy={true} />}
                     {!!this.props.resp.user.email && <ZListItem title="Email" text={this.props.resp.user.email} copy={true} />}
@@ -70,7 +70,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                     {!!this.props.resp.user.location && <ZListItem title="Location" text={this.props.resp.user.location} copy={true} />}
                 </ZListItemGroup>
                 {!!this.props.resp.user.primaryOrganization && (
-                    <ZListItemGroup header={null} divider={false}>
+                    <ZListItemGroup header="Organizations" divider={false}>
                         <ZListItem
                             leftAvatar={{
                                 photo: this.props.resp.user.primaryOrganization.photo,
@@ -86,7 +86,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                         />
                     </ZListItemGroup>
                 )}
-                <ZListItemGroup header={null} footer={null} divider={false}>
+                <ZListItemGroup header="Settings" footer={null} divider={false}>
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                         text="Notifications"
