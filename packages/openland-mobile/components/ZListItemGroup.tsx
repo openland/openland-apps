@@ -46,17 +46,18 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                         <Text
                             style={{
                                 color: '#000',
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
                                 height: 20,
                                 lineHeight: 20,
                                 paddingLeft: 16,
-                                flexShrink: 1
+                                flexShrink: 1,
+                                opacity: 0.7
                             }}
                             numberOfLines={1}
                             ellipsizeMode="tail"
                         >
-                            {this.props.header}
+                            {Platform.OS === 'android' ? this.props.header : this.props.header.toUpperCase()}
                         </Text>
 
                         {this.props.counter !== undefined && this.props.counter !== null && (

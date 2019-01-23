@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { View, Text, Alert, Image, TouchableHighlight, Platform } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
@@ -18,9 +18,10 @@ import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { UserViewAsync } from '../compose/ComposeInitial';
-import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
+import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { PresenceComponent } from './components/PresenceComponent';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -29,7 +30,8 @@ export const UserView = (props: { user: UserShort, role?: string, onPress: () =>
         </View>
         <View flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column">
             <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.user.name}</Text>
-            <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.role}</Text>
+            <PresenceComponent uid={props.user.id} styles={{ fontSize: 16, color: '#181818' }} />
+            {/* <Text numberOfLines={1} style={{ fontSize: 16, color: '#181818' }}>{props.role}</Text> */}
         </View>
     </ZListItemBase>
 );
@@ -48,6 +50,12 @@ class ProfileGroupComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Info" />
+                <SHeaderButton
+                    title="Edit"
+                    onPress={() => {
+                        //
+                    }}
+                />
                 <ZQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
                     {(resp) => {
                         let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
@@ -73,7 +81,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                 )}
 
                                 <ZListItemGroup header={null} divider={false}>
-                                    <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
+                                    {/* <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
                                         {(save) => (
                                             <ZAvatarPicker
                                                 showLoaderOnUpload={true}
@@ -114,7 +122,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                 }
                                             />
                                         )}
-                                    </YMutation>
+                                    </YMutation> */}
                                     <YMutation mutation={RoomSettingsUpdateMutation} {...{ leftIcon: true }}>
                                         {(update) => {
                                             let toggle = async () => {
@@ -135,8 +143,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     onPress={toggle}
                                                 />
                                             );
-                                        }
-                                        }
+                                        }}
                                     </YMutation>
                                     {(sharedRoom.role === 'ADMIN' || sharedRoom.role === 'OWNER' || sharedRoom.role === 'MEMBER') &&
                                         <ZListItem
@@ -176,74 +183,40 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                         );
                                                     }}
                                                 />
-                                                // <TouchableHighlight
-                                                //     underlayColor={XPStyles.colors.selectedListItem}
-                                                //     onPress={() => {
-                                                //         Modals.showUserMuptiplePicker(
-                                                //             this.props.router,
-                                                //             {
-                                                //                 title: 'Add', action: async (users) => {
-                                                //                     startLoader();
-                                                //                     try {
-                                                //                         await add({ variables: { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: sharedRoom!.id } });
-                                                //                         this.props.router.back();
-                                                //                     } catch (e) {
-                                                //                         new AlertBlanketBuilder().alert(e.message);
-                                                //                     }
-                                                //                     stopLoader();
-                                                //                 }
-                                                //             },
-                                                //             'Add members',
-                                                //             sharedRoom!.members.map(m => m.user.id)
-                                                //         );
-                                                //     }}
-                                                // >
-                                                //     <View flexDirection="row" height={60} alignItems="center" >
-                                                //         <View marginLeft={16} marginRight={16} width={40} height={40} borderRadius={20} borderWidth={1} borderColor={XPStyles.colors.brand} justifyContent="center" alignItems="center">
-                                                //             <Image source={require('assets/ic-add.png')} />
-                                                //         </View>
-                                                //         <Text style={{ color: '#4747ec', fontWeight: '500', fontSize: 16 }}>Add members</Text>
-                                                //         {/* <View style={{ position: 'absolute', bottom: 0, width: '100%' }} height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} /> */}
-
-                                                //     </View>
-                                                // </TouchableHighlight>
                                             )}
                                         </YMutation>
                                         {sharedRoom.members.sort((a, b) => a.user.name.localeCompare(b.user.name)).map((v) => (
                                             <YMutation mutation={RoomKickMutation} refetchQueriesVars={[{ query: RoomInviteInfoQuery, variables: { roomId: this.props.router.params.id } }]}>
                                                 {(kick) => (
-                                                    <View>
-                                                        <UserViewAsync
-                                                            item={v.user}
-                                                            onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
+                                                    <UserView
+                                                        user={v.user}
+                                                        onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
 
-                                                                let builder = new ActionSheetBuilder();
-                                                                builder.action(
-                                                                    'Kick',
-                                                                    () => {
-                                                                        new AlertBlanketBuilder().title(`Are you sure you want to kick ${v.user.name}?`)
-                                                                            .button('Cancel', 'cancel')
-                                                                            .button('Kick', 'destructive', async () => {
-                                                                                startLoader();
-                                                                                try {
-                                                                                    await kick({ variables: { userId: v.user.id, roomId: this.props.router.params.id } });
-                                                                                } catch (e) {
-                                                                                    new AlertBlanketBuilder().alert(e.message);
-                                                                                }
-                                                                                stopLoader();
-                                                                            })
-                                                                            .show();
-                                                                    },
-                                                                    true
-                                                                );
-                                                                builder.show();
+                                                            let builder = new ActionSheetBuilder();
+                                                            builder.action(
+                                                                'Kick',
+                                                                () => {
+                                                                    new AlertBlanketBuilder().title(`Are you sure you want to kick ${v.user.name}?`)
+                                                                        .button('Cancel', 'cancel')
+                                                                        .button('Kick', 'destructive', async () => {
+                                                                            startLoader();
+                                                                            try {
+                                                                                await kick({ variables: { userId: v.user.id, roomId: this.props.router.params.id } });
+                                                                            } catch (e) {
+                                                                                new AlertBlanketBuilder().alert(e.message);
+                                                                            }
+                                                                            stopLoader();
+                                                                        })
+                                                                        .show();
+                                                                },
+                                                                true
+                                                            );
+                                                            builder.show();
 
-                                                            } : undefined}
-                                                            onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
+                                                        } : undefined}
+                                                        onPress={() => this.props.router.push('ProfileUser', { 'id': v.user.id })}
 
-                                                        />
-                                                        {/* <Text style={{ position: 'absolute', right: 16, height: 60, lineHeight: 60, fontSize: 15, color: '#99a2b0' }}>{v.role}</Text> */}
-                                                    </View>
+                                                    />
                                                 )}
                                             </YMutation>
                                         ))}

@@ -12,6 +12,7 @@ import { ActionSheetBuilder } from './ActionSheet';
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
     leftIcon?: any | null;
+    leftIconColor?: string;
     separator?: boolean | null;
     title?: string | null;
     text?: string | null;
@@ -34,11 +35,11 @@ export interface ZListItemProps {
     copy?: boolean;
 }
 
-function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger' }) {
+function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) {
     if (Platform.OS === 'ios') {
         return (
-            <View style={{ width: 38, height: 38, borderRadius: 19, alignContent: 'center', justifyContent: 'center', backgroundColor: '#ddd', marginLeft: 16, alignSelf: 'center' }}>
-                <Image source={props.src} style={{ width: 24, height: 24, alignSelf: 'center' }} />
+            <View style={{ width: 42, height: 42, borderRadius: 21, alignContent: 'center', justifyContent: 'center', backgroundColor: props.leftIconColor || '#0184fe', marginLeft: 16, alignSelf: 'center' }}>
+                <Image source={props.src} style={{ width: 24, height: 24, alignSelf: 'center', tintColor: '#fff' }} />
             </View>
         );
     }
@@ -98,10 +99,10 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 path={this.props.path}
                 pathParams={this.props.pathParams}
                 pathRemove={this.props.pathRemove}
-                height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : (Platform.OS === 'android' ? 48 : 44))}
+                height={this.props.multiline ? null : (this.props.title || this.props.leftAvatar ? 60 : (this.props.leftIcon ? 60 : (Platform.OS === 'android' ? 48 : 44)))}
                 navigationIcon={this.props.navigationIcon}
             >
-                {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} appearance={this.props.appearance} />}
+                {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && Platform.OS !== 'android' && <Text style={{ color: '#000', fontSize: 14, height: 22 }}>{this.props.title.toLocaleLowerCase()}</Text>}
@@ -109,7 +110,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                         <ZText
                             linkify={this.props.linkify === true || !this.props.onPress}
                             style={{
-                                fontSize: Platform.OS === 'android' ? 16 : 15,
+                                fontSize: Platform.OS === 'android' ? 16 : 17,
                                 fontWeight: Platform.OS === 'android' ? '400' : '500',
                                 color: this.props.appearance === 'action' ? AppStyles.primaryColor
                                     : this.props.appearance === 'danger' ? '#f6564e'

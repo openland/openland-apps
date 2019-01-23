@@ -19,7 +19,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { View, Text, Clipboard } from 'react-native';
+import { View, Text } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserViewAsync } from '../compose/ComposeInitial';
@@ -32,16 +32,16 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Info" />
-                <ZQuery query={AccountSettingsQuery}>
-                    {settings => (
-                        <ZQuery
-                            query={OrganizationQuery}
-                            variables={{ organizationId: this.props.router.params.id }}
-                        >
-                            {resp => {
-                                return (
-                                    <>
-                                        <SScrollView backgroundColor={'#fff'}>
+                <SScrollView backgroundColor={'#fff'}>
+                    <ZQuery query={AccountSettingsQuery}>
+                        {settings => (
+                            <ZQuery
+                                query={OrganizationQuery}
+                                variables={{ organizationId: this.props.router.params.id }}
+                            >
+                                {resp => {
+                                    return (
+                                        <>
                                             <ZListItemHeader
                                                 photo={resp.data.organization.photo}
                                                 id={resp.data.organization.id}
@@ -267,7 +267,6 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                             );
                                                                                         }
 
-
                                                                                         builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
                                                                                             () => {
                                                                                                 new AlertBlanketBuilder()
@@ -317,13 +316,13 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                     </YMutation>
                                                 )}
                                             </YMutation>
-                                        </SScrollView>
-                                    </>
-                                );
-                            }}
-                        </ZQuery>
-                    )}
-                </ZQuery>
+                                        </>
+                                    );
+                                }}
+                            </ZQuery>
+                        )}
+                    </ZQuery>
+                </SScrollView>
             </>
         );
     }

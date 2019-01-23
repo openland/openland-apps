@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableHighlight, StyleSheet, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, TextStyle } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';

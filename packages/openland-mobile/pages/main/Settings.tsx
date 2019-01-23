@@ -52,22 +52,31 @@ class SettingsComponent extends React.Component<PageProps> {
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
-                                <ZListItemGroup header="Settings" divider={false}>
+                                <ZListItemGroup header="Settings" divider={true}>
                                     <ZListItem
                                         leftIcon={require('assets/ic-notifications-24.png')}
                                         text="Notifications"
                                         path="SettingsNotifications"
                                     />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Support" divider={false}>
+                                <ZListItemGroup header="Support" divider={true}>
+                                    <ZListItem
+                                        leftIcon={require('assets/ic-link-24.png')}
+                                        leftIconColor="#fe9400"
+                                        appearance="default"
+                                        text="Invite friends"
+                                        onPress={() => Share.share({ message: 'https://openland.com' })}
+                                    />
                                     <ZListItem
                                         leftIcon={require('assets/ic-help-24.png')}
+                                        leftIconColor="#00bfff"
                                         appearance="default"
                                         text="Ask for help"
                                         onPress={() => this.props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
                                     />
                                     <ZListItem
                                         leftIcon={require('assets/ic-rate-24.png')}
+                                        leftIconColor="#8a54ff"
                                         appearance="default"
                                         text="Rate the App"
                                         onPress={() => {
@@ -77,14 +86,8 @@ class SettingsComponent extends React.Component<PageProps> {
                                             }, () => { /**/ });
                                         }}
                                     />
-                                    <ZListItem
-                                        leftIcon={require('assets/ic-link-24.png')}
-                                        appearance="default"
-                                        text="Invite friends"
-                                        onPress={() => Share.share({ message: 'https://openland.com' })}
-                                    />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Organizations" divider={false}>
+                                <ZListItemGroup header="Organizations" divider={true}>
                                     {/* <ZListItem leftIcon={require('assets/ic-add-24.png')} text="Create new" path="SettingsOrganizations" /> */}
                                     {primary && <ZListItem
                                         text={primary.name}
