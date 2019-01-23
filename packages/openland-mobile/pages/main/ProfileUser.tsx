@@ -15,6 +15,7 @@ import { Platform } from 'react-native';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 
 class ProfileUserComponent extends React.Component<PageProps & { resp: User }, { notificationsValueCahed?: boolean }> {
     handleSend = () => {
@@ -37,14 +38,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                     {online => {
                         let sub = undefined;
                         if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
-                            let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
-                            if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-                                sub = 'last seen ' + humanize.relativeTime(time / 1000);
-                            } else if (new Date().getTime() - time < 1000 * 60) {
-                                sub = 'just now';
-                            } else {
-                                sub = 'last seen ' + formatDate(time);
-                            }
+                            sub = formatLastSeen(online.data.user.lastSeen);
                         } else {
                             sub = 'online'
                         }

@@ -215,6 +215,7 @@ class ProfileGroupComponent extends React.Component<PageProps> {
                                                     <View>
                                                         <UserViewAsync
                                                             item={v.user}
+                                                            isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
                                                             onLongPress={v.user.id !== getMessenger().engine.user.id ? async () => {
 
                                                                 let builder = new ActionSheetBuilder();
