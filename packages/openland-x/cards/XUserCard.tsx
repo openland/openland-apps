@@ -57,13 +57,15 @@ const AdminIconClass = css`
     }
 `;
 
-const AdminTooltip = () => (
+const Tooltip = ({ isOwner }: { isOwner?: boolean }) => (
     <XPopper
         placement="top"
         showOnHoverContent={false}
         showOnHover={true}
         style="dark"
-        content={TextProfiles.Organization.roles.OWNER}
+        content={
+            isOwner ? TextProfiles.Organization.roles.OWNER : TextProfiles.Organization.roles.ADMIN
+        }
         marginBottom={6}
     >
         <XView marginRight={5} alignItems="center" justifyContent="center">
@@ -79,6 +81,7 @@ interface XUserCardProps {
     customMenu?: any;
     extraMenu?: any;
     isAdmin?: boolean;
+    isOwner?: boolean;
     hideOrganization?: boolean;
 }
 
@@ -100,17 +103,14 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
             extraMenu,
             isAdmin,
             hideOrganization,
+            isOwner,
         } = this.props;
 
         let button =
             typeof customButton === 'undefined' ? (
                 <>
                     {user.isYou && (
-                        <XButton 
-                            style="ghost" 
-                            text={TextProfiles.User.you} 
-                            enabled={false}
-                        />
+                        <XButton style="ghost" text={TextProfiles.User.you} enabled={false} />
                     )}
                     {!user.isYou && (
                         <XButton
@@ -166,7 +166,7 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                                 marginTop={-2}
                                 marginBottom={2}
                             >
-                                {isAdmin && <AdminTooltip />}
+                                {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
                                 {user.name}
                                 {!hideOrganization && user.primaryOrganization && (
                                     <XView
@@ -184,14 +184,9 @@ export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
                             </XView>
                             {user.id && <UserStatus variables={{ userId: user.id }} />}
                         </XView>
-                        <XView 
-                            flexDirection="row"
-                            alignItems="center"
-                        >
+                        <XView flexDirection="row" alignItems="center">
                             {button}
-                            {(customMenu || extraMenu) && (
-                                <XView marginLeft={10}>{menu}</XView>
-                            )}
+                            {(customMenu || extraMenu) && <XView marginLeft={10}>{menu}</XView>}
                         </XView>
                     </XView>
                 </XView>
