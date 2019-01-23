@@ -267,7 +267,6 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                             );
                                                                                         }
 
-
                                                                                         builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
                                                                                             () => {
                                                                                                 new AlertBlanketBuilder()
