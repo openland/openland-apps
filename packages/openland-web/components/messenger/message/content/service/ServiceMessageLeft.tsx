@@ -20,18 +20,19 @@ export const ServiceMessageLeft = (props: ServiceMessageLeftProps) => {
                     has left the room
                 </>
             ) : (
-                <>
-                    <MentionedUser
-                        user={props.kickedUser}
-                        isYou={props.myUserId === props.kickedUser.id}
-                    />{' '}
-                    was kicked by{' '}
-                    <MentionedUser
-                        user={props.kickedByUser}
-                        isYou={props.myUserId === props.kickedByUser.id}
-                    />
-                </>
-            )}
+                    <>
+                        <MentionedUser
+                            user={props.kickedByUser}
+                            isYou={props.myUserId === props.kickedByUser.id}
+                        />{' '}
+                        kicked{' '}
+                        <MentionedUser
+                            user={props.kickedUser}
+                            isYou={props.myUserId === props.kickedUser.id}
+                        />
+
+                    </>
+                )}
         </Container>
     );
 };
