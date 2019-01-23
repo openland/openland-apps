@@ -12,6 +12,12 @@ import { tabs } from './mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
+import { withRoom } from 'openland-web/api/withRoom';
+import { withUserInfo } from 'openland-web/components/UserInfo';
+import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
+import { ChatHeaderView } from 'openland-web/fragments/chat/ChatHeaderView';
+import { XLoader } from 'openland-x/XLoader';
+import { Room, UserShort } from 'openland-api/Types';
 
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -43,6 +49,40 @@ const containerStyle = css`
 const DesktopDialogContainer = ({ children }: { children: any }) => (
     <div className={containerStyle}>{children}</div>
 );
+interface MessengerComponentLoaderProps {
+    variables: { id: string };
+    state?: MessagesStateContextProps;
+    user: UserShort;
+    loading: boolean;
+    data: Room;
+}
+
+const ChatHeaderViewLoader = withRoom(withQueryLoader(
+    withUserInfo(({ user, data, loading }: MessengerComponentLoaderProps) => {
+        if (!data || !data.room || loading) {
+            if (loading) {
+                return <XLoader loading={true} />;
+            }
+            return <div />;
+        }
+
+        return (
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                height={55}
+                paddingLeft={20}
+                paddingRight={20}
+            >
+                <ChatHeaderView room={data.room} me={user} />
+            </XView>
+        );
+    }),
+) as any) as React.ComponentType<{
+    variables: { id: string };
+    state?: MessagesStateContextProps;
+}>;
 
 type PageInnerProps = {
     firstFragment: any;
@@ -63,7 +103,6 @@ const MobilePageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps)
             overflow="hidden"
             alignItems="stretch"
             height="100%"
-            width="100%"
         >
             {tab === tabs.empty ? (
                 <XView width="100%">
@@ -82,7 +121,11 @@ const MobilePageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps)
                     {firstFragment}
                 </XView>
             ) : (
-                secondFragment
+                <XView flexDirection="column" flexGrow={1}>
+                    <ChatHeaderViewLoader variables={{ id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0' }} />
+                    <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                    {secondFragment}
+                </XView>
             )}
         </XView>
     );
@@ -114,7 +157,11 @@ const DesktopPageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps
                 />
                 {firstFragment}
             </DesktopDialogContainer>
-            {secondFragment}
+            <XView flexDirection="column" flexGrow={1}>
+                <ChatHeaderViewLoader variables={{ id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0' }} />
+                <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                {secondFragment}
+            </XView>
         </XView>
     );
 };
