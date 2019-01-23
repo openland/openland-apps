@@ -21,6 +21,7 @@ import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { UserViewAsync } from '../compose/ComposeInitial';
 import { RoomQuery, RoomUpdateMutation, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMemberMutation, RoomAddMembersMutation, RoomLeaveMutation } from 'openland-api';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { YQuery } from 'openland-y-graphql/YQuery';
 
 export const UserView = (props: { user: UserShort, role?: string, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={56} onPress={props.onPress} onLongPress={props.onLongPress}>
@@ -48,9 +49,9 @@ class ProfileGroupComponent extends React.Component<PageProps, { notificationsCa
         return (
             <>
                 <SHeader title="Info" />
-                <ZQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
+                <YQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
                     {(resp) => {
-                        let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
+                        let sharedRoom = resp.data && resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
                         if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
                             throw Error('');
                         }
@@ -279,7 +280,7 @@ class ProfileGroupComponent extends React.Component<PageProps, { notificationsCa
                             </SScrollView>
                         );
                     }}
-                </ZQuery>
+                </YQuery>
             </>
         );
     }

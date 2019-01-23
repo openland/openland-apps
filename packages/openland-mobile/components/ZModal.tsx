@@ -64,6 +64,7 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     }
 
     showModal(modal: ZModal) {
+        Keyboard.dismiss();
         let key = randomKey();
         let cont: ZModalController = {
             hide: () => {
