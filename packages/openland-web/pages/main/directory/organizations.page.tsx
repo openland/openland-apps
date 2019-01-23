@@ -22,7 +22,7 @@ interface OrganizationCardsProps {
     tagsCount: (n: number) => void;
 }
 
-const OrganizationCards = withExploreOrganizations(props => {
+export const OrganizationCards = withExploreOrganizations(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
@@ -61,7 +61,7 @@ interface OrganizationsProps {
     tagsCount: (n: number) => void;
 }
 
-class Organizations extends React.PureComponent<OrganizationsProps> {
+export class Organizations extends React.PureComponent<OrganizationsProps> {
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
     };

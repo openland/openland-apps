@@ -28,11 +28,13 @@ import { PopperOptionsButton } from 'openland-web/pages/main/directory/component
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { UserProfile } from 'openland-web/pages/main/profile/UserProfileComponent';
+import { OrganizationProfile } from 'openland-web/pages/main/profile/OrganizationProfileComponent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
 import { SortPicker } from 'openland-web/pages/main/directory/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { PeopleCards } from 'openland-web/pages/main/directory/people.page';
+import { OrganizationCards } from 'openland-web/pages/main/directory/organizations.page';
 
 // 1) directory navigation
 // 2) tabs navigation, espessally empty/non empty tab
@@ -243,9 +245,21 @@ const DirectoryNavigation = ({ route }: { route: string }) => (
     </Menu>
 );
 
-const DirectoryContent = () => {
-    let uid = false ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
-
+const DirectoryContent = ({
+    id,
+    searchPlaceholder,
+    noQueryText,
+    hasQueryText,
+    CardsComponent,
+    ProfileComponent,
+}: {
+    id?: string | null;
+    searchPlaceholder: string;
+    noQueryText: string;
+    hasQueryText: string;
+    CardsComponent: any;
+    ProfileComponent: any;
+}) => {
     const [orgCount, setOrgCount] = React.useState(0);
     const [query, setQuery] = React.useState('');
     const [sort, setSort] = React.useState({
@@ -261,12 +275,12 @@ const DirectoryContent = () => {
 
     return (
         <>
-            {!uid && (
+            {!id && (
                 <XVertical separator={0} height="100%">
-                    <SearchBox value={query} onChange={setQuery} placeholder="Search people" />
+                    <SearchBox value={query} onChange={setQuery} placeholder={searchPlaceholder} />
                     {query.length <= 0 && (
                         <XSubHeader
-                            title="All people"
+                            title={noQueryText}
                             right={
                                 <SortPicker sort={sort} onPick={setSort} withoutFeatured={true} />
                             }
@@ -274,14 +288,16 @@ const DirectoryContent = () => {
                     )}
                     {query.length > 0 && orgCount > 0 && (
                         <XSubHeader
-                            title="People"
+                            title={hasQueryText}
                             counter={orgCount}
                             right={
                                 <SortPicker sort={sort} onPick={setSort} withoutFeatured={true} />
                             }
                         />
                     )}
-                    <PeopleCards
+                    <CardsComponent
+                        featuredFirst={sort.featured}
+                        orderBy={sort.orderBy}
                         tagsCount={tagsCount}
                         variables={{
                             query,
@@ -289,10 +305,41 @@ const DirectoryContent = () => {
                     />
                 </XVertical>
             )}
-            {uid && <UserProfile userId={uid} onDirectory={true} />}
+            {id && <ProfileComponent id={id} />}
         </>
     );
 };
+
+const SearchUserProfileComponent = ({ id }: { id: string }) => (
+    <UserProfile userId={id} onDirectory={true} />
+);
+
+const SearchOrganizationProfileComponent = ({ id }: { id: string }) => (
+    <OrganizationProfile organizationId={id} onDirectory={true} />
+);
+
+class Organizations extends React.PureComponent<any> {
+    tagsCount = (n: number) => {
+        this.props.tagsCount(n);
+    };
+
+    render() {
+        let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
+        if (this.props.featuredFirst) {
+            sort.unshift({ ['featured']: { order: 'desc' } });
+        }
+
+        return (
+            <OrganizationCards
+                tagsCount={this.tagsCount}
+                variables={{
+                    prefix: this.props.variables.query,
+                    sort: JSON.stringify(sort),
+                }}
+            />
+        );
+    }
+}
 
 export default withApp(
     'Mail',
@@ -301,6 +348,10 @@ export default withApp(
         withQueryLoader(() => {
             const isChat = false;
             const tab = tabs.chat;
+
+            const uid = 'Jl1k97keDvsLjdwXPRKytboAyq';
+            const oid = 'wWwoJPLpYKCVre0WMQ4EspVrvP';
+            let showProfile = false;
 
             return (
                 <>
@@ -329,7 +380,24 @@ export default withApp(
                                         </MainLayout.Menu>
                                         <MainLayout.Content>
                                             <MainLayout.Content>
-                                                <DirectoryContent />
+                                                {/* <DirectoryContent
+                                                    id={showProfile ? uid: null}
+                                                    ProfileComponent={SearchUserProfileComponent}
+                                                    CardsComponent={PeopleCards}
+                                                    searchPlaceholder="Search people"
+                                                    noQueryText="All people"
+                                                    hasQueryText="People"
+                                                /> */}
+                                                <DirectoryContent
+                                                    id={showProfile ? oid : null}
+                                                    ProfileComponent={
+                                                        SearchOrganizationProfileComponent
+                                                    }
+                                                    CardsComponent={Organizations}
+                                                    searchPlaceholder="Search organizations"
+                                                    noQueryText="All organizations"
+                                                    hasQueryText="Organizations"
+                                                />
                                             </MainLayout.Content>
                                         </MainLayout.Content>
                                     </MainLayout>
