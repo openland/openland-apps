@@ -25,7 +25,7 @@ interface WithChatSearchRoomsProps {
     tagsCount: (n: number) => void;
 }
 
-const Rooms = withChatSearchChannels(props => {
+export const Rooms = withChatSearchChannels(props => {
     if (!(props.data && props.data.items)) {
         return <XLoader loading={true} />;
     }

@@ -21,7 +21,7 @@ interface CommunitiesCardsProps {
     tagsCount: (n: number) => void;
 }
 
-const CommunitiesCards = withExploreCommunities(props => {
+export const CommunitiesCards = withExploreCommunities(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }

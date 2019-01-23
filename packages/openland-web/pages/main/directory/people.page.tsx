@@ -39,7 +39,7 @@ export const PeopleCards = withExplorePeople(({ data, error, tagsCount }: any) =
         <>
             {!noData && (
                 <XContentWrapper withPaddingBottom={true}>
-                    {data.items.edges.map((i, j) => (
+                    {data.items.edges.map((i: any, j: any) => (
                         <XUserCard key={'_org_card_' + i.node.id} user={i.node} />
                     ))}
                     <PagePagination

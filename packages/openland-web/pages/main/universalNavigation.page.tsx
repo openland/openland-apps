@@ -35,10 +35,12 @@ import { SortPicker } from 'openland-web/pages/main/directory/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { PeopleCards } from 'openland-web/pages/main/directory/people.page';
 import { OrganizationCards } from 'openland-web/pages/main/directory/organizations.page';
+import { CommunitiesCards } from 'openland-web/pages/main/directory/communities.page';
+import { RoomProfile } from 'openland-web/pages/main/profile/RoomProfileComponent';
+import { Rooms } from 'openland-web/fragments/RoomsExploreComponent';
 
-// 1) directory navigation
-// 2) tabs navigation, espessally empty/non empty tab
-// 3) search
+// TODO
+// need to add prefix universalNavigation to all routes somehow
 
 const AddButton = Glamorous(XButton)({
     '& svg > g > path': {
@@ -318,6 +320,32 @@ const SearchOrganizationProfileComponent = ({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
 );
 
+const SearchRoomsProfileComponent = ({ id }: { id: string }) => (
+    <RoomProfile conversationId={id} onDirectory={true} />
+);
+
+class Communities extends React.PureComponent<any> {
+    tagsCount = (n: number) => {
+        this.props.tagsCount(n);
+    };
+
+    render() {
+        let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
+        if (this.props.featuredFirst) {
+            sort.unshift({ ['featured']: { order: 'desc' } } as any);
+        }
+
+        return (
+            <CommunitiesCards
+                tagsCount={this.tagsCount}
+                variables={{
+                    query: this.props.query,
+                    sort: JSON.stringify(sort),
+                }}
+            />
+        );
+    }
+}
 class Organizations extends React.PureComponent<any> {
     tagsCount = (n: number) => {
         this.props.tagsCount(n);
@@ -326,7 +354,7 @@ class Organizations extends React.PureComponent<any> {
     render() {
         let sort = [{ [this.props.orderBy]: { order: 'desc' } }];
         if (this.props.featuredFirst) {
-            sort.unshift({ ['featured']: { order: 'desc' } });
+            sort.unshift({ ['featured']: { order: 'desc' } } as any);
         }
 
         return (
@@ -348,10 +376,7 @@ export default withApp(
         withQueryLoader(() => {
             const isChat = false;
             const tab = tabs.chat;
-
-            const uid = 'Jl1k97keDvsLjdwXPRKytboAyq';
-            const oid = 'wWwoJPLpYKCVre0WMQ4EspVrvP';
-            let showProfile = false;
+            let showProfile = true;
 
             return (
                 <>
@@ -381,15 +406,15 @@ export default withApp(
                                         <MainLayout.Content>
                                             <MainLayout.Content>
                                                 {/* <DirectoryContent
-                                                    id={showProfile ? uid: null}
+                                                    id={showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq': null}
                                                     ProfileComponent={SearchUserProfileComponent}
                                                     CardsComponent={PeopleCards}
                                                     searchPlaceholder="Search people"
                                                     noQueryText="All people"
                                                     hasQueryText="People"
                                                 /> */}
-                                                <DirectoryContent
-                                                    id={showProfile ? oid : null}
+                                                {/* <DirectoryContent
+                                                    id={showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null}
                                                     ProfileComponent={
                                                         SearchOrganizationProfileComponent
                                                     }
@@ -397,6 +422,32 @@ export default withApp(
                                                     searchPlaceholder="Search organizations"
                                                     noQueryText="All organizations"
                                                     hasQueryText="Organizations"
+                                                /> */}
+                                                {/* <DirectoryContent
+                                                    id={
+                                                        showProfile
+                                                            ? 'qlmY0z56DzsYdBM4d66ZU4n67K'
+                                                            : null
+                                                    }
+                                                    ProfileComponent={
+                                                        SearchOrganizationProfileComponent
+                                                    }
+                                                    CardsComponent={Communities}
+                                                    searchPlaceholder="Search communities"
+                                                    noQueryText="All communities"
+                                                    hasQueryText="Communities"
+                                                /> */}
+                                                <DirectoryContent
+                                                    id={
+                                                        showProfile
+                                                            ? 'wW4975KQVzS17BDVOZojTMRK96'
+                                                            : null
+                                                    }
+                                                    ProfileComponent={SearchRoomsProfileComponent}
+                                                    CardsComponent={Rooms}
+                                                    searchPlaceholder="Search rooms"
+                                                    noQueryText="All rooms"
+                                                    hasQueryText="Rooms"
                                                 />
                                             </MainLayout.Content>
                                         </MainLayout.Content>
