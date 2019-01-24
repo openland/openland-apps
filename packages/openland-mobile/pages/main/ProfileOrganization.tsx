@@ -271,20 +271,14 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                                 Alert.builder()
                                                                                                     .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
-                                                                                                        startLoader();
-                                                                                                        try {
-                                                                                                            await changeRole({
-                                                                                                                variables: {
-                                                                                                                    memberId: v.user.id,
-                                                                                                                    organizationId: this.props.router.params.id,
-                                                                                                                    newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
-                                                                                                                },
-                                                                                                            });
-                                                                                                        } catch (e) {
-                                                                                                            Alert.alert(e.message);
-                                                                                                        }
-                                                                                                        stopLoader();
+                                                                                                    .action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
+                                                                                                        await changeRole({
+                                                                                                            variables: {
+                                                                                                                memberId: v.user.id,
+                                                                                                                organizationId: this.props.router.params.id,
+                                                                                                                newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
+                                                                                                            },
+                                                                                                        });
                                                                                                     }).show();
                                                                                             },
                                                                                         );
