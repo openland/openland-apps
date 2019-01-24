@@ -82,8 +82,9 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                                         <ZListItem
                                             leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                                             text="Invite with a link"
-                                            path={this.props.router.params.inviteLinkButton.path}
-                                            pathParams={this.props.router.params.inviteLinkButton.pathParams}
+                                            onPress={() => {
+                                                this.props.router.pushAndRemove(this.props.router.params.inviteLinkButton.path, this.props.router.params.inviteLinkButton.pathParams);
+                                            }}
                                         />
                                     </View>
                                 }
