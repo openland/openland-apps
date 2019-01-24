@@ -303,6 +303,229 @@ class Organizations extends React.PureComponent<any> {
     }
 }
 
+const UniversalNavigation = ({
+    tab,
+    title,
+    menuRightContent,
+    menuChildrenContent,
+    swapFragmentsOnMobile,
+    secondFragmentHeader,
+    firstFragment,
+    secondFragment,
+}: {
+    tab?: any;
+    title: string;
+    menuRightContent?: any;
+    menuChildrenContent?: any;
+    swapFragmentsOnMobile?: any;
+    secondFragmentHeader?: any;
+    firstFragment?: any;
+    secondFragment?: any;
+}) => {
+    return (
+        <>
+            <XDocumentHead title={title} />
+            <Scaffold>
+                <Scaffold.Content padding={false} bottomOffset={false}>
+                    <XView
+                        flexDirection="row"
+                        flexGrow={1}
+                        flexShrink={0}
+                        overflow="hidden"
+                        alignItems="stretch"
+                        height="100%"
+                        width="100%"
+                    >
+                        <PageInner
+                            tab={tab}
+                            swapFragmentsOnMobile={swapFragmentsOnMobile}
+                            firstFragmentMenu={
+                                <Menu title={title} rightContent={menuRightContent}>
+                                    {menuChildrenContent}
+                                </Menu>
+                            }
+                            secondFragmentHeader={secondFragmentHeader}
+                            firstFragment={firstFragment}
+                            secondFragment={secondFragment}
+                        />
+                    </XView>
+                </Scaffold.Content>
+            </Scaffold>
+        </>
+    );
+};
+
+const MessagesUniversalNavigation = ({
+    tab,
+    showDebugFragments,
+}: {
+    tab?: any;
+    showDebugFragments: boolean;
+}) => {
+    return (
+        <UniversalNavigation
+            title="Messages"
+            tab={tab}
+            menuRightContent={
+                <PopperOptionsButton
+                    path="/mail/new"
+                    icon={<PlusIcon />}
+                    title={TextDirectory.create.title}
+                />
+            }
+            secondFragmentHeader={
+                <>
+                    <ChatHeaderViewLoader
+                        variables={{
+                            id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0',
+                        }}
+                    />
+                    <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                </>
+            }
+            firstFragment={showDebugFragments && <XView color="red">firstFragment</XView>}
+            secondFragment={showDebugFragments && <XView color="blue">secondFragment</XView>}
+        />
+    );
+};
+
+const DirectoryUniversalNavigation = ({
+    showDebugFragments,
+    path,
+    showProfile,
+}: {
+    showDebugFragments: boolean;
+    showProfile?: boolean;
+    path: string;
+}) => {
+    const directoryRightContent = (
+        <>
+            <XMenuItem
+                query={{
+                    field: 'createOrganization',
+                    value: 'true',
+                }}
+                icon="x-dropdown-organization"
+            >
+                {TextDirectory.create.organization}
+            </XMenuItem>
+            <XMenuItem
+                query={{
+                    field: 'createRoom',
+                    value: 'true',
+                }}
+                icon="x-dropdown-room"
+            >
+                {TextDirectory.create.room}
+            </XMenuItem>
+            <XMenuItem
+                query={{
+                    field: 'createOrganization',
+                    value: 'community',
+                }}
+                icon="x-dropdown-community"
+            >
+                {TextDirectory.create.community}
+            </XMenuItem>
+        </>
+    );
+
+    let ProfileComponent;
+    let CardsComponent;
+    let searchPlaceholder = '';
+    let noQueryText = '';
+    let hasQueryText = '';
+    let id: string | null = '';
+    let title = '';
+
+    if (path.endsWith('/organizations')) {
+        title = 'Organizations';
+        id = showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null;
+        ProfileComponent = SearchOrganizationProfileComponent;
+        CardsComponent = Organizations;
+        searchPlaceholder = 'Search organizations';
+        noQueryText = 'All organizations';
+        hasQueryText = 'Organizations';
+    } else if (path.endsWith('/communities')) {
+        title = 'Communities';
+        id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
+        ProfileComponent = SearchOrganizationProfileComponent;
+        CardsComponent = Communities;
+        searchPlaceholder = 'Search communities';
+        noQueryText = 'All communities';
+        hasQueryText = 'Communities';
+    } else if (path.endsWith('/people')) {
+        title = 'People';
+        id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
+        ProfileComponent = SearchUserProfileComponent;
+        CardsComponent = PeopleCards;
+        searchPlaceholder = 'Search people';
+        noQueryText = 'All people';
+        hasQueryText = 'People';
+    } else {
+        title = 'Rooms';
+        id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
+        ProfileComponent = SearchRoomsProfileComponent;
+        CardsComponent = Rooms;
+        searchPlaceholder = 'Search rooms';
+        noQueryText = 'All rooms';
+        hasQueryText = 'Rooms';
+    }
+
+    return (
+        <UniversalNavigation
+            title={title}
+            swapFragmentsOnMobile
+            tab={tabs.empty}
+            menuRightContent={
+                <PopperOptionsButton
+                    path="/mail/new"
+                    icon={<PlusIcon />}
+                    title={TextDirectory.create.title}
+                    content={directoryRightContent}
+                />
+            }
+            menuChildrenContent={
+                <>
+                    <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
+                    <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
+                    <MenuItem
+                        path="/directory/organizations"
+                        title="Organizations"
+                        icon={<OrganizationsIcon />}
+                    />
+                    <MenuItem
+                        path="/directory/communities"
+                        title="Communities"
+                        icon={<CommunityIcon />}
+                    />
+                    <XWithRole role="feature-non-production">
+                        <MenuItem
+                            path="/directory/explore"
+                            title="Explore"
+                            icon={<CommunityIcon />}
+                        />
+                    </XWithRole>
+                </>
+            }
+            firstFragment={showDebugFragments && <XView color="red">firstFragment</XView>}
+            secondFragment={
+                <XView>
+                    <DirectoryContent
+                        id={id}
+                        ProfileComponent={ProfileComponent}
+                        CardsComponent={CardsComponent}
+                        searchPlaceholder={searchPlaceholder}
+                        noQueryText={noQueryText}
+                        hasQueryText={hasQueryText}
+                    />
+                    {showDebugFragments && <XView color="blue">secondFragment</XView>}
+                </XView>
+            }
+        />
+    );
+};
+
 export default withApp(
     'Mail',
     'viewer',
@@ -374,199 +597,27 @@ export default withApp(
             }
 
             let showProfile = false;
-            let id;
-            let ProfileComponent;
-            let CardsComponent;
-            let searchPlaceholder = '';
-            let noQueryText = '';
-            let hasQueryText = '';
-            let title = '';
-
-            if (isDirectory) {
-                if (path.endsWith('/organizations')) {
-                    title = 'Organizations';
-                    id = showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null;
-                    ProfileComponent = SearchOrganizationProfileComponent;
-                    CardsComponent = Organizations;
-                    searchPlaceholder = 'Search organizations';
-                    noQueryText = 'All organizations';
-                    hasQueryText = 'Organizations';
-                } else if (path.endsWith('/communities')) {
-                    title = 'Communities';
-                    id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
-                    ProfileComponent = SearchOrganizationProfileComponent;
-                    CardsComponent = Communities;
-                    searchPlaceholder = 'Search communities';
-                    noQueryText = 'All communities';
-                    hasQueryText = 'Communities';
-                } else if (path.endsWith('/people')) {
-                    title = 'People';
-                    id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
-                    ProfileComponent = SearchUserProfileComponent;
-                    CardsComponent = PeopleCards;
-                    searchPlaceholder = 'Search people';
-                    noQueryText = 'All people';
-                    hasQueryText = 'People';
-                } else {
-                    title = 'Rooms';
-                    id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
-                    ProfileComponent = SearchRoomsProfileComponent;
-                    CardsComponent = Rooms;
-                    searchPlaceholder = 'Search rooms';
-                    noQueryText = 'All rooms';
-                    hasQueryText = 'Rooms';
-                }
-            }
-
-            const directoryRightContent = (
-                <>
-                    <XMenuItem
-                        query={{
-                            field: 'createOrganization',
-                            value: 'true',
-                        }}
-                        icon="x-dropdown-organization"
-                    >
-                        {TextDirectory.create.organization}
-                    </XMenuItem>
-                    <XMenuItem
-                        query={{
-                            field: 'createRoom',
-                            value: 'true',
-                        }}
-                        icon="x-dropdown-room"
-                    >
-                        {TextDirectory.create.room}
-                    </XMenuItem>
-                    <XMenuItem
-                        query={{
-                            field: 'createOrganization',
-                            value: 'community',
-                        }}
-                        icon="x-dropdown-community"
-                    >
-                        {TextDirectory.create.community}
-                    </XMenuItem>
-                </>
-            );
             const showDebugFragments = false;
 
             return (
-                <>
-                    <XDocumentHead title={title} />
-                    <LinkOverwriteContext.Provider
-                        value={{
-                            prefix: '/universalNavigation',
-                        }}
-                    >
-                        <Scaffold>
-                            <Scaffold.Content padding={false} bottomOffset={false}>
-                                <XView
-                                    flexDirection="row"
-                                    flexGrow={1}
-                                    flexShrink={0}
-                                    overflow="hidden"
-                                    alignItems="stretch"
-                                    height="100%"
-                                    width="100%"
-                                >
-                                    <PageInner
-                                        tab={tab}
-                                        swapFragmentsOnMobile={isDirectory}
-                                        firstFragmentMenu={
-                                            <Menu
-                                                title={isDirectory ? title : 'Messages'}
-                                                rightContent={
-                                                    <PopperOptionsButton
-                                                        path="/mail/new"
-                                                        icon={<PlusIcon />}
-                                                        title={TextDirectory.create.title}
-                                                        content={
-                                                            isDirectory && directoryRightContent
-                                                        }
-                                                    />
-                                                }
-                                            >
-                                                {isDirectory && (
-                                                    <>
-                                                        <MenuItem
-                                                            path="/directory"
-                                                            title="Rooms"
-                                                            icon={<RoomIcon />}
-                                                        />
-                                                        <MenuItem
-                                                            path="/directory/people"
-                                                            title="People"
-                                                            icon={<PeopleIcon />}
-                                                        />
-                                                        <MenuItem
-                                                            path="/directory/organizations"
-                                                            title="Organizations"
-                                                            icon={<OrganizationsIcon />}
-                                                        />
-                                                        <MenuItem
-                                                            path="/directory/communities"
-                                                            title="Communities"
-                                                            icon={<CommunityIcon />}
-                                                        />
-                                                        <XWithRole role="feature-non-production">
-                                                            <MenuItem
-                                                                path="/directory/explore"
-                                                                title="Explore"
-                                                                icon={<CommunityIcon />}
-                                                            />
-                                                        </XWithRole>
-                                                    </>
-                                                )}
-                                            </Menu>
-                                        }
-                                        secondFragmentHeader={
-                                            !isDirectory ? (
-                                                <>
-                                                    <ChatHeaderViewLoader
-                                                        variables={{
-                                                            id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0',
-                                                        }}
-                                                    />
-                                                    <XView
-                                                        height={1}
-                                                        backgroundColor="rgba(220, 222, 228, 0.45)"
-                                                    />
-                                                </>
-                                            ) : null
-                                        }
-                                        firstFragment={
-                                            showDebugFragments && (
-                                                <XView color="red">firstFragment</XView>
-                                            )
-                                        }
-                                        secondFragment={
-                                            isDirectory ? (
-                                                <XView>
-                                                    <DirectoryContent
-                                                        id={id}
-                                                        ProfileComponent={ProfileComponent}
-                                                        CardsComponent={CardsComponent}
-                                                        searchPlaceholder={searchPlaceholder}
-                                                        noQueryText={noQueryText}
-                                                        hasQueryText={hasQueryText}
-                                                    />
-                                                    {showDebugFragments && (
-                                                        <XView color="blue">secondFragment</XView>
-                                                    )}
-                                                </XView>
-                                            ) : (
-                                                showDebugFragments && (
-                                                    <XView color="blue">secondFragment</XView>
-                                                )
-                                            )
-                                        }
-                                    />
-                                </XView>
-                            </Scaffold.Content>
-                        </Scaffold>
-                    </LinkOverwriteContext.Provider>
-                </>
+                <LinkOverwriteContext.Provider
+                    value={{
+                        prefix: '/universalNavigation',
+                    }}
+                >
+                    {isDirectory ? (
+                        <DirectoryUniversalNavigation
+                            path={path}
+                            showProfile={showProfile}
+                            showDebugFragments={showDebugFragments}
+                        />
+                    ) : (
+                        <MessagesUniversalNavigation
+                            tab={tab}
+                            showDebugFragments={showDebugFragments}
+                        />
+                    )}
+                </LinkOverwriteContext.Provider>
             );
         }),
     ),
