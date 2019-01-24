@@ -10,7 +10,6 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { Room_room_SharedRoom, RoomMemberRole, UserShort } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
-import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { RoomQuery, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation, RoomUpdateMutation } from 'openland-api';
@@ -18,8 +17,9 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { PromptBuilder } from 'openland-mobile/components/Prompt';
+import { PromptBuilder, Prompt } from 'openland-mobile/components/Prompt';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 
 function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }) {
 
@@ -30,12 +30,12 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
     }, [props.router.params.id]);
 
     const handleEdit = React.useCallback(() => {
-        new ActionSheetBuilder()
+        ActionSheet.builder()
             .action(props.room.photo ? 'Change photo' : 'Set photo', () => {
                 //
             })
             .action('Change name', () => {
-                new PromptBuilder()
+                Prompt.builder()
                     .title(props.room.kind === 'GROUP' ? 'Group name' : 'Room name')
                     .value(props.room.title)
                     .callback(async (src) => {
@@ -79,7 +79,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
 
     const handleMemberLongPress = React.useCallback<{ (user: UserShort): void }>((user) => {
         if (user.id !== getMessenger().engine.user.id) {
-            let builder = new ActionSheetBuilder();
+            let builder = ActionSheet.builder();
             builder.action(
                 'Kick',
                 () => {
@@ -100,7 +100,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
             );
             builder.show();
         } else {
-            let builder = new ActionSheetBuilder();
+            let builder = ActionSheet.builder();
             builder.action('Leave', handleLeave, true);
             builder.show();
         }

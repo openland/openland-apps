@@ -3,6 +3,12 @@ import { Platform, ActionSheetIOS, View } from 'react-native';
 import { showSheetModal } from './showSheetModal';
 import { ZListItem } from './ZListItem';
 
+export class ActionSheet {
+    static builder = () => {
+        return new ActionSheetBuilder();
+    }
+}
+
 export class ActionSheetBuilder {
     private _title?: string;
     private _actions: { name: string, callback: () => void, distructive?: boolean }[] = [];

@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { ZListItemBase } from './ZListItemBase';
-import { View, Text, Switch, Image, Alert, Platform, Clipboard } from 'react-native';
+import { View, Text, Switch, Image, Platform, Clipboard } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XPAvatar } from 'openland-xp/XPAvatar';
-import { XPStyles } from 'openland-xp/XPStyles';
-import { ActionSheetBuilder } from './ActionSheet';
+import { ActionSheet } from './ActionSheet';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -69,7 +68,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             this.props.onLongPress();
         }
         if (this.props.copy && this.props.text) {
-            new ActionSheetBuilder()
+            ActionSheet.builder()
                 .action('Copy', () => Clipboard.setString(this.props.text!))
                 .show();
         }
