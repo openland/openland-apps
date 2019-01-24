@@ -155,45 +155,43 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
 
                                             </ZListItemGroup>
 
-                                            <ZListItemGroup
-                                                header="Rooms"
-                                                divider={false}
-                                                actionRight={
-                                                    resp.data.organization.rooms.length > 3
-                                                        ? {
-                                                            title: 'Show all',
-                                                            onPress: () =>
-                                                                this.props.router.push(
-                                                                    'OrgChannels',
-                                                                    {
-                                                                        organizationId: resp.data.organization.id,
-                                                                        title: resp.data.organization.name + ' rooms',
-                                                                    },
-                                                                ),
-                                                        }
-                                                        : undefined
-                                                }
-                                            >
-                                                {resp.data.organization.rooms
-                                                    .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
-                                                    .filter((c, i) => i <= 2)
-                                                    .map(v => (
-                                                        <ArrowWrapper>
-                                                            <ChannelViewAsync
-                                                                key={v!!.id}
-                                                                item={v!}
-                                                                onPress={() =>
-                                                                    this.props.router.push(
-                                                                        'Conversation',
-                                                                        {
-                                                                            flexibleId: v!!.id,
-                                                                        },
-                                                                    )
-                                                                }
-                                                            />
-                                                        </ArrowWrapper>
-                                                    ))}
-                                            </ZListItemGroup>
+                                            {resp.data.organization.rooms.length > 0 && (
+                                                <ZListItemGroup
+                                                    header="Rooms"
+                                                    divider={false}
+                                                >
+                                                    {resp.data.organization.rooms
+                                                        .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
+                                                        .filter((c, i) => i <= 2)
+                                                        .map(v => (
+                                                            <ArrowWrapper>
+                                                                <ChannelViewAsync
+                                                                    key={v!!.id}
+                                                                    item={v!}
+                                                                    onPress={() =>
+                                                                        this.props.router.push(
+                                                                            'Conversation',
+                                                                            {
+                                                                                flexibleId: v!!.id,
+                                                                            },
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </ArrowWrapper>
+                                                        ))}
+                                                    {resp.data.organization.rooms.length > 3 && (
+                                                        <ZListItem
+                                                            leftIcon={require('assets/ic-more-24.png')}
+                                                            text="More rooms"
+                                                            path="OrgChannels"
+                                                            pathParams={{
+                                                                organizationId: resp.data.organization.id,
+                                                                title: resp.data.organization.name + ' rooms',
+                                                            }}
+                                                            navigationIcon={false}
+                                                        />)}
+                                                </ZListItemGroup>
+                                            )}
 
                                             <YMutation
                                                 mutation={OrganizationChangeMemberRoleMutation}
