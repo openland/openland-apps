@@ -128,13 +128,13 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             )}
                                             <ZListItemGroup
                                                 divider={false}
-                                                header={null}
+                                                header="About"
                                             >
                                                 {resp.data.organization.about && (
-                                                    <ZListItem multiline={true} title="About" text={resp.data.organization.about} copy={true} />
+                                                    <ZListItem multiline={true} text={resp.data.organization.about} copy={true} />
                                                 )}
                                                 {resp.data.organization.shortname && (
-                                                    <ZListItem multiline={true} title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />
+                                                    <ZListItem title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />
                                                 )}
                                                 {resp.data.organization.website && (
                                                     <ZListItem title="Website" text={resp.data.organization.website} copy={true} />
