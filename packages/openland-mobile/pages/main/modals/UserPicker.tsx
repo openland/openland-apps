@@ -5,13 +5,13 @@ import { Keyboard } from 'react-native';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { PageProps } from '../../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { UserView } from '../ProfileGroup';
 import { ZListItemGroup } from '../../../components/ZListItemGroup';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SHeader } from 'react-native-s/SHeader';
 import { SRouter } from 'react-native-s/SRouter';
 import { UserShort } from 'openland-api/Types';
 import { ExplorePeopleQuery } from 'openland-api';
+import { UserView } from '../components/UserView';
 
 class UserSearch extends React.Component<{ query: string, router: SRouter }> {
 

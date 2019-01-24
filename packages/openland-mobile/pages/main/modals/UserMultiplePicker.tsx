@@ -10,9 +10,9 @@ import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZBlurredView } from '../../../components/ZBlurredView';
-import { UserViewAsync } from '../../../pages/compose/ComposeInitial';
 import { ZTagView } from '../../../components/ZTagView';
 import { ExplorePeopleQuery } from 'openland-api';
+import { UserView } from '../components/UserView';
 
 interface UserMultiplePickerComponentState {
     query: string;
@@ -78,7 +78,7 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                             <SScrollView marginTop={this.state.searchHeight}>
                                 {r.data.items.edges.map((v) => (
                                     <CheckListBoxWraper checked={!!this.state.users.find(u => u.id === v.node.id)}>
-                                        <UserViewAsync key={v.node.id} item={v.node} disabled={(this.props.router.params.disableUsers || []).indexOf(v.node.id) > -1} onPress={() => this.handleAddUser(v.node)} />
+                                        <UserView key={v.node.id} user={v.node} enabled={!((this.props.router.params.disableUsers || []).indexOf(v.node.id) > -1)} onPress={() => this.handleAddUser(v.node)} />
                                     </CheckListBoxWraper>
                                 ))}
                             </SScrollView>

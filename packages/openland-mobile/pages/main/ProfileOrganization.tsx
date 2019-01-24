@@ -19,12 +19,11 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { View, Text } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { UserViewAsync } from '../compose/ComposeInitial';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { UserView } from './components/UserView';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -231,77 +230,74 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                         //     description={v.role === 'OWNER' ? 'owner' : undefined}
 
                                                                         // />
-                                                                        <View>
-                                                                            <UserViewAsync
-                                                                                item={
-                                                                                    v.user
-                                                                                }
-                                                                                isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
+                                                                        <UserView
+                                                                            user={
+                                                                                v.user
+                                                                            }
+                                                                            // isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
 
-                                                                                onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
-                                                                                onLongPress={v.user.id === getMessenger().engine.user.id || (resp.data.organization.isOwner || resp.data.organization.isAdmin) ?
-                                                                                    async () => {
+                                                                            onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
+                                                                            onLongPress={v.user.id === getMessenger().engine.user.id || (resp.data.organization.isOwner || resp.data.organization.isAdmin) ?
+                                                                                async () => {
 
-                                                                                        let builder = new ActionSheetBuilder();
+                                                                                    let builder = new ActionSheetBuilder();
 
-                                                                                        if (v.user.id !== getMessenger().engine.user.id && resp.data.organization.isOwner) {
-                                                                                            builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
-                                                                                                () => {
-                                                                                                    new AlertBlanketBuilder()
-                                                                                                        .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
-                                                                                                        .button('Cancel', 'cancel')
-                                                                                                        .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
-                                                                                                            startLoader();
-                                                                                                            try {
-                                                                                                                await changeRole({
-                                                                                                                    variables: {
-                                                                                                                        memberId: v.user.id,
-                                                                                                                        organizationId: this.props.router.params.id,
-                                                                                                                        newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
-                                                                                                                    },
-                                                                                                                });
-                                                                                                            } catch (e) {
-                                                                                                                new AlertBlanketBuilder().alert(e.message);
-                                                                                                            }
-                                                                                                            stopLoader();
-                                                                                                        }).show();
-                                                                                                },
-                                                                                            );
-                                                                                        }
-                                                                                        if (resp.data.organization.isOwner || resp.data.organization.isAdmin || v.user.id !== getMessenger().engine.user.id) {
-                                                                                            builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
-                                                                                                () => {
-                                                                                                    new AlertBlanketBuilder()
-                                                                                                        .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
-                                                                                                        .button('Cancel', 'cancel')
-                                                                                                        .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
-                                                                                                            startLoader();
-                                                                                                            try {
-                                                                                                                await remove({
-                                                                                                                    variables: {
-                                                                                                                        memberId: v.user.id,
-                                                                                                                        organizationId: this.props.router.params.id,
-                                                                                                                    },
-                                                                                                                });
-                                                                                                            } catch (e) {
-                                                                                                                new AlertBlanketBuilder().alert(e.message);
-                                                                                                            }
-                                                                                                            stopLoader();
-                                                                                                        })
-                                                                                                        .show()
-
-                                                                                                },
-                                                                                                true,
-                                                                                            );
-                                                                                        }
-
-                                                                                        builder.show();
+                                                                                    if (v.user.id !== getMessenger().engine.user.id && resp.data.organization.isOwner) {
+                                                                                        builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
+                                                                                            () => {
+                                                                                                new AlertBlanketBuilder()
+                                                                                                    .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
+                                                                                                    .button('Cancel', 'cancel')
+                                                                                                    .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
+                                                                                                        startLoader();
+                                                                                                        try {
+                                                                                                            await changeRole({
+                                                                                                                variables: {
+                                                                                                                    memberId: v.user.id,
+                                                                                                                    organizationId: this.props.router.params.id,
+                                                                                                                    newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
+                                                                                                                },
+                                                                                                            });
+                                                                                                        } catch (e) {
+                                                                                                            new AlertBlanketBuilder().alert(e.message);
+                                                                                                        }
+                                                                                                        stopLoader();
+                                                                                                    }).show();
+                                                                                            },
+                                                                                        );
                                                                                     }
-                                                                                    : undefined
-                                                                                }
-                                                                            />
+                                                                                    if (resp.data.organization.isOwner || resp.data.organization.isAdmin || v.user.id !== getMessenger().engine.user.id) {
+                                                                                        builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
+                                                                                            () => {
+                                                                                                new AlertBlanketBuilder()
+                                                                                                    .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
+                                                                                                    .button('Cancel', 'cancel')
+                                                                                                    .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
+                                                                                                        startLoader();
+                                                                                                        try {
+                                                                                                            await remove({
+                                                                                                                variables: {
+                                                                                                                    memberId: v.user.id,
+                                                                                                                    organizationId: this.props.router.params.id,
+                                                                                                                },
+                                                                                                            });
+                                                                                                        } catch (e) {
+                                                                                                            new AlertBlanketBuilder().alert(e.message);
+                                                                                                        }
+                                                                                                        stopLoader();
+                                                                                                    })
+                                                                                                    .show()
 
-                                                                        </View>
+                                                                                            },
+                                                                                            true,
+                                                                                        );
+                                                                                    }
+
+                                                                                    builder.show();
+                                                                                }
+                                                                                : undefined
+                                                                            }
+                                                                        />
                                                                     ),
                                                                 )}
                                                             </ZListItemGroup>
