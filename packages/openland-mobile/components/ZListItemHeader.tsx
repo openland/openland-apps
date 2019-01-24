@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
         fontSize: Platform.OS === 'android' ?  14 : 15,
         fontWeight: Platform.OS === 'android' ? '400' : '400',
-        height: Platform.OS === 'android' ? 18 : 18,
+        height: Platform.OS === 'android' ? 20 : 20,
         textAlignVertical: 'center'
     } as TextStyle
 });
@@ -70,7 +70,7 @@ export class ZListItemHeader extends React.PureComponent<{
                             <Text style={[styles.title, this.props.titleColor ? { color: this.props.titleColor } : undefined]} numberOfLines={1}>{this.props.title}</Text>
                         </View>
                         <Text style={styles.subtitle} numberOfLines={1}>{this.props.subtitle}</Text>
-                        {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>}
+                        {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
                     </View>
                     {this.props.action && (
                         <View style={styles.footer}>
