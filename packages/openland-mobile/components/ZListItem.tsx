@@ -104,7 +104,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
             >
                 {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
-                <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined} minHeight={this.props.multiline ? 44 : undefined}>
+                <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && Platform.OS !== 'android' && <Text style={{ color: '#5c6a81', fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         <ZText
@@ -115,7 +115,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                 color: this.props.appearance === 'action' ? AppStyles.primaryColor
                                     : this.props.appearance === 'danger' ? '#f6564e'
                                         : '#181818',
-                                height: 24,
+                                lineHeight: 24,
                                 textAlignVertical: 'center',
                                 flexGrow: 1,
                                 flexBasis: 0,

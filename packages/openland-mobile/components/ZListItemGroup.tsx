@@ -39,7 +39,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                     <View
                         style={{
                             paddingTop: 30,
-                            paddingBottom: 10,
+                            paddingBottom: 8,
                             flexDirection: 'row'
                         }}
                     >

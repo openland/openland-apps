@@ -27,6 +27,7 @@ import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { View } from 'react-native';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -48,7 +49,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 photo={resp.data.organization.photo}
                                                 id={resp.data.organization.id}
                                                 title={resp.data.organization.name}
-                                                subtitle="Organization"
+                                                subtitle={resp.data.organization.isCommunity ? 'Community' : 'Organization'}
                                                 action={resp.data.organization.isOwner ? 'Edit profile' : undefined}
                                                 onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })}
                                             />
@@ -132,6 +133,9 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             >
                                                 {resp.data.organization.about && (
                                                     <ZListItem multiline={true} text={resp.data.organization.about} copy={true} />
+                                                )}
+                                                {resp.data.organization.about && (
+                                                    <View height={8} />
                                                 )}
                                                 {resp.data.organization.shortname && (
                                                     <ZListItem title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />
