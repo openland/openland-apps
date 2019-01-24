@@ -20,7 +20,7 @@ import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
-import { PromptBuilder } from '../components/Prompt';
+import { Prompt } from '../components/Prompt';
 import { TextStyles } from '../styles/AppStyles';
 import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
@@ -270,7 +270,7 @@ export class MobileMessenger {
             });
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    new PromptBuilder()
+                    Prompt.builder()
                         .title('Edit message')
                         .value(message.text!)
                         .callback(async (text) => {
