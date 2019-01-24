@@ -18,12 +18,11 @@ export interface NavigableChildProps {
 }
 
 interface NavigableProps {
-
     // Navigation action
     href?: string;
     path?: string;
     anchor?: string;
-    query?: { field: string, value?: string, clear?: boolean, replace?: boolean };
+    query?: { field: string; value?: string; clear?: boolean; replace?: boolean };
     autoClose?: boolean;
 
     // Activation
@@ -45,7 +44,8 @@ interface NavigableProps {
     // onFailed?: () => void;
 }
 
-export type NavigableParentProps<T> = Pick<T, Exclude<keyof T, keyof NavigableChildProps>> & NavigableProps;
+export type NavigableParentProps<T> = Pick<T, Exclude<keyof T, keyof NavigableChildProps>> &
+    NavigableProps;
 
 // Remove tailing slash and cut query string from the path
 function normalizePath(src: string): string {
@@ -55,23 +55,38 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChildProps>): React.ComponentType<NavigableParentProps<T>> {
-
+function makeNavigableInner<T>(
+    Wrapped: React.ComponentType<T & NavigableChildProps>,
+): React.ComponentType<NavigableParentProps<T>> {
     // Actionable component
-    let Actionable = class ActionableComponent extends React.PureComponent<NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }, { active: boolean }> {
-
-        constructor(props: NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }) {
+    let Actionable = class ActionableComponent extends React.PureComponent<
+        NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue },
+        { active: boolean }
+    > {
+        constructor(
+            props: NavigableParentProps<T> & { __router: XRouter } & {
+                __modal: XModalContextValue;
+            },
+        ) {
             super(props);
             this.state = { active: this.resolveIsActive(props) };
         }
 
-        componentWillReceiveProps(nextProps: NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }) {
+        componentWillReceiveProps(
+            nextProps: NavigableParentProps<T> & { __router: XRouter } & {
+                __modal: XModalContextValue;
+            },
+        ) {
             if (this.props !== nextProps) {
                 this.setState({ active: this.resolveIsActive(nextProps) });
             }
         }
 
-        resolveIsActive(props: NavigableParentProps<T> & { __router: XRouter } & { __modal: XModalContextValue }) {
+        resolveIsActive(
+            props: NavigableParentProps<T> & { __router: XRouter } & {
+                __modal: XModalContextValue;
+            },
+        ) {
             if (props.enabled === false) {
                 return false;
             }
@@ -81,11 +96,14 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             if (props.path && props.__router) {
                 let ncurrent = normalizePath(props.__router.path);
                 let ntarget = undefined;
-                if (typeof (props.path) === 'string') {
+                if (typeof props.path === 'string') {
                     ntarget = normalizePath(props.path);
                 }
 
-                if (ncurrent === ntarget || (ncurrent.startsWith(ntarget + '/') && props.activateForSubpaths)) {
+                if (
+                    ncurrent === ntarget ||
+                    (ncurrent.startsWith(ntarget + '/') && props.activateForSubpaths)
+                ) {
                     return true;
                 }
             } else if (props.query && props.__router) {
@@ -94,7 +112,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             return false;
         }
 
-        onClick: React.MouseEventHandler<any> = (e) => {
+        onClick: React.MouseEventHandler<any> = e => {
             const {
                 __router,
                 __modal,
@@ -105,7 +123,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 enabled,
                 onClick,
                 autoClose,
-                href
+                href,
             } = this.props;
 
             // Anchors are handled by default - no need to preventDefault
@@ -121,8 +139,13 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
 
             // Ignore click for new tab / new window behavior
             // if clicked node is anchor element
-            if (e.currentTarget.nodeName === 'A' &&
-                (e.metaKey || e.ctrlKey || e.shiftKey || (e.nativeEvent && e.nativeEvent.which === 2))) {
+            if (
+                e.currentTarget.nodeName === 'A' &&
+                (e.metaKey ||
+                    e.ctrlKey ||
+                    e.shiftKey ||
+                    (e.nativeEvent && e.nativeEvent.which === 2))
+            ) {
                 return;
             }
 
@@ -141,15 +164,14 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
 
             // Handling click itself
             if (path || query) {
-
                 // First of all preventing default behavior
                 e.preventDefault();
-                e.stopPropagation();
+                // e.stopPropagation();
                 // Invoke router
                 if (__router) {
                     if (path) {
                         console.warn(path);
-                        if (typeof (path) === 'string') {
+                        if (typeof path === 'string') {
                             __router.push(path);
                         }
                     } else if (query) {
@@ -167,7 +189,7 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 e.preventDefault();
                 // e.stopPropagation();
             }
-        }
+        };
 
         render() {
             let linkHref = '#';
@@ -175,14 +197,14 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             let isActive = this.state.active;
 
             // Resolving Url
-            if (typeof (this.props.anchor) === 'string') {
+            if (typeof this.props.anchor === 'string') {
                 linkHref = this.props.anchor!;
-            } else if (this.props.__router && typeof (this.props.path) === 'string') {
+            } else if (this.props.__router && typeof this.props.path === 'string') {
                 linkHref = this.props.__router.resolveLink(this.props.path);
             } else if (this.props.__router && this.props.query) {
                 let linkPath = resolveActionPath(this.props, this.props.__router);
                 linkHref = this.props.__router.resolveLink(linkPath);
-            } else if (typeof (this.props.href) === 'string') {
+            } else if (typeof this.props.href === 'string') {
                 linkHref = this.props.href!!;
                 target = '_blank';
             }
@@ -192,9 +214,17 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                 linkHref = '#';
             }
 
-            // Split 
+            // Split
             let {
-                href, path, query, autoClose, activateForSubpaths, active, enabled, onClick, ...other
+                href,
+                path,
+                query,
+                autoClose,
+                activateForSubpaths,
+                active,
+                enabled,
+                onClick,
+                ...other
             } = this.props as any;
             return (
                 <Wrapped
@@ -202,7 +232,15 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
                     hrefTarget={target}
                     active={isActive}
                     enabled={this.props.enabled !== false}
-                    onClick={(this.props.href || this.props.path || this.props.query || this.props.autoClose || this.props.anchor) ? this.onClick : onClick}
+                    onClick={
+                        this.props.href ||
+                        this.props.path ||
+                        this.props.query ||
+                        this.props.autoClose ||
+                        this.props.anchor
+                            ? this.onClick
+                            : onClick
+                    }
                     {...other}
                 >
                     {this.props.children}
@@ -217,9 +255,9 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
             let { children, ...other } = this.props as any;
             return (
                 <XModalContext.Consumer>
-                    {(modal) => (
+                    {modal => (
                         <XRouterContext.Consumer>
-                            {(router) => (
+                            {router => (
                                 <Actionable {...other} __router={router!!} __modal={modal}>
                                     {children}
                                 </Actionable>
@@ -232,4 +270,15 @@ export function makeNavigable<T>(Wrapped: React.ComponentType<T & NavigableChild
     }
 
     return ContextWrapper;
+}
+
+import { LinkOverwriteContext } from 'openland-web/pages/main/universalNavigation.page';
+export function makeNavigable<T>(
+    Wrapped: React.ComponentType<T & NavigableChildProps>,
+): React.ComponentType<NavigableParentProps<T>> {
+    const Component = makeNavigableInner(Wrapped);
+    return (props: any) => {
+        const { prefix } = React.useContext(LinkOverwriteContext);
+        return <Component {...props} path={prefix + props.path} />;
+    };
 }

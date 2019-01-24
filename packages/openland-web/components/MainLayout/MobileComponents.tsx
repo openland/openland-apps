@@ -138,7 +138,17 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                 </XView>
             </XView>
 
-            {children && <MenuItems onBackgroundClick={close}>{children}</MenuItems>}
+            {children && (
+                <MenuItems onBackgroundClick={close}>
+                    {children.map((item: any, key: any) => {
+                        return (
+                            <div onClick={close} key={key}>
+                                {item}
+                            </div>
+                        );
+                    })}
+                </MenuItems>
+            )}
         </XView>
     );
 };

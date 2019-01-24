@@ -48,7 +48,45 @@ routes.add('/acceptChannelInvite/:invite', '/init/acceptChannelInvite');
 routes.add('/acceptChannelInvite/:invite/', '/init/acceptChannelInvite');
 routes.add('/universalNavigation', '/main/universalNavigation');
 routes.add('/universalNavigation/', '/main/universalNavigation');
-routes.add('/404', '/404');
+
+routes.add('/universalNavigation/mail', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/new', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/new/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/:conversationId', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/:conversationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/channels', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/channels/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/joinChannel/:invite', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/joinChannel/:invite/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/o/:organizationId', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/o/:organizationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/p/:conversationId', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/p/:conversationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/u/:userId', '/main/universalNavigation');
+routes.add('/universalNavigation/mail/u/:userId/', '/main/universalNavigation');
+
+routes.add('/universalNavigation/directory', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/people', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/people/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/organizations', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/organizations/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/communities', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/communities/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/explore', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/explore/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/r/:conversationId', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/r/:conversationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/p/:conversationId', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/p/:conversationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/u/:userId', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/u/:userId/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/o/:organizationId', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/o/:organizationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/c/:organizationId', '/main/universalNavigation');
+routes.add('/universalNavigation/directory/c/:organizationId/', '/main/universalNavigation');
+routes.add('/universalNavigation/404', '/404');
 
 //
 // Map
@@ -141,12 +179,8 @@ routes.add('/mail/new', '/main/mail/root');
 routes.add('/mail/new/', '/main/mail/root');
 routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
-routes.add('/support/:conversationId', '/main/mail/support');
-routes.add('/support/:conversationId/', '/main/mail/support');
 routes.add('/mail/channels', '/main/mail/root');
 routes.add('/mail/channels/', '/main/mail/root');
-routes.add('/joinChannel/:invite', '/init/signChannelInvite');
-routes.add('/joinChannel/:invite/', '/init/signChannelInvite');
 routes.add('/mail/joinChannel/:invite', '/main/mail/root');
 routes.add('/mail/joinChannel/:invite/', '/main/mail/root');
 routes.add('/mail/o/:organizationId', '/main/mail/root');
@@ -155,6 +189,11 @@ routes.add('/mail/p/:conversationId', '/main/mail/root');
 routes.add('/mail/p/:conversationId/', '/main/mail/root');
 routes.add('/mail/u/:userId', '/main/mail/root');
 routes.add('/mail/u/:userId/', '/main/mail/root');
+
+routes.add('/joinChannel/:invite', '/init/signChannelInvite');
+routes.add('/joinChannel/:invite/', '/init/signChannelInvite');
+routes.add('/support/:conversationId', '/main/mail/support');
+routes.add('/support/:conversationId/', '/main/mail/support');
 
 //
 // Channel

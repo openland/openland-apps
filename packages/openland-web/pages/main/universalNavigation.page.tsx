@@ -8,7 +8,7 @@ import { withApp } from 'openland-web/components/withApp';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { Menu, MenuItem } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
-import { tabs } from './mail/tabs';
+import { tabs, tabsT } from './mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
@@ -38,6 +38,13 @@ import { OrganizationCards } from 'openland-web/pages/main/directory/organizatio
 import { CommunitiesCards } from 'openland-web/pages/main/directory/communities.page';
 import { RoomProfile } from 'openland-web/pages/main/profile/RoomProfileComponent';
 import { Rooms } from 'openland-web/fragments/RoomsExploreComponent';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
+
+export const LinkOverwriteContext = React.createContext<{
+    prefix: string;
+}>({
+    prefix: '',
+});
 
 // TODO
 // need to add prefix universalNavigation to all routes somehow
@@ -373,89 +380,164 @@ export default withApp(
     'Mail',
     'viewer',
     withRouter(
-        withQueryLoader(() => {
-            const isChat = false;
-            const tab = tabs.chat;
-            let showProfile = true;
+        withQueryLoader((props: any) => {
+            let { router, organizationId, userId } = props;
+            const { path, routeQuery } = router;
+
+            let isCompose = path.endsWith('/new');
+            let pageTitle = isCompose ? 'New chat' : undefined;
+
+            if (!canUseDOM) {
+                return (
+                    <>
+                        <XDocumentHead title={pageTitle} />
+                        <Scaffold>{}</Scaffold>
+                    </>
+                );
+            }
+
+            let isRooms = path.endsWith('/channels');
+            let isCall = path.endsWith('/call');
+            let isInvite = path.includes('joinChannel');
+            let isChat = path.includes('/mail');
+            let isDirectory = path.includes('/directory');
+
+            let cid = routeQuery.conversationId;
+            let oid = organizationId || routeQuery.organizationId;
+            let uid = userId || routeQuery.userId;
+            let tab: tabsT = tabs.empty;
+            if (isCompose) {
+                tab = tabs.compose;
+            }
+
+            if (!isCompose && !cid) {
+                tab = tabs.empty;
+            }
+
+            if (!isCompose && cid) {
+                tab = tabs.conversation;
+            }
+
+            if (isInvite) {
+                tab = tabs.invite;
+            }
+
+            if (isRooms) {
+                tab = tabs.rooms;
+            }
+
+            if (isCall) {
+                tab = tabs.conference;
+            }
+
+            if (oid) {
+                tab = tabs.organization;
+            }
+
+            if (uid) {
+                tab = tabs.user;
+            }
+
+            if (cid && isChat) {
+                tab = tabs.chat;
+            }
+
+            if (tab === tabs.empty) {
+                pageTitle = undefined;
+            }
+
+            let showProfile = false;
+            let id;
+            let ProfileComponent;
+            let CardsComponent;
+            let searchPlaceholder = '';
+            let noQueryText = '';
+            let hasQueryText = '';
+
+            if (isDirectory) {
+                if (path.endsWith('/organizations')) {
+                    id = showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null;
+                    ProfileComponent = SearchOrganizationProfileComponent;
+                    CardsComponent = Organizations;
+                    searchPlaceholder = 'Search organizations';
+                    noQueryText = 'All organizations';
+                    hasQueryText = 'Organizations';
+                } else if (path.endsWith('/communities')) {
+                    id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
+                    ProfileComponent = SearchOrganizationProfileComponent;
+                    CardsComponent = Communities;
+                    searchPlaceholder = 'Search communities';
+                    noQueryText = 'All communities';
+                    hasQueryText = 'Communities';
+                } else if (path.endsWith('/people')) {
+                    id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
+                    ProfileComponent = SearchUserProfileComponent;
+                    CardsComponent = PeopleCards;
+                    searchPlaceholder = 'Search people';
+                    noQueryText = 'All people';
+                    hasQueryText = 'People';
+                } else {
+                    id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
+                    ProfileComponent = SearchRoomsProfileComponent;
+                    CardsComponent = Rooms;
+                    searchPlaceholder = 'Search rooms';
+                    noQueryText = 'All rooms';
+                    hasQueryText = 'Rooms';
+                }
+            }
 
             return (
                 <>
                     <XDocumentHead title={'pageTitle'} />
-                    <Scaffold>
-                        <Scaffold.Content padding={false} bottomOffset={false}>
-                            <XView
-                                flexDirection="row"
-                                flexGrow={1}
-                                flexShrink={0}
-                                overflow="hidden"
-                                alignItems="stretch"
-                                height="100%"
-                                width="100%"
-                            >
-                                {isChat ? (
-                                    <PageInner
-                                        tab={tab}
-                                        firstFragment={<XView color="red">firstFragment</XView>}
-                                        secondFragment={<XView color="blue">secondFragment</XView>}
-                                    />
-                                ) : (
-                                    <MainLayout>
-                                        <MainLayout.Menu>
-                                            <DirectoryNavigation route="Rooms" />
-                                        </MainLayout.Menu>
-                                        <MainLayout.Content>
+                    <LinkOverwriteContext.Provider
+                        value={{
+                            prefix: '/universalNavigation',
+                        }}
+                    >
+                        <Scaffold>
+                            <Scaffold.Content padding={false} bottomOffset={false}>
+                                <XView
+                                    flexDirection="row"
+                                    flexGrow={1}
+                                    flexShrink={0}
+                                    overflow="hidden"
+                                    alignItems="stretch"
+                                    height="100%"
+                                    width="100%"
+                                >
+                                    {isChat ? (
+                                        <PageInner
+                                            tab={tab}
+                                            firstFragment={<XView color="red">firstFragment</XView>}
+                                            secondFragment={
+                                                <XView color="blue">secondFragment</XView>
+                                            }
+                                        />
+                                    ) : (
+                                        <MainLayout>
+                                            <MainLayout.Menu>
+                                                <DirectoryNavigation route="Rooms" />
+                                            </MainLayout.Menu>
                                             <MainLayout.Content>
-                                                {/* <DirectoryContent
-                                                    id={showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq': null}
-                                                    ProfileComponent={SearchUserProfileComponent}
-                                                    CardsComponent={PeopleCards}
-                                                    searchPlaceholder="Search people"
-                                                    noQueryText="All people"
-                                                    hasQueryText="People"
-                                                /> */}
-                                                {/* <DirectoryContent
-                                                    id={showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null}
-                                                    ProfileComponent={
-                                                        SearchOrganizationProfileComponent
-                                                    }
-                                                    CardsComponent={Organizations}
-                                                    searchPlaceholder="Search organizations"
-                                                    noQueryText="All organizations"
-                                                    hasQueryText="Organizations"
-                                                /> */}
-                                                {/* <DirectoryContent
-                                                    id={
-                                                        showProfile
-                                                            ? 'qlmY0z56DzsYdBM4d66ZU4n67K'
-                                                            : null
-                                                    }
-                                                    ProfileComponent={
-                                                        SearchOrganizationProfileComponent
-                                                    }
-                                                    CardsComponent={Communities}
-                                                    searchPlaceholder="Search communities"
-                                                    noQueryText="All communities"
-                                                    hasQueryText="Communities"
-                                                /> */}
-                                                <DirectoryContent
-                                                    id={
-                                                        showProfile
-                                                            ? 'wW4975KQVzS17BDVOZojTMRK96'
-                                                            : null
-                                                    }
-                                                    ProfileComponent={SearchRoomsProfileComponent}
-                                                    CardsComponent={Rooms}
-                                                    searchPlaceholder="Search rooms"
-                                                    noQueryText="All rooms"
-                                                    hasQueryText="Rooms"
-                                                />
+                                                <MainLayout.Content>
+                                                    {isDirectory && (
+                                                        <DirectoryContent
+                                                            id={id}
+                                                            ProfileComponent={ProfileComponent}
+                                                            CardsComponent={CardsComponent}
+                                                            searchPlaceholder={searchPlaceholder}
+                                                            noQueryText={noQueryText}
+                                                            hasQueryText={hasQueryText}
+                                                        />
+                                                    )}
+                                                </MainLayout.Content>
                                             </MainLayout.Content>
-                                        </MainLayout.Content>
-                                    </MainLayout>
-                                )}
-                            </XView>
-                        </Scaffold.Content>
-                    </Scaffold>
+                                        </MainLayout>
+                                    )}
+                                </XView>
+                            </Scaffold.Content>
+                        </Scaffold>
+                    </LinkOverwriteContext.Provider>
                 </>
             );
         }),
