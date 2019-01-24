@@ -411,6 +411,9 @@ export const RoomUpdateMutation = gql`
             }
             ... on SharedRoom {
                 id
+                title
+                photo
+                description
             }
         }
     }

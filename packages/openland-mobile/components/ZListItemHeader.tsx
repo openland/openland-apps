@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 
@@ -14,12 +14,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flexGrow: 1,
         flexBasis: 0,
-        paddingLeft: 15
+        minWidth: 0,
+        paddingLeft: 16,
+        paddingRight: 16
     } as ViewStyle,
     header: {
         flexDirection: 'column',
         flexGrow: 1,
         flexBasis: 0,
+        minWidth: 0,
     } as ViewStyle,
     footer: {
         flexDirection: 'column',
@@ -46,6 +49,8 @@ export class ZListItemHeader extends React.PureComponent<{
     photo?: string | null,
     id?: string,
     title?: string | null,
+    titleIcon?: any;
+    titleColor?: string;
     subtitle?: string | null,
     subsubtitle?: string | null,
     path?: string,
@@ -59,7 +64,10 @@ export class ZListItemHeader extends React.PureComponent<{
                 <XPAvatarWithPreview size={96} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.id} />
                 <View style={styles.body}>
                     <View style={styles.header}>
-                        <Text style={styles.title} numberOfLines={1}>{this.props.title}</Text>
+                        <View flexDirection="row">
+                            {this.props.titleIcon && <Image source={this.props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: 5, tintColor: this.props.titleColor || '#000' }} />}
+                            <Text style={[styles.title, this.props.titleColor ? { color: this.props.titleColor } : undefined]} numberOfLines={1}>{this.props.title}</Text>
+                        </View>
                         <Text style={styles.subtitle} numberOfLines={1}>{this.props.subtitle}</Text>
                         {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>}
                     </View>

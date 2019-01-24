@@ -3143,6 +3143,9 @@ export interface RoomUpdate_betaRoomUpdate_PrivateRoom {
 export interface RoomUpdate_betaRoomUpdate_SharedRoom {
   __typename: "SharedRoom";
   id: string;
+  title: string;
+  photo: string;
+  description: string | null;
 }
 
 export type RoomUpdate_betaRoomUpdate = RoomUpdate_betaRoomUpdate_PrivateRoom | RoomUpdate_betaRoomUpdate_SharedRoom;

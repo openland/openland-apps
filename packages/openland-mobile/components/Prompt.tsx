@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Platform, AlertIOS, View, Text, KeyboardAvoidingView } from 'react-native';
-import DialogAndroid from 'react-native-dialogs';
+import { View, Text, } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TextInput } from 'react-native-gesture-handler';
@@ -34,53 +33,44 @@ export class PromptBuilder {
     }
 
     show() {
-        if (Platform.OS === 'ios') {
-            AlertIOS.prompt(
-                this._title || '',
-                undefined,
-                this._callback,
-                undefined,
-                this._value);
-        } else if (Platform.OS === 'android') {
 
-            if (this._actions.length === 0) {
-                this._actions.push({ name: 'Cancel', style: 'cancel' });
-                this._actions.push({ name: 'Ok', callback: this._callback });
-            }
-
-            showBlanketModal((ctx) => {
-                return (
-                    <View
-                        flexDirection="column"
-                        justifyContent="flex-start"
-                        paddingHorizontal={24}
-                        paddingVertical={20}
-                    >
-                        {this._title && <Text style={{ marginBottom: 12, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this._title}</Text>}
-                        <TextInput defaultValue={this._value} onChangeText={this.onTextChange} autoFocus={true} multiline={true} maxHeight={100} />
-                        <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
-                            {this._actions.map((a, i) => (
-                                <>
-                                    <View style={{ width: 4 }} />
-                                    <ZRoundedButton
-                                        key={i + '-ac'}
-                                        size="big"
-                                        style={a.style === 'cancel' ? 'flat' : a.style === 'destructive' ? 'danger' : 'default'}
-                                        title={a.name}
-                                        onPress={() => {
-                                            ctx.hide();
-                                            if (a.callback) {
-                                                a.callback(this._value);
-                                            }
-                                        }}
-                                    />
-                                </>
-                            ))}
-                        </View>
-                    </View>
-
-                )
-            });
+        if (this._actions.length === 0) {
+            this._actions.push({ name: 'Cancel', style: 'cancel' });
+            this._actions.push({ name: 'Save', callback: this._callback });
         }
+
+        showBlanketModal((ctx) => {
+            return (
+                <View
+                    flexDirection="column"
+                    justifyContent="flex-start"
+                    paddingHorizontal={24}
+                    paddingVertical={20}
+                >
+                    {this._title && <Text style={{ marginBottom: 12, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this._title}</Text>}
+                    <TextInput defaultValue={this._value} onChangeText={this.onTextChange} autoFocus={true} multiline={true} maxHeight={100} />
+                    <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
+                        {this._actions.map((a, i) => (
+                            <>
+                                <View style={{ width: 4 }} />
+                                <ZRoundedButton
+                                    key={i + '-ac'}
+                                    size="big"
+                                    style={a.style === 'cancel' ? 'flat' : a.style === 'destructive' ? 'danger' : 'default'}
+                                    title={a.name}
+                                    onPress={() => {
+                                        ctx.hide();
+                                        if (a.callback) {
+                                            a.callback(this._value);
+                                        }
+                                    }}
+                                />
+                            </>
+                        ))}
+                    </View>
+                </View>
+
+            )
+        });
     }
 }

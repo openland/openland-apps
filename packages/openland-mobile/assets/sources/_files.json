@@ -8,9 +8,13 @@
         "src": "ic-leave.svg",
         "sizes": [24]
     }, {
-        "name": "ic-more",
-        "src": "ic-more.svg",
+        "name": "ic-leave",
+        "src": "ic-leave.svg",
         "sizes": [24]
+    }, {
+        "name": "ic-lock",
+        "src": "ic-lock.svg",
+        "sizes": [18]
     }, {
         "name": "ic-help",
         "src": "ic-notifications-copy.svg",
@@ -20,8 +24,8 @@
         "src": "ic-rate.svg",
         "sizes": [24]
     }, {
-        "name": "ic-star-admin",
-        "src": "ic-star.svg",
+        "name": "ic-star",
+        "src": "ic-star-admin.svg",
         "sizes": [24, 13]
     }, {
         "name": "ic-info",
