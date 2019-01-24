@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, } from 'react-native';
+import { View, Text, Keyboard, } from 'react-native';
 import { showBlanketModal } from './showBlanketModal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { TextInput } from 'react-native-gesture-handler';
@@ -65,6 +65,7 @@ export class PromptBuilder {
                                     style={a.style === 'cancel' ? 'flat' : a.style === 'destructive' ? 'danger' : 'default'}
                                     title={a.name}
                                     onPress={() => {
+                                        Keyboard.dismiss();
                                         ctx.hide();
                                         if (a.callback) {
                                             a.callback(this._value);
