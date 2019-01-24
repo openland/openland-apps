@@ -264,9 +264,9 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 ))}
             </ZListItemGroup>
 
-            <View backgroundColor="#eff0f2" height={0.5} alignSelf="stretch" margin={16} />
+            {Platform.OS === 'ios' && <View backgroundColor="#eff0f2" height={0.5} alignSelf="stretch" margin={16} />}
 
-            <ZListItemGroup divider={false}>
+            <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
                 <ZListItem
                     leftIcon={require('assets/ic-leave-24.png')}
                     text={`Leave ${props.room.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
