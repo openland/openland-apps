@@ -238,7 +238,7 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
     return (
         <>
             <XDocumentHead title={user.name} />
-            <XView height="100%">
+            <XView flexGrow={1}>
                 {!props.hideBack && <BackButton />}
                 <Header user={user} />
                 <XScrollView2 flexGrow={1} height="100%">

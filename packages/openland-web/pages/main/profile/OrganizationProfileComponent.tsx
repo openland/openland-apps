@@ -831,7 +831,7 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
     return (
         <>
             <XDocumentHead title={organization.name} />
-            <XView height="100%">
+            <XView flexGrow={1}>
                 {!props.hideBack && <BackButton />}
                 <Header organization={organization} />
                 <XScrollView2 flexGrow={1} height="100%">

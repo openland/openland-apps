@@ -382,7 +382,7 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
     return (
         <>
             <XDocumentHead title={chat.title} />
-            <XView height="100%">
+            <XView flexGrow={1}>
                 <BackButton />
                 <Header chat={chat} />
                 <XScrollView2 flexGrow={1}>

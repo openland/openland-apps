@@ -273,7 +273,7 @@ class Communities extends React.PureComponent<any> {
             <CommunitiesCards
                 tagsCount={this.tagsCount}
                 variables={{
-                    query: this.props.query,
+                    query: this.props.variables.query,
                     sort: JSON.stringify(sort),
                 }}
             />
@@ -392,12 +392,11 @@ const MessagesUniversalNavigation = ({
 const DirectoryUniversalNavigation = ({
     showDebugFragments,
     path,
-    showProfile,
 }: {
     showDebugFragments: boolean;
-    showProfile?: boolean;
     path: string;
 }) => {
+    let showProfile = false;
     const directoryRightContent = (
         <>
             <XMenuItem
@@ -438,38 +437,70 @@ const DirectoryUniversalNavigation = ({
     let id: string | null = '';
     let title = '';
 
-    if (path.endsWith('/organizations')) {
-        title = 'Organizations';
-        id = showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null;
+    if (path.includes('/directory/o/')) {
+        title = 'Profile';
+        showProfile = true;
+        id = path.split('/directory/o/')[1];
+
         ProfileComponent = SearchOrganizationProfileComponent;
         CardsComponent = Organizations;
-        searchPlaceholder = 'Search organizations';
-        noQueryText = 'All organizations';
-        hasQueryText = 'Organizations';
-    } else if (path.endsWith('/communities')) {
-        title = 'Communities';
-        id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
-        ProfileComponent = SearchOrganizationProfileComponent;
-        CardsComponent = Communities;
-        searchPlaceholder = 'Search communities';
-        noQueryText = 'All communities';
-        hasQueryText = 'Communities';
-    } else if (path.endsWith('/people')) {
-        title = 'People';
-        id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
+    } else if (path.includes('/directory/u/')) {
+        title = 'Profile';
+        showProfile = true;
+        id = path.split('/directory/u/')[1];
         ProfileComponent = SearchUserProfileComponent;
         CardsComponent = PeopleCards;
-        searchPlaceholder = 'Search people';
-        noQueryText = 'All people';
-        hasQueryText = 'People';
-    } else {
-        title = 'Rooms';
-        id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
+    } else if (path.includes('/directory/p/')) {
+        title = 'Room';
+        showProfile = true;
+        id = path.split('/directory/p/')[1];
         ProfileComponent = SearchRoomsProfileComponent;
         CardsComponent = Rooms;
-        searchPlaceholder = 'Search rooms';
-        noQueryText = 'All rooms';
-        hasQueryText = 'Rooms';
+    } else if (path.includes('/directory/r/')) {
+        title = 'Room';
+        showProfile = true;
+        id = path.split('/directory/r/')[1];
+        ProfileComponent = SearchRoomsProfileComponent;
+        CardsComponent = Rooms;
+    } else if (path.includes('/directory/c/')) {
+        title = 'Communities';
+        showProfile = true;
+        id = path.split('/directory/c/')[1];
+        ProfileComponent = SearchOrganizationProfileComponent;
+        CardsComponent = Communities;
+    } else {
+        if (path.endsWith('/organizations')) {
+            title = 'Organizations';
+            ProfileComponent = SearchOrganizationProfileComponent;
+            CardsComponent = Organizations;
+            searchPlaceholder = 'Search organizations';
+            noQueryText = 'All organizations';
+            hasQueryText = 'Organizations';
+        } else if (path.endsWith('/communities')) {
+            title = 'Communities';
+            id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
+            ProfileComponent = SearchOrganizationProfileComponent;
+            CardsComponent = Communities;
+            searchPlaceholder = 'Search communities';
+            noQueryText = 'All communities';
+            hasQueryText = 'Communities';
+        } else if (path.endsWith('/people')) {
+            title = 'People';
+            id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
+            ProfileComponent = SearchUserProfileComponent;
+            CardsComponent = PeopleCards;
+            searchPlaceholder = 'Search people';
+            noQueryText = 'All people';
+            hasQueryText = 'People';
+        } else {
+            title = 'Rooms';
+            id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
+            ProfileComponent = SearchRoomsProfileComponent;
+            CardsComponent = Rooms;
+            searchPlaceholder = 'Search rooms';
+            noQueryText = 'All rooms';
+            hasQueryText = 'Rooms';
+        }
     }
 
     return (
@@ -510,7 +541,7 @@ const DirectoryUniversalNavigation = ({
             }
             firstFragment={showDebugFragments && <XView color="red">firstFragment</XView>}
             secondFragment={
-                <XView>
+                <XView flexGrow={1}>
                     <DirectoryContent
                         id={id}
                         ProfileComponent={ProfileComponent}
@@ -596,7 +627,6 @@ export default withApp(
                 pageTitle = undefined;
             }
 
-            let showProfile = false;
             const showDebugFragments = false;
 
             return (
@@ -608,7 +638,6 @@ export default withApp(
                     {isDirectory ? (
                         <DirectoryUniversalNavigation
                             path={path}
-                            showProfile={showProfile}
                             showDebugFragments={showDebugFragments}
                         />
                     ) : (
