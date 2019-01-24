@@ -7,7 +7,8 @@ export const OrganizationFull = gql`
         id
         superAccountId
         isMine
-        isOwner: alphaIsOwner
+        isOwner: betaIsOwner
+        isAdmin: betaIsAdmin
         featured: alphaFeatured
         isCommunity: alphaIsCommunity
         name

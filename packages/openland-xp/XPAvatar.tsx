@@ -28,8 +28,8 @@ export interface XPAvatarProps {
 }
 
 const placeholderSizeInterpolator = createInterpolator(
-    [22, 28, 30, 36, 40, 56, 96],
-    [12, 12, 13, 14, 16, 26, 28]
+    [22, 28, 30, 36, 40, 42, 56, 96],
+    [12, 12, 13, 14, 16, 16, 26, 28]
 );
 
 export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
@@ -48,7 +48,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                             {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                         </View>
                     </AndroidAliaser>
-                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
+                    {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
                 </View>
             );
         }
@@ -84,7 +84,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                     </XPLinearGradient>
 
                 </AndroidAliaser>
-                {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: 'rgb(92,212,81)', borderWidth: onlineSize / 10 }} />}
+                {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
             </View>
         );
     }

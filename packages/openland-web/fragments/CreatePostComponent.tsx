@@ -10,12 +10,12 @@ import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { XLink } from 'openland-x/XLink';
 import { XCloudImage } from 'openland-x/XCloudImage';
 import { withSendPostMessage, withEditPostMessage } from '../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from './MessengerRootComponent';
 import { DropZone } from './DropZone';
+import { AttachmentButton } from './MessageComposeComponent';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
@@ -83,13 +83,6 @@ const postTexts = {
             '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
     },
 };
-
-const Header = Glamorous(XHorizontal)({
-    height: 56,
-    paddingLeft: 20,
-    paddingRight: 20,
-    borderBottom: '1px solid rgba(220, 222, 228, 0.45)',
-});
 
 const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
     zIndex: 1,
@@ -162,61 +155,6 @@ const FileItem = Glamorous(XHorizontal)({
         opacity: 0.6,
     },
 });
-
-const FileImage = Glamorous.div({
-    width: 11,
-    height: 14,
-    flexShrink: 0,
-    backgroundImage: "url('/static/X/file.svg')",
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-});
-
-const FooterWrapper = Glamorous(XHorizontal)({
-    borderTop: '1px solid #ececec',
-    backgroundColor: '#f9f9f9',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 14,
-    paddingBottom: 14,
-});
-
-const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
-    paddingLeft: 12,
-    paddingRight: 12,
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-    borderRadius: 20,
-    fontSize: 13,
-    fontWeight: 600,
-    letterSpacing: 0,
-    lineHeight: '20px',
-    color: 'rgba(0, 0, 0, 0.4)',
-    opacity: props.disable ? 0.7 : undefined,
-    cursor: props.disable ? 'default !important' : 'pointer',
-    '&:hover': {
-        textDecoration: 'none',
-        color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
-        backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
-        '& > svg > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
-        },
-    },
-    '&.document-button > svg': {
-        marginTop: 1,
-        marginBottom: -1,
-    },
-    '& > svg': {
-        flexShrink: 0,
-        marginRight: 10,
-        '& > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
-        },
-    },
-}));
 
 const CoverWrapper = Glamorous.div({
     borderRadius: 6,
@@ -576,32 +514,42 @@ export class CreatePostComponent extends React.Component<
                 width="100%"
                 height="calc(100% + 56px)"
             >
-                <Header justifyContent="center">
-                    <XHorizontal
+                <XView height={56} flexDirection="column" justifyContent="center">
+                    <XView
+                        flexDirection="row"
                         alignItems="center"
                         justifyContent="space-between"
                         maxWidth={950}
                         flexGrow={1}
+                        paddingLeft={20}
+                        paddingRight={20}
                     >
-                        <XHorizontal alignItems="center">
+                        <XView flexDirection="row" marginRight={16} alignItems="center">
                             <XAvatar2
                                 size={36}
                                 src={props.cloudImageUuid}
                                 title={props.objectName}
                                 id={props.objectId || ''}
                             />
-                            <XHorizontal alignItems="center" separator={3}>
+                            <XView flexDirection="row" alignItems="center" marginLeft={16}>
                                 <XView fontSize={14} fontWeight="600" color="#000">
                                     {props.objectName}
                                 </XView>
-                                <XView opacity={0.3} fontSize={12} fontWeight="600" color="#000">
+                                <XView
+                                    opacity={0.3}
+                                    fontSize={12}
+                                    fontWeight="600"
+                                    color="#000"
+                                    marginLeft={6}
+                                    marginRight={6}
+                                >
                                     •
                                 </XView>
                                 <XView fontSize={14} color="#000">
                                     {props.editData ? 'Post editing' : header}
                                 </XView>
-                            </XHorizontal>
-                        </XHorizontal>
+                            </XView>
+                        </XView>
                         <XView
                             onClick={() => this.props.handleHideChat(false, null)}
                             cursor="pointer"
@@ -615,8 +563,9 @@ export class CreatePostComponent extends React.Component<
                         >
                             <CloseIcon />
                         </XView>
-                    </XHorizontal>
-                </Header>
+                    </XView>
+                    <XView height={1} width="100%" backgroundColor="rgba(220, 222, 228, 0.45)" />
+                </XView>
                 <XView
                     flexDirection="row"
                     flexGrow={1}
@@ -667,7 +616,13 @@ export class CreatePostComponent extends React.Component<
                                             separator={4}
                                             alignItems="center"
                                         >
-                                            <FileImage />
+                                            <XView
+                                                backgroundImage="url('/static/X/file.svg')"
+                                                backgroundRepeat="no-repeat"
+                                                width={11}
+                                                height={14}
+                                                flexShrink={0}
+                                            />
                                             <XHorizontal alignItems="center" separator={4}>
                                                 <div>
                                                     {i.name} <span>•</span>{' '}
@@ -696,51 +651,74 @@ export class CreatePostComponent extends React.Component<
                     </XVertical>
                     <DropZone height="100%" onFileDrop={this.handleDrop} />
                 </XView>
-                <FooterWrapper justifyContent="center" alignItems="center">
-                    <XHorizontal
-                        justifyContent="space-between"
+                <XView
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundColor="#f9f9f9"
+                >
+                    <XView
+                        height={1}
+                        backgroundColor="#ececec"
+                        width="100%"
+                        flexShrink={0}
+                        marginBottom={14}
+                    />
+                    <XView
+                        flexDirection="row"
+                        justifyContent="center"
                         alignItems="center"
-                        flexGrow={1}
-                        maxWidth={700}
+                        paddingLeft={20}
+                        paddingRight={20}
+                        paddingBottom={14}
+                        width="100%"
                     >
-                        <XHorizontal>
-                            <AttachmentButton onClick={this.handleAttach}>
-                                <PhotoIcon />
-                                <span>Photo</span>
-                            </AttachmentButton>
-                            <AttachmentButton onClick={this.handleAttach}>
-                                <FileIcon />
-                                <span>Document</span>
-                            </AttachmentButton>
-                        </XHorizontal>
-                        {!props.editData && (
-                            <SendPostButton
-                                conversationId={props.conversationId}
-                                postType={postType}
-                                title={state.title}
-                                text={state.text}
-                                files={state.files}
-                                handleHideChat={props.handleHideChat}
-                                textValidation={this.validation}
-                            >
-                                <XButton text="Send" style="primary" iconRight="send" />
-                            </SendPostButton>
-                        )}
-                        {props.editData && (
-                            <EditPostButton
-                                messageId={props.editData.messageId}
-                                postType={postType}
-                                title={state.title}
-                                text={state.text}
-                                files={state.files}
-                                handleHideChat={props.handleHideChat}
-                                textValidation={this.validation}
-                            >
-                                <XButton text="Save changes" style="primary" />
-                            </EditPostButton>
-                        )}
-                    </XHorizontal>
-                </FooterWrapper>
+                        <XView
+                            flexDirection="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            flexGrow={1}
+                            maxWidth={700}
+                        >
+                            <XView flexDirection="row" alignItems="center">
+                                <AttachmentButton onClick={this.handleAttach}>
+                                    <PhotoIcon />
+                                    <span>Photo</span>
+                                </AttachmentButton>
+                                <AttachmentButton onClick={this.handleAttach}>
+                                    <FileIcon />
+                                    <span>Document</span>
+                                </AttachmentButton>
+                            </XView>
+                            {!props.editData && (
+                                <SendPostButton
+                                    conversationId={props.conversationId}
+                                    postType={postType}
+                                    title={state.title}
+                                    text={state.text}
+                                    files={state.files}
+                                    handleHideChat={props.handleHideChat}
+                                    textValidation={this.validation}
+                                >
+                                    <XButton text="Send" style="primary" iconRight="send" />
+                                </SendPostButton>
+                            )}
+                            {props.editData && (
+                                <EditPostButton
+                                    messageId={props.editData.messageId}
+                                    postType={postType}
+                                    title={state.title}
+                                    text={state.text}
+                                    files={state.files}
+                                    handleHideChat={props.handleHideChat}
+                                    textValidation={this.validation}
+                                >
+                                    <XButton text="Save changes" style="primary" />
+                                </EditPostButton>
+                            )}
+                        </XView>
+                    </XView>
+                </XView>
             </XView>
         );
     }

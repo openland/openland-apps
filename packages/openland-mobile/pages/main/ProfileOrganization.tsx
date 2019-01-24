@@ -9,6 +9,7 @@ import {
     OrganizationChangeMemberRoleMutation,
     RoomQuery,
     RoomSettingsUpdateMutation,
+    OrganizationAddMemberMutation,
 } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -19,12 +20,15 @@ import { SHeader } from 'react-native-s/SHeader';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { View, Text, Clipboard } from 'react-native';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { UserViewAsync } from '../compose/ComposeInitial';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { UserView } from './components/UserView';
+import { Modals } from './modals/Modals';
+import { formatError } from 'openland-y-forms/errorHandling';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { View } from 'react-native';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -32,26 +36,25 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Info" />
-                <ZQuery query={AccountSettingsQuery}>
-                    {settings => (
-                        <ZQuery
-                            query={OrganizationQuery}
-                            variables={{ organizationId: this.props.router.params.id }}
-                        >
-                            {resp => {
-                                return (
-                                    <>
-                                        <SScrollView backgroundColor={'#fff'}>
+                <SScrollView backgroundColor={'#fff'}>
+                    <ZQuery query={AccountSettingsQuery}>
+                        {settings => (
+                            <ZQuery
+                                query={OrganizationQuery}
+                                variables={{ organizationId: this.props.router.params.id }}
+                            >
+                                {resp => {
+                                    return (
+                                        <>
                                             <ZListItemHeader
                                                 photo={resp.data.organization.photo}
                                                 id={resp.data.organization.id}
                                                 title={resp.data.organization.name}
-                                                subtitle="Organization"
-                                                action={resp.data.organization.isOwner ? 'Edit profile' : undefined}
-                                                onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })}
+                                                subtitle={resp.data.organization.isCommunity ? 'Community' : 'Organization'}
                                             />
-                                            {(resp.data.organization.isMine || resp.data.organization.isOwner || this.props.router.params.conversationId) && (
-                                                <ZListItemGroup header={null} divider={false}>
+                                            {resp.data.organization.isOwner && <SHeaderButton title="Edit" onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })} />}
+                                            {(resp.data.organization.isMine || resp.data.organization.isOwner || resp.data.organization.isAdmin || this.props.router.params.conversationId) && (
+                                                <ZListItemGroup header="Manage" divider={false}>
                                                     {this.props.router.params.conversationId && (
                                                         <YQuery
                                                             query={RoomQuery}
@@ -77,7 +80,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     },
                                                                                 });
                                                                             } catch (e) {
-                                                                                new AlertBlanketBuilder().alert(e.message);
+                                                                                Alert.alert(e.message);
                                                                             }
                                                                             stopLoader();
                                                                         };
@@ -126,13 +129,16 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                             )}
                                             <ZListItemGroup
                                                 divider={false}
-                                                header={null}
+                                                header="About"
                                             >
                                                 {resp.data.organization.about && (
-                                                    <ZListItem multiline={true} title="About" text={resp.data.organization.about} copy={true} />
+                                                    <ZListItem multiline={true} text={resp.data.organization.about} copy={true} />
+                                                )}
+                                                {resp.data.organization.about && (
+                                                    <View height={10} />
                                                 )}
                                                 {resp.data.organization.shortname && (
-                                                    <ZListItem multiline={true} title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />
+                                                    <ZListItem title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />
                                                 )}
                                                 {resp.data.organization.website && (
                                                     <ZListItem title="Website" text={resp.data.organization.website} copy={true} />
@@ -149,45 +155,43 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
 
                                             </ZListItemGroup>
 
-                                            <ZListItemGroup
-                                                header="Rooms"
-                                                divider={false}
-                                                actionRight={
-                                                    resp.data.organization.rooms.length > 3
-                                                        ? {
-                                                            title: 'Show all',
-                                                            onPress: () =>
-                                                                this.props.router.push(
-                                                                    'OrgChannels',
-                                                                    {
-                                                                        organizationId: resp.data.organization.id,
-                                                                        title: resp.data.organization.name + ' rooms',
-                                                                    },
-                                                                ),
-                                                        }
-                                                        : undefined
-                                                }
-                                            >
-                                                {resp.data.organization.rooms
-                                                    .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
-                                                    .filter((c, i) => i <= 2)
-                                                    .map(v => (
-                                                        <ArrowWrapper>
-                                                            <ChannelViewAsync
-                                                                key={v!!.id}
-                                                                item={v!}
-                                                                onPress={() =>
-                                                                    this.props.router.push(
-                                                                        'Conversation',
-                                                                        {
-                                                                            flexibleId: v!!.id,
-                                                                        },
-                                                                    )
-                                                                }
-                                                            />
-                                                        </ArrowWrapper>
-                                                    ))}
-                                            </ZListItemGroup>
+                                            {resp.data.organization.rooms.length > 0 && (
+                                                <ZListItemGroup
+                                                    header="Rooms"
+                                                    divider={false}
+                                                >
+                                                    {resp.data.organization.rooms
+                                                        .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
+                                                        .filter((c, i) => i <= 2)
+                                                        .map(v => (
+                                                            <ArrowWrapper>
+                                                                <ChannelViewAsync
+                                                                    key={v!!.id}
+                                                                    item={v!}
+                                                                    onPress={() =>
+                                                                        this.props.router.push(
+                                                                            'Conversation',
+                                                                            {
+                                                                                flexibleId: v!!.id,
+                                                                            },
+                                                                        )
+                                                                    }
+                                                                />
+                                                            </ArrowWrapper>
+                                                        ))}
+                                                    {resp.data.organization.rooms.length > 3 && (
+                                                        <ZListItem
+                                                            leftIcon={require('assets/ic-more-24.png')}
+                                                            text="More rooms"
+                                                            path="OrgChannels"
+                                                            pathParams={{
+                                                                organizationId: resp.data.organization.id,
+                                                                title: resp.data.organization.name + ' rooms',
+                                                            }}
+                                                            navigationIcon={false}
+                                                        />)}
+                                                </ZListItemGroup>
+                                            )}
 
                                             <YMutation
                                                 mutation={OrganizationChangeMemberRoleMutation}
@@ -218,7 +222,25 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                     <ZListItem
                                                                         leftIcon={require('assets/ic-add-24.png')}
                                                                         text="Add Members"
-                                                                        path="OrganizationInviteLinkModal"
+                                                                        onPress={() => {
+                                                                            Modals.showUserMuptiplePicker(this.props.router,
+                                                                                {
+                                                                                    title: 'Add',
+                                                                                    action: async (users) => {
+                                                                                        startLoader();
+                                                                                        try {
+                                                                                            await getMessenger().engine.client.mutate(OrganizationAddMemberMutation, { userIds: users.map(u => u.id), organizationId: resp.data.organization.id })
+                                                                                        } catch (e) {
+                                                                                            Alert.alert(formatError(e));
+                                                                                        }
+                                                                                        stopLoader();
+                                                                                        this.props.router.back();
+                                                                                    }
+                                                                                },
+                                                                                'Add members',
+                                                                                resp.data.organization.members.map(u => u.user.id),
+                                                                                { path: 'OrganizationInviteLinkModal', pathParams: { id: resp.data.organization.id } });
+                                                                        }}
                                                                     />
                                                                 )}
 
@@ -231,81 +253,62 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                         //     description={v.role === 'OWNER' ? 'owner' : undefined}
 
                                                                         // />
-                                                                        <View>
-                                                                            <UserViewAsync
-                                                                                item={
-                                                                                    v.user
-                                                                                }
-                                                                                onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
-                                                                                onLongPress={v.user.id !== getMessenger().engine.user.id ?
-                                                                                    async () => {
-                                                                                        let builder = new ActionSheetBuilder();
+                                                                        <UserView
+                                                                            user={
+                                                                                v.user
+                                                                            }
+                                                                            // isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
 
+                                                                            onPress={() => this.props.router.push('ProfileUser', { id: v.user.id, })}
+                                                                            onLongPress={v.user.id === getMessenger().engine.user.id || (resp.data.organization.isOwner || resp.data.organization.isAdmin) ?
+                                                                                async () => {
+
+                                                                                    let builder = new ActionSheetBuilder();
+
+                                                                                    if (v.user.id !== getMessenger().engine.user.id && resp.data.organization.isOwner) {
                                                                                         builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
                                                                                             () => {
-                                                                                                new AlertBlanketBuilder()
+                                                                                                Alert.builder()
                                                                                                     .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
-                                                                                                        startLoader();
-                                                                                                        try {
-                                                                                                            await changeRole({
-                                                                                                                variables: {
-                                                                                                                    memberId: v.user.id,
-                                                                                                                    organizationId: this.props.router.params.id,
-                                                                                                                    newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
-                                                                                                                },
-                                                                                                            });
-                                                                                                        } catch (e) {
-                                                                                                            new AlertBlanketBuilder().alert(e.message);
-                                                                                                        }
-                                                                                                        stopLoader();
+                                                                                                    .action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke', 'default', async () => {
+                                                                                                        await changeRole({
+                                                                                                            variables: {
+                                                                                                                memberId: v.user.id,
+                                                                                                                organizationId: this.props.router.params.id,
+                                                                                                                newRole: (v.role === 'MEMBER' ? 'OWNER' : 'MEMBER') as any,
+                                                                                                            },
+                                                                                                        });
                                                                                                     }).show();
                                                                                             },
                                                                                         );
-
-                                                                                        builder.action('Remove',
+                                                                                    }
+                                                                                    if (resp.data.organization.isOwner || resp.data.organization.isAdmin || v.user.id !== getMessenger().engine.user.id) {
+                                                                                        builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
                                                                                             () => {
-                                                                                                new AlertBlanketBuilder()
-                                                                                                    .title(`Are you sure you want to remove ${v.user.name}?`)
+                                                                                                Alert.builder()
+                                                                                                    .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button('Remove from organization', 'destructive', async () => {
-                                                                                                        startLoader();
-                                                                                                        try {
-                                                                                                            await remove({
-                                                                                                                variables: {
-                                                                                                                    memberId: v.user.id,
-                                                                                                                    organizationId: this.props.router.params.id,
-                                                                                                                },
-                                                                                                            });
-                                                                                                        } catch (e) {
-                                                                                                            new AlertBlanketBuilder().alert(e.message);
-                                                                                                        }
-                                                                                                        stopLoader();
+                                                                                                    .action(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
+                                                                                                        await remove({
+                                                                                                            variables: {
+                                                                                                                memberId: v.user.id,
+                                                                                                                organizationId: this.props.router.params.id,
+                                                                                                            },
+                                                                                                        });
                                                                                                     })
                                                                                                     .show()
 
                                                                                             },
                                                                                             true,
                                                                                         );
-                                                                                        builder.show();
                                                                                     }
-                                                                                    : undefined
+
+                                                                                    builder.show();
                                                                                 }
-                                                                            />
-                                                                            <Text
-                                                                                style={{
-                                                                                    position: 'absolute',
-                                                                                    right: 16,
-                                                                                    height: 60,
-                                                                                    lineHeight: 60,
-                                                                                    fontSize: 15,
-                                                                                    color: '#99a2b0',
-                                                                                }}
-                                                                            >
-                                                                                {v.role === 'OWNER' ? 'Owner' : undefined}
-                                                                            </Text>
-                                                                        </View>
+                                                                                : undefined
+                                                                            }
+                                                                        />
                                                                     ),
                                                                 )}
                                                             </ZListItemGroup>
@@ -313,13 +316,13 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                     </YMutation>
                                                 )}
                                             </YMutation>
-                                        </SScrollView>
-                                    </>
-                                );
-                            }}
-                        </ZQuery>
-                    )}
-                </ZQuery>
+                                        </>
+                                    );
+                                }}
+                            </ZQuery>
+                        )}
+                    </ZQuery>
+                </SScrollView>
             </>
         );
     }

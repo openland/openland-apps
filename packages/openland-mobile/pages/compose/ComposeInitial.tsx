@@ -18,39 +18,54 @@ import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ExplorePeopleQuery } from 'openland-api';
+import { ExplorePeopleQuery, OnlineQuery } from 'openland-api';
+import { formatLastSeen } from 'openland-mobile/utils/formatTime';
+import { ASImage } from 'react-native-async-view/ASImage';
+import { UserView } from '../main/components/UserView';
 
-export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, onLongPress?: () => void, disabled?: boolean }> {
+// export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, onLongPress?: () => void, disabled?: boolean, isAdmin?: boolean }> {
 
-    handlePress = () => {
-        this.props.onPress(this.props.item.id);
-    }
+//     handlePress = () => {
+//         this.props.onPress(this.props.item.id);
+//     }
 
-    render() {
-        let item = this.props.item;
-        return (
-            <ASView style={{ height: 60, opacity: this.props.disabled ? 0.5 : 1 }}>
-                <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
-                    <ASFlex width={70} height={60} alignItems="center" justifyContent="center">
-                        <ASAvatar
-                            src={item.photo}
-                            size={40}
-                            placeholderKey={item.id}
-                            placeholderTitle={item.name}
-                        />
-                    </ASFlex>
-                    <ASFlex marginRight={10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                        <ASText fontSize={16} fontWeight="500" lineHeight={19} height={19} color="#181818" numberOfLines={1}>{item.name}</ASText>
-                        {!!item.primaryOrganization && <ASText marginTop={5} fontSize={13} lineHeight={15} height={15} color="#8a8a8f" numberOfLines={1} opacity={0.8}>{item.primaryOrganization.name}</ASText>}
-                    </ASFlex>
-                    {/* <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                        <ASFlex height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} />
-                    </ASFlex> */}
-                </ASFlex>
-            </ASView>
-        );
-    }
-}
+//     render() {
+//         let item = this.props.item;
+//         return (
+//             <ZQuery query={OnlineQuery} variables={{ userId: item.id }}>
+//                 {resp =>
+//                     <ASView style={{ height: 60, opacity: this.props.disabled ? 0.5 : 1 }}>
+//                         <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
+//                             <ASFlex width={70} height={60} alignItems="center" justifyContent="center">
+//                                 <ASAvatar
+//                                     src={item.photo}
+//                                     size={40}
+//                                     placeholderKey={item.id}
+//                                     placeholderTitle={item.name}
+//                                 />
+//                             </ASFlex>
+//                             <ASFlex marginRight={10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+
+//                                 <ASFlex flexDirection="row" alignItems="center">
+//                                     {this.props.isAdmin && <ASImage source={require('assets/ic-star-admin.png')} width={13} height={13} marginRight={5} />}
+//                                     <ASText fontSize={16} fontWeight="500" lineHeight={19} height={19} color="#181818" numberOfLines={1}>
+//                                         {item.name}
+//                                         {item.primaryOrganization && <ASText fontSize={13} lineHeight={15} height={15} color="#8a8a8f" numberOfLines={1} opacity={0.8}>{' ' + item.primaryOrganization.name}</ASText>}
+//                                     </ASText>
+//                                 </ASFlex>
+
+//                                 <ASText marginTop={5} fontSize={13} lineHeight={15} height={15} color={resp.data.user.online ? '#0084fe' : '#8a8a8f'} numberOfLines={1} opacity={0.8}>{resp.data.user.online ? 'online' : formatLastSeen(resp.data.user.lastSeen!)}</ASText>
+//                             </ASFlex>
+//                             {/* <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+//                           <ASFlex height={0.5} flexGrow={1} marginLeft={70} backgroundColor={XPStyles.colors.separator} />
+//                       </ASFlex> */}
+//                         </ASFlex>
+//                     </ASView>
+//                 }
+//             </ZQuery>
+//         );
+//     }
+// }
 
 class UserSearchComponent extends React.Component<PageProps & { query: string }> {
     render() {
@@ -76,7 +91,7 @@ class UserSearchComponent extends React.Component<PageProps & { query: string }>
                                 <SScrollView keyboardDismissMode="on-drag">
                                     <View style={{ flexDirection: 'column', width: '100%' }}>
                                         {resp.data.items.edges.map((item) => (
-                                            <UserViewAsync item={item.node} onPress={(id) => r!.pushAndRemove('Conversation', { flexibleId: id })} />
+                                            <UserView user={item.node} onPress={() => r!.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
                                         ))}
                                     </View>
 
@@ -113,13 +128,11 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
                             }
                             return (
                                 <SScrollView keyboardDismissMode="on-drag">
-                                    <ZListItemGroup>
-                                        <ZListItem leftIcon={require('assets/ic-cell-group-ios.png')} text="Create group" path="CreateGroupAttrs" pathRemove={true} />
-                                        <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Create room" path="CreateChannel" pathRemove={true} />
-                                    </ZListItemGroup>
-                                    <ZListItemGroup divider={false} header="People">
+                                    <ZListItemGroup divider={false}>
+                                        <ZListItem leftIcon={require('assets/ic-group-24.png')} text="Create room" path="CreateChannel" pathRemove={true} />
+                                        <ZListItem leftIcon={require('assets/ic-lock-24.png')} text="Create private group" path="CreateGroupAttrs" pathRemove={true} />
                                         {resp.data.items.edges.map((item) => (
-                                            <UserViewAsync item={item.node} onPress={(id) => this.props.router.pushAndRemove('Conversation', { flexibleId: id })} />
+                                            <UserView key={item.node.id} user={item.node} onPress={() => this.props.router.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
                                         ))}
                                     </ZListItemGroup>
 

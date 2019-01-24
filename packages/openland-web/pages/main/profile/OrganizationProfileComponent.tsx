@@ -157,79 +157,58 @@ interface MemberJoinedProps {
 
 const MemberJoinedCard = (props: MemberJoinedProps) => {
     const { user, role } = props.member;
-    const { isMine, isOwner } = props.organization;
+    const { isMine } = props.organization;
 
-    let isAdmin = isMine ? role === 'OWNER' : undefined;
+    let isOwner = isMine ? role === 'OWNER' : undefined;
+    let isAdmin = isMine ? role === 'ADMIN' : undefined;
 
     return (
         <XUserCard
             user={user}
             hideOrganization={true}
             isAdmin={isAdmin}
+            isOwner={isOwner}
             customMenu={
                 <>
-                    {isOwner && (
-                        <XOverflow
-                            placement="bottom-end"
-                            flat={true}
-                            content={
-                                <>
-                                    {isAdmin && (
-                                        <XMenuItem
-                                            style="danger"
-                                            query={{
-                                                field: 'changeRole',
-                                                value: user.id,
-                                            }}
-                                        >
-                                            {TextProfiles.Organization.members.revokeAdminStatus}
-                                        </XMenuItem>
-                                    )}
-                                    {!isAdmin && (
-                                        <XMenuItem
-                                            query={{
-                                                field: 'changeRole',
-                                                value: user.id,
-                                            }}
-                                        >
-                                            {TextProfiles.Organization.members.makeAdmin}
-                                        </XMenuItem>
-                                    )}
-                                    {!isAdmin && (
-                                        <XMenuItem
-                                            style="danger"
-                                            query={{
-                                                field: 'remove',
-                                                value: user.id,
-                                            }}
-                                        >
-                                            {
-                                                TextProfiles.Organization.members
-                                                    .removeFromOrganization
-                                            }
-                                        </XMenuItem>
-                                    )}
+                    <XOverflow
+                        placement="bottom-end"
+                        flat={true}
+                        content={
+                            <>
+                                {isAdmin && (
+                                    <XMenuItem
+                                        style="danger"
+                                        query={{
+                                            field: 'changeRole',
+                                            value: user.id,
+                                        }}
+                                    >
+                                        {TextProfiles.Organization.members.revokeAdminStatus}
+                                    </XMenuItem>
+                                )}
+                                {!isAdmin && !isOwner && (
+                                    <XMenuItem
+                                        query={{
+                                            field: 'changeRole',
+                                            value: user.id,
+                                        }}
+                                    >
+                                        {TextProfiles.Organization.members.makeAdmin}
+                                    </XMenuItem>
+                                )}
+                                {!isOwner && (
+                                    <XMenuItem
+                                        style="danger"
+                                        query={{
+                                            field: 'remove',
+                                            value: user.id,
+                                        }}
+                                    >
+                                        {TextProfiles.Organization.members.removeFromOrganization}
+                                    </XMenuItem>
+                                )}
 
-                                    <XWithRole role={['super-admin']}>
-                                        <XMenuItem
-                                            query={{
-                                                field: 'editUser',
-                                                value: user.id,
-                                            }}
-                                        >
-                                            {TextProfiles.Organization.members.edit}
-                                        </XMenuItem>
-                                    </XWithRole>
-                                </>
-                            }
-                        />
-                    )}
-                    {!isOwner && (
-                        <XWithRole role={['super-admin']}>
-                            <XOverflow
-                                placement="bottom-end"
-                                flat={true}
-                                content={
+                                <XWithRole role={['super-admin']}>
                                     <XMenuItem
                                         query={{
                                             field: 'editUser',
@@ -238,10 +217,10 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                                     >
                                         {TextProfiles.Organization.members.edit}
                                     </XMenuItem>
-                                }
-                            />
-                        </XWithRole>
-                    )}
+                                </XWithRole>
+                            </>
+                        }
+                    />
                 </>
             }
         />
@@ -791,7 +770,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
             {privateRooms && privateRooms.length > 0 && (
                 <Section separator={0}>
                     <XSubHeader
-                        title={TextProfiles.Organization.privateRooms}
+                        title={TextProfiles.Organization.publicRooms}
                         counter={privateRooms.length}
                         paddingBottom={0}
                     />
@@ -803,7 +782,7 @@ const Rooms = (props: { organization: Organization_organization }) => {
                                         field: 'createRoom',
                                         value: 'true',
                                     }}
-                                    text={TextProfiles.Organization.createPrivateRoom}
+                                    text={TextProfiles.Organization.createPublicRoom}
                                 />
                             </XWithRole>
                         )}

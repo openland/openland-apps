@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
 export class ZListItemGroup extends React.PureComponent<{ header?: string | null, counter?: number | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
@@ -39,24 +39,24 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                     <View
                         style={{
                             paddingTop: 30,
-                            paddingBottom: 10,
+                            paddingBottom: 8,
                             flexDirection: 'row'
                         }}
                     >
                         <Text
                             style={{
-                                color: '#000',
-                                fontSize: 20,
+                                color: Platform.OS === 'android' ? '#000' : '#99a2b0',
+                                fontSize: 16,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                height: 20,
-                                lineHeight: 20,
+                                height: Platform.OS === 'android' ? 21 : 20,
                                 paddingLeft: 16,
-                                flexShrink: 1
+                                flexShrink: 1,
+                                opacity: Platform.OS === 'android' ? 0.7 : 1.0
                             }}
                             numberOfLines={1}
                             ellipsizeMode="tail"
                         >
-                            {this.props.header}
+                            {Platform.OS === 'android' ? this.props.header : this.props.header.toUpperCase()}
                         </Text>
 
                         {this.props.counter !== undefined && this.props.counter !== null && (
@@ -66,7 +66,6 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                     fontSize: 18,
                                     fontWeight: Platform.OS === 'android' ? '500' : '600',
                                     height: 20,
-                                    lineHeight: 20,
                                     paddingLeft: 8,
                                 }}
                             >
@@ -77,26 +76,27 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                         <View flexGrow={1} paddingRight={16} />
 
                         {this.props.actionRight && (
-                            <Text
-                                onPress={this.props.actionRight.onPress}
-                                style={{
-                                    color: '#0084fe',
-                                    fontSize: 15,
-                                    fontWeight: '500',
-                                    height: 18,
-                                    lineHeight: 18,
-                                    paddingLeft: 16,
-                                    paddingRight: 16,
-                                }}
-                                numberOfLines={1}
-                                ellipsizeMode="tail"
-                            >
-                                {this.props.actionRight.title}
-                            </Text>
+                            <TouchableOpacity onPress={this.props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
+                                <Text
+                                    style={{
+                                        color: '#0084fe',
+                                        fontSize: 15,
+                                        fontWeight: Platform.OS === 'android' ? '500' : '600',
+                                        height: 18,
+                                        lineHeight: 18,
+                                        paddingLeft: 16,
+                                        paddingRight: 16,
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode="tail"
+                                >
+                                    {this.props.actionRight.title}
+                                </Text>
+                            </TouchableOpacity>
                         )}
                     </View>
                 }
-                {this.props.header === null && <View height={30} />}
+                {this.props.header === null && <View height={22} />}
                 {/* <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" /> */}
                 <View>
                     {components}

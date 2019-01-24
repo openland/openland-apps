@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AsyncStorage, View, Alert, Linking } from 'react-native';
+import { AsyncStorage, View, Linking } from 'react-native';
 import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
@@ -18,7 +18,7 @@ import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -104,7 +104,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     this.setState({ state: 'initial' });
                 }
             } catch (e) {
-                new AlertBlanketBuilder().alert(e.message);
+                Alert.alert(e.message);
             }
 
         })();

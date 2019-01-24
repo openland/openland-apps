@@ -9,26 +9,25 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import * as humanize from 'humanize';
-import { formatDate } from '../../utils/formatDate';
-import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
-import { Platform } from 'react-native';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Platform, View } from 'react-native';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { formatLastSeen } from 'openland-mobile/utils/formatTime';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
-class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
+class ProfileUserComponent extends React.Component<PageProps & { resp: User }, { notificationsValueCahed?: boolean }> {
     handleSend = () => {
         this.props.router.pushAndReset('Conversation', { 'flexibleId': this.props.router.params.id });
     }
+
     handleMute = async () => {
-        startLoader();
+        let target = !(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute);
         try {
-            await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: !(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute } });
+            await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: target } });
         } catch (e) {
-            new AlertBlanketBuilder().alert(e.message);
+            Alert.alert(e.message);
+            this.setState({ notificationsValueCahed: !target });
         }
-        stopLoader();
     }
     render() {
         return (
@@ -37,14 +36,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
                     {online => {
                         let sub = undefined;
                         if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
-                            let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
-                            if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-                                sub = 'last seen ' + humanize.relativeTime(time / 1000);
-                            } else if (new Date().getTime() - time < 1000 * 60) {
-                                sub = 'just now';
-                            } else {
-                                sub = 'last seen ' + formatDate(time);
-                            }
+                            sub = formatLastSeen(online.data.user.lastSeen);
                         } else {
                             sub = 'online'
                         }
@@ -61,16 +53,15 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
                     }}
                 </YQuery>
 
-                <ZListItemGroup header={null} divider={false}>
-                    {!!this.props.resp.user.about && <ZListItem title="About" multiline={true} text={this.props.resp.user.about} copy={true} />}
-                    {!!this.props.resp.user.shortname && <ZListItem title="Username" multiline={true} text={'@' + this.props.resp.user.shortname} copy={true} />}
+                <ZListItemGroup header="About" divider={false}>
+                    {!!this.props.resp.user.about && <ZListItem multiline={true} text={this.props.resp.user.about} copy={true} />}
+                    {!!this.props.resp.user.about && <View height={10} />}
+                    {!!this.props.resp.user.shortname && <ZListItem title="Username" text={'@' + this.props.resp.user.shortname} copy={true} />}
                     {!!this.props.resp.user.email && <ZListItem title="Email" text={this.props.resp.user.email} copy={true} />}
                     {!!this.props.resp.user.phone && <ZListItem title="Phone" text={'tel:' + this.props.resp.user.phone} copy={true} />}
                     {!!this.props.resp.user.website && <ZListItem title="Website" text={this.props.resp.user.website} copy={true} />}
                     {!!this.props.resp.user.location && <ZListItem title="Location" text={this.props.resp.user.location} copy={true} />}
-                </ZListItemGroup>
-                {!!this.props.resp.user.primaryOrganization && (
-                    <ZListItemGroup header={null} divider={false}>
+                    {/* {!!this.props.resp.user.primaryOrganization && (
                         <ZListItem
                             leftAvatar={{
                                 photo: this.props.resp.user.primaryOrganization.photo,
@@ -79,18 +70,35 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
                             }}
                             text={this.props.resp.user.primaryOrganization.name}
                             description="Organization"
-                            multiline={true}
+                            // title="Organization"
                             path="ProfileOrganization"
                             pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
                         />
-                    </ZListItemGroup>
-                )}
-                <ZListItemGroup header={null} divider={false}>
+                    )} */}
+                </ZListItemGroup>
+
+                <ZListItemGroup header="Organization" footer={null} divider={false}>
+                    {!!this.props.resp.user.primaryOrganization && (
+                        <ZListItem
+                            leftAvatar={{
+                                photo: this.props.resp.user.primaryOrganization.photo,
+                                key: this.props.resp.user.primaryOrganization.id,
+                                title: this.props.resp.user.primaryOrganization.name
+                            }}
+                            text={this.props.resp.user.primaryOrganization.name}
+                            path="ProfileOrganization"
+                            pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
+                        />
+                    )}
+                </ZListItemGroup>
+
+                <ZListItemGroup header="Settings" footer={null} divider={false}>
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                         text="Notifications"
-                        toggle={!(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute}
+                        toggle={!(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute)}
                         onToggle={this.handleMute}
+                        onPress={this.handleMute}
                     />
                 </ZListItemGroup>
             </>

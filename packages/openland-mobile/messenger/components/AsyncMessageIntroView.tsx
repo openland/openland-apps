@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking, Alert } from 'react-native';
+import { Platform, Linking } from 'react-native';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
@@ -12,7 +12,7 @@ import { formatBytes } from '../../utils/formatBytes';
 import { MessageSetReactionMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const paddedText = ' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = ' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -97,7 +97,7 @@ export let renderButtons = (message: DataSourceMessageItem, navigationManager: N
                             await getMessenger().engine.client.mutate(MessageSetReactionMutation, { messageId: message.key, reaction: 'accept' });
                             navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
                         } catch (e) {
-                            new AlertBlanketBuilder().alert(e.message);
+                            Alert.alert(e.message);
                         }
                         stopLoader();
                     }}

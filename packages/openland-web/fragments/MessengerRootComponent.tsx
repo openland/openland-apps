@@ -8,7 +8,12 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MessageComposeComponentDraft } from './MessageComposeComponent';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import {
+    MessageComposeComponentDraft,
+    MessageComposeComponentProps,
+} from './MessageComposeComponent';
+import { MobileMessageCompose } from './MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
 import { withUserInfo } from '../components/UserInfo';
@@ -109,6 +114,22 @@ export const LeaveChatComponent = withChatLeave(props => {
             </XText>
         </XModalForm>
     );
+});
+
+interface ComposeHandlerProps extends MessageComposeComponentProps {
+    variables?: {
+        roomId?: string;
+        conversationId?: string;
+        organizationId: string | null;
+    };
+}
+
+const MessageComposeHandler = React.memo<ComposeHandlerProps>(props => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    if (isMobile) {
+        return <MobileMessageCompose {...props} />;
+    }
+    return <MessageComposeComponentDraft {...props} />;
 });
 
 class MessagesComponent extends React.Component<MessagesComponentProps, MessagesComponentState>
@@ -289,7 +310,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         />
 
                         {this.state.hideInput === false && (
-                            <MessageComposeComponentDraft
+                            <MessageComposeHandler
                                 getMessages={this.getMessages}
                                 conversation={this.conversation}
                                 onChange={this.handleChange}

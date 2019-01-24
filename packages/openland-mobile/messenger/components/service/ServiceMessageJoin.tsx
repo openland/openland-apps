@@ -23,7 +23,7 @@ const JoinOneServiceMessage = (props: JoinDefaultProps & { joinedByUser: UserSho
             <Container>
                 {handEmoji}{' '}
                 <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> was
-                invited by
+                invited by{' '}
                 <UserWrapper user={joinedByUser} onUserPress={onUserPress} myUserId={myUserId} />
             </Container>
         );

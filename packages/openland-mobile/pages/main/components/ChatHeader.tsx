@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { View, Text, TouchableHighlight, StyleSheet, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, TextStyle } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
 import { OnlineQuery, RoomQuery } from 'openland-api';
-import * as humanize from 'humanize';
-import { formatDate } from '../../../utils/formatDate';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -110,15 +109,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
                                 {online => {
                                     let sub = subtitle;
                                     if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
-                                        let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
-                                        if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-                                            sub = 'last seen ' + humanize.relativeTime(time / 1000);
-                                        } else if (new Date().getTime() - time < 1000 * 60) {
-                                            sub = 'just now';
-                                        } else {
-                                            sub = 'last seen ' + formatDate(time);
-                                        }
-                                        // 
+                                        sub = formatLastSeen(online.data.user.lastSeen);
                                     }
                                     return (
                                         <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{sub}</Text>

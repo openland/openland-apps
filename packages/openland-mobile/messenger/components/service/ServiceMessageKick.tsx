@@ -25,8 +25,9 @@ const KickedByServiceMessage = (props: KickDefaultProps & { kickedBy: UserShort 
 
     return (
         <Container>
-            <UserWrapper user={user} onUserPress={onUserPress} myUserId={myUserId} /> was kicked by{' '}
-            <UserWrapper user={kickedBy} onUserPress={onUserPress} myUserId={myUserId} />
+            <UserWrapper user={kickedBy} onUserPress={onUserPress} myUserId={myUserId} />{' '}
+            kicked{' '}
+            <UserWrapper user={user} onUserPress={onUserPress} myUserId={myUserId} />
         </Container>
     );
 };

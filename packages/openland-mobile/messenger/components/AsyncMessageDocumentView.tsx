@@ -10,7 +10,7 @@ import { Platform } from 'react-native';
 import { DownloadManagerInstance } from '../../../openland-mobile/files/DownloadManager';
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { UploadManagerInstance } from '../../files/UploadManager';
-import { DownloadState } from '../../utils/DownloadManagerInterface';
+import { DownloadState } from '../../files/DownloadManagerInterface';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));

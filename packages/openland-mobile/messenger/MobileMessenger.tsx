@@ -15,15 +15,15 @@ import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Alert, Platform } from 'react-native';
+import { Clipboard, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
-import { PromptBuilder } from '../components/Prompt';
+import { Prompt } from '../components/Prompt';
 import { TextStyles } from '../styles/AppStyles';
 import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 interface ASAvatarProps {
     size: number;
@@ -57,7 +57,7 @@ export class ASAvatar extends React.PureComponent<ASAvatarProps> {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
         }
         let textSize = 28;
-        if (this.props.size === 40) {
+        if (this.props.size === 38 || this.props.size === 40) {
             textSize = 16;
         }
         if (this.props.size === 32) {
@@ -109,7 +109,7 @@ export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: b
                 <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
                     {this.props.online && (
                         <ASFlex width={11} height={11} borderRadius={5} backgroundColor="#ffffff" justifyContent="center" marginRight={3} marginBottom={3}>
-                            <ASFlex width={7} height={7} borderRadius={3} backgroundColor="rgb(92,212,81)" marginLeft={2} marginTop={2} marginRight={2} />
+                            <ASFlex width={7} height={7} borderRadius={3} backgroundColor="#0084fe" marginLeft={2} marginTop={2} marginRight={2} />
                         </ASFlex>
                     )}
                 </ASFlex>
@@ -139,7 +139,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
 
     render() {
         let item = this.props.item;
-        let showSenderName = !!(item.message && ((item.isOut || item.kind !== 'PRIVATE')) && item.sender);
+        let showSenderName = !!(item.message && ((item.isOut || item.kind !== 'PRIVATE')) && item.sender) && !item.isService;
         let isUser = item.kind === 'PRIVATE';
         let height = this.props.compact ? 48 : 80;
         let avatarSize = this.props.compact ? 30 : 60;
@@ -167,8 +167,10 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                     </ASFlex>
                     {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            {showSenderName && (<ASText fontSize={14} lineHeight={18} height={18} color="#181818" numberOfLines={1}>{item.sender}</ASText>)}
-                            <ASText fontSize={14} height={showSenderName ? 18 : 36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={showSenderName ? 1 : 2}>{item.message}</ASText>
+                            <ASText fontSize={14} lineHeight={18} height={36} color="#181818" numberOfLines={2}>
+                                {showSenderName && `${item.sender}: `}
+                                <ASText fontSize={14} height={36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={2}>{item.message}</ASText>
+                            </ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             <ASText fontSize={14} height={36} lineHeight={18} color={XPStyles.colors.brand} numberOfLines={2}>{item.typing}</ASText>
@@ -268,7 +270,7 @@ export class MobileMessenger {
             });
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    new PromptBuilder()
+                    Prompt.builder()
                         .title('Edit message')
                         .value(message.text!)
                         .callback(async (text) => {
@@ -276,7 +278,7 @@ export class MobileMessenger {
                             try {
                                 await this.engine.client.mutate(RoomEditMessageMutation, { messageId: message.id!, message: text });
                             } catch (e) {
-                                new AlertBlanketBuilder().alert(e.message);
+                                Alert.alert(e.message);
                             }
                             stopLoader();
                         })
@@ -287,21 +289,15 @@ export class MobileMessenger {
         if (message.senderId === this.engine.user.id) {
             builder.action('Delete', async () => {
                 try {
-                    new AlertBlanketBuilder()
+                    Alert.builder()
                         .title('Delete message')
                         .message('Are you sure you want to delete this message?')
                         .button('Cancel', 'cancel')
-                        .button('Delete', 'destructive', async () => {
-                            startLoader();
-                            try {
-                                await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
-                            } catch (e) {
-                                new AlertBlanketBuilder().alert(e.message);
-                            }
-                            stopLoader();
+                        .action('Delete', 'destructive', async () => {
+                            await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
                         }).show();
                 } catch (e) {
-                    new AlertBlanketBuilder().alert(e.message);
+                    Alert.alert(e.message);
                 }
             });
         }
@@ -318,7 +314,7 @@ export class MobileMessenger {
                             this.engine.client.mutate(MessageSetReactionMutation, { messageId: message.id!, reaction: r });
                         }
                     } catch (e) {
-                        new AlertBlanketBuilder().alert(e.message);
+                        Alert.alert(e.message);
                     }
                     stopLoader();
                 });

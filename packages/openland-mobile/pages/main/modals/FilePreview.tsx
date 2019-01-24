@@ -13,7 +13,7 @@ import { ZRoundedButton } from '../../../components/ZRoundedButton';
 import { XPCircularLoader } from 'openland-xp/XPCircularLoader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { formatBytes } from '../../../utils/formatBytes';
-import { DownloadState } from '../../../utils/DownloadManagerInterface';
+import { DownloadState } from '../../../files/DownloadManagerInterface';
 
 const styles = StyleSheet.create({
     name: {
