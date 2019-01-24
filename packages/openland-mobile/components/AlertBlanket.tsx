@@ -78,7 +78,7 @@ class AlertBlanketBuilderComponent extends React.PureComponent<{ builder: AlertB
         return <View
             flexDirection="column"
             justifyContent="center"
-            backgroundColor={this.state.state === 'done' ? '#69d06d' : this.state.state === 'error' ? '#d75454' : undefined}
+            backgroundColor={this.state.state === 'done' ? '#69d06d' : this.state.state === 'error' ? '#d75454' : 'white'}
             borderRadius={16}
         >
             <SAnimated.View
