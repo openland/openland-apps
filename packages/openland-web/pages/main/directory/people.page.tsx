@@ -7,7 +7,7 @@ import { MainLayout } from '../../../components/MainLayout';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { SortPicker } from './sortPicker';
+import { SortPicker } from './components/sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import { DirectoryNavigation } from './components/Navigation';

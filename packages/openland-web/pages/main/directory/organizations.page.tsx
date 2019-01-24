@@ -5,7 +5,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from '../../../components/Scaffold';
 import { MainLayout } from '../../../components/MainLayout';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { SortPicker } from './sortPicker';
+import { SortPicker } from './components/sortPicker';
 import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { EmptySearchBlock } from './components/EmptySearchBlock';

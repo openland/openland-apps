@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { withChatSearchChannels } from '../api/withChatSearchChannels';
 import { XLoader } from 'openland-x/XLoader';
-import { SortPicker } from '../pages/main/directory/sortPicker';
+import { SortPicker } from '../pages/main/directory/components/sortPicker';
 import { EmptyComponent } from './directory/RoomEmptyComponent';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { XContentWrapper } from 'openland-x/XContentWrapper';

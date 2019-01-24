@@ -20,37 +20,39 @@ type PageInnerProps = {
     cid: string | null | undefined;
 };
 
-const MobilePageInner = ({
-    tab,
-    firstFragmentMenu,
-    secondFragmentHeader,
-    firstFragment,
-    secondFragment,
-    swapFragmentsOnMobile,
-}: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-        >
-            {tab === tabs.empty ? (
-                <XView width="100%">
-                    {firstFragmentMenu}
-                    {swapFragmentsOnMobile ? secondFragment : firstFragment}
-                </XView>
-            ) : (
-                <XView flexDirection="column" flexGrow={1}>
-                    {secondFragmentHeader}
-                    {swapFragmentsOnMobile ? firstFragment : secondFragment}
-                </XView>
-            )}
-        </XView>
-    );
-};
+const MobilePageInner = React.memo(
+    ({
+        tab,
+        firstFragmentMenu,
+        secondFragmentHeader,
+        firstFragment,
+        secondFragment,
+        swapFragmentsOnMobile,
+    }: PageInnerProps) => {
+        return (
+            <XView
+                flexDirection="row"
+                flexGrow={1}
+                flexShrink={0}
+                overflow="hidden"
+                alignItems="stretch"
+                height="100%"
+            >
+                {tab === tabs.empty ? (
+                    <XView width="100%">
+                        {firstFragmentMenu}
+                        {swapFragmentsOnMobile ? secondFragment : firstFragment}
+                    </XView>
+                ) : (
+                    <XView flexDirection="column" flexGrow={1}>
+                        {secondFragmentHeader}
+                        {swapFragmentsOnMobile ? firstFragment : secondFragment}
+                    </XView>
+                )}
+            </XView>
+        );
+    },
+);
 
 const containerStyle = css`
     display: flex;
@@ -69,36 +71,39 @@ const containerStyle = css`
     }
 `;
 
-const DesktopDialogContainer = ({ children }: { children: any }) => (
+const DesktopDialogContainer = React.memo(({ children }: { children: any }) => (
     <div className={containerStyle}>{children}</div>
-);
-const DesktopPageInner = ({
-    firstFragmentMenu,
-    firstFragment,
-    secondFragment,
-    secondFragmentHeader,
-}: PageInnerProps) => {
-    return (
-        <XView
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={0}
-            overflow="hidden"
-            alignItems="stretch"
-            height="100%"
-            width="100%"
-        >
-            <DesktopDialogContainer>
-                {firstFragmentMenu}
-                {firstFragment}
-            </DesktopDialogContainer>
-            <XView flexDirection="column" flexGrow={1}>
-                {secondFragmentHeader}
-                {secondFragment}
+));
+
+const DesktopPageInner = React.memo(
+    ({
+        firstFragmentMenu,
+        firstFragment,
+        secondFragment,
+        secondFragmentHeader,
+    }: PageInnerProps) => {
+        return (
+            <XView
+                flexDirection="row"
+                flexGrow={1}
+                flexShrink={0}
+                overflow="hidden"
+                alignItems="stretch"
+                height="100%"
+                width="100%"
+            >
+                <DesktopDialogContainer>
+                    {firstFragmentMenu}
+                    {firstFragment}
+                </DesktopDialogContainer>
+                <XView flexDirection="column" flexGrow={1}>
+                    {secondFragmentHeader}
+                    {secondFragment}
+                </XView>
             </XView>
-        </XView>
-    );
-};
+        );
+    },
+);
 
 const PageInner = AdaptiveHOC({
     DesktopComponent: DesktopPageInner,
@@ -106,54 +111,56 @@ const PageInner = AdaptiveHOC({
     fullWidth: true,
 });
 
-export const UniversalNavigation = ({
-    tab,
-    title,
-    menuRightContent,
-    menuChildrenContent,
-    swapFragmentsOnMobile,
-    secondFragmentHeader,
-    firstFragment,
-    secondFragment,
-}: {
-    tab?: any;
-    title: string;
-    menuRightContent?: any;
-    menuChildrenContent?: any;
-    swapFragmentsOnMobile?: any;
-    secondFragmentHeader?: any;
-    firstFragment?: any;
-    secondFragment?: any;
-}) => {
-    return (
-        <>
-            <XDocumentHead title={title} />
-            <Scaffold>
-                <Scaffold.Content padding={false} bottomOffset={false}>
-                    <XView
-                        flexDirection="row"
-                        flexGrow={1}
-                        flexShrink={0}
-                        overflow="hidden"
-                        alignItems="stretch"
-                        height="100%"
-                        width="100%"
-                    >
-                        <PageInner
-                            tab={tab}
-                            swapFragmentsOnMobile={swapFragmentsOnMobile}
-                            firstFragmentMenu={
-                                <Menu title={title} rightContent={menuRightContent}>
-                                    {menuChildrenContent}
-                                </Menu>
-                            }
-                            secondFragmentHeader={secondFragmentHeader}
-                            firstFragment={firstFragment}
-                            secondFragment={secondFragment}
-                        />
-                    </XView>
-                </Scaffold.Content>
-            </Scaffold>
-        </>
-    );
-};
+export const UniversalNavigation = React.memo(
+    ({
+        tab,
+        title,
+        menuRightContent,
+        menuChildrenContent,
+        swapFragmentsOnMobile,
+        secondFragmentHeader,
+        firstFragment,
+        secondFragment,
+    }: {
+        tab?: any;
+        title: string;
+        menuRightContent?: any;
+        menuChildrenContent?: any;
+        swapFragmentsOnMobile?: any;
+        secondFragmentHeader?: any;
+        firstFragment?: any;
+        secondFragment?: any;
+    }) => {
+        return (
+            <>
+                <XDocumentHead title={title} />
+                <Scaffold>
+                    <Scaffold.Content padding={false} bottomOffset={false}>
+                        <XView
+                            flexDirection="row"
+                            flexGrow={1}
+                            flexShrink={0}
+                            overflow="hidden"
+                            alignItems="stretch"
+                            height="100%"
+                            width="100%"
+                        >
+                            <PageInner
+                                tab={tab}
+                                swapFragmentsOnMobile={swapFragmentsOnMobile}
+                                firstFragmentMenu={
+                                    <Menu title={title} rightContent={menuRightContent}>
+                                        {menuChildrenContent}
+                                    </Menu>
+                                }
+                                secondFragmentHeader={secondFragmentHeader}
+                                firstFragment={firstFragment}
+                                secondFragment={secondFragment}
+                            />
+                        </XView>
+                    </Scaffold.Content>
+                </Scaffold>
+            </>
+        );
+    },
+);

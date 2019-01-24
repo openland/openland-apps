@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
-import { tabs } from './mail/tabs';
+import { tabs } from '../mail/tabs';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
 import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
@@ -15,91 +15,105 @@ import { UserProfile } from 'openland-web/pages/main/profile/UserProfileComponen
 import { OrganizationProfile } from 'openland-web/pages/main/profile/OrganizationProfileComponent';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
-import { SortPicker } from 'openland-web/pages/main/directory/sortPicker';
+import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { PeopleCards } from 'openland-web/pages/main/directory/people.page';
 import { OrganizationCards } from 'openland-web/pages/main/directory/organizations.page';
 import { CommunitiesCards } from 'openland-web/pages/main/directory/communities.page';
 import { RoomProfile } from 'openland-web/pages/main/profile/RoomProfileComponent';
 import { Rooms } from 'openland-web/fragments/RoomsExploreComponent';
-import { UniversalNavigation } from './UniversalNavigation';
+import { UniversalNavigation } from '../UniversalNavigation';
 
-const DirectoryContent = ({
-    id,
-    searchPlaceholder,
-    noQueryText,
-    hasQueryText,
-    CardsComponent,
-    ProfileComponent,
-}: {
-    id?: string | null;
-    searchPlaceholder: string;
-    noQueryText: string;
-    hasQueryText: string;
-    CardsComponent: any;
-    ProfileComponent: any;
-}) => {
-    const [orgCount, setOrgCount] = React.useState(0);
-    const [query, setQuery] = React.useState('');
-    const [sort, setSort] = React.useState({
-        orderBy: 'createdAt',
-        featured: true,
-    });
+const DirectoryContent = React.memo(
+    ({
+        id,
+        searchPlaceholder,
+        noQueryText,
+        hasQueryText,
+        CardsComponent,
+        ProfileComponent,
+    }: {
+        id?: string | null;
+        searchPlaceholder: string;
+        noQueryText: string;
+        hasQueryText: string;
+        CardsComponent: any;
+        ProfileComponent: any;
+    }) => {
+        const [orgCount, setOrgCount] = React.useState(0);
+        const [query, setQuery] = React.useState('');
+        const [sort, setSort] = React.useState({
+            orderBy: 'createdAt',
+            featured: true,
+        });
 
-    const tagsCount = (n: number) => {
-        if (orgCount !== n) {
-            setOrgCount(n);
-        }
-    };
+        const tagsCount = (n: number) => {
+            if (orgCount !== n) {
+                setOrgCount(n);
+            }
+        };
 
-    return (
-        <>
-            {!id && (
-                <XVertical separator={0} height="100%">
-                    <SearchBox value={query} onChange={setQuery} placeholder={searchPlaceholder} />
-                    {query.length <= 0 && (
-                        <XSubHeader
-                            title={noQueryText}
-                            right={
-                                <SortPicker sort={sort} onPick={setSort} withoutFeatured={true} />
-                            }
+        return (
+            <>
+                {!id && (
+                    <XVertical separator={0} height="100%">
+                        <SearchBox
+                            value={query}
+                            onChange={setQuery}
+                            placeholder={searchPlaceholder}
                         />
-                    )}
-                    {query.length > 0 && orgCount > 0 && (
-                        <XSubHeader
-                            title={hasQueryText}
-                            counter={orgCount}
-                            right={
-                                <SortPicker sort={sort} onPick={setSort} withoutFeatured={true} />
-                            }
+                        {query.length <= 0 && (
+                            <XSubHeader
+                                title={noQueryText}
+                                right={
+                                    <SortPicker
+                                        sort={sort}
+                                        onPick={setSort}
+                                        withoutFeatured={true}
+                                    />
+                                }
+                            />
+                        )}
+                        {query.length > 0 && orgCount > 0 && (
+                            <XSubHeader
+                                title={hasQueryText}
+                                counter={orgCount}
+                                right={
+                                    <SortPicker
+                                        sort={sort}
+                                        onPick={setSort}
+                                        withoutFeatured={true}
+                                    />
+                                }
+                            />
+                        )}
+                        <CardsComponent
+                            featuredFirst={sort.featured}
+                            orderBy={sort.orderBy}
+                            tagsCount={tagsCount}
+                            variables={{
+                                query,
+                            }}
                         />
-                    )}
-                    <CardsComponent
-                        featuredFirst={sort.featured}
-                        orderBy={sort.orderBy}
-                        tagsCount={tagsCount}
-                        variables={{
-                            query,
-                        }}
-                    />
-                </XVertical>
-            )}
-            {id && <ProfileComponent id={id} />}
-        </>
-    );
-};
+                    </XVertical>
+                )}
+                {id && <ProfileComponent id={id} />}
+            </>
+        );
+    },
+);
 
-const SearchUserProfileComponent = ({ id }: { id: string }) => (
+const SearchUserProfileComponent = React.memo(({ id }: { id: string }) => (
     <UserProfile userId={id} onDirectory={true} />
-);
+));
 
-const SearchOrganizationProfileComponent = ({ id }: { id: string }) => (
+const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
-);
+));
 
-const SearchRoomsProfileComponent = ({ id }: { id: string }) => (
+const SearchRoomsProfileComponent = React.memo(({ id }: { id: string }) => (
     <RoomProfile conversationId={id} onDirectory={true} />
-);
+));
 
 const ComponentWithSort = (Component: any) =>
     React.memo(({ featuredFirst, orderBy, variables, tagsCount }: any) => {
@@ -144,7 +158,7 @@ const getCommunityProfile = (path: string) => getId(path, '/directory/c/');
 
 const isCommunity = (path: string) => path.endsWith('/communities') || !!getCommunityProfile(path);
 
-export const DirectoryUniversalNavigation = ({ path }: { path: string }) => {
+export const DirectoryUniversalNavigation = React.memo(({ path }: { path: string }) => {
     let ProfileComponent;
     let CardsComponent;
     let searchPlaceholder = '';
@@ -273,4 +287,4 @@ export const DirectoryUniversalNavigation = ({ path }: { path: string }) => {
             }
         />
     );
-};
+});
