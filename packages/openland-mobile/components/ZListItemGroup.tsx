@@ -49,7 +49,6 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                 fontSize: 16,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
                                 height: 20,
-                                lineHeight: 20,
                                 paddingLeft: 16,
                                 flexShrink: 1,
                                 opacity: Platform.OS === 'android' ? 0.7 : 1.0
@@ -67,7 +66,6 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                     fontSize: 18,
                                     fontWeight: Platform.OS === 'android' ? '500' : '600',
                                     height: 20,
-                                    lineHeight: 20,
                                     paddingLeft: 8,
                                 }}
                             >

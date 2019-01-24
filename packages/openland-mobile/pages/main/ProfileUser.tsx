@@ -9,8 +9,6 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import * as humanize from 'humanize';
-import { formatDate } from '../../utils/formatDate';
 import { Platform } from 'react-native';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -57,11 +55,28 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
 
                 <ZListItemGroup header="About" divider={false}>
                     {!!this.props.resp.user.about && <ZListItem multiline={true} text={this.props.resp.user.about} copy={true} />}
-                    {!!this.props.resp.user.shortname && <ZListItem title="Username" multiline={true} text={'@' + this.props.resp.user.shortname} copy={true} />}
+                    {!!this.props.resp.user.shortname && <ZListItem title="Username" text={'@' + this.props.resp.user.shortname} copy={true} />}
                     {!!this.props.resp.user.email && <ZListItem title="Email" text={this.props.resp.user.email} copy={true} />}
                     {!!this.props.resp.user.phone && <ZListItem title="Phone" text={'tel:' + this.props.resp.user.phone} copy={true} />}
                     {!!this.props.resp.user.website && <ZListItem title="Website" text={this.props.resp.user.website} copy={true} />}
                     {!!this.props.resp.user.location && <ZListItem title="Location" text={this.props.resp.user.location} copy={true} />}
+                    {/* {!!this.props.resp.user.primaryOrganization && (
+                        <ZListItem
+                            leftAvatar={{
+                                photo: this.props.resp.user.primaryOrganization.photo,
+                                key: this.props.resp.user.primaryOrganization.id,
+                                title: this.props.resp.user.primaryOrganization.name
+                            }}
+                            text={this.props.resp.user.primaryOrganization.name}
+                            description="Organization"
+                            // title="Organization"
+                            path="ProfileOrganization"
+                            pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
+                        />
+                    )} */}
+                </ZListItemGroup>
+
+                <ZListItemGroup header="Organization" footer={null} divider={false}>
                     {!!this.props.resp.user.primaryOrganization && (
                         <ZListItem
                             leftAvatar={{
@@ -70,30 +85,12 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                                 title: this.props.resp.user.primaryOrganization.name
                             }}
                             text={this.props.resp.user.primaryOrganization.name}
-                            description="Organization"
-                            // title="Organization"
                             path="ProfileOrganization"
                             pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
                         />
                     )}
                 </ZListItemGroup>
-                {/* {!!this.props.resp.user.primaryOrganization && (
-                    <ZListItemGroup header="Organizations" divider={false}>
-                        <ZListItem
-                            leftAvatar={{
-                                photo: this.props.resp.user.primaryOrganization.photo,
-                                key: this.props.resp.user.primaryOrganization.id,
-                                title: this.props.resp.user.primaryOrganization.name
-                            }}
-                            text={this.props.resp.user.primaryOrganization.name}
-                            description="Organization"
-                            // title="Organization"
-                            multiline={true}
-                            path="ProfileOrganization"
-                            pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
-                        />
-                    </ZListItemGroup>
-                )} */}
+
                 <ZListItemGroup header="Settings" footer={null} divider={false}>
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
