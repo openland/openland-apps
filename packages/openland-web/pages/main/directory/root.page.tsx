@@ -35,8 +35,8 @@ class RootComponent extends React.Component<XWithRouter> {
                 </MainLayout.Menu>
                 <MainLayout.Content>
                     {tab === tabs.invite && <MessengerFragment id={conversationId} />}
-                    {tab === tabs.rooms && <RoomsExploreComponent />}
                     {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
+                    {tab === tabs.rooms && <RoomsExploreComponent />}
                 </MainLayout.Content>
             </MainLayout>
         );

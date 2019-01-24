@@ -1,21 +1,11 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
-import { MainLayout } from '../../../components/MainLayout';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { SortPicker } from './components/sortPicker';
-import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
-import { XSubHeader } from 'openland-x/XSubHeader';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { DirectoryNavigation } from './components/Navigation';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
-import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
-
+import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
 interface OrganizationCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
@@ -84,125 +74,33 @@ export class Organizations extends React.PureComponent<OrganizationsProps> {
     }
 }
 
-interface RootComponentState {
-    query: string;
-    sort: {
-        orderBy: string;
-        featured: boolean;
-    };
-    orgCount: number;
-}
-
-class RootComponent extends React.Component<XWithRouter, RootComponentState> {
-    input?: any;
-    organizationListRef = React.createRef<Organizations>();
-
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            query: '',
-            sort: {
-                orderBy: 'createdAt',
-                featured: true,
-            },
-            orgCount: 0,
-        };
+const getId = (myPath: string, substring: string) => {
+    if (!myPath.includes(substring)) {
+        return null;
     }
+    return myPath.split(substring)[1];
+};
 
-    changeSort = (sort: { orderBy: string; featured: boolean }) => {
-        this.setState({
-            sort: sort,
-        });
-    };
+const getOrganizationProfile = (path: string) => getId(path, '/directory/o/');
 
-    resetPage = () => {
-        this.props.router.replaceQueryParams({ page: undefined });
-    };
+const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) => (
+    <OrganizationProfile organizationId={id} onDirectory={true} />
+));
 
-    onQueryChange = (q: string) => {
-        this.resetPage();
-        this.setState({
-            query: q,
-        });
-    };
+let CardsComponent = ComponentWithSort(OrganizationCards);
 
-    tagsCount = (n: number) => {
-        return this.setState({
-            orgCount: n,
-        });
-    };
+export default React.memo(({ path }: { path: string }) => {
+    let id = getOrganizationProfile(path);
 
-    render() {
-        const { query, orgCount } = this.state;
-        let oid = this.props.router.routeQuery.organizationId;
-
-        return (
-            <>
-                <XDocumentHead title="Organizations Directory" />
-                <Scaffold>
-                    <Scaffold.Content padding={false} bottomOffset={false}>
-                        <MainLayout>
-                            <MainLayout.Menu>
-                                <DirectoryNavigation route="Organizations" />
-                            </MainLayout.Menu>
-                            <MainLayout.Content>
-                                {!oid && (
-                                    <XVertical separator={0}>
-                                        <SearchBox
-                                            value={query}
-                                            onChange={this.onQueryChange}
-                                            placeholder="Search organizations"
-                                        />
-                                        {query.length <= 0 && (
-                                            <XSubHeader
-                                                title="All organizations"
-                                                right={
-                                                    <SortPicker
-                                                        sort={this.state.sort}
-                                                        onPick={this.changeSort}
-                                                    />
-                                                }
-                                                paddingBottom={12}
-                                            />
-                                        )}
-                                        {query.length > 0 && orgCount > 0 && (
-                                            <XSubHeader
-                                                title="Organizations"
-                                                counter={orgCount}
-                                                right={
-                                                    <SortPicker
-                                                        sort={this.state.sort}
-                                                        onPick={this.changeSort}
-                                                    />
-                                                }
-                                                paddingBottom={12}
-                                            />
-                                        )}
-                                        <Organizations
-                                            featuredFirst={this.state.sort.featured}
-                                            orderBy={this.state.sort.orderBy}
-                                            query={query}
-                                            tagsCount={this.tagsCount}
-                                        />
-                                    </XVertical>
-                                )}
-                                {oid && (
-                                    <OrganizationProfile organizationId={oid} onDirectory={true} />
-                                )}
-                            </MainLayout.Content>
-                        </MainLayout>
-                    </Scaffold.Content>
-                </Scaffold>
-            </>
-        );
-    }
-}
-
-export default withApp(
-    'Directory',
-    'viewer',
-    withRouter(props => {
-        return <RootComponent router={props.router} />;
-    }),
-);
+    return (
+        <DirectoryUniversalNavigation
+            id={id}
+            title={'Organizations'}
+            ProfileComponent={SearchOrganizationProfileComponent}
+            CardsComponent={CardsComponent}
+            searchPlaceholder={'Search organizations'}
+            noQueryText={'All organizations'}
+            hasQueryText={'Organizations'}
+        />
+    );
+});

@@ -10,7 +10,6 @@ import ProfileIcon from 'openland-icons/ic-profile.svg';
 import { withChannelJoin } from '../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
-import { TextRoom } from 'openland-text/TextRoom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';
@@ -244,7 +243,7 @@ const JoinLinkButton = withChannelJoinInviteLink(props => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                window.location.href = 'openland://deep/joinroom/' + (props as any).invite
+                window.location.href = 'openland://deep/joinroom/' + (props as any).invite;
                 props.join({ variables: { invite: (props as any).invite } });
                 await delayForewer();
             }}
@@ -271,7 +270,6 @@ interface RoomsInviteComponentProps {
 }
 
 export class RoomsInviteComponent extends React.Component<RoomsInviteComponentProps> {
-
     render() {
         let room = this.props.room;
         return (
@@ -295,8 +293,8 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             <Text>{this.props.invite.invitedByUser.name} invites you to join</Text>
                         </UserInfoWrapper>
                     ) : (
-                            <div style={{ height: 50 }} />
-                        )}
+                        <div style={{ height: 50 }} />
+                    )}
                     <InfoCardWrapper>
                         <InfoCardHeader separator={8} haveDescription={!!room.description}>
                             <RoomAvatar
@@ -377,7 +375,8 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             flexShrink={0}
                             path={this.props.signup}
                             onClick={() => {
-                                window.location.href = 'openland://deep/joinroom/' + this.props.inviteLink;
+                                window.location.href =
+                                    'openland://deep/joinroom/' + this.props.inviteLink;
                             }}
                         />
                     )}

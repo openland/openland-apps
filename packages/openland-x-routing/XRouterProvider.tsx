@@ -47,9 +47,7 @@ export class XRouterProvider extends React.Component<{
         this.xViewRouter = {
             navigate: to => {
                 if (typeof to === 'string') {
-                    this.props.routes.Router.pushRoute('/universalNavigation' + to).then(
-                        this.scrollToTop,
-                    );
+                    this.props.routes.Router.pushRoute(to).then(this.scrollToTop);
                 }
             },
         };

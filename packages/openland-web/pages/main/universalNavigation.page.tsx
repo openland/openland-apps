@@ -2,8 +2,8 @@ import * as React from 'react';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withApp } from 'openland-web/components/withApp';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { MessagesUniversalNavigation } from './MessagesUniversalNavigation';
-import { DirectoryUniversalNavigation } from './DirectoryUniversalNavigation';
+import { MessagesUniversalNavigation } from './mail/MessagesUniversalNavigation';
+import { DirectoryUniversalNavigationWrapper } from './directory/DirectoryUniversalNavigation';
 
 export const LinkOverwriteContext = React.createContext<{
     prefix: string;
@@ -30,7 +30,7 @@ export default withApp(
                     }}
                 >
                     {isDirectory ? (
-                        <DirectoryUniversalNavigation path={path} />
+                        <DirectoryUniversalNavigationWrapper path={path} />
                     ) : (
                         <MessagesUniversalNavigation cid={cid} oid={oid} uid={uid} path={path} />
                     )}

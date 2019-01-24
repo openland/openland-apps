@@ -1,21 +1,13 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { withChatSearchChannels } from '../api/withChatSearchChannels';
 import { XLoader } from 'openland-x/XLoader';
-import { SortPicker } from '../pages/main/directory/components/sortPicker';
 import { EmptyComponent } from './directory/RoomEmptyComponent';
-import { XSubHeader } from 'openland-x/XSubHeader';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { SearchBox } from '../pages/main/directory/components/SearchBox';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
-
-const Root = Glamorous.div({
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
-    flexShrink: 0,
-});
+import {
+    DirectoryContent,
+    ComponentWithSort,
+} from 'openland-web/pages/main/directory/DirectoryUniversalNavigation';
 
 interface WithChatSearchRoomsProps {
     variables: {
@@ -64,94 +56,15 @@ export const Rooms = withChatSearchChannels(props => {
     }
 }) as React.ComponentType<WithChatSearchRoomsProps>;
 
-interface RoomExploreComponentProps {}
+let CardsComponent = ComponentWithSort(Rooms);
 
-interface RoomExploreComponentState {
-    count: number;
-    query: string;
-    sort: {
-        orderBy: string;
-        featured: boolean;
-    };
-}
-
-export class RoomsExploreComponent extends React.Component<
-    RoomExploreComponentProps,
-    RoomExploreComponentState
-> {
-    constructor(props: RoomExploreComponentProps) {
-        super(props);
-        this.state = {
-            count: 0,
-            query: '',
-            sort: {
-                orderBy: 'membersCount',
-                featured: true,
-            },
-        };
-    }
-
-    changeSort = (sort: { orderBy: string; featured: boolean }) => {
-        this.setState({
-            sort: sort,
-        });
-    };
-
-    onQueryChange = (q: string) => {
-        this.setState({
-            query: q,
-        });
-    };
-
-    handleCount = (n: number) => {
-        if (n !== this.state.count) {
-            this.setState({
-                count: n,
-            });
-        }
-    };
-
-    render() {
-        let sort = [{ [this.state.sort.orderBy]: { order: 'desc' } }];
-        if (this.state.sort.featured) {
-            sort.unshift({ ['featured']: { order: 'desc' } });
-        }
-
-        let sortBox = (
-            <SortPicker
-                sort={this.state.sort}
-                onPick={this.changeSort}
-                options={{
-                    label: 'Sort by',
-                    values: [
-                        { label: 'Members count', value: 'membersCount' },
-                        { label: 'Creation date', value: 'createdAt' },
-                    ],
-                }}
-            />
-        );
-
-        return (
-            <Root>
-                <SearchBox
-                    value={this.state.query}
-                    onChange={this.onQueryChange}
-                    placeholder="Search rooms"
-                />
-                {this.state.query.length <= 0 && (
-                    <XSubHeader title="Featured rooms" right={sortBox} />
-                )}
-                {this.state.query.length > 0 && this.state.count > 0 && (
-                    <XSubHeader title="Rooms" counter={this.state.count} right={sortBox} />
-                )}
-                <Rooms
-                    variables={{
-                        query: this.state.query.toLowerCase(),
-                        sort: JSON.stringify(sort),
-                    }}
-                    tagsCount={this.handleCount}
-                />
-            </Root>
-        );
-    }
-}
+export const RoomsExploreComponent = () => {
+    return (
+        <DirectoryContent
+            CardsComponent={CardsComponent}
+            searchPlaceholder={'Search rooms'}
+            noQueryText={'All rooms'}
+            hasQueryText={'Organizations'}
+        />
+    );
+};

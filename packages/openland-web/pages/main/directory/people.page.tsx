@@ -1,21 +1,11 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
 import { withExplorePeople } from '../../../api/withExplorePeople';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
-import { MainLayout } from '../../../components/MainLayout';
-import { XVertical } from 'openland-x-layout/XVertical';
-import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
-import { XSubHeader } from 'openland-x/XSubHeader';
-import { SortPicker } from './components/sortPicker';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { DirectoryNavigation } from './components/Navigation';
 import { UserProfile } from '../profile/UserProfileComponent';
-import { SearchBox } from './components/SearchBox';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-
+import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
@@ -53,134 +43,33 @@ export const PeopleCards = withExplorePeople(({ data, error, tagsCount }: any) =
     );
 }) as React.ComponentType<PeopleCardsProps>;
 
-interface PeopleProps {
-    featuredFirst: boolean;
-    orderBy: string;
-    tagsCount: (n: number) => void;
-    searchText: string;
-}
-
-interface RootComponentState {
-    query: string;
-    sort: {
-        orderBy: string;
-        featured: boolean;
-    };
-    orgCount: number;
-}
-
-class RootComponent extends React.Component<XWithRouter, RootComponentState> {
-    input?: any;
-
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            query: '',
-            sort: {
-                orderBy: 'createdAt',
-                featured: true,
-            },
-            orgCount: 0,
-        };
+const getId = (myPath: string, substring: string) => {
+    if (!myPath.includes(substring)) {
+        return null;
     }
+    return myPath.split(substring)[1];
+};
 
-    onQueryChange = (q: string) => {
-        this.resetPage();
-        this.setState({
-            query: q,
-        });
-    };
+const getPeopleProfile = (path: string) => getId(path, '/directory/u/');
 
-    changeSort = (sort: { orderBy: string; featured: boolean }) => {
-        this.setState({
-            sort: sort,
-        });
-    };
+const SearchUserProfileComponent = React.memo(({ id }: { id: string }) => (
+    <UserProfile userId={id} onDirectory={true} />
+));
 
-    resetPage = () => {
-        this.props.router.replaceQueryParams({ page: undefined });
-    };
+let CardsComponent = ComponentWithSort(PeopleCards);
 
-    tagsCount = (n: number) => {
-        this.setState({ orgCount: n });
-    };
+export default React.memo(({ path }: { path: string }) => {
+    let id = getPeopleProfile(path);
 
-    routerParser = () => {
-        this.setState({
-            query: '',
-        });
-    };
-
-    render() {
-        const { orgCount } = this.state;
-        let uid = this.props.router.routeQuery.userId;
-        console.log(this.props.router.routeQuery.userId);
-
-        return (
-            <>
-                <XDocumentHead title="People Directory" />
-                <Scaffold>
-                    <Scaffold.Content padding={false} bottomOffset={false}>
-                        <MainLayout>
-                            <MainLayout.Menu>
-                                <DirectoryNavigation route="People" />
-                            </MainLayout.Menu>
-                            <MainLayout.Content>
-                                {!uid && (
-                                    <XVertical separator={0} height="100%">
-                                        <SearchBox
-                                            value={this.state.query}
-                                            onChange={this.onQueryChange}
-                                            placeholder="Search people"
-                                        />
-                                        {this.state.query.length <= 0 && (
-                                            <XSubHeader
-                                                title="All people"
-                                                right={
-                                                    <SortPicker
-                                                        sort={this.state.sort}
-                                                        onPick={this.changeSort}
-                                                        withoutFeatured={true}
-                                                    />
-                                                }
-                                            />
-                                        )}
-                                        {this.state.query.length > 0 && orgCount > 0 && (
-                                            <XSubHeader
-                                                title="People"
-                                                counter={orgCount}
-                                                right={
-                                                    <SortPicker
-                                                        sort={this.state.sort}
-                                                        onPick={this.changeSort}
-                                                        withoutFeatured={true}
-                                                    />
-                                                }
-                                            />
-                                        )}
-                                        <PeopleCards
-                                            tagsCount={this.tagsCount}
-                                            variables={{
-                                                query: this.state.query,
-                                            }}
-                                        />
-                                    </XVertical>
-                                )}
-                                {uid && <UserProfile userId={uid} onDirectory={true} />}
-                            </MainLayout.Content>
-                        </MainLayout>
-                    </Scaffold.Content>
-                </Scaffold>
-            </>
-        );
-    }
-}
-
-export default withApp(
-    'Directory',
-    'viewer',
-    withRouter(props => {
-        return <RootComponent router={props.router} />;
-    }),
-);
+    return (
+        <DirectoryUniversalNavigation
+            id={id}
+            title={'People'}
+            ProfileComponent={SearchUserProfileComponent}
+            CardsComponent={CardsComponent}
+            searchPlaceholder={'Search organizations'}
+            noQueryText={'All organizations'}
+            hasQueryText={'People'}
+        />
+    );
+});

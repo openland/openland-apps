@@ -24,7 +24,7 @@ import { RoomProfile } from 'openland-web/pages/main/profile/RoomProfileComponen
 import { Rooms } from 'openland-web/fragments/RoomsExploreComponent';
 import { UniversalNavigation } from '../UniversalNavigation';
 
-const DirectoryContent = React.memo(
+export const DirectoryContent = React.memo(
     ({
         id,
         searchPlaceholder,
@@ -38,7 +38,7 @@ const DirectoryContent = React.memo(
         noQueryText: string;
         hasQueryText: string;
         CardsComponent: any;
-        ProfileComponent: any;
+        ProfileComponent?: any;
     }) => {
         const [orgCount, setOrgCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
@@ -97,8 +97,109 @@ const DirectoryContent = React.memo(
                         />
                     </XVertical>
                 )}
-                {id && <ProfileComponent id={id} />}
+                {id && ProfileComponent && <ProfileComponent id={id} />}
             </>
+        );
+    },
+);
+
+export const DirectoryUniversalNavigation = React.memo(
+    ({
+        title,
+        id,
+        ProfileComponent,
+        CardsComponent,
+        searchPlaceholder,
+        noQueryText,
+        hasQueryText,
+    }: {
+        title: string;
+        id?: string | null;
+        ProfileComponent: any;
+        CardsComponent: any;
+        searchPlaceholder: string;
+        noQueryText: string;
+        hasQueryText: string;
+    }) => {
+        return (
+            <UniversalNavigation
+                title={title}
+                swapFragmentsOnMobile
+                tab={tabs.empty}
+                menuRightContent={
+                    <PopperOptionsButton
+                        path="/mail/new"
+                        icon={<PlusIcon />}
+                        title={TextDirectory.create.title}
+                        content={
+                            <>
+                                <XMenuItem
+                                    query={{
+                                        field: 'createOrganization',
+                                        value: 'true',
+                                    }}
+                                    icon="x-dropdown-organization"
+                                >
+                                    {TextDirectory.create.organization}
+                                </XMenuItem>
+                                <XMenuItem
+                                    query={{
+                                        field: 'createRoom',
+                                        value: 'true',
+                                    }}
+                                    icon="x-dropdown-room"
+                                >
+                                    {TextDirectory.create.room}
+                                </XMenuItem>
+                                <XMenuItem
+                                    query={{
+                                        field: 'createOrganization',
+                                        value: 'community',
+                                    }}
+                                    icon="x-dropdown-community"
+                                >
+                                    {TextDirectory.create.community}
+                                </XMenuItem>
+                            </>
+                        }
+                    />
+                }
+                menuChildrenContent={
+                    <>
+                        <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
+                        <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
+                        <MenuItem
+                            path="/directory/organizations"
+                            title="Organizations"
+                            icon={<OrganizationsIcon />}
+                        />
+                        <MenuItem
+                            path="/directory/communities"
+                            title="Communities"
+                            icon={<CommunityIcon />}
+                        />
+                        <XWithRole role="feature-non-production">
+                            <MenuItem
+                                path="/directory/explore"
+                                title="Explore"
+                                icon={<CommunityIcon />}
+                            />
+                        </XWithRole>
+                    </>
+                }
+                secondFragment={
+                    <XView flexGrow={1}>
+                        <DirectoryContent
+                            id={id}
+                            ProfileComponent={ProfileComponent}
+                            CardsComponent={CardsComponent}
+                            searchPlaceholder={searchPlaceholder}
+                            noQueryText={noQueryText}
+                            hasQueryText={hasQueryText}
+                        />
+                    </XView>
+                }
+            />
         );
     },
 );
@@ -115,7 +216,7 @@ const SearchRoomsProfileComponent = React.memo(({ id }: { id: string }) => (
     <RoomProfile conversationId={id} onDirectory={true} />
 ));
 
-const ComponentWithSort = (Component: any) =>
+export const ComponentWithSort = (Component: any) =>
     React.memo(({ featuredFirst, orderBy, variables, tagsCount }: any) => {
         return (
             <Component
@@ -158,7 +259,7 @@ const getCommunityProfile = (path: string) => getId(path, '/directory/c/');
 
 const isCommunity = (path: string) => path.endsWith('/communities') || !!getCommunityProfile(path);
 
-export const DirectoryUniversalNavigation = React.memo(({ path }: { path: string }) => {
+export const DirectoryUniversalNavigationWrapper = React.memo(({ path }: { path: string }) => {
     let ProfileComponent;
     let CardsComponent;
     let searchPlaceholder = '';
@@ -208,83 +309,14 @@ export const DirectoryUniversalNavigation = React.memo(({ path }: { path: string
     }
 
     return (
-        <UniversalNavigation
+        <DirectoryUniversalNavigation
+            id={id}
             title={title}
-            swapFragmentsOnMobile
-            tab={tabs.empty}
-            menuRightContent={
-                <PopperOptionsButton
-                    path="/mail/new"
-                    icon={<PlusIcon />}
-                    title={TextDirectory.create.title}
-                    content={
-                        <>
-                            <XMenuItem
-                                query={{
-                                    field: 'createOrganization',
-                                    value: 'true',
-                                }}
-                                icon="x-dropdown-organization"
-                            >
-                                {TextDirectory.create.organization}
-                            </XMenuItem>
-                            <XMenuItem
-                                query={{
-                                    field: 'createRoom',
-                                    value: 'true',
-                                }}
-                                icon="x-dropdown-room"
-                            >
-                                {TextDirectory.create.room}
-                            </XMenuItem>
-                            <XMenuItem
-                                query={{
-                                    field: 'createOrganization',
-                                    value: 'community',
-                                }}
-                                icon="x-dropdown-community"
-                            >
-                                {TextDirectory.create.community}
-                            </XMenuItem>
-                        </>
-                    }
-                />
-            }
-            menuChildrenContent={
-                <>
-                    <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
-                    <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
-                    <MenuItem
-                        path="/directory/organizations"
-                        title="Organizations"
-                        icon={<OrganizationsIcon />}
-                    />
-                    <MenuItem
-                        path="/directory/communities"
-                        title="Communities"
-                        icon={<CommunityIcon />}
-                    />
-                    <XWithRole role="feature-non-production">
-                        <MenuItem
-                            path="/directory/explore"
-                            title="Explore"
-                            icon={<CommunityIcon />}
-                        />
-                    </XWithRole>
-                </>
-            }
-            secondFragment={
-                <XView flexGrow={1}>
-                    <DirectoryContent
-                        id={id}
-                        ProfileComponent={ProfileComponent}
-                        CardsComponent={CardsComponent}
-                        searchPlaceholder={searchPlaceholder}
-                        noQueryText={noQueryText}
-                        hasQueryText={hasQueryText}
-                    />
-                </XView>
-            }
+            ProfileComponent={ProfileComponent}
+            CardsComponent={CardsComponent}
+            searchPlaceholder={searchPlaceholder}
+            noQueryText={noQueryText}
+            hasQueryText={hasQueryText}
         />
     );
 });
