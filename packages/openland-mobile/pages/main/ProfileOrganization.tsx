@@ -28,6 +28,7 @@ import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { View } from 'react-native';
+import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -50,11 +51,10 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                 id={resp.data.organization.id}
                                                 title={resp.data.organization.name}
                                                 subtitle={resp.data.organization.isCommunity ? 'Community' : 'Organization'}
-                                                action={resp.data.organization.isOwner ? 'Edit profile' : undefined}
-                                                onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })}
                                             />
+                                            {resp.data.organization.isOwner && <SHeaderButton title="Edit" onPress={() => this.props.router.push('EditOrganization', { id: this.props.router.params.id })} />}
                                             {(resp.data.organization.isMine || resp.data.organization.isOwner || resp.data.organization.isAdmin || this.props.router.params.conversationId) && (
-                                                <ZListItemGroup header={null} divider={false}>
+                                                <ZListItemGroup header="Manage" divider={false}>
                                                     {this.props.router.params.conversationId && (
                                                         <YQuery
                                                             query={RoomQuery}
