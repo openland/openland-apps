@@ -255,29 +255,31 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
 
         return (
-            <>
-                {this.isEmpty() && (
-                    <XScrollViewReversed ref={this.scroller}>
-                        <MessagesWrapperEmpty>
-                            <EmptyBlock
-                                conversationType={this.props.conversationType}
-                                onClick={this.props.inputShower}
-                            />
-                        </MessagesWrapperEmpty>
-                    </XScrollViewReversed>
-                )}
-                {!this.isEmpty() && (
-                    <XResizeDetector
-                        handleWidth={false}
-                        handleHeight={true}
-                        onResize={this.resizeHandler}
-                    >
+            <XView flexGrow={1} position="relative">
+                <XView flexGrow={1} width="100%" position="absolute">
+                    {this.isEmpty() && (
                         <XScrollViewReversed ref={this.scroller}>
-                            <MessagesWrapper>{messages}</MessagesWrapper>
+                            <MessagesWrapperEmpty>
+                                <EmptyBlock
+                                    conversationType={this.props.conversationType}
+                                    onClick={this.props.inputShower}
+                                />
+                            </MessagesWrapperEmpty>
                         </XScrollViewReversed>
-                    </XResizeDetector>
-                )}
-            </>
+                    )}
+                    {!this.isEmpty() && (
+                        <XResizeDetector
+                            handleWidth={false}
+                            handleHeight={true}
+                            onResize={this.resizeHandler}
+                        >
+                            <XScrollViewReversed ref={this.scroller}>
+                                <MessagesWrapper>{messages}</MessagesWrapper>
+                            </XScrollViewReversed>
+                        </XResizeDetector>
+                    )}
+                </XView>
+            </XView>
         );
     }
 }

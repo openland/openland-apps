@@ -52,11 +52,10 @@ const SendMessageWrapper = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'stretch',
-    width: '100%',
+    flexShrink: 1,
     minHeight: 114,
-    maxHeight: 330,
+    height: 114,
     backgroundColor: XThemeDefault.backyardColor,
-    flexShrink: 0,
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 12,
@@ -1038,18 +1037,15 @@ class MessageComposeComponentInner extends React.PureComponent<
 
 export const MessageComposeComponent = withMessageState(
     withUserInfo(props => {
+        const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
         return (
-            <MessagesStateContext.Consumer>
-                {(state: MessagesStateContextProps) => (
-                    <MessageComposeComponentInner
-                        {...props}
-                        messagesContext={state}
-                        replyMessage={props.replyMessage}
-                        saveDraft={props.saveDraft}
-                        draft={props.draft}
-                    />
-                )}
-            </MessagesStateContext.Consumer>
+            <MessageComposeComponentInner
+                {...props}
+                messagesContext={state}
+                replyMessage={props.replyMessage}
+                saveDraft={props.saveDraft}
+                draft={props.draft}
+            />
         );
     }),
 ) as React.ComponentType<MessageComposeWithChannelMembers>;

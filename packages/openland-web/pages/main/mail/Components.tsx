@@ -36,17 +36,7 @@ const DesktopConversationContainer = Glamorous.div({
     flexShrink: 0,
     minWidth: 0,
     overflow: 'hidden',
-
     backgroundColor: XThemeDefault.backgroundColor,
-    maxWidth: 'calc(100% - 344px)',
-    '@media (max-width: 1100px)': {
-        width: 'calc(100% - 300px)',
-        maxWidth: 'calc(100% - 300px)',
-    },
-    '@media (max-width: 950px)': {
-        width: 'calc(100% - 230px)',
-        maxWidth: 'calc(100% - 230px)',
-    },
 });
 
 type PageInnerProps = {
@@ -57,18 +47,22 @@ type PageInnerProps = {
     cid: string | null | undefined;
 };
 
-const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: PageInnerProps) => {
+export const ConversationContainerWrapper = ({
+    tab,
+    conversationId,
+    oid,
+    uid,
+    cid,
+}: PageInnerProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
-        ? ({ children }: any) => <XView width="100%">{children}</XView>
+        ? ({ children }: any) => <XView flexGrow={1}>{children}</XView>
         : DesktopConversationContainer;
 
     return (
         <ConversationContainerInner>
-            {tab === tabs.conversation && conversationId && (
-                <MessengerFragment id={conversationId} />
-            )}
+            {tab === tabs.chat && conversationId && <MessengerFragment id={conversationId} />}
             {tab === tabs.compose && <ComposeFragment />}
             {tab === tabs.empty && <MessengerEmptyFragment />}
             {tab === tabs.rooms && <RoomsExploreComponent />}
@@ -83,7 +77,7 @@ const ConversationContainerWrapper = ({ tab, conversationId, oid, uid, cid }: Pa
                     <UserProfile userId={uid} />
                 </OrganizationProfileContainer>
             )}
-            {tab === tabs.chat && cid && (
+            {tab === tabs.organization && cid && (
                 <OrganizationProfileContainer>
                     <RoomProfile conversationId={cid} />
                 </OrganizationProfileContainer>

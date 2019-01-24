@@ -1,46 +1,26 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { css } from 'linaria';
-
-const styleContainer = css`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: 100%;
-    padding-left: 16px;
-    padding-right: 16px;
-    overflow: hidden;
-`;
 
 const styleInner = css`
     display: flex;
     word-break: break-word;
     flex-grow: 1;
-    flex-basis: 100%;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-self: center;
     position: relative;
-    max-height: 100%;
-    height: 100%;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+    flex-direction: column;
     & > div:first-child {
-        position: absolute;
-        width: 100%;
-        max-width: 100%;
-        flex-basis: 100%;
-        height: 100%;
-        max-height: 100%;
         flex-grow: 1;
+        position: relative;
+        height: 100%;
         & > .simplebar-track.horizontal {
             display: none;
         },
         & > .simplebar-scroll-content > .simplebar-content {
+            position: relative;
+            height: 100%;
             overflow-x: unset !important;
             overflow-y: unset !important;
             width: 100%;
-            justify-content: flex-end;
             will-change: transform;
         },
     }
@@ -48,8 +28,14 @@ const styleInner = css`
 
 export const MessagesContainer = (props: { children?: any }) => {
     return (
-        <div className={styleContainer}>
+        <XView
+            flexDirection="column"
+            flexGrow={1}
+            paddingLeft={16}
+            paddingRight={16}
+            overflow="hidden"
+        >
             <div className={'messages-wrapper ' + styleInner}>{props.children}</div>
-        </div>
+        </XView>
     );
 };

@@ -261,7 +261,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         }
 
         return (
-            <XView flexDirection="column" width="100%" height="100%">
+            <XView flexDirection="column" flexGrow={1}>
                 {this.state.hideChat && (
                     <CreatePostComponent
                         handleHideChat={this.handleHideChat}
@@ -287,6 +287,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                             inputShower={this.handleShowIput}
                             editPostHandler={this.editPostHandler}
                         />
+
                         {this.state.hideInput === false && (
                             <MessageComposeComponentDraft
                                 getMessages={this.getMessages}

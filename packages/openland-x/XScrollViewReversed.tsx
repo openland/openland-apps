@@ -8,27 +8,28 @@ interface Dimensions {
 }
 
 export class XScrollViewReversed extends React.Component<{}, { inited: boolean }> {
-
     state = {
-        inited: false
+        inited: false,
     };
 
     private lastDimensions: Dimensions | null = null;
     private scroller: HTMLDivElement | null = null;
-    private handleScroll = throttle(() => { this.updateDimensions(); }, 100);
+    private handleScroll = throttle(() => {
+        this.updateDimensions();
+    }, 100);
 
     private handleRef = (src: any) => {
         if (src !== null) {
             this.scroller = src;
         }
-    }
+    };
 
     scrollToBottom = () => {
         if (this.scroller) {
             this.lastDimensions = null;
             this.scroller.scrollTop = this.scroller.scrollHeight;
         }
-    }
+    };
 
     private restoreScroll = () => {
         if (this.lastDimensions) {
@@ -36,15 +37,17 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
         } else {
             this.scrollToBottom();
         }
-    }
+    };
 
     restorePreviousScroll = () => {
         if (this.lastDimensions) {
-            this.scroller!!.scrollTop = this.scroller!!.scrollHeight - (this.lastDimensions.scrollHeight - this.lastDimensions.scrollTop);
+            this.scroller!!.scrollTop =
+                this.scroller!!.scrollHeight -
+                (this.lastDimensions.scrollHeight - this.lastDimensions.scrollTop);
         } else {
             this.scrollToBottom();
         }
-    }
+    };
 
     private handleWindowResize = () => {
         // let container = this.scroller!!.children.item(0).children.item(0);
@@ -63,7 +66,7 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
         } else {
             this.scrollToBottom();
         }
-    }
+    };
 
     updateDimensions = () => {
         let dimensions = this.getDimensions();
@@ -73,15 +76,15 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
         } else {
             this.lastDimensions = dimensions;
         }
-    }
+    };
 
     private getDimensions = () => {
         return {
             scrollTop: this.scroller!.scrollTop,
             scrollHeight: this.scroller!.scrollHeight,
-            offsetHeight: this.scroller!.offsetHeight
+            offsetHeight: this.scroller!.offsetHeight,
         };
-    }
+    };
 
     componentWillReceiveProps() {
         this.updateDimensions();
@@ -103,7 +106,12 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
 
     render() {
         return (
-            <XScrollView innerRef={this.handleRef} onScroll={this.handleScroll} opacity={this.state.inited ? 1 : 0} optimize={true}>
+            <XScrollView
+                innerRef={this.handleRef}
+                onScroll={this.handleScroll}
+                opacity={this.state.inited ? 1 : 0}
+                optimize={true}
+            >
                 {this.props.children}
             </XScrollView>
         );

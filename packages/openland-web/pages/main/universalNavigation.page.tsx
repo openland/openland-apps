@@ -36,6 +36,8 @@ import { OrganizationCards } from 'openland-web/pages/main/directory/organizatio
 import { CommunitiesCards } from 'openland-web/pages/main/directory/communities.page';
 import { RoomProfile } from 'openland-web/pages/main/profile/RoomProfileComponent';
 import { Rooms } from 'openland-web/fragments/RoomsExploreComponent';
+import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/Components';
+
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export const LinkOverwriteContext = React.createContext<{
@@ -458,7 +460,9 @@ const MessagesUniversalNavigation = ({
                 )
             }
             firstFragment={<DialogListFragment />}
-            secondFragment={showDebugFragments && <XView color="blue">secondFragment</XView>}
+            secondFragment={
+                <ConversationContainerWrapper {...{ tab, conversationId: cid, oid, uid, cid }} />
+            }
         />
     );
 };

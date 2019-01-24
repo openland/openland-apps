@@ -8,7 +8,6 @@ import {
     MessagesStateContextProps,
 } from '../components/messenger/MessagesStateContext';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { ChatHeaderView } from './chat/ChatHeaderView';
 import { XView } from 'react-mental';
 import { XLoader } from 'openland-x/XLoader';
 import { withRoom } from '../api/withRoom';
@@ -29,35 +28,8 @@ interface MessengerComponentLoaderProps {
     data: Room;
 }
 
-const ChatHeaderViewLoader = withRoom(withQueryLoader(
-    withUserInfo(({ user, data, loading }: MessengerComponentLoaderProps) => {
-        if (!data || !data.room || loading) {
-            if (loading) {
-                return <XLoader loading={true} />;
-            }
-            return <div />;
-        }
-
-        return (
-            <XView
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-                height={55}
-                paddingLeft={20}
-                paddingRight={20}
-            >
-                <ChatHeaderView room={data.room} me={user} />
-            </XView>
-        );
-    }),
-) as any) as React.ComponentType<{
-    variables: { id: string };
-    state: MessagesStateContextProps;
-}>;
-
 const MessengerComponentLoader = withRoom(withQueryLoader(
-    withUserInfo(({ state, data, loading, variables }: MessengerComponentLoaderProps) => {
+    withUserInfo(({ state, data, loading }: MessengerComponentLoaderProps) => {
         if (!data || !data.room || loading) {
             if (loading) {
                 return <XLoader loading={true} />;
@@ -92,19 +64,9 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
                     alignItems="stretch"
                 >
                     {state.useForwardPlaceholder && <ForwardPlaceholder state={state} />}
-
-                    <ChatHeaderViewLoader variables={variables} state={state} />
-
-                    <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                     <TalkBarComponent conversationId={data.room.id} />
 
-                    <XView
-                        alignItems="center"
-                        flexGrow={1}
-                        flexBasis={0}
-                        minHeight={0}
-                        flexShrink={1}
-                    >
+                    <XView flexGrow={1} flexBasis={0} minHeight={0} flexShrink={1}>
                         <MessengerRootComponent
                             objectName={title}
                             objectId={
@@ -139,10 +101,8 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
     state: MessagesStateContextProps;
 }>;
 
-export const MessengerFragment = ({ id }: MessengerComponentProps) => (
-    <MessagesStateContext.Consumer>
-        {(state: MessagesStateContextProps) => (
-            <MessengerComponentLoader variables={{ id }} state={state} />
-        )}
-    </MessagesStateContext.Consumer>
-);
+export const MessengerFragment = ({ id }: MessengerComponentProps) => {
+    const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
+
+    return <MessengerComponentLoader variables={{ id }} state={state} />;
+};

@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { css } from 'glamor';
 import { XFlexStyles, extractFlexProps, applyFlex } from './basics/Flex';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import * as ReactDOM from 'react-dom';
 
 //
 // Styles
@@ -14,7 +13,7 @@ css.global('.simplebar-scroll-content', {
     overflowY: 'scroll',
     boxSizing: 'content-box!important',
     maxHeight: 'inherit!important',
-    minWidth: '100%!important'
+    minWidth: '100%!important',
 });
 
 css.global('.simplebar-content', {
@@ -23,7 +22,7 @@ css.global('.simplebar-content', {
     overflowX: 'scroll',
     overflowY: 'hidden!important',
     boxSizing: 'border-box!important',
-    minHeight: '100%!important'
+    minHeight: '100%!important',
 });
 
 css.global('.simplebar-track', {
@@ -31,14 +30,14 @@ css.global('.simplebar-track', {
     position: 'absolute',
     right: 0,
     bottom: 0,
-    width: 11
+    width: 11,
 });
 
 css.global('.simplebar-scrollbar', {
     position: 'absolute',
     right: 0,
     width: 4,
-    minHeight: 10
+    minHeight: 10,
 });
 
 css.global('.simplebar-scrollbar:before', {
@@ -49,38 +48,38 @@ css.global('.simplebar-scrollbar:before', {
     left: 0,
     right: 0,
     opacity: 0,
-    transition: 'opacity 0.2s linear'
+    transition: 'opacity 0.2s linear',
 });
 
 css.global('.simplebar-track:hover .simplebar-scrollbar:before', {
     opacity: 0.38,
-    transition: 'opacity 0 linear'
+    transition: 'opacity 0 linear',
 });
 
 css.global('.simplebar-track .simplebar-scrollbar.visible:before', {
     opacity: 0.38,
-    transition: 'opacity 0 linear'
+    transition: 'opacity 0 linear',
 });
 
 css.global('.simplebar-track.vertical', {
-    top: 0
+    top: 0,
 });
 
 css.global('.simplebar-track.vertical .simplebar-scrollbar:before', {
     top: 2,
-    bottom: 2
+    bottom: 2,
 });
 
 css.global('.simplebar-track.horizontal', {
     left: 0,
     width: 'auto',
-    height: 11
+    height: 11,
 });
 
 css.global('.simplebar-track.horizontal .simplebar-scrollbar:before', {
     height: '100%',
     left: 2,
-    right: 2
+    right: 2,
 });
 
 css.global('.horizontal.simplebar-track .simplebar-scrollbar', {
@@ -89,7 +88,7 @@ css.global('.horizontal.simplebar-track .simplebar-scrollbar', {
     height: 4,
     minHeight: 0,
     minWidth: 10,
-    width: 'auto'
+    width: 'auto',
 });
 
 export interface XScrollViewProps extends XFlexStyles {
@@ -101,14 +100,19 @@ export interface XScrollViewProps extends XFlexStyles {
     optimize?: boolean;
 }
 
-const ScrollDiv = Glamorous.div<XFlexStyles>([{
-    display: 'flex',
-    position: 'relative',
-    zIndex: 0,
-    overflow: 'hidden!important',
-    // maxHeight: 'inherit',
-    WebkitOverflowScrolling: 'touch', /* Trigger native scrolling for mobile, if not supported, plugin is used. */
-}, applyFlex]);
+const ScrollDiv = Glamorous.div<XFlexStyles>([
+    {
+        display: 'flex',
+        position: 'relative',
+        zIndex: 0,
+        overflow: 'hidden!important',
+        flexGrow: 1,
+        // maxHeight: 'inherit',
+        WebkitOverflowScrolling:
+            'touch' /* Trigger native scrolling for mobile, if not supported, plugin is used. */,
+    },
+    applyFlex,
+]);
 
 export class XScrollView extends React.Component<XScrollViewProps> {
     Simplebar = canUseDOM ? require('simplebar') : null;
@@ -122,7 +126,7 @@ export class XScrollView extends React.Component<XScrollViewProps> {
                 // tslint:enable
             }
         }
-    }
+    };
 
     render() {
         return (
@@ -137,10 +141,12 @@ export class XScrollView extends React.Component<XScrollViewProps> {
                 <div className="simplebar-track horizontal">
                     <div className="simplebar-scrollbar" />
                 </div>
-                <div className="simplebar-scroll-content" ref={this.props.contentContainerRef || this.props.innerRef} onScroll={this.props.onScroll}>
-                    <div className="simplebar-content" >
-                        {this.props.children}
-                    </div>
+                <div
+                    className="simplebar-scroll-content"
+                    ref={this.props.contentContainerRef || this.props.innerRef}
+                    onScroll={this.props.onScroll}
+                >
+                    <div className="simplebar-content">{this.props.children}</div>
                 </div>
             </ScrollDiv>
         );
