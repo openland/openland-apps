@@ -26,7 +26,7 @@
     }, {
         "name": "ic-star",
         "src": "ic-star-admin.svg",
-        "sizes": [24, 13]
+        "sizes": [24, 13, 16]
     }, {
         "name": "ic-info",
         "src": "ic-info.svg",

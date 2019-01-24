@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     } as TextStyle,
     subtitle: {
         color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
-        fontSize: 15,
-        fontWeight: 'normal',
-        height: Platform.OS === 'android' ? 20 : 18,
+        fontSize: Platform.OS === 'android' ?  14 : 15,
+        fontWeight: Platform.OS === 'android' ? '400' : '400',
+        height: Platform.OS === 'android' ? 18 : 18,
         textAlignVertical: 'center'
     } as TextStyle
 });
@@ -66,7 +66,7 @@ export class ZListItemHeader extends React.PureComponent<{
                 <View style={styles.body}>
                     <View style={styles.header}>
                         <View flexDirection="row">
-                            {this.props.titleIcon && <Image source={this.props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: 5, tintColor: this.props.titleColor || '#000' }} />}
+                            {this.props.titleIcon && <Image source={this.props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: this.props.titleColor || '#000' }} />}
                             <Text style={[styles.title, this.props.titleColor ? { color: this.props.titleColor } : undefined]} numberOfLines={1}>{this.props.title}</Text>
                         </View>
                         <Text style={styles.subtitle} numberOfLines={1}>{this.props.subtitle}</Text>

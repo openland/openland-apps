@@ -225,13 +225,28 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 onPress={handleSend}
             />
 
-            {!!props.room.description && (
-                <ZListItemGroup header="About" divider={false}>
-                    <ZListItem text={props.room.description} multiline={true} />
-                </ZListItemGroup>
-            )}
+            <ZListItemGroup header="About" divider={false}>
+                {!!props.room.description && (
+                    <ZListItem
+                        text={props.room.description}
+                        multiline={true}
+                    />
+                )}
+                {!!props.room.organization && (
+                    <ZListItem
+                        text={props.room.organization.name}
+                        leftAvatar={{
+                            photo: props.room.organization.photo,
+                            key: props.room.organization.id,
+                            title: props.room.organization.name
+                        }}
+                        path="ProfileOrganization"
+                        pathParams={{ id: props.room.organization.id }}
+                    />
+                )}
+            </ZListItemGroup>
 
-            <ZListItemGroup header={null} divider={false}>
+            <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'} divider={false}>
                 <ZListItem
                     leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                     text="Notifications"
@@ -256,6 +271,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
 
                 {sortedMembers.map((v) => (
                     <UserView
+                        isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
                         key={v.user.id}
                         user={v.user}
                         onLongPress={() => handleMemberLongPress(v.user)}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, Platform } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
     title: {
         color: '#fff',
         textAlignVertical: 'center',
-        fontWeight: '600',
+        fontWeight: Platform.OS === 'android' ? '500' : '600',
         fontSize: 14,
     } as TextStyle,
     titleBig: {
         color: '#fff',
         textAlignVertical: 'center',
-        fontWeight: '600',
+        fontWeight: Platform.OS === 'android' ? '500' : '600',
         fontSize: 16,
         height: 56,
         lineHeight: 56,
