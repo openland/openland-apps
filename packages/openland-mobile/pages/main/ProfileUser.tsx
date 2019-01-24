@@ -9,7 +9,7 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
@@ -55,6 +55,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
 
                 <ZListItemGroup header="About" divider={false}>
                     {!!this.props.resp.user.about && <ZListItem multiline={true} text={this.props.resp.user.about} copy={true} />}
+                    {!!this.props.resp.user.about && <View height={10} />}
                     {!!this.props.resp.user.shortname && <ZListItem title="Username" text={'@' + this.props.resp.user.shortname} copy={true} />}
                     {!!this.props.resp.user.email && <ZListItem title="Email" text={this.props.resp.user.email} copy={true} />}
                     {!!this.props.resp.user.phone && <ZListItem title="Phone" text={'tel:' + this.props.resp.user.phone} copy={true} />}

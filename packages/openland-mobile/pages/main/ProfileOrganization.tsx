@@ -135,7 +135,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                     <ZListItem multiline={true} text={resp.data.organization.about} copy={true} />
                                                 )}
                                                 {resp.data.organization.about && (
-                                                    <View height={8} />
+                                                    <View height={10} />
                                                 )}
                                                 {resp.data.organization.shortname && (
                                                     <ZListItem title="Shortname" text={'@' + resp.data.organization.shortname} copy={true} />

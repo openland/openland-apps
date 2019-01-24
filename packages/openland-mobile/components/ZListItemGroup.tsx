@@ -48,7 +48,7 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                                 color: Platform.OS === 'android' ? '#000' : '#99a2b0',
                                 fontSize: 16,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                height: 20,
+                                height: Platform.OS === 'android' ? 21 : 20,
                                 paddingLeft: 16,
                                 flexShrink: 1,
                                 opacity: Platform.OS === 'android' ? 0.7 : 1.0
