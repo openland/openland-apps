@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TextStyle, Platform, Button, View, Text, Alert } from 'react-native';
+import { StyleSheet, TextStyle, Platform, Button, View, Text } from 'react-native';
 import { ZTextInput } from '../../components/ZTextInput';
 import { ActionButtonAndroid } from 'react-native-s/navigation/buttons/ActionButtonAndroid';
 import { ActionButtonIOS } from 'react-native-s/navigation/buttons/ActionButtonIOS';
@@ -13,7 +13,7 @@ import { YMutation } from 'openland-y-graphql/YMutation';
 import { next } from './signup';
 import { XPStyles } from 'openland-xp/XPStyles';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -73,7 +73,7 @@ class SignupUserComponent extends React.PureComponent<PageProps> {
                             action={async (src) => {
                                 // await delay(1000);
                                 if (!src.input.firstName) {
-                                    new AlertBlanketBuilder().alert('Name can\'t be empty');
+                                    Alert.alert('Name can\'t be empty');
                                     return;
                                 }
                                 await create({ variables: { input: { firstName: src.input.firstName, lastName: src.input.lastName } } });

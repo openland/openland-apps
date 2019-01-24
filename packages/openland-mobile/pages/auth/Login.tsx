@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Alert, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, StatusBar, ActivityIndicator, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import { Auth0Client } from '../../index';
 import RNRestart from 'react-native-restart';
 import { SSafeAreaView } from 'react-native-s/SSafeArea';
@@ -7,7 +7,7 @@ import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SDevice } from 'react-native-s/SDevice';
 import { SHeader } from 'react-native-s/SHeader';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     container: {
@@ -118,7 +118,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
             console.log(uploaded);
 
             // TODO: Better error
-            new AlertBlanketBuilder().alert('Unable to authenticate');
+            Alert.alert('Unable to authenticate');
 
         } catch (e) {
             if (e.error) {
@@ -127,7 +127,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 }
             }
 
-            new AlertBlanketBuilder().alert(e.message + '\n' + JSON.stringify(e));
+            Alert.alert(e.message + '\n' + JSON.stringify(e));
         } finally {
             this.setState({ loading: false });
         }

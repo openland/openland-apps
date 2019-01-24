@@ -15,15 +15,15 @@ import { showPictureModal } from '../components/modal/ZPictureModal';
 import { AsyncMessageView } from './components/AsyncMessageView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
-import { Clipboard, Alert, Platform } from 'react-native';
+import { Clipboard, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
 import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
-import { PromptBuilder } from '../components/Prompt';
+import { Prompt } from '../components/Prompt';
 import { TextStyles } from '../styles/AppStyles';
 import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 interface ASAvatarProps {
     size: number;
@@ -270,7 +270,7 @@ export class MobileMessenger {
             });
             if (message.senderId === this.engine.user.id) {
                 builder.action('Edit', () => {
-                    new PromptBuilder()
+                    Prompt.builder()
                         .title('Edit message')
                         .value(message.text!)
                         .callback(async (text) => {
@@ -278,7 +278,7 @@ export class MobileMessenger {
                             try {
                                 await this.engine.client.mutate(RoomEditMessageMutation, { messageId: message.id!, message: text });
                             } catch (e) {
-                                new AlertBlanketBuilder().alert(e.message);
+                                Alert.alert(e.message);
                             }
                             stopLoader();
                         })
@@ -289,7 +289,7 @@ export class MobileMessenger {
         if (message.senderId === this.engine.user.id) {
             builder.action('Delete', async () => {
                 try {
-                    new AlertBlanketBuilder()
+                    Alert.builder()
                         .title('Delete message')
                         .message('Are you sure you want to delete this message?')
                         .button('Cancel', 'cancel')
@@ -298,12 +298,12 @@ export class MobileMessenger {
                             try {
                                 await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
                             } catch (e) {
-                                new AlertBlanketBuilder().alert(e.message);
+                                Alert.alert(e.message);
                             }
                             stopLoader();
                         }).show();
                 } catch (e) {
-                    new AlertBlanketBuilder().alert(e.message);
+                    Alert.alert(e.message);
                 }
             });
         }
@@ -320,7 +320,7 @@ export class MobileMessenger {
                             this.engine.client.mutate(MessageSetReactionMutation, { messageId: message.id!, reaction: r });
                         }
                     } catch (e) {
-                        new AlertBlanketBuilder().alert(e.message);
+                        Alert.alert(e.message);
                     }
                     stopLoader();
                 });

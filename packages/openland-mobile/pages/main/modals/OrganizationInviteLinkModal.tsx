@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { ZListItemGroup } from '../../../components/ZListItemGroup';
-import { Share, Alert, Clipboard } from 'react-native';
+import { Share, Clipboard } from 'react-native';
 import { PageProps } from '../../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
@@ -10,8 +10,8 @@ import { OrganizationPublicInviteQuery, OrganizationCreatePublicInviteMutation }
 import { ZListItem } from '../../../components/ZListItem';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -43,7 +43,7 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
                                                 try {
                                                     await renew({ variables: { organizationId: this.props.router.params.id } });
                                                 } catch (e) {
-                                                    new AlertBlanketBuilder().alert(formatError(e));
+                                                    Alert.alert(formatError(e));
                                                 }
                                                 stopLoader();
 

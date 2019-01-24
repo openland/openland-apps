@@ -1,11 +1,20 @@
 import * as React from 'react';
-import { Platform, View, Alert, Text } from 'react-native';
+import { Platform, View, Text, Alert as AlertReact } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { showBlanketModal } from './showBlanketModal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 
+export class Alert {
+    static alert = (message: string) => {
+        new AlertBlanketBuilder().alert(message);
+    }
+
+    static builder = () => {
+        return new AlertBlanketBuilder();
+    }
+}
 export class AlertBlanketBuilder {
     private _title?: string;
     private _message?: string;
@@ -40,7 +49,7 @@ export class AlertBlanketBuilder {
 
     show() {
         if (Platform.OS === 'ios') {
-            Alert.alert(this._title || '', this._message, this._actions.map(a => ({ text: a.name, onPress: a.callback, style: a.style })))
+            AlertReact.alert(this._title || '', this._message, this._actions.map(a => ({ text: a.name, onPress: a.callback, style: a.style })))
         } else if (Platform.OS === 'android') {
             showBlanketModal((ctx) => {
                 return (

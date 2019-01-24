@@ -10,19 +10,19 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { Room_room_SharedRoom, RoomMemberRole, UserShort } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
-import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { RoomQuery, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation, RoomUpdateMutation } from 'openland-api';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
-import { PromptBuilder } from 'openland-mobile/components/Prompt';
+import { PromptBuilder, Prompt } from 'openland-mobile/components/Prompt';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from 'openland-mobile/utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
+import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }) {
 
@@ -63,7 +63,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
     }, []);
 
     const handleEdit = React.useCallback(() => {
-        new ActionSheetBuilder()
+        ActionSheet.builder()
             .action(props.room.photo ? 'Change photo' : 'Set photo', () => {
                 new ActionSheetBuilder()
                     .action('Take Photo', async () => {
@@ -105,7 +105,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     .show();
             })
             .action('Change name', () => {
-                new PromptBuilder()
+                Prompt.builder()
                     .title(props.room.kind === 'GROUP' ? 'Group name' : 'Room name')
                     .value(props.room.title)
                     .callback(async (src) => {
@@ -132,7 +132,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
     }, [props.room.id, props.room.title, props.room.photo, props.room.description]);
 
     const handleLeave = React.useCallback(() => {
-        new AlertBlanketBuilder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
+        Alert.builder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
             .button('Cancel', 'cancel')
             .button('Leave', 'destructive', async () => {
                 startLoader();
@@ -140,7 +140,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     await client.mutate(RoomLeaveMutation, { roomId: props.router.params.id });
                     props.router.pushAndResetRoot('Home');
                 } catch (e) {
-                    new AlertBlanketBuilder().alert(e.message);
+                    Alert.alert(e.message);
                 }
                 stopLoader();
             })
@@ -149,18 +149,18 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
 
     const handleMemberLongPress = React.useCallback<{ (user: UserShort): void }>((user) => {
         if (user.id !== getMessenger().engine.user.id) {
-            let builder = new ActionSheetBuilder();
+            let builder = ActionSheet.builder();
             builder.action(
                 'Kick',
                 () => {
-                    new AlertBlanketBuilder().title(`Are you sure you want to kick ${user.name}?`)
+                    Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
                         .button('Cancel', 'cancel')
                         .button('Kick', 'destructive', async () => {
                             startLoader();
                             try {
                                 await client.mutate(RoomKickMutation, { userId: user.id, roomId: props.router.params.id });
                             } catch (e) {
-                                new AlertBlanketBuilder().alert(e.message);
+                                Alert.alert(e.message);
                             }
                             stopLoader();
                         })
@@ -170,7 +170,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
             );
             builder.show();
         } else {
-            let builder = new ActionSheetBuilder();
+            let builder = ActionSheet.builder();
             builder.action('Leave', handleLeave, true);
             builder.show();
         }
@@ -185,7 +185,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                         await client.mutate(RoomAddMembersMutation, { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: props.room.id });
                         props.router.back();
                     } catch (e) {
-                        new AlertBlanketBuilder().alert(e.message);
+                        Alert.alert(e.message);
                     }
                     stopLoader();
                 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { Share, Alert, Clipboard } from 'react-native';
+import { Share, Clipboard } from 'react-native';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
@@ -10,8 +10,8 @@ import { ZListItem } from '../../components/ZListItem';
 import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { RoomInviteLinkQuery, RoomRenewInviteLinkMutation } from 'openland-api';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -44,7 +44,7 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
                                                 try {
                                                     await renew({ variables: { roomId: this.props.router.params.id } });
                                                 } catch (e) {
-                                                    new AlertBlanketBuilder().alert(e);
+                                                    Alert.alert(e);
                                                 }
                                                 stopLoader();
 

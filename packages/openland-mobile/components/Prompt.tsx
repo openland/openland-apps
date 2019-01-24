@@ -7,6 +7,12 @@ import { ZRoundedButton } from './ZRoundedButton';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 
+export class Prompt {
+    static builder = () => {
+        return new PromptBuilder();
+    }
+}
+
 export class PromptBuilder {
     private _title?: string;
     private _callback?: (text: string) => void;

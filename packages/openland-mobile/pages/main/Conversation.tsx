@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, Alert, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -26,7 +26,7 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -199,7 +199,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                     try {
                                                                         await join({ variables: { roomId: sharedRoom!.id } });
                                                                     } catch (e) {
-                                                                        new AlertBlanketBuilder().alert(e.message);
+                                                                        Alert.alert(e.message);
                                                                     }
                                                                     stopLoader();
 
@@ -218,7 +218,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                                                     try {
                                                                         await join({ variables: { invite: invite } });
                                                                     } catch (e) {
-                                                                        new AlertBlanketBuilder().alert(e.message);
+                                                                        Alert.alert(e.message);
                                                                     }
                                                                     stopLoader();
 

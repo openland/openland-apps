@@ -3,7 +3,7 @@ import { Query, QueryResult } from 'react-apollo';
 import { GraphqlTypedQuery } from 'openland-y-graphql/typed';
 import { ZLoader } from './ZLoader';
 import { FetchPolicy } from 'apollo-client';
-import { AlertBlanketBuilder } from './AlertBlanket';
+import { Alert } from './AlertBlanket';
 
 export interface ZQueryProps<QUERY, VARIABLES> {
     query: GraphqlTypedQuery<QUERY, VARIABLES>;
@@ -19,7 +19,7 @@ export class ZQuery<QUERY, VARIABLES> extends React.PureComponent<ZQueryProps<QU
                 {(resp) => {
                     // console.log(resp);
                     if (resp.error) {
-                        new AlertBlanketBuilder().alert(resp.error!!.message);
+                        Alert.alert(resp.error!!.message);
                     }
                     if ((resp.loading || !resp.data) && (resp.networkStatus !== 2)) {
                         return <ZLoader />;
