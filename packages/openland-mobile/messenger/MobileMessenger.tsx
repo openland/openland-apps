@@ -293,14 +293,8 @@ export class MobileMessenger {
                         .title('Delete message')
                         .message('Are you sure you want to delete this message?')
                         .button('Cancel', 'cancel')
-                        .button('Delete', 'destructive', async () => {
-                            startLoader();
-                            try {
-                                await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
-                            } catch (e) {
-                                Alert.alert(e.message);
-                            }
-                            stopLoader();
+                        .action('Delete', 'destructive', async () => {
+                            await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
                         }).show();
                 } catch (e) {
                     Alert.alert(e.message);

@@ -43,11 +43,8 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                         .title('Invite to ' + info.invite.title)
                         .message(info.invite.creator.name + ' invites you to join ' + info.invite.title)
                         .button('Cancel', 'cancel')
-                        .button('Accept invitation', 'default', async () => {
-                            startLoader();
-                            let res = await getMessenger().engine.client.mutate(AccountInviteJoinMutation, { inviteKey: uuid });
-                            getMessenger().history.navigationManager.push('ProfileOrganization', { id: orgId });
-                            stopLoader();
+                        .action('Accept invitation', 'default', async () => {
+                            await getMessenger().engine.client.mutate(AccountInviteJoinMutation, { inviteKey: uuid });
                         })
                         .show();
                 } else {
