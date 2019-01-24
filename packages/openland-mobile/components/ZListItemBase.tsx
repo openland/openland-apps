@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableHighlight, Alert, Platform, TouchableNativeFeedback } from 'react-native';
+import { View, Image, TouchableHighlight, Alert, Platform, TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 import { isAndroid } from '../utils/isAndroid';
 import { RectButton } from 'react-native-gesture-handler';
@@ -56,37 +56,25 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
             </View>
         );
 
-        if (!!this.props.onPress || !!this.props.onLongPress || !!this.props.path) {
-            if (this.props.enabled !== false) {
-                if (Platform.OS === 'android') {
-                    return (
-                        <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple('rgba(0, 0, 0, .24)', false)} delayPressIn={20}>
-                            {content}
-                        </TouchableNativeFeedback>
-                    );
-                } else {
-                    return (
-                        <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
-                            {content}
-                        </TouchableHighlight>
-                    )
-                }
-            }
-            return (this.props.enabled !== false ? (
-                <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
-                    {content}
-                </TouchableHighlight>
-            ) : (
-                    <RectButton enabled={this.props.enabled} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+        if ((!!this.props.onPress || !!this.props.onLongPress || !!this.props.path) && (this.props.enabled !== false)) {
+            if (Platform.OS === 'android') {
+                return (
+                    <TouchableNativeFeedback onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }} background={TouchableNativeFeedback.Ripple('rgba(0, 0, 0, .24)', false)} delayPressIn={20}>
                         {content}
-                    </RectButton>
+                    </TouchableNativeFeedback>
+                );
+            } else {
+                return (
+                    <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                        {content}
+                    </TouchableHighlight>
                 )
-            );
+            }
         } else {
             return (
-                <View style={{ backgroundColor: this.props.backgroundColor }}>
+                <TouchableWithoutFeedback style={{ backgroundColor: this.props.backgroundColor }}>
                     {content}
-                </View>
+                </TouchableWithoutFeedback>
             );
         }
     }
