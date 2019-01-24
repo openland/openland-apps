@@ -107,6 +107,9 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
 
     const MenuItems = showMenu ? ShowMenuItems : HideMenuItems;
 
+    // if children is fragment get it's children
+    // this is hack make it better later
+    const finalChildren = children && children.props ? children.props.children : children;
     return (
         <XView width="100%">
             <XView
@@ -124,11 +127,11 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                     <BurgerButton />
                     <XView
                         flexDirection="row"
-                        cursor={children ? 'pointer' : undefined}
+                        cursor={finalChildren ? 'pointer' : undefined}
                         onClick={toggle}
                     >
                         <Title>{title}</Title>
-                        {children && (
+                        {finalChildren && (
                             <XView marginLeft={5} flexDirection="row" alignSelf="center">
                                 <SelectIcon />
                             </XView>
@@ -138,9 +141,9 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                 </XView>
             </XView>
 
-            {children && (
+            {finalChildren && (
                 <MenuItems onBackgroundClick={close}>
-                    {children.map((item: any, key: any) => {
+                    {finalChildren.map((item: any, key: any) => {
                         return (
                             <div onClick={close} key={key}>
                                 {item}

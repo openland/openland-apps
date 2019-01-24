@@ -1,8 +1,6 @@
 import * as React from 'react';
-import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { XButton } from 'openland-x/XButton';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withApp } from 'openland-web/components/withApp';
 import { withRouter } from 'openland-x-routing/withRouter';
@@ -48,16 +46,6 @@ export const LinkOverwriteContext = React.createContext<{
 
 // TODO
 // need to add prefix universalNavigation to all routes somehow
-
-const AddButton = Glamorous(XButton)({
-    '& svg > g > path': {
-        transition: 'all .2s',
-    },
-    '& svg > g > path:last-child': {
-        fill: '#1790ff',
-        opacity: 0.5,
-    },
-});
 
 const containerStyle = css`
     display: flex;
@@ -115,8 +103,11 @@ const ChatHeaderViewLoader = withRoom(withQueryLoader(
 }>;
 
 type PageInnerProps = {
+    swapFragmentsOnMobile?: boolean;
+    firstFragmentMenu: any;
     firstFragment: any;
     secondFragment: any;
+    secondFragmentHeader: any;
     tab: string;
     conversationId: string | null | undefined;
     oid: string | null | undefined;
@@ -124,7 +115,14 @@ type PageInnerProps = {
     cid: string | null | undefined;
 };
 
-const MobilePageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps) => {
+const MobilePageInner = ({
+    tab,
+    firstFragmentMenu,
+    secondFragmentHeader,
+    firstFragment,
+    secondFragment,
+    swapFragmentsOnMobile,
+}: PageInnerProps) => {
     return (
         <XView
             flexDirection="row"
@@ -136,32 +134,25 @@ const MobilePageInner = ({ tab, firstFragment, secondFragment }: PageInnerProps)
         >
             {tab === tabs.empty ? (
                 <XView width="100%">
-                    <Menu
-                        title={'Messages'}
-                        rightContent={
-                            <AddButton
-                                style="light"
-                                path="/mail/new"
-                                text="New"
-                                icon={<PlusIcon />}
-                                size="small"
-                            />
-                        }
-                    />
-                    {firstFragment}
+                    {firstFragmentMenu}
+                    {swapFragmentsOnMobile ? secondFragment : firstFragment}
                 </XView>
             ) : (
                 <XView flexDirection="column" flexGrow={1}>
-                    <ChatHeaderViewLoader variables={{ id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0' }} />
-                    <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                    {secondFragment}
+                    {secondFragmentHeader}
+                    {swapFragmentsOnMobile ? firstFragment : secondFragment}
                 </XView>
             )}
         </XView>
     );
 };
 
-const DesktopPageInner = ({ firstFragment, secondFragment }: PageInnerProps) => {
+const DesktopPageInner = ({
+    firstFragmentMenu,
+    firstFragment,
+    secondFragment,
+    secondFragmentHeader,
+}: PageInnerProps) => {
     return (
         <XView
             flexDirection="row"
@@ -173,23 +164,11 @@ const DesktopPageInner = ({ firstFragment, secondFragment }: PageInnerProps) => 
             width="100%"
         >
             <DesktopDialogContainer>
-                <Menu
-                    title={'Messages'}
-                    rightContent={
-                        <AddButton
-                            style="light"
-                            path="/mail/new"
-                            text="New"
-                            icon={<PlusIcon />}
-                            size="small"
-                        />
-                    }
-                />
+                {firstFragmentMenu}
                 {firstFragment}
             </DesktopDialogContainer>
             <XView flexDirection="column" flexGrow={1}>
-                <ChatHeaderViewLoader variables={{ id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0' }} />
-                <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                {secondFragmentHeader}
                 {secondFragment}
             </XView>
         </XView>
@@ -201,58 +180,6 @@ const PageInner = AdaptiveHOC({
     MobileComponent: MobilePageInner,
     fullWidth: true,
 });
-
-const DirectoryNavigation = ({ route }: { route: string }) => (
-    <Menu
-        title={route}
-        rightContent={
-            <PopperOptionsButton
-                icon={<PlusIcon />}
-                title={TextDirectory.create.title}
-                content={
-                    <>
-                        <XMenuItem
-                            query={{
-                                field: 'createOrganization',
-                                value: 'true',
-                            }}
-                            icon="x-dropdown-organization"
-                        >
-                            {TextDirectory.create.organization}
-                        </XMenuItem>
-                        <XMenuItem
-                            query={{ field: 'createRoom', value: 'true' }}
-                            icon="x-dropdown-room"
-                        >
-                            {TextDirectory.create.room}
-                        </XMenuItem>
-                        <XMenuItem
-                            query={{
-                                field: 'createOrganization',
-                                value: 'community',
-                            }}
-                            icon="x-dropdown-community"
-                        >
-                            {TextDirectory.create.community}
-                        </XMenuItem>
-                    </>
-                }
-            />
-        }
-    >
-        <MenuItem path="/directory" title="Rooms" icon={<RoomIcon />} />
-        <MenuItem path="/directory/people" title="People" icon={<PeopleIcon />} />
-        <MenuItem
-            path="/directory/organizations"
-            title="Organizations"
-            icon={<OrganizationsIcon />}
-        />
-        <MenuItem path="/directory/communities" title="Communities" icon={<CommunityIcon />} />
-        <XWithRole role="feature-non-production">
-            <MenuItem path="/directory/explore" title="Explore" icon={<CommunityIcon />} />
-        </XWithRole>
-    </Menu>
-);
 
 const DirectoryContent = ({
     id,
@@ -453,9 +380,11 @@ export default withApp(
             let searchPlaceholder = '';
             let noQueryText = '';
             let hasQueryText = '';
+            let title = '';
 
             if (isDirectory) {
                 if (path.endsWith('/organizations')) {
+                    title = 'Organizations';
                     id = showProfile ? 'wWwoJPLpYKCVre0WMQ4EspVrvP' : null;
                     ProfileComponent = SearchOrganizationProfileComponent;
                     CardsComponent = Organizations;
@@ -463,6 +392,7 @@ export default withApp(
                     noQueryText = 'All organizations';
                     hasQueryText = 'Organizations';
                 } else if (path.endsWith('/communities')) {
+                    title = 'Communities';
                     id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
                     ProfileComponent = SearchOrganizationProfileComponent;
                     CardsComponent = Communities;
@@ -470,6 +400,7 @@ export default withApp(
                     noQueryText = 'All communities';
                     hasQueryText = 'Communities';
                 } else if (path.endsWith('/people')) {
+                    title = 'People';
                     id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
                     ProfileComponent = SearchUserProfileComponent;
                     CardsComponent = PeopleCards;
@@ -477,6 +408,7 @@ export default withApp(
                     noQueryText = 'All people';
                     hasQueryText = 'People';
                 } else {
+                    title = 'Rooms';
                     id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
                     ProfileComponent = SearchRoomsProfileComponent;
                     CardsComponent = Rooms;
@@ -486,9 +418,42 @@ export default withApp(
                 }
             }
 
+            const directoryRightContent = (
+                <>
+                    <XMenuItem
+                        query={{
+                            field: 'createOrganization',
+                            value: 'true',
+                        }}
+                        icon="x-dropdown-organization"
+                    >
+                        {TextDirectory.create.organization}
+                    </XMenuItem>
+                    <XMenuItem
+                        query={{
+                            field: 'createRoom',
+                            value: 'true',
+                        }}
+                        icon="x-dropdown-room"
+                    >
+                        {TextDirectory.create.room}
+                    </XMenuItem>
+                    <XMenuItem
+                        query={{
+                            field: 'createOrganization',
+                            value: 'community',
+                        }}
+                        icon="x-dropdown-community"
+                    >
+                        {TextDirectory.create.community}
+                    </XMenuItem>
+                </>
+            );
+            const showDebugFragments = false;
+
             return (
                 <>
-                    <XDocumentHead title={'pageTitle'} />
+                    <XDocumentHead title={title} />
                     <LinkOverwriteContext.Provider
                         value={{
                             prefix: '/universalNavigation',
@@ -505,35 +470,98 @@ export default withApp(
                                     height="100%"
                                     width="100%"
                                 >
-                                    {isChat ? (
-                                        <PageInner
-                                            tab={tab}
-                                            firstFragment={<XView color="red">firstFragment</XView>}
-                                            secondFragment={
-                                                <XView color="blue">secondFragment</XView>
-                                            }
-                                        />
-                                    ) : (
-                                        <MainLayout>
-                                            <MainLayout.Menu>
-                                                <DirectoryNavigation route="Rooms" />
-                                            </MainLayout.Menu>
-                                            <MainLayout.Content>
-                                                <MainLayout.Content>
-                                                    {isDirectory && (
-                                                        <DirectoryContent
-                                                            id={id}
-                                                            ProfileComponent={ProfileComponent}
-                                                            CardsComponent={CardsComponent}
-                                                            searchPlaceholder={searchPlaceholder}
-                                                            noQueryText={noQueryText}
-                                                            hasQueryText={hasQueryText}
+                                    <PageInner
+                                        tab={tab}
+                                        swapFragmentsOnMobile={isDirectory}
+                                        firstFragmentMenu={
+                                            <Menu
+                                                title={isDirectory ? title : 'Messages'}
+                                                rightContent={
+                                                    <PopperOptionsButton
+                                                        path="/mail/new"
+                                                        icon={<PlusIcon />}
+                                                        title={TextDirectory.create.title}
+                                                        content={
+                                                            isDirectory && directoryRightContent
+                                                        }
+                                                    />
+                                                }
+                                            >
+                                                {isDirectory && (
+                                                    <>
+                                                        <MenuItem
+                                                            path="/directory"
+                                                            title="Rooms"
+                                                            icon={<RoomIcon />}
                                                         />
+                                                        <MenuItem
+                                                            path="/directory/people"
+                                                            title="People"
+                                                            icon={<PeopleIcon />}
+                                                        />
+                                                        <MenuItem
+                                                            path="/directory/organizations"
+                                                            title="Organizations"
+                                                            icon={<OrganizationsIcon />}
+                                                        />
+                                                        <MenuItem
+                                                            path="/directory/communities"
+                                                            title="Communities"
+                                                            icon={<CommunityIcon />}
+                                                        />
+                                                        <XWithRole role="feature-non-production">
+                                                            <MenuItem
+                                                                path="/directory/explore"
+                                                                title="Explore"
+                                                                icon={<CommunityIcon />}
+                                                            />
+                                                        </XWithRole>
+                                                    </>
+                                                )}
+                                            </Menu>
+                                        }
+                                        secondFragmentHeader={
+                                            !isDirectory ? (
+                                                <>
+                                                    <ChatHeaderViewLoader
+                                                        variables={{
+                                                            id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0',
+                                                        }}
+                                                    />
+                                                    <XView
+                                                        height={1}
+                                                        backgroundColor="rgba(220, 222, 228, 0.45)"
+                                                    />
+                                                </>
+                                            ) : null
+                                        }
+                                        firstFragment={
+                                            showDebugFragments && (
+                                                <XView color="red">firstFragment</XView>
+                                            )
+                                        }
+                                        secondFragment={
+                                            isDirectory ? (
+                                                <XView>
+                                                    <DirectoryContent
+                                                        id={id}
+                                                        ProfileComponent={ProfileComponent}
+                                                        CardsComponent={CardsComponent}
+                                                        searchPlaceholder={searchPlaceholder}
+                                                        noQueryText={noQueryText}
+                                                        hasQueryText={hasQueryText}
+                                                    />
+                                                    {showDebugFragments && (
+                                                        <XView color="blue">secondFragment</XView>
                                                     )}
-                                                </MainLayout.Content>
-                                            </MainLayout.Content>
-                                        </MainLayout>
-                                    )}
+                                                </XView>
+                                            ) : (
+                                                showDebugFragments && (
+                                                    <XView color="blue">secondFragment</XView>
+                                                )
+                                            )
+                                        }
+                                    />
                                 </XView>
                             </Scaffold.Content>
                         </Scaffold>

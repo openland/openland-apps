@@ -15,7 +15,7 @@ const PopperOptionsButtonWrapper = Glamorous(XButton)({
 });
 
 export const PopperOptionsButton = React.memo(
-    ({ content, icon, title }: { content: any; icon: any; title: any }) => {
+    ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
         const [show, setShow] = React.useState(false);
 
         const closer = () => {
@@ -39,6 +39,7 @@ export const PopperOptionsButton = React.memo(
             >
                 <PopperOptionsButtonWrapper
                     onClick={toggle}
+                    path={path}
                     style="light"
                     text={title}
                     icon={icon}
