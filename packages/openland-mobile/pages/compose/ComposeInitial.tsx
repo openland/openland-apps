@@ -128,11 +128,9 @@ class ComposeInitialComponent extends React.PureComponent<PageProps> {
                             }
                             return (
                                 <SScrollView keyboardDismissMode="on-drag">
-                                    <ZListItemGroup>
-                                        <ZListItem leftIcon={require('assets/ic-cell-group-ios.png')} text="Create group" path="CreateGroupAttrs" pathRemove={true} />
-                                        <ZListItem leftIcon={require('assets/ic-cell-channels-ios.png')} text="Create room" path="CreateChannel" pathRemove={true} />
-                                    </ZListItemGroup>
-                                    <ZListItemGroup divider={false} header="People">
+                                    <ZListItemGroup divider={false}>
+                                        <ZListItem leftIcon={require('assets/ic-group-24.png')} text="Create room" path="CreateChannel" pathRemove={true} />
+                                        <ZListItem leftIcon={require('assets/ic-lock-24.png')} text="Create private group" path="CreateGroupAttrs" pathRemove={true} />
                                         {resp.data.items.edges.map((item) => (
                                             <UserView key={item.node.id} user={item.node} onPress={() => this.props.router.pushAndRemove('Conversation', { flexibleId: item.node.id })} />
                                         ))}

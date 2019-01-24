@@ -14,7 +14,7 @@
     }, {
         "name": "ic-lock",
         "src": "ic-lock.svg",
-        "sizes": [18]
+        "sizes": [18, 24]
     }, {
         "name": "ic-help",
         "src": "ic-notifications-copy.svg",
@@ -27,6 +27,14 @@
         "name": "ic-star",
         "src": "ic-star-admin.svg",
         "sizes": [24, 13, 16]
+    }, {
+        "name": "ic-group",
+        "src": "ic-group.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-rooms",
+        "src": "ic-rooms.svg",
+        "sizes": [24]
     }, {
         "name": "ic-info",
         "src": "ic-info.svg",

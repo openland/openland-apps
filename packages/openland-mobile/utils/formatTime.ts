@@ -10,14 +10,16 @@ export function formatTime(date: number) {
 }
 
 export function formatLastSeen(lastSeen: string) {
-    let sub;
-    let time = new Date(parseInt(lastSeen, 10)).getTime();
-    if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-        sub = 'last seen ' + humanize.relativeTime(time / 1000);
-    } else if (new Date().getTime() - time < 1000 * 60) {
-        sub = 'just now';
+    if (lastSeen === 'never_online') {
+        return 'last seen long time ago';
     } else {
-        sub = 'last seen ' + formatDate(time);
+        let time = new Date(parseInt(lastSeen, 10)).getTime();
+        if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
+            return 'last seen ' + humanize.relativeTime(time / 1000);
+        } else if (new Date().getTime() - time < 1000 * 60) {
+            return 'just now';
+        } else {
+            return 'last seen ' + formatDate(time);
+        }
     }
-    return sub;
 }

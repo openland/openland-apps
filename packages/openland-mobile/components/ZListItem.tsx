@@ -110,7 +110,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                         <ZText
                             linkify={this.props.linkify === true || !this.props.onPress}
                             style={{
-                                fontSize: Platform.OS === 'android' ? 16 : 17,
+                                fontSize: Platform.OS === 'android' ? 18 : 17,
                                 fontWeight: Platform.OS === 'android' ? '400' : '500',
                                 color: this.props.appearance === 'action' ? AppStyles.primaryColor
                                     : this.props.appearance === 'danger' ? '#f6564e'

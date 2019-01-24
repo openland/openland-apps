@@ -2,8 +2,7 @@ import * as React from 'react';
 import { OnlineQuery } from 'openland-api';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { TextStyle, Text } from 'react-native';
-import { formatDate } from 'openland-mobile/utils/formatDate';
-import * as humanize from 'humanize';
+import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 
 export class PresenceComponent extends React.PureComponent<{ uid: string, style?: TextStyle, onlineStyle?: TextStyle }> {
     render() {
@@ -12,15 +11,7 @@ export class PresenceComponent extends React.PureComponent<{ uid: string, style?
                 let sub = undefined;
                 let isOnline = false;
                 if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
-                    let time = new Date(parseInt(online.data.user.lastSeen, 10)).getTime();
-                    if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-                        sub = 'last seen ' + humanize.relativeTime(time / 1000);
-                    } else if (new Date().getTime() - time < 1000 * 60) {
-                        sub = 'just now';
-                    } else {
-                        sub = 'last seen ' + formatDate(time);
-                    }
-                    // 
+                    sub = formatLastSeen(online.data.user.lastSeen);
                 } else if (online.data && online.data.user && online.data.user.online) {
                     sub = 'online';
                     isOnline = true;

@@ -28,8 +28,8 @@ export interface XPAvatarProps {
 }
 
 const placeholderSizeInterpolator = createInterpolator(
-    [22, 28, 30, 36, 40, 56, 96],
-    [12, 12, 13, 14, 16, 26, 28]
+    [22, 28, 30, 36, 40, 42, 56, 96],
+    [12, 12, 13, 14, 16, 16, 26, 28]
 );
 
 export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
