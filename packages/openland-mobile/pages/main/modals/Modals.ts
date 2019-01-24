@@ -8,8 +8,8 @@ export const Modals = {
     showUserPicker(router: SRouter, action: (value: UserShort) => any, autoclose?: boolean) {
         router.push('UserPicker', { 'action': action, autoclose });
     },
-    showUserMuptiplePicker(router: SRouter, action: { title: string, action: (users: UserShort[]) => any }, title?: string, disableUsers?: string[]) {
-        router.push('UserMultiplePicker', { action, title, disableUsers });
+    showUserMuptiplePicker(router: SRouter, action: { title: string, action: (users: UserShort[]) => any }, title?: string, disableUsers?: string[], inviteLinkButton?: { path: String, pathParams: any }) {
+        router.push('UserMultiplePicker', { action, title, disableUsers, inviteLinkButton });
     },
     showCountryPicker(router: SRouter, action: (value: string) => any) {
         router.push('CountryPicker', { 'action': action });

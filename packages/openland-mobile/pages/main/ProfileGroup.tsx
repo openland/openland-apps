@@ -121,7 +121,8 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 }
             },
             'Add members',
-            props.room!.members.map(m => m.user.id)
+            props.room!.members.map(m => m.user.id),
+            { path: 'ChannelInviteLinkModal', pathParams: { id: props.room.id } }
         );
     }, []);
 

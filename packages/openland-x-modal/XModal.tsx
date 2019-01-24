@@ -34,6 +34,10 @@ const ModalRender = React.memo<ModalRenderProps>(props => {
         width = 460;
     }
 
+    if (!props.isOpen) {
+        return null;
+    }
+
     return (
         <ReactModal
             isOpen={props.isOpen}

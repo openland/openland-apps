@@ -145,7 +145,9 @@ export default class OpenlandDocument extends Document {
                 </Head>
                 <body>
                     <Main />
-                    <NextScript />
+                    <div className="main_scripts">
+                        <NextScript />
+                    </div>
                     <div
                         style={{
                             position: 'fixed',

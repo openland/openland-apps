@@ -57,7 +57,7 @@ export class ASAvatar extends React.PureComponent<ASAvatarProps> {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
         }
         let textSize = 28;
-        if (this.props.size === 40) {
+        if (this.props.size === 38 || this.props.size === 40) {
             textSize = 16;
         }
         if (this.props.size === 32) {

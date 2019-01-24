@@ -8,3 +8,7 @@ a:hover {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.main_scripts {
+    display: none;
+}

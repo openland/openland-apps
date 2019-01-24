@@ -4386,6 +4386,129 @@ export interface OrganizationChangeMemberRoleVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: OrganizationAddMember
+// ====================================================
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_members_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_members_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_members_user_primaryOrganization | null;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_members {
+  __typename: "OrganizationJoinedMember";
+  role: OrganizationMemberRole;
+  user: OrganizationAddMember_betaOrganizationMemberAdd_members_user;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_requests_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_requests_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  about: string | null;
+  location: string | null;
+  isBot: boolean;
+  isYou: boolean;
+  online: boolean;
+  lastSeen: string | null;
+  linkedin: string | null;
+  twitter: string | null;
+  shortname: string | null;
+  primaryOrganization: OrganizationAddMember_betaOrganizationMemberAdd_requests_user_primaryOrganization | null;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_requests {
+  __typename: "OrganizationRequestedMember";
+  role: OrganizationMemberRole;
+  user: OrganizationAddMember_betaOrganizationMemberAdd_requests_user;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+}
+
+export interface OrganizationAddMember_betaOrganizationMemberAdd {
+  __typename: "Organization";
+  id: string;
+  /**
+   * # Refactor?
+   */
+  superAccountId: string;
+  isMine: boolean;
+  isOwner: boolean;
+  isAdmin: boolean;
+  featured: boolean;
+  isCommunity: boolean;
+  name: string;
+  photo: string | null;
+  shortname: string | null;
+  website: string | null;
+  about: string | null;
+  twitter: string | null;
+  facebook: string | null;
+  linkedin: string | null;
+  members: OrganizationAddMember_betaOrganizationMemberAdd_members[];
+  requests: OrganizationAddMember_betaOrganizationMemberAdd_requests[];
+  rooms: OrganizationAddMember_betaOrganizationMemberAdd_rooms[];
+}
+
+export interface OrganizationAddMember {
+  betaOrganizationMemberAdd: OrganizationAddMember_betaOrganizationMemberAdd;
+}
+
+export interface OrganizationAddMemberVariables {
+  userIds?: string[] | null;
+  organizationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: OrganizationRemoveMember
 // ====================================================
 
