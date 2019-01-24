@@ -1,3 +1,5 @@
+/* tslint:disable */ 
+
 import * as React from 'react';
 import { Platform, View, Text, Alert as AlertReact, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
