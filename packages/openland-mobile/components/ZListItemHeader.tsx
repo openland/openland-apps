@@ -6,7 +6,8 @@ import { XPAvatarWithPreview } from './XPAvatarWithPreview';
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        height: 96,
+        height: 94,
+        paddingTop: 8,
         paddingLeft: Platform.OS === 'android' ? 16 : 13,
         paddingRight: 16
     } as ViewStyle,
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     } as ViewStyle,
     title: {
-        color: Platform.OS === 'android' ? '#000000' : '#1c2e4a',
+        color: '#000000',
         fontSize: 22,
         fontWeight: Platform.OS === 'android' ? '500' : '600',
         height: 30,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
     subtitle: {
         color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
-        fontSize: Platform.OS === 'android' ? 15 : 13,
+        fontSize: 15,
         fontWeight: 'normal',
         height: Platform.OS === 'android' ? 20 : 18,
         textAlignVertical: 'center'
@@ -61,7 +62,7 @@ export class ZListItemHeader extends React.PureComponent<{
     render() {
         return (
             <View style={styles.container}>
-                <XPAvatarWithPreview size={96} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.id} />
+                <XPAvatarWithPreview size={86} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.id} />
                 <View style={styles.body}>
                     <View style={styles.header}>
                         <View flexDirection="row">

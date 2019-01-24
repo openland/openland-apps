@@ -45,14 +45,14 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                     >
                         <Text
                             style={{
-                                color: '#000',
+                                color: Platform.OS === 'android' ? '#000' : '#99a2b0',
                                 fontSize: 16,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
                                 height: 20,
                                 lineHeight: 20,
                                 paddingLeft: 16,
                                 flexShrink: 1,
-                                opacity: 0.7
+                                opacity: Platform.OS === 'android' ? 0.7 : 1.0
                             }}
                             numberOfLines={1}
                             ellipsizeMode="tail"

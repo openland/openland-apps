@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItem } from '../../components/ZListItem';
@@ -20,6 +20,9 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { PromptBuilder } from 'openland-mobile/components/Prompt';
+import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
+import { UploadCareDirectUploading } from 'openland-mobile/utils/UploadCareDirectUploading';
+import { UploadStatus } from 'openland-engines/messenger/types';
 
 function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }) {
 
@@ -29,10 +32,77 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
         props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id });
     }, [props.router.params.id]);
 
+    const handlePhotoSet = React.useCallback<{ (src: PickerImage): void }>((img) => {
+        startLoader();
+        let uploading = new UploadCareDirectUploading('photo.jpg', img.path);
+        uploading.watch((v) => {
+            if (v.status === UploadStatus.COMPLETED) {
+                let completed = {
+                    uuid: v.uuid!!,
+                    crop: {
+                        x: 0,
+                        y: 0,
+                        w: img.width,
+                        h: img.height
+                    }
+                };
+                (async () => {
+                    try {
+                        await client.mutate(RoomUpdateMutation, {
+                            input: { photoRef: completed },
+                            roomId: props.room.id
+                        });
+                    } finally {
+                        stopLoader();
+                    }
+                })();
+            } else if (v.status === UploadStatus.FAILED) {
+                stopLoader();
+            }
+        });
+    }, []);
+
     const handleEdit = React.useCallback(() => {
         new ActionSheetBuilder()
             .action(props.room.photo ? 'Change photo' : 'Set photo', () => {
-                //
+                new ActionSheetBuilder()
+                    .action('Take Photo', async () => {
+                        let res: PickerImage | null = null;
+                        let r = await ImagePicker.openCamera({
+                            width: 1024,
+                            height: 1024,
+                            cropping: true
+                        });
+
+                        if (!Array.isArray(r)) {
+                            res = r;
+                        } else {
+                            res = r[0];
+                        }
+
+                        if (res) {
+                            handlePhotoSet(res);
+                        }
+                    })
+                    .action('Pick from Library', async () => {
+                        let res: PickerImage | null = null;
+                        let r = await ImagePicker.openPicker({
+                            width: 1024,
+                            height: 1024,
+                            cropping: true
+                        });
+
+                        if (!Array.isArray(r)) {
+                            res = r;
+                        } else {
+                            res = r[0];
+                        }
+
+                        if (res) {
+                            handlePhotoSet(res);
+                        }
+                    })
+                    .show();
             })
             .action('Change name', () => {
                 new PromptBuilder()
@@ -168,32 +238,6 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     toggle={nofications}
                     onToggle={handleNotifications}
                 />
-                {/* <YMutation mutation={RoomUpdateMutation} {...{ leftIcon: true }}>
-                                    {(save) => (
-                                        <ZAvatarPicker
-                                            showLoaderOnUpload={true}
-                                            render={(props) => {
-
-                                                return <ZListItem
-                                                    onPress={props.showPicker}
-                                                    leftIcon={Platform.OS === 'android' ? require('assets/ic-photo-24.png') : require('assets/ic-photo-fill-24.png')}
-                                                    text={`${setOrChange} room photo`}
-                                                />;
-                                            }}
-                                            onChanged={(val) => {
-                                                save({
-                                                    variables: {
-                                                        roomId: this.props.router.params.id,
-                                                        input: {
-                                                            photoRef: val
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                            }
-                                        />
-                                    )}
-                                </YMutation> */}
             </ZListItemGroup>
 
             <ZListItemGroup header="Members" divider={false}>
@@ -218,7 +262,11 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                         onPress={() => props.router.push('ProfileUser', { 'id': v.user.id })}
                     />
                 ))}
+            </ZListItemGroup>
 
+            <View backgroundColor="#eff0f2" height={0.5} alignSelf="stretch" margin={16} />
+
+            <ZListItemGroup divider={false}>
                 <ZListItem
                     leftIcon={require('assets/ic-leave-24.png')}
                     text={`Leave ${props.room.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
