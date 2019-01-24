@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { AppStyles } from '../styles/AppStyles';
-import { Alert } from 'react-native';
 import { YForm } from 'openland-y-forms/YForm';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { AlertBlanketBuilder } from './AlertBlanket';
+import { Alert } from './AlertBlanket';
 
 export interface ZFormProps {
     action: (src: any) => any;
@@ -40,7 +39,7 @@ export class ZForm extends React.PureComponent<ZFormProps> {
             if (this.props.onError) {
                 this.props.onError(e);
             } else {
-                new AlertBlanketBuilder().alert(formatError(e));
+                Alert.alert(formatError(e));
             }
         } finally {
             stopLoader();

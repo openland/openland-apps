@@ -14,12 +14,12 @@ import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { getMessenger } from '../../utils/messenger';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { RoomQuery, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation, RoomUpdateMutation } from 'openland-api';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { PromptBuilder } from 'openland-mobile/components/Prompt';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }) {
 
@@ -62,7 +62,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
     }, [props.room.id, props.room.title, props.room.photo, props.room.description]);
 
     const handleLeave = React.useCallback(() => {
-        new AlertBlanketBuilder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
+        Alert.builder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
             .button('Cancel', 'cancel')
             .button('Leave', 'destructive', async () => {
                 startLoader();
@@ -70,7 +70,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     await client.mutate(RoomLeaveMutation, { roomId: props.router.params.id });
                     props.router.pushAndResetRoot('Home');
                 } catch (e) {
-                    new AlertBlanketBuilder().alert(e.message);
+                    Alert.alert(e.message);
                 }
                 stopLoader();
             })
@@ -83,14 +83,14 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
             builder.action(
                 'Kick',
                 () => {
-                    new AlertBlanketBuilder().title(`Are you sure you want to kick ${user.name}?`)
+                    Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
                         .button('Cancel', 'cancel')
                         .button('Kick', 'destructive', async () => {
                             startLoader();
                             try {
                                 await client.mutate(RoomKickMutation, { userId: user.id, roomId: props.router.params.id });
                             } catch (e) {
-                                new AlertBlanketBuilder().alert(e.message);
+                                Alert.alert(e.message);
                             }
                             stopLoader();
                         })
@@ -115,7 +115,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                         await client.mutate(RoomAddMembersMutation, { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: props.room.id });
                         props.router.back();
                     } catch (e) {
-                        new AlertBlanketBuilder().alert(e.message);
+                        Alert.alert(e.message);
                     }
                     stopLoader();
                 }

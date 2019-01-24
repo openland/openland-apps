@@ -1,7 +1,7 @@
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
 import { RoomInviteInfoQuery, AccountInviteInfoQuery, OrganizationActivateByInviteMutation, AccountInviteJoinMutation, ResolveShortNameQuery } from 'openland-api';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export let resolveInternalLink = (link: string, fallback?: () => void) => {
     // 
@@ -17,10 +17,10 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                     let roomId = info.invite.room.id;
                     getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
                 } else {
-                    new AlertBlanketBuilder().alert('Invite not found');
+                    Alert.alert('Invite not found');
                 }
             } catch (e) {
-                new AlertBlanketBuilder().alert(e.message);
+                Alert.alert(e.message);
             }
             stopLoader();
         };
@@ -39,7 +39,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                 if (info && info.invite) {
                     let orgId = info.invite.orgId;
                     stopLoader();
-                    new AlertBlanketBuilder()
+                    Alert.builder()
                         .title('Invite to ' + info.invite.title)
                         .message(info.invite.creator.name + ' invites you to join ' + info.invite.title)
                         .button('Cancel', 'cancel')
@@ -51,10 +51,10 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                         })
                         .show();
                 } else {
-                    new AlertBlanketBuilder().alert('Invite not found');
+                    Alert.alert('Invite not found');
                 }
             } catch (e) {
-                new AlertBlanketBuilder().alert(e.message);
+                Alert.alert(e.message);
             }
             stopLoader();
         };
@@ -99,7 +99,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                         }
                     }
                 } catch (e) {
-                    new AlertBlanketBuilder().alert(e.message);
+                    Alert.alert(e.message);
                 }
                 stopLoader();
             };

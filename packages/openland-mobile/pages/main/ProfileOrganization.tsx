@@ -23,10 +23,10 @@ import { getMessenger } from '../../utils/messenger';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -79,7 +79,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     },
                                                                                 });
                                                                             } catch (e) {
-                                                                                new AlertBlanketBuilder().alert(e.message);
+                                                                                Alert.alert(e.message);
                                                                             }
                                                                             stopLoader();
                                                                         };
@@ -229,7 +229,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                         try {
                                                                                             await getMessenger().engine.client.mutate(OrganizationAddMemberMutation, { userIds: users.map(u => u.id), organizationId: resp.data.organization.id })
                                                                                         } catch (e) {
-                                                                                            new AlertBlanketBuilder().alert(formatError(e));
+                                                                                            Alert.alert(formatError(e));
                                                                                         }
                                                                                         stopLoader();
                                                                                         this.props.router.back();
@@ -266,7 +266,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     if (v.user.id !== getMessenger().engine.user.id && resp.data.organization.isOwner) {
                                                                                         builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
                                                                                             () => {
-                                                                                                new AlertBlanketBuilder()
+                                                                                                Alert.builder()
                                                                                                     .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
                                                                                                     .button('Cancel', 'cancel')
                                                                                                     .button(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status', 'default', async () => {
@@ -280,7 +280,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                                                 },
                                                                                                             });
                                                                                                         } catch (e) {
-                                                                                                            new AlertBlanketBuilder().alert(e.message);
+                                                                                                            Alert.alert(e.message);
                                                                                                         }
                                                                                                         stopLoader();
                                                                                                     }).show();
@@ -290,7 +290,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     if (resp.data.organization.isOwner || resp.data.organization.isAdmin || v.user.id !== getMessenger().engine.user.id) {
                                                                                         builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
                                                                                             () => {
-                                                                                                new AlertBlanketBuilder()
+                                                                                                Alert.builder()
                                                                                                     .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
                                                                                                     .button('Cancel', 'cancel')
                                                                                                     .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
@@ -303,7 +303,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                                                 },
                                                                                                             });
                                                                                                         } catch (e) {
-                                                                                                            new AlertBlanketBuilder().alert(e.message);
+                                                                                                            Alert.alert(e.message);
                                                                                                         }
                                                                                                         stopLoader();
                                                                                                     })

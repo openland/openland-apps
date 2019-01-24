@@ -12,10 +12,10 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import * as humanize from 'humanize';
 import { formatDate } from '../../utils/formatDate';
 import { Platform } from 'react-native';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class ProfileUserComponent extends React.Component<PageProps & { resp: User }, { notificationsValueCahed?: boolean }> {
     handleSend = () => {
@@ -27,7 +27,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
         try {
             await getClient().mutate(RoomSettingsUpdateMutation, { roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: target } });
         } catch (e) {
-            new AlertBlanketBuilder().alert(e.message);
+            Alert.alert(e.message);
             this.setState({ notificationsValueCahed: !target });
         }
     }
