@@ -20,6 +20,10 @@
         "src": "ic-notifications-copy.svg",
         "sizes": [24]
     }, {
+        "name": "ic-browse-fill",
+        "src": "ic-rooms-ios.svg",
+        "sizes": [30]
+    }, {
         "name": "ic-rate",
         "src": "ic-rate.svg",
         "sizes": [24]

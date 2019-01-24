@@ -75,8 +75,8 @@ export class Home extends React.PureComponent<PageProps, { tab: number, counter?
                                     onPress={() => this.handleTabChange(0)}
                                 /> */}
                                 <AppBarBottomItem
-                                    title="Rooms"
-                                    icon={Platform.OS === 'android' ? require('assets/ic-rooms.png') : require('assets/ic-feed.png')}
+                                    title="Explore"
+                                    icon={Platform.OS === 'android' ? require('assets/ic-rooms.png') : require('assets/ic-browse-fill-30.png')}
                                     selected={this.state.tab === 0}
                                     onPress={() => this.handleTabChange(0)}
                                 />
