@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler } from 'react-native';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform } from 'react-native';
 import { SSafeAreaContext, SSafeArea } from 'react-native-s/SSafeArea';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
@@ -44,21 +44,33 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
         // Prepare
         SAnimated.beginTransaction();
         this.contentView.opacity = 0;
+        this.contentView.translateY = 200;
 
         SAnimated.commitTransaction();
 
-        // Srtart
+        // Start
         SAnimated.beginTransaction();
-        SAnimated.setPropertyAnimator((name, prop, from, to) => {
-            SAnimated.timing(name, {
-                property: prop,
-                from: from,
-                to: to,
-                easing: 'material'
+        if (Platform.OS === 'ios') {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.spring(name, {
+                    property: prop,
+                    from: from,
+                    to: to
+                });
             });
-        });
+        } else {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.timing(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                    easing: 'material'
+                });
+            });
+        }
         this.contentView.opacity = 1;
         this.bgView.opacity = 1;
+        this.contentView.translateY = 0;
 
         SAnimated.commitTransaction();
     }
@@ -70,16 +82,27 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
         this.ended = true;
 
         SAnimated.beginTransaction();
-        SAnimated.setPropertyAnimator((name, prop, from, to) => {
-            SAnimated.timing(name, {
-                property: prop,
-                from: from,
-                to: to,
-                easing: 'material'
+        if (Platform.OS === 'ios') {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.spring(name, {
+                    property: prop,
+                    from: from,
+                    to: to
+                });
             });
-        });
+        } else {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.timing(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                    easing: 'material'
+                });
+            });
+        }
         this.contentView.opacity = 0;
         this.bgView.opacity = 0;
+        this.contentView.translateY = 200;
 
         SAnimated.commitTransaction(() => { this.props.ctx.hide(); });
     }
