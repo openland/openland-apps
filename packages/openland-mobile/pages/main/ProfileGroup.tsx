@@ -134,15 +134,9 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
     const handleLeave = React.useCallback(() => {
         Alert.builder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
             .button('Cancel', 'cancel')
-            .button('Leave', 'destructive', async () => {
-                startLoader();
-                try {
-                    await client.mutate(RoomLeaveMutation, { roomId: props.router.params.id });
-                    props.router.pushAndResetRoot('Home');
-                } catch (e) {
-                    Alert.alert(e.message);
-                }
-                stopLoader();
+            .action('Leave', 'destructive', async () => {
+                await client.mutate(RoomLeaveMutation, { roomId: props.router.params.id });
+                props.router.pushAndResetRoot('Home');
             })
             .show();
     }, []);
@@ -160,14 +154,8 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 () => {
                     Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
                         .button('Cancel', 'cancel')
-                        .button('Kick', 'destructive', async () => {
-                            startLoader();
-                            try {
-                                await client.mutate(RoomKickMutation, { userId: user.id, roomId: props.router.params.id });
-                            } catch (e) {
-                                Alert.alert(e.message);
-                            }
-                            stopLoader();
+                        .action('Kick', 'destructive', async () => {
+                            await client.mutate(RoomKickMutation, { userId: user.id, roomId: props.router.params.id });
                         })
                         .show();
                 },

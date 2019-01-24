@@ -289,19 +289,13 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                                 Alert.builder()
                                                                                                     .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
                                                                                                     .button('Cancel', 'cancel')
-                                                                                                    .button(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
-                                                                                                        startLoader();
-                                                                                                        try {
-                                                                                                            await remove({
-                                                                                                                variables: {
-                                                                                                                    memberId: v.user.id,
-                                                                                                                    organizationId: this.props.router.params.id,
-                                                                                                                },
-                                                                                                            });
-                                                                                                        } catch (e) {
-                                                                                                            Alert.alert(e.message);
-                                                                                                        }
-                                                                                                        stopLoader();
+                                                                                                    .action(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
+                                                                                                        await remove({
+                                                                                                            variables: {
+                                                                                                                memberId: v.user.id,
+                                                                                                                organizationId: this.props.router.params.id,
+                                                                                                            },
+                                                                                                        });
                                                                                                     })
                                                                                                     .show()
 
