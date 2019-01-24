@@ -396,7 +396,14 @@ const DirectoryUniversalNavigation = ({
     showDebugFragments: boolean;
     path: string;
 }) => {
-    let showProfile = false;
+    let ProfileComponent;
+    let CardsComponent;
+    let searchPlaceholder = '';
+    let noQueryText = '';
+    let hasQueryText = '';
+    let id: string | null = '';
+    let title = '';
+
     const directoryRightContent = (
         <>
             <XMenuItem
@@ -429,78 +436,81 @@ const DirectoryUniversalNavigation = ({
         </>
     );
 
-    let ProfileComponent;
-    let CardsComponent;
-    let searchPlaceholder = '';
-    let noQueryText = '';
-    let hasQueryText = '';
-    let id: string | null = '';
-    let title = '';
+    const getDirectoryId = (myPath: string, substring: string) => {
+        if (!myPath.includes(substring)) {
+            return null;
+        }
+        return path.split(substring)[1];
+    };
 
-    if (path.includes('/directory/o/')) {
-        title = 'Profile';
-        showProfile = true;
-        id = path.split('/directory/o/')[1];
+    const getOrganizationProfile = (myPath: string) => getDirectoryId(myPath, '/directory/o/');
 
+    const isOrganization = (myPath: string) => {
+        return myPath.endsWith('/organizations') || !!getOrganizationProfile(myPath);
+    };
+
+    const getPeopleProfile = (myPath: string) => getDirectoryId(myPath, '/directory/u/');
+
+    const isPeople = (myPath: string) => {
+        return myPath.endsWith('/people') || !!getPeopleProfile(myPath);
+    };
+
+    const getRoomProfile = (myPath: string) => {
+        return (
+            getDirectoryId(myPath, '/directory/r/') ||
+            getDirectoryId(myPath, '/directory/p/') ||
+            null
+        );
+    };
+
+    const isRoom = (myPath: string) => {
+        return myPath.endsWith('/directory') || !!getRoomProfile(myPath);
+    };
+
+    const getCommunityProfile = (myPath: string) => getDirectoryId(myPath, '/directory/c/');
+
+    const isCommunity = (myPath: string) => {
+        return myPath.endsWith('/communities') || !!getCommunityProfile(myPath);
+    };
+
+    if (getOrganizationProfile(path)) {
+        id = getOrganizationProfile(path);
+    } else if (getPeopleProfile(path)) {
+        id = getPeopleProfile(path);
+    } else if (getRoomProfile(path)) {
+        id = getRoomProfile(path);
+    } else if (getCommunityProfile(path)) {
+        id = getCommunityProfile(path);
+    }
+
+    if (isOrganization(path)) {
+        title = 'Organizations';
         ProfileComponent = SearchOrganizationProfileComponent;
         CardsComponent = Organizations;
-    } else if (path.includes('/directory/u/')) {
-        title = 'Profile';
-        showProfile = true;
-        id = path.split('/directory/u/')[1];
-        ProfileComponent = SearchUserProfileComponent;
-        CardsComponent = PeopleCards;
-    } else if (path.includes('/directory/p/')) {
-        title = 'Room';
-        showProfile = true;
-        id = path.split('/directory/p/')[1];
-        ProfileComponent = SearchRoomsProfileComponent;
-        CardsComponent = Rooms;
-    } else if (path.includes('/directory/r/')) {
-        title = 'Room';
-        showProfile = true;
-        id = path.split('/directory/r/')[1];
-        ProfileComponent = SearchRoomsProfileComponent;
-        CardsComponent = Rooms;
-    } else if (path.includes('/directory/c/')) {
+        searchPlaceholder = 'Search organizations';
+        noQueryText = 'All organizations';
+        hasQueryText = 'Organizations';
+    } else if (isCommunity(path)) {
         title = 'Communities';
-        showProfile = true;
-        id = path.split('/directory/c/')[1];
         ProfileComponent = SearchOrganizationProfileComponent;
         CardsComponent = Communities;
-    } else {
-        if (path.endsWith('/organizations')) {
-            title = 'Organizations';
-            ProfileComponent = SearchOrganizationProfileComponent;
-            CardsComponent = Organizations;
-            searchPlaceholder = 'Search organizations';
-            noQueryText = 'All organizations';
-            hasQueryText = 'Organizations';
-        } else if (path.endsWith('/communities')) {
-            title = 'Communities';
-            id = showProfile ? 'qlmY0z56DzsYdBM4d66ZU4n67K' : null;
-            ProfileComponent = SearchOrganizationProfileComponent;
-            CardsComponent = Communities;
-            searchPlaceholder = 'Search communities';
-            noQueryText = 'All communities';
-            hasQueryText = 'Communities';
-        } else if (path.endsWith('/people')) {
-            title = 'People';
-            id = showProfile ? 'Jl1k97keDvsLjdwXPRKytboAyq' : null;
-            ProfileComponent = SearchUserProfileComponent;
-            CardsComponent = PeopleCards;
-            searchPlaceholder = 'Search people';
-            noQueryText = 'All people';
-            hasQueryText = 'People';
-        } else {
-            title = 'Rooms';
-            id = showProfile ? 'wW4975KQVzS17BDVOZojTMRK96' : null;
-            ProfileComponent = SearchRoomsProfileComponent;
-            CardsComponent = Rooms;
-            searchPlaceholder = 'Search rooms';
-            noQueryText = 'All rooms';
-            hasQueryText = 'Rooms';
-        }
+        searchPlaceholder = 'Search communities';
+        noQueryText = 'All communities';
+        hasQueryText = 'Communities';
+    } else if (isPeople(path)) {
+        title = 'People';
+        ProfileComponent = SearchUserProfileComponent;
+        CardsComponent = PeopleCards;
+        searchPlaceholder = 'Search people';
+        noQueryText = 'All people';
+        hasQueryText = 'People';
+    } else if (isRoom(path)) {
+        title = 'Rooms';
+        ProfileComponent = SearchRoomsProfileComponent;
+        CardsComponent = Rooms;
+        searchPlaceholder = 'Search rooms';
+        noQueryText = 'All rooms';
+        hasQueryText = 'Rooms';
     }
 
     return (
