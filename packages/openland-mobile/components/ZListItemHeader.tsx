@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
         fontSize: Platform.OS === 'android' ?  14 : 15,
         fontWeight: Platform.OS === 'android' ? '400' : '400',
         height: Platform.OS === 'android' ? 20 : 20,
-        textAlignVertical: 'center'
+        textAlignVertical: 'center',
+        marginTop: -3
     } as TextStyle
 });
 
