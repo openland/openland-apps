@@ -2,7 +2,8 @@ import * as React from 'react';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
+import { Room, Room_room_SharedRoom, Room_room_PrivateRoom, UserShort } from 'openland-api/Types';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { RoomEditModal } from './RoomEditModal';
 import { RoomAddMemberModal } from './RoomAddMemberModal';
@@ -16,6 +17,10 @@ import { HeaderInviteButton } from './components/HeaderInviteButton';
 import { HeaderMenu } from './components/HeaderMenu';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
 import { HideOnMobile, HideOnDesktop } from 'openland-web/components/Adaptive';
+import { withRoom } from 'openland-web/api/withRoom';
+import { withUserInfo } from 'openland-web/components/UserInfo';
+import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
+import { XLoader } from 'openland-x/XLoader';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -186,3 +191,38 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
         </ChatHeaderViewAbstract>
     );
 });
+
+interface MessengerComponentLoaderProps {
+    variables: { id: string };
+    state?: MessagesStateContextProps;
+    user: UserShort;
+    loading: boolean;
+    data: Room;
+}
+
+export const ChatHeaderViewLoader = withRoom(withQueryLoader(
+    withUserInfo(({ user, data, loading }: MessengerComponentLoaderProps) => {
+        if (!data || !data.room || loading) {
+            if (loading) {
+                return <XLoader loading={true} />;
+            }
+            return <div />;
+        }
+
+        return (
+            <XView
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                height={55}
+                paddingLeft={20}
+                paddingRight={20}
+            >
+                <ChatHeaderView room={data.room} me={user} />
+            </XView>
+        );
+    }),
+) as any) as React.ComponentType<{
+    variables: { id: string };
+    state?: MessagesStateContextProps;
+}>;
