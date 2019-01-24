@@ -15,7 +15,7 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { ChatHeaderView } from 'openland-web/fragments/chat/ChatHeaderView';
 import { XLoader } from 'openland-x/XLoader';
-import { MainLayout } from 'openland-web/components/MainLayout';
+import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { Room, UserShort } from 'openland-api/Types';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
@@ -355,13 +355,85 @@ const UniversalNavigation = ({
     );
 };
 
+const getId = (myPath: string, substring: string) => {
+    if (!myPath.includes(substring)) {
+        return null;
+    }
+    return myPath.split(substring)[1];
+};
+
 const MessagesUniversalNavigation = ({
-    tab,
+    path,
     showDebugFragments,
+    cid: cid,
+    oid: oid,
+    uid: uid,
 }: {
-    tab?: any;
+    cid?: string;
+    oid?: string;
+    uid?: string;
+    path?: any;
     showDebugFragments: boolean;
 }) => {
+    let tab: tabsT = tabs.empty;
+
+    let isCompose = path.endsWith('/new');
+    let pageTitle = isCompose ? 'New chat' : undefined;
+    if (!canUseDOM) {
+        return (
+            <>
+                <XDocumentHead title={pageTitle} />
+                <Scaffold>{}</Scaffold>
+            </>
+        );
+    }
+    let isRooms = path.endsWith('/channels');
+    let isCall = path.endsWith('/call');
+    let isInvite = path.includes('joinChannel');
+    let isChat = path.includes('/mail');
+
+    const chatId = getId(path, '/mail/');
+
+    if (isCompose) {
+        tab = tabs.compose;
+    }
+
+    if (!isCompose && !cid) {
+        tab = tabs.empty;
+    }
+
+    if (!isCompose && cid) {
+        tab = tabs.conversation;
+    }
+
+    if (isInvite) {
+        tab = tabs.invite;
+    }
+
+    if (isRooms) {
+        tab = tabs.rooms;
+    }
+
+    if (isCall) {
+        tab = tabs.conference;
+    }
+
+    if (oid) {
+        tab = tabs.organization;
+    }
+
+    if (uid) {
+        tab = tabs.user;
+    }
+
+    if (cid && isChat) {
+        tab = tabs.chat;
+    }
+
+    if (tab === tabs.empty) {
+        pageTitle = undefined;
+    }
+
     return (
         <UniversalNavigation
             title="Messages"
@@ -374,28 +446,42 @@ const MessagesUniversalNavigation = ({
                 />
             }
             secondFragmentHeader={
-                <>
-                    <ChatHeaderViewLoader
-                        variables={{
-                            id: 'Jlb4AOJBWEc5MvaQWkjLhlALo0',
-                        }}
-                    />
-                    <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                </>
+                chatId && (
+                    <>
+                        <ChatHeaderViewLoader
+                            variables={{
+                                id: chatId,
+                            }}
+                        />
+                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                    </>
+                )
             }
-            firstFragment={showDebugFragments && <XView color="red">firstFragment</XView>}
+            firstFragment={<DialogListFragment />}
             secondFragment={showDebugFragments && <XView color="blue">secondFragment</XView>}
         />
     );
 };
 
-const DirectoryUniversalNavigation = ({
-    showDebugFragments,
-    path,
-}: {
-    showDebugFragments: boolean;
-    path: string;
-}) => {
+const getOrganizationProfile = (path: string) => getId(path, '/directory/o/');
+
+const isOrganization = (path: string) =>
+    path.endsWith('/organizations') || !!getOrganizationProfile(path);
+
+const getPeopleProfile = (path: string) => getId(path, '/directory/u/');
+
+const isPeople = (path: string) => path.endsWith('/people') || !!getPeopleProfile(path);
+
+const getRoomProfile = (path: string) =>
+    getId(path, '/directory/r/') || getId(path, '/directory/p/') || null;
+
+const isRoom = (path: string) => path.endsWith('/directory') || !!getRoomProfile(path);
+
+const getCommunityProfile = (path: string) => getId(path, '/directory/c/');
+
+const isCommunity = (path: string) => path.endsWith('/communities') || !!getCommunityProfile(path);
+
+const DirectoryUniversalNavigation = ({ path }: { path: string }) => {
     let ProfileComponent;
     let CardsComponent;
     let searchPlaceholder = '';
@@ -435,43 +521,6 @@ const DirectoryUniversalNavigation = ({
             </XMenuItem>
         </>
     );
-
-    const getDirectoryId = (myPath: string, substring: string) => {
-        if (!myPath.includes(substring)) {
-            return null;
-        }
-        return path.split(substring)[1];
-    };
-
-    const getOrganizationProfile = (myPath: string) => getDirectoryId(myPath, '/directory/o/');
-
-    const isOrganization = (myPath: string) => {
-        return myPath.endsWith('/organizations') || !!getOrganizationProfile(myPath);
-    };
-
-    const getPeopleProfile = (myPath: string) => getDirectoryId(myPath, '/directory/u/');
-
-    const isPeople = (myPath: string) => {
-        return myPath.endsWith('/people') || !!getPeopleProfile(myPath);
-    };
-
-    const getRoomProfile = (myPath: string) => {
-        return (
-            getDirectoryId(myPath, '/directory/r/') ||
-            getDirectoryId(myPath, '/directory/p/') ||
-            null
-        );
-    };
-
-    const isRoom = (myPath: string) => {
-        return myPath.endsWith('/directory') || !!getRoomProfile(myPath);
-    };
-
-    const getCommunityProfile = (myPath: string) => getDirectoryId(myPath, '/directory/c/');
-
-    const isCommunity = (myPath: string) => {
-        return myPath.endsWith('/communities') || !!getCommunityProfile(myPath);
-    };
 
     if (getOrganizationProfile(path)) {
         id = getOrganizationProfile(path);
@@ -549,7 +598,6 @@ const DirectoryUniversalNavigation = ({
                     </XWithRole>
                 </>
             }
-            firstFragment={showDebugFragments && <XView color="red">firstFragment</XView>}
             secondFragment={
                 <XView flexGrow={1}>
                     <DirectoryContent
@@ -560,7 +608,6 @@ const DirectoryUniversalNavigation = ({
                         noQueryText={noQueryText}
                         hasQueryText={hasQueryText}
                     />
-                    {showDebugFragments && <XView color="blue">secondFragment</XView>}
                 </XView>
             }
         />
@@ -574,68 +621,10 @@ export default withApp(
         withQueryLoader((props: any) => {
             let { router, organizationId, userId } = props;
             const { path, routeQuery } = router;
-
-            let isCompose = path.endsWith('/new');
-            let pageTitle = isCompose ? 'New chat' : undefined;
-
-            if (!canUseDOM) {
-                return (
-                    <>
-                        <XDocumentHead title={pageTitle} />
-                        <Scaffold>{}</Scaffold>
-                    </>
-                );
-            }
-
-            let isRooms = path.endsWith('/channels');
-            let isCall = path.endsWith('/call');
-            let isInvite = path.includes('joinChannel');
-            let isChat = path.includes('/mail');
-            let isDirectory = path.includes('/directory');
-
             let cid = routeQuery.conversationId;
             let oid = organizationId || routeQuery.organizationId;
             let uid = userId || routeQuery.userId;
-            let tab: tabsT = tabs.empty;
-            if (isCompose) {
-                tab = tabs.compose;
-            }
-
-            if (!isCompose && !cid) {
-                tab = tabs.empty;
-            }
-
-            if (!isCompose && cid) {
-                tab = tabs.conversation;
-            }
-
-            if (isInvite) {
-                tab = tabs.invite;
-            }
-
-            if (isRooms) {
-                tab = tabs.rooms;
-            }
-
-            if (isCall) {
-                tab = tabs.conference;
-            }
-
-            if (oid) {
-                tab = tabs.organization;
-            }
-
-            if (uid) {
-                tab = tabs.user;
-            }
-
-            if (cid && isChat) {
-                tab = tabs.chat;
-            }
-
-            if (tab === tabs.empty) {
-                pageTitle = undefined;
-            }
+            let isDirectory = path.includes('/directory');
 
             const showDebugFragments = false;
 
@@ -646,13 +635,13 @@ export default withApp(
                     }}
                 >
                     {isDirectory ? (
-                        <DirectoryUniversalNavigation
-                            path={path}
-                            showDebugFragments={showDebugFragments}
-                        />
+                        <DirectoryUniversalNavigation path={path} />
                     ) : (
                         <MessagesUniversalNavigation
-                            tab={tab}
+                            cid={cid}
+                            oid={oid}
+                            uid={uid}
+                            path={path}
                             showDebugFragments={showDebugFragments}
                         />
                     )}
