@@ -9,6 +9,7 @@ import {
     OrganizationChangeMemberRoleMutation,
     RoomQuery,
     RoomSettingsUpdateMutation,
+    OrganizationAddMemberMutation,
 } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -24,6 +25,8 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ChannelViewAsync, ArrowWrapper } from './OrgChannels';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { UserView } from './components/UserView';
+import { Modals } from './modals/Modals';
+import { formatError } from 'openland-y-forms/errorHandling';
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
 
@@ -217,7 +220,25 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                     <ZListItem
                                                                         leftIcon={require('assets/ic-add-24.png')}
                                                                         text="Add Members"
-                                                                        path="OrganizationInviteLinkModal"
+                                                                        onPress={() => {
+                                                                            Modals.showUserMuptiplePicker(this.props.router,
+                                                                                {
+                                                                                    title: 'Add',
+                                                                                    action: async (users) => {
+                                                                                        startLoader();
+                                                                                        try {
+                                                                                            await getMessenger().engine.client.mutate(OrganizationAddMemberMutation, { userIds: users.map(u => u.id), organizationId: resp.data.organization.id })
+                                                                                        } catch (e) {
+                                                                                            new AlertBlanketBuilder().alert(formatError(e));
+                                                                                        }
+                                                                                        stopLoader();
+                                                                                        this.props.router.back();
+                                                                                    }
+                                                                                },
+                                                                                'Add members',
+                                                                                resp.data.organization.members.map(u => u.user.id),
+                                                                                { path: 'OrganizationInviteLinkModal', pathParams: { id: resp.data.organization.id } });
+                                                                        }}
                                                                     />
                                                                 )}
 

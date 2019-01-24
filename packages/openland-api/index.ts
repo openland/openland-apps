@@ -101,6 +101,7 @@ export const OrganizationProfileQuery = typedQuery<Types.OrganizationProfile, Ty
 export const ExploreOrganizationsQuery = typedQuery<Types.ExploreOrganizations, Types.ExploreOrganizationsVariables>(Organization.ExploreOrganizationsQuery);
 export const ExploreComunityQuery = typedQuery<Types.ExploreComunity, Types.ExploreComunityVariables>(Organization.ExploreComunityQuery);
 export const OrganizationChangeMemberRoleMutation = typedMutation<Types.OrganizationChangeMemberRole, Types.OrganizationChangeMemberRoleVariables>(Organization.OrganizationChangeMemberRoleMutation);
+export const OrganizationAddMemberMutation = typedMutation<Types.OrganizationAddMember, Types.OrganizationAddMemberVariables>(Organization.OrganizationAddMemberMutation);
 export const OrganizationRemoveMemberMutation = typedMutation<Types.OrganizationRemoveMember, Types.OrganizationRemoveMemberVariables>(Organization.OrganizationRemoveMemberMutation);
 export const OrganizationInviteMembersMutation = typedMutation<Types.OrganizationInviteMembers, Types.OrganizationInviteMembersVariables>(Organization.OrganizationInviteMembersMutation);
 export const OrganizationPublicInviteQuery = typedQuery<Types.OrganizationPublicInvite, Types.OrganizationPublicInviteVariables>(Organization.OrganizationPublicInviteQuery);

@@ -3,7 +3,7 @@ import { PageProps } from '../../../components/PageProps';
 import { withApp } from '../../../components/withApp';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { View, LayoutChangeEvent, Image } from 'react-native';
+import { View, LayoutChangeEvent, Image, Platform } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZQuery } from '../../../components/ZQuery';
 import { UserShort } from 'openland-api/Types';
@@ -13,6 +13,7 @@ import { ZBlurredView } from '../../../components/ZBlurredView';
 import { ZTagView } from '../../../components/ZTagView';
 import { ExplorePeopleQuery } from 'openland-api';
 import { UserView } from '../components/UserView';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
 
 interface UserMultiplePickerComponentState {
     query: string;
@@ -76,6 +77,16 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                     <ZQuery query={ExplorePeopleQuery} variables={{ query: this.state.query }} fetchPolicy="cache-and-network">
                         {r => (
                             <SScrollView marginTop={this.state.searchHeight}>
+                                {this.props.router.params.inviteLinkButton &&
+                                    <View marginBottom={6} marginTop={18}>
+                                        <ZListItem
+                                            leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                                            text="Invite with a link"
+                                            path={this.props.router.params.inviteLinkButton.path}
+                                            pathParams={this.props.router.params.inviteLinkButton.pathParams}
+                                        />
+                                    </View>
+                                }
                                 {r.data.items.edges.map((v) => (
                                     <CheckListBoxWraper checked={!!this.state.users.find(u => u.id === v.node.id)}>
                                         <UserView key={v.node.id} user={v.node} enabled={!((this.props.router.params.disableUsers || []).indexOf(v.node.id) > -1)} onPress={() => this.handleAddUser(v.node)} />

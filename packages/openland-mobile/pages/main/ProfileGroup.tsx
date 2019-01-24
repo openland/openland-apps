@@ -143,7 +143,8 @@ class ProfileGroupComponent extends React.Component<PageProps & { room: Room_roo
                                                 }
                                             },
                                             'Add members',
-                                            this.props.room!.members.map(m => m.user.id)
+                                            this.props.room!.members.map(m => m.user.id),
+                                            { path: 'ChannelInviteLinkModal', pathParams: { id: this.props.room.id } }
                                         );
                                     }}
                                 />
