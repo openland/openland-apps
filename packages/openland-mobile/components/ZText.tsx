@@ -11,7 +11,7 @@ export class ZText extends React.PureComponent<{ text?: string | null | undefine
                 if (v.type === 'new_line') {
                     return <Text key={'br-' + i} style={this.props.style} >{'\n'}</Text>;
                 } else if (v.type === 'link') {
-                    return <Text key={'link-' + i} style={[this.props.style, { color: '#654bfa' }]} onPress={this.props.linkify !== false ? resolveInternalLink(v.link!, () => Linking.openURL(v.link!!)) : undefined}>{v.text}</Text>;
+                    return <Text key={'link-' + i} style={[this.props.style, { color: '#0084fe' }]} onPress={this.props.linkify !== false ? resolveInternalLink(v.link!, () => Linking.openURL(v.link!!)) : undefined}>{v.text}</Text>;
                 } else {
                     return <Text key={'text-' + i} style={this.props.style}>{v.text}</Text>;
                 }

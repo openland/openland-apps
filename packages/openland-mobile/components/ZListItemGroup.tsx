@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
 
 export class ZListItemGroup extends React.PureComponent<{ header?: string | null, counter?: number | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
@@ -78,22 +78,23 @@ export class ZListItemGroup extends React.PureComponent<{ header?: string | null
                         <View flexGrow={1} paddingRight={16} />
 
                         {this.props.actionRight && (
-                            <Text
-                                onPress={this.props.actionRight.onPress}
-                                style={{
-                                    color: '#0084fe',
-                                    fontSize: 15,
-                                    fontWeight: '500',
-                                    height: 18,
-                                    lineHeight: 18,
-                                    paddingLeft: 16,
-                                    paddingRight: 16,
-                                }}
-                                numberOfLines={1}
-                                ellipsizeMode="tail"
-                            >
-                                {this.props.actionRight.title}
-                            </Text>
+                            <TouchableOpacity onPress={this.props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
+                                <Text
+                                    style={{
+                                        color: '#0084fe',
+                                        fontSize: 15,
+                                        fontWeight: Platform.OS === 'android' ? '500' : '600',
+                                        height: 18,
+                                        lineHeight: 18,
+                                        paddingLeft: 16,
+                                        paddingRight: 16,
+                                    }}
+                                    numberOfLines={1}
+                                    ellipsizeMode="tail"
+                                >
+                                    {this.props.actionRight.title}
+                                </Text>
+                            </TouchableOpacity>
                         )}
                     </View>
                 }

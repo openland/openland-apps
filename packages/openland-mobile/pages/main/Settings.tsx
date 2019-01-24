@@ -87,7 +87,7 @@ class SettingsComponent extends React.Component<PageProps> {
                                         }}
                                     />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Organizations" divider={true}>
+                                <ZListItemGroup header="Organizations" divider={true} actionRight={{ title: '+ New', onPress: () => this.props.router.push('NewOrganization') }}>
                                     {/* <ZListItem leftIcon={require('assets/ic-add-24.png')} text="Create new" path="SettingsOrganizations" /> */}
                                     {primary && <ZListItem
                                         text={primary.name}

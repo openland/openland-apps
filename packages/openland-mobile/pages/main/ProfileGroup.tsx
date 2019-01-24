@@ -151,6 +151,11 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
         if (user.id !== getMessenger().engine.user.id) {
             let builder = ActionSheet.builder();
             builder.action(
+                'Info',
+                () => {
+                    props.router.push('ProfileUser', { id: user.id });
+                });
+            builder.action(
                 'Kick',
                 () => {
                     Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
