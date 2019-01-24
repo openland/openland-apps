@@ -10,6 +10,7 @@ import { EmptyBlock } from '../../../fragments/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
+import { css } from 'linaria';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -60,6 +61,13 @@ const MessagesWrapperEmpty = (props: { children?: any }) => (
     </XView>
 );
 
+const scrollWrapper = css`
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+    overflow: scroll;
+`;
+
 interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
@@ -73,7 +81,7 @@ interface MessageListProps {
 const getScrollView = () => {
     return document
         .getElementsByClassName('messages-wrapper')[0]
-        .getElementsByClassName('simplebar-scroll-content')[0];
+        .getElementsByClassName('simplebar-scroll-content')[0].children[0].children[0];
 };
 
 let lastMessageId = '';
@@ -111,6 +119,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     handleScroll = (e: any) => {
+        console.log(e.target.scrollTop);
         if (lastMessageId !== '' && e.target.scrollTop < 50) {
             this.props.conversation.loadBefore(lastMessageId);
         }
@@ -255,31 +264,36 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
 
         return (
-            <XView flexGrow={1} position="relative">
-                <XView flexGrow={1} width="100%" position="absolute">
-                    {this.isEmpty() && (
-                        <XScrollViewReversed ref={this.scroller}>
-                            <MessagesWrapperEmpty>
-                                <EmptyBlock
-                                    conversationType={this.props.conversationType}
-                                    onClick={this.props.inputShower}
-                                />
-                            </MessagesWrapperEmpty>
-                        </XScrollViewReversed>
-                    )}
-                    {!this.isEmpty() && (
-                        <XResizeDetector
-                            handleWidth={false}
-                            handleHeight={true}
-                            onResize={this.resizeHandler}
+            <>
+                {this.isEmpty() && (
+                    <XScrollViewReversed ref={this.scroller}>
+                        <MessagesWrapperEmpty>
+                            <EmptyBlock
+                                conversationType={this.props.conversationType}
+                                onClick={this.props.inputShower}
+                            />
+                        </MessagesWrapperEmpty>
+                    </XScrollViewReversed>
+                )}
+                {!this.isEmpty() && (
+                    <XResizeDetector
+                        handleWidth={false}
+                        handleHeight={true}
+                        onResize={this.resizeHandler}
+                    >
+                        <XScrollViewReversed
+                            ref={this.scroller}
+                            getScrollElement={(src: any) => src.children[0].children[0]}
                         >
-                            <XScrollViewReversed ref={this.scroller}>
-                                <MessagesWrapper>{messages}</MessagesWrapper>
-                            </XScrollViewReversed>
-                        </XResizeDetector>
-                    )}
-                </XView>
-            </XView>
+                            <div className={scrollWrapper} id="chat">
+                                <XView flexGrow={1} width="100%" position="absolute">
+                                    <MessagesWrapper>{messages}</MessagesWrapper>
+                                </XView>
+                            </div>
+                        </XScrollViewReversed>
+                    </XResizeDetector>
+                )}
+            </>
         );
     }
 }

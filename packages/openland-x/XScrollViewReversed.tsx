@@ -20,6 +20,11 @@ export class XScrollViewReversed extends React.Component<{}, { inited: boolean }
 
     private handleRef = (src: any) => {
         if (src !== null) {
+            if (this.props.getScrollElement) {
+                this.scroller = this.props.getScrollElement(src);
+                return;
+            }
+
             this.scroller = src;
         }
     };
