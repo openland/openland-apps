@@ -16,6 +16,7 @@ import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBo
 import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from '../../../../components/Navigation';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 
 export const DirectoryContent = React.memo(
     ({
@@ -182,19 +183,23 @@ export const DirectoryNavigation = React.memo(
                     </>
                 }
                 secondFragment={
-                    <XView flexGrow={1}>
-                        {children ? (
-                            children
-                        ) : (
-                            <DirectoryContent
-                                id={id}
-                                ProfileComponent={ProfileComponent}
-                                CardsComponent={CardsComponent}
-                                searchPlaceholder={searchPlaceholder || ''}
-                                noQueryText={noQueryText || ''}
-                                hasQueryText={hasQueryText || ''}
-                            />
-                        )}
+                    <XView flexGrow={1} height="100%" position="relative">
+                        <XScrollView2 height="100%">
+                            <XView flexGrow={1}>
+                                {children ? (
+                                    children
+                                ) : (
+                                    <DirectoryContent
+                                        id={id}
+                                        ProfileComponent={ProfileComponent}
+                                        CardsComponent={CardsComponent}
+                                        searchPlaceholder={searchPlaceholder || ''}
+                                        noQueryText={noQueryText || ''}
+                                        hasQueryText={hasQueryText || ''}
+                                    />
+                                )}
+                            </XView>
+                        </XScrollView2>
                     </XView>
                 }
             />

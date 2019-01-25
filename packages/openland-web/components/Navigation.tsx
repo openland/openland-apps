@@ -6,7 +6,6 @@ import { tabs } from '../pages/main/mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
-import { XScrollView2 } from 'openland-x/XScrollView2';
 
 type PageInnerProps = {
     swapFragmentsOnMobile?: boolean;
@@ -99,9 +98,7 @@ const DesktopPageInner = React.memo(
                 </DesktopDialogContainer>
                 <XView flexDirection="column" flexGrow={1}>
                     {secondFragmentHeader}
-                    <XView flexGrow={1} height="100%" position="relative">
-                        <XScrollView2 height="100%"> {secondFragment}</XScrollView2>
-                    </XView>
+                    {secondFragment}
                 </XView>
             </XView>
         );
