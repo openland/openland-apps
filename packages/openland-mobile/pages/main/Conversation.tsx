@@ -57,24 +57,38 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
 
     handleAttach = () => {
         let builder = new ActionSheetBuilder();
-        builder.action('Take Photo...', () => {
+        builder.action('Take Photo', () => {
             Picker.launchCamera({ title: 'Take Photo' }, (response) => {
                 if (response.didCancel) {
                     return;
                 }
-
-                UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+                // only photos has this field: https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Reference.md
+                let isPhoto = !!response.type;
+                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
             });
         });
-        builder.action('Choose from Library...', () => {
-            Picker.launchImageLibrary({ title: 'Take Photo' }, (response) => {
+        builder.action(Platform.select({ ios: 'Photo or Video', android: 'Photo' }), () => {
+            Picker.launchImageLibrary({ mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed' }, (response) => {
                 if (response.didCancel) {
                     return;
                 }
 
-                UploadManagerInstance.registerUpload(this.props.chat.id, response.fileName || 'image.jpg', response.uri, response.fileSize);
+                // only photos has this field: https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Reference.md
+                let isPhoto = !!response.type;
+                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
             });
         });
+        if (Platform.OS === 'android') {
+            builder.action('Video', () => {
+                Picker.launchImageLibrary({ mediaType: 'video' }, (response) => {
+                    if (response.didCancel) {
+                        return;
+                    }
+                    UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
+                });
+            });
+        }
+
         builder.show();
     }
 
