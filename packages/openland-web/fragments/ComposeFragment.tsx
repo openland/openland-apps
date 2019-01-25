@@ -256,13 +256,12 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                 });
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
-                let res = await this.props.messenger.client.mutate(
-                    RoomCreateMutation, {
-                        kind: SharedRoomKind.GROUP,
-                        message: msg,
-                        title: this.state.values.map(v => v.label).join(', '),
-                        members: this.state.values.map(v => v.value as string),
-                    });
+                let res = await this.props.messenger.client.mutate(RoomCreateMutation, {
+                    kind: SharedRoomKind.GROUP,
+                    message: msg,
+                    title: this.state.values.map(v => v.label).join(', '),
+                    members: this.state.values.map(v => v.value as string),
+                });
                 Router.replaceRoute('/mail/' + res.room.id);
             }
         }

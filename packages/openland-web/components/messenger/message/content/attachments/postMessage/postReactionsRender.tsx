@@ -116,10 +116,7 @@ export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
                             style="gray"
                             path={'/mail/u/' + i.user.id}
                         >
-                            <RespondUserContent
-                                justifyContent="space-between"
-                                alignItems="center"
-                            >
+                            <RespondUserContent justifyContent="space-between" alignItems="center">
                                 <XHorizontal separator={6} alignItems="center">
                                     <RespondUserAvatar
                                         style="user"

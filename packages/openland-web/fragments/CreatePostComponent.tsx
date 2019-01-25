@@ -607,47 +607,44 @@ export class CreatePostComponent extends React.Component<
                                 </CoverWrapper>
                             )}
                         </XHorizontal>
-                        {moreFiles &&
-                            moreFiles.length > 0 && (
-                                <FilesWrapper>
-                                    {moreFiles.map(i => (
-                                        <FileItem
-                                            key={'file' + i.uuid}
-                                            separator={4}
-                                            alignItems="center"
-                                        >
-                                            <XView
-                                                backgroundImage="url('/static/X/file.svg')"
-                                                backgroundRepeat="no-repeat"
-                                                width={11}
-                                                height={14}
-                                                flexShrink={0}
-                                            />
-                                            <XHorizontal alignItems="center" separator={4}>
-                                                <div>
-                                                    {i.name} <span>•</span>{' '}
-                                                    {niceBytes(Number(i.size))}
-                                                </div>
-                                                <XHorizontal
-                                                    alignItems="center"
-                                                    className="remove"
-                                                    onClick={() => this.fileRemover(i)}
-                                                >
-                                                    <RemoveIcon />
-                                                </XHorizontal>
+                        {moreFiles && moreFiles.length > 0 && (
+                            <FilesWrapper>
+                                {moreFiles.map(i => (
+                                    <FileItem
+                                        key={'file' + i.uuid}
+                                        separator={4}
+                                        alignItems="center"
+                                    >
+                                        <XView
+                                            backgroundImage="url('/static/X/file.svg')"
+                                            backgroundRepeat="no-repeat"
+                                            width={11}
+                                            height={14}
+                                            flexShrink={0}
+                                        />
+                                        <XHorizontal alignItems="center" separator={4}>
+                                            <div>
+                                                {i.name} <span>•</span> {niceBytes(Number(i.size))}
+                                            </div>
+                                            <XHorizontal
+                                                alignItems="center"
+                                                className="remove"
+                                                onClick={() => this.fileRemover(i)}
+                                            >
+                                                <RemoveIcon />
                                             </XHorizontal>
-                                        </FileItem>
-                                    ))}
-                                </FilesWrapper>
-                            )}
-                        {!!uploadProgress &&
-                            uploadProgress > 0 && (
-                                <MessageUploadComponent
-                                    key={'file_uploading'}
-                                    progress={Math.round(uploadProgress * 100)}
-                                    title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
-                                />
-                            )}
+                                        </XHorizontal>
+                                    </FileItem>
+                                ))}
+                            </FilesWrapper>
+                        )}
+                        {!!uploadProgress && uploadProgress > 0 && (
+                            <MessageUploadComponent
+                                key={'file_uploading'}
+                                progress={Math.round(uploadProgress * 100)}
+                                title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
+                            />
+                        )}
                     </XVertical>
                     <DropZone height="100%" onFileDrop={this.handleDrop} />
                 </XView>

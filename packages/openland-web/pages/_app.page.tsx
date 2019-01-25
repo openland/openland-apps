@@ -88,7 +88,9 @@ export default withData(
             return (
                 <Container>
                     <EnvironmentContext.Provider value={{ isApp: this.props.isApp }}>
-                        <XStorageProvider storage={canUseDOM ? getClientStorage() : this.props.storage}>
+                        <XStorageProvider
+                            storage={canUseDOM ? getClientStorage() : this.props.storage}
+                        >
                             <XRouterProvider
                                 routes={Routes}
                                 hostName={this.props.host}

@@ -16,13 +16,11 @@ export default withApp('UI Framework - Rich Input', 'viewer', props => {
             <XContent>
                 <XVertical>
                     <XTitle>Simple</XTitle>
-                    <XView height={24}>
-                        {currentWord}
-                    </XView>
+                    <XView height={24}>{currentWord}</XView>
                     <XButton
                         text="set mention"
                         onClick={() => {
-                            ref.current!.applyMention({ id: 'someid', name: 'Fabulous developer' })
+                            ref.current!.applyMention({ id: 'someid', name: 'Fabulous developer' });
                         }}
                     />
                     <XView backgroundColor="rgba(0,0,0,0.1)">

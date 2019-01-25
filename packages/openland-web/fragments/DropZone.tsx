@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import UloadIc from 'openland-icons/file-upload.svg';
 
-const DropArea = Glamorous.div<{ dragOn: boolean, height: string | number }>(props => ({
+const DropArea = Glamorous.div<{ dragOn: boolean; height: string | number }>(props => ({
     position: 'absolute',
     display: 'flex',
     alignItems: 'center',
@@ -53,8 +53,8 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
 
         this.state = {
             dragOn: false,
-            dragUnder: false
-        }
+            dragUnder: false,
+        };
     }
 
     private handleDrop = (e: any) => {
@@ -64,7 +64,7 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
 
         this.setState({
             dragOn: false,
-            dragUnder: false
+            dragUnder: false,
         });
 
         if (!file) {
@@ -77,27 +77,27 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
     private handleWindowDragover = (e: any) => {
         e.preventDefault();
         this.setState({
-            dragOn: true
+            dragOn: true,
         });
     };
 
     private handleMouseOut = () => {
         this.setState({
             dragOn: false,
-            dragUnder: false
+            dragUnder: false,
         });
     };
 
     private handleWindowDrop = (e: any) => {
         e.preventDefault();
         this.setState({
-            dragOn: false
+            dragOn: false,
         });
     };
 
     private handleDragOver = (e: any) => {
         this.setState({
-            dragUnder: true
+            dragUnder: true,
         });
     };
 
@@ -105,11 +105,11 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
         let file = e.dataTransfer.files[0];
         if (!file) {
             this.setState({
-                dragOn: false
+                dragOn: false,
             });
         }
         this.setState({
-            dragUnder: false
+            dragUnder: false,
         });
     };
 

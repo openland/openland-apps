@@ -42,7 +42,14 @@ export function withData(App: React.ComponentType<any>) {
             let token = getToken(ctx.ctx.req);
             const apollo = apolloClient({}, token);
 
-            if (!canUseDOM || isPageChanged({ pathname: ctx.router.pathname, query: ctx.router.query, asPath: ctx.router.asPath })) {
+            if (
+                !canUseDOM ||
+                isPageChanged({
+                    pathname: ctx.router.pathname,
+                    query: ctx.router.query,
+                    asPath: ctx.router.asPath,
+                })
+            ) {
                 try {
                     let start = Date.now();
                     await getDataFromTree(

@@ -226,7 +226,9 @@ export class MobileMessageCompose extends React.PureComponent<
                                 onPaste={this.onPaste}
                                 ref={this.inputRef}
                             />
-                            {message === '' && <div className={InputPlaceholder}>Write a message...</div>}
+                            {message === '' && (
+                                <div className={InputPlaceholder}>Write a message...</div>
+                            )}
                         </XView>
                         <XHorizontal
                             alignItems="center"
@@ -268,33 +270,31 @@ export class MobileMessageCompose extends React.PureComponent<
                                 enabled={this.props.enabled !== false}
                             />
                         </XHorizontal>
-                        {file &&
-                            fileSrc && (
-                                <CoverWrapper>
-                                    <img src={fileSrc} />
-                                    <CoverDelButton onClick={this.fileRemover}>
+                        {file && fileSrc && (
+                            <CoverWrapper>
+                                <img src={fileSrc} />
+                                <CoverDelButton onClick={this.fileRemover}>
+                                    <RemoveIcon />
+                                </CoverDelButton>
+                            </CoverWrapper>
+                        )}
+                        {file && fileName && (
+                            <FileItem key={'file' + fileName} separator={4} alignItems="center">
+                                <FileImage />
+                                <XHorizontal alignItems="center" separator={4}>
+                                    <div>
+                                        {fileName} <span>•</span> {niceBytes(Number(file.size))}
+                                    </div>
+                                    <XHorizontal
+                                        alignItems="center"
+                                        className="remove"
+                                        onClick={this.fileRemover}
+                                    >
                                         <RemoveIcon />
-                                    </CoverDelButton>
-                                </CoverWrapper>
-                            )}
-                        {file &&
-                            fileName && (
-                                <FileItem key={'file' + fileName} separator={4} alignItems="center">
-                                    <FileImage />
-                                    <XHorizontal alignItems="center" separator={4}>
-                                        <div>
-                                            {fileName} <span>•</span> {niceBytes(Number(file.size))}
-                                        </div>
-                                        <XHorizontal
-                                            alignItems="center"
-                                            className="remove"
-                                            onClick={this.fileRemover}
-                                        >
-                                            <RemoveIcon />
-                                        </XHorizontal>
                                     </XHorizontal>
-                                </FileItem>
-                            )}
+                                </XHorizontal>
+                            </FileItem>
+                        )}
                     </XVertical>
                 </SendMessageContent>
             </SendMessageWrapper>

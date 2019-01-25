@@ -8,7 +8,6 @@ import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
 
 export const AuthRouter = React.memo<{ children?: any }>(props => {
-
     let router = React.useContext(XRouterContext)!;
     let userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);
@@ -53,7 +52,10 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
     ////////////////////////////////////////////////
 
     // Redirect to Join prview before Signup/Signin if there are was redirect to join
-    if (!userInfo.isLoggedIn && (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))) {
+    if (
+        !userInfo.isLoggedIn &&
+        (router.path.startsWith('/join/') || router.path.startsWith('/invite/'))
+    ) {
         return redirectIfNeeded('/signin/invite');
     }
 
@@ -99,7 +101,7 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
     ////////////////////////////////////////////////
 
     // Handle channel joins
-    if ((router.path.includes('joinChannel')) || router.path.includes('acceptChannelInvite')) {
+    if (router.path.includes('joinChannel') || router.path.includes('acceptChannelInvite')) {
         return defaultRoute;
     }
 
@@ -108,7 +110,10 @@ export const AuthRouter = React.memo<{ children?: any }>(props => {
     ////////////////////////////////////////////////
 
     // Activate user if needed and possible
-    if (!userInfo.isCompleted && router.path.startsWith('/invite/') || redirectPath.startsWith('/invite/')) {
+    if (
+        (!userInfo.isCompleted && router.path.startsWith('/invite/')) ||
+        redirectPath.startsWith('/invite/')
+    ) {
         return redirectJoin('/invite');
     }
 

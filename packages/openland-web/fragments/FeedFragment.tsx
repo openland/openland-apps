@@ -9,12 +9,12 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { FeedListComponent } from './feed/FeedListComponent';
 
-const NewPostModal = withCreatePost((props) => {
+const NewPostModal = withCreatePost(props => {
     return (
         <XModalForm
             title="Create post"
-            defaultAction={(src) => {
-                return props.post({ variables: { message: src.message } })
+            defaultAction={src => {
+                return props.post({ variables: { message: src.message } });
             }}
             targetQuery="new"
         >
@@ -27,18 +27,13 @@ const NewPostModal = withCreatePost((props) => {
                 />
             </XFormField>
         </XModalForm>
-    )
+    );
 });
 
 export const FeedFragment = React.memo(() => {
     return (
         <XView flexDirection="row" alignItems="stretch" justifyContent="center">
-            <XView
-                flexDirection="column"
-                width={200}
-                alignItems="center"
-                marginTop={32}
-            >
+            <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>
                 <XTitle>Channels</XTitle>
                 <XLink>Founders</XLink>
                 <XLink>Developers</XLink>
@@ -68,8 +63,11 @@ export const FeedFragment = React.memo(() => {
                         ]}
                     />
                     <XView width={16} /> */}
-                    <XButton style="primary" text="New Post" query={{ field: 'new', value: 'true' }} />
-
+                    <XButton
+                        style="primary"
+                        text="New Post"
+                        query={{ field: 'new', value: 'true' }}
+                    />
                 </XView>
                 <FeedListComponent />
                 {/* <Post
@@ -91,12 +89,7 @@ export const FeedFragment = React.memo(() => {
                     kind="introduction"
                 /> */}
             </XView>
-            <XView
-                flexDirection="column"
-                width={200}
-                alignItems="center"
-                marginTop={32}
-            >
+            <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>
                 <XTitle>Hot topics</XTitle>
                 <XLink>#hiring</XLink>
                 <XLink>#advice</XLink>
@@ -104,5 +97,5 @@ export const FeedFragment = React.memo(() => {
             </XView>
             <NewPostModal />
         </XView>
-    )
+    );
 });
