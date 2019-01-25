@@ -145,10 +145,15 @@ class MessageStateProviderComponent extends React.PureComponent<
 }
 
 export default withApp('Mail', 'viewer', () => {
-    const { path, routeQuery } = React.useContext(XRouterContext) as XRouter;
+    const router = React.useContext(XRouterContext) as XRouter;
+    const { path, routeQuery } = router;
     let cid = routeQuery.conversationId;
     let oid = routeQuery.organizationId;
     let uid = routeQuery.userId;
 
-    return <MessagesNavigation path={path} cid={cid} oid={oid} uid={uid} />;
+    return (
+        <MessageStateProviderComponent router={router}>
+            <MessagesNavigation path={path} cid={cid} oid={oid} uid={uid} />
+        </MessageStateProviderComponent>
+    );
 });
