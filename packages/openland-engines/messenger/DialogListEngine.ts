@@ -14,19 +14,22 @@ import { emoji } from 'openland-y-utils/emoji';
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
+    
     title: string;
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
     photo?: string;
+
     unread: number;
     online?: boolean;
     typing?: string;
-    isService?: boolean;
     isMuted?: boolean;
     haveMention?: boolean;
-    messageId?: string;
+
     date?: number;
+    messageId?: string;
     message?: string;
     messageEmojified?: any;
+    isService?: boolean;
     sender?: string;
     isOut?: boolean;
     fileMeta?: { isImage?: boolean };

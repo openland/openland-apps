@@ -9,8 +9,8 @@ import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
 import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
-import { Channels } from './Channels';
 import { getMessenger } from '../../utils/messenger';
+import { Explore } from './Explore';
 
 export class Home extends React.PureComponent<PageProps, { tab: number, counter?: { counter: number, visible: boolean } }> {
     unsubscribe?: () => void;
@@ -49,7 +49,7 @@ export class Home extends React.PureComponent<PageProps, { tab: number, counter?
                         </View> */}
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 0 ? 1 : 0 }} pointerEvents={this.state.tab === 0 ? 'box-none' : 'none'}>
                             <HeaderContextChild enabled={this.state.tab === 0}>
-                                <Channels {...this.props as any} />
+                                <Explore {...this.props as any} />
                             </HeaderContextChild>
                         </View>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 1 ? 1 : 0 }} pointerEvents={this.state.tab === 1 ? 'box-none' : 'none'}>
@@ -75,7 +75,7 @@ export class Home extends React.PureComponent<PageProps, { tab: number, counter?
                                     onPress={() => this.handleTabChange(0)}
                                 /> */}
                                 <AppBarBottomItem
-                                    title="Explore"
+                                    title="Browse"
                                     icon={Platform.OS === 'android' ? require('assets/ic-rooms.png') : require('assets/ic-browse-fill-30.png')}
                                     selected={this.state.tab === 0}
                                     onPress={() => this.handleTabChange(0)}

@@ -10,6 +10,11 @@ export const AvailableRoomsQuery = gql`
                 photo
                 membersCount
                 membership
+                organization {
+                    id
+                    name
+                    photo
+                }
             }
         }
     }

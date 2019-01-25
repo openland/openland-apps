@@ -3791,6 +3791,13 @@ export interface AvailableRooms_rooms_PrivateRoom {
   __typename: "PrivateRoom";
 }
 
+export interface AvailableRooms_rooms_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
 export interface AvailableRooms_rooms_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -3799,6 +3806,7 @@ export interface AvailableRooms_rooms_SharedRoom {
   photo: string;
   membersCount: number | null;
   membership: SharedRoomMembershipStatus;
+  organization: AvailableRooms_rooms_SharedRoom_organization | null;
 }
 
 export type AvailableRooms_rooms = AvailableRooms_rooms_PrivateRoom | AvailableRooms_rooms_SharedRoom;
