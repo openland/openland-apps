@@ -18,6 +18,7 @@ import { XWithRouter } from 'openland-x-routing/withRouter';
 import { XButton, XButtonProps } from 'openland-x/XButton';
 import {
     RemoveOrganizationModal,
+    LeaveOrganizationModal,
     AboutPlaceholder,
     SocialPlaceholder,
     WebsitePlaceholder,
@@ -123,6 +124,7 @@ const HeaderAddWebsite = Glamorous.div({
 
 export const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13,
+    alignItems: 'center'
 });
 
 const EditButtonWrapper = Glamorous(XButton)<XButtonProps & { big?: boolean }>(props => ({
@@ -500,6 +502,15 @@ const Header = (props: { organization: Organization_organization }) => {
             </XMenuItem>
         </XWithRole>
     );
+
+    const leaveOrganizationButton = (
+        <XWithRole role={['feature-non-production']}>
+            <XMenuItem style="danger" query={{ field: 'leaveOrganization', value: 'true' }}>
+                Leave organization
+            </XMenuItem>
+        </XWithRole>
+    );
+
     return (
         <HeaderWrapper>
             <XContentWrapper withFlex={true}>
@@ -513,6 +524,7 @@ const Header = (props: { organization: Organization_organization }) => {
                     />
                 </HeaderAvatar>
                 <RemoveOrganizationModal />
+                <LeaveOrganizationModal />
                 <HeaderInfo flexGrow={1} separator={0}>
                     <HeaderTitle>{organization.name}</HeaderTitle>
                     {organization.website && (
@@ -557,6 +569,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                 content={
                                     <>
                                         {editButton}
+                                        {leaveOrganizationButton}
                                         {deleteOrganizationButton}
                                     </>
                                 }
@@ -574,6 +587,7 @@ const Header = (props: { organization: Organization_organization }) => {
                                     <XMenuItem path={'/super/orgs/' + organization.superAccountId}>
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
+                                    {leaveOrganizationButton}
                                     {deleteOrganizationButton}
                                 </>
                             }

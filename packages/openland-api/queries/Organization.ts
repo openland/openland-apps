@@ -121,12 +121,11 @@ export const OrganizationChangeMemberRoleMutation = gql`
 
 export const OrganizationAddMemberMutation = gql`
     mutation OrganizationAddMember($userIds: [ID!], $organizationId: ID!) {
-        betaOrganizationMemberAdd(userIds: $userIds, organizationId: $organizationId){
+        betaOrganizationMemberAdd(userIds: $userIds, organizationId: $organizationId) {
             ...OrganizationFull
         }
     }
     ${OrganizationFull}
-
 `;
 
 export const OrganizationRemoveMemberMutation = gql`
@@ -170,6 +169,14 @@ export const OrganizationCreatePublicInviteMutation = gql`
 export const DeleteOrganizationMutation = gql`
     mutation DeleteOrganization($organizationId: ID!) {
         deleteOrganization(id: $organizationId)
+    }
+`;
+
+export const OrganizationMemberRemoveMutation = gql`
+    mutation OrganizationMemberRemove($userId: ID!, $organizationId: ID!) {
+        betaOrganizationMemberRemove(userId: $userId, organizationId: $organizationId) {
+            id
+        }
     }
 `;
 

@@ -6,7 +6,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
-import { XMenuItem } from 'openland-x/XMenuItem';
+import { UserInfoContext } from 'openland-web/components/UserInfo';
 import { XInput } from 'openland-x/XInput';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XViewRouterContext } from 'react-mental';
@@ -46,6 +46,49 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
     );
 }) as React.ComponentType<{ target?: any }>;
 
+export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
+    let router = React.useContext(XViewRouterContext);
+    let ctx = React.useContext(UserInfoContext);
+    if (!(props.data && props.data.organizationProfile && !!ctx )) {
+        return null;
+    }
+    const {user} = ctx
+
+    if (!user) {
+        return null;
+    }
+
+    return (
+        <XModalForm
+            title={'Leave Organization'}
+            useTopCloser={true}
+            defaultData={{}}
+            defaultAction={async () => {
+                await props.organizationMemberRemove({
+                    variables: {
+                        userId: user.id,
+                        organizationId: props.data.organizationProfile.id,
+                    },
+                });
+                // hack to navigate after modal closing navigation
+                setTimeout(() => {
+                    router!.navigate('/');
+                });
+            }}
+            targetQuery={'leaveOrganization'}
+            submitBtnText="Yes, I am sure"
+        >
+            <XFormLoadingContent>
+                <XVertical flexGrow={1} separator={8}>
+                    Are you sure you want to leave? You will lose access to all internal chats at{' '}
+                    {props.data.organizationProfile.name}. You can only join{' '}
+                    {props.data.organizationProfile.name} by invitation in the future.
+                </XVertical>
+            </XFormLoadingContent>
+        </XModalForm>
+    );
+}) as React.ComponentType<{ target?: any }>;
+
 export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
     let router = React.useContext(XViewRouterContext);
     if (!(props.data && props.data.organizationProfile)) {
@@ -54,7 +97,7 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
 
     return (
         <XModalForm
-            title={'RemoveOrganization'}
+            title={'Remove Organization'}
             useTopCloser={true}
             defaultData={{}}
             defaultAction={async () => {

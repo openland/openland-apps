@@ -4601,6 +4601,27 @@ export interface DeleteOrganizationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: OrganizationMemberRemove
+// ====================================================
+
+export interface OrganizationMemberRemove_betaOrganizationMemberRemove {
+  __typename: "Organization";
+  id: string;
+}
+
+export interface OrganizationMemberRemove {
+  betaOrganizationMemberRemove: OrganizationMemberRemove_betaOrganizationMemberRemove;
+}
+
+export interface OrganizationMemberRemoveVariables {
+  userId: string;
+  organizationId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: OrganizationActivateByInvite
 // ====================================================
 
