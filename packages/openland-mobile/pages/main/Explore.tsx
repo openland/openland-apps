@@ -31,7 +31,7 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: 
 
     return (
         <>
-            <ZListItemGroup header="Available Groups">
+            <ZListItemGroup header="Available Groups" divider={false}>
                 {newRooms.map((v) => (
                     <ZListItem
                         key={v.id}
@@ -49,7 +49,7 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: 
                 ))}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Your Groups">
+            <ZListItemGroup header="Your Groups" divider={false}>
                 {existingRooms.map((v) => (
                     <ZListItem
                         key={v.id}
@@ -67,7 +67,7 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: 
                 ))}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Featured">
+            <ZListItemGroup header="Featured" divider={false}>
                 {featured.map((v) => (
                     <ZListItem
                         key={v.id}

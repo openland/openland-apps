@@ -52,14 +52,14 @@ class SettingsComponent extends React.Component<PageProps> {
                                     path="SettingsProfile"
                                     action="Edit profile"
                                 />
-                                <ZListItemGroup header="Settings" divider={true}>
+                                <ZListItemGroup header="Settings" divider={false}>
                                     <ZListItem
                                         leftIcon={require('assets/ic-notifications-24.png')}
                                         text="Notifications"
                                         path="SettingsNotifications"
                                     />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Support" divider={true}>
+                                <ZListItemGroup header="Support" divider={false}>
                                     <ZListItem
                                         leftIcon={require('assets/ic-link-24.png')}
                                         leftIconColor="#fe9400"
@@ -87,7 +87,7 @@ class SettingsComponent extends React.Component<PageProps> {
                                         }}
                                     />
                                 </ZListItemGroup>
-                                <ZListItemGroup header="Organizations" divider={true} actionRight={{ title: '+ New', onPress: () => this.props.router.push('NewOrganization') }}>
+                                <ZListItemGroup header="Organizations" divider={false} actionRight={{ title: '+ New', onPress: () => this.props.router.push('NewOrganization') }}>
                                     {/* <ZListItem leftIcon={require('assets/ic-add-24.png')} text="Create new" path="SettingsOrganizations" /> */}
                                     {primary && <ZListItem
                                         text={primary.name}
