@@ -130,12 +130,20 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return res.data
     }
 
-    readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
-        return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
+    async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
+        let r = this.client.client.readQuery<TQuery>({ query: query.document, variables: vars });
+        if (r) {
+            let udpated = updater(r);
+            if (udpated) {
+                this.client.client.writeQuery<TQuery>({ query: query.document, variables: vars, data: udpated });
+                return true;
+            }
+        }
+        return false;
     }
 
-    writeQuery<TQuery, TVars>(data: TQuery, query: GraphqlQuery<TQuery, TVars>, vars?: TVars) {
-        this.client.client.writeQuery<TQuery>({ query: query.document, variables: vars, data: data });
+    async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
+        return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
     }
 
     subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {

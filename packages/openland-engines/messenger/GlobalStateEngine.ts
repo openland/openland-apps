@@ -209,7 +209,7 @@ export class GlobalStateEngine {
             let visible = this.visibleConversations.has(event.cid);
 
             // Global counter
-            this.writeGlobalCounter(event.globalUnread, visible);
+            await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
             let res = this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
@@ -225,7 +225,7 @@ export class GlobalStateEngine {
             let visible = this.visibleConversations.has(event.conversationId);
 
             // Global counter
-            this.writeGlobalCounter(event.globalUnread, visible);
+            await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
@@ -236,7 +236,7 @@ export class GlobalStateEngine {
             let visible = this.visibleConversations.has(event.conversationId);
 
             // Global counter
-            this.writeGlobalCounter(event.globalUnread, visible);
+            await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
@@ -266,7 +266,7 @@ export class GlobalStateEngine {
             let visible = this.visibleConversations.has(event.conversationId);
 
             // Global counter
-            this.writeGlobalCounter(event.globalUnread, visible);
+            await this.writeGlobalCounter(event.globalUnread, visible);
 
             // Notifications
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
@@ -293,23 +293,21 @@ export class GlobalStateEngine {
         };
     }
 
-    private writeGlobalCounter = (counter: number, visible: boolean) => {
+    private writeGlobalCounter = async (counter: number, visible: boolean) => {
 
         //
         // Update counter anywhere in the app
         //
 
-        let existing = this.engine.client.readQuery(GlobalCounterQuery);
-        if (existing) {
+        await this.engine.client.updateQuery((data) => {
             if (visible) {
-                // Do not increment unread count
-                if ((existing as any).counter.unreadCount < counter) {
-                    return;
+                if (data.counter.unreadCount < counter) {
+                    return null;
                 }
             }
-            (existing as any).counter.unreadCount = counter;
-            this.engine.client.writeQuery(existing, GlobalCounterQuery);
-        }
+            data.counter.unreadCount = counter;
+            return data;
+        }, GlobalCounterQuery);
 
         for (let l of this.counterListeners) {
             l(counter, visible);
