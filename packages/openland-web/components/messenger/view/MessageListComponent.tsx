@@ -119,7 +119,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     handleScroll = (e: any) => {
-        console.log(e.target.scrollTop);
         if (lastMessageId !== '' && e.target.scrollTop < 50) {
             this.props.conversation.loadBefore(lastMessageId);
         }

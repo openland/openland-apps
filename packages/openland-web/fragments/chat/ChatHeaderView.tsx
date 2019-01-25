@@ -106,9 +106,9 @@ const RowWithSeparators = ({
     const finalChildren = [];
     for (let i = 0; i < notEmptyChildrens.length; i++) {
         if (i > 0) {
-            finalChildren.push(<XView width={separatorWidth} />);
+            finalChildren.push(<XView key={'separator_' + i} width={separatorWidth} />);
         }
-        finalChildren.push(notEmptyChildrens[i]);
+        finalChildren.push(<div key={'item_' + i}>{notEmptyChildrens[i]}</div>);
     }
     return (
         <XView flexDirection="row" alignItems="center">
