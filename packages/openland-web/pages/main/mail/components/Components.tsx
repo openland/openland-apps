@@ -21,15 +21,14 @@ import { tabs } from '../tabs';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
-
+    flexGrow: 1,
     flexDirection: 'column',
-    width: '100%',
-    height: '100%',
+
     flexShrink: 0,
 });
 
 const DesktopConversationContainer = Glamorous.div({
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
