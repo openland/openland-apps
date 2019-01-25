@@ -123,13 +123,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
             minWidth={0}
             flexShrink={1}
         >
-            <XView
-                flexDirection="row"
-                flexGrow={1}
-                minWidth={0}
-                flexShrink={1}
-                paddingRight={16}
-            >
+            <XView flexDirection="row" flexGrow={1} minWidth={0} flexShrink={1} paddingRight={16}>
                 {isMobile && (
                     <XView
                         as="a"
@@ -141,11 +135,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(props => {
                         <CloseChatIcon />
                     </XView>
                 )}
-                <XView
-                    flexDirection="row"
-                    path={headerPath}
-                    alignItems="center"
-                >
+                <XView flexDirection="row" path={headerPath} alignItems="center">
                     {avatar}
                     <XView marginLeft={16} minWidth={0} flexShrink={1}>
                         {title}

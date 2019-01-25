@@ -97,8 +97,8 @@ const MessengerComponentLoader = withRoom(withQueryLoader(
                                         ? sharedRoom.organization.id
                                         : sharedRoom.id
                                     : privateRoom
-                                        ? privateRoom.user.id
-                                        : undefined
+                                    ? privateRoom.user.id
+                                    : undefined
                             }
                             cloudImageUuid={
                                 (sharedRoom && sharedRoom.photo) ||

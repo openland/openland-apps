@@ -17,7 +17,7 @@ function dateFormat(date: number) {
     let now = new Date();
     let dt = date ? new Date(date) : new Date();
     let prefix = '';
-    if ((now.getFullYear() !== (dt.getFullYear() + 1)) && (now.getFullYear() !== dt.getFullYear())) {
+    if (now.getFullYear() !== dt.getFullYear() + 1 && now.getFullYear() !== dt.getFullYear()) {
         prefix = dt.getFullYear().toString() + ', ';
     }
     if (

@@ -29,14 +29,14 @@ const InfoText = Glamorous.div({
     lineHeight: 1.53,
     color: '#000',
     opacity: 0.8,
-    textAlign: 'center'
+    textAlign: 'center',
 });
 
 const MailText = Glamorous.span({
     fontSize: 13,
     marginBottom: 32,
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
 });
 
 const QuestionsSpan = Glamorous.span({

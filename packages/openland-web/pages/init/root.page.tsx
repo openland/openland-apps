@@ -11,7 +11,6 @@ import { EnvironmentContext } from '../root/EnvironmentContext';
 export default withAppBase(
     'Root',
     withUserInfo(props => {
-
         let env = React.useContext(EnvironmentContext);
 
         return (
@@ -25,9 +24,7 @@ export default withAppBase(
                         <XPageRedirect path={'/mail'} />
                     </>
                 )}
-                {!(env.isApp || props.isCompleted) && (
-                    <HomePage />
-                )}
+                {!(env.isApp || props.isCompleted) && <HomePage />}
             </AuthRouter>
         );
     }),

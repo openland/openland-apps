@@ -121,8 +121,8 @@ export default withAppBase(
                             instantRedirect={
                                 props.isLoggedIn
                                     ? (props.isCompleted
-                                        ? '/mail/joinChannel/'
-                                        : '/acceptChannelInvite/') + invite
+                                          ? '/mail/joinChannel/'
+                                          : '/acceptChannelInvite/') + invite
                                     : undefined
                             }
                         />
