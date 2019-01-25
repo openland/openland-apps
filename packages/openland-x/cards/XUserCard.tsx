@@ -139,18 +139,19 @@ export const XUserCard = ({
             customMenu
         );
 
-    const organizationElem = !hideOrganization && user.primaryOrganization && (
-        <XView
-            fontSize={12}
-            lineHeight="22px"
-            fontWeight="600"
-            color="rgba(0, 0, 0, 0.4)"
-            marginTop={1}
-            marginBottom={-1}
-        >
-            {user.primaryOrganization.name}
-        </XView>
-    );
+    const organizationElem = !hideOrganization &&
+        user.primaryOrganization && (
+            <XView
+                fontSize={12}
+                lineHeight="22px"
+                fontWeight="600"
+                color="rgba(0, 0, 0, 0.4)"
+                marginTop={1}
+                marginBottom={-1}
+            >
+                {user.primaryOrganization.name}
+            </XView>
+        );
 
     return (
         <XView
@@ -166,9 +167,13 @@ export const XUserCard = ({
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <XView flexDirection="row" flexGrow={1} justifyContent="space-between">
+            <XView
+                flexDirection="row"
+                flexGrow={1}
+                justifyContent="space-between"
+                alignItems="center"
+            >
                 <XAvatar2
-                    online={isMobile}
                     src={user.photo}
                     title={user.name || ''}
                     id={user.id || ''}
