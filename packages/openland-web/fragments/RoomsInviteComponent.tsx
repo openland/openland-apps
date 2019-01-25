@@ -10,9 +10,11 @@ import ProfileIcon from 'openland-icons/ic-profile.svg';
 import { withChannelJoin } from '../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
+import { TextRoom } from 'openland-text/TextRoom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';
+import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -243,7 +245,9 @@ const JoinLinkButton = withChannelJoinInviteLink(props => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                window.location.href = 'openland://deep/joinroom/' + (props as any).invite;
+                if (isMobileUserAgent) {
+                    window.location.href = 'openland://deep/joinroom/' + (props as any).invite;
+                }
                 props.join({ variables: { invite: (props as any).invite } });
                 await delayForewer();
             }}
@@ -375,8 +379,10 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             flexShrink={0}
                             path={this.props.signup}
                             onClick={() => {
-                                window.location.href =
-                                    'openland://deep/joinroom/' + this.props.inviteLink;
+                                if (isMobileUserAgent) {
+                                    window.location.href =
+                                        'openland://deep/joinroom/' + this.props.inviteLink;
+                                }
                             }}
                         />
                     )}
