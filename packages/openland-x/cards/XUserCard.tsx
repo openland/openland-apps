@@ -10,6 +10,7 @@ import { XDate } from 'openland-x/XDate';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { css } from 'linaria';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);
@@ -85,112 +86,130 @@ interface XUserCardProps {
     hideOrganization?: boolean;
 }
 
-interface XUserCardState {
-    isHovered: boolean;
-}
+const userNameClassname = css`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 8px;
+`;
 
-export class XUserCard extends React.Component<XUserCardProps, XUserCardState> {
-    state = {
-        isHovered: false,
-    };
+export const XUserCard = ({
+    user,
+    path,
+    customButton,
+    customMenu,
+    extraMenu,
+    isAdmin,
+    hideOrganization,
+    isOwner,
+}: XUserCardProps) => {
+    const [isHovered, setIsHovered] = React.useState(false);
+    const { isMobile } = React.useContext(MobileSidebarContext);
 
-    render() {
-        let {
-            user,
-            path,
-            customButton,
-            customMenu,
-            extraMenu,
-            isAdmin,
-            hideOrganization,
-            isOwner,
-        } = this.props;
+    let button =
+        typeof customButton === 'undefined' ? (
+            <>
+                {user.isYou && (
+                    <XButton style="ghost" text={TextProfiles.User.you} enabled={false} />
+                )}
+                {!user.isYou && (
+                    <XButton
+                        style={isHovered ? 'primary' : 'default'}
+                        path={'/mail/' + user.id}
+                        text={TextProfiles.User.message}
+                    />
+                )}
+            </>
+        ) : (
+            customButton
+        );
 
-        let button =
-            typeof customButton === 'undefined' ? (
-                <>
-                    {user.isYou && (
-                        <XButton style="ghost" text={TextProfiles.User.you} enabled={false} />
-                    )}
-                    {!user.isYou && (
-                        <XButton
-                            style={this.state.isHovered ? 'primary' : 'default'}
-                            path={'/mail/' + user.id}
-                            text={TextProfiles.User.message}
-                        />
-                    )}
-                </>
-            ) : (
-                customButton
-            );
+    let menu =
+        typeof customMenu === 'undefined' ? (
+            <>
+                {extraMenu && (
+                    <XOverflow
+                        flat={true}
+                        placement="bottom-end"
+                        content={<div>{extraMenu}</div>}
+                    />
+                )}
+            </>
+        ) : (
+            customMenu
+        );
 
-        let menu =
-            typeof customMenu === 'undefined' ? (
-                <>
-                    {extraMenu && (
-                        <XOverflow
-                            flat={true}
-                            placement="bottom-end"
-                            content={<div>{extraMenu}</div>}
-                        />
-                    )}
-                </>
-            ) : (
-                customMenu
-            );
+    const organizationElem = !hideOrganization && user.primaryOrganization && (
+        <XView
+            fontSize={12}
+            lineHeight="22px"
+            fontWeight="600"
+            color="rgba(0, 0, 0, 0.4)"
+            marginTop={1}
+            marginBottom={-1}
+        >
+            {user.primaryOrganization.name}
+        </XView>
+    );
 
-        return (
-            <XView
-                cursor="pointer"
-                backgroundColor="#ffffff"
-                paddingVertical={12}
-                paddingHorizontal={16}
-                marginHorizontal={-16}
-                borderRadius={8}
-                height={64}
-                hoverBackgroundColor="#f9f9f9"
-                path={path || '/directory/u/' + user.id}
-                onMouseEnter={() => this.setState({ isHovered: true })}
-                onMouseLeave={() => this.setState({ isHovered: false })}
-            >
-                <XView flexDirection="row" justifyContent="space-between">
-                    <XAvatar2 src={user.photo} title={user.name || ''} id={user.id || ''} />
-                    <XView flexDirection="row" flexGrow={1} marginLeft={16}>
-                        <XView flexGrow={1} marginRight={12}>
-                            <XView
-                                flexDirection="row"
-                                fontSize={14}
-                                lineHeight="22px"
-                                fontWeight="600"
-                                color="#000000"
-                                marginTop={-2}
-                                marginBottom={2}
-                            >
-                                {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
-                                {user.name}
-                                {!hideOrganization && user.primaryOrganization && (
-                                    <XView
-                                        fontSize={12}
-                                        lineHeight="22px"
-                                        fontWeight="600"
-                                        color="rgba(0, 0, 0, 0.4)"
-                                        marginTop={1}
-                                        marginBottom={-1}
-                                        marginLeft={8}
-                                    >
-                                        {user.primaryOrganization.name}
-                                    </XView>
-                                )}
+    return (
+        <XView
+            cursor="pointer"
+            backgroundColor="#ffffff"
+            paddingVertical={12}
+            paddingHorizontal={16}
+            marginHorizontal={-16}
+            borderRadius={8}
+            height={64}
+            hoverBackgroundColor="#f9f9f9"
+            path={path || '/directory/u/' + user.id}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <XView flexDirection="row" flexGrow={1} justifyContent="space-between">
+                <XAvatar2
+                    online={isMobile}
+                    src={user.photo}
+                    title={user.name || ''}
+                    id={user.id || ''}
+                />
+                <XView
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    flexGrow={1}
+                    marginLeft={16}
+                >
+                    <XView
+                        flexShrink={1}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        minWidth="0"
+                    >
+                        <XView
+                            flexDirection="row"
+                            fontSize={14}
+                            lineHeight="22px"
+                            fontWeight="600"
+                            color="#000000"
+                            marginTop={-2}
+                            marginBottom={2}
+                        >
+                            {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
+                            <XView minWidth={0} flexShrink={1}>
+                                <div className={userNameClassname}>{user.name}</div>
                             </XView>
-                            {user.id && <UserStatus variables={{ userId: user.id }} />}
+                            {!isMobile && organizationElem}
                         </XView>
-                        <XView flexDirection="row" alignItems="center">
-                            {button}
-                            {(customMenu || extraMenu) && <XView marginLeft={10}>{menu}</XView>}
-                        </XView>
+                        {!isMobile && user.id && <UserStatus variables={{ userId: user.id }} />}
+                        {isMobile && organizationElem}
+                    </XView>
+                    <XView flexShrink={0} flexDirection="row" alignItems="center">
+                        {button}
+                        {(customMenu || extraMenu) && <XView marginLeft={10}>{menu}</XView>}
                     </XView>
                 </XView>
             </XView>
-        );
-    }
-}
+        </XView>
+    );
+};
