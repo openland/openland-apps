@@ -5,9 +5,13 @@ import { PagePagination } from './components/PagePagination';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
-import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
+import {
+    DirectoryUniversalNavigation,
+    ComponentWithSort,
+} from './components/DirectoryUniversalNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { withApp } from 'openland-web/components/withApp';
 
 interface CommunitiesCardsProps {
     variables: { query?: string; sort?: string };
@@ -59,7 +63,7 @@ const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) =
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
-export default () => {
+export default withApp('Communities', 'viewer', () => {
     const { path } = React.useContext(XRouterContext) as XRouter;
 
     let CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
@@ -75,4 +79,4 @@ export default () => {
             hasQueryText={'Communities'}
         />
     );
-};
+});

@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { withRouter, XWithRouter } from 'openland-x-routing/withRouter';
+import { withRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from '../../../components/Scaffold';
-import { MainLayout } from '../../../components/MainLayout';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerFragment } from '../../../fragments/MessengerFragment';
-import { DirectoryNavigation } from './components/Navigation';
+import { DirectoryUniversalNavigation } from './components/DirectoryUniversalNavigation';
 import { RoomProfile } from '../profile/RoomProfileComponent';
 import { tabs } from './tabs';
 
-class RootComponent extends React.Component<XWithRouter> {
-    render() {
-        const { router } = this.props;
+export default withApp(
+    'Directory',
+    'viewer',
+    withRouter(props => {
+        const { router } = props;
         const {
             routeQuery: { conversationId },
             path,
@@ -27,35 +26,12 @@ class RootComponent extends React.Component<XWithRouter> {
                 tab = tabs.profile;
             }
         }
-
         return (
-            <MainLayout>
-                <MainLayout.Menu>
-                    <DirectoryNavigation route="Rooms" />
-                </MainLayout.Menu>
-                <MainLayout.Content>
-                    {tab === tabs.invite && <MessengerFragment id={conversationId} />}
-                    {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
-                    {tab === tabs.rooms && <RoomsExploreComponent />}
-                </MainLayout.Content>
-            </MainLayout>
-        );
-    }
-}
-
-export default withApp(
-    'Directory',
-    'viewer',
-    withRouter(props => {
-        return (
-            <>
-                <XDocumentHead title="Rooms Directory" />
-                <Scaffold>
-                    <Scaffold.Content padding={false} bottomOffset={false}>
-                        <RootComponent router={props.router} />
-                    </Scaffold.Content>
-                </Scaffold>
-            </>
+            <DirectoryUniversalNavigation title={'Rooms Directory'}>
+                {tab === tabs.invite && <MessengerFragment id={conversationId} />}
+                {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
+                {tab === tabs.rooms && <RoomsExploreComponent />}
+            </DirectoryUniversalNavigation>
         );
     }),
 );

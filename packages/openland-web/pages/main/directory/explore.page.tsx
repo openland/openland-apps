@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { withApp } from 'openland-web/components/withApp';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from 'openland-web/components/Scaffold';
-import { MainLayout } from 'openland-web/components/MainLayout';
-import { DirectoryNavigation } from './components/Navigation';
+import { DirectoryUniversalNavigation } from './components/DirectoryUniversalNavigation';
 import { XView } from 'react-mental';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withAvailableRooms } from 'openland-web/api/withAvailableRooms';
@@ -36,22 +33,8 @@ const Rooms = withAvailableRooms(
 
 export default withApp('Explore', 'viewer', () => {
     return (
-        <>
-            <XDocumentHead title="Explore" />
-            <Scaffold>
-                <Scaffold.Content padding={false} bottomOffset={false}>
-                    <MainLayout>
-                        <MainLayout.Menu>
-                            <DirectoryNavigation route="Explore" />
-                        </MainLayout.Menu>
-                        <MainLayout.Content>
-                            <XView flexDirection="column">
-                                <Rooms />
-                            </XView>
-                        </MainLayout.Content>
-                    </MainLayout>
-                </Scaffold.Content>
-            </Scaffold>
-        </>
+        <DirectoryUniversalNavigation title={'Explore'}>
+            <Rooms />
+        </DirectoryUniversalNavigation>
     );
 });

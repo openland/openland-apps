@@ -5,7 +5,10 @@ import { PagePagination } from './components/PagePagination';
 import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
-import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
+import {
+    DirectoryUniversalNavigation,
+    ComponentWithSort,
+} from './components/DirectoryUniversalNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 

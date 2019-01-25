@@ -5,7 +5,10 @@ import { PagePagination } from './components/PagePagination';
 import { UserProfile } from '../profile/UserProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
+import {
+    DirectoryUniversalNavigation,
+    ComponentWithSort,
+} from './components/DirectoryUniversalNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 interface PeopleCardsProps {

@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { css } from 'linaria';
 import { XLink } from 'openland-x/XLink';
-import { XScrollView2 } from 'openland-x/XScrollView2';
 import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
-import { findChild } from '../utils';
 import { AdaptiveComponent } from 'openland-web/components/Adaptive';
 import { DesktopMenu } from './DesktopComponents';
 import { MobileMenu } from './MobileComponents';
-import { XView } from 'react-mental';
 
 const MenuItemWrapper = css`
     display: flex;
@@ -115,77 +112,3 @@ export const Menu = React.memo<MenuPropsT>(props => {
         />
     );
 });
-
-const menuWrapperClassName = css`
-    width: 344px;
-    height: 100%;
-    border-right: 1px solid #ececec;
-    background-color: #ffffff;
-    flex-shrink: 0;
-    position: relative;
-    @media (max-width: 1100px) {
-        width: 300px;
-    }
-    @media (max-width: 950px) {
-        width: 230px;
-    }
-    @media (max-width: 700px) {
-        width: 100%;
-        display: flex;
-        height: 53px;
-        border-right: none;
-        border-bottom: 1px solid #ececec;
-    }
-`;
-
-class MenuWrapper extends React.PureComponent {
-    static defaultProps = {
-        _isMenu: true,
-    };
-
-    render() {
-        return <div className={menuWrapperClassName}>{this.props.children}</div>;
-    }
-}
-
-class Container extends React.PureComponent {
-    static defaultProps = {
-        _isContainer: true,
-    };
-
-    render() {
-        const { children } = this.props;
-        return (
-            <XView flexGrow={1} height="100%" position="relative">
-                <XScrollView2 height="100%">{children}</XScrollView2>
-            </XView>
-        );
-    }
-}
-
-const RootWrapperStyle = css`
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    @media (max-width: 700px) {
-        flex-direction: column;
-    }
-`;
-
-export class MainLayout extends React.PureComponent {
-    static Menu = MenuWrapper;
-    static Content = Container;
-    render() {
-        const { children } = this.props;
-        const menu = findChild(children, '_isMenu');
-        const content = findChild(children, '_isContainer');
-
-        return (
-            <div className={RootWrapperStyle}>
-                {menu}
-                {content}
-            </div>
-        );
-    }
-}

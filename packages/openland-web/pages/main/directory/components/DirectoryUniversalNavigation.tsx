@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
-import { tabs } from '../mail/tabs';
+import { tabs } from '../../mail/tabs';
 import RoomIcon from 'openland-icons/dir-rooms.svg';
 import PeopleIcon from 'openland-icons/dir-people.svg';
 import OrganizationsIcon from 'openland-icons/dir-organizations.svg';
@@ -15,7 +15,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
 import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { UniversalNavigation } from '../UniversalNavigation';
+import { UniversalNavigation } from '../../UniversalNavigation';
 
 export const DirectoryContent = React.memo(
     ({
@@ -105,14 +105,16 @@ export const DirectoryUniversalNavigation = React.memo(
         searchPlaceholder,
         noQueryText,
         hasQueryText,
+        children,
     }: {
         title: string;
         id?: string | null;
-        ProfileComponent: any;
-        CardsComponent: any;
-        searchPlaceholder: string;
-        noQueryText: string;
-        hasQueryText: string;
+        ProfileComponent?: any;
+        CardsComponent?: any;
+        searchPlaceholder?: string;
+        noQueryText?: string;
+        hasQueryText?: string;
+        children?: any;
     }) => {
         return (
             <UniversalNavigation
@@ -181,14 +183,18 @@ export const DirectoryUniversalNavigation = React.memo(
                 }
                 secondFragment={
                     <XView flexGrow={1}>
-                        <DirectoryContent
-                            id={id}
-                            ProfileComponent={ProfileComponent}
-                            CardsComponent={CardsComponent}
-                            searchPlaceholder={searchPlaceholder}
-                            noQueryText={noQueryText}
-                            hasQueryText={hasQueryText}
-                        />
+                        {children ? (
+                            children
+                        ) : (
+                            <DirectoryContent
+                                id={id}
+                                ProfileComponent={ProfileComponent}
+                                CardsComponent={CardsComponent}
+                                searchPlaceholder={searchPlaceholder || ''}
+                                noQueryText={noQueryText || ''}
+                                hasQueryText={hasQueryText || ''}
+                            />
+                        )}
                     </XView>
                 }
             />
