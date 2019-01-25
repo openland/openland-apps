@@ -16,7 +16,11 @@ const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
         return null;
     }
-    return myPath.split(substring)[1];
+    const result = myPath.split(substring)[1];
+    if (result.includes('/')) {
+        return null;
+    }
+    return result;
 };
 export const MessagesNavigation = React.memo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
@@ -36,6 +40,7 @@ export const MessagesNavigation = React.memo(
         let isCall = path.endsWith('/call');
         let isInvite = path.includes('joinChannel');
         let isChat = path.includes('/mail');
+        let isRoomProfile = path.includes('/mail/p/');
 
         const chatId = getId(path, '/mail/');
 
@@ -73,6 +78,10 @@ export const MessagesNavigation = React.memo(
 
         if (cid && isChat) {
             tab = tabs.chat;
+        }
+
+        if (cid && isRoomProfile) {
+            tab = tabs.roomProfile;
         }
 
         if (tab === tabs.empty) {

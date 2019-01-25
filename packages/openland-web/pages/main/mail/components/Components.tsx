@@ -21,6 +21,7 @@ import { tabs } from '../tabs';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
+
     flexDirection: 'column',
     width: '100%',
     height: '100%',
@@ -77,7 +78,7 @@ export const ConversationContainerWrapper = ({
                     <UserProfile userId={uid} />
                 </OrganizationProfileContainer>
             )}
-            {tab === tabs.organization && cid && (
+            {tab === tabs.roomProfile && cid && (
                 <OrganizationProfileContainer>
                     <RoomProfile conversationId={cid} />
                 </OrganizationProfileContainer>
