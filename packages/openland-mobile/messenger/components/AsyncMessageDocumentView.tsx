@@ -11,6 +11,7 @@ import { DownloadManagerInstance } from '../../../openland-mobile/files/Download
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { DownloadState } from '../../files/DownloadManagerInterface';
+import { ASView } from 'react-native-async-view/ASView';
 
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
@@ -86,6 +87,27 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                             <ASText color="#fff" opacity={0.8} textAlign="center">{Math.round(this.state.downloadState.progress * 100)}</ASText>
                         </ASFlex>}
                     </ASFlex>
+
+                    {/* Ugly fix - text overflows parent if flexDirection="row" is somewhere above in hierarchy */}
+                    <ASFlex
+                        overlay={true}
+                        flexDirection="column"
+                        marginTop={12}
+                        marginLeft={60}
+                        marginRight={this.props.message.isOut ? 10 : 12}
+                        marginBottom={10}
+                    >
+                        <ASText
+                            color={this.props.message.isOut ? '#ffffff' : '#000000'}
+                            height={18}
+                            fontSize={15}
+                            lineHeight={18}
+                            numberOfLines={1}
+                        >
+                            {this.props.message.file!!.fileName}{this.props.message.isOut ? paddedTextOut : paddedText}
+                        </ASText>
+                    </ASFlex>
+
                     <ASFlex
                         flexGrow={1}
                         flexDirection="column"
@@ -94,8 +116,9 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                         marginRight={14}
                         alignSelf="center"
                     >
+                        {/* Ugly fix - text overflows parent if flexDirection="row" is somewhere above in hierarchy */}
                         <ASText
-                            color={this.props.message.isOut ? '#ffffff' : '#000000'}
+                            color="rgba(0,0,1,0)"
                             height={18}
                             fontSize={15}
                             lineHeight={18}
