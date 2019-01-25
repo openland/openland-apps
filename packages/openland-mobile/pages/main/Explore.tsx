@@ -6,14 +6,14 @@ import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { ZQuery } from 'openland-mobile/components/ZQuery';
-import { AvailableRoomsQuery } from 'openland-api';
+import { AvailableRoomsQuery, RoomSearchQuery } from 'openland-api';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { AvailableRooms_rooms_SharedRoom } from 'openland-api/Types';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 
-const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[] }) => {
+const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: AvailableRooms_rooms_SharedRoom[] }) => {
 
     let src = props.rooms
         .filter((v) => !!v.membersCount)
@@ -23,6 +23,11 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[] }) => {
         .filter((v) => v.membership === 'NONE' || v.membership === 'REQUESTED')
     let existingRooms = src
         .filter((v) => v.membership === 'MEMBER')
+
+    let featured = props.featured
+        .filter((v) => newRooms.find((v2) => v.id !== v2.id))
+        .filter((v) => existingRooms.find((v2) => v.id !== v2.id))
+        .sort((a, b) => ((b.membersCount || 0) - (a.membersCount || 0)));
 
     return (
         <>
@@ -61,6 +66,24 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[] }) => {
                     />
                 ))}
             </ZListItemGroup>
+
+            <ZListItemGroup header="Featured">
+                {featured.map((v) => (
+                    <ZListItem
+                        key={v.id}
+                        text={v.title}
+                        leftAvatar={{
+                            photo: v.photo,
+                            key: v.id,
+                            title: v.title
+                        }}
+                        title={v.organization!.name}
+                        description={v.membersCount + ' members'}
+                        path="Conversation"
+                        pathParams={{ flexibleId: v.id }}
+                    />
+                ))}
+            </ZListItemGroup>
         </>
     )
 }
@@ -78,7 +101,11 @@ const ExplorePage = (props: PageProps) => {
             <SSearchControler searchRender={(p) => null}>
                 <SScrollView>
                     <ZQuery query={AvailableRoomsQuery}>
-                        {resp => (<RoomsList rooms={resp.data.rooms as AvailableRooms_rooms_SharedRoom[]} />)}
+                        {resp => (
+                            <ZQuery query={RoomSearchQuery} variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }}>
+                                {resp2 => (<RoomsList rooms={resp.data.rooms as AvailableRooms_rooms_SharedRoom[]} featured={resp2.data.items.edges.map((v) => v.node)} />)}
+                            </ZQuery>
+                        )}
                     </ZQuery>
                 </SScrollView>
             </SSearchControler>
