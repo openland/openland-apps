@@ -6,6 +6,9 @@ import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
 import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
+
 interface OrganizationCardsProps {
     onPageChange?: () => void;
     variables: { query?: string; prefix?: string; sort?: string };
@@ -16,6 +19,7 @@ export const OrganizationCards = withExploreOrganizations(props => {
     if (!(props.data && props.data.items)) {
         return null;
     }
+    console.log(props);
 
     let noData =
         props.error ||
@@ -87,14 +91,13 @@ const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) =
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
-let CardsComponent = ComponentWithSort(OrganizationCards);
+export default () => {
+    const { path } = React.useContext(XRouterContext) as XRouter;
 
-export default React.memo(({ path }: { path: string }) => {
-    let id = getOrganizationProfile(path);
-
+    let CardsComponent = ComponentWithSort({ Component: OrganizationCards, queryToPrefix: true });
     return (
         <DirectoryUniversalNavigation
-            id={id}
+            id={getOrganizationProfile(path)}
             title={'Organizations'}
             ProfileComponent={SearchOrganizationProfileComponent}
             CardsComponent={CardsComponent}
@@ -103,4 +106,4 @@ export default React.memo(({ path }: { path: string }) => {
             hasQueryText={'Organizations'}
         />
     );
-});
+};

@@ -40,7 +40,7 @@ export const DirectoryContent = React.memo(
         CardsComponent: any;
         ProfileComponent?: any;
     }) => {
-        const [orgCount, setOrgCount] = React.useState(0);
+        const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
         const [sort, setSort] = React.useState({
             orderBy: 'createdAt',
@@ -48,8 +48,8 @@ export const DirectoryContent = React.memo(
         });
 
         const tagsCount = (n: number) => {
-            if (orgCount !== n) {
-                setOrgCount(n);
+            if (itemCount !== n) {
+                setItemCount(n);
             }
         };
 
@@ -74,10 +74,10 @@ export const DirectoryContent = React.memo(
                                 }
                             />
                         )}
-                        {query.length > 0 && orgCount > 0 && (
+                        {query.length > 0 && itemCount > 0 && (
                             <XSubHeader
                                 title={hasQueryText}
-                                counter={orgCount}
+                                counter={itemCount}
                                 right={
                                     <SortPicker
                                         sort={sort}
@@ -216,23 +216,28 @@ const SearchRoomsProfileComponent = React.memo(({ id }: { id: string }) => (
     <RoomProfile conversationId={id} onDirectory={true} />
 ));
 
-export const ComponentWithSort = (Component: any) =>
-    React.memo(({ featuredFirst, orderBy, variables, tagsCount }: any) => {
-        return (
-            <Component
-                tagsCount={(n: number) => {
-                    tagsCount(n);
-                }}
-                variables={{
-                    prefix: variables.query,
-                    sort: JSON.stringify([
-                        ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
-                        { [orderBy]: { order: 'desc' } },
-                    ]),
-                }}
-            />
-        );
-    });
+export const ComponentWithSort = ({
+    Component,
+    queryToPrefix,
+}: {
+    Component: any;
+    queryToPrefix?: boolean;
+}) => ({ featuredFirst, orderBy, variables, tagsCount }: any) => {
+    return (
+        <Component
+            tagsCount={(n: number) => {
+                tagsCount(n);
+            }}
+            variables={{
+                ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
+                sort: JSON.stringify([
+                    ...(featuredFirst ? [{ ['featured']: { order: 'desc' } } as any] : []),
+                    { [orderBy]: { order: 'desc' } },
+                ]),
+            }}
+        />
+    );
+};
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -281,14 +286,14 @@ export const DirectoryUniversalNavigationWrapper = React.memo(({ path }: { path:
     if (isOrganization(path)) {
         title = 'Organizations';
         ProfileComponent = SearchOrganizationProfileComponent;
-        CardsComponent = ComponentWithSort(OrganizationCards);
+        CardsComponent = ComponentWithSort({ Component: OrganizationCards });
         searchPlaceholder = 'Search organizations';
         noQueryText = 'All organizations';
         hasQueryText = 'Organizations';
     } else if (isCommunity(path)) {
         title = 'Communities';
         ProfileComponent = SearchOrganizationProfileComponent;
-        CardsComponent = ComponentWithSort(CommunitiesCards);
+        CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
         searchPlaceholder = 'Search communities';
         noQueryText = 'All communities';
         hasQueryText = 'Communities';

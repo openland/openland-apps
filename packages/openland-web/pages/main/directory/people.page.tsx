@@ -6,6 +6,8 @@ import { UserProfile } from '../profile/UserProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
@@ -56,14 +58,14 @@ const SearchUserProfileComponent = React.memo(({ id }: { id: string }) => (
     <UserProfile userId={id} onDirectory={true} />
 ));
 
-let CardsComponent = ComponentWithSort(PeopleCards);
+export default () => {
+    const { path } = React.useContext(XRouterContext) as XRouter;
 
-export default React.memo(({ path }: { path: string }) => {
-    let id = getPeopleProfile(path);
+    let CardsComponent = ComponentWithSort({ Component: PeopleCards });
 
     return (
         <DirectoryUniversalNavigation
-            id={id}
+            id={getPeopleProfile(path)}
             title={'People'}
             ProfileComponent={SearchUserProfileComponent}
             CardsComponent={CardsComponent}
@@ -72,4 +74,4 @@ export default React.memo(({ path }: { path: string }) => {
             hasQueryText={'People'}
         />
     );
-});
+};

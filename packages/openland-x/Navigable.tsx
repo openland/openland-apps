@@ -55,7 +55,7 @@ function normalizePath(src: string): string {
     return src.endsWith('/') ? src.substring(0, src.length - 1) : src;
 }
 
-function makeNavigableInner<T>(
+export function makeNavigable<T>(
     Wrapped: React.ComponentType<T & NavigableChildProps>,
 ): React.ComponentType<NavigableParentProps<T>> {
     // Actionable component
@@ -272,13 +272,3 @@ function makeNavigableInner<T>(
     return ContextWrapper;
 }
 
-import { LinkOverwriteContext } from 'openland-web/pages/main/universalNavigation.page';
-export function makeNavigable<T>(
-    Wrapped: React.ComponentType<T & NavigableChildProps>,
-): React.ComponentType<NavigableParentProps<T>> {
-    const Component = makeNavigableInner(Wrapped);
-    return (props: any) => {
-        const { prefix } = React.useContext(LinkOverwriteContext);
-        return <Component {...props} path={prefix + props.path} />;
-    };
-}

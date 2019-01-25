@@ -6,6 +6,9 @@ import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
 import { DirectoryUniversalNavigation, ComponentWithSort } from './DirectoryUniversalNavigation';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
+
 interface CommunitiesCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
@@ -56,14 +59,14 @@ const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) =
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
-let CardsComponent = ComponentWithSort(CommunitiesCards);
+export default () => {
+    const { path } = React.useContext(XRouterContext) as XRouter;
 
-export default React.memo(({ path }: { path: string }) => {
-    let id = getCommunityProfile(path);
+    let CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
 
     return (
         <DirectoryUniversalNavigation
-            id={id}
+            id={getCommunityProfile(path)}
             title={'Communities'}
             ProfileComponent={SearchOrganizationProfileComponent}
             CardsComponent={CardsComponent}
@@ -72,4 +75,4 @@ export default React.memo(({ path }: { path: string }) => {
             hasQueryText={'Communities'}
         />
     );
-});
+};

@@ -56,15 +56,15 @@ export const Rooms = withChatSearchChannels(props => {
     }
 }) as React.ComponentType<WithChatSearchRoomsProps>;
 
-let CardsComponent = ComponentWithSort(Rooms);
-
 export const RoomsExploreComponent = () => {
+    let CardsComponent = ComponentWithSort({ Component: Rooms });
+
     return (
         <DirectoryContent
             CardsComponent={CardsComponent}
             searchPlaceholder={'Search rooms'}
             noQueryText={'All rooms'}
-            hasQueryText={'Organizations'}
+            hasQueryText={'Rooms'}
         />
     );
 };
