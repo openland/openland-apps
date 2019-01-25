@@ -100,6 +100,9 @@ const ExplorePage = (props: PageProps) => {
             <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => props.router.push('ComposeInitial')} />
             <SSearchControler searchRender={(p) => null}>
                 <SScrollView>
+                    {/* <ZListItem text="People" />
+                    <ZListItem text="Communities" /> */}
+                    <ZListItem text="Organizations" path="Organizations" />
                     <ZQuery query={AvailableRoomsQuery}>
                         {resp => (
                             <ZQuery query={RoomSearchQuery} variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }}>

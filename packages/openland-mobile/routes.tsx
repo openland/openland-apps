@@ -30,6 +30,7 @@ import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInv
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
 import { ChannelInviteLinkModal } from './pages/main/RoomInviteLink';
 import { OrgChannels } from './pages/main/OrgChannels';
+import { Directory } from './pages/main/Directory';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -59,6 +60,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('ChannelInviteLinkModal', ChannelInviteLinkModal)
   .addRoute('OrgChannels', OrgChannels)
+  .addRoute('Organizations', Directory)
   
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)
