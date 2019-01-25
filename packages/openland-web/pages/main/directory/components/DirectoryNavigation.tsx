@@ -195,7 +195,7 @@ export const DirectoryNavigation = React.memo(
                 secondFragment={
                     <XView flexGrow={1} height="100%" position="relative">
                         <XScrollView2 height="100%">
-                            <XView flexGrow={1}>
+                            <XView flexGrow={1} marginBottom={50}>
                                 {children ? (
                                     children
                                 ) : (
