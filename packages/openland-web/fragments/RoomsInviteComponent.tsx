@@ -14,7 +14,7 @@ import { TextRoom } from 'openland-text/TextRoom';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';
-import { isMobile } from 'openland-web/utils/isMobile';
+import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
 
 const Root = Glamorous(XScrollView)({
     position: 'relative',
@@ -245,7 +245,7 @@ const JoinLinkButton = withChannelJoinInviteLink(props => {
             alignSelf="center"
             flexShrink={0}
             action={async () => {
-                if (isMobile) {
+                if (isMobileUserAgent) {
                     window.location.href = 'openland://deep/joinroom/' + (props as any).invite
                 }
                 props.join({ variables: { invite: (props as any).invite } });
@@ -380,7 +380,7 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             flexShrink={0}
                             path={this.props.signup}
                             onClick={() => {
-                                if (isMobile) {
+                                if (isMobileUserAgent) {
                                     window.location.href = 'openland://deep/joinroom/' + this.props.inviteLink;
                                 }
                             }}
