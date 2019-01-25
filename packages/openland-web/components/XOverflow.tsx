@@ -23,8 +23,8 @@ interface DottedMenuButtonStyleProps {
 }
 
 const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(props => ({
-    width: 32,
-    height: 32,
+    width: 22,
+    height: 17,
     display: 'flex',
     flexDirection: props.horizontal ? 'row' : 'column',
     alignItems: 'center',

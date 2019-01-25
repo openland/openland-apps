@@ -21,6 +21,7 @@ import { withRoom } from 'openland-web/api/withRoom';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { XLoader } from 'openland-x/XLoader';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -86,7 +87,38 @@ const ChatHeaderViewAbstract = React.memo(
     },
 );
 
+const CallButton = ({ room }: { room: Room_room_SharedRoom | Room_room_PrivateRoom }) => {
+    const ctx = React.useContext(TalkContext);
+
+    return ctx.cid !== room.id ? (
+        <XButton text="Call" onClick={() => ctx.joinCall(room.id)} />
+    ) : null;
+};
+
+const RowWithSeparators = ({
+    separatorWidth,
+    children,
+}: {
+    separatorWidth: number;
+    children: any;
+}) => {
+    const notEmptyChildrens = children.filter((item: any) => !!item);
+    const finalChildren = [];
+    for (let i = 0; i < notEmptyChildrens.length; i++) {
+        if (i > 0) {
+            finalChildren.push(<XView width={separatorWidth} />);
+        }
+        finalChildren.push(notEmptyChildrens[i]);
+    }
+    return (
+        <XView flexDirection="row" alignItems="center">
+            {finalChildren}
+        </XView>
+    );
+};
+
 export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
     const state = React.useContext(MessagesStateContext);
 
     if (state.useForwardHeader) {
@@ -99,7 +131,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
     let headerPath: string | undefined = undefined;
     let subtitle = undefined;
     let inviteButton = undefined;
-    let menu = undefined;
+    let threeDots = undefined;
     let modals = undefined;
 
     if (sharedRoom) {
@@ -117,7 +149,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
                 />
             );
 
-            menu = <HeaderMenu room={sharedRoom} />;
+            threeDots = <HeaderMenu room={sharedRoom} />;
 
             if (sharedRoom.kind === 'PUBLIC') {
                 inviteButton = <HeaderInviteButton room={sharedRoom} />;
@@ -166,25 +198,16 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
             subtitle={subtitle}
             modals={modals}
             rightButtons={
-                <XView flexDirection="row" alignItems="center">
-                    <HideOnMobile>
-                        <TalkContext.Consumer>
-                            {ctx =>
-                                ctx.cid !== room.id && (
-                                    <XView>
-                                        <XButton
-                                            text="Call"
-                                            onClick={() => ctx.joinCall(room.id)}
-                                        />
-                                    </XView>
-                                )
-                            }
-                        </TalkContext.Consumer>
-                    </HideOnMobile>
-                    <HideOnMobile>{inviteButton}</HideOnMobile>
+                <RowWithSeparators separatorWidth={20}>
+                    {!isMobile && (
+                        <XView>
+                            <CallButton room={room} />
+                        </XView>
+                    )}
+                    {!isMobile && inviteButton}
                     <HeaderMuteButton settings={room.settings} roomId={room.id} />
-                    <HideOnMobile>{menu}</HideOnMobile>
-                </XView>
+                    {!isMobile && threeDots}
+                </RowWithSeparators>
             }
         >
             {modals}
