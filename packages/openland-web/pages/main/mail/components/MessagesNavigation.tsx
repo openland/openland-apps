@@ -42,7 +42,7 @@ export const MessagesNavigation = React.memo(
         let isChat = path.includes('/mail');
         let isRoomProfile = path.includes('/mail/p/');
 
-        const chatId = getId(path, '/mail/');
+        const chatId = !path.includes('/mail/new') && getId(path, '/mail/');
 
         if (isCompose) {
             tab = tabs.compose;

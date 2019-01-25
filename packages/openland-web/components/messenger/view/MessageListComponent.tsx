@@ -285,7 +285,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                             ref={this.scroller}
                             getScrollElement={(src: any) => src.children[0].children[0]}
                         >
-                            <div className={scrollWrapper} id="chat">
+                            <div className={scrollWrapper}>
                                 <XView flexGrow={1} width="100%" position="absolute">
                                     <MessagesWrapper>{messages}</MessagesWrapper>
                                 </XView>
