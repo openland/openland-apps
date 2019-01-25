@@ -63,8 +63,15 @@ export const RoomsExploreComponent = () => {
         <DirectoryContent
             CardsComponent={CardsComponent}
             searchPlaceholder={'Search rooms'}
-            noQueryText={'All rooms'}
+            noQueryText={'Featured rooms'}
             hasQueryText={'Rooms'}
+            sortOptions={{
+                label: 'Sort by',
+                values: [
+                    { label: 'Members count', value: 'membersCount' },
+                    { label: 'Creation date', value: 'createdAt' },
+                ],
+            }}
         />
     );
 };

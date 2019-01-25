@@ -72,6 +72,7 @@ export default () => {
             searchPlaceholder={'Search people'}
             noQueryText={'All people'}
             hasQueryText={'People'}
+            withoutFeatured
         />
     );
 };

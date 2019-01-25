@@ -26,6 +26,8 @@ export const DirectoryContent = React.memo(
         hasQueryText,
         CardsComponent,
         ProfileComponent,
+        sortOptions,
+        withoutFeatured,
     }: {
         id?: string | null;
         searchPlaceholder: string;
@@ -33,6 +35,11 @@ export const DirectoryContent = React.memo(
         hasQueryText: string;
         CardsComponent: any;
         ProfileComponent?: any;
+        sortOptions?: {
+            label: string;
+            values: { label: string; value: string }[];
+        };
+        withoutFeatured?: boolean;
     }) => {
         const [itemCount, setItemCount] = React.useState(0);
         const [query, setQuery] = React.useState('');
@@ -63,7 +70,8 @@ export const DirectoryContent = React.memo(
                                     <SortPicker
                                         sort={sort}
                                         onPick={setSort}
-                                        withoutFeatured={true}
+                                        withoutFeatured={withoutFeatured}
+                                        options={sortOptions}
                                     />
                                 }
                             />
@@ -76,7 +84,7 @@ export const DirectoryContent = React.memo(
                                     <SortPicker
                                         sort={sort}
                                         onPick={setSort}
-                                        withoutFeatured={true}
+                                        withoutFeatured={withoutFeatured}
                                     />
                                 }
                             />
@@ -107,6 +115,7 @@ export const DirectoryNavigation = React.memo(
         noQueryText,
         hasQueryText,
         children,
+        withoutFeatured,
     }: {
         title: string;
         id?: string | null;
@@ -116,6 +125,7 @@ export const DirectoryNavigation = React.memo(
         noQueryText?: string;
         hasQueryText?: string;
         children?: any;
+        withoutFeatured?: boolean;
     }) => {
         return (
             <Navigation
@@ -196,6 +206,7 @@ export const DirectoryNavigation = React.memo(
                                         searchPlaceholder={searchPlaceholder || ''}
                                         noQueryText={noQueryText || ''}
                                         hasQueryText={hasQueryText || ''}
+                                        withoutFeatured={withoutFeatured}
                                     />
                                 )}
                             </XView>
