@@ -66,6 +66,7 @@ const scrollWrapper = css`
     flex-grow: 1;
     position: relative;
     overflow: scroll;
+    flex-direction: column-reverse;
 `;
 
 interface MessageListProps {
