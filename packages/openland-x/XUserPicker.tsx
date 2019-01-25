@@ -229,6 +229,7 @@ interface UserPickerProps {
 }
 
 interface UserPickerState {
+    firstCharacterWasTyped: boolean;
     selected: number[];
     empty: boolean;
     notFound: boolean;
@@ -264,6 +265,7 @@ export class UserPicker extends React.Component<UserPickerProps, UserPickerState
         }
 
         this.state = {
+            firstCharacterWasTyped: false,
             selected: [0, 0],
             empty: count === 0,
             notFound: count === 0,
@@ -273,6 +275,11 @@ export class UserPicker extends React.Component<UserPickerProps, UserPickerState
 
     componentWillReceiveProps(props: UserPickerProps) {
         clearInterval(this.timer);
+        if (props.query && props.query.length > 0 && !this.state.firstCharacterWasTyped) {
+            this.setState({
+                firstCharacterWasTyped: true,
+            });
+        }
         let fOptions = [];
         let count = 0;
         for (let o of props.options) {
@@ -363,7 +370,7 @@ export class UserPicker extends React.Component<UserPickerProps, UserPickerState
     render() {
         return (
             <>
-                {this.state.empty && (
+                {this.state.firstCharacterWasTyped && this.state.empty && (
                     <XHorizontal alignItems="center" justifyContent="center" width={120}>
                         <XButton
                             alignSelf="center"
@@ -373,7 +380,7 @@ export class UserPicker extends React.Component<UserPickerProps, UserPickerState
                         />
                     </XHorizontal>
                 )}
-                {!this.state.empty && (
+                {this.state.firstCharacterWasTyped && !this.state.empty && (
                     <XVertical separator={9} width="100%">
                         {this.props.options.length === 1 && (
                             <EntriesComponent
