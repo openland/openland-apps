@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
+import { XView } from 'react-mental';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
 import { withProfile } from '../../../api/withProfile';
-import { MainNavigation } from './Navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -18,7 +18,7 @@ import { Query } from '../../../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 import { DateFormater } from 'openland-x/XDate';
-import { XView } from 'react-mental';
+import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
 
 const Content = (props: { children?: any }) => (
     <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
@@ -76,7 +76,7 @@ export default withApp(
     withProfile(
         withQueryLoader(props => {
             return (
-                <MainNavigation title="Profile">
+                <SettingsUniversalNavigation title="Profile">
                     <Content>
                         <XVertical separator={21}>
                             <Query query={MyOrganizationsQuery.document}>
@@ -306,7 +306,7 @@ export default withApp(
                             </XVertical>
                         </XVertical>
                     </Content>
-                </MainNavigation>
+                </SettingsUniversalNavigation>
             );
         }),
     ),

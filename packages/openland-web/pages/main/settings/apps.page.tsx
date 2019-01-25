@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
-import { MainNavigation } from './Navigation';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { withMyApps } from 'openland-web/api/withMyApps';
 import { XView } from 'react-mental';
@@ -10,13 +9,14 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { CreateAppModal } from 'openland-web/components/apps/CreateAppModal';
 import { EditAppModal } from 'openland-web/components/apps/EditAppModal';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
 
 export default withApp(
     'My Apps',
     'feature-non-production',
     withMyApps(
         withQueryLoader(props => (
-            <MainNavigation title="My Apps">
+            <SettingsUniversalNavigation title="My Apps">
                 <XView
                     paddingTop={20}
                     paddingBottom={20}
@@ -58,7 +58,7 @@ export default withApp(
 
                 <CreateAppModal />
                 <EditAppModal apps={props.data.apps} />
-            </MainNavigation>
+            </SettingsUniversalNavigation>
         )),
     ),
 );

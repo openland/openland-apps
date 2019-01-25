@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { css } from 'linaria';
+import { XView, XImage } from 'react-mental';
+import { MutationFunc } from 'react-apollo';
 import { withApp } from '../../../components/withApp';
 import { withSettings } from '../../../api/withSettings';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XForm } from 'openland-x-forms/XForm2';
-import { MainNavigation } from './Navigation';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { XView, XImage } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
@@ -17,7 +18,6 @@ import {
     SettingsUpdate,
     SettingsUpdateVariables,
 } from 'openland-api/Types';
-import { MutationFunc } from 'react-apollo';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { AppNotifcationsState } from 'openland-y-runtime-api/AppNotificationsApi';
 import { XModal, XModalFooter } from 'openland-x-modal/XModal';
@@ -25,7 +25,7 @@ import CloseIcon from 'openland-icons/ic-close.svg';
 import LockIcon from 'openland-icons/ic-lock-settings.svg';
 import NotificationsIcon from 'openland-icons/ic-notifications.svg';
 import NotificationsFirefoxIcon from 'openland-icons/ic-notifications-firefox-2.svg';
-import { css } from 'linaria';
+import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
 
 const Container = (props: { children?: any }) => (
     <XView paddingTop={16} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
@@ -323,7 +323,7 @@ class NotificationsSettingsPageInner extends React.Component<
         }
 
         return (
-            <MainNavigation title="Notifications">
+            <SettingsUniversalNavigation title="Notifications">
                 <Container>
                     <Header>Notifications</Header>
                     <XVertical separator={15}>
@@ -458,7 +458,7 @@ class NotificationsSettingsPageInner extends React.Component<
                         <MobileApps />
                     </XVertical>
                 </Container>
-            </MainNavigation>
+            </SettingsUniversalNavigation>
         );
     }
 }

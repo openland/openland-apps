@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { MainNavigation } from './Navigation';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
@@ -17,6 +16,7 @@ import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
 import { DateFormater } from 'openland-x/XDate';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XView } from 'react-mental';
+import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
 
 const Content = (props: { children?: any }) => (
     <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
@@ -169,7 +169,7 @@ const Separator = Glamorous.div({
 
 export const OrganizationSettings = ((props: any) => {
     return (
-        <MainNavigation title="Organization">
+        <SettingsUniversalNavigation title="Organization">
             <Content>
                 <XVertical alignSelf="stretch" separator={30}>
                     <XVertical separator={12}>
@@ -325,7 +325,7 @@ export const OrganizationSettings = ((props: any) => {
                     </XWithRole>
                 </XVertical>
             </Content>
-        </MainNavigation>
+        </SettingsUniversalNavigation>
     );
 }) as React.ComponentType<
     XWithRouter & {

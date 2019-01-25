@@ -271,4 +271,3 @@ export function makeNavigable<T>(
 
     return ContextWrapper;
 }
-

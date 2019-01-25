@@ -19,17 +19,7 @@ const getId = (myPath: string, substring: string) => {
     return myPath.split(substring)[1];
 };
 export const MessagesUniversalNavigation = React.memo(
-    ({
-        path,
-        cid: cid,
-        oid: oid,
-        uid: uid,
-    }: {
-        cid?: string;
-        oid?: string;
-        uid?: string;
-        path?: any;
-    }) => {
+    ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
 
         let isCompose = path.endsWith('/new');

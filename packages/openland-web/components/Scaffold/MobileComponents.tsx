@@ -70,7 +70,7 @@ const MobileUserProfile = withUserInfo(({ user, onClick }: any) => {
             <XView
                 as="a"
                 onClick={onClick}
-                path={`/mail/u/${user.id}`}
+                path={`/settings/profile`}
                 height={70}
                 width="100%"
                 backgroundColor="#f9f9f9"

@@ -9,10 +9,12 @@ import {
 } from 'openland-web/components/messenger/MessagesStateContext';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { XRouter } from 'openland-x-routing/XRouter';
 import { MessageFull } from 'openland-api/Types';
 import { MessagePageInner } from './Components';
 import { tabs, tabsT } from './tabs';
+import { MessagesUniversalNavigation } from './MessagesUniversalNavigation';
+import { XRouterContext } from 'openland-x-routing/XRouterContext';
+import { XRouter } from 'openland-x-routing/XRouter';
 
 type MessagePageProps = {
     router: XRouter;
@@ -20,7 +22,10 @@ type MessagePageProps = {
     organizationId?: string;
 };
 
-class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateContextProps> {
+class MessageStateProviderComponent extends React.PureComponent<
+    MessagePageProps,
+    MessagesStateContextProps
+> {
     constructor(props: MessagePageProps) {
         super(props);
 
@@ -129,98 +134,21 @@ class MessagePage extends React.PureComponent<MessagePageProps, MessagesStateCon
     };
 
     render() {
-        let { router, organizationId, userId } = this.props;
-        const { path, routeQuery } = router;
-
-        let isCompose = path.endsWith('/new');
-        let pageTitle = isCompose ? 'New chat' : undefined;
-
-        if (!canUseDOM) {
-            return (
-                <>
-                    <XDocumentHead title={pageTitle} />
-                    <Scaffold>{}</Scaffold>
-                </>
-            );
-        }
-
-        let isRooms = path.endsWith('/channels');
-        let isCall = path.endsWith('/call');
-        let isInvite = path.includes('joinChannel');
-        let isChat = path.includes('/p/');
-        let cid = routeQuery.conversationId;
-        let oid = organizationId || routeQuery.organizationId;
-        let uid = userId || routeQuery.userId;
-
-        let tab: tabsT = tabs.empty;
-
-        if (isCompose) {
-            tab = tabs.compose;
-        }
-
-        if (!isCompose && !cid) {
-            tab = tabs.empty;
-        }
-
-        if (!isCompose && cid) {
-            tab = tabs.conversation;
-        }
-
-        if (isInvite) {
-            tab = tabs.invite;
-        }
-
-        if (isRooms) {
-            tab = tabs.rooms;
-        }
-
-        if (isCall) {
-            tab = tabs.conference;
-        }
-
-        if (oid) {
-            tab = tabs.organization;
-        }
-
-        if (uid) {
-            tab = tabs.user;
-        }
-
-        if (cid && isChat) {
-            tab = tabs.chat;
-        }
-
-        if (tab === tabs.empty) {
-            pageTitle = undefined;
-        }
+        let { children } = this.props;
 
         return (
-            <>
-                <XDocumentHead title={pageTitle} />
-                <Scaffold>
-                    <Scaffold.Content padding={false} bottomOffset={false}>
-                        <MessagesStateContext.Provider value={this.state}>
-                            <MessagePageInner
-                                tab={tab}
-                                conversationId={routeQuery.conversationId}
-                                oid={oid}
-                                uid={uid}
-                                cid={cid}
-                            />
-                        </MessagesStateContext.Provider>
-                    </Scaffold.Content>
-                </Scaffold>
-            </>
+            <MessagesStateContext.Provider value={this.state}>
+                {children}
+            </MessagesStateContext.Provider>
         );
     }
 }
 
-export default withApp(
-    'Mail',
-    'viewer',
-    withRouter(
-        withQueryLoader(({ router }) => {
-            return <MessagePage router={router} />;
-        }),
-    ),
-);
+export default withApp('Mail', 'viewer', () => {
+    const { path, routeQuery } = React.useContext(XRouterContext) as XRouter;
+    let cid = routeQuery.conversationId;
+    let oid = routeQuery.organizationId;
+    let uid = routeQuery.userId;
+
+    return <MessagesUniversalNavigation path={path} cid={cid} oid={oid} uid={uid} />;
+});

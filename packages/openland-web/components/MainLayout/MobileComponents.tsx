@@ -33,7 +33,7 @@ const ShowMenuItems = ({
     <XView
         position="absolute"
         width="100%"
-        zIndex={1}
+        zIndex={4}
         flexDirection="column"
         alignItems="stretch"
         backgroundColor="#fff"
@@ -55,7 +55,7 @@ const HideMenuItems = ({
     <XView
         position="absolute"
         width="100%"
-        zIndex={1}
+        zIndex={4}
         flexDirection="column"
         alignItems="stretch"
         backgroundColor="#fff"
