@@ -69,8 +69,8 @@ export default () => {
             title={'People'}
             ProfileComponent={SearchUserProfileComponent}
             CardsComponent={CardsComponent}
-            searchPlaceholder={'Search organizations'}
-            noQueryText={'All organizations'}
+            searchPlaceholder={'Search people'}
+            noQueryText={'All people'}
             hasQueryText={'People'}
         />
     );
