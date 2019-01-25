@@ -57,7 +57,8 @@ const MobileMenuLink = (props: MobileMenuLinkProps) => (
         lineHeight="45px"
         fontWeight="600"
         opacity={0.7}
-        color="#ffffff"
+        color="#fff"
+        hoverColor="#fff"
         textDecoration="none"
         hoverOpacity={1}
         hoverTextDecoration="none"
