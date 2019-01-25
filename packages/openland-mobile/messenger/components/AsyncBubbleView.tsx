@@ -48,7 +48,7 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
 
         let resolved = Image.resolveAssetSource(image);
         return (
-            <ASFlex marginRight={isMedia ? 5 : 0} marginLeft={isMedia ? 5 : 0} flexDirection="column" alignItems="stretch">
+            <ASFlex marginRight={isMedia ? 5 : 0} marginLeft={isMedia ? 5 : this.props.isOut ? 10 : 0} flexDirection="column" alignItems="stretch">
                 <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch">
                     <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch">
                         {this.props.children}
