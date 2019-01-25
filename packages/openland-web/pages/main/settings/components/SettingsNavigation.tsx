@@ -3,6 +3,7 @@ import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { Navigation } from '../../../../components/Navigation';
+import { XScrollView2 } from 'openland-x/XScrollView2';
 
 export const SettingsNavigation = React.memo(
     ({ title, children }: { title: string; children: any }) => {
@@ -20,7 +21,11 @@ export const SettingsNavigation = React.memo(
                         </XWithRole>
                     </>
                 }
-                secondFragment={<XView flexGrow={1}>{children}</XView>}
+                secondFragment={
+                    <XView flexGrow={1} height="100%" position="relative">
+                        <XScrollView2 height="100%">{children}</XScrollView2>
+                    </XView>
+                }
             />
         );
     },
