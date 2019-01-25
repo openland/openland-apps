@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { ZRoundedButton } from './ZRoundedButton';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
+
 export class PromptBuilder {
     private _title?: string;
     private _callback?: (text: string) => void;
