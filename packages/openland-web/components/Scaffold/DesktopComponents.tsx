@@ -20,7 +20,10 @@ import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { MyOrganizations_myOrganizations, UserShort_primaryOrganization } from 'openland-api/Types';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { withUserInfo } from '../UserInfo';
-import { InvitesToOrganizationModal, InvitesGlobalModal } from '../../pages/main/settings/invites';
+import {
+    InvitesToOrganizationModal,
+    InvitesGlobalModal,
+} from '../../pages/main/settings/components/invites';
 import { CreateOrganization, CreateRoom } from './Modals';
 
 interface NavigatorItemProps {

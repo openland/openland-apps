@@ -10,9 +10,9 @@ import {
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { withRouter } from 'openland-x-routing/withRouter';
 import { MessageFull } from 'openland-api/Types';
-import { MessagePageInner } from './Components';
+import { MessagePageInner } from './components/Components';
 import { tabs, tabsT } from './tabs';
-import { MessagesUniversalNavigation } from './MessagesUniversalNavigation';
+import { MessagesNavigation } from './components/MessagesNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 
@@ -150,5 +150,5 @@ export default withApp('Mail', 'viewer', () => {
     let oid = routeQuery.organizationId;
     let uid = routeQuery.userId;
 
-    return <MessagesUniversalNavigation path={path} cid={cid} oid={oid} uid={uid} />;
+    return <MessagesNavigation path={path} cid={cid} oid={oid} uid={uid} />;
 });

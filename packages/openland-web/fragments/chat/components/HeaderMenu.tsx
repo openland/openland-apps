@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XMenuItemSeparator, XMenuItem } from 'openland-x/XMenuItem';
-import { AdminTools } from 'openland-web/pages/main/profile/RoomProfileComponent';
+import { AdminTools } from 'openland-web/pages/main/profile/components/RoomProfileComponent';
 import { XOverflow } from 'openland-web/components/XOverflow';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 

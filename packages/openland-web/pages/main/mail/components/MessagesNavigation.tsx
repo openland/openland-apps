@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
-import { tabs, tabsT } from './tabs';
+import { tabs, tabsT } from '../tabs';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
 import { TextDirectory } from 'openland-text/TextDirectory';
-import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/Components';
+import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/Components';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { UniversalNavigation } from '../UniversalNavigation';
+import { Navigation } from '../../../../components/Navigation';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -18,7 +18,7 @@ const getId = (myPath: string, substring: string) => {
     }
     return myPath.split(substring)[1];
 };
-export const MessagesUniversalNavigation = React.memo(
+export const MessagesNavigation = React.memo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
 
@@ -80,7 +80,7 @@ export const MessagesUniversalNavigation = React.memo(
         }
 
         return (
-            <UniversalNavigation
+            <Navigation
                 title="Messages"
                 tab={tab}
                 menuRightContent={
@@ -91,7 +91,7 @@ export const MessagesUniversalNavigation = React.memo(
                     />
                 }
                 secondFragmentHeader={
-                    chatId && (
+                    !!chatId && (
                         <>
                             <ChatHeaderViewLoader
                                 variables={{

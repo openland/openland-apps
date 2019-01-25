@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { UserProfile } from '../../main/profile/UserProfileComponent';
+import { UserProfile } from '../../main/profile/components/UserProfileComponent';
 
 export default withApp('UI Framework - Profile (User - Visitor)', 'viewer', props => {
     return (

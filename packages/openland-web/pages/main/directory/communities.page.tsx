@@ -2,13 +2,10 @@ import * as React from 'react';
 import { withExploreCommunities } from '../../../api/withExploreCommunities';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
+import { OrganizationProfile } from '../profile/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XCommunityCard } from 'openland-x/cards/XCommunityCard';
-import {
-    DirectoryUniversalNavigation,
-    ComponentWithSort,
-} from './components/DirectoryUniversalNavigation';
+import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { withApp } from 'openland-web/components/withApp';
@@ -69,7 +66,7 @@ export default withApp('Communities', 'viewer', () => {
     let CardsComponent = ComponentWithSort({ Component: CommunitiesCards });
 
     return (
-        <DirectoryUniversalNavigation
+        <DirectoryNavigation
             id={getCommunityProfile(path)}
             title={'Communities'}
             ProfileComponent={SearchOrganizationProfileComponent}

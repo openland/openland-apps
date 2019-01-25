@@ -2,13 +2,10 @@ import * as React from 'react';
 import { withExplorePeople } from '../../../api/withExplorePeople';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { UserProfile } from '../profile/UserProfileComponent';
+import { UserProfile } from '../profile/components/UserProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XUserCard } from 'openland-x/cards/XUserCard';
-import {
-    DirectoryUniversalNavigation,
-    ComponentWithSort,
-} from './components/DirectoryUniversalNavigation';
+import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 interface PeopleCardsProps {
@@ -67,7 +64,7 @@ export default () => {
     let CardsComponent = ComponentWithSort({ Component: PeopleCards });
 
     return (
-        <DirectoryUniversalNavigation
+        <DirectoryNavigation
             id={getPeopleProfile(path)}
             title={'People'}
             ProfileComponent={SearchUserProfileComponent}

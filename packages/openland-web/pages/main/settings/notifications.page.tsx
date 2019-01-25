@@ -25,7 +25,7 @@ import CloseIcon from 'openland-icons/ic-close.svg';
 import LockIcon from 'openland-icons/ic-lock-settings.svg';
 import NotificationsIcon from 'openland-icons/ic-notifications.svg';
 import NotificationsFirefoxIcon from 'openland-icons/ic-notifications-firefox-2.svg';
-import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
+import { SettingsNavigation } from './components/SettingsNavigation';
 
 const Container = (props: { children?: any }) => (
     <XView paddingTop={16} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
@@ -323,7 +323,7 @@ class NotificationsSettingsPageInner extends React.Component<
         }
 
         return (
-            <SettingsUniversalNavigation title="Notifications">
+            <SettingsNavigation title="Notifications">
                 <Container>
                     <Header>Notifications</Header>
                     <XVertical separator={15}>
@@ -458,7 +458,7 @@ class NotificationsSettingsPageInner extends React.Component<
                         <MobileApps />
                     </XVertical>
                 </Container>
-            </SettingsUniversalNavigation>
+            </SettingsNavigation>
         );
     }
 }

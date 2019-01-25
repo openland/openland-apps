@@ -7,16 +7,16 @@ import { XInput } from 'openland-x/XInput';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormLoadingContent } from 'openland-x-forms/XFormLoadingContent';
-import { sanitizeImageRef } from '../../../utils/sanitizer';
+import { sanitizeImageRef } from '../../../../utils/sanitizer';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { TextOrganizationProfile } from 'openland-text/TextOrganizationProfile';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XCheckbox } from 'openland-x/XCheckbox';
-import { withSuperAccountActions } from '../../../api/withSuperAccountActions';
+import { withSuperAccountActions } from '../../../../api/withSuperAccountActions';
 import { DateFormater } from 'openland-x/XDate';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XView } from 'react-mental';
-import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
+import { SettingsNavigation } from './SettingsNavigation';
 
 const Content = (props: { children?: any }) => (
     <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
@@ -169,7 +169,7 @@ const Separator = Glamorous.div({
 
 export const OrganizationSettings = ((props: any) => {
     return (
-        <SettingsUniversalNavigation title="Organization">
+        <SettingsNavigation title="Organization">
             <Content>
                 <XVertical alignSelf="stretch" separator={30}>
                     <XVertical separator={12}>
@@ -325,7 +325,7 @@ export const OrganizationSettings = ((props: any) => {
                     </XWithRole>
                 </XVertical>
             </Content>
-        </SettingsUniversalNavigation>
+        </SettingsNavigation>
     );
 }) as React.ComponentType<
     XWithRouter & {

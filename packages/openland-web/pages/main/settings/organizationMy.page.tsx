@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
 import { withQueryLoader } from '../../../components/withQueryLoader';
-import { OrganizationSettings } from './organizationBase';
+import { OrganizationSettings } from './components/organizationBase';
 
 const Root = withMyOrganizationProfile(props => {
     console.warn('my');

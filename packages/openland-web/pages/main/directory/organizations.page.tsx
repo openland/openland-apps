@@ -2,13 +2,10 @@ import * as React from 'react';
 import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
-import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
+import { OrganizationProfile } from '../profile/components/OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
-import {
-    DirectoryUniversalNavigation,
-    ComponentWithSort,
-} from './components/DirectoryUniversalNavigation';
+import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 
@@ -99,7 +96,7 @@ export default () => {
 
     let CardsComponent = ComponentWithSort({ Component: OrganizationCards, queryToPrefix: true });
     return (
-        <DirectoryUniversalNavigation
+        <DirectoryNavigation
             id={getOrganizationProfile(path)}
             title={'Organizations'}
             ProfileComponent={SearchOrganizationProfileComponent}

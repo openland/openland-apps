@@ -15,7 +15,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { SearchBox } from 'openland-web/pages/main/directory/components/SearchBox';
 import { SortPicker } from 'openland-web/pages/main/directory/components/sortPicker';
 import { XSubHeader } from 'openland-x/XSubHeader';
-import { UniversalNavigation } from '../../UniversalNavigation';
+import { Navigation } from '../../../../components/Navigation';
 
 export const DirectoryContent = React.memo(
     ({
@@ -96,7 +96,7 @@ export const DirectoryContent = React.memo(
     },
 );
 
-export const DirectoryUniversalNavigation = React.memo(
+export const DirectoryNavigation = React.memo(
     ({
         title,
         id,
@@ -117,7 +117,7 @@ export const DirectoryUniversalNavigation = React.memo(
         children?: any;
     }) => {
         return (
-            <UniversalNavigation
+            <Navigation
                 title={title}
                 swapFragmentsOnMobile
                 tab={tabs.empty}

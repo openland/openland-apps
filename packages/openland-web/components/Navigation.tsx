@@ -2,7 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { Menu } from 'openland-web/components/MainLayout';
-import { tabs } from './mail/tabs';
+import { tabs } from '../pages/main/mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
@@ -10,10 +10,10 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 
 type PageInnerProps = {
     swapFragmentsOnMobile?: boolean;
-    firstFragmentMenu: any;
-    firstFragment: any;
-    secondFragment: any;
-    secondFragmentHeader: any;
+    firstFragmentMenu: React.ReactElement<any>;
+    firstFragment: React.ReactElement<any>;
+    secondFragment: React.ReactElement<any>;
+    secondFragmentHeader: React.ReactElement<any>;
     tab: string;
     conversationId: string | null | undefined;
     oid: string | null | undefined;
@@ -114,7 +114,7 @@ const PageInner = AdaptiveHOC({
     fullWidth: true,
 });
 
-export const UniversalNavigation = React.memo(
+export const Navigation = React.memo(
     ({
         tab,
         title,
@@ -127,12 +127,12 @@ export const UniversalNavigation = React.memo(
     }: {
         tab?: any;
         title: string;
-        menuRightContent?: any;
-        menuChildrenContent?: any;
-        swapFragmentsOnMobile?: any;
-        secondFragmentHeader?: any;
-        firstFragment?: any;
-        secondFragment?: any;
+        menuRightContent?: React.ReactElement<any> | null | boolean;
+        menuChildrenContent?: React.ReactElement<any> | null | boolean;
+        swapFragmentsOnMobile?: boolean;
+        secondFragmentHeader?: React.ReactElement<any> | null | boolean;
+        firstFragment?: React.ReactElement<any> | null | boolean;
+        secondFragment?: React.ReactElement<any> | null | boolean;
     }) => {
         return (
             <>

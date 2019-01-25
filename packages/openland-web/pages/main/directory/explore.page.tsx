@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from 'openland-web/components/withApp';
-import { DirectoryUniversalNavigation } from './components/DirectoryUniversalNavigation';
+import { DirectoryNavigation } from './components/DirectoryNavigation';
 import { XView } from 'react-mental';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withAvailableRooms } from 'openland-web/api/withAvailableRooms';
@@ -33,8 +33,8 @@ const Rooms = withAvailableRooms(
 
 export default withApp('Explore', 'viewer', () => {
     return (
-        <DirectoryUniversalNavigation title={'Explore'}>
+        <DirectoryNavigation title={'Explore'}>
             <Rooms />
-        </DirectoryUniversalNavigation>
+        </DirectoryNavigation>
     );
 });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { withOrganizationProfile } from '../../../api/withOrganizationProfile';
 import { withQueryLoader } from '../../../components/withQueryLoader';
-import { OrganizationSettings } from './organizationBase';
+import { OrganizationSettings } from './components/organizationBase';
 import { XLoader } from 'openland-x/XLoader';
 
 const Root = withOrganizationProfile(props =>

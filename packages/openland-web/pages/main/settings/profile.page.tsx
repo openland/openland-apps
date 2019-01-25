@@ -18,7 +18,7 @@ import { Query } from '../../../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
 import { DateFormater } from 'openland-x/XDate';
-import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
+import { SettingsNavigation } from './components/SettingsNavigation';
 
 const Content = (props: { children?: any }) => (
     <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
@@ -76,7 +76,7 @@ export default withApp(
     withProfile(
         withQueryLoader(props => {
             return (
-                <SettingsUniversalNavigation title="Profile">
+                <SettingsNavigation title="Profile">
                     <Content>
                         <XVertical separator={21}>
                             <Query query={MyOrganizationsQuery.document}>
@@ -306,7 +306,7 @@ export default withApp(
                             </XVertical>
                         </XVertical>
                     </Content>
-                </SettingsUniversalNavigation>
+                </SettingsNavigation>
             );
         }),
     ),

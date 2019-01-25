@@ -3,8 +3,8 @@ import { withRouter } from 'openland-x-routing/withRouter';
 import { withApp } from '../../../components/withApp';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerFragment } from '../../../fragments/MessengerFragment';
-import { DirectoryUniversalNavigation } from './components/DirectoryUniversalNavigation';
-import { RoomProfile } from '../profile/RoomProfileComponent';
+import { DirectoryNavigation } from './components/DirectoryNavigation';
+import { RoomProfile } from '../profile/components/RoomProfileComponent';
 import { tabs } from './tabs';
 
 export default withApp(
@@ -27,11 +27,11 @@ export default withApp(
             }
         }
         return (
-            <DirectoryUniversalNavigation title={'Rooms Directory'}>
+            <DirectoryNavigation title={'Rooms'}>
                 {tab === tabs.invite && <MessengerFragment id={conversationId} />}
                 {tab === tabs.profile && <RoomProfile conversationId={conversationId} />}
                 {tab === tabs.rooms && <RoomsExploreComponent />}
-            </DirectoryUniversalNavigation>
+            </DirectoryNavigation>
         );
     }),
 );

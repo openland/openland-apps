@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../../components/withApp';
 import { DevDocsScaffold } from './components/DevDocsScaffold';
-import { OrganizationProfile } from '../../main/profile/OrganizationProfileComponent';
+import { OrganizationProfile } from '../../main/profile/components/OrganizationProfileComponent';
 
 export default withApp('UI Framework - Profile (Organization)', 'viewer', props => {
     return (

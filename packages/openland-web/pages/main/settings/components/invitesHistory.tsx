@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withInvitesHistory } from '../../../api/withInvitesHistory';
+import { withInvitesHistory } from '../../../../api/withInvitesHistory';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XTable } from 'openland-x/XTable';
 import { XAvatar } from 'openland-x/XAvatar';

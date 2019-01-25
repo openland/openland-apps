@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withOrganizationInviteMembers } from '../../../api/withOrganizationInviteMember';
-import { withPublicInvite } from '../../../api/withPublicInvite';
+import { withOrganizationInviteMembers } from '../../../../api/withOrganizationInviteMember';
+import { withPublicInvite } from '../../../../api/withPublicInvite';
 import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { XInput, XInputGroup } from 'openland-x/XInput';
@@ -23,7 +23,7 @@ import PlusIcon from 'openland-icons/ic-add-small.svg';
 import LinkIcon from 'openland-icons/ic-link.svg';
 import EmailIcon from 'openland-icons/ic-email.svg';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
-import { withAppInvite } from '../../../api/withAppInvite';
+import { withAppInvite } from '../../../../api/withAppInvite';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,

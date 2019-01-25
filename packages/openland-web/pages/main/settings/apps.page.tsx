@@ -9,14 +9,14 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { CreateAppModal } from 'openland-web/components/apps/CreateAppModal';
 import { EditAppModal } from 'openland-web/components/apps/EditAppModal';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { SettingsUniversalNavigation } from './SettingsUniversalNavigation';
+import { SettingsNavigation } from './components/SettingsNavigation';
 
 export default withApp(
     'My Apps',
     'feature-non-production',
     withMyApps(
         withQueryLoader(props => (
-            <SettingsUniversalNavigation title="My Apps">
+            <SettingsNavigation title="My Apps">
                 <XView
                     paddingTop={20}
                     paddingBottom={20}
@@ -58,7 +58,7 @@ export default withApp(
 
                 <CreateAppModal />
                 <EditAppModal apps={props.data.apps} />
-            </SettingsUniversalNavigation>
+            </SettingsNavigation>
         )),
     ),
 );

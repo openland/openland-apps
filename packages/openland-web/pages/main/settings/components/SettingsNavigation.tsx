@@ -2,12 +2,12 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { MenuItem } from 'openland-web/components/MainLayout';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { UniversalNavigation } from '../UniversalNavigation';
+import { Navigation } from '../../../../components/Navigation';
 
-export const SettingsUniversalNavigation = React.memo(
+export const SettingsNavigation = React.memo(
     ({ title, children }: { title: string; children: any }) => {
         return (
-            <UniversalNavigation
+            <Navigation
                 title={title}
                 swapFragmentsOnMobile
                 tab={'empty'}

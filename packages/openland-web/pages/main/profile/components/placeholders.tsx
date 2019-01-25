@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withMyOrganizationProfile } from '../../../api/withMyOrganizationProfile';
+import { withMyOrganizationProfile } from '../../../../api/withMyOrganizationProfile';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';

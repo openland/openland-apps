@@ -5,8 +5,8 @@ import { withShortName } from 'openland-web/api/withShortName';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { XView } from 'react-mental';
-import { UserProfileInner } from '../profile/UserProfileComponent';
-import { OrganizationProfileInner } from '../profile/OrganizationProfileComponent';
+import { UserProfileInner } from './components/UserProfileComponent';
+import { OrganizationProfileInner } from './components/OrganizationProfileComponent';
 import { ResolveShortName_item_User, ResolveShortName_item_Organization } from 'openland-api/Types';
 
 export default withApp(

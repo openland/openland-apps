@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withAlterChat } from '../../../api/withAlterChat';
+import { withAlterChat } from '../../../../api/withAlterChat';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -15,9 +15,9 @@ import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XMenuItem, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { XOverflow } from '../../../components/XOverflow';
-import { LeaveChatComponent } from '../../../fragments/MessengerRootComponent';
-import { RemoveMemberModal } from '../channel/components/membersComponent';
+import { XOverflow } from '../../../../components/XOverflow';
+import { LeaveChatComponent } from '../../../../fragments/MessengerRootComponent';
+import { RemoveMemberModal } from '../../channel/components/membersComponent';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import {
     HeaderAvatar,
@@ -36,21 +36,24 @@ import {
     RoomFull_SharedRoom_requests,
     SharedRoomKind,
 } from 'openland-api/Types';
-import { withRoom } from '../../../api/withRoom';
+import { withRoom } from '../../../../api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
-import { InviteMembersModal } from '../channel/components/inviteMembersModal';
+import { InviteMembersModal } from '../../channel/components/inviteMembersModal';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
-import { RoomSetFeatured, RoomSetHidden } from 'openland-web/pages/main/profile/RoomControls';
+import {
+    RoomSetFeatured,
+    RoomSetHidden,
+} from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
-import { tabs, tabsT } from './tabs';
+import { tabs, tabsT } from '../tabs';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>

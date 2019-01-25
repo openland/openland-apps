@@ -7,7 +7,7 @@ import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import {
     DirectoryContent,
     ComponentWithSort,
-} from 'openland-web/pages/main/directory/components/DirectoryUniversalNavigation';
+} from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 
 interface WithChatSearchRoomsProps {
     variables: {

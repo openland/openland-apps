@@ -8,16 +8,16 @@ import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFra
 import { ComposeFragment } from 'openland-web/fragments/ComposeFragment';
 import { RoomsExploreComponent } from 'openland-web/fragments/RoomsExploreComponent';
 import { MessengerEmptyFragment } from 'openland-web/fragments/MessengerEmptyFragment';
-import { OrganizationProfile } from '../profile/OrganizationProfileComponent';
-import { RoomProfile } from '../profile/RoomProfileComponent';
-import { UserProfile } from '../profile/UserProfileComponent';
+import { OrganizationProfile } from '../../profile/components/OrganizationProfileComponent';
+import { RoomProfile } from '../../profile/components/RoomProfileComponent';
+import { UserProfile } from '../../profile/components/UserProfileComponent';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { Menu } from 'openland-web/components/MainLayout';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { XButton } from 'openland-x/XButton';
 import { RoomInviteFromLink } from './RoomInviteFromLink';
-import { tabs } from './tabs';
+import { tabs } from '../tabs';
 
 export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
