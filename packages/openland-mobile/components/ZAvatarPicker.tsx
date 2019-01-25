@@ -7,6 +7,7 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { XPAvatar } from 'openland-xp/XPAvatar';
+import { UplaodCareUploading } from 'openland-web/utils/UploadCareUploading';
 
 interface AvatarImageRef {
     uuid: string;
@@ -14,6 +15,7 @@ interface AvatarImageRef {
 }
 
 export interface ZAvatarPickerProps {
+    initialUrl?: string
     field?: string;
     valueStoreKey?: string;
     value?: AvatarImageRef | null;
@@ -22,7 +24,7 @@ export interface ZAvatarPickerProps {
     render?: React.ComponentType<{ url?: string, file?: string, loading: boolean, showPicker: () => void }>;
 }
 
-class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { file?: string, loading: boolean }> {
+class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { loading: boolean }> {
 
     state = {
         file: undefined,
@@ -30,6 +32,55 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
     };
 
     private currentIteration = 0;
+
+    upload = (data: { path: string, width?: number, height?: number }) => {
+        startLoader();
+        this.setState({ loading: true });
+        let up = ++this.currentIteration;
+        let uploading;
+        uploading = new UploadCareDirectUploading('photo.jpg', data.path);
+
+        uploading.watch((v) => {
+            if (up === this.currentIteration) {
+                if (v.status === UploadStatus.COMPLETED) {
+                    if (this.props.onChanged) {
+                        this.props.onChanged({
+                            uuid: v.uuid!!,
+                            ...data.width && data.height ?
+                                {
+                                    crop: {
+                                        x: 0,
+                                        y: 0,
+                                        w: data!!.width!!,
+                                        h: data!!.height!!
+                                    }
+                                } : {}
+                        });
+                    }
+                    if (this.props.valueStoreKey || this.props.field) {
+                        this.props.store!!.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), {
+                            uuid: v.uuid!!,
+                            ...data.width && data.height ?
+                                {
+                                    crop: {
+                                        x: 0,
+                                        y: 0,
+                                        w: data!!.width!!,
+                                        h: data!!.height!!
+                                    }
+                                } : {}
+                        });
+                    }
+                    this.setState({ loading: false });
+                    stopLoader();
+                } else if (v.status === UploadStatus.FAILED) {
+                    this.setState({ loading: false });
+                    stopLoader();
+                }
+            }
+        });
+    }
+
     private handlePicker = async () => {
         try {
             let res: PickerImage | null = null;
@@ -51,50 +102,19 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             }
             if (res) {
                 if (this.props.showLoaderOnUpload) {
-                    startLoader();
+                    this.upload(res);
                 }
-                this.setState({ file: res.path, loading: true });
-                let up = ++this.currentIteration;
-                let uploading = new UploadCareDirectUploading('photo.jpg', res.path);
-                uploading.watch((v) => {
-                    if (up === this.currentIteration) {
-                        if (v.status === UploadStatus.COMPLETED) {
-                            if (this.props.onChanged) {
-                                this.props.onChanged({
-                                    uuid: v.uuid!!,
-                                    crop: {
-                                        x: 0,
-                                        y: 0,
-                                        w: res!!.width,
-                                        h: res!!.height
-                                    }
-                                });
-                            }
-                            if (this.props.valueStoreKey || this.props.field) {
-                                this.props.store!!.writeValue(this.props.valueStoreKey || ('fields.' + this.props.field), {
-                                    uuid: v.uuid!!,
-                                    crop: {
-                                        x: 0,
-                                        y: 0,
-                                        w: res!!.width,
-                                        h: res!!.height
-                                    }
-                                });
-                            }
-                            this.setState({ loading: false });
-                            stopLoader();
-                        } else if (v.status === UploadStatus.FAILED) {
-                            this.setState({ file: undefined, loading: false });
-                            stopLoader();
-                        }
-                    }
-                });
+
             }
         } catch (e) {
             console.log(e);
         }
     }
-
+    componentDidMount() {
+        if (this.props.initialUrl) {
+            this.upload({ path: this.props.initialUrl });
+        }
+    }
     componentWillUnmount() {
         // Reset watcher
         this.currentIteration++;
@@ -109,6 +129,9 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             }
         }
         let valueUrl = undefined;
+
+        valueUrl = this.props.initialUrl
+
         if (value) {
             valueUrl = 'https://ucarecdn.com/' + value.uuid + '/';
             if (value.crop) {
