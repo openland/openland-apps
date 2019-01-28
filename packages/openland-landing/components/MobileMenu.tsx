@@ -97,7 +97,6 @@ export const MobileMenu = (props: MobileMenuProps) => {
                 <Container>
                     <MobileMenuLink path={LandingLinks.home} content="Messenger" />
                     <MobileMenuLink path={LandingLinks.about} content="About" />
-                    <br />
                     <MobileMenuLink path={LandingLinks.signin} content="Sign in" />
                 </Container>
             </div>
