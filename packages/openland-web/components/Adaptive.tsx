@@ -12,7 +12,7 @@ const fullHeightClassName = css`
 `;
 
 const hideMobileClassName = css`
-    @media (max-width: 700px) {
+    @media (max-width: 750px) {
         display: none;
     }
 `;
@@ -56,7 +56,7 @@ export const HideOnMobile = ({
 };
 
 const hideDesktopClassName = css`
-    @media (min-width: 700px) {
+    @media (min-width: 750px) {
         display: none;
     }
 `;
@@ -86,18 +86,18 @@ export const HideOnDesktop = ({
     );
 };
 const showMobileClassName = css`
-    @media (min-width: 700px) {
+    @media (min-width: 750px) {
         display: none;
     }
-    @media (max-width: 700px) {
+    @media (max-width: 750px) {
         display: block;
     }
 `;
 const showDesktopClassName = css`
-    @media (min-width: 700px) {
+    @media (min-width: 750px) {
         display: block;
     }
-    @media (max-width: 700px) {
+    @media (max-width: 750px) {
         display: none;
     }
 `;

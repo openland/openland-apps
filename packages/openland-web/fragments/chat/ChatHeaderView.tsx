@@ -22,6 +22,7 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -199,11 +200,11 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
             modals={modals}
             rightButtons={
                 <RowWithSeparators separatorWidth={20}>
-                    {!isMobile && (
+                    {/* {!isMobile && (
                         <XView>
                             <CallButton room={room} />
                         </XView>
-                    )}
+                    )} */}
                     {!isMobile && inviteButton}
                     <HeaderMuteButton settings={room.settings} roomId={room.id} />
                     {!isMobile && threeDots}
@@ -223,13 +224,10 @@ interface MessengerComponentLoaderProps {
     data: Room;
 }
 
-export const ChatHeaderViewLoader = withRoom(withQueryLoader(
-    withUserInfo(({ user, data, loading }: MessengerComponentLoaderProps) => {
-        if (!data || !data.room || loading) {
-            if (loading) {
-                return <XLoader loading={true} />;
-            }
-            return <div />;
+const ChatHeaderViewLoaderInner = withRoom(withUserInfo(
+    ({ user, data, loading }: MessengerComponentLoaderProps) => {
+        if (!data || !data.room) {
+            return <XLoader loading={true} />;
         }
 
         return (
@@ -244,8 +242,25 @@ export const ChatHeaderViewLoader = withRoom(withQueryLoader(
                 <ChatHeaderView room={data.room} me={user} />
             </XView>
         );
-    }),
+    },
 ) as any) as React.ComponentType<{
     variables: { id: string };
     state?: MessagesStateContextProps;
 }>;
+
+export const ChatHeaderViewLoader = (props: {
+    variables: {
+        id?: string;
+    };
+}) => {
+    if (!canUseDOM || !props.variables.id) {
+        return <XLoader loading={true} />;
+    }
+    return (
+        <ChatHeaderViewLoaderInner
+            variables={{
+                id: props.variables.id,
+            }}
+        />
+    );
+};

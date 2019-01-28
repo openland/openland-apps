@@ -31,34 +31,42 @@ function dateFormat(date: number) {
     return prefix + months[dt.getMonth()] + ' ' + dt.getDate() + 'th';
 }
 
+const messagesWrapperClassName = css`
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: center;
+    padding-top: 96px;
+    padding-bottom: 40px;
+    width: 100%;
+    max-width: 930px;
+    @media (min-width: 750px) {
+        min-width: 512px;
+    }
+`;
+
 const MessagesWrapper = (props: { children?: any }) => (
-    <XView
-        flexDirection="column"
-        alignItems="stretch"
-        alignSelf="center"
-        paddingTop={96}
-        paddingBottom={40}
-        width="100%"
-        maxWidth={930}
-    >
-        {props.children}
-    </XView>
+    <div className={messagesWrapperClassName}>{props.children}</div>
 );
 
+const messagesWrapperEmptyClassName = css`
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: center;
+    justify-content: center;
+    flex-grow: 1;
+    padding-top: 20px;
+    paddingbottom: 0px;
+    width: 100%;
+    maxwidth: 930px;
+    @media (min-width: 750px) {
+        minwidth: 512px;
+    }
+`;
+
 const MessagesWrapperEmpty = (props: { children?: any }) => (
-    <XView
-        flexDirection="column"
-        alignItems="stretch"
-        alignSelf="center"
-        justifyContent="center"
-        flexGrow={1}
-        paddingTop={20}
-        paddingBottom={0}
-        width="100%"
-        maxWidth={930}
-    >
-        {props.children}
-    </XView>
+    <div className={messagesWrapperEmptyClassName}>{props.children}</div>
 );
 
 const scrollWrapper = css`

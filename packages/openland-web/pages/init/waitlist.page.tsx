@@ -16,7 +16,7 @@ const Img = Glamorous.img({
     maxWidth: 520,
     height: 216,
     marginBottom: 64,
-    '@media (max-height: 700px)': {
+    '@media (max-height: 750px)': {
         maxWidth: 500,
     },
 });

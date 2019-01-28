@@ -1,17 +1,10 @@
 import * as React from 'react';
-import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withApp } from 'openland-web/components/withApp';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from 'openland-web/components/Scaffold';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from 'openland-web/components/messenger/MessagesStateContext';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
-import { withRouter } from 'openland-x-routing/withRouter';
 import { MessageFull } from 'openland-api/Types';
-import { MessagePageInner } from './components/Components';
-import { tabs, tabsT } from './tabs';
 import { MessagesNavigation } from './components/MessagesNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';

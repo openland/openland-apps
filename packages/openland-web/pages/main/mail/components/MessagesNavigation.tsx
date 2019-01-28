@@ -2,15 +2,13 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { tabs, tabsT } from '../tabs';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
-import { Scaffold } from 'openland-web/components/Scaffold';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { PopperOptionsButton } from 'openland-web/pages/main/directory/components/PopperOptionsButton';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/Components';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { Navigation } from '../../../../components/Navigation';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -27,15 +25,7 @@ export const MessagesNavigation = React.memo(
         let tab: tabsT = tabs.empty;
 
         let isCompose = path.endsWith('/new');
-        let pageTitle = isCompose ? 'New chat' : undefined;
-        if (!canUseDOM) {
-            return (
-                <>
-                    <XDocumentHead title={pageTitle} />
-                    <Scaffold>{}</Scaffold>
-                </>
-            );
-        }
+
         let isRooms = path.endsWith('/channels');
         let isCall = path.endsWith('/call');
         let isInvite = path.includes('joinChannel');
@@ -84,10 +74,6 @@ export const MessagesNavigation = React.memo(
             tab = tabs.roomProfile;
         }
 
-        if (tab === tabs.empty) {
-            pageTitle = undefined;
-        }
-
         return (
             <Navigation
                 title="Messages"
@@ -100,18 +86,18 @@ export const MessagesNavigation = React.memo(
                     />
                 }
                 secondFragmentHeader={
-                    !!chatId && (
-                        <>
+                    <>
+                        {chatId && (
                             <ChatHeaderViewLoader
                                 variables={{
                                     id: chatId,
                                 }}
                             />
-                            <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
-                        </>
-                    )
+                        )}
+                        <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
+                    </>
                 }
-                firstFragment={<DialogListFragment />}
+                firstFragment={canUseDOM && <DialogListFragment />}
                 secondFragment={
                     <ConversationContainerWrapper
                         {...{ tab, conversationId: cid, oid, uid, cid }}

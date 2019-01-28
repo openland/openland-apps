@@ -18,5 +18,5 @@ export const useWithWidth = () => {
 
 export const useIsMobile = () => {
     const [width] = useWithWidth();
-    return [width ? width <= 700 : null];
+    return [width ? width <= 750 : null];
 };

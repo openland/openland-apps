@@ -66,10 +66,12 @@ export const SendMessageWrapper = Glamorous.div({
 export const SendMessageContent = Glamorous(XHorizontal)({
     width: '100%',
     maxWidth: 930,
+    minWidth: 512,
     flexBasis: '100%',
     paddingLeft: 97,
     paddingRight: 112,
-    '@media (max-width: 700px)': {
+    '@media (max-width: 750px)': {
+        minWidth: 0,
         paddingLeft: 0,
         paddingRight: 0,
     },
@@ -94,7 +96,7 @@ export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props =>
     '&:first-child': {
         marginLeft: 6,
     },
-    '@media (max-width: 1150px)': {
+    '@media (max-width: 1230px)': {
         fontSize: 0,
         '& > svg': {
             marginRight: '0!important',

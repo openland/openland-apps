@@ -575,7 +575,7 @@ export class CreatePostComponent extends React.Component<
                     paddingBottom={12}
                     position="relative"
                 >
-                    <XVertical maxWidth={700} flexGrow={1}>
+                    <XVertical maxWidth={750} flexGrow={1}>
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
                                 <PostTitle invalid={state.invalidTitle}>
@@ -675,7 +675,7 @@ export class CreatePostComponent extends React.Component<
                             justifyContent="space-between"
                             alignItems="center"
                             flexGrow={1}
-                            maxWidth={700}
+                            maxWidth={750}
                         >
                             <XView flexDirection="row" alignItems="center">
                                 <AttachmentButton onClick={this.handleAttach}>

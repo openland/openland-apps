@@ -23,7 +23,6 @@ const Container = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
     background: '#ffffff',
     borderRadius: 10,
     padding: '9px 16px 12px',
-    maxWidth: 620,
     color: '#121e2b !important',
     width: '100%',
     '& .delete-button': {
