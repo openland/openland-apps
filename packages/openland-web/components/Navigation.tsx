@@ -71,8 +71,27 @@ const containerStyle = css`
     }
 `;
 
+const contentStyle = css`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    width: calc(100% - 344px);
+    flex-shrink: 0;
+    @media (max-width: 1100px) {
+        width: calc(100% - 300px);
+    }
+    @media (max-width: 950px) {
+        width: calc(100% - 230px);
+    }
+`;
+
 const DesktopDialogContainer = React.memo(({ children }: { children: any }) => (
     <div className={containerStyle}>{children}</div>
+));
+
+const DesktopContentContainer = React.memo(({ children }: { children: any }) => (
+    <div className={contentStyle}>{children}</div>
 ));
 
 const DesktopPageInner = React.memo(
@@ -96,10 +115,10 @@ const DesktopPageInner = React.memo(
                     {firstFragmentMenu}
                     {firstFragment}
                 </DesktopDialogContainer>
-                <XView flexDirection="column" flexGrow={1}>
+                <DesktopContentContainer>
                     {secondFragmentHeader}
                     {secondFragment}
-                </XView>
+                </DesktopContentContainer>
             </XView>
         );
     },
