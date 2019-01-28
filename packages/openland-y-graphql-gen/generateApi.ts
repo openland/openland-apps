@@ -29,9 +29,15 @@ export function generateApi() {
                     output += '    async query' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
                     output += '        return this.client.query(Source.' + op.name + ', variables);\n';
                     output += '    }\n';
+                    output += '    async refetch' + name + '(variables: Types.' + name + 'Variables): Promise<Types.' + name + '> {\n';
+                    output += '        return this.client.refetch(Source.' + op.name + ', variables);\n';
+                    output += '    }\n';
                 } else {
                     output += '    async query' + name + '(): Promise<Types.' + name + '> {\n';
                     output += '        return this.client.query(Source.' + op.name + ');\n';
+                    output += '    }\n';
+                    output += '    async refetch' + name + '(): Promise<Types.' + name + '> {\n';
+                    output += '        return this.client.refetch(Source.' + op.name + ');\n';
                     output += '    }\n';
                 }
             }

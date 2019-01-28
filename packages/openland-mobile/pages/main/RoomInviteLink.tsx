@@ -7,11 +7,11 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { ZListItem } from '../../components/ZListItem';
-import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
-import { RoomInviteLinkQuery, RoomRenewInviteLinkMutation } from 'openland-api';
+import { RoomInviteLinkQuery } from 'openland-api';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -35,22 +35,21 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
                                 </ZListItemGroup>
                                 <ZListItemGroup >
                                     <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/joinChannel/${data.data!.link}`)} />
-                                    <YMutation mutation={RoomRenewInviteLinkMutation} variables={{ roomId: this.props.router.params.id }} refetchQueriesVars={[{ query: RoomInviteLinkQuery, variables: { roomId: this.props.router.params.id } }]}>
-                                        {renew => <ZListItem
-                                            appearance="action"
-                                            text="Revoke link"
-                                            onPress={async () => {
-                                                startLoader();
-                                                try {
-                                                    await renew({ variables: { roomId: this.props.router.params.id } });
-                                                } catch (e) {
-                                                    Alert.alert(e);
-                                                }
-                                                stopLoader();
+                                    <ZListItem
+                                        appearance="action"
+                                        text="Revoke link"
+                                        onPress={async () => {
+                                            startLoader();
+                                            try {
+                                                await getClient().mutateRoomRenewInviteLink({ roomId: this.props.router.params.id });
+                                                await getClient().refetchRoomInviteLink({ roomId: this.props.router.params.id });
+                                            } catch (e) {
+                                                Alert.alert(e);
+                                            }
+                                            stopLoader();
 
-                                            }}
-                                        />}
-                                    </YMutation>
+                                        }}
+                                    />
                                 </ZListItemGroup>
                                 <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/joinChannel/${data.data!.link}` })} />
                             </>)}

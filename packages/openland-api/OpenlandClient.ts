@@ -9,131 +9,260 @@ export class OpenlandClient {
     async queryAccount(): Promise<Types.Account> {
         return this.client.query(Source.AccountQuery);
     }
+    async refetchAccount(): Promise<Types.Account> {
+        return this.client.refetch(Source.AccountQuery);
+    }
     async queryAccountSettings(): Promise<Types.AccountSettings> {
         return this.client.query(Source.AccountSettingsQuery);
+    }
+    async refetchAccountSettings(): Promise<Types.AccountSettings> {
+        return this.client.refetch(Source.AccountSettingsQuery);
     }
     async queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Promise<Types.AccountInviteInfo> {
         return this.client.query(Source.AccountInviteInfoQuery, variables);
     }
+    async refetchAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Promise<Types.AccountInviteInfo> {
+        return this.client.refetch(Source.AccountInviteInfoQuery, variables);
+    }
     async queryAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Promise<Types.AccountAppInviteInfo> {
         return this.client.query(Source.AccountAppInviteInfoQuery, variables);
+    }
+    async refetchAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Promise<Types.AccountAppInviteInfo> {
+        return this.client.refetch(Source.AccountAppInviteInfoQuery, variables);
     }
     async queryAccountAppInvite(): Promise<Types.AccountAppInvite> {
         return this.client.query(Source.AccountAppInviteQuery);
     }
+    async refetchAccountAppInvite(): Promise<Types.AccountAppInvite> {
+        return this.client.refetch(Source.AccountAppInviteQuery);
+    }
     async queryAccountInvites(): Promise<Types.AccountInvites> {
         return this.client.query(Source.AccountInvitesQuery);
+    }
+    async refetchAccountInvites(): Promise<Types.AccountInvites> {
+        return this.client.refetch(Source.AccountInvitesQuery);
     }
     async queryAccountInvitesHistory(): Promise<Types.AccountInvitesHistory> {
         return this.client.query(Source.AccountInvitesHistoryQuery);
     }
+    async refetchAccountInvitesHistory(): Promise<Types.AccountInvitesHistory> {
+        return this.client.refetch(Source.AccountInvitesHistoryQuery);
+    }
     async queryProfilePrefill(): Promise<Types.ProfilePrefill> {
         return this.client.query(Source.ProfilePrefillQuery);
+    }
+    async refetchProfilePrefill(): Promise<Types.ProfilePrefill> {
+        return this.client.refetch(Source.ProfilePrefillQuery);
     }
     async queryMyApps(): Promise<Types.MyApps> {
         return this.client.query(Source.MyAppsQuery);
     }
+    async refetchMyApps(): Promise<Types.MyApps> {
+        return this.client.refetch(Source.MyAppsQuery);
+    }
     async queryDialogs(variables: Types.DialogsVariables): Promise<Types.Dialogs> {
         return this.client.query(Source.DialogsQuery, variables);
+    }
+    async refetchDialogs(variables: Types.DialogsVariables): Promise<Types.Dialogs> {
+        return this.client.refetch(Source.DialogsQuery, variables);
     }
     async queryRoom(variables: Types.RoomVariables): Promise<Types.Room> {
         return this.client.query(Source.RoomQuery, variables);
     }
+    async refetchRoom(variables: Types.RoomVariables): Promise<Types.Room> {
+        return this.client.refetch(Source.RoomQuery, variables);
+    }
     async queryRoomSuper(variables: Types.RoomSuperVariables): Promise<Types.RoomSuper> {
         return this.client.query(Source.RoomSuperQuery, variables);
+    }
+    async refetchRoomSuper(variables: Types.RoomSuperVariables): Promise<Types.RoomSuper> {
+        return this.client.refetch(Source.RoomSuperQuery, variables);
     }
     async queryGetDraftMessage(variables: Types.GetDraftMessageVariables): Promise<Types.GetDraftMessage> {
         return this.client.query(Source.GetDraftMessageQuery, variables);
     }
+    async refetchGetDraftMessage(variables: Types.GetDraftMessageVariables): Promise<Types.GetDraftMessage> {
+        return this.client.refetch(Source.GetDraftMessageQuery, variables);
+    }
     async queryGlobalCounter(): Promise<Types.GlobalCounter> {
         return this.client.query(Source.GlobalCounterQuery);
+    }
+    async refetchGlobalCounter(): Promise<Types.GlobalCounter> {
+        return this.client.refetch(Source.GlobalCounterQuery);
     }
     async queryRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
         return this.client.query(Source.RoomHistoryQuery, variables);
     }
+    async refetchRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
+        return this.client.refetch(Source.RoomHistoryQuery, variables);
+    }
     async queryChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
         return this.client.query(Source.ChatSearchGroupQuery, variables);
+    }
+    async refetchChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
+        return this.client.refetch(Source.ChatSearchGroupQuery, variables);
     }
     async queryRoomSearchText(variables: Types.RoomSearchTextVariables): Promise<Types.RoomSearchText> {
         return this.client.query(Source.RoomSearchTextQuery, variables);
     }
+    async refetchRoomSearchText(variables: Types.RoomSearchTextVariables): Promise<Types.RoomSearchText> {
+        return this.client.refetch(Source.RoomSearchTextQuery, variables);
+    }
     async queryRoomSearch(variables: Types.RoomSearchVariables): Promise<Types.RoomSearch> {
         return this.client.query(Source.RoomSearchQuery, variables);
+    }
+    async refetchRoomSearch(variables: Types.RoomSearchVariables): Promise<Types.RoomSearch> {
+        return this.client.refetch(Source.RoomSearchQuery, variables);
     }
     async queryRoomMembers(variables: Types.RoomMembersVariables): Promise<Types.RoomMembers> {
         return this.client.query(Source.RoomMembersQuery, variables);
     }
+    async refetchRoomMembers(variables: Types.RoomMembersVariables): Promise<Types.RoomMembers> {
+        return this.client.refetch(Source.RoomMembersQuery, variables);
+    }
     async queryRoomInviteLink(variables: Types.RoomInviteLinkVariables): Promise<Types.RoomInviteLink> {
         return this.client.query(Source.RoomInviteLinkQuery, variables);
+    }
+    async refetchRoomInviteLink(variables: Types.RoomInviteLinkVariables): Promise<Types.RoomInviteLink> {
+        return this.client.refetch(Source.RoomInviteLinkQuery, variables);
     }
     async queryRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Promise<Types.RoomInviteInfo> {
         return this.client.query(Source.RoomInviteInfoQuery, variables);
     }
+    async refetchRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Promise<Types.RoomInviteInfo> {
+        return this.client.refetch(Source.RoomInviteInfoQuery, variables);
+    }
     async queryConference(variables: Types.ConferenceVariables): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables);
+    }
+    async refetchConference(variables: Types.ConferenceVariables): Promise<Types.Conference> {
+        return this.client.refetch(Source.ConferenceQuery, variables);
     }
     async queryAvailableRooms(): Promise<Types.AvailableRooms> {
         return this.client.query(Source.AvailableRoomsQuery);
     }
+    async refetchAvailableRooms(): Promise<Types.AvailableRooms> {
+        return this.client.refetch(Source.AvailableRoomsQuery);
+    }
     async queryFeatureFlags(): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery);
+    }
+    async refetchFeatureFlags(): Promise<Types.FeatureFlags> {
+        return this.client.refetch(Source.FeatureFlagsQuery);
     }
     async queryFeedHome(): Promise<Types.FeedHome> {
         return this.client.query(Source.FeedHomeQuery);
     }
+    async refetchFeedHome(): Promise<Types.FeedHome> {
+        return this.client.refetch(Source.FeedHomeQuery);
+    }
     async queryMyOrganizations(): Promise<Types.MyOrganizations> {
         return this.client.query(Source.MyOrganizationsQuery);
+    }
+    async refetchMyOrganizations(): Promise<Types.MyOrganizations> {
+        return this.client.refetch(Source.MyOrganizationsQuery);
     }
     async queryOrganization(variables: Types.OrganizationVariables): Promise<Types.Organization> {
         return this.client.query(Source.OrganizationQuery, variables);
     }
+    async refetchOrganization(variables: Types.OrganizationVariables): Promise<Types.Organization> {
+        return this.client.refetch(Source.OrganizationQuery, variables);
+    }
     async queryOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
         return this.client.query(Source.OrganizationProfileQuery, variables);
+    }
+    async refetchOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
+        return this.client.refetch(Source.OrganizationProfileQuery, variables);
     }
     async queryExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Promise<Types.ExploreOrganizations> {
         return this.client.query(Source.ExploreOrganizationsQuery, variables);
     }
+    async refetchExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Promise<Types.ExploreOrganizations> {
+        return this.client.refetch(Source.ExploreOrganizationsQuery, variables);
+    }
     async queryExploreComunity(variables: Types.ExploreComunityVariables): Promise<Types.ExploreComunity> {
         return this.client.query(Source.ExploreComunityQuery, variables);
+    }
+    async refetchExploreComunity(variables: Types.ExploreComunityVariables): Promise<Types.ExploreComunity> {
+        return this.client.refetch(Source.ExploreComunityQuery, variables);
     }
     async queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Promise<Types.OrganizationPublicInvite> {
         return this.client.query(Source.OrganizationPublicInviteQuery, variables);
     }
+    async refetchOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Promise<Types.OrganizationPublicInvite> {
+        return this.client.refetch(Source.OrganizationPublicInviteQuery, variables);
+    }
     async queryOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Promise<Types.OrganizationByPrefix> {
         return this.client.query(Source.OrganizationByPrefixQuery, variables);
+    }
+    async refetchOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Promise<Types.OrganizationByPrefix> {
+        return this.client.refetch(Source.OrganizationByPrefixQuery, variables);
     }
     async queryPermissions(): Promise<Types.Permissions> {
         return this.client.query(Source.PermissionsQuery);
     }
+    async refetchPermissions(): Promise<Types.Permissions> {
+        return this.client.refetch(Source.PermissionsQuery);
+    }
     async querySuperAdmins(): Promise<Types.SuperAdmins> {
         return this.client.query(Source.SuperAdminsQuery);
+    }
+    async refetchSuperAdmins(): Promise<Types.SuperAdmins> {
+        return this.client.refetch(Source.SuperAdminsQuery);
     }
     async querySuperAccounts(): Promise<Types.SuperAccounts> {
         return this.client.query(Source.SuperAccountsQuery);
     }
+    async refetchSuperAccounts(): Promise<Types.SuperAccounts> {
+        return this.client.refetch(Source.SuperAccountsQuery);
+    }
     async querySuperAccount(variables: Types.SuperAccountVariables): Promise<Types.SuperAccount> {
         return this.client.query(Source.SuperAccountQuery, variables);
+    }
+    async refetchSuperAccount(variables: Types.SuperAccountVariables): Promise<Types.SuperAccount> {
+        return this.client.refetch(Source.SuperAccountQuery, variables);
     }
     async queryProfile(): Promise<Types.Profile> {
         return this.client.query(Source.ProfileQuery);
     }
+    async refetchProfile(): Promise<Types.Profile> {
+        return this.client.refetch(Source.ProfileQuery);
+    }
     async querySettings(): Promise<Types.Settings> {
         return this.client.query(Source.SettingsQuery);
+    }
+    async refetchSettings(): Promise<Types.Settings> {
+        return this.client.refetch(Source.SettingsQuery);
     }
     async queryUsers(variables: Types.UsersVariables): Promise<Types.Users> {
         return this.client.query(Source.UsersQuery, variables);
     }
+    async refetchUsers(variables: Types.UsersVariables): Promise<Types.Users> {
+        return this.client.refetch(Source.UsersQuery, variables);
+    }
     async queryUser(variables: Types.UserVariables): Promise<Types.User> {
         return this.client.query(Source.UserQuery, variables);
+    }
+    async refetchUser(variables: Types.UserVariables): Promise<Types.User> {
+        return this.client.refetch(Source.UserQuery, variables);
     }
     async queryOnline(variables: Types.OnlineVariables): Promise<Types.Online> {
         return this.client.query(Source.OnlineQuery, variables);
     }
+    async refetchOnline(variables: Types.OnlineVariables): Promise<Types.Online> {
+        return this.client.refetch(Source.OnlineQuery, variables);
+    }
     async queryExplorePeople(variables: Types.ExplorePeopleVariables): Promise<Types.ExplorePeople> {
         return this.client.query(Source.ExplorePeopleQuery, variables);
     }
+    async refetchExplorePeople(variables: Types.ExplorePeopleVariables): Promise<Types.ExplorePeople> {
+        return this.client.refetch(Source.ExplorePeopleQuery, variables);
+    }
     async queryResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
         return this.client.query(Source.ResolveShortNameQuery, variables);
+    }
+    async refetchResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
+        return this.client.refetch(Source.ResolveShortNameQuery, variables);
     }
     async mutateCreateOrganization(variables: Types.CreateOrganizationVariables): Promise<Types.CreateOrganization> {
         return this.client.mutate(Source.CreateOrganizationMutation, variables);

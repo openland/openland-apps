@@ -19,6 +19,7 @@ export interface GraphqlActiveSubscription {
 
 export interface GraphqlClient {
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery>;
+    refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery>;
     subscribe(subscription: any, vars?: any): GraphqlActiveSubscription;
     mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation>;
 

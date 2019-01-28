@@ -14,8 +14,7 @@ import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { ZRoundedButton } from '../../components/ZRoundedButton';
-import { YMutation } from 'openland-y-graphql/YMutation';
-import { SetTypingMutation, RoomQuery, RoomJoinMutation, RoomJoinInviteLinkMutation } from 'openland-api';
+import { RoomQuery, RoomJoinMutation, RoomJoinInviteLinkMutation } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
@@ -27,6 +26,7 @@ import { XPAvatar } from 'openland-xp/XPAvatar';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -202,44 +202,40 @@ class ConversationComponent extends React.Component<PageProps> {
                                                     </View>
                                                 </View>
                                                 <View alignSelf="center" marginBottom={46}>
-                                                    {!invite && <YMutation mutation={RoomJoinMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
-                                                        {(join) => (
-                                                            <ZRoundedButton
-                                                                size="big"
-                                                                uppercase={false}
-                                                                title={sharedRoom!.membership === 'REQUESTED' ? 'Invite requested' : 'Request invite'}
-                                                                onPress={async () => {
-                                                                    startLoader();
-                                                                    try {
-                                                                        await join({ variables: { roomId: sharedRoom!.id } });
-                                                                    } catch (e) {
-                                                                        Alert.alert(e.message);
-                                                                    }
-                                                                    stopLoader();
+                                                    {!invite &&
+                                                        <ZRoundedButton
+                                                            size="big"
+                                                            uppercase={false}
+                                                            title={sharedRoom!.membership === 'REQUESTED' ? 'Invite requested' : 'Request invite'}
+                                                            onPress={async () => {
+                                                                startLoader();
+                                                                try {
+                                                                    await getClient().mutateRoomJoin({ roomId: sharedRoom!.id });
+                                                                } catch (e) {
+                                                                    Alert.alert(e.message);
+                                                                }
+                                                                stopLoader();
 
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </YMutation>}
-                                                    {invite && <YMutation mutation={RoomJoinInviteLinkMutation} refetchQueriesVars={[{ query: RoomQuery, variables: { conversationId: this.props.router.params.flexibleId } }]}>
-                                                        {(join) => (
-                                                            <ZRoundedButton
-                                                                size="big"
-                                                                uppercase={false}
-                                                                title={'Accept invitation'}
-                                                                onPress={async () => {
-                                                                    startLoader();
-                                                                    try {
-                                                                        await join({ variables: { invite: invite } });
-                                                                    } catch (e) {
-                                                                        Alert.alert(e.message);
-                                                                    }
-                                                                    stopLoader();
+                                                            }}
+                                                        />}
+                                                    {invite &&
+                                                        <ZRoundedButton
+                                                            size="big"
+                                                            uppercase={false}
+                                                            title={'Accept invitation'}
+                                                            onPress={async () => {
+                                                                startLoader();
+                                                                try {
+                                                                    let client = getClient();
+                                                                    await client.mutateRoomJoinInviteLink({ invite });
+                                                                } catch (e) {
+                                                                    Alert.alert(e.message);
+                                                                }
+                                                                stopLoader();
 
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </YMutation>}
+                                                            }}
+                                                        />
+                                                    }
                                                 </View>
 
                                             </ASSafeAreaView>

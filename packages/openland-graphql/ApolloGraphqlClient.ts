@@ -130,6 +130,14 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return res.data
     }
 
+    async refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+        let res = await this.client.client.query<TQuery, TVars>({ query: query.document, variables: vars, fetchPolicy: 'network-only' });
+        if (res.errors && res.errors.length > 0) {
+            throw Error();
+        }
+        return res.data
+    }
+
     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
         let r = this.client.client.readQuery<TQuery>({ query: query.document, variables: vars });
         if (r) {

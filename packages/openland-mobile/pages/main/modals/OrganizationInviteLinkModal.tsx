@@ -6,13 +6,11 @@ import { PageProps } from '../../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { OrganizationPublicInviteQuery, OrganizationCreatePublicInviteMutation } from 'openland-api';
+import { OrganizationPublicInviteQuery } from 'openland-api';
 import { ZListItem } from '../../../components/ZListItem';
-import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { getClient } from 'openland-mobile/utils/apolloClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
