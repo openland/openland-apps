@@ -50,6 +50,8 @@ type PageInnerProps = {
     cid: string | null | undefined;
 };
 
+const MobileConversationContainer = ({ children }: any) => <XView flexGrow={1}>{children}</XView>;
+
 export const ConversationContainerWrapper = ({
     tab,
     conversationId,
@@ -69,7 +71,7 @@ export const ConversationContainerWrapper = ({
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
-        ? ({ children }: any) => <XView flexGrow={1}>{children}</XView>
+        ? MobileConversationContainer
         : DesktopConversationContainer;
 
     return (

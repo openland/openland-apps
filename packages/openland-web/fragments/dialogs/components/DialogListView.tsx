@@ -11,6 +11,7 @@ import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
+import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
 const LoadingWrapper = Glamorous.div({
     height: 60,
@@ -108,7 +109,7 @@ export const DialogListView = React.memo<DialogListViewProps>(props => {
                 <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
                 <XView flexGrow={1} flexBasis={0} minHeight={0}>
                     {isSearching && <DialogSearchResults variables={{ query: query }} />}
-                    {!isSearching && (
+                    {canUseDOM && !isSearching && (
                         <XListView
                             dataSource={messenger.dialogList.dataSource}
                             itemHeight={72}
