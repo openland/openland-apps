@@ -15,6 +15,9 @@ export const RoomShort = gql`
             photo
             membership
             membersCount
+            organization{
+                ...OrganizationShort
+            }
         }
     }
 `;

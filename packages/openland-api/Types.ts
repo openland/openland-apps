@@ -883,6 +883,14 @@ export interface RoomTiny_room_PrivateRoom {
   user: RoomTiny_room_PrivateRoom_user;
 }
 
+export interface RoomTiny_room_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomTiny_room_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -891,6 +899,7 @@ export interface RoomTiny_room_SharedRoom {
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: RoomTiny_room_SharedRoom_organization | null;
 }
 
 export type RoomTiny_room = RoomTiny_room_PrivateRoom | RoomTiny_room_SharedRoom;
@@ -1293,6 +1302,14 @@ export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata
   user: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
 }
 
+export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -1301,6 +1318,7 @@ export interface RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
 }
 
 export type RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom = RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | RoomHistory_messages_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
@@ -4125,6 +4143,14 @@ export interface Organization_organization_requests {
   user: Organization_organization_requests_user;
 }
 
+export interface Organization_organization_rooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface Organization_organization_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -4133,6 +4159,7 @@ export interface Organization_organization_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: Organization_organization_rooms_organization | null;
 }
 
 export interface Organization_organization {
@@ -4459,6 +4486,14 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_requests {
   user: OrganizationAddMember_betaOrganizationMemberAdd_requests_user;
 }
 
+export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -4467,6 +4502,7 @@ export interface OrganizationAddMember_betaOrganizationMemberAdd_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: OrganizationAddMember_betaOrganizationMemberAdd_rooms_organization | null;
 }
 
 export interface OrganizationAddMember_betaOrganizationMemberAdd {
@@ -5646,6 +5682,14 @@ export interface ResolveShortName_item_Organization_requests {
   user: ResolveShortName_item_Organization_requests_user;
 }
 
+export interface ResolveShortName_item_Organization_rooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ResolveShortName_item_Organization_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -5654,6 +5698,7 @@ export interface ResolveShortName_item_Organization_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: ResolveShortName_item_Organization_rooms_organization | null;
 }
 
 export interface ResolveShortName_item_Organization {
@@ -5989,6 +6034,14 @@ export interface ConversationShort_AnonymousConversation_topMessage_serviceMetad
   user: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
 }
 
+export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -5997,6 +6050,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_serviceMetad
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
 }
 
 export type ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom = ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | ConversationShort_AnonymousConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
@@ -6512,6 +6566,14 @@ export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_
   user: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
 }
 
+export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -6520,6 +6582,7 @@ export interface ConversationShort_GroupConversation_topMessage_serviceMetadata_
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
 }
 
 export type ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom = ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | ConversationShort_GroupConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
@@ -7051,6 +7114,14 @@ export interface ConversationShort_ChannelConversation_topMessage_serviceMetadat
   user: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
 }
 
+export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -7059,6 +7130,7 @@ export interface ConversationShort_ChannelConversation_topMessage_serviceMetadat
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
 }
 
 export type ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom = ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | ConversationShort_ChannelConversation_topMessage_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
@@ -7602,6 +7674,14 @@ export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom
   user: MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
 }
 
+export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -7610,6 +7690,7 @@ export interface MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
 }
 
 export type MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom = MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | MessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
@@ -8115,6 +8196,14 @@ export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post
   user: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom_user;
 }
 
+export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -8123,6 +8212,7 @@ export interface RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_post
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom_organization | null;
 }
 
 export type RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom = RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_PrivateRoom | RoomMessageFull_serviceMetadata_PostRespondServiceMetadata_postRoom_SharedRoom;
@@ -8602,6 +8692,14 @@ export interface OrganizationFull_requests {
   user: OrganizationFull_requests_user;
 }
 
+export interface OrganizationFull_rooms_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface OrganizationFull_rooms {
   __typename: "SharedRoom";
   id: string;
@@ -8610,6 +8708,7 @@ export interface OrganizationFull_rooms {
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: OrganizationFull_rooms_organization | null;
 }
 
 export interface OrganizationFull {
@@ -8900,6 +8999,14 @@ export interface RoomShort_PrivateRoom {
   user: RoomShort_PrivateRoom_user;
 }
 
+export interface RoomShort_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
 export interface RoomShort_SharedRoom {
   __typename: "SharedRoom";
   id: string;
@@ -8908,6 +9015,7 @@ export interface RoomShort_SharedRoom {
   photo: string;
   membership: SharedRoomMembershipStatus;
   membersCount: number | null;
+  organization: RoomShort_SharedRoom_organization | null;
 }
 
 export type RoomShort = RoomShort_PrivateRoom | RoomShort_SharedRoom;
