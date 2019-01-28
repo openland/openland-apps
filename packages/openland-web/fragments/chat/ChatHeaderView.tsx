@@ -200,11 +200,11 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
             modals={modals}
             rightButtons={
                 <RowWithSeparators separatorWidth={20}>
-                    {/* {!isMobile && (
+                    {!isMobile && (
                         <XView>
                             <CallButton room={room} />
                         </XView>
-                    )} */}
+                    )}
                     {!isMobile && inviteButton}
                     <HeaderMuteButton settings={room.settings} roomId={room.id} />
                     {!isMobile && threeDots}
