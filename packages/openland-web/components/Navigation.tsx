@@ -44,7 +44,7 @@ const MobilePageInner = React.memo(
                         {swapFragmentsOnMobile ? secondFragment : firstFragment}
                     </XView>
                 ) : (
-                    <XView flexDirection="column" flexGrow={1}>
+                    <XView flexDirection="column" flexGrow={1} width="100%">
                         {secondFragmentHeader}
                         {swapFragmentsOnMobile ? firstFragment : secondFragment}
                     </XView>
