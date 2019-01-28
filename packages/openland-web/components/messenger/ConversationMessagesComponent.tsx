@@ -45,7 +45,7 @@ interface ConversationMessagesComponentProps {
 
 export class ConversationMessagesComponent extends React.PureComponent<
     ConversationMessagesComponentProps
-> {
+    > {
     messagesList = React.createRef<MessageListComponent>();
 
     scrollToBottom = () => {
@@ -61,7 +61,6 @@ export class ConversationMessagesComponent extends React.PureComponent<
                     me={this.props.me}
                     conversation={this.props.conversation}
                     conversationType={this.props.conversationType}
-                    messages={this.props.messages}
                     inputShower={this.props.inputShower}
                     ref={this.messagesList}
                     conversationId={this.props.conversationId}

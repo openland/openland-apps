@@ -2,7 +2,7 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from '../message/MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
@@ -72,7 +72,6 @@ const MessagesWrapperEmpty = (props: { children?: any }) => (
 
 interface MessageListProps {
     conversation: ConversationEngine;
-    messages: ModelMessage[];
     conversationType?: SharedRoomKind | 'PRIVATE';
     inputShower?: (show: boolean) => void;
     me?: UserShort | null;
@@ -103,13 +102,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         this.scroller.current!!.scrollToBottom();
     };
 
-    componentWillUpdate(newprops: MessageListProps) {
-        if (newprops.messages[0] !== this.props.messages[0]) {
-            this.scroller.current!!.updateDimensions();
-            this.unshifted = true;
-        }
-    }
-
     componentDidMount() {
         if (!canUseDOM) {
             return;
@@ -137,7 +129,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     isEmpty = () => {
-        return this.props.conversation.historyFullyLoaded && this.props.messages.length === 0;
+        return this.props.conversation.historyFullyLoaded && this.props.conversation.getState().messages.length === 1;
     };
 
     resizeHandler = (width: number, height: number) => {
@@ -145,6 +137,34 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             this.scroller.current.restorePreviousScroll();
         }
     };
+
+    renderMessage = (i: DataSourceMessageItem) => {
+        if (i.type === 'message') {
+            if (!i.isService) {
+                return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} />
+            }
+        }
+        return <div key={i.key} />;
+    }
+
+    renderLoad = () => <div key={'load'} />;
+
+    getScrollElement = (src: any) => src.children[0].children[0];
+
+    wrapper = (props: any) => (
+        <XScrollViewReversed
+            ref={this.scroller}
+            getScrollElement={this.getScrollElement}
+        >
+            <div className={scrollWrapper}>
+                <XView flexGrow={1} width="100%" position="absolute">
+                    <MessagesWrapper >
+                        {props.children}
+                    </MessagesWrapper>
+                </XView>
+            </div>
+        </XScrollViewReversed>
+    );
 
     render() {
 
@@ -170,29 +190,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         <DataSourceRender
                             dataSource={this.props.conversation.dataSource}
                             reverce={true}
-                            wrapWith={(props: any) =>
-                                <XScrollViewReversed
-                                    ref={this.scroller}
-                                    getScrollElement={(src: any) => src.children[0].children[0]}
-                                >
-                                    <div className={scrollWrapper}>
-                                        <XView flexGrow={1} width="100%" position="absolute">
-                                            <MessagesWrapper >
-                                                {props.children}
-                                            </MessagesWrapper>
-                                        </XView>
-                                    </div>
-                                </XScrollViewReversed>
-                            }
-                            renderItem={i => {
-                                if (i.type === 'message') {
-                                    if (!i.isService) {
-                                        return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} />
-                                    }
-                                }
-                                return <div key={i.key} />;
-                            }}
-                            renderLoading={() => <div key={'load'} />}
+                            wrapWith={this.wrapper}
+                            renderItem={this.renderMessage}
+                            renderLoading={this.renderLoad}
                         />
                     </XResizeDetector>
                 )}

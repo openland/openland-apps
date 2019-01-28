@@ -7,12 +7,12 @@ interface Dimensions {
     offsetHeight: number;
 }
 
-export class XScrollViewReversed extends React.Component<
+export class XScrollViewReversed extends React.PureComponent<
     {
         getScrollElement?: Function;
     },
     { inited: boolean }
-> {
+    > {
     state = {
         inited: false,
     };

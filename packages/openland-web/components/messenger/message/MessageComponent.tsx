@@ -138,6 +138,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
     > {
+
     static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
         // if (isServerMessage(props.message)) {
         //     if (props.messagesContext.editMessageId === props.message.id) {
@@ -344,6 +345,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     render() {
+        console.warn('MEssage render');
         let { message } = this.props;
         let content: any[] = [];
         let date: any = null;
