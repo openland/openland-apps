@@ -11,10 +11,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { Room_room_SharedRoom, RoomMemberRole, UserShort } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
-import { SDeferred } from 'react-native-s/SDeferred';
-import { RoomQuery, RoomSettingsUpdateMutation, RoomKickMutation, RoomInviteInfoQuery, RoomAddMembersMutation, RoomLeaveMutation, RoomUpdateMutation } from 'openland-api';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { UserView } from './components/UserView';
 import { useClient } from 'openland-mobile/utils/useClient';
 import { PromptBuilder, Prompt } from 'openland-mobile/components/Prompt';
@@ -24,9 +21,11 @@ import { UploadStatus } from 'openland-engines/messenger/types';
 import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 
-function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }) {
+function ProfileGroupComponent(props: PageProps & { id: string }) {
 
     const client = useClient();
+
+    const room = client.useRoom({ id: props.id }).room as Room_room_SharedRoom;
 
     const handleSend = React.useCallback(() => {
         props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id });
@@ -50,7 +49,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     try {
                         await client.mutateRoomUpdate({
                             input: { photoRef: completed },
-                            roomId: props.room.id
+                            roomId: room.id
                         });
                     } finally {
                         stopLoader();
@@ -64,7 +63,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
 
     const handleEdit = React.useCallback(() => {
         ActionSheet.builder()
-            .action(props.room.photo ? 'Change photo' : 'Set photo', () => {
+            .action(room.photo ? 'Change photo' : 'Set photo', () => {
                 new ActionSheetBuilder()
                     .action('Take Photo', async () => {
                         let res: PickerImage | null = null;
@@ -106,33 +105,33 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
             })
             .action('Change name', () => {
                 Prompt.builder()
-                    .title(props.room.kind === 'GROUP' ? 'Group name' : 'Room name')
-                    .value(props.room.title)
+                    .title(room.kind === 'GROUP' ? 'Group name' : 'Room name')
+                    .value(room.title)
                     .callback(async (src) => {
                         await client.mutateRoomUpdate({
                             input: { title: src },
-                            roomId: props.room!.id
+                            roomId: room.id
                         });
                     })
                     .show();
             })
             .action('Change about', () => {
                 new PromptBuilder()
-                    .title(props.room.kind === 'GROUP' ? 'Group about' : 'Room about')
-                    .value(props.room.description || '')
+                    .title(room.kind === 'GROUP' ? 'Group about' : 'Room about')
+                    .value(room.description || '')
                     .callback(async (src) => {
                         await client.mutateRoomUpdate({
                             input: { description: src },
-                            roomId: props.room!.id
+                            roomId: room.id
                         });
                     })
                     .show();
             })
             .show();
-    }, [props.room.id, props.room.title, props.room.photo, props.room.description]);
+    }, [room.id, room.title, room.photo, room.description]);
 
     const handleLeave = React.useCallback(() => {
-        Alert.builder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
+        Alert.builder().title(`Are you sure you want to leave ${room.kind === 'GROUP' ? 'and delete' : ''} ${room.title}?`)
             .button('Cancel', 'cancel')
             .action('Leave', 'destructive', async () => {
                 await client.mutateRoomLeave({ roomId: props.router.params.id });
@@ -175,7 +174,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 title: 'Add', action: async (users) => {
                     startLoader();
                     try {
-                        await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: props.room.id });
+                        await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: room.id });
                         props.router.back();
                     } catch (e) {
                         Alert.alert(e.message);
@@ -184,57 +183,57 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 }
             },
             'Add members',
-            props.room!.members.map(m => m.user.id),
-            { path: 'ChannelInviteLinkModal', pathParams: { id: props.room.id } }
+            room.members.map(m => m.user.id),
+            { path: 'ChannelInviteLinkModal', pathParams: { id: room.id } }
         );
     }, []);
 
-    const [nofications, setNotifications] = React.useState(!props.room.settings.mute);
+    const [nofications, setNotifications] = React.useState(!room.settings.mute);
 
     const handleNotifications = React.useCallback<{ (value: boolean): void }>((value) => {
         setNotifications(value);
-        client.mutateRoomSettingsUpdate({ roomId: props.room.id, settings: { mute: !value } });
+        client.mutateRoomSettingsUpdate({ roomId: room.id, settings: { mute: !value } });
     }, []);
 
-    const sortedMembers = props.room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
-    const subtitle = (props.room.membersCount || 0) > 1 ? props.room.membersCount + ' members' : (props.room.membersCount || 0) + 'member';
+    const sortedMembers = room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
+    const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + 'member';
 
     return (
         <>
-            {(props.room.role === 'ADMIN' || props.room.role === 'OWNER' || (props.room.role === 'MEMBER' && props.room.kind === 'GROUP')) && (
+            {(room.role === 'ADMIN' || room.role === 'OWNER' || (room.role === 'MEMBER' && room.kind === 'GROUP')) && (
                 <SHeaderButton
                     title="Edit"
                     onPress={handleEdit}
                 />
             )}
             <ZListItemHeader
-                titleIcon={props.room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
-                titleColor={props.room.kind === 'GROUP' ? 'green' : undefined}
-                title={props.room.title}
+                titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
+                titleColor={room.kind === 'GROUP' ? 'green' : undefined}
+                title={room.title}
                 subtitle={subtitle}
-                photo={props.room.photo}
-                id={props.room.id}
+                photo={room.photo}
+                id={room.id}
                 action="Send message"
                 onPress={handleSend}
             />
 
             <ZListItemGroup header="About" divider={false}>
-                {!!props.room.description && (
+                {!!room.description && (
                     <ZListItem
-                        text={props.room.description}
+                        text={room.description}
                         multiline={true}
                     />
                 )}
-                {!!props.room.organization && (
+                {!!room.organization && (
                     <ZListItem
-                        text={props.room.organization.name}
+                        text={room.organization.name}
                         leftAvatar={{
-                            photo: props.room.organization.photo,
-                            key: props.room.organization.id,
-                            title: props.room.organization.name
+                            photo: room.organization.photo,
+                            key: room.organization.id,
+                            title: room.organization.name
                         }}
                         path="ProfileOrganization"
-                        pathParams={{ id: props.room.organization.id }}
+                        pathParams={{ id: room.organization.id }}
                     />
                 )}
             </ZListItemGroup>
@@ -254,11 +253,11 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     leftIcon={require('assets/ic-add-24.png')}
                     onPress={handleAddMember}
                 />
-                {(props.room.role === 'ADMIN' || props.room.role === 'OWNER' || props.room.role === 'MEMBER') &&
+                {(room.role === 'ADMIN' || room.role === 'OWNER' || room.role === 'MEMBER') &&
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text="Invite to room with a link"
-                        onPress={() => props.router.present('ChannelInviteLinkModal', { id: props.room!.id })}
+                        onPress={() => props.router.present('ChannelInviteLinkModal', { id: room!.id })}
                         navigationIcon={false}
                     />}
 
@@ -278,7 +277,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
             <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
                 <ZListItem
                     leftIcon={require('assets/ic-leave-24.png')}
-                    text={`Leave ${props.room.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
+                    text={`Leave ${room.kind === 'PUBLIC' ? 'room' : 'and delete group'}`}
                     appearance="danger"
                     onPress={handleLeave}
                 />
@@ -293,21 +292,9 @@ class ProfileGroupComponentLoader extends React.Component<PageProps> {
         return (
             <>
                 <SHeader title="Info" />
-                <YQuery query={RoomQuery} variables={{ id: this.props.router.params.id }}>
-                    {(resp) => {
-                        let sharedRoom = resp.data && resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
-                        if (!sharedRoom || !(sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
-                            throw Error('');
-                        }
-                        return (
-                            <SScrollView>
-                                <SDeferred>
-                                    <ProfileGroupComponent {...this.props} room={sharedRoom} />
-                                </SDeferred>
-                            </SScrollView>
-                        );
-                    }}
-                </YQuery>
+                <SScrollView>
+                    <ProfileGroupComponent {...this.props} id={this.props.router.params.id} />
+                </SScrollView>
             </>
         );
     }

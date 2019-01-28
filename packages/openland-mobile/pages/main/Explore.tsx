@@ -5,17 +5,19 @@ import { Platform } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { ZQuery } from 'openland-mobile/components/ZQuery';
-import { AvailableRoomsQuery, RoomSearchQuery } from 'openland-api';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { AvailableRooms_rooms_SharedRoom } from 'openland-api/Types';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
-const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: AvailableRooms_rooms_SharedRoom[] }) => {
+const RoomsList = React.memo((props) => {
 
-    let src = props.rooms
+    let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms_SharedRoom[];
+    let featureds = getClient().useRoomSearch({ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }).items.edges.map((v) => v.node);
+
+    let src = rooms
         .filter((v) => !!v.membersCount)
         .sort((a, b) => ((b.membersCount || 0) - (a.membersCount || 0)));
 
@@ -24,7 +26,7 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: 
     let existingRooms = src
         .filter((v) => v.membership === 'MEMBER')
 
-    let featured = props.featured
+    let featured = featureds
         .filter((v) => newRooms.find((v2) => v.id !== v2.id))
         .filter((v) => existingRooms.find((v2) => v.id !== v2.id))
         .sort((a, b) => ((b.membersCount || 0) - (a.membersCount || 0)));
@@ -86,7 +88,7 @@ const RoomsList = (props: { rooms: AvailableRooms_rooms_SharedRoom[], featured: 
             </ZListItemGroup>
         </>
     )
-}
+});
 
 const ExplorePage = (props: PageProps) => {
     return (
@@ -99,21 +101,10 @@ const ExplorePage = (props: PageProps) => {
             )}
             <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => props.router.push('ComposeInitial')} />
             <SSearchControler searchRender={(p) => null}>
-
-                {/* <ZListItem text="People" />
-                    <ZListItem text="Communities" /> */}
-
-                <ZQuery query={AvailableRoomsQuery}>
-                    {resp => (
-                        <ZQuery query={RoomSearchQuery} variables={{ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }}>
-                            {resp2 => (
-                                <SScrollView>
-                                    <ZListItem text="Organizations" path="Organizations" />
-                                    <RoomsList rooms={resp.data.rooms as AvailableRooms_rooms_SharedRoom[]} featured={resp2.data.items.edges.map((v) => v.node)} />
-                                </SScrollView>)}
-                        </ZQuery>
-                    )}
-                </ZQuery>
+                <SScrollView>
+                    <ZListItem text="Organizations" path="Organizations" />
+                    <RoomsList />
+                </SScrollView>
             </SSearchControler>
         </>
     );

@@ -55,7 +55,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         (async () => {
             try {
                 let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
-                let userAccount: string | undefined = await AsyncStorage.getItem('openland-account-3');
+                let userAccount: string | undefined = undefined; // await AsyncStorage.getItem('openland-account-3');
                 let res: any;
                 if (userToken) {
                     this.setState({ state: 'loading' });

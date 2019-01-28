@@ -61,20 +61,6 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                     {!!this.props.resp.user.phone && <ZListItem title="Phone" text={'tel:' + this.props.resp.user.phone} copy={true} />}
                     {!!this.props.resp.user.website && <ZListItem title="Website" text={this.props.resp.user.website} copy={true} />}
                     {!!this.props.resp.user.location && <ZListItem title="Location" text={this.props.resp.user.location} copy={true} />}
-                    {/* {!!this.props.resp.user.primaryOrganization && (
-                        <ZListItem
-                            leftAvatar={{
-                                photo: this.props.resp.user.primaryOrganization.photo,
-                                key: this.props.resp.user.primaryOrganization.id,
-                                title: this.props.resp.user.primaryOrganization.name
-                            }}
-                            text={this.props.resp.user.primaryOrganization.name}
-                            description="Organization"
-                            // title="Organization"
-                            path="ProfileOrganization"
-                            pathParams={{ id: this.props.resp.user.primaryOrganization.id }}
-                        />
-                    )} */}
                 </ZListItemGroup>
 
                 <ZListItemGroup header="Organization" footer={null} divider={false}>

@@ -1,6 +1,8 @@
+import * as React from 'react';
 import { GraphqlClient, GraphqlQuery, GraphqlMutation, GraphqlActiveSubscription } from './GraphqlClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { Observable } from 'apollo-link';
+import { keyFromObject } from './utils/keyFromObject';
 
 class ApolloSubscription implements GraphqlActiveSubscription {
     private readonly client: ApolloGraphqlClient;
@@ -151,7 +153,55 @@ export class ApolloGraphqlClient implements GraphqlClient {
     }
 
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
-        return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
+        try {
+            return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
+        } catch (e) {
+            return null;
+        }
+    }
+
+    useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
+
+        // Build and wait for initial data
+        const observableQuery = React.useMemo(
+            () => this.client.client.watchQuery({ query: query.document, variables: vars }),
+            [query.document, keyFromObject(vars)]
+        );
+        console.log('1');
+
+        // Subsctibe for latest values
+        const [responseId, setResponseId] = React.useState(0);
+        console.log('2');
+        const currentResult = React.useMemo(() => {
+            return observableQuery.currentResult();
+        }, [responseId, observableQuery]);
+        console.log('3');
+        React.useEffect(() => {
+            const invalidateCurrentResult = () => setResponseId(x => x + 1);
+            let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
+            return () => {
+                subs.unsubscribe();
+            }
+        }, [observableQuery]);
+        console.log('4');
+
+        if (currentResult.errors && currentResult.errors.length > 0) {
+            throw Error();
+        }
+
+        if (currentResult.loading || currentResult.partial) {
+            throw observableQuery.result();
+        }
+
+        return currentResult.data as TQuery
+    }
+
+    readQuerySync<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
+        try {
+            return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
+        } catch (e) {
+            return null;
+        }
     }
 
     subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
