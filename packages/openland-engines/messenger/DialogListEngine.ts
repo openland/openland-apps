@@ -332,7 +332,7 @@ export class DialogListEngine {
                 return;
             }
 
-            let info = await this.engine.client.query(RoomQuery, {
+            let info = await this.engine.client.client.query(RoomQuery, {
                 id: conversationId,
             });
 
@@ -391,7 +391,7 @@ export class DialogListEngine {
             let res = await backoff(async () => {
                 try {
                     return await backoff(async () => {
-                        return await this.engine.client.query(DialogsQuery, {
+                        return await this.engine.client.client.query(DialogsQuery, {
                             ...(this.next !== undefined
                                 ? { after: this.next }
                                 : {}),

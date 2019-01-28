@@ -1,0 +1,11 @@
+{
+    "operations": [
+        { "name": "ConferenceQuery", "type": "query", "hasVariables": true },
+        { "name": "ConferenceJoinMutation", "type": "mutation", "hasVariables": true },
+        { "name": "ConferenceLeaveMutation", "type": "mutation", "hasVariables": true },
+        { "name": "ConferenceKeepAliveMutation", "type": "mutation", "hasVariables": true },
+        { "name": "ConferenceOfferMutation", "type": "mutation", "hasVariables": true },
+        { "name": "ConferenceAnswerMutation", "type": "mutation", "hasVariables": true },
+        { "name": "ConferenceCandidateMutation", "type": "mutation", "hasVariables": true }
+    ]
+}

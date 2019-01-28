@@ -29,10 +29,7 @@ export const resolveNextPageCompleteAction: (page?: string) => ((router: SRouter
 };
 
 next = async (router: SRouter) => {
-    let res = await backoff(async () => await getClient().client.query<any>({
-        query: AccountQuery.document,
-        fetchPolicy: 'network-only'
-    }));
-    let nextPage = resolveNextPage(res.data.sessionState, router.route);
+    let res = await backoff(async () => await getClient().queryAccount()); // TODO: Refetch!
+    let nextPage = resolveNextPage(res.sessionState, router.route);
     router.push(nextPage, { action: resolveNextPageCompleteAction(nextPage) });
 };

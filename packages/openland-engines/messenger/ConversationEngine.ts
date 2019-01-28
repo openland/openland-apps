@@ -179,7 +179,7 @@ export class ConversationEngine implements MessageSendHandler {
         console.info('Loading initial state for ' + this.conversationId);
         let initialChat = await backoff(async () => {
             try {
-                return await this.engine.client.query(RoomHistoryQuery, { roomId: this.conversationId });
+                return await this.engine.client.client.query(RoomHistoryQuery, { roomId: this.conversationId });
             } catch (e) {
                 console.warn(e);
                 throw e;
@@ -194,7 +194,7 @@ export class ConversationEngine implements MessageSendHandler {
         this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
         this.historyFullyLoaded = this.messages.length < CONVERSATION_PAGE_SIZE;
         console.info('Initial state for ' + this.conversationId);
-        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.state.state);
+        this.watcher = new SequenceModernWatcher('chat:' + this.conversationId, CHAT_SUBSCRIPTION, this.engine.client.client, this.updateHandler, undefined, { conversationId: this.conversationId }, initialChat.state.state);
         this.onMessagesUpdated();
 
         // Update Data Source
@@ -261,7 +261,7 @@ export class ConversationEngine implements MessageSendHandler {
             this.loadingHistory = id;
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, true, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
-            let loaded = await backoff(() => this.engine.client.query(RoomHistoryQuery, { roomId: this.conversationId, before: id }));
+            let loaded = await backoff(() => this.engine.client.client.query(RoomHistoryQuery, { roomId: this.conversationId, before: id }));
 
             let history = [...(loaded.messages as any as MessageFullFragment[])].filter((remote: MessageFullFragment) => this.messages.findIndex(local => isServerMessage(local) && local.id === remote.id) === -1);
             history.reverse();
@@ -449,7 +449,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handleMuteUpdated = async (mute: boolean) => {
-        await this.engine.client.updateQuery((data) => {
+        await this.engine.client.client.updateQuery((data) => {
             if (data.room) {
                 data.room.settings.mute = mute;
                 return data;
@@ -459,7 +459,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handleTitleUpdated = async (title: string) => {
-        await this.engine.client.updateQuery((data) => {
+        await this.engine.client.client.updateQuery((data) => {
             if (data.room && data.room.__typename === 'SharedRoom') {
                 data.room.title = title;
                 return data;
@@ -469,7 +469,7 @@ export class ConversationEngine implements MessageSendHandler {
     }
 
     handlePhotoUpdated = async (photo: string) => {
-        await this.engine.client.updateQuery((data) => {
+        await this.engine.client.client.updateQuery((data) => {
             if (data.room && data.room.__typename === 'SharedRoom') {
                 data.room.photo = photo;
                 return data;
@@ -499,7 +499,7 @@ export class ConversationEngine implements MessageSendHandler {
         }
         if (id !== null && id !== this.lastTopMessageRead) {
             this.lastTopMessageRead = id;
-            this.engine.client.mutate(RoomReadMutation, {
+            this.engine.client.client.mutate(RoomReadMutation, {
                 id: this.conversationId,
                 mid: id
             });
@@ -514,7 +514,7 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received new message');
 
             // Write message to store
-            await this.engine.client.updateQuery((data) => {
+            await this.engine.client.client.updateQuery((data) => {
                 data.messages = [event.message, ...data.messages];
                 return data;
             }, RoomHistoryQuery, { roomId: this.conversationId });
@@ -546,7 +546,7 @@ export class ConversationEngine implements MessageSendHandler {
             // Handle message
             console.info('Received delete message');
             // Write message to store
-            await this.engine.client.updateQuery((data) => {
+            await this.engine.client.client.updateQuery((data) => {
                 data.messages = data.messages.filter((m) => m.id !== event.message.id);
                 return data;
             }, RoomHistoryQuery, { roomId: this.conversationId });
@@ -567,7 +567,7 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received edit message');
 
             // Write message to store
-            await this.engine.client.updateQuery((data) => {
+            await this.engine.client.client.updateQuery((data) => {
                 data.messages = data.messages.map((m) => m.id !== event.message.id ? m : event.message);
                 return data;
             }, RoomHistoryQuery, { roomId: this.conversationId });

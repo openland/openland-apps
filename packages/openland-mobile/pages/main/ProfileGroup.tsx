@@ -48,7 +48,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 };
                 (async () => {
                     try {
-                        await client.mutate(RoomUpdateMutation, {
+                        await client.mutateRoomUpdate({
                             input: { photoRef: completed },
                             roomId: props.room.id
                         });
@@ -109,7 +109,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     .title(props.room.kind === 'GROUP' ? 'Group name' : 'Room name')
                     .value(props.room.title)
                     .callback(async (src) => {
-                        await client.mutate(RoomUpdateMutation, {
+                        await client.mutateRoomUpdate({
                             input: { title: src },
                             roomId: props.room!.id
                         });
@@ -121,7 +121,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     .title(props.room.kind === 'GROUP' ? 'Group about' : 'Room about')
                     .value(props.room.description || '')
                     .callback(async (src) => {
-                        await client.mutate(RoomUpdateMutation, {
+                        await client.mutateRoomUpdate({
                             input: { description: src },
                             roomId: props.room!.id
                         });
@@ -135,7 +135,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
         Alert.builder().title(`Are you sure you want to leave ${props.room.kind === 'GROUP' ? 'and delete' : ''} ${props.room.title}?`)
             .button('Cancel', 'cancel')
             .action('Leave', 'destructive', async () => {
-                await client.mutate(RoomLeaveMutation, { roomId: props.router.params.id });
+                await client.mutateRoomLeave({ roomId: props.router.params.id });
                 props.router.pushAndResetRoot('Home');
             })
             .show();
@@ -155,7 +155,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                     Alert.builder().title(`Are you sure you want to kick ${user.name}?`)
                         .button('Cancel', 'cancel')
                         .action('Kick', 'destructive', async () => {
-                            await client.mutate(RoomKickMutation, { userId: user.id, roomId: props.router.params.id });
+                            await client.mutateRoomKick({ userId: user.id, roomId: props.router.params.id });
                         })
                         .show();
                 },
@@ -175,7 +175,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
                 title: 'Add', action: async (users) => {
                     startLoader();
                     try {
-                        await client.mutate(RoomAddMembersMutation, { invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: props.room.id });
+                        await client.mutateRoomAddMembers({ invites: users.map(u => ({ userId: u.id, role: RoomMemberRole.MEMBER })), roomId: props.room.id });
                         props.router.back();
                     } catch (e) {
                         Alert.alert(e.message);
@@ -193,7 +193,7 @@ function ProfileGroupComponent(props: PageProps & { room: Room_room_SharedRoom }
 
     const handleNotifications = React.useCallback<{ (value: boolean): void }>((value) => {
         setNotifications(value);
-        client.mutate(RoomSettingsUpdateMutation, { roomId: props.room.id, settings: { mute: !value } });
+        client.mutateRoomSettingsUpdate({ roomId: props.room.id, settings: { mute: !value } });
     }, []);
 
     const sortedMembers = props.room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));

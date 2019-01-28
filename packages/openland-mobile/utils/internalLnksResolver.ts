@@ -12,7 +12,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             startLoader();
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.query(RoomInviteInfoQuery, { invite: uuid });
+                let info: any = await getMessenger().engine.client.queryRoomInviteInfo({ invite: uuid });
                 if (info && info.invite) {
                     let roomId = info.invite.room.id;
                     getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
@@ -35,7 +35,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             startLoader();
             try {
                 let uuid = link.split('/')[link.split('/').length - 1];
-                let info: any = await getMessenger().engine.client.query(AccountInviteInfoQuery, { inviteKey: uuid });
+                let info: any = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: uuid });
                 if (info && info.invite) {
                     let orgId = info.invite.orgId;
                     stopLoader();
@@ -44,7 +44,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                         .message(info.invite.creator.name + ' invites you to join ' + info.invite.title)
                         .button('Cancel', 'cancel')
                         .action('Accept invitation', 'default', async () => {
-                            await getMessenger().engine.client.mutate(AccountInviteJoinMutation, { inviteKey: uuid });
+                            await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: uuid });
                         })
                         .show();
                 } else {
@@ -87,7 +87,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
             return async () => {
                 startLoader();
                 try {
-                    let info: any = await getMessenger().engine.client.query(ResolveShortNameQuery, { shortname: shortName });
+                    let info: any = await getMessenger().engine.client.queryResolveShortName({ shortname: shortName });
                     if (info) {
                         if (info.item.__typename === 'User') {
                             getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.item.id });

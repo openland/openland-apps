@@ -1,6 +1,7 @@
 import { generate } from 'graphql-code-generator';
 import * as fs from 'fs';
 import * as path from 'path';
+import { generateApi } from './generateApi';
 
 // let documents = fs.readFileSync(__dirname + '/documents.handlebars', 'utf-8');
 
@@ -37,28 +38,41 @@ function prepareTemplate(file: string) {
         exports["default"] = config;
         `,
         'utf-8');
-    //     "use strict";
-    // exports.__esModule = true;
-    // var graphql_codegen_core_1 = require("graphql-codegen-core");
-    // var fs = require("fs");
-    // var documents = fs.readFileSync(__dirname + '/documents.handlebars', 'utf-8');
-    // var config = {
-    //     inputType: graphql_codegen_core_1.EInputType.PROJECT,
-    //     flattenTypes: true,
-    //     templates: {
-    //         index: documents
-    //     },
-    //     primitives: {
-    //         String: 'string',
-    //         Int: 'number',
-    //         Float: 'number',
-    //         Boolean: 'boolean',
-    //         ID: 'string'
-    //     },
-    //     filesExtension: '.types.ts'
-    //     // outFile: './out.ts'
-    // };
-    // exports["default"] = config;
+}
+
+function prepareTemplate2(file: string) {
+    fs.writeFileSync(
+        __dirname + '/_tmp2.js',
+        `
+        var c = require("graphql-codegen-core");
+        var fs = require("fs");
+        let documents = fs.readFileSync(__dirname + '/documents2.handlebars', 'utf-8');
+        var config = {
+            inputType: c.EInputType.SINGLE_FILE,
+            flattenTypes: true,
+            templates: {
+                index: documents
+            },
+            primitives: {
+                String: 'string',
+                Int: 'number',
+                Float: 'number',
+                Boolean: 'boolean',
+                ID: 'string'
+            },
+            customHelpers: {
+                ifEq: function(v1, v2, options) {
+                    if(v1 === v2) {
+                      return options.fn(this);
+                    }
+                    return options.inverse(this);
+                }
+            },
+            outFile: '${file}.json'
+        };
+        exports["default"] = config;
+        `,
+        'utf-8');
 }
 
 function postProcess(file: string) {
@@ -98,9 +112,14 @@ function postProcess(file: string) {
 }
 
 async function doIteration(file: string): Promise<{ import: string, contents: string }> {
+    
     console.warn('Processing ' + path.parse(file).base);
     prepareTemplate(file);
+    prepareTemplate2(file);
     delete require.cache[require.resolve('./_tmp.js')];
+    delete require.cache[require.resolve('./_tmp2.js')];
+
+    // First pass
     let genres = generate(
         {
             overwrite: true,
@@ -115,6 +134,23 @@ async function doIteration(file: string): Promise<{ import: string, contents: st
         setTimeout(() => { r(''); }, 500);
     });
     fs.unlinkSync(__dirname + '/_tmp.js');
+
+    // Second pass
+    let genres2 = generate(
+        {
+            overwrite: true,
+            template: path.resolve(__dirname + '/_tmp2.js'),
+            schema: path.resolve(__dirname + '/../../schema.json'),
+            args: [file]
+        },
+        true);
+    genres2.then((v) => console.warn('post2'));
+    await genres2;
+    await new Promise<string>((r) => {
+        setTimeout(() => { r(''); }, 500);
+    });
+    fs.unlinkSync(__dirname + '/_tmp2.js');
+    
     return postProcess(file);
 }
 
@@ -151,6 +187,9 @@ async function doConvert() {
     resContent += '\n';
     resContent += processed.map((v) => v.contents).join('\n');
     fs.writeFileSync(path.resolve(__dirname + '/../openland-api/index.ts'), resContent);
+
+    // Generate API class
+    generateApi();
 }
 
 doConvert();

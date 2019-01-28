@@ -3511,72 +3511,6 @@ export interface ConferenceKeepAliveVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: ConferenceWatch
-// ====================================================
-
-export interface ConferenceWatch_alphaConferenceWatch_peers_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface ConferenceWatch_alphaConferenceWatch_peers_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  shortname: string | null;
-  primaryOrganization: ConferenceWatch_alphaConferenceWatch_peers_user_primaryOrganization | null;
-}
-
-export interface ConferenceWatch_alphaConferenceWatch_peers_connection {
-  __typename: "ConferencePeerConnection";
-  state: ConferencePeerConnectionState;
-  sdp: string | null;
-  ice: string[];
-}
-
-export interface ConferenceWatch_alphaConferenceWatch_peers {
-  __typename: "ConferencePeer";
-  id: string;
-  user: ConferenceWatch_alphaConferenceWatch_peers_user;
-  connection: ConferenceWatch_alphaConferenceWatch_peers_connection | null;
-}
-
-export interface ConferenceWatch_alphaConferenceWatch_iceServers {
-  __typename: "ICEServer";
-  urls: string[];
-  username: string | null;
-  credential: string | null;
-}
-
-export interface ConferenceWatch_alphaConferenceWatch {
-  __typename: "Conference";
-  id: string;
-  peers: ConferenceWatch_alphaConferenceWatch_peers[];
-  iceServers: ConferenceWatch_alphaConferenceWatch_iceServers[];
-}
-
-export interface ConferenceWatch {
-  alphaConferenceWatch: ConferenceWatch_alphaConferenceWatch;
-}
-
-export interface ConferenceWatchVariables {
-  id: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: ConferenceOffer
 // ====================================================
 
@@ -5355,6 +5289,22 @@ export interface SettingsUpdate {
 
 export interface SettingsUpdateVariables {
   input?: UpdateSettingsInput | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: PersistEvents
+// ====================================================
+
+export interface PersistEvents {
+  track: string;
+}
+
+export interface PersistEventsVariables {
+  did: string;
+  events: Event[];
 }
 
 /* tslint:disable */
@@ -9193,6 +9143,12 @@ export interface CreateProfileInput {
   linkedin?: string | null;
   twitter?: string | null;
   primaryOrganization?: string | null;
+}
+
+export interface Event {
+  id: string;
+  event: string;
+  params?: string | null;
 }
 
 export interface ImageCropInput {

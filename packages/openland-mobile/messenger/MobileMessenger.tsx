@@ -276,7 +276,7 @@ export class MobileMessenger {
                         .callback(async (text) => {
                             startLoader();
                             try {
-                                await this.engine.client.mutate(RoomEditMessageMutation, { messageId: message.id!, message: text });
+                                await this.engine.client.mutateRoomEditMessage({ messageId: message.id!, message: text });
                             } catch (e) {
                                 Alert.alert(e.message);
                             }
@@ -294,7 +294,7 @@ export class MobileMessenger {
                         .message('Are you sure you want to delete this message?')
                         .button('Cancel', 'cancel')
                         .action('Delete', 'destructive', async () => {
-                            await this.engine.client.mutate(RoomDeleteMessageMutation, { messageId: message.id! });
+                            await this.engine.client.mutateRoomDeleteMessage({ messageId: message.id! });
                         }).show();
                 } catch (e) {
                     Alert.alert(e.message);
@@ -309,9 +309,9 @@ export class MobileMessenger {
                     try {
                         let remove = message.reactions && message.reactions.filter(userReaction => userReaction.user.id === this.engine.user.id && userReaction.reaction === r).length > 0;
                         if (remove) {
-                            this.engine.client.mutate(MessageUnsetReactionMutation, { messageId: message.id!, reaction: r });
+                            this.engine.client.mutateMessageUnsetReaction({ messageId: message.id!, reaction: r });
                         } else {
-                            this.engine.client.mutate(MessageSetReactionMutation, { messageId: message.id!, reaction: r });
+                            this.engine.client.mutateMessageSetReaction({ messageId: message.id!, reaction: r });
                         }
                     } catch (e) {
                         Alert.alert(e.message);

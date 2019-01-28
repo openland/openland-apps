@@ -1,6 +1,5 @@
 import { MessengerEngine } from './MessengerEngine';
 import { backoff, delayBreakable } from 'openland-y-utils/timer';
-import { ReportOnlineMutation } from 'openland-api/ReportOnlineMutation';
 
 export class OnlineReportEngine {
     readonly engine: MessengerEngine;
@@ -14,7 +13,7 @@ export class OnlineReportEngine {
         (async () => {
             while (this.alive) {
                 let active = this.visible;
-                await backoff(async () => engine.client.mutate(ReportOnlineMutation, { active: active }));
+                await backoff(async () => engine.client.mutateReportOnline({ active: active }));
                 if (this.visible !== active) {
                     continue;
                 }

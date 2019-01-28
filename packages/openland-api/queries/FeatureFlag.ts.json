@@ -1,0 +1,8 @@
+{
+    "operations": [
+        { "name": "FeatureFlagsQuery", "type": "query", "hasVariables": false },
+        { "name": "FeatureFlagAddMutation", "type": "mutation", "hasVariables": true },
+        { "name": "FeatureFlagEnableMutation", "type": "mutation", "hasVariables": true },
+        { "name": "FeatureFlagDisableMutation", "type": "mutation", "hasVariables": true }
+    ]
+}

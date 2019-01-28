@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 const SUBSCRIBE_ONLINES = gql`
     subscription SubscribeOnlines($conversations: [ID!]!) {
@@ -29,15 +29,15 @@ export class OnlineWatcher {
 
     private listeners: ((data: {}) => void)[] = [];
     private singleChangeListeners: ((user: string, online: boolean) => void)[] = [];
-    private client: GraphqlClient;
-    constructor(client: GraphqlClient) {
+    private client: OpenlandClient;
+    constructor(client: OpenlandClient) {
         this.client = client;
     }
 
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        this.sub = this.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
+        this.sub = this.client.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
 
         (async () => {
             while (true) {

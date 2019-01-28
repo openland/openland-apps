@@ -12,6 +12,8 @@ import { YMutation } from 'openland-y-graphql/YMutation';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -34,22 +36,20 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
                                 <ZListItemGroup >
                                     <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/join/${data.data!.publicInvite!.key}`)} />
                                     <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/join/${data.data!.publicInvite!.key}` })} />
-                                    <YMutation mutation={OrganizationCreatePublicInviteMutation} variables={{ organizationId: this.props.router.params.id }} refetchQueriesVars={[{ query: OrganizationPublicInviteQuery, variables: { organizationId: this.props.router.params.id } }]}>
-                                        {renew => <ZListItem
-                                            appearance="action"
-                                            text="Renew link"
-                                            onPress={async () => {
-                                                startLoader();
-                                                try {
-                                                    await renew({ variables: { organizationId: this.props.router.params.id } });
-                                                } catch (e) {
-                                                    Alert.alert(formatError(e));
-                                                }
-                                                stopLoader();
+                                    <ZListItem
+                                        appearance="action"
+                                        text="Renew link"
+                                        onPress={async () => {
+                                            startLoader();
+                                            try {
+                                                await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: this.props.router.params.id });
+                                            } catch (e) {
+                                                Alert.alert(formatError(e));
+                                            }
+                                            stopLoader();
 
-                                            }}
-                                        />}
-                                    </YMutation>
+                                        }}
+                                    />
                                 </ZListItemGroup>
                             </>)}
 

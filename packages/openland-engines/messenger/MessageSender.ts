@@ -3,6 +3,7 @@ import { SendMessageMutation } from 'openland-api/SendMessageMutation';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { UploadingFile, UploadStatus } from './types';
 import { MessageFull_mentions } from 'openland-api/Types';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 export interface MessageSendHandler {
     onProgress(key: string, progress: number): void;
     onCompleted(key: string): void;
@@ -13,16 +14,16 @@ type MessageBodyT = {
     conversationId: string;
     message: string | null;
     file: string | null;
-    replyMessages: number[] | null;
+    replyMessages: string[] | null;
     mentions: MessageFull_mentions[] | null;
 };
 
 export class MessageSender {
-    private client: OpenApolloClient;
+    private client: OpenlandClient;
     private uploadedFiles = new Map<string, string>();
     private pending = new Map<string, MessageBodyT>();
 
-    constructor(client: OpenApolloClient) {
+    constructor(client: OpenlandClient) {
         this.client = client;
     }
 
@@ -189,14 +190,13 @@ export class MessageSender {
         (async () => {
             let start = Date.now();
             try {
-                await this.client.client.mutate({
-                    mutation: SendMessageMutation.document,
-                    variables: {
-                        repeatKey: key,
-                        mentions: mentionsToStrings ? mentionsToStrings.map(({ id }) => id) : null,
-                        ...restMessageBody,
-                        roomId: conversationId
-                    }
+                await this.client.mutateSendMessage({
+                    repeatKey: key,
+                    mentions: mentionsToStrings ? mentionsToStrings.map(({ id }) => id) : null,
+                    message,
+                    file,
+                    replyMessages,
+                    room: conversationId
                 });
             } catch (e) {
                 if (

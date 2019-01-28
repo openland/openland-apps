@@ -1,6 +1,6 @@
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import gql from 'graphql-tag';
-import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 const SUBSCRIBE_TYPINGS = gql`
     subscription SubscribeTypings {
@@ -42,9 +42,9 @@ export class TypingsWatcher {
     private subscription: GraphqlActiveSubscription;
     private onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void;
 
-    constructor(client: GraphqlClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
+    constructor(client: OpenlandClient, onChange: (conversationId: string, data?: { typing: string, users: TypingsUser[] }) => void, currentuserId: string) {
         this.onChange = onChange;
-        this.subscription = client.subscribe(SUBSCRIBE_TYPINGS);
+        this.subscription = client.client.subscribe(SUBSCRIBE_TYPINGS);
 
         this.start(currentuserId);
     }

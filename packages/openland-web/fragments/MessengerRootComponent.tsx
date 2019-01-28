@@ -219,7 +219,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         let curLength = text.length;
 
         if (prevLength < curLength) {
-            await this.props.messenger.client.mutate(SetTypingMutation, {
+            await this.props.messenger.client.mutateSetTyping({
                 conversationId: this.props.conversationId,
             });
         }

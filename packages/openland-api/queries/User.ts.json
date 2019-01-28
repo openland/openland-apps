@@ -1,0 +1,9 @@
+{
+    "operations": [
+        { "name": "UsersQuery", "type": "query", "hasVariables": true },
+        { "name": "UserQuery", "type": "query", "hasVariables": true },
+        { "name": "OnlineQuery", "type": "query", "hasVariables": true },
+        { "name": "ExplorePeopleQuery", "type": "query", "hasVariables": true },
+        { "name": "ResolveShortNameQuery", "type": "query", "hasVariables": true }
+    ]
+}

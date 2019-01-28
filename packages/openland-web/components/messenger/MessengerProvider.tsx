@@ -3,6 +3,8 @@ import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { UserShort } from 'openland-api/Types';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
 
 let cachedMessenger: MessengerEngine | null = null;
 
@@ -15,10 +17,10 @@ const Messenger = (props: { currentUser: UserShort; children?: any }) => {
                         throw Error('Unable to get apollo');
                     }
                     if (!cachedMessenger) {
-                        cachedMessenger = new MessengerEngine(apollo, props.currentUser);
+                        cachedMessenger = new MessengerEngine(new OpenlandClient(new ApolloGraphqlClient(apollo)), props.currentUser);
                     }
                     return (
-                        <MessengerContext.Provider value={cachedMessenger}>
+                        <MessengerContext.Provider value={cachedMessenger!}>
                             {props.children}
                         </MessengerContext.Provider>
                     );

@@ -13,6 +13,7 @@ import * as Feed from './queries/Feed';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Settings from './queries/Settings';
+import * as Track from './queries/Track';
 import * as User from './queries/User';
 
 export const AccountQuery = typedQuery<Types.Account, {}>(Account.AccountQuery);
@@ -82,7 +83,6 @@ export const ConferenceQuery = typedQuery<Types.Conference, Types.ConferenceVari
 export const ConferenceJoinMutation = typedMutation<Types.ConferenceJoin, Types.ConferenceJoinVariables>(Conferences.ConferenceJoinMutation);
 export const ConferenceLeaveMutation = typedMutation<Types.ConferenceLeave, Types.ConferenceLeaveVariables>(Conferences.ConferenceLeaveMutation);
 export const ConferenceKeepAliveMutation = typedMutation<Types.ConferenceKeepAlive, Types.ConferenceKeepAliveVariables>(Conferences.ConferenceKeepAliveMutation);
-export const ConferenceWatchSubscription = typedQuery<Types.ConferenceWatch, Types.ConferenceWatchVariables>(Conferences.ConferenceWatchSubscription);
 export const ConferenceOfferMutation = typedMutation<Types.ConferenceOffer, Types.ConferenceOfferVariables>(Conferences.ConferenceOfferMutation);
 export const ConferenceAnswerMutation = typedMutation<Types.ConferenceAnswer, Types.ConferenceAnswerVariables>(Conferences.ConferenceAnswerMutation);
 export const ConferenceCandidateMutation = typedMutation<Types.ConferenceCandidate, Types.ConferenceCandidateVariables>(Conferences.ConferenceCandidateMutation);
@@ -131,6 +131,7 @@ export const SetUserShortnameMutation = typedMutation<Types.SetUserShortname, Ty
 export const ProfileCreateMutation = typedMutation<Types.ProfileCreate, Types.ProfileCreateVariables>(Settings.ProfileCreateMutation);
 export const SettingsQuery = typedQuery<Types.Settings, {}>(Settings.SettingsQuery);
 export const SettingsUpdateMutation = typedMutation<Types.SettingsUpdate, Types.SettingsUpdateVariables>(Settings.SettingsUpdateMutation);
+export const PersistEventsMutation = typedMutation<Types.PersistEvents, Types.PersistEventsVariables>(Track.PersistEventsMutation);
 export const UsersQuery = typedQuery<Types.Users, Types.UsersVariables>(User.UsersQuery);
 export const UserQuery = typedQuery<Types.User, Types.UserVariables>(User.UserQuery);
 export const OnlineQuery = typedQuery<Types.Online, Types.OnlineVariables>(User.OnlineQuery);

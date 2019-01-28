@@ -1,24 +1,17 @@
 import { AppStorage } from 'openland-y-runtime-native/AppStorage';
 import uuid from 'uuid/v4';
-import ApolloClient from 'apollo-client';
-import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
-
-const Persist = gql`
-    mutation PersistEvents($did: String!, $events: [Event!]!) {
-        track(did: $did, events: $events)
-    }
-`;
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 class TrackingEngine {
 
-    private client!: ApolloClient<{}>;
+    private client!: OpenlandClient;
     private initPromise: Promise<void> | undefined;
     private deviceId!: string;
     private pending: { id: string, event: string, params?: string }[] = [];
     private isSending = false;
 
-    setClient(client: ApolloClient<{}>) {
+    setClient(client: OpenlandClient) {
         if (!this.client) {
             this.client = client;
             this.flush();
@@ -63,15 +56,10 @@ class TrackingEngine {
         let events = [...this.pending];
         this.pending = [];
         await backoff(async () => {
-            let res = await this.client.mutate({
-                mutation: Persist, variables: {
-                    did: this.deviceId,
-                    events: events
-                }
+            await this.client.mutatePersistEvents({
+                did: this.deviceId,
+                events: events
             });
-            if (res.errors && res.errors.length > 0) {
-                throw Error('Error during persisting event');
-            }
         })
 
         this.isSending = false;

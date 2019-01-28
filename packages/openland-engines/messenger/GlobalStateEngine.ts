@@ -117,13 +117,13 @@ export class GlobalStateEngine {
 
         // Loading settings
         let settings = backoff(async () => {
-            return await this.engine.client.query(SettingsQuery);
+            return await this.engine.client.client.query(SettingsQuery);
         });
 
         // Loading initial chat state
         let start = Date.now();
         let res = (await backoff(async () => {
-            return await this.engine.client.query(DialogsQuery);
+            return await this.engine.client.client.query(DialogsQuery);
         }));
         await settings;
         console.log('Dialogs loaded in ' + (Date.now() - start) + ' ms');
@@ -132,10 +132,10 @@ export class GlobalStateEngine {
         this.engine.dialogList.handleInitialDialogs((res as any).dialogs.items, (res as any).dialogs.cursor);
 
         // Starting Sequence Watcher
-        this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
+        this.watcher = new SequenceModernWatcher('global', GLOBAL_SUBSCRIPTION, this.engine.client.client, this.handleGlobalEvent, this.handleSeqUpdated, undefined, (res as any).state.state);
 
         // Subscribe for settings update
-        let settingsSubscription = this.engine.client.subscribe(SUBSCRIBE_SETTINGS);
+        let settingsSubscription = this.engine.client.client.subscribe(SUBSCRIBE_SETTINGS);
         (async () => {
             while (true) {
                 await settingsSubscription.get();
@@ -145,7 +145,7 @@ export class GlobalStateEngine {
     }
 
     resolvePrivateConversation = async (uid: string) => {
-        let res = await this.engine.client.query(RoomQuery, { id: uid });
+        let res = await this.engine.client.client.query(RoomQuery, { id: uid });
         return {
             id: (res as any).room.id as string,
             flexibleId: uid
@@ -153,7 +153,7 @@ export class GlobalStateEngine {
     }
 
     resolveGroup = async (uids: string[]) => {
-        let res = await this.engine.client.query(ChatSearchGroupQuery, { members: uids });
+        let res = await this.engine.client.client.query(ChatSearchGroupQuery, { members: uids });
         if (!(res as any).group) {
             return null;
         }
@@ -198,7 +198,7 @@ export class GlobalStateEngine {
             this.lastReportedSeq = this.maxSeq;
             let seq = this.maxSeq;
             (async () => {
-                backoff(() => this.engine.client.mutate(MarkSequenceReadMutation, { seq }));
+                backoff(() => this.engine.client.client.mutate(MarkSequenceReadMutation, { seq }));
             })();
         }
     }
@@ -299,7 +299,7 @@ export class GlobalStateEngine {
         // Update counter anywhere in the app
         //
 
-        await this.engine.client.updateQuery((data) => {
+        await this.engine.client.client.updateQuery((data) => {
             if (visible) {
                 if (data.counter.unreadCount < counter) {
                     return null;

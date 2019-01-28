@@ -256,7 +256,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                 });
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
-                let res = await this.props.messenger.client.mutate(RoomCreateMutation, {
+                let res = await this.props.messenger.client.mutateRoomCreate({
                     kind: SharedRoomKind.GROUP,
                     message: msg,
                     title: this.state.values.map(v => v.label).join(', '),

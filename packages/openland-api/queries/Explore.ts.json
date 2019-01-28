@@ -1,0 +1,3 @@
+{
+    "operations": [{ "name": "AvailableRoomsQuery", "type": "query", "hasVariables": false }]
+}

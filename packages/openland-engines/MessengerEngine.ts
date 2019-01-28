@@ -12,10 +12,11 @@ import { DialogListEngine } from './messenger/DialogListEngine';
 import { OnlineReportEngine } from './OnlineReportEngine';
 import { GraphqlClient } from 'openland-graphql/GraphqlClient';
 import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 export class MessengerEngine {
 
-    readonly client: GraphqlClient;
+    readonly client: OpenlandClient;
     readonly sender: MessageSender;
     readonly dialogList: DialogListEngine;
     readonly global: GlobalStateEngine;
@@ -33,9 +34,9 @@ export class MessengerEngine {
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(client: OpenApolloClient, user: UserShort) {
+    constructor(client: OpenlandClient, user: UserShort) {
 
-        this.client = new ApolloGraphqlClient(client);
+        this.client = client;
         this.user = user;
 
         // Onlines

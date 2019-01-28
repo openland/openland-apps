@@ -229,7 +229,7 @@ class ProfileOrganizationComponent extends React.Component<PageProps> {
                                                                                     action: async (users) => {
                                                                                         startLoader();
                                                                                         try {
-                                                                                            await getMessenger().engine.client.mutate(OrganizationAddMemberMutation, { userIds: users.map(u => u.id), organizationId: resp.data.organization.id })
+                                                                                            await getMessenger().engine.client.mutateOrganizationAddMember({ userIds: users.map(u => u.id), organizationId: resp.data.organization.id })
                                                                                         } catch (e) {
                                                                                             Alert.alert(formatError(e));
                                                                                         }

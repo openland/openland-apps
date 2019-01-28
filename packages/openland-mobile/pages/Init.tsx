@@ -19,6 +19,7 @@ import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -55,21 +56,17 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             try {
                 let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
                 let userAccount: string | undefined = await AsyncStorage.getItem('openland-account-3');
-                let res;
+                let res: any;
                 if (userToken) {
                     this.setState({ state: 'loading' });
                     let client = buildNativeClient(userToken);
                     saveClient(client);
-                    res = userAccount ? JSON.parse(userAccount) : (await backoff(async () => await getClient().client.query<any>({
-                        query: AccountQuery.document
-                    }))).data;
+                    res = userAccount ? JSON.parse(userAccount) : (await backoff(async () => await getClient().queryAccount()));
 
                     // Refresh
                     if (userAccount) {
-                        getClient().client.writeQuery({ query: AccountQuery.document, data: res });
-                        backoff(async () => await getClient().client.query<any>({
-                            query: AccountQuery.document
-                        }))
+                        getClient().client.updateQuery((data) => res, AccountQuery);
+                        backoff(async () => await getClient().queryAccount())
                     }
 
                     let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState, 'SignupUser') : undefined;
@@ -115,8 +112,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return <ZLoader appearance="large" />;
         } else if (this.state.state === 'app') {
             return (
-                <YApolloProvider client={getClient()}>
-                    <PushManager client={getClient()} />
+                <YApolloProvider client={(getClient().client as ApolloGraphqlClient).client}>
+                    <PushManager client={(getClient().client as ApolloGraphqlClient).client} />
                     <MobileMessengerContext.Provider value={getMessenger()}>
                         <MessengerContext.Provider value={getMessenger().engine}>
                             <View style={{ width: '100%', height: '100%' }}>
@@ -138,7 +135,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             );
         } else if (this.state.state === 'signup') {
             return (
-                <YApolloProvider client={getClient()}>
+                <YApolloProvider client={(getClient().client as ApolloGraphqlClient).client}>
                     <View style={{ width: '100%', height: '100%' }}>
                         <ZModalProvider>
                             <Root routing={this.history} />

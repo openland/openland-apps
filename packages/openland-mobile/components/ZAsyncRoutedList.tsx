@@ -63,16 +63,16 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
         if (!this.isLoading) {
             (async () => {
                 this.isLoading = true;
-                let loaded = await backoff(async () => await getClient().query(this.props.query, { ...(this.props.variables as any), page: this.nextPage }));
-                let items = loaded.data.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
-                if (loaded.data.items.pageInfo.hasNextPage) {
-                    this.nextCursor = loaded.data.items.edges[loaded.data.items.edges.length - 1].cursor;
+                let loaded = await backoff(async () => await getClient().client.query(this.props.query, { ...(this.props.variables as any), page: this.nextPage }));
+                let items = loaded.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
+                if (loaded.items.pageInfo.hasNextPage) {
+                    this.nextCursor = loaded.items.edges[loaded.items.edges.length - 1].cursor;
                 } else {
                     this.nextCursor = undefined;
                 }
                 this.nextPage++;
                 this.isLoading = false;
-                this.dataSource.loadedMore(items, !loaded.data.items.pageInfo.hasNextPage);
+                this.dataSource.loadedMore(items, !loaded.items.pageInfo.hasNextPage);
             })();
         }
     }
@@ -89,16 +89,16 @@ export class ZAsyncRoutedList<Q, V> extends React.PureComponent<ZAsyncRoutedList
         (async () => {
             this.isLoading = true;
             this.setState({ loading: true });
-            let loaded = await backoff(async () => await getClient().query(this.props.query, this.props.variables));
-            let items = loaded.data.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
-            if (loaded.data.items.pageInfo.hasNextPage) {
-                this.nextCursor = loaded.data.items.edges[loaded.data.items.edges.length - 1].cursor;
+            let loaded = await backoff(async () => await getClient().client.query(this.props.query, this.props.variables));
+            let items = loaded.items.edges.map((v) => ({ key: (v.node as any).id, value: v.node }));
+            if (loaded.items.pageInfo.hasNextPage) {
+                this.nextCursor = loaded.items.edges[loaded.items.edges.length - 1].cursor;
             } else if (items.length === 0) {
                 this.setState({ empty: true });
             }
             this.isLoading = false;
             this.setState({ loading: false });
-            this.dataSource.initialize(items, !loaded.data.items.pageInfo.hasNextPage);
+            this.dataSource.initialize(items, !loaded.items.pageInfo.hasNextPage);
         })();
     }
     render() {

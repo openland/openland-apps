@@ -67,7 +67,7 @@ class ComposeModalComponent extends React.PureComponent<PageProps & { messenger:
                             });
                             // this.props.navigation.replace('Conversation', { id: id.id });
                         } else {
-                            let res = await this.props.messenger.client.mutate(RoomCreateMutation, {
+                            let res = await this.props.messenger.client.mutateRoomCreate({
                                 kind: SharedRoomKind.GROUP,
                                 message: msg,
                                 members: ids

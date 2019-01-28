@@ -45,16 +45,6 @@ export const ConferenceKeepAliveMutation = gql`
     ${UserShort}
 `;
 
-export const  ConferenceWatchSubscription = gql`
-    subscription ConferenceWatch($id: ID!) {
-        alphaConferenceWatch(id: $id) {
-            ...ConferenceFull
-        }
-    }
-    ${ConferenceFull}
-    ${UserShort}
-`;
-
 export const ConferenceOfferMutation = gql`
     mutation ConferenceOffer($id: ID!, $ownPeerId: ID!, $peerId: ID!, $offer: String!) {
         peerConnectionOffer(id: $id, peerId: $peerId, ownPeerId: $ownPeerId, offer: $offer) {
