@@ -41,7 +41,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
 
     render() {
         let { community, path, customButton, customMenu, extraMenu } = this.props;
-        let roomsCount = community.channels.filter(c => c && !c.hidden).length;
+        let roomsCount = community.channels.length;
 
         let button = this.state.isHovered ? (
             typeof customButton === 'undefined' ? (
