@@ -25,6 +25,10 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './CreatePostComponent';
+import { XListView } from 'openland-web/components/XListView';
+import { DataSourceRender } from 'openland-web/components/messenger/view/DataSourceRender';
+import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
+import { MessagesContainer } from 'openland-web/components/messenger/view/MessagesContainer';
 
 export interface File {
     uuid: string;
@@ -346,32 +350,12 @@ interface MessengerRootComponentProps {
     cloudImageUuid?: string;
 }
 
-const MessagesWithUser = withUserInfo(props => (
-    <MessagesComponent
-        me={props.user}
-        loading={false}
-        organizationId={props.organizationId}
-        conversationId={props.conversationId}
-        messenger={props.messenger}
-        conversationType={props.conversationType}
-        objectName={props.objectName}
-        objectId={props.objectId}
-        cloudImageUuid={props.cloudImageUuid}
-    />
-)) as React.ComponentType<{
-    conversationId: string;
-    organizationId: string | null;
-    messenger: any;
-    conversationType: SharedRoomKind | 'PRIVATE';
-    objectName: string;
-    objectId?: string;
-    cloudImageUuid?: string;
-}>;
-
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     return (
-        <MessagesWithUser
+        <MessagesComponent
+            me={messenger.user}
+            loading={false}
             organizationId={props.organizationId}
             conversationId={props.conversationId}
             messenger={messenger}

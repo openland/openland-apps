@@ -10,6 +10,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { MessageFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -38,12 +39,12 @@ const TextInputWrapper = Glamorous.div({
 
 export type XTextInputProps =
     | {
-          kind: 'from_store';
-          valueStoreKey: string;
-      }
+        kind: 'from_store';
+        valueStoreKey: string;
+    }
     | {
-          kind: 'controlled';
-      } & XRichTextInputProps;
+        kind: 'controlled';
+    } & XRichTextInputProps;
 
 class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
     onChangeHandler = (value: string) => {
@@ -151,7 +152,7 @@ const EditMessageInline = withEditMessage(props => {
 }) as React.ComponentType<{ id: string; text: string | null; onClose: any }>;
 
 export class EditMessageInlineWrapper extends React.Component<{
-    message: MessageFull;
+    message: DataSourceMessageItem;
     onClose: any;
 }> {
     onCloseHandler = () => {
@@ -170,8 +171,8 @@ export class EditMessageInlineWrapper extends React.Component<{
                 }}
             >
                 <EditMessageInline
-                    id={this.props.message.id}
-                    text={this.props.message.message}
+                    id={this.props.message.id!}
+                    text={this.props.message.text!}
                     onClose={this.onCloseHandler}
                 />
             </XShortcuts>

@@ -11,6 +11,7 @@ import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import { DataSourceRender } from './DataSourceRender';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -146,125 +147,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     };
 
     render() {
-        let messages: any[] = [];
-        let prevDate: string | undefined;
-        let prevMessageDate: number | undefined = undefined;
-        let prevMessageSender: string | undefined = undefined;
-        let currentCollapsed = 0;
-        let appendDateIfNeeded = (date: number) => {
-            let dstr = dateFormat(date);
-            if (dstr !== prevDate) {
-                messages.push(
-                    <XView
-                        key={'date-' + dstr}
-                        justifyContent="center"
-                        alignItems="center"
-                        zIndex={1}
-                        marginTop={24}
-                        marginBottom={0}
-                    >
-                        <XView
-                            justifyContent="center"
-                            alignItems="center"
-                            backgroundColor="#ffffff"
-                            borderRadius={50}
-                            paddingLeft={10}
-                            paddingRight={10}
-                            paddingTop={2}
-                            paddingBottom={2}
-                        >
-                            <XView fontSize={13} color="#99A2B0">
-                                {dstr}
-                            </XView>
-                        </XView>
-                    </XView>,
-                );
-                prevDate = dstr;
-                prevMessageDate = undefined;
-                prevMessageSender = undefined;
-                currentCollapsed = 0;
-            }
-        };
-        let shouldCompact = (sender: string, date: number) => {
-            if (prevMessageSender === sender && prevMessageDate !== undefined) {
-                let delta = prevMessageDate - date;
-
-                // 1 hour
-                if (delta * -1 > 3600000) {
-                    prevMessageDate = date;
-                    currentCollapsed = 0;
-                    return false;
-                }
-                // 10 sec
-                if (delta < 10000 && currentCollapsed < 10) {
-                    prevMessageDate = date;
-                    currentCollapsed++;
-                    return true;
-                }
-            }
-            prevMessageDate = date;
-            prevMessageSender = sender;
-            currentCollapsed = 0;
-            return false;
-        };
-
-        for (let i = 0; i < this.props.messages.length; i++) {
-            const prevMessage = i === 0 ? null : this.props.messages[i - 1];
-            const isPrevMessageService = prevMessage && prevMessage.isService;
-            const m = this.props.messages[i];
-            let date = parseInt(m.date, 10);
-            appendDateIfNeeded(date);
-            if (isServerMessage(m)) {
-                messages.push(
-                    <MessageComponent
-                        key={'message-' + m.id}
-                        compact={shouldCompact(m.sender.id, date) && !isPrevMessageService}
-                        sender={m.sender as any}
-                        message={m}
-                        conversation={this.props.conversation}
-                        out={!!(this.props.me && this.props.me.id === m.sender.id)}
-                        me={this.props.me}
-                        conversationType={this.props.conversationType}
-                        conversationId={this.props.conversationId}
-                        editPostHandler={this.props.editPostHandler}
-                    />,
-                );
-            } else {
-                messages.push(
-                    <MessageComponent
-                        key={'pending-' + m.key}
-                        compact={shouldCompact(this.props.conversation.engine.user.id, date)}
-                        sender={this.props.conversation.engine.user}
-                        message={m}
-                        conversation={this.props.conversation}
-                        out={true}
-                        me={this.props.me}
-                        conversationType={this.props.conversationType}
-                        conversationId={this.props.conversationId}
-                        editPostHandler={this.props.editPostHandler}
-                    />,
-                );
-            }
-        }
-
-        let serverMessages = this.props.messages.filter(m => isServerMessage(m));
-        let lastMessage = serverMessages[0];
-
-        lastMessageId = '';
-
-        if (!this.props.conversation.historyFullyLoaded && lastMessage) {
-            let id = (lastMessage as MessageFull).id;
-            lastMessageId = id;
-            messages.unshift(
-                <XButton
-                    alignSelf="center"
-                    style="flat"
-                    key={'load_more_' + id}
-                    text="Load more"
-                    loading={true}
-                />,
-            );
-        }
 
         return (
             <>
@@ -284,12 +166,34 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         handleHeight={true}
                         onResize={this.resizeHandler}
                     >
-                        <XScrollViewReversed
-                            ref={this.scroller}
-                            getScrollElement={getScrollElement}
-                        >
-                            <MessagesWrapper>{messages}</MessagesWrapper>
-                        </XScrollViewReversed>
+
+                        <DataSourceRender
+                            dataSource={this.props.conversation.dataSource}
+                            reverce={true}
+                            wrapWith={(props: any) =>
+                                <XScrollViewReversed
+                                    ref={this.scroller}
+                                    getScrollElement={(src: any) => src.children[0].children[0]}
+                                >
+                                    <div className={scrollWrapper}>
+                                        <XView flexGrow={1} width="100%" position="absolute">
+                                            <MessagesWrapper >
+                                                {props.children}
+                                            </MessagesWrapper>
+                                        </XView>
+                                    </div>
+                                </XScrollViewReversed>
+                            }
+                            renderItem={i => {
+                                if (i.type === 'message') {
+                                    if (!i.isService) {
+                                        return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} />
+                                    }
+                                }
+                                return <div key={i.key} />;
+                            }}
+                            renderLoading={() => <div key={'load'} />}
+                        />
                     </XResizeDetector>
                 )}
             </>

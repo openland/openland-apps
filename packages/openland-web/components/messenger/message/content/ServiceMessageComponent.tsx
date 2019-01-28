@@ -8,6 +8,7 @@ import { ServiceMessageReplyDefault } from './service/ServiceMessageReplyDefault
 import { ServiceMessageReplyJobApply } from './service/ServiceMessageReplyJobApply';
 import { ServiceMessageReplyJobRecommend } from './service/ServiceMessageReplyJobRecommend';
 import { ServiceMessageReplyStartupRecommend } from './service/ServiceMessageReplyStartupRecommend';
+import { UserShort, MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
 
 type ServiceMessageType = 'JOIN' | 'POST' | 'KICK' | 'PHOTO_CHANGE' | 'TITLE_CHANGE';
 
@@ -122,10 +123,10 @@ const resolveServiceMessageType = ({ serviceMetadata }: { serviceMetadata: any }
 };
 
 export const ServiceMessageComponent = (params: {
-    senderUser: any;
-    serviceMetadata: any;
+    senderUser: { id: string, name: string };
+    serviceMetadata: MessageFull_serviceMetadata;
     message: string;
-    alphaMentions: any;
+    alphaMentions: MessageFull_alphaMentions;
     myUserId: string;
 }) => {
     const typesObject = resolveServiceMessageType({
