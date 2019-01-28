@@ -10,6 +10,7 @@ export const MessengerEmptyFragment = React.memo(() => {
             justifyContent="center"
             minWidth="100%"
             height="100%"
+            flexGrow={1}
             paddingTop={28}
             paddingLeft={28}
             paddingBottom={28}
