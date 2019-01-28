@@ -105,6 +105,15 @@ export class OpenlandClient {
     useRoom(variables: Types.RoomVariables): Types.Room {
         return this.client.useQuery(Source.RoomQuery, variables);
     }
+    async queryRoomTiny(variables: Types.RoomTinyVariables): Promise<Types.RoomTiny> {
+        return this.client.query(Source.RoomTinyQuery, variables);
+    }
+    async refetchRoomTiny(variables: Types.RoomTinyVariables): Promise<Types.RoomTiny> {
+        return this.client.refetch(Source.RoomTinyQuery, variables);
+    }
+    useRoomTiny(variables: Types.RoomTinyVariables): Types.RoomTiny {
+        return this.client.useQuery(Source.RoomTinyQuery, variables);
+    }
     async queryRoomSuper(variables: Types.RoomSuperVariables): Promise<Types.RoomSuper> {
         return this.client.query(Source.RoomSuperQuery, variables);
     }

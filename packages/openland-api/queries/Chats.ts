@@ -6,6 +6,7 @@ import { RoomMessageShort } from '../fragments/MessageShort';
 import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
+import { RoomShort } from 'openland-api/fragments/RoomShort';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
@@ -49,6 +50,17 @@ export const RoomQuery = gql`
         }
     }
     ${RoomFull}
+    ${UserShort}
+    ${OrganizationShort}
+`;
+
+export const RoomTinyQuery = gql`
+    query RoomTiny($id: ID!) {
+        room(id: $id) {
+            ... RoomShort
+        }
+    }
+    ${RoomShort}
     ${UserShort}
     ${OrganizationShort}
 `;

@@ -36,6 +36,7 @@ export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppV
 export const RefreshAppTokenMutation = typedMutation<Types.RefreshAppToken, Types.RefreshAppTokenVariables>(App.RefreshAppTokenMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
+export const RoomTinyQuery = typedQuery<Types.RoomTiny, Types.RoomTinyVariables>(Chats.RoomTinyQuery);
 export const RoomSuperQuery = typedQuery<Types.RoomSuper, Types.RoomSuperVariables>(Chats.RoomSuperQuery);
 export const MessageSetReactionMutation = typedMutation<Types.MessageSetReaction, Types.MessageSetReactionVariables>(Chats.MessageSetReactionMutation);
 export const SwitchReactionMutation = typedMutation<Types.SwitchReaction, Types.SwitchReactionVariables>(Chats.SwitchReactionMutation);

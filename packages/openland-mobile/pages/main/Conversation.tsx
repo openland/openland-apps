@@ -27,6 +27,7 @@ import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { RoomTinyQuery } from 'openland-api/RoomTinyQuery';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -156,7 +157,7 @@ class ConversationComponent extends React.Component<PageProps> {
         return (
             <>
                 <View flexDirection={'column'} height="100%" width="100%">
-                    <ZQuery query={RoomQuery} variables={{ id: this.props.router.params.flexibleId || this.props.router.params.id }}>
+                    <ZQuery query={RoomTinyQuery} variables={{ id: this.props.router.params.flexibleId || this.props.router.params.id }}>
                         {resp => {
                             let sharedRoom = resp.data.room!.__typename === 'SharedRoom' ? resp.data.room! as Room_room_SharedRoom : null;
                             let privateRoom = resp.data.room!.__typename === 'PrivateRoom' ? resp.data.room! as Room_room_PrivateRoom : null;

@@ -3,10 +3,10 @@ import { View, TouchableOpacity, Platform } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { SRouter } from 'react-native-s/SRouter';
-import { RoomQuery } from 'openland-api';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/Types';
+import { RoomTinyQuery } from 'openland-api/RoomTinyQuery';
 
-export let resolveConversationProfilePath = (room: Room_room) => {
+export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;
     let pathArgs: any = {};
     let sharedRoom = room.__typename === 'SharedRoom' ? room as Room_room_SharedRoom : null;
@@ -30,7 +30,7 @@ export class ChatHeaderAvatar extends React.PureComponent<{ conversationId: stri
 
     render() {
         return (
-            <YQuery query={RoomQuery} variables={{ id: this.props.conversationId }}>
+            <YQuery query={RoomTinyQuery} variables={{ id: this.props.conversationId }}>
                 {res => {
                     if (res.loading) {
                         return null;

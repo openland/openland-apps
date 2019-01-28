@@ -7,6 +7,7 @@ import { getMessenger } from '../../../utils/messenger';
 import { OnlineQuery, RoomQuery } from 'openland-api';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
+import { RoomTinyQuery } from 'openland-api/RoomTinyQuery';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -64,7 +65,7 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
     render() {
         return (
-            <YQuery query={RoomQuery} variables={{ id: this.props.conversationId }}>
+            <YQuery query={RoomTinyQuery} variables={{ id: this.props.conversationId }}>
                 {res => {
                     if (res.loading) {
                         return null;

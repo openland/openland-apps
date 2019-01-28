@@ -851,6 +851,62 @@ export interface RoomVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: RoomTiny
+// ====================================================
+
+export interface RoomTiny_room_PrivateRoom_user_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface RoomTiny_room_PrivateRoom_user {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: RoomTiny_room_PrivateRoom_user_primaryOrganization | null;
+}
+
+export interface RoomTiny_room_PrivateRoom {
+  __typename: "PrivateRoom";
+  id: string;
+  user: RoomTiny_room_PrivateRoom_user;
+}
+
+export interface RoomTiny_room_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  photo: string;
+  membership: SharedRoomMembershipStatus;
+  membersCount: number | null;
+}
+
+export type RoomTiny_room = RoomTiny_room_PrivateRoom | RoomTiny_room_SharedRoom;
+
+export interface RoomTiny {
+  room: RoomTiny_room | null;
+}
+
+export interface RoomTinyVariables {
+  id: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: RoomSuper
 // ====================================================
 
