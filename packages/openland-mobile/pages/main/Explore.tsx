@@ -33,6 +33,7 @@ const RoomsList = React.memo((props) => {
 
     return (
         <>
+            <ZListItem text="Organizations" path="ExploreOrganizations" />
             <ZListItemGroup header="Available Groups">
                 {newRooms.map((v) => (
                     <ZListItem
@@ -102,7 +103,6 @@ const ExplorePage = (props: PageProps) => {
             <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => props.router.push('ComposeInitial')} />
             <SSearchControler searchRender={(p) => null}>
                 <SScrollView>
-                    <ZListItem text="Organizations" path="Organizations" />
                     <RoomsList />
                 </SScrollView>
             </SSearchControler>

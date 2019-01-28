@@ -167,15 +167,12 @@ export class ApolloGraphqlClient implements GraphqlClient {
             () => this.client.client.watchQuery({ query: query.document, variables: vars }),
             [query.document, keyFromObject(vars)]
         );
-        console.log('1');
 
         // Subsctibe for latest values
         const [responseId, setResponseId] = React.useState(0);
-        console.log('2');
         const currentResult = React.useMemo(() => {
             return observableQuery.currentResult();
         }, [responseId, observableQuery]);
-        console.log('3');
         React.useEffect(() => {
             const invalidateCurrentResult = () => setResponseId(x => x + 1);
             let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
@@ -183,7 +180,6 @@ export class ApolloGraphqlClient implements GraphqlClient {
                 subs.unsubscribe();
             }
         }, [observableQuery]);
-        console.log('4');
 
         if (currentResult.errors && currentResult.errors.length > 0) {
             throw Error();

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { withApp } from '../../components/withApp';
-import { PageProps } from '../../components/PageProps';
-import { ZQuery } from '../../components/ZQuery';
+import { withApp } from '../../../components/withApp';
+import { PageProps } from '../../../components/PageProps';
+import { ZQuery } from '../../../components/ZQuery';
 import { AccountSettingsQuery } from 'openland-api';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItem } from '../../components/ZListItem';
+import { ZListItemGroup } from '../../../components/ZListItemGroup';
+import { ZListItem } from '../../../components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 

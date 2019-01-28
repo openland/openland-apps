@@ -106,4 +106,4 @@ class OrgChannelsComponent extends React.PureComponent<PageProps> {
     }
 }
 
-export const OrgChannels = withApp(OrgChannelsComponent, { navigationAppearance: 'small-hidden' });
+export const ProfileOrganizationGroups = withApp(OrgChannelsComponent, { navigationAppearance: 'small-hidden' });

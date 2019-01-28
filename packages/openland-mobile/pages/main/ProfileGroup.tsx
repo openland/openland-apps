@@ -184,9 +184,9 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             },
             'Add members',
             room.members.map(m => m.user.id),
-            { path: 'ChannelInviteLinkModal', pathParams: { id: room.id } }
+            { path: 'ProfileGroupLink', pathParams: { id: room.id } }
         );
-    }, []);
+    }, [room.members]);
 
     const [nofications, setNotifications] = React.useState(!room.settings.mute);
 
@@ -257,7 +257,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text="Invite to room with a link"
-                        onPress={() => props.router.present('ChannelInviteLinkModal', { id: room!.id })}
+                        onPress={() => props.router.present('ProfileGroupLink', { id: room!.id })}
                         navigationIcon={false}
                     />}
 

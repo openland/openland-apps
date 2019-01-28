@@ -98,4 +98,4 @@ class DialogsComponent extends React.Component<PageProps> {
     }
 }
 
-export const Dialogs = withApp(DialogsComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });
+export const HomeDialogs = withApp(DialogsComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });

@@ -25,7 +25,7 @@ import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigR
 import { STrackedValue } from 'react-native-s/STrackedValue';
 import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
 import { ExploreOrganizationsQuery } from 'openland-api';
-import { DirectoryItemComponent } from '../main/Directory';
+import { DirectoryItemComponent } from '../main/ExploreOrganizations';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
 import { XPStyles } from 'openland-xp/XPStyles';
 

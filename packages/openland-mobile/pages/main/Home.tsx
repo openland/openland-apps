@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, Platform } from 'react-native';
 // import { Directory } from './Directory';
-import { Dialogs } from './Dialogs';
+import { HomeDialogs } from './HomeDialogs';
 import { Settings } from './Settings';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
@@ -54,7 +54,7 @@ export class Home extends React.PureComponent<PageProps, { tab: number, counter?
                         </View>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 1 ? 1 : 0 }} pointerEvents={this.state.tab === 1 ? 'box-none' : 'none'}>
                             <HeaderContextChild enabled={this.state.tab === 1}>
-                                <Dialogs {...this.props as any} />
+                                <HomeDialogs {...this.props as any} />
                             </HeaderContextChild>
                         </View>
                         <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 2 ? 1 : 0 }} pointerEvents={this.state.tab === 2 ? 'box-none' : 'none'}>

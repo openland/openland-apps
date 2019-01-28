@@ -82,4 +82,4 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
     }
 }
 
-export const Directory = withApp(DirectoryComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });
+export const ExploreOrganizations = withApp(DirectoryComponent, { navigationAppearance: Platform.OS === 'android' ? 'small-hidden' : undefined });

@@ -14,7 +14,7 @@ import { TextEditModal } from './pages/main/modals/TextEditModal';
 import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { FilePreview } from './pages/main/modals/FilePreview';
-import { SettingsOrganizations } from './pages/main/SettingsOrganizations';
+import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
 import { SRoutesBuilder } from 'react-native-s/SRoutes';
 import { NewOrganization } from './pages/main/NewOrganization';
 import { EditOrganization } from './pages/main/EditOrganization';
@@ -28,9 +28,9 @@ import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { CreateChannel } from './pages/compose/CreateChannel';
 import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
-import { ChannelInviteLinkModal } from './pages/main/RoomInviteLink';
-import { OrgChannels } from './pages/main/OrgChannels';
-import { Directory } from './pages/main/Directory';
+import { ProfileGroupLink } from './pages/main/ProfileGroupLink';
+import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroups';
+import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home)
@@ -58,9 +58,9 @@ export const Routes = new SRoutesBuilder()
   .addRoute('CreateChannel', CreateChannel)
   .addRoute('OrganizationInviteLinkModal', OrganizationInviteLinkModal)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
-  .addRoute('ChannelInviteLinkModal', ChannelInviteLinkModal)
-  .addRoute('OrgChannels', OrgChannels)
-  .addRoute('Organizations', Directory)
+  .addRoute('ProfileGroupLink', ProfileGroupLink)
+  .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
+  .addRoute('ExploreOrganizations', ExploreOrganizations)
   
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)

@@ -14,7 +14,6 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 
 let SettingsContent = React.memo<PageProps>((props) => {
     let resp = getClient().useAccountSettings();
-    console.log('resp');
     let primary = resp.me!.primaryOrganization;
     let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
     secondary.sort((a, b) => a.name.localeCompare(b.name));

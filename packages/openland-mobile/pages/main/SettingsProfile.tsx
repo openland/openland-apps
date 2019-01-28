@@ -2,8 +2,6 @@ import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { View, Text } from 'react-native';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZQuery } from '../../components/ZQuery';
-import { ProfileQuery } from 'openland-api/ProfileQuery';
 import { ZForm } from '../../components/ZForm';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { ZListItemBase } from '../../components/ZListItemBase';

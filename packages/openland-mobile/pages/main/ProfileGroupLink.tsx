@@ -62,4 +62,4 @@ class ChannelInviteLinkModalComponent extends React.PureComponent<PageProps> {
     }
 }
 
-export const ChannelInviteLinkModal = withApp(ChannelInviteLinkModalComponent, { navigationAppearance: 'small' });
+export const ProfileGroupLink = withApp(ChannelInviteLinkModalComponent, { navigationAppearance: 'small' });

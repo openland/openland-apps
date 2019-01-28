@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { PageProps } from '../../components/PageProps';
-import { withApp } from '../../components/withApp';
+import { PageProps } from '../../../components/PageProps';
+import { withApp } from '../../../components/withApp';
 import { View } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { AsyncAvatar } from '../../messenger/components/AsyncAvatar';
+import { AsyncAvatar } from '../../../messenger/components/AsyncAvatar';
 import { ASText } from 'react-native-async-view/ASText';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
