@@ -250,9 +250,12 @@ const ChatHeaderViewLoaderInner = withRoom(withUserInfo(
 
 export const ChatHeaderViewLoader = (props: {
     variables: {
-        id?: string;
+        id?: string | false | null;
     };
 }) => {
+    if (!props.variables.id) {
+        return <div />;
+    }
     if (!canUseDOM || !props.variables.id) {
         return <XLoader loading={true} />;
     }

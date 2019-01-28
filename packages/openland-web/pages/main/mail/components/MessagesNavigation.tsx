@@ -97,7 +97,7 @@ export const MessagesNavigation = React.memo(
                         <XView height={1} backgroundColor="rgba(220, 222, 228, 0.45)" />
                     </>
                 }
-                firstFragment={canUseDOM && <DialogListFragment />}
+                firstFragment={<DialogListFragment />}
                 secondFragment={
                     <ConversationContainerWrapper
                         {...{ tab, conversationId: cid, oid, uid, cid }}

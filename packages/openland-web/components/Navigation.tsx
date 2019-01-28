@@ -39,12 +39,12 @@ const MobilePageInner = React.memo(
                 height="100%"
             >
                 {tab === tabs.empty ? (
-                    <XView width="100%">
+                    <XView position="relative" width="100%">
                         {firstFragmentMenu}
                         {swapFragmentsOnMobile ? secondFragment : firstFragment}
                     </XView>
                 ) : (
-                    <XView flexDirection="column" flexGrow={1} width="100%">
+                    <XView position="relative" flexDirection="column" flexGrow={1} width="100%">
                         {secondFragmentHeader}
                         {swapFragmentsOnMobile ? firstFragment : secondFragment}
                     </XView>
@@ -56,6 +56,7 @@ const MobilePageInner = React.memo(
 
 const containerStyle = css`
     display: flex;
+    position: relative;
     flex-direction: column;
     height: 100%;
     width: 344px;
@@ -73,6 +74,7 @@ const containerStyle = css`
 
 const contentStyle = css`
     display: flex;
+    position: relative;
     flex-direction: column;
     height: 100%;
     flex-grow: 1;
