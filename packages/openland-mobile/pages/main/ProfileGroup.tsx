@@ -20,6 +20,7 @@ import { UploadCareDirectUploading } from 'openland-mobile/utils/UploadCareDirec
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { NotificationSettings } from './modals/NotificationSetting';
 
 function ProfileGroupComponent(props: PageProps & { id: string }) {
 
@@ -188,13 +189,6 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         );
     }, [room.members]);
 
-    const [nofications, setNotifications] = React.useState(!room.settings.mute);
-
-    const handleNotifications = React.useCallback<{ (value: boolean): void }>((value) => {
-        setNotifications(value);
-        client.mutateRoomSettingsUpdate({ roomId: room.id, settings: { mute: !value } });
-    }, []);
-
     const sortedMembers = room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
     const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + 'member';
 
@@ -239,12 +233,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             </ZListItemGroup>
 
             <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'} divider={false}>
-                <ZListItem
-                    leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
-                    text="Notifications"
-                    toggle={nofications}
-                    onToggle={handleNotifications}
-                />
+                <NotificationSettings id={room.id} mute={!!room.settings.mute} />
             </ZListItemGroup>
 
             <ZListItemGroup header="Members" divider={false}>

@@ -92,7 +92,7 @@ class OrgChannelsComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title={this.props.router.params.title || 'Channels'} />
+                <SHeader title={this.props.router.params.title || 'Groups'} />
 
                 {this.props.router.params.organizationId && <ZQuery query={OrganizationQuery} variables={{ organizationId: this.props.router.params.organizationId }}>
                     {(resp) => (

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { ZQuery } from '../../components/ZQuery';
-import { UserQuery, OnlineQuery, RoomSettingsUpdateMutation } from 'openland-api';
+import { UserQuery, OnlineQuery } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
@@ -9,26 +9,16 @@ import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
-import { getClient } from 'openland-mobile/utils/apolloClient';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { NotificationSettings } from './modals/NotificationSetting';
 
-class ProfileUserComponent extends React.Component<PageProps & { resp: User }, { notificationsValueCahed?: boolean }> {
+class ProfileUserComponent extends React.Component<PageProps & { resp: User }> {
     handleSend = () => {
         this.props.router.pushAndReset('Conversation', { 'flexibleId': this.props.router.params.id });
     }
 
-    handleMute = async () => {
-        let target = !(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute);
-        try {
-            await getClient().mutateRoomSettingsUpdate({ roomId: (this.props.resp.conversation as User_conversation_PrivateRoom).id, settings: { mute: target } });
-        } catch (e) {
-            Alert.alert(e.message);
-            this.setState({ notificationsValueCahed: !target });
-        }
-    }
     render() {
         return (
             <>
@@ -79,13 +69,7 @@ class ProfileUserComponent extends React.Component<PageProps & { resp: User }, {
                 </ZListItemGroup>
 
                 <ZListItemGroup header="Settings" footer={null} divider={false}>
-                    <ZListItem
-                        leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
-                        text="Notifications"
-                        toggle={!(this.state && this.state.notificationsValueCahed !== undefined ? this.state.notificationsValueCahed : (this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute)}
-                        onToggle={this.handleMute}
-                        onPress={this.handleMute}
-                    />
+                    <NotificationSettings id={(this.props.resp.conversation as User_conversation_PrivateRoom).id} mute={!!(this.props.resp.conversation as User_conversation_PrivateRoom).settings.mute} />
                 </ZListItemGroup>
             </>
         );
