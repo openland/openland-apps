@@ -1,7 +1,8 @@
 import { SAnimatedView } from './SAnimatedView';
-import { NativeModules, NativeEventEmitter, Platform, DeviceEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform, DeviceEventEmitter, Animated } from 'react-native';
 import UUID from 'uuid/v4';
 import { SAnimatedProperty } from './SAnimatedProperty';
+import { randomKey } from './utils/randomKey';
 
 const RNSAnimatedViewManager = NativeModules.RNSAnimatedViewManager as {
     animate: (config: string) => void,
@@ -60,6 +61,12 @@ export interface SAnimatedSpringConfig {
     velocity?: number;
 }
 
+export interface SAnimatedDynamic {
+    translateX?: Animated.AnimatedInterpolation;
+    translateY?: Animated.AnimatedInterpolation;
+    opacity?: Animated.AnimatedInterpolation;
+}
+
 class SAnimatedImpl {
     View = SAnimatedView;
 
@@ -72,6 +79,8 @@ class SAnimatedImpl {
     private _dirtyProperties = new Map<string, Map<SAnimatedPropertyName, { from: number, to: number }>>();
     private _transactionKey?: string;
     private _knownComponents = new Map<string, Set<string>>();
+    private _subscriptions = new Map<string, Map<string, (src: SAnimatedDynamic) => void>>();
+    private _dynamic = new Map<string, SAnimatedDynamic>();
 
     constructor() {
         if (Platform.OS === 'ios') {
@@ -97,23 +106,6 @@ class SAnimatedImpl {
         }
     }
 
-    get isInTransaction() {
-        return this._inTransaction;
-    }
-
-    get isInAnimatedTransaction() {
-        return this._inTransaction && !!this._propertyAnimator;
-    }
-
-    beginTransaction = () => {
-        if (this._inTransaction) {
-            return;
-        }
-        this._inTransaction = true;
-        this._transactionDuration = 0.25;
-        this._transactionKey = UUID();
-    }
-
     onPropertyChanged = (property: SAnimatedProperty, oldValue: number) => {
         if (!this._knownComponents.has(property.name)) {
             this._knownComponents.set(property.name, new Set());
@@ -135,6 +127,95 @@ class SAnimatedImpl {
                 this.setValue(property.name, property.property, property.value);
             }
         }
+    }
+
+    setValue = (name: string, property: SAnimatedPropertyName, value: number) => {
+        if (typeof value === 'number') {
+            let v = {
+                view: name,
+                prop: property,
+                to: value
+            };
+            if (this._inTransaction) {
+                this._pendingSetters.push(v);
+            } else {
+                this._postAnimations(this._transactionDuration, [], [v], undefined);
+            }
+        }
+    }
+
+    //
+    // Dynamic
+    //
+
+    getDynamic(name: string): SAnimatedDynamic {
+        let ex = this._dynamic.get(name);
+        if (ex) {
+            return ex;
+        } else {
+            return {};
+        }
+    }
+
+    startDynamic(name: string, property: SAnimatedPropertyName, value: Animated.AnimatedInterpolation) {
+        if (property === 'opacity') {
+            let ex = this._dynamic.get(name);
+            if (!ex) {
+                ex = {
+                    opacity: value
+                };
+                this._dynamic.set(name, ex);
+            } else {
+                ex.opacity = value;
+            }
+            let s = this._subscriptions.get(name);
+            if (s) {
+                for (let v of s.values()) {
+                    v(ex!);
+                }
+            }
+        }
+    }
+
+    stopDynamic(name: string, property: SAnimatedPropertyName) {
+        if (property === 'opacity') {
+            let ex = this._dynamic.get(name);
+            if (!ex) {
+                ex = {
+                    opacity: undefined
+                };
+                this._dynamic.set(name, ex);
+            } else {
+                ex.opacity = undefined;
+            }
+            let s = this._subscriptions.get(name);
+            if (s) {
+                for (let v of s.values()) {
+                    v(ex!);
+                }
+            }
+        }
+    }
+
+    //
+    // Transaction
+    //
+
+    get isInTransaction() {
+        return this._inTransaction;
+    }
+
+    get isInAnimatedTransaction() {
+        return this._inTransaction && !!this._propertyAnimator;
+    }
+
+    beginTransaction = () => {
+        if (this._inTransaction) {
+            return;
+        }
+        this._inTransaction = true;
+        this._transactionDuration = 0.25;
+        this._transactionKey = UUID();
     }
 
     setDuration = (duration: number) => {
@@ -162,55 +243,6 @@ class SAnimatedImpl {
             this._callbacks.get(this._transactionKey!)!.push(callback);
         } else {
             this._callbacks.set(this._transactionKey!, [callback]);
-        }
-    }
-
-    timing = (name: string, animation: SAnimatedTimingConfig) => {
-        let anim = {
-            view: name,
-            type: 'timing',
-            prop: animation.property,
-            from: animation.from,
-            to: animation.to,
-            optional: animation.optional,
-            duration: animation.duration,
-            delay: animation.delay,
-            easing: resolveEasing(animation.easing)
-        };
-        if (this._inTransaction) {
-            this._pendingAnimations.push(anim);
-        } else {
-            this._postAnimations(this._transactionDuration, [anim], [], undefined);
-        }
-    }
-
-    spring = (name: string, animation: SAnimatedSpringConfig) => {
-        let anim = {
-            view: name,
-            type: 'spring',
-            prop: animation.property,
-            from: animation.from,
-            to: animation.to,
-            optional: animation.optional,
-            velocity: animation.velocity
-        };
-        if (this._inTransaction) {
-            this._pendingAnimations.push(anim);
-        } else {
-            this._postAnimations(this._transactionDuration, [anim], [], undefined);
-        }
-    }
-
-    setValue = (name: string, property: SAnimatedPropertyName, value: number) => {
-        let v = {
-            view: name,
-            prop: property,
-            to: value
-        };
-        if (this._inTransaction) {
-            this._pendingSetters.push(v);
-        } else {
-            this._postAnimations(this._transactionDuration, [], [v], undefined);
         }
     }
 
@@ -261,6 +293,46 @@ class SAnimatedImpl {
         this._propertyAnimator = undefined;
     }
 
+    //
+    // Animation
+    //
+
+    timing = (name: string, animation: SAnimatedTimingConfig) => {
+        let anim = {
+            view: name,
+            type: 'timing',
+            prop: animation.property,
+            from: animation.from,
+            to: animation.to,
+            optional: animation.optional,
+            duration: animation.duration,
+            delay: animation.delay,
+            easing: resolveEasing(animation.easing)
+        };
+        if (this._inTransaction) {
+            this._pendingAnimations.push(anim);
+        } else {
+            this._postAnimations(this._transactionDuration, [anim], [], undefined);
+        }
+    }
+
+    spring = (name: string, animation: SAnimatedSpringConfig) => {
+        let anim = {
+            view: name,
+            type: 'spring',
+            prop: animation.property,
+            from: animation.from,
+            to: animation.to,
+            optional: animation.optional,
+            velocity: animation.velocity
+        };
+        if (this._inTransaction) {
+            this._pendingAnimations.push(anim);
+        } else {
+            this._postAnimations(this._transactionDuration, [anim], [], undefined);
+        }
+    }
+
     private _postAnimations(duration: number, animations: any[], valueSetters: any[], transactionKey: string | undefined) {
         RNSAnimatedViewManager.animate(
             JSON.stringify({
@@ -271,8 +343,33 @@ class SAnimatedImpl {
             }));
     }
 
-    onViewUnmounted = (name: string) => {
-        this._knownComponents.delete(name);
+    onViewMounted = (name: string, handler: (src: SAnimatedDynamic) => void) => {
+
+        // Basic Map
+        let map: Map<string, (src: SAnimatedDynamic) => void>;
+        if (this._subscriptions.has(name)) {
+            map = this._subscriptions.get(name)!;
+        } else {
+            map = new Map();
+            this._subscriptions.set(name, map);
+        }
+
+        // Create subscription
+        let key = randomKey();
+        map.set(key, handler);
+
+        // Unsubscribe callback
+        return () => {
+            if (map.has(key)) {
+                map.delete(key);
+                if (map.size === 0) {
+                    this._subscriptions.delete(name);
+                }
+                this._knownComponents.delete(name);
+            } else {
+                console.warn('Double unmount detected');
+            }
+        }
     }
 }
 

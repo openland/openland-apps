@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { requireNativeComponent, StyleProp, ViewStyle } from 'react-native';
-import { SAnimated } from './SAnimated';
+import { requireNativeComponent, StyleProp, ViewStyle, Animated } from 'react-native';
+import { SAnimated, SAnimatedDynamic } from './SAnimated';
 
 //
 // Native View
@@ -15,6 +15,7 @@ interface RNFastAnimatedViewProps {
 }
 
 const RNFastAnimatedView = requireNativeComponent<RNFastAnimatedViewProps>('RNSAnimatedView');
+const RNFastAnimatedViewAnimated = Animated.createAnimatedComponent(RNFastAnimatedView);
 
 //
 // Wrapper
@@ -26,19 +27,49 @@ export interface SAnimatedViewProps {
     pointerEvents?: PointerEvents;
 }
 
-export class SAnimatedView extends React.PureComponent<SAnimatedViewProps> {
-    componentWillUnmount() {
-        SAnimated.onViewUnmounted(this.props.name);
+export interface SAnimatedViewState {
+    translateX?: Animated.AnimatedInterpolation;
+    translateY?: Animated.AnimatedInterpolation;
+    opacity?: Animated.AnimatedInterpolation;
+}
+
+export class SAnimatedView extends React.PureComponent<SAnimatedViewProps, SAnimatedViewState> {
+
+    private _unsubscribe: () => void;
+    private _handler = (src: SAnimatedDynamic) => {
+        this.setState({ translateX: src.translateX, translateY: src.translateY, opacity: src.opacity });
+    };
+
+    constructor(props: SAnimatedViewProps) {
+        super(props);
+        this._unsubscribe = SAnimated.onViewMounted(this.props.name, this._handler);
+        this.state = {};
     }
+
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+
     render() {
         return (
-            <RNFastAnimatedView
-                style={this.props.style}
+            <RNFastAnimatedViewAnimated
+                style={[
+                    this.props.style,
+                    ((this.state.translateX !== undefined) || (this.state.translateY !== undefined)) && {
+                        transform: [
+                            ...(this.state.translateX ? [{ translateX: this.state.translateX }] : []),
+                            ...(this.state.translateY ? [{ translateY: this.state.translateX }] : []),
+                        ]
+                    },
+                        this.state.opacity !== undefined && {
+                            opacity: this.state.opacity
+                        }
+                ]}
                 animatedKey={this.props.name}
                 pointerEvents={this.props.pointerEvents}
             >
                 {this.props.children}
-            </RNFastAnimatedView>
+            </RNFastAnimatedViewAnimated>
         );
     }
 }

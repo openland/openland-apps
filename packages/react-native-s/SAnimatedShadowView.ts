@@ -1,4 +1,5 @@
 import { SAnimatedProperty } from './SAnimatedProperty';
+import { Animated } from 'react-native';
 
 export class SAnimatedShadowView {
     readonly name: string;
@@ -13,6 +14,14 @@ export class SAnimatedShadowView {
     }
     set opacity(value: number) {
         this._opacity.value = value;
+    }
+
+    set opacityDynamic(value: Animated.AnimatedInterpolation | undefined) {
+        if (value) {
+            this._opacity.startDynamic(value);
+        } else {
+            this._opacity.stopDynamic();
+        }
     }
 
     get translateX() {
