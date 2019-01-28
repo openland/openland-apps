@@ -21,7 +21,7 @@ let styles = StyleSheet.create({
     } as ViewStyle
 });
 
-const iconAttach = require('assets/ic-attachment.png');
+const iconAttach = require('assets/ic-add-24.png');
 const icon = require('assets/ic-send.png');
 
 export interface MessageInputBarProps {
@@ -46,7 +46,9 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress}>
                                 <View width={48} height={50} alignItems="center" justifyContent="center">
-                                    <Image source={iconAttach} style={{ width: 24, height: 24 }} />
+                                    <View width={30} height={30} borderRadius={24} backgroundColor="#0084fe" alignItems="center" justifyContent="center">
+                                        <Image source={iconAttach} style={{ width: 24, height: 24, tintColor: '#fff' }} />
+                                    </View>
                                 </View>
                             </TouchableOpacity>
                         )}
