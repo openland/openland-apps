@@ -191,13 +191,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             ref={this.scroller}
             getScrollElement={this.getScrollElement}
         >
-            <div className={scrollWrapper}>
-                <XView flexGrow={1} width="100%" position="absolute">
-                    <MessagesWrapper >
-                        {props.children}
-                    </MessagesWrapper>
-                </XView>
-            </div>
+            <MessagesWrapper >
+                {props.children}
+            </MessagesWrapper>
         </XScrollViewReversed>
     );
 
