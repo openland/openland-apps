@@ -91,8 +91,6 @@ const getScrollView = () => {
     );
 };
 
-let lastMessageId = '';
-
 const LoadingWrapper = glamorous.div({
     height: 50,
 });
@@ -140,7 +138,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     renderMessage = (i: DataSourceMessageItem | DataSourceDateItem) => {
         if (i.type === 'message') {
-            return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} />
+            return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} editPostHandler={this.props.editPostHandler} me={this.props.me} />
 
         } else if (i.type === 'date') {
             let now = new Date();

@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { DataSource, DataSourceItem } from 'openland-y-utils/DataSource';
-import { XScrollView2 } from 'openland-x/XScrollView2';
-import { map } from 'lodash-es';
-import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 
 function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[], boolean] {
     let [items, setItems] = React.useState<T[]>([]);

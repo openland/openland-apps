@@ -140,17 +140,17 @@ class DesktopMessageComponentInner extends React.PureComponent<
     > {
 
     static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
-        // if (isServerMessage(props.message)) {
-        //     if (props.messagesContext.editMessageId === props.message.id) {
-        //         return {
-        //             isEditView: true,
-        //         };
-        //     } else {
-        //         return {
-        //             isEditView: false,
-        //         };
-        //     }
-        // }
+        if (!props.message.isSending) {
+            if (props.messagesContext.editMessageId === props.message.id) {
+                return {
+                    isEditView: true,
+                };
+            } else {
+                return {
+                    isEditView: false,
+                };
+            }
+        }
 
         return null;
     };
@@ -171,107 +171,105 @@ class DesktopMessageComponentInner extends React.PureComponent<
     }
 
     private setEditMessage = (e: any) => {
-        // let { message, messagesContext } = this.props;
-        // if (isServerMessage(message)) {
-        //     message = message as MessageFull;
+        let { message, messagesContext } = this.props;
+        if (!message.isSending) {
 
-        //     e.stopPropagation();
-        //     messagesContext.resetAll();
-        //     messagesContext.setEditMessage(message.id, message.text);
-        // }
+            e.stopPropagation();
+            messagesContext.resetAll();
+            messagesContext.setEditMessage(message.id!, message.text!);
+        }
     };
 
     private setEditPostMessage = (e: any) => {
-        // let { message, editPostHandler } = this.props;
-        // if (isServerMessage(message) && editPostHandler && message.alphaTitle && message.text) {
-        //     message = message as MessageFull;
+        let { message, editPostHandler } = this.props;
+        if (!message.isSending && editPostHandler && message.title && message.text) {
 
-        //     let postFiles: Set<File> = new Set();
-        //     let file: File | null = null;
+            let postFiles: Set<File> = new Set();
+            let file: File | null = null;
 
-        //     message.alphaAttachments.map(i => {
-        //         if (i.fileMetadata) {
-        //             file = {
-        //                 uuid: i.fileId,
-        //                 name: i.fileMetadata.name,
-        //                 size: String(i.fileMetadata.size),
-        //                 isImage: i.fileMetadata.isImage,
-        //             };
+            (message.attachments || []).map(i => {
+                if (i.fileMetadata) {
+                    file = {
+                        uuid: i.fileId,
+                        name: i.fileMetadata.name,
+                        size: String(i.fileMetadata.size),
+                        isImage: i.fileMetadata.isImage,
+                    };
 
-        //             postFiles.add(file);
-        //         }
-        //     });
-        //     let postData: EditPostProps = {
-        //         title: message.alphaTitle!,
-        //         text: message.text!,
-        //         postTipe: (message as any).alphaPostType,
-        //         files: postFiles,
-        //         messageId: message.id,
-        //     };
+                    postFiles.add(file);
+                }
+            });
+            let postData: EditPostProps = {
+                title: message.title!,
+                text: message.text!,
+                postTipe: (message as any).alphaPostType,
+                files: postFiles,
+                messageId: message.id!,
+            };
 
-        //     editPostHandler(postData);
-        // }
+            editPostHandler(postData);
+        }
     };
 
     private setReplyMessages = (e: any) => {
-        // let { message, messagesContext } = this.props;
+        let { message, messagesContext } = this.props;
 
-        // if (isServerMessage(message)) {
-        //     e.stopPropagation();
-        //     messagesContext.resetAll();
-        //     let singleReplyMessageMessage = new Set().add(message.text);
-        //     let singleReplyMessageId = new Set().add(message.id);
-        //     let singleReplyMessageSender = new Set().add(message.sender.name);
+        if (!message.isSending) {
+            e.stopPropagation();
+            messagesContext.resetAll();
+            let singleReplyMessageMessage = new Set().add(message.text);
+            let singleReplyMessageId = new Set().add(message.id);
+            let singleReplyMessageSender = new Set().add(message.sender.name);
 
-        //     if (message.file && !message.urlAugmentation) {
-        //         singleReplyMessageMessage = new Set().add('File');
-        //         if (message.fileMetadata!!.isImage) {
-        //             singleReplyMessageMessage = new Set().add('Photo');
-        //         }
-        //     }
-        //     messagesContext.setReplyMessages(
-        //         singleReplyMessageId,
-        //         singleReplyMessageMessage,
-        //         singleReplyMessageSender,
-        //     );
-        // }
+            if (message.file && !message.urlAugmentation) {
+                singleReplyMessageMessage = new Set().add('File');
+                if (message.file!!.isImage) {
+                    singleReplyMessageMessage = new Set().add('Photo');
+                }
+            }
+            messagesContext.setReplyMessages(
+                singleReplyMessageId,
+                singleReplyMessageMessage,
+                singleReplyMessageSender,
+            );
+        }
     };
 
     private selectMessage = () => {
-        // let { message, messagesContext } = this.props;
+        let { message, messagesContext } = this.props;
 
-        // if (
-        //     !isServerMessage(message) ||
-        //     this.state.isEditView ||
-        //     document.body.classList[0] === 'ReactModal__Body--open' ||
-        //     messagesContext.editMessageId
-        // ) {
-        //     return;
-        // }
+        if (
+            message.isSending ||
+            this.state.isEditView ||
+            document.body.classList[0] === 'ReactModal__Body--open' ||
+            messagesContext.editMessageId
+        ) {
+            return;
+        }
 
-        // if (window.getSelection().toString()) {
-        //     return;
-        // }
+        if (window.getSelection().toString()) {
+            return;
+        }
 
-        // let { forwardMessagesId } = messagesContext;
-        // let selectedMessageId = forwardMessagesId;
+        let { forwardMessagesId } = messagesContext;
+        let selectedMessageId = forwardMessagesId;
 
-        // if (forwardMessagesId && selectedMessageId) {
-        //     if (forwardMessagesId.has(message.id)) {
-        //         selectedMessageId.delete(message.id);
-        //         messagesContext.setForwardMessages(selectedMessageId);
-        //     } else {
-        //         selectedMessageId.add(message.id);
-        //         messagesContext.setForwardMessages(selectedMessageId);
-        //     }
-        // } else if (!forwardMessagesId && !selectedMessageId) {
-        //     selectedMessageId = new Set<string>();
-        //     selectedMessageId.add(message.id);
-        //     messagesContext.setForwardMessages(selectedMessageId);
-        // }
-        // if (isServerMessage(message)) {
-        //     messagesContext.switchMessageSelect(message);
-        // }
+        if (forwardMessagesId && selectedMessageId) {
+            if (forwardMessagesId.has(message.id!)) {
+                selectedMessageId.delete(message.id!);
+                messagesContext.setForwardMessages(selectedMessageId);
+            } else {
+                selectedMessageId.add(message.id!);
+                messagesContext.setForwardMessages(selectedMessageId);
+            }
+        } else if (!forwardMessagesId && !selectedMessageId) {
+            selectedMessageId = new Set<string>();
+            selectedMessageId.add(message.id!);
+            messagesContext.setForwardMessages(selectedMessageId);
+        }
+        if (!message.isSending) {
+            messagesContext.switchMessageSelect(message);
+        }
     };
 
     private hideEditView = () => {
@@ -281,65 +279,63 @@ class DesktopMessageComponentInner extends React.PureComponent<
     private menuRender = () => {
         let { message } = this.props;
         let out = message.isOut;
-        // if (isServerMessage(message)) {
-        //     message = message as MessageFull;
+        if (!message.isSending) {
 
-        //     const isPost = message.text && message.alphaTitle && message.alphaType === 'POST';
+            const isPost = message.text && message.title && message.messageType === 'POST';
 
-        //     const isNotIntro =
-        //         !message.urlAugmentation || message.urlAugmentation!.type !== 'intro';
+            const isNotIntro =
+                !message.urlAugmentation || message.urlAugmentation!.type !== 'intro';
 
-        //     return (
-        //         <XHorizontal
-        //             alignItems="center"
-        //             alignSelf="flex-start"
-        //             justifyContent="flex-start"
-        //             width={83}
-        //             flexShrink={0}
-        //             separator={5}
-        //             className="menu-wrapper"
-        //         >
-        //             <XHorizontal alignItems="center" separator={8}>
-        //                 {isNotIntro && <ReactionComponent messageId={message.id} />}
-        //                 {!isPost && (
-        //                     <IconButton onClick={this.setReplyMessages}>
-        //                         <ReplyIcon />
-        //                     </IconButton>
-        //                 )}
-        //                 {out && message.text && (
-        //                     <IconButton
-        //                         onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-        //                     >
-        //                         <EditIcon />
-        //                     </IconButton>
-        //                 )}
-        //             </XHorizontal>
-        //         </XHorizontal>
-        //     );
-        // } else {
-        //     return null;
-        // }
+            return (
+                <XHorizontal
+                    alignItems="center"
+                    alignSelf="flex-start"
+                    justifyContent="flex-start"
+                    width={83}
+                    flexShrink={0}
+                    separator={5}
+                    className="menu-wrapper"
+                >
+                    <XHorizontal alignItems="center" separator={8}>
+                        {isNotIntro && <ReactionComponent messageId={message.id!} />}
+                        {!isPost && (
+                            <IconButton onClick={this.setReplyMessages}>
+                                <ReplyIcon />
+                            </IconButton>
+                        )}
+                        {out && message.text && (
+                            <IconButton
+                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        )}
+                    </XHorizontal>
+                </XHorizontal>
+            );
+        } else {
+            return null;
+        }
     };
 
     private reactionsRender = () => {
         let { message } = this.props;
 
-        // if (isServerMessage(message)) {
-        //     message = message as MessageFull;
+        if (!message.isSending) {
 
-        //     if (
-        //         !message.urlAugmentation ||
-        //         (message.urlAugmentation && message.urlAugmentation!.type !== 'intro')
-        //     ) {
-        //         return (
-        //             <Reactions
-        //                 messageId={message.id}
-        //                 reactions={message.reactions}
-        //                 meId={(this.props.me as UserShort).id}
-        //             />
-        //         );
-        //     }
-        // }
+            if (
+                !message.urlAugmentation ||
+                (message.urlAugmentation && message.urlAugmentation!.type !== 'intro')
+            ) {
+                return (
+                    <Reactions
+                        messageId={message.id!}
+                        reactions={message.reactions || []}
+                        meId={this.props.me && this.props.me.id || ''}
+                    />
+                );
+            }
+        }
 
         return null;
     };
@@ -364,7 +360,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
 
         if (!message.isSending) {
 
-            // todo: check is post
             if (message.text && message.title && message.messageType === MessageType.POST) {
                 isPost = true;
                 let meId = this.props.me ? this.props.me.id : '';
@@ -377,10 +372,8 @@ class DesktopMessageComponentInner extends React.PureComponent<
                         userId={message.senderId}
                         message={message.text}
                         alphaTitle={message.title}
-                        // todo: recover buttons
-                        alphaButtons={[]}
-                        // todo: recover attachments
-                        alphaAttachments={[]}
+                        alphaButtons={message.buttons || []}
+                        alphaAttachments={message.attachments || []}
                         reactions={message.reactions}
                         edited={!!message.isEdited}
                         meId={meId}
@@ -406,7 +399,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 myUserId={this.props.me ? this.props.me.id : ''}
                                 serviceMetadata={message.serviceMetaData!}
                                 message={message.text || ''}
-                                alphaMentions={(message as any).alphaMentions}
+                                alphaMentions={message.mentions || []}
                                 key={'service_message'}
                             />,
                         );
@@ -625,10 +618,8 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                     userId={message.sender.id}
                     message={message.text}
                     alphaTitle={message.title}
-                    // todo: recover buttons
-                    alphaButtons={[]}
-                    // todo: recover attachments
-                    alphaAttachments={[]}
+                    alphaButtons={message.buttons || []}
+                    alphaAttachments={message.attachments || []}
                     reactions={message.reactions}
                     edited={!!message.isEdited}
                     meId={meId}
@@ -644,7 +635,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                         myUserId={props.me ? props.me.id : ''}
                         serviceMetadata={message.serviceMetaData!}
                         message={message.text || ''}
-                        alphaMentions={(message as any).alphaMentions}
+                        alphaMentions={message.mentions || []}
                         key={'service_message'}
                     />,
                 );

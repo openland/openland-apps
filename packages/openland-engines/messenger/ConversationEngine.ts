@@ -4,7 +4,7 @@ import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions, MessageFull_reply, MessageFull_sender, MessageType } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions, MessageFull_reply, MessageFull_sender, MessageType, MessageFull_alphaAttachments, MessageFull_alphaButtons } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
@@ -95,6 +95,8 @@ export interface DataSourceMessageItem {
     urlAugmentation?: MessageFull_urlAugmentation;
     reactions?: MessageFull_reactions[];
     mentions?: MessageFull_alphaMentions[];
+    attachments?: MessageFull_alphaAttachments[];
+    buttons?: (MessageFull_alphaButtons[] | null)[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -140,6 +142,8 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         serviceMetaData: src.serviceMetadata || undefined,
         isService: src.isService || undefined,
         mentions: src.alphaMentions || (src.mentions || []).map(m => ({ user: { ...m }, __typename: 'UserMention' as 'UserMention' })),
+        attachments: src.alphaAttachments || undefined,
+        buttons: src.alphaButtons || undefined,
         reply: src.reply || undefined,
         isEdited: src.edited,
 

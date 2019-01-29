@@ -1,6 +1,7 @@
 import linkify from 'linkify-it';
 import tlds from 'tlds';
-import { MessageFull_mentions } from 'openland-api/Types';
+import { MessageFull_alphaMentions } from 'openland-api/Types';
+import { string } from 'prop-types';
 
 export interface Span {
     type: 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_room';
@@ -12,7 +13,7 @@ let linkifyInstance = linkify()
     .tlds(tlds)
     .tlds('onion', true);
 
-function preprocessRawText(text: string, mentions?: MessageFull_mentions[]): Span[] {
+function preprocessRawText(text: string, mentions?: MessageFull_alphaMentions[]): Span[] {
     let res: Span[] = [];
     for (let p of text.split('\n')) {
         if (res.length > 0) {
@@ -32,18 +33,16 @@ function preprocessRawText(text: string, mentions?: MessageFull_mentions[]): Spa
     return res;
 }
 
-function preprocessMentions(text: string, mentions: MessageFull_mentions[]): Span[] {
+function preprocessMentions(text: string, mentions: MessageFull_alphaMentions[]): Span[] {
     let res: Span[] = [];
 
     for (let m of mentions) {
-        // let mention: undefined | { str: string, type: 'mention_user' | 'mention_room' } = undefined;
-        // if (m.__typename === 'UserMention') {
-        //     mention = { str: m.user.name, type: 'mention_user' };
-        // } else if (m.__typename === 'SharedRoomMention') {
-        //     mention = { str: m.sharedRoom.title, type: 'mention_room' };
-        // }
-
-        let mention: undefined | { str: string, type: 'mention_user' | 'mention_room' } = { str: m.name, type: 'mention_user' };
+        let mention: undefined | { str: string, type: 'mention_user' | 'mention_room', id: string } = undefined;
+        if (m.__typename === 'UserMention') {
+            mention = { str: m.user.name, type: 'mention_user', id: m.user.id };
+        } else if (m.__typename === 'SharedRoomMention') {
+            mention = { str: m.sharedRoom.title, type: 'mention_room', id: m.sharedRoom.id };
+        }
 
         if (mention && text.includes('@' + mention.str)) {
             let split = text.split('@' + mention.str);
@@ -52,7 +51,7 @@ function preprocessMentions(text: string, mentions: MessageFull_mentions[]): Spa
                 res.push({
                     type: mention.type,
                     text: mention.str,
-                    link: m.id
+                    link: mention.id
                 });
             }
             res.pop();
@@ -68,7 +67,7 @@ function preprocessMentions(text: string, mentions: MessageFull_mentions[]): Spa
     return res;
 }
 
-export function preprocessText(text: string, mentions?: MessageFull_mentions[]): Span[] {
+export function preprocessText(text: string, mentions?: MessageFull_alphaMentions[]): Span[] {
     let res: Span[] = [];
     let offset = 0;
     let links = linkifyInstance.match(text);

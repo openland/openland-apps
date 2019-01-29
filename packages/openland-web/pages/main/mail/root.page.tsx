@@ -8,6 +8,8 @@ import { MessageFull } from 'openland-api/Types';
 import { MessagesNavigation } from './components/MessagesNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { isEqual, includes } from 'openland-y-utils/isEqual';
+import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 
 type MessagePageProps = {
     router: XRouter;
@@ -18,7 +20,7 @@ type MessagePageProps = {
 class MessageStateProviderComponent extends React.PureComponent<
     MessagePageProps,
     MessagesStateContextProps
-> {
+    > {
     constructor(props: MessagePageProps) {
         super(props);
 
@@ -46,14 +48,14 @@ class MessageStateProviderComponent extends React.PureComponent<
     componentWillReceiveProps(nextProps: MessagePageProps) {
         if (
             this.props.router.routeQuery.conversationId !==
-                nextProps.router.routeQuery.conversationId &&
+            nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
             this.state.resetAll();
         }
     }
 
-    private switchMessageSelect = (message: MessageFull) => {
+    private switchMessageSelect = (message: DataSourceMessageItem) => {
         let res = new Set(this.state.selectedMessages);
         if (res.has(message)) {
             res.delete(message);
@@ -112,7 +114,7 @@ class MessageStateProviderComponent extends React.PureComponent<
     };
 
     private resetAll = () => {
-        this.setState({
+        let target = {
             editMessageId: null,
             editMessage: null,
             forwardMessagesId: null,
@@ -123,7 +125,12 @@ class MessageStateProviderComponent extends React.PureComponent<
             useForwardMessages: false,
             useForwardPlaceholder: false,
             useForwardHeader: false,
-        });
+        }
+
+        if (!includes(this.state, target)) {
+            this.setState(target);
+        }
+
     };
 
     render() {
