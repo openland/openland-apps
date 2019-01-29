@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, Linking, Image, Dimensions } from 'react-native';
 import { DataSourceMessageItem, convertMessage } from 'openland-engines/messenger/ConversationEngine';
-import { preprocessText } from '../../utils/TextProcessor';
+import { preprocessText, Span } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -27,6 +27,18 @@ export class AsyncMessageTextView extends React.PureComponent<{
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }> {
+
+    prprocessedRender = (v: Span, i: number) => {
+        if (v.type === 'new_line') {
+            return <ASText key={'br-' + i} >{'\n'}</ASText>;
+        } else if (v.type === 'link') {
+            return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
+        } else if (v.type === 'mention_user') {
+            return <ASText key={'mention-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
+        } else {
+            return <ASText key={'text-' + i}>{v.text}</ASText>;
+        }
+    }
     render() {
         let preprocessed = preprocessText(this.props.message.text || '', this.props.message.mentions);
         let big = false;
@@ -35,17 +47,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
             big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
         }
 
-        let parts = preprocessed.map((v, i) => {
-            if (v.type === 'new_line') {
-                return <ASText key={'br-' + i} >{'\n'}</ASText>;
-            } else if (v.type === 'link') {
-                return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
-            } else if (v.type === 'mention_user') {
-                return <ASText key={'mention-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
-            } else {
-                return <ASText key={'text-' + i}>{v.text}</ASText>;
-            }
-        });
+        let parts = preprocessed.map(this.prprocessedRender);
         if (this.props.message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
@@ -98,7 +100,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
                                 <ASText
                                     marginLeft={10}
                                     color={this.props.message.isOut ? '#fff' : ZStyles.avatars[doSimpleHash(m.sender.id) % ZStyles.avatars.length].placeholderColorEnd}
-                                    lineHeight={big ? 60 : 20}
+                                    lineHeight={20}
                                     letterSpacing={-0.3}
                                     fontSize={12}
                                     fontWeight={TextStyles.weight.medium}
@@ -110,12 +112,12 @@ export class AsyncMessageTextView extends React.PureComponent<{
                                 {!!m.message && <ASText
                                     marginLeft={10}
                                     color={this.props.message.isOut ? '#fff' : '#000'}
-                                    lineHeight={big ? 60 : 20}
+                                    lineHeight={20}
                                     fontSize={14}
                                     fontWeight={TextStyles.weight.medium}
                                 >
-                                    {m.message}
-                                    {this.props.message.isOut ? paddedTextOut : paddedText}
+                                    {preprocessText(m.message, this.props.message.mentions).map(this.prprocessedRender)}
+                                    {(!this.props.message.text && this.props.message.isOut) ? paddedTextOut : paddedText}
                                 </ASText>}
                                 {m.fileMetadata && m.fileMetadata.isImage ? <AsyncReplyMessageMediaView onPress={this.props.onMediaPress} message={convertMessage(m as any, getMessenger().engine)} /> : null}
                                 {m.fileMetadata && !m.fileMetadata.isImage ? <AsyncReplyMessageDocumentView onPress={this.props.onDocumentPress} parent={this.props.message} message={convertMessage(m as any, getMessenger().engine)} /> : null}
