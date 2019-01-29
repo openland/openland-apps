@@ -7,7 +7,6 @@ import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';
-import { YApolloProvider } from 'openland-y-graphql/YApolloProvider';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
 import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
@@ -19,7 +18,6 @@ import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -112,7 +110,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return <ZLoader appearance="large" />;
         } else if (this.state.state === 'app') {
             return (
-                <YApolloProvider client={(getClient().client as ApolloGraphqlClient).client}>
+                <>
                     <PushManager client={getClient()} />
                     <MobileMessengerContext.Provider value={getMessenger()}>
                         <MessengerContext.Provider value={getMessenger().engine}>
@@ -123,7 +121,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                             </View>
                         </MessengerContext.Provider>
                     </MobileMessengerContext.Provider>
-                </YApolloProvider>
+                </>
             );
         } else if (this.state.state === 'initial') {
             return (
@@ -135,13 +133,11 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             );
         } else if (this.state.state === 'signup') {
             return (
-                <YApolloProvider client={(getClient().client as ApolloGraphqlClient).client}>
-                    <View style={{ width: '100%', height: '100%' }}>
-                        <ZModalProvider>
-                            <Root routing={this.history} />
-                        </ZModalProvider>
-                    </View>
-                </YApolloProvider>
+                <View style={{ width: '100%', height: '100%' }}>
+                    <ZModalProvider>
+                        <Root routing={this.history} />
+                    </ZModalProvider>
+                </View>
             );
         }
 

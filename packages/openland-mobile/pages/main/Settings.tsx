@@ -26,6 +26,7 @@ let SettingsContent = React.memo<PageProps>((props) => {
             <ZListItemHeader
                 photo={resp.me!!.photo}
                 id={resp!!.me!!.id}
+                userId={resp!!.me!!.id}
                 title={resp!!.me!!.name}
                 subtitle={primary ? primary.name : undefined}
                 path="SettingsProfile"

@@ -28,6 +28,7 @@ const ProfileUserContent = React.memo<PageProps>((props) => {
             <ZListItemHeader
                 photo={user.user.photo}
                 id={user.user.id}
+                userId={user.user.id}
                 title={user.user.name}
                 subtitle={sub}
                 action="Send message"

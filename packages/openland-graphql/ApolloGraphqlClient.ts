@@ -140,24 +140,16 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return res.data
     }
 
-    async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
-        let r = this.client.client.readQuery<TQuery>({ query: query.document, variables: vars });
-        if (r) {
-            let udpated = updater(r);
-            if (udpated) {
-                this.client.client.writeQuery<TQuery>({ query: query.document, variables: vars, data: udpated });
-                return true;
-            }
+    async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
+        let res = await this.client.client.mutate<TMutation, TVars>({ mutation: mutation.document, variables: vars });
+        if (res.errors && res.errors.length > 0) {
+            throw Error();
         }
-        return false;
+        return res.data as TMutation;
     }
 
-    async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
-        try {
-            return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
-        } catch (e) {
-            return null;
-        }
+    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
+        return new ApolloSubscription(this, subscription, vars);
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
@@ -224,24 +216,24 @@ export class ApolloGraphqlClient implements GraphqlClient {
 
         return currentResult.data as TQuery
     }
+    
+    async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
+        let r = this.client.client.readQuery<TQuery>({ query: query.document, variables: vars });
+        if (r) {
+            let udpated = updater(r);
+            if (udpated) {
+                this.client.client.writeQuery<TQuery>({ query: query.document, variables: vars, data: udpated });
+                return true;
+            }
+        }
+        return false;
+    }
 
-    readQuerySync<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
+    async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
         try {
             return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })
         } catch (e) {
             return null;
         }
-    }
-
-    subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
-        return new ApolloSubscription(this, subscription, vars);
-    }
-
-    async mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
-        let res = await this.client.client.mutate<TMutation, TVars>({ mutation: mutation.document, variables: vars });
-        if (res.errors && res.errors.length > 0) {
-            throw Error();
-        }
-        return res.data as TMutation;
     }
 }

@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
 export class ZListItemHeader extends React.PureComponent<{
     photo?: string | null,
     id?: string,
+    userId?: string,
     title?: string | null,
     titleIcon?: any;
     titleColor?: string;
@@ -63,7 +64,7 @@ export class ZListItemHeader extends React.PureComponent<{
     render() {
         return (
             <View style={styles.container}>
-                <XPAvatarWithPreview size={86} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.id} />
+                <XPAvatarWithPreview size={86} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.userId} />
                 <View style={styles.body}>
                     <View style={styles.header}>
                         <View flexDirection="row">
