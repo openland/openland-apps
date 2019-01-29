@@ -5,15 +5,15 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View, LayoutChangeEvent, Image, Platform } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
-import { ZQuery } from '../../../components/ZQuery';
 import { UserShort } from 'openland-api/Types';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ZBlurredView } from '../../../components/ZBlurredView';
 import { ZTagView } from '../../../components/ZTagView';
-import { ExplorePeopleQuery } from 'openland-api';
 import { UserView } from '../components/UserView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { getClient } from 'openland-mobile/utils/apolloClient';
+import { ZLoader } from 'openland-mobile/components/ZLoader';
 
 interface UserMultiplePickerComponentState {
     query: string;
@@ -35,6 +35,30 @@ class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
         );
     }
 }
+
+const UsersList = React.memo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
+    let users = getClient().useExplorePeople({ query: props.query });
+    return (
+        <SScrollView marginTop={props.searchHeight}>
+            {props.router.params.inviteLinkButton &&
+                <View marginBottom={6} marginTop={18}>
+                    <ZListItem
+                        leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
+                        text="Invite with a link"
+                        onPress={() => {
+                            props.router.pushAndRemove(props.router.params.inviteLinkButton.path, props.router.params.inviteLinkButton.pathParams);
+                        }}
+                    />
+                </View>
+            }
+            {users.items.edges.map((v) => (
+                <CheckListBoxWraper checked={!!props.users.find((u: any) => u.id === v.node.id)}>
+                    <UserView key={v.node.id} user={v.node} enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)} onPress={() => props.onAdd(v.node)} />
+                </CheckListBoxWraper>
+            ))}
+        </SScrollView >
+    );
+});
 
 class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMultiplePickerComponentState> {
     constructor(props: any) {
@@ -73,28 +97,9 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                     }}
                 />
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%' }}>
-                    <ZQuery query={ExplorePeopleQuery} variables={{ query: this.state.query }} fetchPolicy="cache-and-network">
-                        {r => (
-                            <SScrollView marginTop={this.state.searchHeight}>
-                                {this.props.router.params.inviteLinkButton &&
-                                    <View marginBottom={6} marginTop={18}>
-                                        <ZListItem
-                                            leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
-                                            text="Invite with a link"
-                                            onPress={() => {
-                                                this.props.router.pushAndRemove(this.props.router.params.inviteLinkButton.path, this.props.router.params.inviteLinkButton.pathParams);
-                                            }}
-                                        />
-                                    </View>
-                                }
-                                {r.data.items.edges.map((v) => (
-                                    <CheckListBoxWraper checked={!!this.state.users.find(u => u.id === v.node.id)}>
-                                        <UserView key={v.node.id} user={v.node} enabled={!((this.props.router.params.disableUsers || []).indexOf(v.node.id) > -1)} onPress={() => this.handleAddUser(v.node)} />
-                                    </CheckListBoxWraper>
-                                ))}
-                            </SScrollView>
-                        )}
-                    </ZQuery>
+                    <React.Suspense fallback={<ZLoader />}>
+                        <UsersList {...this.props} users={this.state.users} searchHeight={this.state.searchHeight} query={this.state.query} onAdd={this.handleAddUser} />
+                    </React.Suspense>
                 </View>
                 <ASSafeAreaContext.Consumer>
                     {area => (
