@@ -424,7 +424,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <MessageAnimationComponent
                                     key={'file'}
                                     file={file.fileId!}
-                                    fileName={name}
+                                    fileName={file.fileName}
                                     {...file.imageSize}
                                 />,
                             );
@@ -433,7 +433,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <MessageImageComponent
                                     key={'file'}
                                     file={file.fileId!}
-                                    fileName={name}
+                                    fileName={file.fileName}
                                     startSelected={hideMenu}
                                     {...file.imageSize}
                                 />,
@@ -444,7 +444,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                             <MessageFileComponent
                                 key={'file'}
                                 file={file.fileId}
-                                fileName={name}
+                                fileName={file.fileName}
                                 fileSize={file.fileSize}
                             />,
                         );
@@ -659,7 +659,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                         <MessageAnimationComponent
                             key={'file'}
                             file={message.file.fileId!}
-                            fileName={name}
+                            fileName={message.file.fileName}
                             {...message.file.imageSize}
                         />,
                     );
@@ -668,7 +668,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                         <MessageImageComponent
                             key={'file'}
                             file={message.file.fileId!}
-                            fileName={name}
+                            fileName={message.file.fileName}
                             startSelected={hideMenu}
                             {...message.file.imageSize}
 
@@ -680,7 +680,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                     <MessageFileComponent
                         key={'file'}
                         file={message.file.fileId}
-                        fileName={name}
+                        fileName={message.file.fileName}
                         fileSize={message.file.fileSize}
                     />,
                 );
