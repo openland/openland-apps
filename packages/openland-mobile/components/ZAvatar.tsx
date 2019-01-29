@@ -3,12 +3,11 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { View, Platform, Text, StyleSheet, TextStyle } from 'react-native';
 import { createInterpolator } from 'openland-y-utils/createInterpolator';
-import { YQuery } from 'openland-y-graphql/YQuery';
-import { OnlineQuery } from 'openland-api';
 import { AndroidAliaser } from './visual/AndroidAliaser';
 import { ZImage } from './ZImage';
 import { ZLinearGradient } from './visual/ZLinearGradient.native';
 import { ZStyles } from './ZStyles';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -90,23 +89,16 @@ class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
     }
 }
 
-export class ZAvatar extends React.PureComponent<ZAvatarProps> {
-    render() {
-        return (
-            <>
-                {this.props.userId && <YQuery query={OnlineQuery} variables={{ userId: this.props.userId }}>
-                    {online => (
-                        <XPAvatarInner
-                            {...this.props}
-                            online={online.data && online.data.user && online.data.user.online}
-                        />
-                    )}
-
-                </YQuery>}
-                {!this.props.userId && < XPAvatarInner
-                    {...this.props}
-                />}
-            </>
-        );
+export const ZAvatar = React.memo<ZAvatarProps>((props) => {
+    if (!props.userId) {
+        return <XPAvatarInner {...props} />;
     }
-}
+
+    let online = getClient().useWithoutLoaderOnline({ userId: props.userId });
+    return (
+        <XPAvatarInner
+            {...props}
+            online={online && online.user && online.user.online || false}
+        />
+    )
+})

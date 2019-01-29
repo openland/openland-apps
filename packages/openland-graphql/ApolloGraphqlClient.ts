@@ -192,6 +192,39 @@ export class ApolloGraphqlClient implements GraphqlClient {
         return currentResult.data as TQuery
     }
 
+    useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
+
+        // Build and wait for initial data
+        const observableQuery = React.useMemo(
+            () => this.client.client.watchQuery({ query: query.document, variables: vars }),
+            [query.document, keyFromObject(vars)]
+        );
+
+        // Subsctibe for latest values
+        const [responseId, setResponseId] = React.useState(0);
+        const currentResult = React.useMemo(() => {
+            return observableQuery.currentResult();
+        }, [responseId, observableQuery]);
+        React.useEffect(() => {
+            const invalidateCurrentResult = () => setResponseId(x => x + 1);
+            let subs = observableQuery.subscribe(invalidateCurrentResult, invalidateCurrentResult);
+            return () => {
+                subs.unsubscribe();
+            }
+        }, [observableQuery]);
+
+        if (currentResult.errors && currentResult.errors.length > 0) {
+            throw Error();
+        }
+
+        if (currentResult.loading || currentResult.partial) {
+            // throw observableQuery.result();
+            return null;
+        }
+
+        return currentResult.data as TQuery
+    }
+
     readQuerySync<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
         try {
             return this.client.client.readQuery<TQuery>({ query: query.document, variables: vars })

@@ -35,6 +35,9 @@ export function generateApi() {
                     output += '    use' + name + '(variables: Types.' + name + 'Variables): Types.' + name + ' {\n';
                     output += '        return this.client.useQuery(Source.' + op.name + ', variables);\n';
                     output += '    }\n';
+                    output += '    useWithoutLoader' + name + '(variables: Types.' + name + 'Variables): Types.' + name + ' | null {\n';
+                    output += '        return this.client.useWithoutLoaderQuery(Source.' + op.name + ', variables);\n';
+                    output += '    }\n';
                 } else {
                     output += '    async query' + name + '(): Promise<Types.' + name + '> {\n';
                     output += '        return this.client.query(Source.' + op.name + ');\n';
@@ -44,6 +47,9 @@ export function generateApi() {
                     output += '    }\n';
                     output += '    use' + name + '(): Types.' + name + ' {\n';
                     output += '        return this.client.useQuery(Source.' + op.name + ');\n';
+                    output += '    }\n';
+                    output += '    useWithoutLoader' + name + '(): Types.' + name + ' | null {\n';
+                    output += '        return this.client.useWithoutLoaderQuery(Source.' + op.name + ');\n';
                     output += '    }\n';
                 }
             }

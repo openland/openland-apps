@@ -15,6 +15,9 @@ export class OpenlandClient {
     useAccount(): Types.Account {
         return this.client.useQuery(Source.AccountQuery);
     }
+    useWithoutLoaderAccount(): Types.Account | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountQuery);
+    }
     async queryAccountSettings(): Promise<Types.AccountSettings> {
         return this.client.query(Source.AccountSettingsQuery);
     }
@@ -23,6 +26,9 @@ export class OpenlandClient {
     }
     useAccountSettings(): Types.AccountSettings {
         return this.client.useQuery(Source.AccountSettingsQuery);
+    }
+    useWithoutLoaderAccountSettings(): Types.AccountSettings | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountSettingsQuery);
     }
     async queryAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Promise<Types.AccountInviteInfo> {
         return this.client.query(Source.AccountInviteInfoQuery, variables);
@@ -33,6 +39,9 @@ export class OpenlandClient {
     useAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Types.AccountInviteInfo {
         return this.client.useQuery(Source.AccountInviteInfoQuery, variables);
     }
+    useWithoutLoaderAccountInviteInfo(variables: Types.AccountInviteInfoVariables): Types.AccountInviteInfo | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountInviteInfoQuery, variables);
+    }
     async queryAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Promise<Types.AccountAppInviteInfo> {
         return this.client.query(Source.AccountAppInviteInfoQuery, variables);
     }
@@ -41,6 +50,9 @@ export class OpenlandClient {
     }
     useAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Types.AccountAppInviteInfo {
         return this.client.useQuery(Source.AccountAppInviteInfoQuery, variables);
+    }
+    useWithoutLoaderAccountAppInviteInfo(variables: Types.AccountAppInviteInfoVariables): Types.AccountAppInviteInfo | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountAppInviteInfoQuery, variables);
     }
     async queryAccountAppInvite(): Promise<Types.AccountAppInvite> {
         return this.client.query(Source.AccountAppInviteQuery);
@@ -51,6 +63,9 @@ export class OpenlandClient {
     useAccountAppInvite(): Types.AccountAppInvite {
         return this.client.useQuery(Source.AccountAppInviteQuery);
     }
+    useWithoutLoaderAccountAppInvite(): Types.AccountAppInvite | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountAppInviteQuery);
+    }
     async queryAccountInvites(): Promise<Types.AccountInvites> {
         return this.client.query(Source.AccountInvitesQuery);
     }
@@ -59,6 +74,9 @@ export class OpenlandClient {
     }
     useAccountInvites(): Types.AccountInvites {
         return this.client.useQuery(Source.AccountInvitesQuery);
+    }
+    useWithoutLoaderAccountInvites(): Types.AccountInvites | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountInvitesQuery);
     }
     async queryAccountInvitesHistory(): Promise<Types.AccountInvitesHistory> {
         return this.client.query(Source.AccountInvitesHistoryQuery);
@@ -69,6 +87,9 @@ export class OpenlandClient {
     useAccountInvitesHistory(): Types.AccountInvitesHistory {
         return this.client.useQuery(Source.AccountInvitesHistoryQuery);
     }
+    useWithoutLoaderAccountInvitesHistory(): Types.AccountInvitesHistory | null {
+        return this.client.useWithoutLoaderQuery(Source.AccountInvitesHistoryQuery);
+    }
     async queryProfilePrefill(): Promise<Types.ProfilePrefill> {
         return this.client.query(Source.ProfilePrefillQuery);
     }
@@ -77,6 +98,9 @@ export class OpenlandClient {
     }
     useProfilePrefill(): Types.ProfilePrefill {
         return this.client.useQuery(Source.ProfilePrefillQuery);
+    }
+    useWithoutLoaderProfilePrefill(): Types.ProfilePrefill | null {
+        return this.client.useWithoutLoaderQuery(Source.ProfilePrefillQuery);
     }
     async queryMyApps(): Promise<Types.MyApps> {
         return this.client.query(Source.MyAppsQuery);
@@ -87,6 +111,9 @@ export class OpenlandClient {
     useMyApps(): Types.MyApps {
         return this.client.useQuery(Source.MyAppsQuery);
     }
+    useWithoutLoaderMyApps(): Types.MyApps | null {
+        return this.client.useWithoutLoaderQuery(Source.MyAppsQuery);
+    }
     async queryDialogs(variables: Types.DialogsVariables): Promise<Types.Dialogs> {
         return this.client.query(Source.DialogsQuery, variables);
     }
@@ -95,6 +122,9 @@ export class OpenlandClient {
     }
     useDialogs(variables: Types.DialogsVariables): Types.Dialogs {
         return this.client.useQuery(Source.DialogsQuery, variables);
+    }
+    useWithoutLoaderDialogs(variables: Types.DialogsVariables): Types.Dialogs | null {
+        return this.client.useWithoutLoaderQuery(Source.DialogsQuery, variables);
     }
     async queryRoom(variables: Types.RoomVariables): Promise<Types.Room> {
         return this.client.query(Source.RoomQuery, variables);
@@ -105,6 +135,9 @@ export class OpenlandClient {
     useRoom(variables: Types.RoomVariables): Types.Room {
         return this.client.useQuery(Source.RoomQuery, variables);
     }
+    useWithoutLoaderRoom(variables: Types.RoomVariables): Types.Room | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomQuery, variables);
+    }
     async queryRoomTiny(variables: Types.RoomTinyVariables): Promise<Types.RoomTiny> {
         return this.client.query(Source.RoomTinyQuery, variables);
     }
@@ -113,6 +146,9 @@ export class OpenlandClient {
     }
     useRoomTiny(variables: Types.RoomTinyVariables): Types.RoomTiny {
         return this.client.useQuery(Source.RoomTinyQuery, variables);
+    }
+    useWithoutLoaderRoomTiny(variables: Types.RoomTinyVariables): Types.RoomTiny | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomTinyQuery, variables);
     }
     async queryRoomSuper(variables: Types.RoomSuperVariables): Promise<Types.RoomSuper> {
         return this.client.query(Source.RoomSuperQuery, variables);
@@ -123,6 +159,9 @@ export class OpenlandClient {
     useRoomSuper(variables: Types.RoomSuperVariables): Types.RoomSuper {
         return this.client.useQuery(Source.RoomSuperQuery, variables);
     }
+    useWithoutLoaderRoomSuper(variables: Types.RoomSuperVariables): Types.RoomSuper | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomSuperQuery, variables);
+    }
     async queryGetDraftMessage(variables: Types.GetDraftMessageVariables): Promise<Types.GetDraftMessage> {
         return this.client.query(Source.GetDraftMessageQuery, variables);
     }
@@ -131,6 +170,9 @@ export class OpenlandClient {
     }
     useGetDraftMessage(variables: Types.GetDraftMessageVariables): Types.GetDraftMessage {
         return this.client.useQuery(Source.GetDraftMessageQuery, variables);
+    }
+    useWithoutLoaderGetDraftMessage(variables: Types.GetDraftMessageVariables): Types.GetDraftMessage | null {
+        return this.client.useWithoutLoaderQuery(Source.GetDraftMessageQuery, variables);
     }
     async queryGlobalCounter(): Promise<Types.GlobalCounter> {
         return this.client.query(Source.GlobalCounterQuery);
@@ -141,6 +183,9 @@ export class OpenlandClient {
     useGlobalCounter(): Types.GlobalCounter {
         return this.client.useQuery(Source.GlobalCounterQuery);
     }
+    useWithoutLoaderGlobalCounter(): Types.GlobalCounter | null {
+        return this.client.useWithoutLoaderQuery(Source.GlobalCounterQuery);
+    }
     async queryRoomHistory(variables: Types.RoomHistoryVariables): Promise<Types.RoomHistory> {
         return this.client.query(Source.RoomHistoryQuery, variables);
     }
@@ -149,6 +194,9 @@ export class OpenlandClient {
     }
     useRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory {
         return this.client.useQuery(Source.RoomHistoryQuery, variables);
+    }
+    useWithoutLoaderRoomHistory(variables: Types.RoomHistoryVariables): Types.RoomHistory | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomHistoryQuery, variables);
     }
     async queryChatSearchGroup(variables: Types.ChatSearchGroupVariables): Promise<Types.ChatSearchGroup> {
         return this.client.query(Source.ChatSearchGroupQuery, variables);
@@ -159,6 +207,9 @@ export class OpenlandClient {
     useChatSearchGroup(variables: Types.ChatSearchGroupVariables): Types.ChatSearchGroup {
         return this.client.useQuery(Source.ChatSearchGroupQuery, variables);
     }
+    useWithoutLoaderChatSearchGroup(variables: Types.ChatSearchGroupVariables): Types.ChatSearchGroup | null {
+        return this.client.useWithoutLoaderQuery(Source.ChatSearchGroupQuery, variables);
+    }
     async queryRoomSearchText(variables: Types.RoomSearchTextVariables): Promise<Types.RoomSearchText> {
         return this.client.query(Source.RoomSearchTextQuery, variables);
     }
@@ -167,6 +218,9 @@ export class OpenlandClient {
     }
     useRoomSearchText(variables: Types.RoomSearchTextVariables): Types.RoomSearchText {
         return this.client.useQuery(Source.RoomSearchTextQuery, variables);
+    }
+    useWithoutLoaderRoomSearchText(variables: Types.RoomSearchTextVariables): Types.RoomSearchText | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomSearchTextQuery, variables);
     }
     async queryRoomSearch(variables: Types.RoomSearchVariables): Promise<Types.RoomSearch> {
         return this.client.query(Source.RoomSearchQuery, variables);
@@ -177,6 +231,9 @@ export class OpenlandClient {
     useRoomSearch(variables: Types.RoomSearchVariables): Types.RoomSearch {
         return this.client.useQuery(Source.RoomSearchQuery, variables);
     }
+    useWithoutLoaderRoomSearch(variables: Types.RoomSearchVariables): Types.RoomSearch | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomSearchQuery, variables);
+    }
     async queryRoomMembers(variables: Types.RoomMembersVariables): Promise<Types.RoomMembers> {
         return this.client.query(Source.RoomMembersQuery, variables);
     }
@@ -185,6 +242,9 @@ export class OpenlandClient {
     }
     useRoomMembers(variables: Types.RoomMembersVariables): Types.RoomMembers {
         return this.client.useQuery(Source.RoomMembersQuery, variables);
+    }
+    useWithoutLoaderRoomMembers(variables: Types.RoomMembersVariables): Types.RoomMembers | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomMembersQuery, variables);
     }
     async queryRoomInviteLink(variables: Types.RoomInviteLinkVariables): Promise<Types.RoomInviteLink> {
         return this.client.query(Source.RoomInviteLinkQuery, variables);
@@ -195,6 +255,9 @@ export class OpenlandClient {
     useRoomInviteLink(variables: Types.RoomInviteLinkVariables): Types.RoomInviteLink {
         return this.client.useQuery(Source.RoomInviteLinkQuery, variables);
     }
+    useWithoutLoaderRoomInviteLink(variables: Types.RoomInviteLinkVariables): Types.RoomInviteLink | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomInviteLinkQuery, variables);
+    }
     async queryRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Promise<Types.RoomInviteInfo> {
         return this.client.query(Source.RoomInviteInfoQuery, variables);
     }
@@ -203,6 +266,9 @@ export class OpenlandClient {
     }
     useRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Types.RoomInviteInfo {
         return this.client.useQuery(Source.RoomInviteInfoQuery, variables);
+    }
+    useWithoutLoaderRoomInviteInfo(variables: Types.RoomInviteInfoVariables): Types.RoomInviteInfo | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomInviteInfoQuery, variables);
     }
     async queryConference(variables: Types.ConferenceVariables): Promise<Types.Conference> {
         return this.client.query(Source.ConferenceQuery, variables);
@@ -213,6 +279,9 @@ export class OpenlandClient {
     useConference(variables: Types.ConferenceVariables): Types.Conference {
         return this.client.useQuery(Source.ConferenceQuery, variables);
     }
+    useWithoutLoaderConference(variables: Types.ConferenceVariables): Types.Conference | null {
+        return this.client.useWithoutLoaderQuery(Source.ConferenceQuery, variables);
+    }
     async queryAvailableRooms(): Promise<Types.AvailableRooms> {
         return this.client.query(Source.AvailableRoomsQuery);
     }
@@ -221,6 +290,9 @@ export class OpenlandClient {
     }
     useAvailableRooms(): Types.AvailableRooms {
         return this.client.useQuery(Source.AvailableRoomsQuery);
+    }
+    useWithoutLoaderAvailableRooms(): Types.AvailableRooms | null {
+        return this.client.useWithoutLoaderQuery(Source.AvailableRoomsQuery);
     }
     async queryFeatureFlags(): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery);
@@ -231,6 +303,9 @@ export class OpenlandClient {
     useFeatureFlags(): Types.FeatureFlags {
         return this.client.useQuery(Source.FeatureFlagsQuery);
     }
+    useWithoutLoaderFeatureFlags(): Types.FeatureFlags | null {
+        return this.client.useWithoutLoaderQuery(Source.FeatureFlagsQuery);
+    }
     async queryFeedHome(): Promise<Types.FeedHome> {
         return this.client.query(Source.FeedHomeQuery);
     }
@@ -239,6 +314,9 @@ export class OpenlandClient {
     }
     useFeedHome(): Types.FeedHome {
         return this.client.useQuery(Source.FeedHomeQuery);
+    }
+    useWithoutLoaderFeedHome(): Types.FeedHome | null {
+        return this.client.useWithoutLoaderQuery(Source.FeedHomeQuery);
     }
     async queryMyOrganizations(): Promise<Types.MyOrganizations> {
         return this.client.query(Source.MyOrganizationsQuery);
@@ -249,6 +327,9 @@ export class OpenlandClient {
     useMyOrganizations(): Types.MyOrganizations {
         return this.client.useQuery(Source.MyOrganizationsQuery);
     }
+    useWithoutLoaderMyOrganizations(): Types.MyOrganizations | null {
+        return this.client.useWithoutLoaderQuery(Source.MyOrganizationsQuery);
+    }
     async queryOrganization(variables: Types.OrganizationVariables): Promise<Types.Organization> {
         return this.client.query(Source.OrganizationQuery, variables);
     }
@@ -257,6 +338,9 @@ export class OpenlandClient {
     }
     useOrganization(variables: Types.OrganizationVariables): Types.Organization {
         return this.client.useQuery(Source.OrganizationQuery, variables);
+    }
+    useWithoutLoaderOrganization(variables: Types.OrganizationVariables): Types.Organization | null {
+        return this.client.useWithoutLoaderQuery(Source.OrganizationQuery, variables);
     }
     async queryOrganizationProfile(variables: Types.OrganizationProfileVariables): Promise<Types.OrganizationProfile> {
         return this.client.query(Source.OrganizationProfileQuery, variables);
@@ -267,6 +351,9 @@ export class OpenlandClient {
     useOrganizationProfile(variables: Types.OrganizationProfileVariables): Types.OrganizationProfile {
         return this.client.useQuery(Source.OrganizationProfileQuery, variables);
     }
+    useWithoutLoaderOrganizationProfile(variables: Types.OrganizationProfileVariables): Types.OrganizationProfile | null {
+        return this.client.useWithoutLoaderQuery(Source.OrganizationProfileQuery, variables);
+    }
     async queryExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Promise<Types.ExploreOrganizations> {
         return this.client.query(Source.ExploreOrganizationsQuery, variables);
     }
@@ -275,6 +362,9 @@ export class OpenlandClient {
     }
     useExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Types.ExploreOrganizations {
         return this.client.useQuery(Source.ExploreOrganizationsQuery, variables);
+    }
+    useWithoutLoaderExploreOrganizations(variables: Types.ExploreOrganizationsVariables): Types.ExploreOrganizations | null {
+        return this.client.useWithoutLoaderQuery(Source.ExploreOrganizationsQuery, variables);
     }
     async queryExploreComunity(variables: Types.ExploreComunityVariables): Promise<Types.ExploreComunity> {
         return this.client.query(Source.ExploreComunityQuery, variables);
@@ -285,6 +375,9 @@ export class OpenlandClient {
     useExploreComunity(variables: Types.ExploreComunityVariables): Types.ExploreComunity {
         return this.client.useQuery(Source.ExploreComunityQuery, variables);
     }
+    useWithoutLoaderExploreComunity(variables: Types.ExploreComunityVariables): Types.ExploreComunity | null {
+        return this.client.useWithoutLoaderQuery(Source.ExploreComunityQuery, variables);
+    }
     async queryOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Promise<Types.OrganizationPublicInvite> {
         return this.client.query(Source.OrganizationPublicInviteQuery, variables);
     }
@@ -293,6 +386,9 @@ export class OpenlandClient {
     }
     useOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Types.OrganizationPublicInvite {
         return this.client.useQuery(Source.OrganizationPublicInviteQuery, variables);
+    }
+    useWithoutLoaderOrganizationPublicInvite(variables: Types.OrganizationPublicInviteVariables): Types.OrganizationPublicInvite | null {
+        return this.client.useWithoutLoaderQuery(Source.OrganizationPublicInviteQuery, variables);
     }
     async queryOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Promise<Types.OrganizationByPrefix> {
         return this.client.query(Source.OrganizationByPrefixQuery, variables);
@@ -303,6 +399,9 @@ export class OpenlandClient {
     useOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Types.OrganizationByPrefix {
         return this.client.useQuery(Source.OrganizationByPrefixQuery, variables);
     }
+    useWithoutLoaderOrganizationByPrefix(variables: Types.OrganizationByPrefixVariables): Types.OrganizationByPrefix | null {
+        return this.client.useWithoutLoaderQuery(Source.OrganizationByPrefixQuery, variables);
+    }
     async queryPermissions(): Promise<Types.Permissions> {
         return this.client.query(Source.PermissionsQuery);
     }
@@ -311,6 +410,9 @@ export class OpenlandClient {
     }
     usePermissions(): Types.Permissions {
         return this.client.useQuery(Source.PermissionsQuery);
+    }
+    useWithoutLoaderPermissions(): Types.Permissions | null {
+        return this.client.useWithoutLoaderQuery(Source.PermissionsQuery);
     }
     async querySuperAdmins(): Promise<Types.SuperAdmins> {
         return this.client.query(Source.SuperAdminsQuery);
@@ -321,6 +423,9 @@ export class OpenlandClient {
     useSuperAdmins(): Types.SuperAdmins {
         return this.client.useQuery(Source.SuperAdminsQuery);
     }
+    useWithoutLoaderSuperAdmins(): Types.SuperAdmins | null {
+        return this.client.useWithoutLoaderQuery(Source.SuperAdminsQuery);
+    }
     async querySuperAccounts(): Promise<Types.SuperAccounts> {
         return this.client.query(Source.SuperAccountsQuery);
     }
@@ -329,6 +434,9 @@ export class OpenlandClient {
     }
     useSuperAccounts(): Types.SuperAccounts {
         return this.client.useQuery(Source.SuperAccountsQuery);
+    }
+    useWithoutLoaderSuperAccounts(): Types.SuperAccounts | null {
+        return this.client.useWithoutLoaderQuery(Source.SuperAccountsQuery);
     }
     async querySuperAccount(variables: Types.SuperAccountVariables): Promise<Types.SuperAccount> {
         return this.client.query(Source.SuperAccountQuery, variables);
@@ -339,6 +447,9 @@ export class OpenlandClient {
     useSuperAccount(variables: Types.SuperAccountVariables): Types.SuperAccount {
         return this.client.useQuery(Source.SuperAccountQuery, variables);
     }
+    useWithoutLoaderSuperAccount(variables: Types.SuperAccountVariables): Types.SuperAccount | null {
+        return this.client.useWithoutLoaderQuery(Source.SuperAccountQuery, variables);
+    }
     async queryProfile(): Promise<Types.Profile> {
         return this.client.query(Source.ProfileQuery);
     }
@@ -347,6 +458,9 @@ export class OpenlandClient {
     }
     useProfile(): Types.Profile {
         return this.client.useQuery(Source.ProfileQuery);
+    }
+    useWithoutLoaderProfile(): Types.Profile | null {
+        return this.client.useWithoutLoaderQuery(Source.ProfileQuery);
     }
     async querySettings(): Promise<Types.Settings> {
         return this.client.query(Source.SettingsQuery);
@@ -357,6 +471,9 @@ export class OpenlandClient {
     useSettings(): Types.Settings {
         return this.client.useQuery(Source.SettingsQuery);
     }
+    useWithoutLoaderSettings(): Types.Settings | null {
+        return this.client.useWithoutLoaderQuery(Source.SettingsQuery);
+    }
     async queryUsers(variables: Types.UsersVariables): Promise<Types.Users> {
         return this.client.query(Source.UsersQuery, variables);
     }
@@ -365,6 +482,9 @@ export class OpenlandClient {
     }
     useUsers(variables: Types.UsersVariables): Types.Users {
         return this.client.useQuery(Source.UsersQuery, variables);
+    }
+    useWithoutLoaderUsers(variables: Types.UsersVariables): Types.Users | null {
+        return this.client.useWithoutLoaderQuery(Source.UsersQuery, variables);
     }
     async queryUser(variables: Types.UserVariables): Promise<Types.User> {
         return this.client.query(Source.UserQuery, variables);
@@ -375,6 +495,9 @@ export class OpenlandClient {
     useUser(variables: Types.UserVariables): Types.User {
         return this.client.useQuery(Source.UserQuery, variables);
     }
+    useWithoutLoaderUser(variables: Types.UserVariables): Types.User | null {
+        return this.client.useWithoutLoaderQuery(Source.UserQuery, variables);
+    }
     async queryOnline(variables: Types.OnlineVariables): Promise<Types.Online> {
         return this.client.query(Source.OnlineQuery, variables);
     }
@@ -383,6 +506,9 @@ export class OpenlandClient {
     }
     useOnline(variables: Types.OnlineVariables): Types.Online {
         return this.client.useQuery(Source.OnlineQuery, variables);
+    }
+    useWithoutLoaderOnline(variables: Types.OnlineVariables): Types.Online | null {
+        return this.client.useWithoutLoaderQuery(Source.OnlineQuery, variables);
     }
     async queryExplorePeople(variables: Types.ExplorePeopleVariables): Promise<Types.ExplorePeople> {
         return this.client.query(Source.ExplorePeopleQuery, variables);
@@ -393,6 +519,9 @@ export class OpenlandClient {
     useExplorePeople(variables: Types.ExplorePeopleVariables): Types.ExplorePeople {
         return this.client.useQuery(Source.ExplorePeopleQuery, variables);
     }
+    useWithoutLoaderExplorePeople(variables: Types.ExplorePeopleVariables): Types.ExplorePeople | null {
+        return this.client.useWithoutLoaderQuery(Source.ExplorePeopleQuery, variables);
+    }
     async queryResolveShortName(variables: Types.ResolveShortNameVariables): Promise<Types.ResolveShortName> {
         return this.client.query(Source.ResolveShortNameQuery, variables);
     }
@@ -401,6 +530,9 @@ export class OpenlandClient {
     }
     useResolveShortName(variables: Types.ResolveShortNameVariables): Types.ResolveShortName {
         return this.client.useQuery(Source.ResolveShortNameQuery, variables);
+    }
+    useWithoutLoaderResolveShortName(variables: Types.ResolveShortNameVariables): Types.ResolveShortName | null {
+        return this.client.useWithoutLoaderQuery(Source.ResolveShortNameQuery, variables);
     }
     async mutateCreateOrganization(variables: Types.CreateOrganizationVariables): Promise<Types.CreateOrganization> {
         return this.client.mutate(Source.CreateOrganizationMutation, variables);

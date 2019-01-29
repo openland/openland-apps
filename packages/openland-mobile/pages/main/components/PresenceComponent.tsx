@@ -5,12 +5,12 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 
 export const PresenceComponent = React.memo<{ uid: string, style?: TextStyle, onlineStyle?: TextStyle }>((props) => {
     // TODO: Implement non-suspense rendering
-    let online = getClient().useOnline({ userId: props.uid });
+    let online = getClient().useWithoutLoaderOnline({ userId: props.uid });
     let sub = undefined;
     let isOnline = false;
-    if (online.user && !online.user.online && online.user.lastSeen) {
+    if (online && online.user && !online.user.online && online.user.lastSeen) {
         sub = formatLastSeen(online.user.lastSeen);
-    } else if (online.user && online.user.online) {
+    } else if (online && online.user && online.user.online) {
         sub = 'online';
         isOnline = true;
     }
