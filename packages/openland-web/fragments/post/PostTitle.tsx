@@ -36,10 +36,18 @@ export const Invalid = css`
     }
 `;
 
-const EmojiWrapper = css`
+const EmojiPosition = css`
     position: absolute;
     top: 6px;
     right: 12px;
+    & > div > div {
+        top: 30px;
+        right: 0;
+        bottom: auto !important;
+    },
+`;
+
+export const EmojiWrapper = css`
     & > div {
         display: block;
     }
@@ -66,8 +74,8 @@ const EmojiWrapper = css`
         }
     }
     & > div > div {
-        top: 30px;
         right: 0;
+        bottom: 50px;
     },
 `;
 
@@ -141,7 +149,7 @@ export class PostTitle extends React.PureComponent<TextInputProps, TextInputStat
                         ref={this.editorRef}
                         plugins={[emojiPlugin]}
                     />
-                    <div className={`${EmojiWrapper} emoji-wrapper`}>
+                    <div className={`${EmojiWrapper} ${EmojiPosition} emoji-wrapper`}>
                         <EmojiSelect />
                     </div>
                 </div>

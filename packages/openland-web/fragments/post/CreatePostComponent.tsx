@@ -22,7 +22,7 @@ import { MessageUploadComponent } from 'openland-web/components/messenger/messag
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
 import { postTexts } from './text';
-import { PostTitle } from './PostTitle';
+import { PostTitle, EmojiWrapper } from './PostTitle';
 import { PostText, EmojiSelect } from './PostText';
 
 const FilesWrapper = Glamorous(XVertical)({
@@ -585,33 +585,46 @@ export class CreatePostComponent extends React.Component<
                                     <span>Document</span>
                                 </AttachmentButton>
                             </XView>
-                            <EmojiSelect />
-                            {!props.editData && (
-                                <SendPostButton
-                                    conversationId={props.conversationId}
-                                    postType={postType}
-                                    title={state.title}
-                                    text={state.text}
-                                    files={state.files}
-                                    handleHideChat={props.handleHideChat}
-                                    textValidation={this.validation}
+                            <XView
+                                flexDirection="row"
+                                alignItems="center"
+                            >
+                                <XView
+                                    flexDirection="row"
+                                    alignItems="center"
+                                    marginRight={10}
                                 >
-                                    <XButton text="Send" style="primary" iconRight="send" />
-                                </SendPostButton>
-                            )}
-                            {props.editData && (
-                                <EditPostButton
-                                    messageId={props.editData.messageId}
-                                    postType={postType}
-                                    title={state.title}
-                                    text={state.text}
-                                    files={state.files}
-                                    handleHideChat={props.handleHideChat}
-                                    textValidation={this.validation}
-                                >
-                                    <XButton text="Save changes" style="primary" />
-                                </EditPostButton>
-                            )}
+                                    <div className={EmojiWrapper}>
+                                        <EmojiSelect />
+                                    </div>
+                                </XView>
+                                {!props.editData && (
+                                    <SendPostButton
+                                        conversationId={props.conversationId}
+                                        postType={postType}
+                                        title={state.title}
+                                        text={state.text}
+                                        files={state.files}
+                                        handleHideChat={props.handleHideChat}
+                                        textValidation={this.validation}
+                                    >
+                                        <XButton text="Send" style="primary" iconRight="send" />
+                                    </SendPostButton>
+                                )}
+                                {props.editData && (
+                                    <EditPostButton
+                                        messageId={props.editData.messageId}
+                                        postType={postType}
+                                        title={state.title}
+                                        text={state.text}
+                                        files={state.files}
+                                        handleHideChat={props.handleHideChat}
+                                        textValidation={this.validation}
+                                    >
+                                        <XButton text="Save changes" style="primary" />
+                                    </EditPostButton>
+                                )}
+                            </XView>
                         </XView>
                     </XView>
                 </XView>
