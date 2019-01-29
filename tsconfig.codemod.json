@@ -18,14 +18,10 @@
         "allowSyntheticDefaultImports": true,
         "strictPropertyInitialization": true,
         "typeRoots": ["./node_modules/@types"],
-        "outDir": "packages/openland-x-codemod/lib/",
         "baseUrl": "packages",
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "paths": {
-            "openland-x-codemod": ["openland-x-codemod"],
-            "openland-x-styles": ["openland-x-styles"]
-        },
+        "paths": {},
         "importHelpers": true
     },
     "exclude": [
@@ -40,12 +36,5 @@
         "packages/openland-web/src/less",
         "**/*.spec.ts"
     ],
-    "files": [
-        "./packages/openland-web/typings.d.ts",
-        "./packages/openland-mobile/typings.d.ts"
-    ],
-    "include": [
-        "./packages/openland-x-codemod",
-        "./packages/openland-x-styles"
-    ]
+    "files": ["./packages/openland-web/typings.d.ts", "./packages/openland-mobile/typings.d.ts"]
 }
