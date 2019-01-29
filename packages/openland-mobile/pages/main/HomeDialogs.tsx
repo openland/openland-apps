@@ -80,12 +80,7 @@ class DialogsComponent extends React.Component<PageProps> {
                 {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
                 <SSearchControler
                     key={this.props.router.key + new Date().getTime()}
-                    searchRender={
-                        (props) => (
-                            <React.Suspense fallback={<ZLoader />}>
-                                <DialogsSearch query={props.query} router={this.props.router} />
-                            </React.Suspense>
-                        )}
+                    searchRender={(props) => (<DialogsSearch query={props.query} router={this.props.router} />)}
                 >
                     <MobileMessengerContext.Consumer>
                         {engine => (<DialogListComponent dialogs={engine.dialogs} />)}

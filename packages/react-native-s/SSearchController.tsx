@@ -7,6 +7,7 @@ import UUID from 'uuid/v4';
 import { SAnimatedShadowView } from './SAnimatedShadowView';
 import { HeaderContextNone } from './navigation/HeaderContextNone';
 import { SearchContext } from './navigation/SearchContext';
+import { SNativeConfig } from './SNativeConfig';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
@@ -68,7 +69,9 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                                         <HeaderContextNone>
                                             <ASSafeAreaProvider top={6}>
                                                 <View width="100%" height="100%">
-                                                    <Render query={this.state.query} />
+                                                    <React.Suspense fallback={SNativeConfig.loader}>
+                                                        <Render query={this.state.query} />
+                                                    </React.Suspense>
                                                 </View>
                                             </ASSafeAreaProvider>
                                         </HeaderContextNone>
@@ -90,7 +93,9 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                             <HeaderContextNone>
                                 <ASSafeAreaProvider top={-56}>
                                     <View width="100%" height="100%">
-                                        <Render query={this.state.query} />
+                                        <React.Suspense fallback={SNativeConfig.loader}>
+                                            <Render query={this.state.query} />
+                                        </React.Suspense>
                                     </View>
                                 </ASSafeAreaProvider>
                             </HeaderContextNone>
