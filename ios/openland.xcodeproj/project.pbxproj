@@ -83,6 +83,7 @@
 		AA0D751D215ED59B00BDE84E /* ProximaNova-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D74D2215ED59800BDE84E /* ProximaNova-Semibold.ttf */; };
 		AA0D751F215ED5E400BDE84E /* ProximaNova-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D751E215ED5E400BDE84E /* ProximaNova-Regular.ttf */; };
 		AA0D7521215ED69C00BDE84E /* ProximaNova-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D7520215ED69C00BDE84E /* ProximaNova-Bold.ttf */; };
+		AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AA260848220074F100A69D84 /* index.thread.jsbundle */; };
 		AA5ACBC82107642B004798B4 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5ACBC521076417004798B4 /* libRCTPushNotification.a */; };
 		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
@@ -2588,6 +2589,7 @@
 				AA0D7521215ED69C00BDE84E /* ProximaNova-Bold.ttf in Resources */,
 				AA0D74A6215EA8DE00BDE84E /* WorkSans-SemiBold.ttf in Resources */,
 				C76D7A1B6372414D92C3ADEB /* SimpleLineIcons.ttf in Resources */,
+				AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */,
 				C4CCFE291D7643E781230076 /* Zocial.ttf in Resources */,
 				AA0D74AB215EA8DE00BDE84E /* WorkSans-ExtraLight.ttf in Resources */,
 				440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */,
@@ -2624,7 +2626,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../scripts/ios_prebuild.sh\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../scripts/ios_prebuild.sh\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
