@@ -1951,7 +1951,7 @@
     "@types/prop-types" "*"
     "@types/react" "*"
 
-"@types/react@^16.7.22", "@types/react@*", "@types/react@^16.3.14":
+"@types/react@*", "@types/react@^16.3.14", "@types/react@^16.7.22":
   version "16.7.22"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.22.tgz#5bc6d166d5ac34b835756f0b736c7b1af0043e81"
   integrity sha512-j/3tVoY09kHcTfbia4l67ofQn9xvktUvlC/4QN0KuBHAXlbU/wuGKMb8WfEb/vIcWxsOxHv559uYprkFDFfP8Q==
@@ -12228,6 +12228,11 @@ react-native-share@^1.1.1:
 react-native-super-ellipse-mask@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/react-native-super-ellipse-mask/-/react-native-super-ellipse-mask-1.0.7.tgz#31e01b95ce1ff43904554c4a20875988eda9c212"
+
+react-native-threads@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/react-native-threads/-/react-native-threads-0.0.15.tgz#7dee96658065aa74ca65a27995e29d97da3aae34"
+  integrity sha512-WfVQMtqzOfrY4QcMkuCjr37EHE0E4aIgCTVttZzz8fm3WIJKAAfIiuK1hupULQqn3J8VO3+3PuuZh8SMkvtvEw==
 
 react-native-vector-icons@^4.6.0:
   version "4.6.0"

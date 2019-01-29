@@ -9,6 +9,19 @@ declare module 'rn-fetch-blob' {
     export default instance;
 }
 
+declare module 'react-native-threads' {
+    export const self: {
+        onmessage: (message: string) => void;
+        postMessage(message: string): void;
+    };
+    export class Thread {
+        constructor(path: string);
+        onmessage: (message: string) => void;
+        postMessage(message: string): void;
+        terminate(): void;
+    }
+}
+
 declare module 'react-native-restart' {
     const instance: {
         Restart: () => void;

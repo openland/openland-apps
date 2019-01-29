@@ -84,6 +84,11 @@ let SettingsContent = React.memo<PageProps>((props) => {
                     />
                 ))}
             </ZListItemGroup>
+            {(resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ')) && (
+                <ZListItemGroup header={null} divider={false}>
+                    <ZListItem text="Developer Menu" path="Dev" />
+                </ZListItemGroup>
+            )}
         </SScrollView>
     );
 });
