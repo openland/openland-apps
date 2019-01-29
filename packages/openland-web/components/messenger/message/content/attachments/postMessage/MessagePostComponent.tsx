@@ -101,7 +101,7 @@ interface MessagePostComponentProps {
     alphaTitle: string;
     alphaButtons: (MessageFull_alphaButtons[] | null)[];
     alphaAttachments: MessageFull_alphaAttachments[];
-    reactions: MessageFull_reactions[];
+    reactions?: MessageFull_reactions[];
     edited: boolean;
     privateConversation: boolean;
 }
@@ -114,7 +114,7 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
     };
 
     let { reactions } = props;
-    let meRespond: any[] | boolean = reactions.filter(
+    let meRespond: any[] | boolean = (reactions || []).filter(
         i => i.reaction === 'respondPost' && i.user.id === props.meId,
     );
     let meSender = false;
@@ -313,7 +313,7 @@ export const MessagePostComponent = React.memo<MessagePostComponentProps>(props 
                         messageId={props.messageId}
                         userId={props.userId}
                         meId={props.meId}
-                        reactions={props.reactions}
+                        reactions={props.reactions || []}
                     />
                 </XView>
             )}

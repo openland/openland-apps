@@ -65,8 +65,8 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                     </ASFlex>
                 }
                 <ASFlex flexDirection="column" alignItems={this.props.message.isOut ? 'flex-end' : 'flex-start'} flexGrow={1} flexBasis={0} marginLeft={this.props.message.isOut ? 50 : 0} marginRight={this.props.message.isOut ? 0 : 50}>
-                    {!specialMessage && this.props.message.text && !this.props.message.file && (
-                        <AsyncMessageTextView message={this.props.message} onUserPress={this.props.onAvatarPress} />
+                    {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
+                        <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
                     )}
                     {!specialMessage && this.props.message.file && this.props.message.file.isImage && (
                         <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />

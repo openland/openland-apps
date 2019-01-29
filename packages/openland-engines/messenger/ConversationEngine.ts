@@ -4,12 +4,14 @@ import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import gql from 'graphql-tag';
-import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
+import { MessageFull as MessageFullFragment, UserShort as UserShortFragnemt, MessageFull_urlAugmentation, MessageFull_reactions, MessageFull_mentions, MessageFull_serviceMetadata, MessageFull_alphaMentions, MessageFull_reply, MessageFull_sender, MessageType, MessageFull_alphaAttachments, MessageFull_alphaButtons } from 'openland-api/Types';
 import { ConversationState, Day, MessageGroup } from './ConversationState';
 import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, ModelMessage } from './types';
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { isLoaded } from 'google-maps';
+import { number } from 'prop-types';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $state: String) {
@@ -69,10 +71,12 @@ const CONVERSATION_PAGE_SIZE = 30;
 
 export interface DataSourceMessageItem {
     type: 'message';
+    messageType: MessageType;
     key: string;
     id?: string;
     date: number;
     isOut: boolean;
+    sender: UserShortFragnemt;
     senderId: string;
     senderName: string;
     senderPhoto?: string;
@@ -87,14 +91,19 @@ export interface DataSourceMessageItem {
         isGif: boolean,
         imageSize?: { width: number, height: number }
     };
+    isEdited?: boolean;
+    reply?: MessageFull_reply[];
     urlAugmentation?: MessageFull_urlAugmentation;
     reactions?: MessageFull_reactions[];
-    mentions?: MessageFull_mentions[];
+    mentions?: MessageFull_alphaMentions[];
+    attachments?: MessageFull_alphaAttachments[];
+    buttons?: (MessageFull_alphaButtons[] | null)[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
     serviceMetaData?: MessageFull_serviceMetadata;
     isService?: boolean;
+    progress?: number;
 }
 
 export interface DataSourceDateItem {
@@ -108,6 +117,7 @@ export interface DataSourceDateItem {
 export function convertMessage(src: MessageFullFragment & { local?: boolean }, engine: MessengerEngine, prev?: MessageFullFragment, next?: MessageFullFragment): DataSourceMessageItem {
     return {
         type: 'message',
+        messageType: src.alphaType,
         id: src.id,
         key: (src.local && src.repeatKey) || src.id,
         date: parseInt(src.date, 10),
@@ -115,6 +125,7 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         senderId: src.sender.id,
         senderName: src.sender.name,
         senderPhoto: src.sender.photo || undefined,
+        sender: src.sender,
         text: src.message || undefined,
         title: src.alphaTitle || undefined,
         file: src.file ? {
@@ -132,7 +143,12 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         reactions: src.reactions || undefined,
         serviceMetaData: src.serviceMetadata || undefined,
         isService: src.isService || undefined,
-        mentions: src.mentions || undefined,
+        mentions: src.alphaMentions || (src.mentions || []).map(m => ({ user: { ...m }, __typename: 'UserMention' as 'UserMention' })),
+        attachments: src.alphaAttachments || undefined,
+        buttons: src.alphaButtons || undefined,
+        reply: src.reply || undefined,
+        isEdited: src.edited,
+
     };
 }
 
@@ -249,6 +265,9 @@ export class ConversationEngine implements MessageSendHandler {
     // 
 
     loadBefore = async (id?: string) => {
+        if (this.historyFullyLoaded) {
+            return
+        }
         if (id === undefined) {
             let serverMessages = this.messages.filter(m => isServerMessage(m));
             let first = serverMessages[0];
@@ -423,6 +442,12 @@ export class ConversationEngine implements MessageSendHandler {
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
         }
+
+        let old = this.dataSource.getItem(key);
+        if (old && old.type === 'message') {
+            let updated = { ...old, progress }
+            this.dataSource.updateItem(updated);
+        }
     }
 
     subscribe = (listener: ConversationStateHandler) => {
@@ -571,7 +596,7 @@ export class ConversationEngine implements MessageSendHandler {
                 data.messages = data.messages.map((m) => m.id !== event.message.id ? m : event.message);
                 return data;
             }, RoomHistoryQuery, { roomId: this.conversationId });
-            
+
             this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
@@ -609,10 +634,12 @@ export class ConversationEngine implements MessageSendHandler {
             let p = src as PendingMessage;
             conv = {
                 type: 'message',
+                messageType: MessageType.MESSAGE,
                 key: src.key,
                 date: parseInt(src.date, 10),
                 senderId: this.engine.user.id,
                 senderName: this.engine.user.name,
+                sender: this.engine.user,
                 senderPhoto: this.engine.user.photo ? this.engine.user.photo : undefined,
                 isOut: true,
                 isSending: true,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
-import { MessageFull_sender } from 'openland-api/Types';
+import { MessageFull_sender, UserShort } from 'openland-api/Types';
 import Glamorous from 'glamorous';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { withOnline } from '../api/withOnline';
@@ -50,8 +50,8 @@ const Status = withOnline(props => {
                 {props.data.user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
-                )}
+                        <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    )}
             </StatusWrapper>
         );
     } else if (props.data.user && props.data.user.online) {
@@ -77,7 +77,7 @@ export default React.memo(
         user,
         startSelected,
     }: {
-        user: MessageFull_sender;
+        user: UserShort;
         isMe: boolean;
         startSelected: boolean;
         noCardOnMe?: boolean;

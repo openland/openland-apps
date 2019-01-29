@@ -5,6 +5,7 @@ import {
     MessageFull_reply_sender,
     MessageFull_reply_fileMetadata,
     MessageFull_mentions,
+    MessageFull_alphaMentions,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';
 import { MessageAnimationComponent } from './MessageAnimationComponent';
@@ -14,7 +15,7 @@ import { XDate } from 'openland-x/XDate';
 
 interface ReplyMessageProps {
     sender: MessageFull_reply_sender;
-    mentions: MessageFull_mentions[] | null;
+    mentions: MessageFull_alphaMentions[] | null;
     id: string;
     date: any;
     message: string | null;

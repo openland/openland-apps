@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, Linking, Image, Dimensions } from 'react-native';
-import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { preprocessText } from '../../utils/TextProcessor';
+import { DataSourceMessageItem, convertMessage } from 'openland-engines/messenger/ConversationEngine';
+import { preprocessText, Span } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
 import { AsyncBubbleView } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -12,6 +12,11 @@ import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { TextStyles } from '../../styles/AppStyles';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
+import { AsyncReplyMessageMediaView } from './AsyndReplyMessageMediaView';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
+import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
+import { AsyncReplyMessageDocumentView } from './AsyncReplyMessageDocumentView';
 
 const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }))}</ASText>;
@@ -19,26 +24,30 @@ const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.sele
 export class AsyncMessageTextView extends React.PureComponent<{
     message: DataSourceMessageItem,
     onUserPress: (id: string) => void;
+    onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
+    onDocumentPress: (document: DataSourceMessageItem) => void;
 }> {
+
+    prprocessedRender = (v: Span, i: number) => {
+        if (v.type === 'new_line') {
+            return <ASText key={'br-' + i} >{'\n'}</ASText>;
+        } else if (v.type === 'link') {
+            return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
+        } else if (v.type === 'mention_user') {
+            return <ASText key={'mention-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
+        } else {
+            return <ASText key={'text-' + i}>{v.text}</ASText>;
+        }
+    }
     render() {
-        let preprocessed = preprocessText(this.props.message.text!, this.props.message.mentions);
+        let preprocessed = preprocessText(this.props.message.text || '', this.props.message.mentions);
         let big = false;
         if (this.props.message.text) {
             big = this.props.message.text.length <= 3 && this.props.message.text.search(/(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|[\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|[\ud83c[\ude32-\ude3a]|[\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g) !== -1;
             big = big || (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
         }
 
-        let parts = preprocessed.map((v, i) => {
-            if (v.type === 'new_line') {
-                return <ASText key={'br-' + i} >{'\n'}</ASText>;
-            } else if (v.type === 'link') {
-                return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
-            } else if (v.type === 'mention_user') {
-                return <ASText key={'mention-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
-            } else {
-                return <ASText key={'text-' + i}>{v.text}</ASText>;
-            }
-        });
+        let parts = preprocessed.map(this.prprocessedRender);
         if (this.props.message.title) {
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
@@ -64,12 +73,14 @@ export class AsyncMessageTextView extends React.PureComponent<{
             if (this.props.message.urlAugmentation.photo && this.props.message.urlAugmentation.imageInfo) {
                 layout = layoutMedia(this.props.message.urlAugmentation.imageInfo!.imageWidth!, this.props.message.urlAugmentation.imageInfo!.imageHeight!, maxSize, maxSize);
             }
+        }
 
+        if (this.props.message.urlAugmentation || this.props.message.reply) {
             // for left accent line
             let image = this.props.message.isOut ? require('assets/chat-link-line-my.png') : require('assets/chat-link-line-foreign.png');
             resolved = Image.resolveAssetSource(image);
-
         }
+
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
                 <ASFlex
@@ -80,7 +91,44 @@ export class AsyncMessageTextView extends React.PureComponent<{
                     flexDirection="column"
                 >
                     {!this.props.message.isOut && !this.props.message.attachTop && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
-                    <ASText
+
+                    {/* forward/reply */}
+                    {this.props.message.reply && (
+
+                        this.props.message.reply.map(m => (
+                            <ASFlex flexDirection="column" marginLeft={1} marginTop={6} marginBottom={6} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
+                                <ASText
+                                    marginLeft={10}
+                                    color={this.props.message.isOut ? '#fff' : ZStyles.avatars[doSimpleHash(m.sender.id) % ZStyles.avatars.length].placeholderColorEnd}
+                                    lineHeight={20}
+                                    letterSpacing={-0.3}
+                                    fontSize={12}
+                                    fontWeight={TextStyles.weight.medium}
+                                    onPress={() => this.props.onUserPress(m.sender.id)}
+                                >
+                                    {m.sender.name || ''}
+                                </ASText>
+
+                                {!!m.message && <ASText
+                                    marginLeft={10}
+                                    color={this.props.message.isOut ? '#fff' : '#000'}
+                                    lineHeight={20}
+                                    fontSize={14}
+                                    fontWeight={TextStyles.weight.medium}
+                                >
+                                    {preprocessText(m.message, this.props.message.mentions).map(this.prprocessedRender)}
+                                    {(!this.props.message.text && this.props.message.isOut) ? paddedTextOut : paddedText}
+                                </ASText>}
+                                {m.fileMetadata && m.fileMetadata.isImage ? <AsyncReplyMessageMediaView onPress={this.props.onMediaPress} message={convertMessage(m as any, getMessenger().engine)} /> : null}
+                                {m.fileMetadata && !m.fileMetadata.isImage ? <AsyncReplyMessageDocumentView onPress={this.props.onDocumentPress} parent={this.props.message} message={convertMessage(m as any, getMessenger().engine)} /> : null}
+
+                            </ASFlex>
+                        ))
+
+                    )}
+
+                    {/* main content */}
+                    {this.props.message.text && <ASText
                         color={this.props.message.isOut ? '#fff' : '#000'}
                         lineHeight={big ? 60 : 20}
                         letterSpacing={-0.3}
@@ -89,8 +137,9 @@ export class AsyncMessageTextView extends React.PureComponent<{
                     >
                         {parts}
                         {this.props.message.isOut ? paddedTextOut : paddedText}
-                    </ASText>
+                    </ASText>}
 
+                    {/* url augmentation */}
                     {this.props.message.urlAugmentation && (
                         <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={15} marginBottom={15} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
                             {this.props.message.urlAugmentation.photo && layout && layout.width && layout.height && (
@@ -156,7 +205,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
                         )}
                     </ASFlex>
                 </ASFlex>
-            </AsyncBubbleView>
+            </AsyncBubbleView >
         );
     }
 }

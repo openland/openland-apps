@@ -71,7 +71,7 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                     <XWithRole role="super-admin">
                         <DeleteMessagesButton
                             roomId={props.roomId}
-                            messagesIds={Array.from(state.selectedMessages).map(m => m.id)}
+                            messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
                             onSuccess={state.resetAll}
                         >
                             <XButton text="Delete" style="default" />
@@ -81,14 +81,14 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeleteMessagesButton
-                                roomId={props.roomId}
-                                messagesIds={Array.from(state.selectedMessages).map(m => m.id)}
-                                onSuccess={state.resetAll}
-                            >
-                                <XButton text="Delete" style="default" />
-                            </DeleteMessagesButton>
-                        )}
+                                <DeleteMessagesButton
+                                    roomId={props.roomId}
+                                    messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                                    onSuccess={state.resetAll}
+                                >
+                                    <XButton text="Delete" style="default" />
+                                </DeleteMessagesButton>
+                            )}
                     </XWithRole>
                     <XButton
                         text="Reply"

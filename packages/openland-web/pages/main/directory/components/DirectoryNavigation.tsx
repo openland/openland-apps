@@ -224,12 +224,22 @@ export const ComponentWithSort = ({
 }: {
     Component: any;
     queryToPrefix?: boolean;
-}) => ({ featuredFirst, orderBy, variables, tagsCount }: any) => {
+}) => ({
+    featuredFirst,
+    orderBy,
+    variables,
+    tagsCount,
+}: {
+    featuredFirst: boolean;
+    orderBy: string;
+    variables: {
+        query: string;
+    };
+    tagsCount: Function;
+}) => {
     return (
         <Component
-            tagsCount={(n: number) => {
-                tagsCount(n);
-            }}
+            tagsCount={tagsCount}
             variables={{
                 ...(queryToPrefix ? { prefix: variables.query } : { query: variables.query }),
                 sort: JSON.stringify([

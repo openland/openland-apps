@@ -28,6 +28,8 @@ import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
 import { ProfileGroupLink } from './pages/main/ProfileGroupLink';
 import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroups';
 import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
+import { Developer } from './pages/dev/Developer';
+import { Worker } from './pages/dev/Worker';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -41,10 +43,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('FilePreview', FilePreview)
-  .addRoute('DevTypography', Typography)
-  .addRoute('DevComponents', Components)
-  .addRoute('DevNavigation', Navigation)
-  .addRoute('DevLoader', Loader)
   .addRoute('PhoneVerify', PhoneVerify)
   .addRoute('CountryPicker', CountryPicker)
   .addRoute('Compose', Compose)
@@ -63,4 +61,12 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Login', Login)
   .addRoute('EmailStart', EmailStart)
   .addRoute('EmailCode', EmailCode)
+
+  .addRoute('Dev', Developer)
+  .addRoute('DevWorker', Worker)
+  .addRoute('DevTypography', Typography)
+  .addRoute('DevComponents', Components)
+  .addRoute('DevNavigation', Navigation)
+  .addRoute('DevLoader', Loader)
+
   .build();

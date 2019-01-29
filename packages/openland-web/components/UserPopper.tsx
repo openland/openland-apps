@@ -4,7 +4,7 @@ import * as glamor from 'glamor';
 import Loadable from 'react-loadable';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XPopper } from 'openland-x/XPopper';
-import { MessageFull_sender } from 'openland-api/Types';
+import { UserShort } from 'openland-api/Types';
 
 const showAnimation = glamor.keyframes({
     '0%': {
@@ -46,7 +46,7 @@ const Container = Glamorous(XPopper.Content)({
 });
 
 export class UserAvatar extends React.PureComponent<{
-    user: MessageFull_sender;
+    user: UserShort;
     startSelected: boolean;
 }> {
     render() {
@@ -78,7 +78,7 @@ const UserPopperContent = Loadable({
 
 export class UserPopper extends React.PureComponent<
     {
-        user: MessageFull_sender;
+        user: UserShort;
         isMe: boolean;
         startSelected: boolean;
         noCardOnMe?: boolean;
@@ -87,7 +87,7 @@ export class UserPopper extends React.PureComponent<
     {
         showPopper: boolean;
     }
-> {
+    > {
     xPopperRef = React.createRef<XPopper>();
 
     showPopper = () => {

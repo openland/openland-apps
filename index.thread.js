@@ -1,0 +1,1 @@
+require('./build/native/openland-mobile/apollo/ApolloThread')

@@ -36,15 +36,21 @@ const MobilePageInner = React.memo(
                 flexShrink={0}
                 overflow="hidden"
                 alignItems="stretch"
-                height="100%"
+                height="100vh"
             >
                 {tab === tabs.empty ? (
-                    <XView position="relative" width="100%">
+                    <XView position="relative" flexGrow={1} width="100%" height="100%">
                         {firstFragmentMenu}
                         {swapFragmentsOnMobile ? secondFragment : firstFragment}
                     </XView>
                 ) : (
-                    <XView position="relative" flexDirection="column" flexGrow={1} width="100%">
+                    <XView
+                        position="relative"
+                        flexDirection="column"
+                        flexGrow={1}
+                        width="100%"
+                        height="100%"
+                    >
                         {secondFragmentHeader}
                         {swapFragmentsOnMobile ? firstFragment : secondFragment}
                     </XView>
