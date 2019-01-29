@@ -2,10 +2,14 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from '../message/MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
-import { ConversationEngine, DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
-import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
+import {
+    ConversationEngine,
+    DataSourceMessageItem,
+    DataSourceDateItem,
+} from 'openland-engines/messenger/ConversationEngine';
+
 import { XButton } from 'openland-x/XButton';
-import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
+import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from '../../../fragments/ChatEmptyComponent';
 import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
@@ -13,27 +17,8 @@ import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
-import { ServiceMessageComponent } from '../message/content/ServiceMessageComponent';
-import { formatDate } from 'openland-mobile/utils/formatDate';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-function dateFormat(date: number) {
-    let now = new Date();
-    let dt = date ? new Date(date) : new Date();
-    let prefix = '';
-    if (now.getFullYear() !== dt.getFullYear() + 1 && now.getFullYear() !== dt.getFullYear()) {
-        prefix = dt.getFullYear().toString() + ', ';
-    }
-    if (
-        now.getFullYear() === dt.getFullYear() &&
-        now.getMonth() === dt.getMonth() &&
-        now.getDate() === dt.getDate()
-    ) {
-        return 'Today';
-    }
-    return prefix + months[dt.getMonth()] + ' ' + dt.getDate() + 'th';
-}
 
 const messagesWrapperClassName = css`
     display: flex;
@@ -82,7 +67,10 @@ interface MessageListProps {
     editPostHandler?: (data: EditPostProps) => void;
 }
 
-const getScrollElement = (src: any) => src;
+const getScrollElement = (src: any) => {
+    return src;
+};
+
 const getScrollView = () => {
     return getScrollElement(
         document
@@ -127,7 +115,10 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     };
 
     isEmpty = () => {
-        return this.props.conversation.historyFullyLoaded && this.props.conversation.getState().messages.length === 1;
+        return (
+            this.props.conversation.historyFullyLoaded &&
+            this.props.conversation.getState().messages.length === 1
+        );
     };
 
     resizeHandler = (width: number, height: number) => {
@@ -138,8 +129,15 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
 
     renderMessage = (i: DataSourceMessageItem | DataSourceDateItem) => {
         if (i.type === 'message') {
-            return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} editPostHandler={this.props.editPostHandler} me={this.props.me} />
-
+            return (
+                <MessageComponent
+                    key={i.key}
+                    message={i}
+                    conversation={this.props.conversation}
+                    editPostHandler={this.props.editPostHandler}
+                    me={this.props.me}
+                />
+            );
         } else if (i.type === 'date') {
             let now = new Date();
             let date = 'Today';
@@ -150,55 +148,50 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             } else {
                 date = i.year + ', ' + months[i.month] + ' ' + i.date;
             }
-            return <XView
-                key={'date-' + i.key}
-                justifyContent="center"
-                alignItems="center"
-                zIndex={1}
-                marginTop={24}
-                marginBottom={0}
-            >
+            return (
                 <XView
+                    key={'date-' + i.key}
                     justifyContent="center"
                     alignItems="center"
-                    backgroundColor="#ffffff"
-                    borderRadius={50}
-                    paddingLeft={10}
-                    paddingRight={10}
-                    paddingTop={2}
-                    paddingBottom={2}
+                    zIndex={1}
+                    marginTop={24}
+                    marginBottom={0}
                 >
-                    <XView fontSize={13} color="#99A2B0">{date}</XView>
+                    <XView
+                        justifyContent="center"
+                        alignItems="center"
+                        backgroundColor="#ffffff"
+                        borderRadius={50}
+                        paddingLeft={10}
+                        paddingRight={10}
+                        paddingTop={2}
+                        paddingBottom={2}
+                    >
+                        <XView fontSize={13} color="#99A2B0">
+                            {date}
+                        </XView>
+                    </XView>
                 </XView>
-            </XView>
+            );
         }
         return <div />;
-    }
+    };
 
     renderLoading = () => {
         return (
             <LoadingWrapper>
                 <XButton alignSelf="center" style="flat" loading={true} />
             </LoadingWrapper>
-
         );
     };
 
-    getScrollElement = (src: any) => src.children[0].children[0];
-
     dataSourceWrapper = (props: any) => (
-        <XScrollViewReversed
-            ref={this.scroller}
-            getScrollElement={this.getScrollElement}
-        >
-            <MessagesWrapper >
-                {props.children}
-            </MessagesWrapper>
+        <XScrollViewReversed ref={this.scroller} getScrollElement={getScrollElement}>
+            <MessagesWrapper>{props.children}</MessagesWrapper>
         </XScrollViewReversed>
     );
 
     render() {
-
         return (
             <>
                 {this.isEmpty() && (
