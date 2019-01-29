@@ -4,7 +4,7 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { XPAvatar } from 'openland-xp/XPAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/Types';
-import { RoomTinyQuery } from 'openland-api/RoomTinyQuery';
+import { RoomTinyQuery } from 'openland-api';
 
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;

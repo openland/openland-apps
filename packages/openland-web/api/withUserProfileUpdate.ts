@@ -1,7 +1,7 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { ProfileUpdateMutation } from 'openland-api/ProfileUpdateMutation';
-import { AccountQuery } from 'openland-api/AccountQuery';
-import { MyOrganizationsQuery } from 'openland-api/MyOrganizationsQuery';
+import { ProfileUpdateMutation } from 'openland-api';
+import { AccountQuery } from 'openland-api';
+import { MyOrganizationsQuery } from 'openland-api';
 
 export const withUserProfileUpdate = graphqlMutation(ProfileUpdateMutation, 'updateProfile', {
     refetchQueries: [AccountQuery, MyOrganizationsQuery],

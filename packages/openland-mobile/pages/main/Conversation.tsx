@@ -26,7 +26,7 @@ import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { RoomTinyQuery } from 'openland-api/RoomTinyQuery';
+import { RoomTinyQuery } from 'openland-api';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;

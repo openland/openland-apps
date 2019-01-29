@@ -2,14 +2,14 @@ import { MessengerEngine } from '../MessengerEngine';
 import gql from 'graphql-tag';
 import { backoff } from 'openland-y-utils/timer';
 import { GlobalCounterQuery, ChatSearchGroupQuery } from 'openland-api';
-import { SettingsQuery } from 'openland-api/SettingsQuery';
+import { SettingsQuery } from 'openland-api';
 import { SettingsFull } from 'openland-api/fragments/SettingsFragment';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { MessageShort } from 'openland-api/fragments/MessageShort';
 import { UserTiny } from 'openland-api/fragments/UserTiny';
-import { DialogsQuery } from 'openland-api/DialogsQuery';
+import { DialogsQuery } from 'openland-api';
 import { RoomQuery } from 'openland-api';
-import { MarkSequenceReadMutation } from 'openland-api/MarkSequenceReadMutation';
+import { MarkSequenceReadMutation } from 'openland-api';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($state: String) {

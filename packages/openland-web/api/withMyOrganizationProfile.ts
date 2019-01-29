@@ -1,14 +1,14 @@
 import { graphqlCompose5 } from 'openland-x-graphql/graphqlCompose';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { OrganizationQuery } from 'openland-api/OrganizationQuery';
-import { MyOrganizationsQuery } from 'openland-api/MyOrganizationsQuery';
-import { UpdateOrganizationMutation } from 'openland-api/UpdateOrganizationMutation';
-import { DeleteOrganizationMutation } from 'openland-api/DeleteOrganizationMutation';
-import { OrganizationMemberRemoveMutation } from 'openland-api/OrganizationMemberRemoveMutation';
+import { OrganizationQuery } from 'openland-api';
+import { MyOrganizationsQuery } from 'openland-api';
+import { UpdateOrganizationMutation } from 'openland-api';
+import { DeleteOrganizationMutation } from 'openland-api';
+import { OrganizationMemberRemoveMutation } from 'openland-api';
 import { OrganizationProfileQuery } from 'openland-api';
-import { SetOrgShortnameMutation } from 'openland-api/SetOrgShortnameMutation';
-import { AccountQuery } from 'openland-api/AccountQuery';
+import { SetOrgShortnameMutation } from 'openland-api';
+import { AccountQuery } from 'openland-api';
 
 export const withMyOrganizationProfile = graphqlCompose5(
     graphqlRouted(OrganizationProfileQuery, { params: ['organizationId'] }),

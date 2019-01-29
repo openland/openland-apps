@@ -1,6 +1,4 @@
 import UUID from 'uuid/v4';
-import { SendMessageMutation } from 'openland-api/SendMessageMutation';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { UploadingFile, UploadStatus } from './types';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { OpenlandClient } from 'openland-api/OpenlandClient';

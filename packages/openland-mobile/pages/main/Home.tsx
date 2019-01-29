@@ -4,7 +4,7 @@ import { View, Platform } from 'react-native';
 import { HomeDialogs } from './HomeDialogs';
 import { Settings } from './Settings';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { GlobalCounterQuery } from 'openland-api/GlobalCounterQuery';
+import { GlobalCounterQuery } from 'openland-api';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
 import { PageProps } from '../../components/PageProps';

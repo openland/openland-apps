@@ -1,5 +1,5 @@
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { SuperAccountQuery } from 'openland-api/SuperAccountQuery';
+import { SuperAccountQuery } from 'openland-api';
 import { graphqlCompose3 } from 'openland-x-graphql/graphqlCompose';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
 import { SuperAccountActivateMutation, SuperAccountPendMutation } from 'openland-api';

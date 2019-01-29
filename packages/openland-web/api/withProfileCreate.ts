@@ -1,9 +1,9 @@
 import { graphqlCompose2 } from 'openland-x-graphql/graphqlCompose';
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
 import { graphqlRouted } from 'openland-x-graphql/graphqlRouted';
-import { ProfileCreateMutation } from 'openland-api/ProfileCreateMutation';
-import { ProfilePrefillQuery } from 'openland-api/ProfilePrefillQuery';
-import { AccountQuery } from 'openland-api/AccountQuery';
+import { ProfileCreateMutation } from 'openland-api';
+import { ProfilePrefillQuery } from 'openland-api';
+import { AccountQuery } from 'openland-api';
 
 export const withProfileCreate = graphqlCompose2(
     graphqlMutation(ProfileCreateMutation, 'createProfile', {

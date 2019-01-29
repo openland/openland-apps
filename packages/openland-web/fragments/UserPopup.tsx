@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useQuery } from 'openland-web/components/useQuery';
-import { UserQuery } from 'openland-api/UserQuery';
+import { UserQuery } from 'openland-api';
 import { XLoader } from 'openland-x/XLoader';
 
 export const UserPopup = React.memo<{ id: string }>(props => {

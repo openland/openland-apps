@@ -4,10 +4,10 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { OnlineQuery, RoomQuery } from 'openland-api';
+import { OnlineQuery } from 'openland-api';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
-import { RoomTinyQuery } from 'openland-api/RoomTinyQuery';
+import { RoomTinyQuery } from 'openland-api';
 
 const styles = StyleSheet.create({
     androidTitle: {

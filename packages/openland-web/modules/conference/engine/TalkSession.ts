@@ -1,8 +1,8 @@
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { ConferenceJoinMutation } from 'openland-api/ConferenceJoinMutation';
+import { ConferenceJoinMutation } from 'openland-api';
 import { backoff, delay } from 'openland-y-utils/timer';
-import { ConferenceKeepAliveMutation } from 'openland-api/ConferenceKeepAliveMutation';
-import { ConferenceLeaveMutation } from 'openland-api/ConferenceLeaveMutation';
+import { ConferenceKeepAliveMutation } from 'openland-api';
+import { ConferenceLeaveMutation } from 'openland-api';
 import { ConferenceQuery } from 'openland-api';
 
 export class TalkSession {
