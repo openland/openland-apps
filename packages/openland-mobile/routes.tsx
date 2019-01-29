@@ -23,7 +23,7 @@ import { SignupUser } from './pages/auth/SignupUser';
 import { SignupOrg } from './pages/auth/SignupOrg';
 import { Waitlist } from './pages/auth/Waitlist';
 import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
-import { ComposeInitial } from './pages/compose/ComposeInitial';
+import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { CreateChannel } from './pages/compose/CreateChannel';
 import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
@@ -33,7 +33,7 @@ import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroup
 import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
 
 export const Routes = new SRoutesBuilder()
-  .addRoute('Home', Home)
+  .addRoute('Home', Home as any)
   .addRoute('Conversation', Conversation)
   .addRoute('ProfileUser', ProfileUser)
   .addRoute('ProfileOrganization', ProfileOrganization)
@@ -53,7 +53,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevLoader', Loader)
   .addRoute('PhoneVerify', PhoneVerify)
   .addRoute('CountryPicker', CountryPicker)
-  .addRoute('ComposeInitial', ComposeInitial)
+  .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('CreateChannel', CreateChannel)
   .addRoute('OrganizationInviteLinkModal', OrganizationInviteLinkModal)

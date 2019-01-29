@@ -100,7 +100,7 @@ const ExplorePage = (props: PageProps) => {
             {Platform.OS === 'android' && (
                 <CenteredHeader title="Browse" padding={48} />
             )}
-            <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => props.router.push('ComposeInitial')} />
+            <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => props.router.push('Compose')} />
             <SSearchControler searchRender={(p) => null}>
                 <SScrollView>
                     <RoomsList />

@@ -86,7 +86,7 @@ class DialogsComponent extends React.Component<PageProps> {
                 {Platform.OS === 'android' && (
                     <CenteredHeader title="Messages" padding={98} />
                 )}
-                <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => this.props.router.push('ComposeInitial')} />
+                <SHeaderButton title="New" icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')} onPress={() => this.props.router.push('Compose')} />
                 {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
                 <SSearchControler key={this.props.router.key + new Date().getTime()} searchRender={(props) => (<DialogsSearch query={props.query} router={this.props.router} />)}>
                     <MobileMessengerContext.Consumer>

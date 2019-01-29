@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle } from 'react-native';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
-import { OnlineQuery } from 'openland-api';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
-import { RoomTinyQuery } from 'openland-api';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -40,14 +38,69 @@ const styles = StyleSheet.create({
     } as TextStyle,
 
     subTitleAccent: {
-        color: '#4747ec',
+        color: '#0084fe',
         opacity: 1
     } as TextStyle,
 
 });
 
+const ChatHeaderContent = React.memo<{ conversationId: string, router: SRouter, typing?: string }>((props) => {
+    let room = getClient().useRoom({ id: props.conversationId });
+
+    let accent = false;
+
+    let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room as Room_room_SharedRoom : null;
+    let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room as Room_room_PrivateRoom : null;
+
+    let title = sharedRoom ? sharedRoom.title : privateRoom!.user.name;
+    let subtitle = '';
+    if (privateRoom) {
+        if (privateRoom.user.primaryOrganization) {
+            subtitle = privateRoom.user.primaryOrganization.name;
+        } else {
+            subtitle = 'Person';
+        }
+    } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
+        subtitle = 'Organization';
+    } else if (sharedRoom && (sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
+        subtitle = sharedRoom.membersCount + (sharedRoom.membersCount === 1 ? ' member' : ' members');
+    }
+
+    let typingString = props.typing;
+    if (typingString && privateRoom) {
+        typingString = 'typing...';
+    }
+    subtitle = (typingString) || subtitle;
+
+    if (props.typing) {
+        accent = true;
+    }
+
+    if (privateRoom) {
+        let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
+        if (online && online.user) {
+            if (!online.user.online && online.user.lastSeen) {
+                subtitle = formatLastSeen(online.user.lastSeen);
+                accent = false;
+            } else if (online.user.online) {
+                subtitle = 'online'
+                accent = true;
+            }
+        }
+    }
+
+    return (
+        <View flexDirection="column" alignItems={isAndroid ? 'flex-start' : 'center'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
+            <Text style={isAndroid ? styles.androidTitle : styles.iosTitle} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{subtitle}</Text>
+        </View>
+    );
+});
+
 export class ChatHeader extends React.PureComponent<{ conversationId: string, router: SRouter }, { typing?: string }> {
+
     disposeSubscription?: () => any;
+
     constructor(props: any) {
         super(props);
         this.state = {};
@@ -65,65 +118,9 @@ export class ChatHeader extends React.PureComponent<{ conversationId: string, ro
 
     render() {
         return (
-            <YQuery query={RoomTinyQuery} variables={{ id: this.props.conversationId }}>
-                {res => {
-                    if (res.loading) {
-                        return null;
-                    }
-
-                    const chat = res.data!!.room;
-
-                    let accent = false;
-
-                    let sharedRoom = res.data!.room!.__typename === 'SharedRoom' ? res.data!.room as Room_room_SharedRoom : null;
-                    let privateRoom = res.data!.room!.__typename === 'PrivateRoom' ? res.data!.room as Room_room_PrivateRoom : null;
-                    let room = (sharedRoom || privateRoom)!;
-
-                    let title = sharedRoom ? sharedRoom.title : privateRoom!.user.name;
-                    let subtitle = '';
-                    if (privateRoom) {
-                        if (privateRoom.user.primaryOrganization) {
-                            subtitle = privateRoom.user.primaryOrganization.name;
-                        } else {
-                            subtitle = 'Person';
-                        }
-                    } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
-                        subtitle = 'Organization';
-                    } else if (sharedRoom && (sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
-                        subtitle = sharedRoom.membersCount + (sharedRoom.membersCount === 1 ? ' member' : ' members');
-                    }
-
-                    let typingString = this.state.typing;
-                    if (typingString && privateRoom) {
-                        typingString = 'typing...';
-                    }
-                    subtitle = (typingString) || subtitle;
-
-                    if (this.state.typing) {
-                        accent = true;
-                    }
-
-                    return (
-                        <View flexDirection="column" alignItems={isAndroid ? 'flex-start' : 'center'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
-                            <Text style={isAndroid ? styles.androidTitle : styles.iosTitle} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
-                            {privateRoom && <YQuery query={OnlineQuery} variables={{ userId: privateRoom.user.id }}>
-                                {online => {
-                                    let sub = subtitle;
-                                    if (online.data && online.data.user && !online.data.user.online && online.data.user.lastSeen) {
-                                        sub = formatLastSeen(online.data.user.lastSeen);
-                                    }
-                                    return (
-                                        <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{sub}</Text>
-                                    );
-                                }}
-                            </YQuery>}
-                            {sharedRoom && (
-                                <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{subtitle}</Text>
-                            )}
-                        </View>
-                    );
-                }}
-            </YQuery>
+            <React.Suspense fallback={null}>
+                <ChatHeaderContent {...this.props} typing={this.state.typing} />
+            </React.Suspense>
         );
     }
 }
