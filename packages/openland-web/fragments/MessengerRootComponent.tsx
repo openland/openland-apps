@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { SetTypingMutation } from 'openland-api';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
@@ -24,7 +23,7 @@ import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
-import { CreatePostComponent } from './CreatePostComponent';
+import { CreatePostComponent } from './post/CreatePostComponent';
 
 export interface File {
     uuid: string;

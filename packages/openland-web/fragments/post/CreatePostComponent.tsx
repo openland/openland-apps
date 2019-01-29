@@ -2,133 +2,28 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import UploadCare from 'uploadcare-widget';
-import { getConfig } from '../config';
+import { getConfig } from '../../config';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
-import { XTextArea } from 'openland-x/XTextArea';
-import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import { XMutation } from 'openland-x/XMutation';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XCloudImage } from 'openland-x/XCloudImage';
-import { withSendPostMessage, withEditPostMessage } from '../api/withPostMessage';
+import { withSendPostMessage, withEditPostMessage } from '../../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
-import { EditPostProps } from './MessengerRootComponent';
-import { DropZone } from './DropZone';
-import { AttachmentButton } from './MessageComposeComponent';
+import { EditPostProps } from '../MessengerRootComponent';
+import { DropZone } from '../DropZone';
+import { AttachmentButton } from '../MessageComposeComponent';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import { MessageUploadComponent } from 'openland-web/components/messenger/message/content/MessageUploadComponent';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
-
-const postTexts = {
-    BLANK: {
-        header: 'Quick post',
-        titlePlaceholder: 'Title',
-        text: '',
-        textPlaceholder:
-            '✍🏼 Write your post here. You can ask for help, share opportunities, and offer services.',
-    },
-    JOB_OPPORTUNITY: {
-        header: 'Job opportunity',
-        titlePlaceholder: 'Job Opportunity Title',
-        text: `💰 Salary range $XX-XXXk
-
-🚀 About company
-        • Short description
-        • Company size
-        • Funding, progress to date...
-        • etc
-
-🔨 Responsibilities
-        • A
-        • B 
-        • C
-
-🎓 Qualifications
-        • A
-        • B 
-        • C
-
-🧁 Benefits
-        • A
-        • B 
-        • C`,
-        textPlaceholder:
-            '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
-    },
-    OFFICE_HOURS: {
-        header: 'Office hours',
-        titlePlaceholder: 'Office hours with XX',
-        text: `👋 About you / your expertise areas 
-🙄 Who can apply 
-💬 Preferred way to connect
-`,
-        textPlaceholder:
-            '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
-    },
-    REQUEST_FOR_STARTUPS: {
-        header: 'Request for startups',
-        titlePlaceholder: 'XX — Request for startups',
-        text: `💰 Typical check size
-⏳ Investment process and average decision time
-✅ Preferred moment to invest / criteria
-🌎 Markets / geographies / keywords
-🔗 Website / links
-📞 Preferred way to be contacted (intros, directly, etc.)
-`,
-        textPlaceholder:
-            '🌱Write your post here. \n You can share an opportunity, ask for help, or describe an offer.',
-    },
-};
-
-const PostTitle = Glamorous.div<{ invalid: boolean }>(props => ({
-    zIndex: 1,
-    '& *': {
-        color: props.invalid ? '#e26363 !important' : undefined,
-    },
-    '& *, & input, & *:focus-within, & *:focus': {
-        fontSize: 22,
-        fontWeight: 600,
-        border: 'none !important',
-        boxShadow: 'none !important',
-        lineHeight: 'normal',
-        paddingLeft: '0 !important',
-        paddingRight: '0 !important',
-        minHeight: 30,
-        display: 'block',
-    },
-}));
-
-const PostText = Glamorous.div<{ invalid: boolean }>(props => ({
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    position: 'relative',
-    alignItems: 'stretch',
-    '& textarea': {
-        minHeight: '100%',
-        height: '100%',
-        flexShrink: 0,
-        fontSize: 14,
-        border: 'none',
-        lineHeight: 1.57,
-        resize: 'none',
-        padding: 0,
-        flexGrow: 1,
-        display: 'block',
-        borderRadius: 0,
-        '&:focus, &:active': {
-            boxShadow: 'none',
-            border: 'none',
-        },
-    },
-    '& textarea::placeholder': {
-        color: props.invalid ? 'rgb(226, 99, 99)' : undefined,
-    },
-}));
+import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
+import { postTexts } from './text';
+import { PostTitle } from './PostTitle';
+import { PostText, EmojiSelect } from './PostText';
 
 const FilesWrapper = Glamorous(XVertical)({
     paddingTop: 10,
@@ -157,6 +52,7 @@ const FileItem = Glamorous(XHorizontal)({
 });
 
 const CoverWrapper = Glamorous.div({
+    flexShrink: 0,
     borderRadius: 6,
     overflow: 'hidden',
     position: 'relative',
@@ -181,7 +77,7 @@ const CoverDelButton = Glamorous.div({
     borderRadius: 6,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     cursor: 'pointer',
-    '& > svg > g > path:last-child': {
+    '& > svg > path': {
         fill: '#fff',
     },
 });
@@ -574,24 +470,23 @@ export class CreatePostComponent extends React.Component<
                     paddingTop={20}
                     paddingBottom={12}
                     position="relative"
+                    height="calc(100% - 117px)"
                 >
                     <XVertical maxWidth={750} flexGrow={1}>
                         <XHorizontal separator={10} flexGrow={1}>
                             <XVertical flexGrow={1}>
-                                <PostTitle invalid={state.invalidTitle}>
-                                    <XInput
-                                        placeholder={titlePlaceholder}
-                                        onChange={this.titleChange}
-                                        value={this.state.title}
-                                    />
-                                </PostTitle>
-                                <PostText invalid={state.invalidText}>
-                                    <XTextArea
-                                        placeholder={textPlaceholder}
-                                        value={this.state.text}
-                                        onChange={this.textChange}
-                                    />
-                                </PostText>
+                                <PostTitle
+                                    placeholder={titlePlaceholder}
+                                    value={this.state.title}
+                                    onChange={this.titleChange}
+                                    invalid={state.invalidTitle}
+                                />
+                                <PostText
+                                    placeholder={textPlaceholder}
+                                    value={this.state.text}
+                                    onChange={this.textChange}
+                                    invalid={state.invalidText}
+                                />
                             </XVertical>
                             {cover && (
                                 <CoverWrapper>
@@ -607,44 +502,47 @@ export class CreatePostComponent extends React.Component<
                                 </CoverWrapper>
                             )}
                         </XHorizontal>
-                        {moreFiles && moreFiles.length > 0 && (
-                            <FilesWrapper>
-                                {moreFiles.map(i => (
-                                    <FileItem
-                                        key={'file' + i.uuid}
-                                        separator={4}
-                                        alignItems="center"
-                                    >
-                                        <XView
-                                            backgroundImage="url('/static/X/file.svg')"
-                                            backgroundRepeat="no-repeat"
-                                            width={11}
-                                            height={14}
-                                            flexShrink={0}
-                                        />
-                                        <XHorizontal alignItems="center" separator={4}>
-                                            <div>
-                                                {i.name} <span>•</span> {niceBytes(Number(i.size))}
-                                            </div>
-                                            <XHorizontal
-                                                alignItems="center"
-                                                className="remove"
-                                                onClick={() => this.fileRemover(i)}
-                                            >
-                                                <RemoveIcon />
+                        {moreFiles &&
+                            moreFiles.length > 0 && (
+                                <FilesWrapper>
+                                    {moreFiles.map(i => (
+                                        <FileItem
+                                            key={'file' + i.uuid}
+                                            separator={4}
+                                            alignItems="center"
+                                        >
+                                            <XView
+                                                backgroundImage="url('/static/X/file.svg')"
+                                                backgroundRepeat="no-repeat"
+                                                width={11}
+                                                height={14}
+                                                flexShrink={0}
+                                            />
+                                            <XHorizontal alignItems="center" separator={4}>
+                                                <div>
+                                                    {i.name} <span>•</span>{' '}
+                                                    {niceBytes(Number(i.size))}
+                                                </div>
+                                                <XHorizontal
+                                                    alignItems="center"
+                                                    className="remove"
+                                                    onClick={() => this.fileRemover(i)}
+                                                >
+                                                    <RemoveIcon />
+                                                </XHorizontal>
                                             </XHorizontal>
-                                        </XHorizontal>
-                                    </FileItem>
-                                ))}
-                            </FilesWrapper>
-                        )}
-                        {!!uploadProgress && uploadProgress > 0 && (
-                            <MessageUploadComponent
-                                key={'file_uploading'}
-                                progress={Math.round(uploadProgress * 100)}
-                                title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
-                            />
-                        )}
+                                        </FileItem>
+                                    ))}
+                                </FilesWrapper>
+                            )}
+                        {!!uploadProgress &&
+                            uploadProgress > 0 && (
+                                <MessageUploadComponent
+                                    key={'file_uploading'}
+                                    progress={Math.round(uploadProgress * 100)}
+                                    title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
+                                />
+                            )}
                     </XVertical>
                     <DropZone height="100%" onFileDrop={this.handleDrop} />
                 </XView>
@@ -687,6 +585,7 @@ export class CreatePostComponent extends React.Component<
                                     <span>Document</span>
                                 </AttachmentButton>
                             </XView>
+                            <EmojiSelect />
                             {!props.editData && (
                                 <SendPostButton
                                     conversationId={props.conversationId}

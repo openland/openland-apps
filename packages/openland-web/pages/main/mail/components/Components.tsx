@@ -38,7 +38,6 @@ const DesktopConversationContainer = Glamorous.div({
     flexGrow: 1,
     flexShrink: 0,
     minWidth: 0,
-    overflow: 'hidden',
     backgroundColor: XThemeDefault.backgroundColor,
 });
 
