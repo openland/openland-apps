@@ -35,7 +35,7 @@ const messagesWrapperClassName = css`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    align-self: center;
+    justify-self: center;
     padding-top: 96px;
     padding-bottom: 40px;
     width: 100%;
@@ -57,7 +57,7 @@ const messagesWrapperEmptyClassName = css`
     justify-content: center;
     flex-grow: 1;
     padding-top: 20px;
-    paddingbottom: 0px;
+    padding-bottom: 0px;
     width: 100%;
     maxwidth: 930px;
     @media (min-width: 750px) {
@@ -69,13 +69,6 @@ const MessagesWrapperEmpty = (props: { children?: any }) => (
     <div className={messagesWrapperEmptyClassName}>{props.children}</div>
 );
 
-const scrollWrapper = css`
-    display: flex;
-    flex-grow: 1;
-    position: relative;
-    overflow: scroll;
-`;
-
 interface MessageListProps {
     conversation: ConversationEngine;
     messages: ModelMessage[];
@@ -86,10 +79,13 @@ interface MessageListProps {
     editPostHandler?: (data: EditPostProps) => void;
 }
 
+const getScrollElement = (src: any) => src;
 const getScrollView = () => {
-    return document
-        .getElementsByClassName('messages-wrapper')[0]
-        .getElementsByClassName('simplebar-scroll-content')[0].children[0].children[0];
+    return getScrollElement(
+        document
+            .getElementsByClassName('messages-wrapper')[0]
+            .getElementsByClassName('simplebar-scroll-content')[0],
+    );
 };
 
 let lastMessageId = '';
@@ -290,13 +286,9 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     >
                         <XScrollViewReversed
                             ref={this.scroller}
-                            getScrollElement={(src: any) => src.children[0].children[0]}
+                            getScrollElement={getScrollElement}
                         >
-                            <div className={scrollWrapper}>
-                                <XView flexGrow={1} width="100%" position="absolute">
-                                    <MessagesWrapper>{messages}</MessagesWrapper>
-                                </XView>
-                            </div>
+                            <MessagesWrapper>{messages}</MessagesWrapper>
                         </XScrollViewReversed>
                     </XResizeDetector>
                 )}

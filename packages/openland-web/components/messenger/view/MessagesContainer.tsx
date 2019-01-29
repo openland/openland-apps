@@ -4,25 +4,29 @@ import { css } from 'linaria';
 
 const styleInner = css`
     display: flex;
-    word-break: break-word;
     flex-grow: 1;
-    position: relative;
+    flex-basis: 100%;
     flex-direction: column;
-    & > div:first-child {
-        flex-grow: 1;
-        position: relative;
-        height: 100%;
-        & > .simplebar-track.horizontal {
-            display: none;
-        },
-        & > .simplebar-scroll-content > .simplebar-content {
-            position: relative;
-            height: 100%;
-            overflow-x: unset !important;
-            overflow-y: unset !important;
-            width: 100%;
-            will-change: transform;
-        },
+    justify-content: flex-end;
+    align-self: center;
+    position: relative;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+
+    & .simplebar-track.horizontal {
+        display: none !important;
+    }
+
+    & .simplebar-scroll-content .simplebar-content {
+        align-items: center !important;
+        overflow-x: unset !important;
+        overflow-y: unset !important;
+        width: 100%;
+        justify-content: flex-end;
+        will-change: transform;
     }
 `;
 
@@ -31,6 +35,7 @@ export const MessagesContainer = (props: { children?: any }) => {
         <XView
             flexDirection="column"
             flexGrow={1}
+            flexShrink={1}
             paddingLeft={16}
             paddingRight={16}
             overflow="hidden"
