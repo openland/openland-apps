@@ -3,7 +3,6 @@ import { Organization_organization_rooms } from 'openland-api/Types';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASAvatar } from '../../messenger/MobileMessenger';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { ASText } from 'react-native-async-view/ASText';
 import { View, Image, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
@@ -14,6 +13,7 @@ import { ZQuery } from '../../components/ZQuery';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
+import { ZStyles } from 'openland-mobile/components/ZStyles';
 
 export class ArrowWrapper extends React.PureComponent {
     render() {
@@ -43,7 +43,7 @@ export class ChannelViewAsync extends React.PureComponent<{ item: Organization_o
         let membersCount = item.membersCount || 0;
         return (
             <ASView style={{ height: 60, opacity: this.props.disabled ? 0.5 : 1 }}>
-                <ASFlex height={60} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
+                <ASFlex height={60} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.props.disabled ? undefined : this.handlePress} onLongPress={this.props.onLongPress}>
                     <ASFlex width={70} height={60} alignItems="center" justifyContent="center">
                         <ASAvatar
                             src={item.photo}

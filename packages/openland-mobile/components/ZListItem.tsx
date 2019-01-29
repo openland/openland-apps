@@ -5,8 +5,8 @@ import { AppStyles } from '../styles/AppStyles';
 import { ZText } from './ZText';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
-import { XPAvatar } from 'openland-xp/XPAvatar';
 import { ActionSheet } from './ActionSheet';
+import { ZAvatar } from './ZAvatar';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -103,7 +103,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 navigationIcon={this.props.navigationIcon}
             >
                 {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
-                {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><XPAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
+                {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && Platform.OS !== 'android' && <Text style={{ color: '#5c6a81', fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
@@ -136,7 +136,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     </View>
                     {this.props.title && Platform.OS === 'android' && <Text style={{ color: '#000', opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                 </View>
-                {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><XPAvatar size={40} placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
+                {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
             </ZListItemBase>
         );
     }

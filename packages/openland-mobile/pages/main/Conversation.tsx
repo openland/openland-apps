@@ -21,12 +21,12 @@ import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/AS
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
-import { XPAvatar } from 'openland-xp/XPAvatar';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { RoomTinyQuery } from 'openland-api';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -187,7 +187,7 @@ class ConversationComponent extends React.Component<PageProps> {
                                             <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
 
                                                 <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
-                                                    <XPAvatar
+                                                    <ZAvatar
                                                         src={sharedRoom.photo}
                                                         size={100}
                                                         placeholderKey={sharedRoom.id}

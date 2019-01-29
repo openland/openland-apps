@@ -8,10 +8,10 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { TextStyles } from '../../styles/AppStyles';
+import { ZStyles } from 'openland-mobile/components/ZStyles';
 
 const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }))}</ASText>;
@@ -51,7 +51,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
         if (this.props.message.senderId) {
             placeholderIndex = doSimpleHash(this.props.message.senderId);
         }
-        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
+        let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
         let layout: { width: number, height: number } | undefined = undefined;
         let resolved: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };

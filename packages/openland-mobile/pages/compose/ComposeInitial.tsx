@@ -8,19 +8,11 @@ import { ZQuery } from '../../components/ZQuery';
 import { ZLoader } from '../../components/ZLoader';
 import { View, Text } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
-import { ASView } from 'react-native-async-view/ASView';
-import { UserShort } from 'openland-api/Types';
-import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASAvatar } from '../../messenger/MobileMessenger';
-import { XPStyles } from 'openland-xp/XPStyles';
-import { ASText } from 'react-native-async-view/ASText';
 import { ZListItem } from '../../components/ZListItem';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ExplorePeopleQuery, OnlineQuery } from 'openland-api';
-import { formatLastSeen } from 'openland-mobile/utils/formatTime';
-import { ASImage } from 'react-native-async-view/ASImage';
+import { ExplorePeopleQuery } from 'openland-api';
 import { UserView } from '../main/components/UserView';
 
 // export class UserViewAsync extends React.PureComponent<{ item: UserShort, onPress: (id: string) => void, onLongPress?: () => void, disabled?: boolean, isAdmin?: boolean }> {

@@ -4,7 +4,6 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { formatDate } from '../utils/formatDate';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
@@ -18,12 +17,12 @@ import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigM
 import { Clipboard, Platform } from 'react-native';
 import { ActionSheetBuilder } from '../components/ActionSheet';
 import { SRouting } from 'react-native-s/SRouting';
-import { MessageSetReactionMutation, MessageUnsetReactionMutation, RoomEditMessageMutation, RoomDeleteMessageMutation } from 'openland-api';
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { Prompt } from '../components/Prompt';
-import { TextStyles } from '../styles/AppStyles';
+import { TextStyles, AppStyles } from '../styles/AppStyles';
 import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ZStyles } from 'openland-mobile/components/ZStyles';
 
 interface ASAvatarProps {
     size: number;
@@ -51,7 +50,7 @@ export class ASAvatar extends React.PureComponent<ASAvatarProps> {
         if (this.props.placeholderKey) {
             placeholderIndex = doSimpleHash(this.props.placeholderKey);
         }
-        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
+        let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
         let placeholderText = '?';
         if (this.props.placeholderTitle) {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
@@ -144,7 +143,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
         let height = this.props.compact ? 48 : 80;
         let avatarSize = this.props.compact ? 30 : 60;
         return (
-            <ASFlex height={height} flexDirection="row" highlightColor={XPStyles.colors.selectedListItem} onPress={this.handlePress} alignItems={this.props.compact ? 'center' : undefined}>
+            <ASFlex height={height} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.handlePress} alignItems={this.props.compact ? 'center' : undefined}>
                 <ASFlex marginLeft={this.props.compact ? 12 : undefined} width={height} height={height} alignItems="center" justifyContent="center">
                     {!isUser && <ASAvatar
                         src={item.photo}
@@ -173,7 +172,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                             </ASText>
                         </ASFlex>}
                         {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={14} height={36} lineHeight={18} color={XPStyles.colors.brand} numberOfLines={2}>{item.typing}</ASText>
+                            <ASText fontSize={14} height={36} lineHeight={18} color="##4747EC" numberOfLines={2}>{item.typing}</ASText>
                         </ASFlex>}
                         {item.unread > 0 && (
                             <ASFlex marginTop={18} flexShrink={0}>
@@ -183,7 +182,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                     </ASFlex>}
                 </ASFlex>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={this.props.compact ? 62 : 80} backgroundColor={XPStyles.colors.separator} />
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={this.props.compact ? 62 : 80} backgroundColor={AppStyles.separatorColor} />
                 </ASFlex>
             </ASFlex>
         );

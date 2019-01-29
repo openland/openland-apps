@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { PImageProps } from './PImageProps';
 
-export function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null }) {
+function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null }) {
     if (!source) {
         return undefined;
     }
@@ -12,7 +11,22 @@ export function buildBaseImageUrl(source?: { uuid: string, crop?: { x: number, y
     return res;
 }
 
-export class PImage extends React.Component<PImageProps> {
+export interface XImageProps {
+    source?: { uuid: string, crop?: { x: number, y: number, w: number, h: number } | null } | string | null;
+    width: number;
+    height: number;
+    imageSize?: { width: number, height: number };
+    resize?: 'fill' | 'fit' | 'none';
+    borderRadius?: number;
+    borderBottomLeftRadius?: number;
+    borderBottomRightRadius?: number;
+    borderTopLeftRadius?: number;
+    borderTopRightRadius?: number;
+    highPriority?: boolean;
+    onLoaded?: () => void;
+}
+
+export class XImage extends React.Component<XImageProps> {
     render() {
         let baseUrl: string | undefined;
         if (this.props.source) {

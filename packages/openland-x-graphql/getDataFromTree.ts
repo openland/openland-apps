@@ -76,7 +76,7 @@ export function walkTree<Cache>(
     if (isReactElement(element)) {
         if (typeof element.type === 'function') {
             const Comp = element.type;
-            const props = Object.assign({}, Comp.defaultProps, getProps(element));
+            const props = Object.assign({}, (Comp as any).defaultProps, getProps(element));
             let childContext = context;
             let child;
 
@@ -150,7 +150,7 @@ export function walkTree<Cache>(
                     return;
                 }
 
-                child = Comp(props, context);
+                child = (Comp as any)(props, context);
             }
 
             if (child) {

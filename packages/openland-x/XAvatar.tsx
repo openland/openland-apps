@@ -3,13 +3,13 @@ import Glamorous from 'glamorous';
 import { XFlexStyles, applyFlex } from './basics/Flex';
 import { styleResolver, styleResolverWithProps } from 'openland-x-utils/styleResolver';
 import { XPhotoRef } from './XCloudImage';
-import { XPImage } from 'openland-xp/XPImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { Query } from 'react-apollo';
 import { OnlineQuery } from 'openland-api';
 import { XRouting } from 'openland-x-routing/XRouting';
 import { XRoutingContext } from 'openland-x-routing/XRoutingContext';
+import { XImage } from './XImage';
 
 export type XAvatarSize = 'm-small' | 'x-large' | 'large' | 's-large' | 'x-medium' | 's-medium' | 'l-medium' | 'medium' | 'default' | 'small' | 'l-small' | 'x-small';
 export type XAvatarStyle = 'organization' | 'person' | 'room' | 'group' | 'colorus' | 'user' | undefined;
@@ -342,7 +342,7 @@ class XAvatarWrapper extends React.Component<XAvatarProps & { routing: XRouting 
                 )}
                 {(props.photoRef || imageLink) && (
                     <StyledAvatar {...avatarProps}>
-                        <XPImage source={imageLink ? imageLink : props.photoRef!!} width={imageWidth} height={imageHeight} />
+                        <XImage source={imageLink ? imageLink : props.photoRef!!} width={imageWidth} height={imageHeight} />
                     </StyledAvatar>
                 )}
                 {!props.src && !(props.photoRef || imageLink) && (

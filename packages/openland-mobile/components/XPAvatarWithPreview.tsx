@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { XPAvatarProps, XPAvatar } from 'openland-xp/XPAvatar';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from './modal/ZPictureModal';
+import { ZAvatarProps, ZAvatar } from './ZAvatar';
 
-class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps> {
+class XPAvatarWithPreviewComponent extends React.PureComponent<ZAvatarProps> {
 
     ref = React.createRef<View>();
     handleLayout = () => {
@@ -50,14 +50,14 @@ class XPAvatarWithPreviewComponent extends React.PureComponent<XPAvatarProps> {
         return (
             <TouchableWithoutFeedback onPress={this.handlePress}>
                 <View onLayout={this.handleLayout} ref={this.ref}>
-                    <XPAvatar {...other} />
+                    <ZAvatar {...other} />
                 </View>
             </TouchableWithoutFeedback>
         );
     }
 }
 
-export const XPAvatarWithPreview = (props: XPAvatarProps) => {
+export const XPAvatarWithPreview = (props: ZAvatarProps) => {
     return (
         <XPAvatarWithPreviewComponent {...props} />
     );

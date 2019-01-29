@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll, Alert, BackHandler } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
-import { XPImage } from 'openland-xp/XPImage';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { FastImageViewer } from 'react-native-s/FastImageViewer';
@@ -11,6 +10,7 @@ import Share from 'react-native-share';
 import UUID from 'uuid/v4';
 import RNFetchBlob from 'rn-fetch-blob';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
+import { ZImage } from '../ZImage';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -215,7 +215,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                         startLayout={animate}
                         startLayoutRenderer={
                             (onLoaded) => (
-                                <XPImage
+                                <ZImage
                                     source={this.props.config.url}
                                     width={animate.width}
                                     height={animate.height}
@@ -232,7 +232,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
                     >
                         {onLoaded => (
-                            <XPImage
+                            <ZImage
                                 source={this.props.config.url}
                                 width={size.width}
                                 height={size.height}

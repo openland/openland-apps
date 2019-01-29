@@ -10,7 +10,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ZForm } from '../../components/ZForm';
 import { next } from './signup';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { YQuery } from 'openland-y-graphql/YQuery';
@@ -47,11 +46,11 @@ const styles = StyleSheet.create({
 export const HeaderButton = (props: { title: string, handlePress: () => void }) => {
     if (Platform.OS === 'android') {
         return (
-            <ActionButtonAndroid title={props.title} onPress={props.handlePress} tintColor={XPStyles.colors.brand} />
+            <ActionButtonAndroid title={props.title} onPress={props.handlePress} tintColor="#4747EC" />
         );
     } else if (Platform.OS === 'ios') {
         return (
-            <ActionButtonIOS title={props.title} tintColor={XPStyles.colors.brand} onPress={props.handlePress} />
+            <ActionButtonIOS title={props.title} tintColor="#4747EC" onPress={props.handlePress} />
         );
     }
     return (<Button color="#000" onPress={props.handlePress} title={props.title} />);

@@ -1,33 +1,11 @@
-
 import { Platform } from 'react-native';
 
-export type XPColor = string;
-
-export const XPStyles = {
-    colors: {
-        /** Brand Main Color */
-        brand: '#4747EC',
-        /** Background color for lists where there are no content */
-        backyard: 'white',
-        /** Primary background color of the app */
-        background: 'white', //  Changing this ususally leads to need to update values in platform-specific values in EVERY app
-        /** Primary text color  */
-        textPrimary: 'black',
-
-        /** Selected List Item color */
-        selectedListItem: Platform.select({
-            default: '#E0E0E0',
-            ios: '#EFF1F3',
-            macos: '#4747EC'
-        }),
-        inactiveCounter: '#c8c7cc',
-
-        separator: Platform.select({
-            default: '#EDEDED',
-            ios: '#EFF1F3',
-            android: '#ebebeb',
-        })
-    },
+export const ZStyles = {
+    selectedListItem: Platform.select({
+        default: '#E0E0E0',
+        ios: '#EFF1F3',
+        macos: '#4747EC'
+    }),
     avatars: [{
         nameColor: '#FF8D00',
         placeholderTitle: 'white',
@@ -65,4 +43,4 @@ export const XPStyles = {
         placeholderColorStart: '#aa22ff',
         placeholderColorEnd: '#8e00e6'
     }]
-};
+}

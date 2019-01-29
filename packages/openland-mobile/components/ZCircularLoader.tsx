@@ -5,7 +5,7 @@ export interface XPCircularLoaderProps {
     visible: boolean;
     progress: number;
 }
-export class XPCircularLoader extends React.PureComponent<XPCircularLoaderProps, { visible: boolean }> {
+export class ZCircularLoader extends React.PureComponent<XPCircularLoaderProps, { visible: boolean }> {
     private rotation = new Animated.Value(0);
     private opactiy = new Animated.Value(0);
     private animation: Animated.CompositeAnimation | null = null;

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { UserShort } from 'openland-api/Types';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { View, Text, Image } from 'react-native';
-import { XPAvatar } from 'openland-xp/XPAvatar';
 import { PresenceComponent } from './PresenceComponent';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 
 export const UserView = (props: { user: UserShort, isAdmin?: boolean, role?: string, enabled?: boolean, onPress: () => void, onLongPress?: () => void }) => (
     <ZListItemBase key={props.user.id} separator={false} height={60} onPress={props.onPress} onLongPress={props.onLongPress} enabled={props.enabled}>
         <View paddingLeft={15} paddingRight={15} alignSelf="center" opacity={props.enabled === false ? 0.5 : 1}>
-            <XPAvatar size={42} src={props.user.photo} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
+            <ZAvatar size={42} src={props.user.photo} userId={props.user.id} placeholderKey={props.user.id} placeholderTitle={props.user.name} />
         </View>
         <View alignSelf="center" flexGrow={1} flexBasis={0} alignItems="flex-start" justifyContent="center" flexDirection="column" opacity={props.enabled === false ? 0.5 : 1}>
             <View flexDirection="row">

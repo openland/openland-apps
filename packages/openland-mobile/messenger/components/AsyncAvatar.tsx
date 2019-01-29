@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
-import { XPStyles } from 'openland-xp/XPStyles';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
+import { ZStyles } from 'openland-mobile/components/ZStyles';
 
 export interface AsyncAvatarProps {
     size: number;
@@ -33,7 +33,7 @@ export class AsyncAvatar extends React.PureComponent<AsyncAvatarProps> {
         if (this.props.placeholderKey) {
             placeholderIndex = doSimpleHash(this.props.placeholderKey);
         }
-        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
+        let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
         let placeholderText = '?';
         if (this.props.placeholderTitle) {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);

@@ -6,8 +6,7 @@ import { UploadStatus } from 'openland-engines/messenger/types';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { startLoader, stopLoader } from './ZGlobalLoader';
-import { XPAvatar } from 'openland-xp/XPAvatar';
-import { UplaodCareUploading } from 'openland-web/utils/UploadCareUploading';
+import { ZAvatar } from './ZAvatar';
 
 interface AvatarImageRef {
     uuid: string;
@@ -143,7 +142,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
         return this.props.render ? <this.props.render url={valueUrl} file={this.state.file} loading={this.state.loading} showPicker={this.handlePicker} /> : (
             <TouchableOpacity onPress={this.handlePicker}>
                 <View width={size} height={size} borderRadius={size / 2}>
-                    {valueUrl && <XPAvatar src={valueUrl} size={size} />}
+                    {valueUrl && <ZAvatar src={valueUrl} size={size} />}
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2, borderWidth: 1, borderColor: '#eff0f2' }}>
                         {!this.state.loading && <Image style={{ tintColor: valueUrl ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
                         {this.state.loading && <ActivityIndicator color="#fff" />}

@@ -1,6 +1,6 @@
 type FlexAlignType = 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
 
-export interface XPFlexStyle {
+export interface ZFlexStyle {
     flex?: number;
     flexBasis?: number | string;
     flexGrow?: number;

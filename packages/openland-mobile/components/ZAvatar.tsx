@@ -2,13 +2,13 @@ import * as React from 'react';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { View, Platform, Text, StyleSheet, TextStyle } from 'react-native';
-import { XPImage } from './XPImage';
-import { XPLinearGradient } from './XPLinearGradient';
-import { XPStyles } from './XPStyles';
-import { AndroidAliaser } from './AndroidAliaser';
 import { createInterpolator } from 'openland-y-utils/createInterpolator';
 import { YQuery } from 'openland-y-graphql/YQuery';
 import { OnlineQuery } from 'openland-api';
+import { AndroidAliaser } from './visual/AndroidAliaser';
+import { ZImage } from './ZImage';
+import { ZLinearGradient } from './visual/ZLinearGradient.native';
+import { ZStyles } from './ZStyles';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         color: '#fff'
     } as TextStyle
 });
-export interface XPAvatarProps {
+export interface ZAvatarProps {
     size: number;
     src?: string | null;
     placeholderKey?: string | null;
@@ -32,7 +32,7 @@ const placeholderSizeInterpolator = createInterpolator(
     [12, 12, 13, 14, 16, 16, 26, 28]
 );
 
-export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
+class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
     render() {
         let onlineSize = this.props.size / 4;
         if (this.props.src && !this.props.src.startsWith('ph://')) {
@@ -44,7 +44,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                         borderRadius={this.props.size / 2}
                     >
                         <View style={{ width: this.props.size, height: this.props.size, borderRadius: this.props.size / 2, backgroundColor: '#fff' }}>
-                            <XPImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
+                            <ZImage highPriority={true} imageSize={{ width: 256, height: 256 }} width={this.props.size} height={this.props.size} source={this.props.src} borderRadius={this.props.size / 2} />
                             {Platform.OS !== 'android' && <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, borderRadius: this.props.size / 2, borderColor: '#000', opacity: 0.03, borderWidth: 0.5 }} />}
                         </View>
                     </AndroidAliaser>
@@ -56,7 +56,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
         if (this.props.placeholderKey) {
             placeholderIndex = doSimpleHash(this.props.placeholderKey);
         }
-        let placeholderStyle = XPStyles.avatars[placeholderIndex % XPStyles.avatars.length];
+        let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
         let placeholderText = '?';
         if (this.props.placeholderTitle) {
             placeholderText = extractPlaceholder(this.props.placeholderTitle);
@@ -69,7 +69,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                     height={this.props.size}
                     borderRadius={this.props.size / 2}
                 >
-                    <XPLinearGradient
+                    <ZLinearGradient
                         width={this.props.size}
                         height={this.props.size}
                         borderRadius={this.props.size / 2}
@@ -81,7 +81,7 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
                         <View alignItems="center" justifyContent="center" width={this.props.size} height={this.props.size}>
                             <Text style={[styles.placeholderText, { fontSize: textSize }]}>{placeholderText}</Text>
                         </View>
-                    </XPLinearGradient>
+                    </ZLinearGradient>
 
                 </AndroidAliaser>
                 {this.props.online && <View style={{ position: 'absolute', width: onlineSize, height: onlineSize, bottom: 0, right: 0, borderRadius: onlineSize / 2, borderColor: '#fff', backgroundColor: '#0084fe', borderWidth: onlineSize / 10 }} />}
@@ -90,13 +90,13 @@ export class XPAvatarInner extends React.PureComponent<XPAvatarProps> {
     }
 }
 
-export class XPAvatar extends React.PureComponent<XPAvatarProps> {
+export class ZAvatar extends React.PureComponent<ZAvatarProps> {
     render() {
         return (
             <>
                 {this.props.userId && <YQuery query={OnlineQuery} variables={{ userId: this.props.userId }}>
                     {online => (
-                        < XPAvatarInner
+                        <XPAvatarInner
                             {...this.props}
                             online={online.data && online.data.user && online.data.user.online}
                         />

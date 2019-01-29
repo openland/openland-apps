@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { YQuery } from 'openland-y-graphql/YQuery';
-import { XPAvatar } from 'openland-xp/XPAvatar';
 import { SRouter } from 'react-native-s/SRouter';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/Types';
 import { RoomTinyQuery } from 'openland-api';
+import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;
@@ -47,7 +47,7 @@ export class ChatHeaderAvatar extends React.PureComponent<{ conversationId: stri
                     return (
                         <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!!, path.pathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 10, marginLeft: Platform.OS === 'ios' ? 10 : 0 }}>
                             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
-                                <XPAvatar
+                                <ZAvatar
                                     src={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
                                     size={Platform.OS === 'android' ? 40 : 36}
                                     placeholderKey={privateRoom ? privateRoom.user.id : sharedRoom!.id}

@@ -5,29 +5,19 @@ import { ZTextInput } from '../../components/ZTextInput';
 import { View, Text, Keyboard, Animated } from 'react-native';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { SScrollView } from 'react-native-s/SScrollView';
-import countries from '../../../openland-shared/data/countries.json';
 import { ZListItem } from '../../components/ZListItem';
 import { SRouter } from 'react-native-s/SRouter';
 import { SSearchControler } from 'react-native-s/SSearchController';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { ZListItemBase } from '../../components/ZListItemBase';
 import { Modals } from '../main/modals/Modals';
-import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { delay } from 'openland-y-utils/timer';
 import { ASListView } from 'react-native-async-view/ASListView';
 import { ASDataView } from 'react-native-async-view/ASDataView';
 import { DataSource } from 'openland-y-utils/DataSource';
-import { HeaderConfigRegistrator } from 'react-native-s/navigation/HeaderConfigRegistrator';
 import { STrackedValue } from 'react-native-s/STrackedValue';
-import { ZAsyncRoutedList } from '../../components/ZAsyncRoutedList';
-import { ExploreOrganizationsQuery } from 'openland-api';
-import { DirectoryItemComponent } from '../main/ExploreOrganizations';
-import { HeaderContextChild } from 'react-native-s/navigation/HeaderContextChild';
-import { XPStyles } from 'openland-xp/XPStyles';
+import { ZStyles } from 'openland-mobile/components/ZStyles';
+import { AppStyles } from 'openland-mobile/styles/AppStyles';
 
 class PhoneVerifyComponent extends React.Component<PageProps, { phone: string, code: string }> {
     constructor(props: PageProps) {
@@ -160,13 +150,13 @@ class CountryPickerComponent extends React.Component<PageProps> {
         this.dataSource = new DataSource<{ key: string, name: string, phone: string, code: string }>(() => false);
         this.dataSource.initialize(list.map(c => ({ ...c, key: c.code })), true);
         this.dataView = new ASDataView(this.dataSource, (c) => (
-            <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={XPStyles.colors.selectedListItem} onPress={() => this.handlePicked(c.phone)}>
+            <ASFlex height={56} flexDirection="row" alignItems="center" highlightColor={ZStyles.selectedListItem} onPress={() => this.handlePicked(c.phone)}>
                 <ASFlex marginLeft={15} marginRight={15} flexDirection="row" alignItems="center" flexGrow={1} >
                     <ASText color="#000" flexGrow={1}>{c.name}</ASText>
                     <ASText color="#000">+{c.phone}</ASText>
                 </ASFlex>
                 <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={XPStyles.colors.separator} />
+                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={AppStyles.separatorColor} />
                 </ASFlex>
             </ASFlex>
         ));
