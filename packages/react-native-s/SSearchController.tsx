@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
-import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
+import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { View, Platform } from 'react-native';
 import { SAnimatedView } from './SAnimatedView';
 import UUID from 'uuid/v4';
@@ -9,6 +9,7 @@ import { HeaderContextNone } from './navigation/HeaderContextNone';
 import { SearchContext } from './navigation/SearchContext';
 import { SNativeConfig } from './SNativeConfig';
 import { SContentContext } from './SContentContext';
+import { SDevice } from './SDevice';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
@@ -58,30 +59,35 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
             ? (
                 <>
                     <SAnimatedView name={this.containerShadowView.name} style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
-                        <SContentContext>
-                            <ASSafeAreaProvider top={48}>
+
+                        <ASSafeAreaProvider top={48}>
+                            <View style={{ flexGrow: 1, flexBasis: 0, width: '100%' }}>
                                 <View style={{ flexGrow: 1, flexBasis: 0, width: '100%', marginBottom: this.state.searchMounted ? -96 : 0 }}>
                                     {this.props.children}
-                                    <SAnimatedView
-                                        name={this.searchShadowView.name}
-                                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || '#fff' }}
-                                        pointerEvents="box-none"
-                                    >
-                                        {this.state.searchMounted && (
-                                            <HeaderContextNone>
-                                                <ASSafeAreaProvider top={6}>
-                                                    <View width="100%" height="100%">
-                                                        <React.Suspense fallback={SNativeConfig.loader}>
-                                                            <Render query={this.state.query} />
-                                                        </React.Suspense>
-                                                    </View>
-                                                </ASSafeAreaProvider>
-                                            </HeaderContextNone>
-                                        )}
-                                    </SAnimatedView>
                                 </View>
-                            </ASSafeAreaProvider>
-                        </SContentContext>
+                                <SAnimatedView
+                                    name={this.searchShadowView.name}
+                                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || '#fff' }}
+                                    pointerEvents="box-none"
+                                >
+                                    {this.state.searchMounted && (
+                                        // <ASSafeAreaContext.Provider value={{ top: SDevice.safeArea.top + 96, bottom: SDevice.safeArea.bottom, keyboardHeight: 0 }}>
+                                        //     <SContentContext>
+                                        <HeaderContextNone>
+                                            <ASSafeAreaProvider top={6}>
+                                                <View width="100%" height="100%">
+                                                    <React.Suspense fallback={SNativeConfig.loader}>
+                                                        <Render query={this.state.query} />
+                                                    </React.Suspense>
+                                                </View>
+                                            </ASSafeAreaProvider>
+                                        </HeaderContextNone>
+                                        //     </SContentContext>
+                                        // </ASSafeAreaContext.Provider>
+                                    )}
+                                </SAnimatedView>
+                            </View>
+                        </ASSafeAreaProvider>
                     </SAnimatedView>
                 </>
             )

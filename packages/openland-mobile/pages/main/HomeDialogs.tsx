@@ -11,7 +11,7 @@ import { SScrollView } from 'react-native-s/SScrollView';
 import { ASView } from 'react-native-async-view/ASView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { randomEmptyPlaceholderEmoji } from '../../utils/tolerance';
-import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { ASSafeAreaView, KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { CenteredHeader } from './components/CenteredHeader';
 import { SRouter } from 'react-native-s/SRouter';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -26,11 +26,11 @@ const DialogsSearch = React.memo<{ query: string, router: SRouter }>((props) => 
 
     if (search.items.length === 0) {
         return (
-            <ASSafeAreaView>
+            <KeyboardSafeAreaView>
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No chats found' + randomEmptyPlaceholderEmoji()}</Text>
                 </View>
-            </ASSafeAreaView>
+            </KeyboardSafeAreaView>
         );
 
     }

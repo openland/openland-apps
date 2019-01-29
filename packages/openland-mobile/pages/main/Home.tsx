@@ -15,7 +15,7 @@ export const Home = React.memo<PageProps>((props) => {
 
     return (
         <View style={{ width: '100%', height: '100%', flexDirection: 'column', alignItems: 'stretch' }}>
-            <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 54 : 0}>
+            <ASSafeAreaProvider bottom={Platform.OS === 'ios' ? 48 : 0}>
                 <View style={{ width: '100%', flexGrow: 1, flexBasis: 0 }}>
                     {/* <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, opacity: this.state.tab === 0 ? 1 : 0 }} pointerEvents={this.state.tab === 0 ? 'box-none' : 'none'}>
                             <HeaderContextChild enabled={this.state.tab === 0}>

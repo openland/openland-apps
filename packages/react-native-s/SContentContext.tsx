@@ -20,17 +20,17 @@ export class SContentContext extends React.PureComponent<{}, { keyboardHeight: n
     }
 
     componentDidMount() {
-        if (Platform.OS !== 'ios') {
-            Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
-            Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
-        }
+        // if (Platform.OS !== 'ios') {
+        Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
+        Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
+        // }
     }
 
     componentWillMount() {
-        if (Platform.OS !== 'ios') {
-            Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
-            Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
-        }
+        // if (Platform.OS !== 'ios') {
+        Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
+        Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
+        // }
     }
 
     handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string } }>) => {
@@ -55,6 +55,7 @@ export class SContentContext extends React.PureComponent<{}, { keyboardHeight: n
                     >
                         <ASSafeAreaProvider
                             bottom={this.state.keyboardHeight}
+                            keyboardHeight={this.state.keyboardHeight}
                         >
                             <ASKeyboardAcessoryViewContext.Provider value={this}>
                                 {this.props.children}
