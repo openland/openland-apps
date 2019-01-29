@@ -15,3 +15,6 @@ mkdir ./build/bundle-android/threads
 # Copy Android
 mkdir ./android/app/src/main/assets/threads
 cp -f ./build/bundle-android/threads/index.thread.bundle ./android/app/src/main/assets/threads/index.thread.bundle
+
+# Copy iOS
+cp -f ./build/bundle-ios/threads/index.thread.jsbundle ./ios/index.thread.jsbundle
