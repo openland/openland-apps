@@ -414,8 +414,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                         content.push(
                             <MessageTextComponent
                                 message={message.text || ''}
-                                mentions={message.mentions}
-                                alphaMentions={(message as any).alphaMentions}
+                                mentions={message.mentions || []}
                                 key={'text'}
                                 isEdited={!!message.isEdited}
                             />,
@@ -431,7 +430,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                             content.push(
                                 <MessageAnimationComponent
                                     key={'file'}
-                                    file={file.uri!}
+                                    file={file.fileId!}
                                     fileName={name}
                                     {...file.imageSize}
                                 />,
@@ -440,7 +439,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                             content.push(
                                 <MessageImageComponent
                                     key={'file'}
-                                    file={file.uri!}
+                                    file={file.fileId!}
                                     fileName={name}
                                     startSelected={hideMenu}
                                     {...file.imageSize}
@@ -451,7 +450,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                         content.push(
                             <MessageFileComponent
                                 key={'file'}
-                                file={file.uri}
+                                file={file.fileId}
                                 fileName={name}
                                 fileSize={file.fileSize}
                             />,
@@ -654,7 +653,6 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                     <MessageTextComponent
                         message={message.text || ''}
                         mentions={message.mentions}
-                        alphaMentions={(message as any).alphaMentions}
                         key={'text'}
                         isEdited={!!message.isEdited}
                     />,
@@ -669,7 +667,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                     content.push(
                         <MessageAnimationComponent
                             key={'file'}
-                            file={message.file.uri!}
+                            file={message.file.fileId!}
                             fileName={name}
                             {...message.file.imageSize}
                         />,
@@ -678,7 +676,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                     content.push(
                         <MessageImageComponent
                             key={'file'}
-                            file={message.file.uri!}
+                            file={message.file.fileId!}
                             fileName={name}
                             startSelected={hideMenu}
                             {...message.file.imageSize}
@@ -690,7 +688,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                 content.push(
                     <MessageFileComponent
                         key={'file'}
-                        file={message.file.uri}
+                        file={message.file.fileId}
                         fileName={name}
                         fileSize={message.file.fileSize}
                     />,

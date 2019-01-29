@@ -139,7 +139,7 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         reactions: src.reactions || undefined,
         serviceMetaData: src.serviceMetadata || undefined,
         isService: src.isService || undefined,
-        mentions: src.alphaMentions || undefined,
+        mentions: src.alphaMentions || (src.mentions || []).map(m => ({ user: { ...m }, __typename: 'UserMention' as 'UserMention' })),
         reply: src.reply || undefined,
         isEdited: src.edited,
 
