@@ -15,7 +15,9 @@ class AsyncViewEventEmitter {
   
   // When React Native instantiates the emitter it is registered here.
   func registerEventEmitter(eventEmitter: RNAsyncViewEventEmitter) {
-    self.nativeInstance = eventEmitter
+    if self.nativeInstance == nil {
+      self.nativeInstance = eventEmitter
+    }
   }
   
   func dispatchOnPress(key: String, frame: CGRect, instanceKey: String?) {
