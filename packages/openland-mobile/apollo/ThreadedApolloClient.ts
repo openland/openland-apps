@@ -5,12 +5,39 @@ import { Request, Response } from './api/Request';
 import { randomKey } from 'openland-mobile/utils/randomKey';
 import { delay } from 'openland-y-utils/timer';
 import { keyFromObject } from 'openland-graphql/utils/keyFromObject';
+import { Queue } from 'openland-graphql/utils/Queue';
+import { any } from 'glamor';
+
+class QueryWatch {
+
+    value: any;
+    isErrored = false;
+    isCompleted = false;
+    promise: any;
+
+    private handlers = new Map<string, () => void>();
+
+    notify() {
+        for (let l of this.handlers.values()) {
+            l();
+        }
+    }
+
+    waitForUpdate(handler: () => void): () => void {
+        let k = randomKey();
+        this.handlers.set(k, handler);
+        return () => {
+            this.handlers.delete(k);
+        }
+    }
+}
 
 export class WorkerApolloClient implements GraphqlClient {
 
     private readonly thread: Thread;
     private handlers = new Map<string, { resolve: (src: any) => void, reject: (src: any) => void }>();
     private queries = new Map<any, Map<string, any>>();
+    private watches = new Map<any, Map<string, QueryWatch>>();
 
     constructor(token?: string) {
         this.thread = new Thread('./index.thread.js');
@@ -51,6 +78,69 @@ export class WorkerApolloClient implements GraphqlClient {
         }
     }
 
+    private async postWatch(request: Request, watch: QueryWatch) {
+        return await new Promise<any>((resolve, reject) => {
+            this.handlers.set(request.id, {
+                resolve: (v) => {
+                    if (!watch.isCompleted) {
+                        resolve(v);
+                    }
+                    // console.log('watch:update');
+                    // console.log(v);
+                    watch.isCompleted = true;
+                    watch.isErrored = false;
+                    watch.value = v;
+                    watch.notify();
+                },
+                reject: (v) => {
+                    if (!watch.isCompleted) {
+                        reject(v);
+                    }
+                    watch.isCompleted = true;
+                    watch.isErrored = true;
+                    watch.value = v;
+                    watch.notify();
+                }
+            });
+            this.thread.postMessage(JSON.stringify(request));
+        });
+    }
+
+    private useQueryRaw<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): QueryWatch {
+        return React.useMemo(() => {
+            let key = keyFromObject(vars);
+
+            if (this.watches.has(query.document)) {
+                let q = this.watches.get(query.document)!;
+                if (q.has(key)) {
+                    return q.get(key)!;
+                }
+            } else {
+                this.watches.set(query.document, new Map());
+            }
+
+            let res = new QueryWatch();
+            res.promise = this.postWatch({ type: 'watch', id: this.nextId(), body: query.document, variables: vars }, res);
+            // res.promise
+            //     .then((v: any) => {
+            //         console.log('completed')
+            //         res.isCompleted = true;
+            //         res.isErrored = false;
+            //         res.value = v;
+            //         res.notify();
+            //     })
+            //     .catch((e: any) => {
+            //         res.isCompleted = false;
+            //         res.isErrored = true;
+            //         res.value = e;
+            //         res.notify();
+            //     });
+
+            this.watches.get(query.document)!.set(key, res);
+            return res;
+        }, [query.document, keyFromObject(vars)]);
+    }
+
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
         return this.postCall({ type: 'query', body: query.document, variables: vars, id: this.nextId() });
     }
@@ -62,13 +152,34 @@ export class WorkerApolloClient implements GraphqlClient {
     }
 
     subscribe(subscription: any, vars?: any): GraphqlActiveSubscription {
-        // throw Error();
-        return {
-            get: async () => {
-                while (true) {
-                    await delay(1000);
-                }
+        let queue = new Queue();
+
+        let key = this.nextId();
+        this.handlers.set(key, {
+            resolve: (v) => {
+                queue.post(v);
+                // if (!watch.isCompleted) {
+                //     resolve(v);
+                // }
+                // watch.isCompleted = true;
+                // watch.isErrored = false;
+                // watch.value = v;
+                // watch.notify();
             },
+            reject: (v) => {
+                // if (!watch.isCompleted) {
+                //     reject(v);
+                // }
+                // watch.isCompleted = true;
+                // watch.isErrored = true;
+                // watch.value = v;
+                // watch.notify();
+            }
+        });
+        this.thread.postMessage(JSON.stringify({ type: 'subscribe', body: subscription, variables: vars, id: key } as Request));
+
+        return {
+            get: queue.get,
             updateVariables: (src?: any) => {
                 //
             },
@@ -79,107 +190,61 @@ export class WorkerApolloClient implements GraphqlClient {
     }
 
     useQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery {
+
+        let q = this.useQueryRaw(query, vars);
         const [responseId, setResponseId] = React.useState(0);
-        let r = React.useMemo(() => {
-            let key = keyFromObject(vars);
+        React.useEffect(() => {
+            return q.waitForUpdate(() => {
+                setResponseId((x) => x + 1);
+            });
+        }, [q]);
 
-            if (this.queries.has(query.document)) {
-                let q = this.queries.get(query.document)!;
-                if (q.has(key)) {
-                    return q.get(key)!;
-                }
-            } else {
-                this.queries.set(query.document, new Map());
-            }
-
-            let result = {
-                finished: false,
-                error: false,
-                data: null
-            } as any;
-            result.promise = this.postCall({ type: 'query', id: this.nextId(), body: query.document, variables: vars });
-            result.promise
-                .then((v: any) => {
-                    console.log('completed')
-                    result.finished = true;
-                    result.data = v;
-                    result.error = false;
-                    setResponseId((x) => x + 1);
-                })
-                .catch((e: any) => {
-                    console.log('errored')
-                    result.finished = true;
-                    result.data = e;
-                    result.error = true;
-                    setResponseId((x) => x + 1);
-                });
-
-            this.queries.get(query.document)!.set(key, result);
-            return result;
-        }, [query.document, keyFromObject(vars)]);
-        if (!r.finished) {
-            throw r.promise;
+        if (!q.isCompleted) {
+            throw q.promise;
         }
-        if (r.error) {
-            throw Error('query error: ' + JSON.stringify(r.data));
+        if (q.isErrored) {
+            throw Error('query error: ' + JSON.stringify(q.value));
         }
-        return r.data;
+
+        // console.log('q: ' + JSON.stringify(q.value));
+        return q.value;
     }
 
     useWithoutLoaderQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): TQuery | null {
+
+        let q = this.useQueryRaw(query, vars);
         const [responseId, setResponseId] = React.useState(0);
-        let r = React.useMemo(() => {
-            let key = keyFromObject(vars);
+        React.useEffect(() => {
+            return q.waitForUpdate(() => {
+                setResponseId((x) => x + 1);
+            });
+        }, [q]);
 
-            if (this.queries.has(query.document)) {
-                let q = this.queries.get(query.document)!;
-                if (q.has(key)) {
-                    return q.get(key)!;
-                }
-            } else {
-                this.queries.set(query.document, new Map());
-            }
-
-            let result = {
-                finished: false,
-                error: false,
-                data: null
-            } as any;
-            result.promise = this.postCall({ type: 'query', id: this.nextId(), body: query.document, variables: vars });
-            result.promise
-                .then((v: any) => {
-                    console.log('completed')
-                    result.finished = true;
-                    result.data = v;
-                    result.error = false;
-                    setResponseId((x) => x + 1);
-                })
-                .catch((e: any) => {
-                    console.log('errored')
-                    result.finished = true;
-                    result.data = e;
-                    result.error = true;
-                    setResponseId((x) => x + 1);
-                });
-
-            this.queries.get(query.document)!.set(key, result);
-            return result;
-        }, [query.document, keyFromObject(vars)]);
-        if (!r.finished) {
+        if (!q.isCompleted) {
             return null;
         }
-        if (r.error) {
-            throw Error('query error: ' + JSON.stringify(r.data) + ', ' + JSON.stringify(vars));
+        if (q.isErrored) {
+            throw Error('query error: ' + JSON.stringify(q.value));
         }
-        return r.data;
+        return q.value;
     }
 
     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
-        // throw Error();
+        let r = await this.readQuery(query, vars);
+        if (r) {
+            let udpated = updater(r);
+            if (udpated) {
+                await this.writeQuery<TQuery, TVars>(r, query, vars);
+                return true;
+            }
+        }
         return false;
     }
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
-        // throw Error();
-        return null;
+        return this.postCall({ type: 'read', body: query.document, variables: vars, id: this.nextId() });
+    }
+
+    async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
+        return this.postCall({ type: 'write', body: query.document, variables: vars, id: this.nextId(), data });
     }
 }
