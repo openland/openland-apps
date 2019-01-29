@@ -26,7 +26,6 @@
             "openland-web": ["openland-web"],
             "openland-text": ["openland-text"],
             "openland-x": ["openland-x"],
-            "openland-x-codemod": ["openland-x-codemod"],
             "openland-x-routing": ["openland-x-routing"],
             "openland-x-config": ["openland-x-config"],
             "openland-x-utils": ["openland-x-utils"],
@@ -38,7 +37,6 @@
             "openland-x-layout": ["openland-x-layout"],
             "openland-x-permissions": ["openland-x-permissions"],
             "openland-x-graphql": ["openland-x-graphql"],
-            "openland-x-styles": ["openland-x-styles"],
             "openland-x-analytics": ["openland-x-analytics"],
             "openland-y-store": ["openland-y-store"],
             "openland-y-graphql-gen": ["openland-y-graphql-gen"],
@@ -78,10 +76,7 @@
         "packages/openland-web/src/less",
         "**/*.spec.ts"
     ],
-    "files": [
-        "./packages/openland-web/typings.d.ts",
-        "./packages/openland-mobile/typings.d.ts"
-    ],
+    "files": ["./packages/openland-web/typings.d.ts", "./packages/openland-mobile/typings.d.ts"],
     "include": [
         "./packages/openland-web",
         "./packages/openland-api",
@@ -98,8 +93,6 @@
         "./packages/openland-x-forms",
         "./packages/openland-y-forms",
         "./packages/openland-x-layout",
-        "./packages/openland-x-codemod",
-        "./packages/openland-x-styles",
         "./packages/openland-x-permissions",
         "./packages/openland-x-graphql",
         "./packages/openland-x-analytics",
