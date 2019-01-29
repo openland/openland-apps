@@ -178,7 +178,7 @@ export class HeaderTitleViewCoordinator {
                     this.searchViewContainer.translateX = 0;
                 } else {
                     this.searchView.translateY = -contentOffset;
-                    this.searchViewContainer.translateY = - Math.abs(progress) * 22;
+                    this.searchViewContainer.translateY = - Math.abs(progress) * 26;
                     if (progress > 0) {
                         this.searchViewContainer.translateX = (progress) * this.coordinator.size.width;
                     } else {
