@@ -51,7 +51,7 @@ export const SendMessageWrapper = Glamorous.div({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'stretch',
-    flexShrink: 1,
+    flexShrink: 0,
     minHeight: 114,
     backgroundColor: XThemeDefault.backyardColor,
     paddingLeft: 16,
