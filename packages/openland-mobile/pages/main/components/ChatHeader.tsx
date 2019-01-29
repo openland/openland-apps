@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 });
 
 const ChatHeaderContent = React.memo<{ conversationId: string, router: SRouter, typing?: string }>((props) => {
-    let room = getClient().useRoom({ id: props.conversationId });
+    let room = getClient().useRoomTiny({ id: props.conversationId });
 
     let accent = false;
 
