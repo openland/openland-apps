@@ -11,3 +11,7 @@ mkdir ./build/bundle-android/threads
 ./node_modules/.bin/react-native bundle --platform ios --entry-file index.thread.js --bundle-output ./build/bundle-ios/threads/index.thread.jsbundle --assets-dest ./build/bundle-ios/ --dev false
 ./node_modules/.bin/react-native bundle --platform android --entry-file index.js --bundle-output ./build/bundle-android/main.jsbundle --assets-dest ./build/bundle-android/ --dev false
 ./node_modules/.bin/react-native bundle --platform android --entry-file index.thread.js --bundle-output ./build/bundle-android/threads/index.thread.bundle --assets-dest ./build/bundle-android/ --dev false
+
+# Copy Android
+mkdir ./android/app/src/main/assets/threads
+cp -f ./build/bundle-android/threads/index.thread.bundle ./android/app/src/main/assets/threads/index.thread.bundle
