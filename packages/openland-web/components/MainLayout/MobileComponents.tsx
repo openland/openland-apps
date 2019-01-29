@@ -111,7 +111,7 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
     // this is hack make it better later
     const finalChildren = children && children.props ? children.props.children : children;
     return (
-        <XView width="100%">
+        <XView width="100%" flexShrink={1}>
             <XView
                 flexDirection="row"
                 width="100%"
@@ -120,7 +120,7 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                 paddingRight={16}
                 marginTop={4}
                 marginBottom={3}
-                flexShrink={0}
+                flexShrink={1}
                 alignItems="center"
             >
                 <XView flexDirection="row" width="100%" justifyContent="space-between">

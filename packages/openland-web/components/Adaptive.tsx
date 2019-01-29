@@ -3,6 +3,10 @@ import { css, cx } from 'linaria';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
+const noFlexShrinkClassName = css`
+    flex-shrink: 0;
+`;
+
 const fullWidthClassName = css`
     width: 100%;
 `;
@@ -45,6 +49,7 @@ export const HideOnMobile = ({
             <div
                 className={cx(
                     hideMobileClassName,
+                    noFlexShrinkClassName,
                     fullWidth && fullWidthClassName,
                     fullHeight && fullHeightClassName,
                 )}
@@ -76,6 +81,7 @@ export const HideOnDesktop = ({
             <div
                 className={cx(
                     hideDesktopClassName,
+                    noFlexShrinkClassName,
                     fullWidth && fullWidthClassName,
                     fullHeight && fullHeightClassName,
                 )}
@@ -119,6 +125,7 @@ export const AdaptiveComponent = ({
             <div
                 className={cx(
                     showMobileClassName,
+                    noFlexShrinkClassName,
                     fullWidth && fullWidthClassName,
                     fullHeight && fullHeightClassName,
                 )}
@@ -128,6 +135,7 @@ export const AdaptiveComponent = ({
             <div
                 className={cx(
                     showDesktopClassName,
+                    noFlexShrinkClassName,
                     fullWidth && fullWidthClassName,
                     fullHeight && fullHeightClassName,
                 )}
@@ -157,6 +165,7 @@ export const AdaptiveHOC = ({
                 <div
                     className={cx(
                         showMobileClassName,
+                        noFlexShrinkClassName,
                         fullWidth && fullWidthClassName,
                         fullHeight && fullHeightClassName,
                     )}
@@ -168,6 +177,7 @@ export const AdaptiveHOC = ({
                 <div
                     className={cx(
                         showDesktopClassName,
+                        noFlexShrinkClassName,
                         fullWidth && fullWidthClassName,
                         fullHeight && fullHeightClassName,
                     )}
