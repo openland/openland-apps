@@ -10,6 +10,7 @@ import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, Model
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
+import { isLoaded } from 'google-maps';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $state: String) {
@@ -93,7 +94,7 @@ export interface DataSourceMessageItem {
     reply?: MessageFull_reply[];
     urlAugmentation?: MessageFull_urlAugmentation;
     reactions?: MessageFull_reactions[];
-    mentions?: MessageFull_mentions[];
+    mentions?: MessageFull_alphaMentions[];
     isSending: boolean;
     attachTop: boolean;
     attachBottom: boolean;
@@ -138,7 +139,7 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
         reactions: src.reactions || undefined,
         serviceMetaData: src.serviceMetadata || undefined,
         isService: src.isService || undefined,
-        mentions: src.mentions || undefined,
+        mentions: src.alphaMentions || undefined,
         reply: src.reply || undefined,
         isEdited: src.edited,
 
@@ -258,6 +259,9 @@ export class ConversationEngine implements MessageSendHandler {
     // 
 
     loadBefore = async (id?: string) => {
+        if (this.historyFullyLoaded) {
+            return
+        }
         if (id === undefined) {
             let serverMessages = this.messages.filter(m => isServerMessage(m));
             let first = serverMessages[0];

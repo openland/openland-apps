@@ -75,12 +75,14 @@ export function DataSourceRender<T extends DataSourceItem>(props: XListViewProps
     return (
         <>
             {items && props.wrapWith && <props.wrapWith>
+                {!completed && props.reverce && props.renderLoading()}
                 {items.map(i => props.renderItem(i))}
-                {!completed && props.renderLoading()}
+                {!completed && !props.reverce && props.renderLoading()}
             </props.wrapWith>}
             {items && !props.wrapWith && <>
+                {!completed && props.reverce && props.renderLoading()}
                 {items.map(i => props.renderItem(i))}
-                {!completed && props.renderLoading()}
+                {!completed && !props.reverce && props.renderLoading()}
             </>}
         </>
     );

@@ -111,7 +111,12 @@ export class XScrollViewReversed extends React.PureComponent<
     }
 
     componentDidUpdate() {
-        this.restoreScroll();
+        let dimensions = this.getDimensions();
+        if (this.lastDimensions && (this.lastDimensions.scrollHeight !== dimensions.scrollHeight)) {
+            this.restorePreviousScroll();
+        } else {
+            this.restoreScroll();
+        }
     }
 
     render() {

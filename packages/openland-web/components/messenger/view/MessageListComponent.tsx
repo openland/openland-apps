@@ -2,7 +2,7 @@ import * as React from 'react';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { MessageComponent } from '../message/MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
-import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { ConversationEngine, DataSourceMessageItem, DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage, isServerMessage } from 'openland-engines/messenger/types';
 import { XButton } from 'openland-x/XButton';
 import { MessageFull, UserShort, SharedRoomKind } from 'openland-api/Types';
@@ -12,6 +12,9 @@ import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
+import glamorous from 'glamorous';
+import { ServiceMessageComponent } from '../message/content/ServiceMessageComponent';
+import { formatDate } from 'openland-mobile/utils/formatDate';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -90,6 +93,10 @@ const getScrollView = () => {
 
 let lastMessageId = '';
 
+const LoadingWrapper = glamorous.div({
+    height: 50,
+});
+
 export class MessageListComponent extends React.PureComponent<MessageListProps> {
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
@@ -116,17 +123,10 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     handleScroll = (e: any) => {
-        if (lastMessageId !== '' && e.target.scrollTop < 50) {
-            this.props.conversation.loadBefore(lastMessageId);
+        if (e.target.scrollTop < 50) {
+            this.props.conversation.loadBefore();
         }
     };
-
-    componentDidUpdate() {
-        if (this.unshifted) {
-            this.scroller.current!!.restorePreviousScroll();
-            this.unshifted = false;
-        }
-    }
 
     isEmpty = () => {
         return this.props.conversation.historyFullyLoaded && this.props.conversation.getState().messages.length === 1;
@@ -138,20 +138,57 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
     };
 
-    renderMessage = (i: DataSourceMessageItem) => {
+    renderMessage = (i: DataSourceMessageItem | DataSourceDateItem) => {
         if (i.type === 'message') {
-            if (!i.isService) {
-                return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} />
+            return <MessageComponent key={i.key} message={i} conversation={this.props.conversation} />
+
+        } else if (i.type === 'date') {
+            let now = new Date();
+            let date = 'Today';
+            if (now.getFullYear() === i.year) {
+                if (now.getMonth() !== i.month || now.getDate() !== i.date) {
+                    date = months[i.month] + ' ' + i.date;
+                }
+            } else {
+                date = i.year + ', ' + months[i.month] + ' ' + i.date;
             }
+            return <XView
+                key={'date-' + i.key}
+                justifyContent="center"
+                alignItems="center"
+                zIndex={1}
+                marginTop={24}
+                marginBottom={0}
+            >
+                <XView
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundColor="#ffffff"
+                    borderRadius={50}
+                    paddingLeft={10}
+                    paddingRight={10}
+                    paddingTop={2}
+                    paddingBottom={2}
+                >
+                    <XView fontSize={13} color="#99A2B0">{date}</XView>
+                </XView>
+            </XView>
         }
-        return <div key={i.key} />;
+        return <div />;
     }
 
-    renderLoad = () => <div key={'load'} />;
+    renderLoading = () => {
+        return (
+            <LoadingWrapper>
+                <XButton alignSelf="center" style="flat" loading={true} />
+            </LoadingWrapper>
+
+        );
+    };
 
     getScrollElement = (src: any) => src.children[0].children[0];
 
-    wrapper = (props: any) => (
+    dataSourceWrapper = (props: any) => (
         <XScrollViewReversed
             ref={this.scroller}
             getScrollElement={this.getScrollElement}
@@ -186,13 +223,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         handleHeight={true}
                         onResize={this.resizeHandler}
                     >
-
                         <DataSourceRender
                             dataSource={this.props.conversation.dataSource}
                             reverce={true}
-                            wrapWith={this.wrapper}
+                            wrapWith={this.dataSourceWrapper}
                             renderItem={this.renderMessage}
-                            renderLoading={this.renderLoad}
+                            renderLoading={this.renderLoading}
                         />
                     </XResizeDetector>
                 )}

@@ -126,7 +126,7 @@ export const ServiceMessageComponent = (params: {
     senderUser: { id: string, name: string };
     serviceMetadata: MessageFull_serviceMetadata;
     message: string;
-    alphaMentions: MessageFull_alphaMentions;
+    alphaMentions: MessageFull_alphaMentions[];
     myUserId: string;
 }) => {
     const typesObject = resolveServiceMessageType({
