@@ -14,7 +14,6 @@ import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { ChatHeaderAvatar, resolveConversationProfilePath } from './components/ChatHeaderAvatar';
 import { ZRoundedButton } from '../../components/ZRoundedButton';
-import { RoomQuery } from 'openland-api';
 import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';

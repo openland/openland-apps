@@ -82,7 +82,7 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
                             <Image source={require('assets/img-file.png')} style={{ width: 50, height: 60 }} />
                             <Text style={styles.name}>{config.name}</Text>
                             <Text style={styles.size}>{formatBytes(config.size)}</Text>
-                            < View height={46} justifyContent="center" marginTop={5}>
+                            <View height={46} justifyContent="center" marginTop={5}>
                                 {this.state.path && <ZRoundedButton title="Open" onPress={this.handleOpen} />}
                                 {!this.state.path && <XPCircularLoader visible={!this.state.path} progress={(this.state.completed ? 1 : (this.state.downloadState ? this.state.downloadState.progress || 0 : 0))} />}
                             </View>

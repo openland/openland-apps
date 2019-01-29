@@ -1,16 +1,13 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { ZQuery } from '../../components/ZQuery';
-import { UserQuery, OnlineQuery } from 'openland-api';
 import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { ZListItem } from '../../components/ZListItem';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { YQuery } from 'openland-y-graphql/YQuery';
 import { View } from 'react-native';
-import { User, User_conversation_PrivateRoom } from 'openland-api/Types';
+import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { NotificationSettings } from './modals/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/apolloClient';

@@ -146,7 +146,7 @@ export class XSAnimatedShadowView {
 
     private withoutAnimations(element: HTMLElement, callback: () => void) {
         let ex = element.style.transition;
-        element.style.transition = null;
+        element.style.transition = '';
         callback();
         element.style.transition = ex;
     }

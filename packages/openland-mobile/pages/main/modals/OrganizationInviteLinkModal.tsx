@@ -5,13 +5,48 @@ import { Share, Clipboard } from 'react-native';
 import { PageProps } from '../../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { YQuery } from 'openland-y-graphql/YQuery';
-import { OrganizationPublicInviteQuery } from 'openland-api';
 import { ZListItem } from '../../../components/ZListItem';
 import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { getClient } from 'openland-mobile/utils/apolloClient';
+
+const OrganizationInviteLinkContent = React.memo<PageProps>((props) => {
+    let invite = getClient().useOrganizationPublicInvite({ organizationId: props.router.params.id }).publicInvite!;
+    return (
+        <>
+            <ZListItemGroup footer="People can join organization by following this link. You can renew the link at any time">
+                <ZListItem
+                    key="add"
+                    text={`https://openland.com/join/${invite.key}`}
+                    appearance="action"
+                    onPress={() => Share.share({ message: `https://openland.com/join/${invite.key}` })}
+                    copy={true}
+                />
+            </ZListItemGroup>
+            <ZListItemGroup >
+                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/join/${invite.key}`)} />
+                <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/join/${invite.key}` })} />
+                <ZListItem
+                    appearance="action"
+                    text="Renew link"
+                    onPress={async () => {
+                        startLoader();
+                        try {
+                            await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: props.router.params.id });
+                            await getClient().refetchOrganizationPublicInvite({ organizationId: props.router.params.id });
+                        } catch (e) {
+                            Alert.alert(formatError(e));
+                        }
+                        stopLoader();
+
+                    }}
+                />
+            </ZListItemGroup>
+        </>
+    )
+});
 
 class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps> {
 
@@ -20,39 +55,7 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
             <>
                 <SHeader title="Organization invite link" />
                 <SScrollView>
-                    <YQuery query={OrganizationPublicInviteQuery} variables={{ organizationId: this.props.router.params.id }}>
-                        {data => (
-                            <>
-                                <ZListItemGroup footer="People can join organization by following this link. You can renew the link at any time">
-                                    {data && data.data && data.data.publicInvite && (<ZListItem
-                                        key="add"
-                                        text={`https://openland.com/join/${data.data!.publicInvite!.key}`}
-                                        appearance="action"
-                                        onPress={() => Share.share({ message: `https://openland.com/join/${data.data!.publicInvite!.key}` })}
-                                    />)}
-                                </ZListItemGroup>
-                                <ZListItemGroup >
-                                    <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/join/${data.data!.publicInvite!.key}`)} />
-                                    <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/join/${data.data!.publicInvite!.key}` })} />
-                                    <ZListItem
-                                        appearance="action"
-                                        text="Renew link"
-                                        onPress={async () => {
-                                            startLoader();
-                                            try {
-                                                await getMessenger().engine.client.mutateOrganizationCreatePublicInvite({ organizationId: this.props.router.params.id });
-                                            } catch (e) {
-                                                Alert.alert(formatError(e));
-                                            }
-                                            stopLoader();
-
-                                        }}
-                                    />
-                                </ZListItemGroup>
-                            </>)}
-
-                    </YQuery>
-
+                    <OrganizationInviteLinkContent {...this.props} />
                 </SScrollView>
             </>
         );
