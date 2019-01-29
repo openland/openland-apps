@@ -26,9 +26,8 @@ import { AppRegistry } from 'react-native';
 // disabled to fix random crash https://github.com/facebook/react-native/issues/13984#issuecomment-343826572
 // if (UIManager.setLayoutAnimationEnabledExperimental) { UIManager.setLayoutAnimationEnabledExperimental(true); }
 
-SNativeConfig.loader = <ZLoader />;
-
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
+SNativeConfig.loader = <ZLoader />;
 AppRegistry.registerComponent('openland', () => withGlobalLoader(Init));
