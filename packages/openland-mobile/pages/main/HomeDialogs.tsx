@@ -72,7 +72,7 @@ const DialogsComponent = React.memo<PageProps>((props) => {
             )}
             <SHeaderButton
                 title="New"
-                icon={Platform.OS === 'ios' ? require('assets/ic-new.png') : require('assets/ic-edit.png')}
+                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
                 onPress={() => props.router.push('Compose')}
             />
 

@@ -1,5 +1,9 @@
 {
     "icons": [{
+        "name": "ic-compose",
+        "src": "ic-compose-ios.svg",
+        "sizes": [26]
+    }, {
         "name": "ic-link",
         "src": "ic-link.svg",
         "sizes": [24]
