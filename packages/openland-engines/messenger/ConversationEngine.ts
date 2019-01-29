@@ -11,6 +11,7 @@ import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
 import { isLoaded } from 'google-maps';
+import { number } from 'prop-types';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $state: String) {
@@ -102,6 +103,7 @@ export interface DataSourceMessageItem {
     attachBottom: boolean;
     serviceMetaData?: MessageFull_serviceMetadata;
     isService?: boolean;
+    progress?: number;
 }
 
 export interface DataSourceDateItem {
@@ -439,6 +441,12 @@ export class ConversationEngine implements MessageSendHandler {
             });
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
+        }
+
+        let old = this.dataSource.getItem(key);
+        if (old && old.type === 'message') {
+            let updated = { ...old, progress }
+            this.dataSource.updateItem(updated);
         }
     }
 

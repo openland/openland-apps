@@ -510,12 +510,12 @@ class DesktopMessageComponentInner extends React.PureComponent<
                 );
             }
             // TODO: subscribe to dowload/upload
-            if (message.file) {
-                // let progress = Math.round(message.progress * 100);
-                // let title = 'Uploading ' + message.file + ' (' + progress + '%)';
-                // content.push(
-                //     <MessageUploadComponent key={'file'} progress={progress} title={title} />,
-                // );
+            if (message.progress !== undefined) {
+                let progress = Math.round(message.progress * 100);
+                let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+                content.push(
+                    <MessageUploadComponent key={'file'} progress={progress} title={title} />,
+                );
             }
             // TODO: recover retry button
             // if (message.failed) {
@@ -742,11 +742,12 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                 />,
             );
         }
-        if (message.file) {
-            // TODO: subscribe to file upload/download
-            // let progress = Math.round(message.progress * 100);
-            // let title = 'Uploading ' + message.file + ' (' + progress + '%)';
-            // content.push(<MessageUploadComponent key={'file'} progress={progress} title={title} />);
+        if (message.progress !== undefined) {
+            let progress = Math.round(message.progress * 100);
+            let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+            content.push(
+                <MessageUploadComponent key={'file'} progress={progress} title={title} />,
+            );
         }
         // if (message.failed) {
         //     let key = message.key;
