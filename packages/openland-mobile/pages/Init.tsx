@@ -113,7 +113,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'app') {
             return (
                 <YApolloProvider client={(getClient().client as ApolloGraphqlClient).client}>
-                    <PushManager client={(getClient().client as ApolloGraphqlClient).client} />
+                    <PushManager client={getClient()} />
                     <MobileMessengerContext.Provider value={getMessenger()}>
                         <MessengerContext.Provider value={getMessenger().engine}>
                             <View style={{ width: '100%', height: '100%' }}>

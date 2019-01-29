@@ -4,14 +4,11 @@ import { ConversationEngine } from './messenger/ConversationEngine';
 import { GlobalStateEngine } from './messenger/GlobalStateEngine';
 import { UserShort } from 'openland-api/Types';
 import { NotificationsEngine } from './NotificationsEngine';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { AppVisibility } from 'openland-y-runtime/AppVisibility';
 import { TypingEngine, TypingsWatcher } from './messenger/Typings';
 import { OnlineWatcher } from './messenger/Online';
 import { DialogListEngine } from './messenger/DialogListEngine';
 import { OnlineReportEngine } from './OnlineReportEngine';
-import { GraphqlClient } from 'openland-graphql/GraphqlClient';
-import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 export class MessengerEngine {

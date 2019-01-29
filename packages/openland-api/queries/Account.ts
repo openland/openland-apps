@@ -157,3 +157,9 @@ export const ReportOnlineMutation = gql`
         presenceReportOnline(timeout: 5000, active: $active)
     }
 `;
+
+export const RegisterPushMutation = gql`
+    mutation RegisterPush($endpoint: String!, $type: PushType!) {
+        registerPush(endpoint: $endpoint, type: $type)
+    }
+`;

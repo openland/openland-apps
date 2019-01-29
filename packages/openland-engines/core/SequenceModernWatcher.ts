@@ -1,4 +1,3 @@
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { SequenceHandler } from './SequenceHandler';
 import { GraphqlClient, GraphqlActiveSubscription } from 'openland-graphql/GraphqlClient';
 

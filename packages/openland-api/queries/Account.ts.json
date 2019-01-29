@@ -17,6 +17,7 @@
             "type": "mutation",
             "hasVariables": true
         },
-        { "name": "ReportOnlineMutation", "type": "mutation", "hasVariables": true }
+        { "name": "ReportOnlineMutation", "type": "mutation", "hasVariables": true },
+        { "name": "RegisterPushMutation", "type": "mutation", "hasVariables": true }
     ]
 }

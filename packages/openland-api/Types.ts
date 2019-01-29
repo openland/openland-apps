@@ -435,6 +435,22 @@ export interface ReportOnlineVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: RegisterPush
+// ====================================================
+
+export interface RegisterPush {
+  registerPush: string;
+}
+
+export interface RegisterPushVariables {
+  endpoint: string;
+  type: PushType;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyApps
 // ====================================================
 
@@ -9230,6 +9246,13 @@ export enum PostMessageType {
   JOB_OPPORTUNITY = "JOB_OPPORTUNITY",
   OFFICE_HOURS = "OFFICE_HOURS",
   REQUEST_FOR_STARTUPS = "REQUEST_FOR_STARTUPS",
+}
+
+export enum PushType {
+  ANDROID = "ANDROID",
+  IOS = "IOS",
+  SAFARI = "SAFARI",
+  WEB_PUSH = "WEB_PUSH",
 }
 
 export enum RoomMemberRole {

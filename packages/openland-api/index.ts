@@ -30,6 +30,7 @@ export const AccountDestroyInviteMutation = typedMutation<Types.AccountDestroyIn
 export const ProfilePrefillQuery = typedQuery<Types.ProfilePrefill, {}>(Account.ProfilePrefillQuery);
 export const CreateUserProfileAndOrganizationMutation = typedMutation<Types.CreateUserProfileAndOrganization, Types.CreateUserProfileAndOrganizationVariables>(Account.CreateUserProfileAndOrganizationMutation);
 export const ReportOnlineMutation = typedMutation<Types.ReportOnline, Types.ReportOnlineVariables>(Account.ReportOnlineMutation);
+export const RegisterPushMutation = typedMutation<Types.RegisterPush, Types.RegisterPushVariables>(Account.RegisterPushMutation);
 export const MyAppsQuery = typedQuery<Types.MyApps, {}>(App.MyAppsQuery);
 export const CreateAppMutation = typedMutation<Types.CreateApp, Types.CreateAppVariables>(App.CreateAppMutation);
 export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppVariables>(App.UpdateAppMutation);

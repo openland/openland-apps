@@ -552,6 +552,9 @@ export class OpenlandClient {
     async mutateReportOnline(variables: Types.ReportOnlineVariables): Promise<Types.ReportOnline> {
         return this.client.mutate(Source.ReportOnlineMutation, variables);
     }
+    async mutateRegisterPush(variables: Types.RegisterPushVariables): Promise<Types.RegisterPush> {
+        return this.client.mutate(Source.RegisterPushMutation, variables);
+    }
     async mutateCreateApp(variables: Types.CreateAppVariables): Promise<Types.CreateApp> {
         return this.client.mutate(Source.CreateAppMutation, variables);
     }

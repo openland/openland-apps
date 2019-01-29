@@ -1,23 +1,17 @@
 import * as React from 'react';
 import DeviceInfo from 'react-native-device-info';
 import { Platform } from 'react-native';
-import gql from 'graphql-tag';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
 import { backoff } from 'openland-y-utils/timer';
 import { AppNotifications } from 'openland-y-runtime-native/AppNotifications';
 import { logger } from 'openland-y-utils/logger';
-
-const RegisterPush = gql`
-    mutation RegisterPush($endpoint: String!, $type: PushType!) {
-        registerPush(endpoint: $endpoint, type: $type)
-    }
-`;
+import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { PushType } from 'openland-api/Types';
 
 const log = logger('push');
 
 class PushRegistrator {
-    private client: OpenApolloClient;
-    constructor(client: OpenApolloClient) {
+    private client: OpenlandClient;
+    constructor(client: OpenlandClient) {
         this.client = client;
         log.log('Requesting permission');
         AppNotifications.requestPermission();
@@ -38,12 +32,9 @@ class PushRegistrator {
                 sandbox: sandbox
             };
             log.log('Registering endpoint' + (sandbox ? ' [sandbox]' : ''));
-            await backoff(async () => await this.client.client.mutate({
-                mutation: RegisterPush,
-                variables: {
-                    endpoint: JSON.stringify(endpoint),
-                    type: Platform.OS === 'ios' ? 'IOS' : 'ANDROID'
-                }
+            await backoff(async () => await this.client.mutateRegisterPush({
+                endpoint: JSON.stringify(endpoint),
+                type: Platform.OS === 'ios' ? PushType.IOS : PushType.ANDROID
             }));
             log.log('Token registered successfully');
         }
@@ -52,7 +43,7 @@ class PushRegistrator {
 
 var registrator: PushRegistrator | null = null;
 
-export class PushManager extends React.PureComponent<{ client: OpenApolloClient }> {
+export class PushManager extends React.PureComponent<{ client: OpenlandClient }> {
 
     componentDidMount() {
         if (registrator === null) {
