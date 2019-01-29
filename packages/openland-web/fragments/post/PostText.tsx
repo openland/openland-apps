@@ -1,13 +1,16 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import Editor from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
-import { Invalid } from './PostTitle';
+import { DesktopInvalid, EmojiWrapper } from './PostTitle';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { XTextArea } from 'openland-x/XTextArea';
 
-const Wrapper = css`
+const DesktopWrapper = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -55,7 +58,7 @@ type TextInputState = {
 };
 
 /// End Mentions
-export class PostText extends React.PureComponent<TextInputProps, TextInputState> {
+class DesktopPostText extends React.PureComponent<TextInputProps, TextInputState> {
     private editorRef = React.createRef<Editor>();
 
     constructor(props: TextInputProps) {
@@ -98,7 +101,7 @@ export class PostText extends React.PureComponent<TextInputProps, TextInputState
         if (canUseDOM) {
             const { invalid } = this.props;
             return (
-                <div className={cx(Wrapper, invalid && Invalid)}>
+                <div className={cx(DesktopWrapper, invalid && DesktopInvalid)}>
                     <Editor
                         editorState={this.state.editorState}
                         onChange={this.onChange}
@@ -112,3 +115,60 @@ export class PostText extends React.PureComponent<TextInputProps, TextInputState
         return null;
     }
 }
+
+const MobileWrapper = css`
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+    align-items: stretch;
+    & textarea {
+        min-height: 100%;
+        height: 100%;
+        flex-shrink: 0;
+        font-size: 14px;
+        border: none;
+        line-height: 1.57;
+        resize: none;
+        padding: 0;
+        flex-grow: 1;
+        display: block;
+        border-radius: 0;
+        &:focus,
+        &:active {
+            box-shadow: none;
+            border: none;
+        }
+    }
+`;
+
+const MobileInvalid = css`
+    & textarea::placeholder {
+        color: rgb(226, 99, 99);
+    }
+`;
+
+const MobilePostText = (props: TextInputProps) => (
+    <div className={cx(MobileWrapper, props.invalid && MobileInvalid)}>
+        <XTextArea {...props} />
+    </div>
+);
+
+export const EmojiSelectButton = React.memo(() => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    if (!isMobile) {
+        return (
+            <XView flexDirection="row" alignItems="center" marginRight={10}>
+                <div className={EmojiWrapper}>
+                    <EmojiSelect />
+                </div>
+            </XView>
+        );
+    }
+    return null;
+});
+
+export const PostText = React.memo<TextInputProps>(props => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return isMobile ? <MobilePostText {...props} /> : <DesktopPostText {...props} />;
+});

@@ -5,8 +5,10 @@ import createEmojiPlugin from 'draft-js-emoji-plugin';
 import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
+import { XInput } from 'openland-x/XInput';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
-const Wrapper = css`
+const DesktopWrapper = css`
     flex-shrink: 0;
     z-index: 2;
     & .emoji-wrapper {
@@ -30,7 +32,7 @@ const Wrapper = css`
     }
 `;
 
-export const Invalid = css`
+export const DesktopInvalid = css`
     & .DraftEditor-root .public-DraftEditorPlaceholder-root {
         color: #e26363 !important;
     }
@@ -98,7 +100,7 @@ type TextInputState = {
 };
 
 /// End Mentions
-export class PostTitle extends React.PureComponent<TextInputProps, TextInputState> {
+class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputState> {
     private editorRef = React.createRef<Editor>();
 
     constructor(props: TextInputProps) {
@@ -141,7 +143,7 @@ export class PostTitle extends React.PureComponent<TextInputProps, TextInputStat
         if (canUseDOM) {
             const { invalid } = this.props;
             return (
-                <div className={cx(Wrapper, invalid && Invalid)}>
+                <div className={cx(DesktopWrapper, invalid && DesktopInvalid)}>
                     <Editor
                         editorState={this.state.editorState}
                         onChange={this.onChange}
@@ -158,3 +160,38 @@ export class PostTitle extends React.PureComponent<TextInputProps, TextInputStat
         return null;
     }
 }
+
+const MobileWrapper = css`
+    z-index: 1;
+    & *,
+    & input,
+    & *:focus-within,
+    & *:focus {
+        font-size: 22px;
+        font-weight: 600;
+        border: none !important;
+        box-shadow: none !important;
+        line-height: normal;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        min-height: 30px;
+        display: block;
+    }
+`;
+
+const MobileInvalid = css`
+    & * {
+        color: #e26363 !important;
+    }
+`;
+
+const MobilePostTitle = (props: TextInputProps) => (
+    <div className={cx(MobileWrapper, props.invalid && MobileInvalid)}>
+        <XInput {...props} />
+    </div>
+);
+
+export const PostTitle = React.memo<TextInputProps>(props => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return isMobile ? <MobilePostTitle {...props} /> : <DesktopPostTitle {...props} />;
+});

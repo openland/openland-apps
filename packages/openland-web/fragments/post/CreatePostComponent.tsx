@@ -22,8 +22,8 @@ import { MessageUploadComponent } from 'openland-web/components/messenger/messag
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
 import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
 import { postTexts } from './text';
-import { PostTitle, EmojiWrapper } from './PostTitle';
-import { PostText, EmojiSelect } from './PostText';
+import { PostTitle } from './PostTitle';
+import { PostText, EmojiSelectButton } from './PostText';
 
 const FilesWrapper = Glamorous(XVertical)({
     paddingTop: 10,
@@ -589,15 +589,7 @@ export class CreatePostComponent extends React.Component<
                                 flexDirection="row"
                                 alignItems="center"
                             >
-                                <XView
-                                    flexDirection="row"
-                                    alignItems="center"
-                                    marginRight={10}
-                                >
-                                    <div className={EmojiWrapper}>
-                                        <EmojiSelect />
-                                    </div>
-                                </XView>
+                                <EmojiSelectButton/>
                                 {!props.editData && (
                                     <SendPostButton
                                         conversationId={props.conversationId}
