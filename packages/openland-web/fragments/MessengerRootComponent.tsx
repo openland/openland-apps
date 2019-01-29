@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { SetTypingMutation } from 'openland-api';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';
 import {
     ConversationEngine,
@@ -16,7 +15,6 @@ import {
 import { MobileMessageCompose } from './MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
-import { withUserInfo } from '../components/UserInfo';
 import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';
 import { XText } from 'openland-x/XText';
 import { withDeleteMessage } from '../api/withDeleteMessage';
@@ -24,11 +22,7 @@ import { withDeleteUrlAugmentation } from '../api/withDeleteUrlAugmentation';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
-import { CreatePostComponent } from './CreatePostComponent';
-import { XListView } from 'openland-web/components/XListView';
-import { DataSourceRender } from 'openland-web/components/messenger/view/DataSourceRender';
-import { MessageComponent } from 'openland-web/components/messenger/message/MessageComponent';
-import { MessagesContainer } from 'openland-web/components/messenger/view/MessagesContainer';
+import { CreatePostComponent } from './post/CreatePostComponent';
 
 export interface File {
     uuid: string;
