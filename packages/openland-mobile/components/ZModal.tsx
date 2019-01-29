@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { View, Platform, Keyboard, NativeSyntheticEvent } from 'react-native';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from 'react-native-s/SDevice';
-import { SSafeAreaContext, SSafeAreaProvider } from 'react-native-s/SSafeArea';
+import { SSafeAreaProvider } from 'react-native-s/SSafeArea';
 
 export interface ZModalController {
     hide(): void;

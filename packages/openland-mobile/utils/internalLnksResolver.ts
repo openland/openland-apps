@@ -1,6 +1,5 @@
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
-import { RoomInviteInfoQuery, AccountInviteInfoQuery, OrganizationActivateByInviteMutation, AccountInviteJoinMutation, ResolveShortNameQuery } from 'openland-api';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export let resolveInternalLink = (link: string, fallback?: () => void) => {

@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, TouchableOpacity, Platform, ActivityIndicator } from 'react-native';
-import { AppStyles } from '../styles/AppStyles';
 import { withRouter } from 'react-native-s/withRouter';
 import { SRouter } from 'react-native-s/SRouter';
 import { Alert } from './AlertBlanket';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { Loader } from 'openland-mobile/pages/dev/Loader';
-import { ZLoader } from './ZLoader';
 
 type ZRoundedButtonStyle = 'default' | 'flat' | 'danger' | 'flat-danger';
 const styles = StyleSheet.create({

@@ -1,7 +1,6 @@
 import linkify from 'linkify-it';
 import tlds from 'tlds';
 import { MessageFull_mentions } from 'openland-api/Types';
-import { string } from 'prop-types';
 
 export interface Span {
     type: 'link' | 'text' | 'new_line' | 'mention_user' | 'mention_room';

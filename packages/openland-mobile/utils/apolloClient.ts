@@ -1,4 +1,4 @@
-import { buildClient, OpenApolloClient } from 'openland-y-graphql/apolloClient';
+import { buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
 import { ApolloGraphqlClient } from 'openland-graphql/ApolloGraphqlClient';
