@@ -8,12 +8,11 @@ import { View, Image, Platform } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
-import { OrganizationQuery } from 'openland-api';
-import { ZQuery } from '../../components/ZQuery';
 import { SRouter } from 'react-native-s/SRouter';
 import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
+import { getClient } from 'openland-mobile/utils/apolloClient';
 
 export class ArrowWrapper extends React.PureComponent {
     render() {
@@ -88,22 +87,14 @@ class ChannelsList extends React.PureComponent<{ channels: (Organization_organiz
     }
 }
 
-class OrgChannelsComponent extends React.PureComponent<PageProps> {
-    render() {
-        return (
-            <>
-                <SHeader title={this.props.router.params.title || 'Groups'} />
+const ProfileOrganizationGroupsComponent = React.memo<PageProps>((props) => {
+    let org = getClient().useOrganization({ organizationId: props.router.params.organizationId });
+    return (
+        <>
+            <SHeader title={props.router.params.title || 'Groups'} />
+            <ChannelsList router={props.router} channels={org.organization.rooms} />
+        </>
+    )
+});
 
-                {this.props.router.params.organizationId && <ZQuery query={OrganizationQuery} variables={{ organizationId: this.props.router.params.organizationId }}>
-                    {(resp) => (
-                        <ChannelsList router={this.props.router} channels={resp.data.organization.rooms} />
-                    )}
-                </ZQuery>}
-                {this.props.router.params.channels && <ChannelsList router={this.props.router} channels={this.props.router.params.channels} />}
-
-            </>
-        );
-    }
-}
-
-export const ProfileOrganizationGroups = withApp(OrgChannelsComponent, { navigationAppearance: 'small-hidden' });
+export const ProfileOrganizationGroups = withApp(ProfileOrganizationGroupsComponent, { navigationAppearance: 'small-hidden' });

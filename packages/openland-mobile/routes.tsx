@@ -9,9 +9,6 @@ import { ProfileOrganization } from './pages/main/ProfileOrganization';
 import { ProfileGroup } from './pages/main/ProfileGroup';
 import { Navigation } from './pages/dev/Navigation';
 import { Loader } from './pages/dev/Loader';
-import { UserPicker } from './pages/main/modals/UserPicker';
-import { TextEditModal } from './pages/main/modals/TextEditModal';
-import { ComposeModal } from './pages/main/modals/ComposeModal';
 import { Home } from './pages/main/Home';
 import { FilePreview } from './pages/main/modals/FilePreview';
 import { SettingsOrganizations } from './pages/main/beta/SettingsOrganizations';
@@ -26,7 +23,7 @@ import { EmailStart, EmailCode } from './pages/auth/EmailAuth';
 import { Compose } from './pages/main/Compose';
 import { CreateGroupAttrs } from './pages/compose/CreateGroupAttrs';
 import { CreateChannel } from './pages/compose/CreateChannel';
-import { OrganizationInviteLinkModal } from './pages/main/modals/OrganizationInviteLinkModal';
+import { ProfileOrganizationLink } from './pages/main/ProfileOrganizationLink';
 import { UserMultiplePicker } from './pages/main/modals/UserMultiplePicker';
 import { ProfileGroupLink } from './pages/main/ProfileGroupLink';
 import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroups';
@@ -43,9 +40,6 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsOrganizations', SettingsOrganizations)
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditOrganization', EditOrganization)
-  .addRoute('UserPicker', UserPicker)
-  .addRoute('TextEditModal', TextEditModal)
-  .addRoute('ComposeModal', ComposeModal)
   .addRoute('FilePreview', FilePreview)
   .addRoute('DevTypography', Typography)
   .addRoute('DevComponents', Components)
@@ -56,7 +50,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('Compose', Compose)
   .addRoute('CreateGroupAttrs', CreateGroupAttrs)
   .addRoute('CreateChannel', CreateChannel)
-  .addRoute('OrganizationInviteLinkModal', OrganizationInviteLinkModal)
+  .addRoute('OrganizationInviteLinkModal', ProfileOrganizationLink)
   .addRoute('UserMultiplePicker', UserMultiplePicker)
   .addRoute('ProfileGroupLink', ProfileGroupLink)
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)

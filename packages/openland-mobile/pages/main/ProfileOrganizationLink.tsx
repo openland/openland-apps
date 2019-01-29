@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
-import { ZListItemGroup } from '../../../components/ZListItemGroup';
+import { withApp } from '../../components/withApp';
+import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { Share, Clipboard } from 'react-native';
-import { PageProps } from '../../../components/PageProps';
+import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { ZListItem } from '../../../components/ZListItem';
-import { startLoader, stopLoader } from '../../../components/ZGlobalLoader';
+import { ZListItem } from '../../components/ZListItem';
+import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -62,4 +62,4 @@ class OrganizationInviteLinkModalComponent extends React.PureComponent<PageProps
     }
 }
 
-export const OrganizationInviteLinkModal = withApp(OrganizationInviteLinkModalComponent, { navigationAppearance: 'small' });
+export const ProfileOrganizationLink = withApp(OrganizationInviteLinkModalComponent, { navigationAppearance: 'small' });

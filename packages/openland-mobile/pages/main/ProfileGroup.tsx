@@ -20,7 +20,7 @@ import { UploadCareDirectUploading } from 'openland-mobile/utils/UploadCareDirec
 import { UploadStatus } from 'openland-engines/messenger/types';
 import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { NotificationSettings } from './modals/NotificationSetting';
+import { NotificationSettings } from './components/NotificationSetting';
 
 function ProfileGroupComponent(props: PageProps & { id: string }) {
 

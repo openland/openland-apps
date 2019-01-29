@@ -9,7 +9,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { View } from 'react-native';
 import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
-import { NotificationSettings } from './modals/NotificationSetting';
+import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
 const ProfileUserContent = React.memo<PageProps>((props) => {

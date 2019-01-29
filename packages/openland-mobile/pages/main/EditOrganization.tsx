@@ -9,111 +9,93 @@ import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { ZTextInput } from '../../components/ZTextInput';
 import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
-import {
-    OrganizationProfileQuery,
-} from 'openland-api';
-import { ZQuery } from '../../components/ZQuery';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { ListItemEdit } from './SettingsProfile';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
-class EditOrganizationComponent extends React.PureComponent<PageProps> {
-    private ref = React.createRef<ZForm>();
-    render() {
-        return (
-            <>
-                <SHeader title="Edit organization" />
-                <SHeaderButton
-                    title="Save"
-                    onPress={() => {
-                        this.ref.current!.submitForm();
-                    }}
-                />
-                <ZQuery
-                    query={OrganizationProfileQuery}
-                    variables={{ organizationId: this.props.router.params.id }}
-                >
-                    {resp => {
-                        return (
-                            <ZForm
-                                ref={this.ref}
-                                action={async src => {
-                                    let client = getClient();
-                                    await client.mutateUpdateOrganization(src);
-                                    await client.refetchOrganizationProfile({ organizationId: this.props.router.params.id });
-                                    await client.refetchOrganization({ organizationId: this.props.router.params.id });
-                                }}
-                                defaultData={{
-                                    input: {
-                                        name: resp.data!!.organizationProfile.name,
-                                        photoRef: sanitizeImageRef(
-                                            resp.data!!.organizationProfile.photoRef,
-                                        ),
-                                        about: resp.data!!.organizationProfile.about,
-                                        website: resp.data!!.organizationProfile.website,
-                                        twitter: resp.data!!.organizationProfile.twitter,
-                                        facebook: resp.data!!.organizationProfile.facebook,
-                                        linkedin: resp.data!!.organizationProfile.linkedin,
-                                    },
-                                }}
-                                staticData={{
-                                    organizationId: this.props.router.params.id,
-                                }}
-                                onSuccess={() => {
-                                    this.props.router.back();
-                                }}
-                            >
-                                <View>
-                                    <View
-                                        alignSelf="center"
-                                        marginTop={30}
-                                        marginBottom={10}
-                                    >
-                                        <ZAvatarPicker field="input.photoRef" />
-                                    </View>
-                                    <ZTextInput
-                                        marginLeft={16}
-                                        marginTop={21}
-                                        placeholder="Organization name"
-                                        field="input.name"
-                                        height={44}
-                                        style={{ fontSize: 16 }}
-                                    />
-                                    <View
-                                        marginLeft={16}
-                                        height={1}
-                                        alignSelf="stretch"
-                                        backgroundColor={AppStyles.separatorColor}
-                                    />
-                                    <ZListItemGroup>
-                                        <ListItemEdit
-                                            title="About"
-                                            field="input.about"
-                                        />
-                                        <ListItemEdit
-                                            title="Link"
-                                            field="input.website"
-                                        />
-                                        <ListItemEdit
-                                            title="Twitter"
-                                            field="input.twitter"
-                                        />
-                                        <ListItemEdit
-                                            title="Facebook"
-                                            field="input.facebook"
-                                        />
-                                        <ListItemEdit
-                                            title="Linkedin"
-                                            field="input.linkedin"
-                                        />
-                                    </ZListItemGroup>
-                                </View>
-                            </ZForm>
-                        );
-                    }}
-                </ZQuery>
-            </>
-        );
-    }
-}
+const EditOrganizationComponent = React.memo<PageProps>((props) => {
+    let ref = React.useRef<ZForm | null>(null);
+    let org = getClient().useOrganizationProfile({ organizationId: props.router.params.id });
+    return (
+        <>
+            <SHeader title="Edit organization" />
+            <SHeaderButton title="Save" onPress={() => { ref.current!.submitForm(); }} />
+            <ZForm
+                ref={ref}
+                action={async src => {
+                    let client = getClient();
+                    await client.mutateUpdateOrganization(src);
+                    await client.refetchOrganizationProfile({ organizationId: props.router.params.id });
+                    await client.refetchOrganization({ organizationId: props.router.params.id });
+                }}
+                defaultData={{
+                    input: {
+                        name: org.organizationProfile.name,
+                        photoRef: sanitizeImageRef(
+                            org.organizationProfile.photoRef,
+                        ),
+                        about: org.organizationProfile.about,
+                        website: org.organizationProfile.website,
+                        twitter: org.organizationProfile.twitter,
+                        facebook: org.organizationProfile.facebook,
+                        linkedin: org.organizationProfile.linkedin,
+                    },
+                }}
+                staticData={{
+                    organizationId: props.router.params.id,
+                }}
+                onSuccess={() => {
+                    props.router.back();
+                }}
+            >
+                <View>
+                    <View
+                        alignSelf="center"
+                        marginTop={30}
+                        marginBottom={10}
+                    >
+                        <ZAvatarPicker field="input.photoRef" />
+                    </View>
+                    <ZTextInput
+                        marginLeft={16}
+                        marginTop={21}
+                        placeholder="Organization name"
+                        field="input.name"
+                        height={44}
+                        style={{ fontSize: 16 }}
+                    />
+                    <View
+                        marginLeft={16}
+                        height={1}
+                        alignSelf="stretch"
+                        backgroundColor={AppStyles.separatorColor}
+                    />
+                    <ZListItemGroup>
+                        <ListItemEdit
+                            title="About"
+                            field="input.about"
+                        />
+                        <ListItemEdit
+                            title="Link"
+                            field="input.website"
+                        />
+                        <ListItemEdit
+                            title="Twitter"
+                            field="input.twitter"
+                        />
+                        <ListItemEdit
+                            title="Facebook"
+                            field="input.facebook"
+                        />
+                        <ListItemEdit
+                            title="Linkedin"
+                            field="input.linkedin"
+                        />
+                    </ZListItemGroup>
+                </View>
+            </ZForm>
+        </>
+    )
+});
+
 export const EditOrganization = withApp(EditOrganizationComponent);
