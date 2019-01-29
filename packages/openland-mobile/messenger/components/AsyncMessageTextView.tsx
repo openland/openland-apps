@@ -115,6 +115,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
                                     fontWeight={TextStyles.weight.medium}
                                 >
                                     {m.message}
+                                    {this.props.message.isOut ? paddedTextOut : paddedText}
                                 </ASText>}
                                 {m.fileMetadata && m.fileMetadata.isImage ? <AsyncReplyMessageMediaView onPress={this.props.onMediaPress} message={convertMessage(m as any, getMessenger().engine)} /> : null}
                                 {m.fileMetadata && !m.fileMetadata.isImage ? <AsyncReplyMessageDocumentView onPress={this.props.onDocumentPress} parent={this.props.message} message={convertMessage(m as any, getMessenger().engine)} /> : null}
