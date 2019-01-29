@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Platform, Keyboard, NativeSyntheticEvent } from 'react-native';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SDevice } from 'react-native-s/SDevice';
-import { SSafeAreaProvider } from 'react-native-s/SSafeArea';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 
 export interface ZModalController {
     hide(): void;
@@ -81,9 +81,9 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
                     {this.props.children}
                     {this.state.modals.map((v) => (
                         <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
-                            <SSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
+                            <ASSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
                                 {v.element}
-                            </SSafeAreaProvider>
+                            </ASSafeAreaProvider>
                         </View>
                     ))}
                 </View>

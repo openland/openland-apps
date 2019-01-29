@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, AsyncStorage, Image, ViewStyle, TextStyle, TouchableOpacity, ActivityIndicator, Dimensions } from 'react-native';
 import { Auth0Client } from '../../index';
 import RNRestart from 'react-native-restart';
-import { SSafeAreaView } from 'react-native-s/SSafeArea';
 import { PageProps } from '../../components/PageProps';
 import { withApp } from '../../components/withApp';
 import { SDevice } from 'react-native-s/SDevice';
 import { SHeader } from 'react-native-s/SHeader';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 const styles = StyleSheet.create({
     container: {
@@ -146,7 +146,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                 <SHeader hidden={true} />
                 <View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }}>
                     <Image source={require('assets/img-chat-3.jpg')} style={{ position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }} resizeMode="cover" />
-                    <SSafeAreaView style={styles.container}>
+                    <ASSafeAreaView style={styles.container}>
                         <View style={{ width: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
                             <View style={{ width: '100%', marginTop: 32, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={require('assets/logo-unicorn.png')} style={{ width: 130, height: 155 }} />
@@ -175,7 +175,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    </SSafeAreaView>
+                    </ASSafeAreaView>
                 </View>
             </>
         );

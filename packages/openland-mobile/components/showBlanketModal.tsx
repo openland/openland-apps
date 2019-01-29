@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
 import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler, Platform } from 'react-native';
-import { SSafeAreaContext, SSafeArea } from 'react-native-s/SSafeArea';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
+import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 
-class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: SSafeArea, cancalable?: boolean }> implements ZModalController {
+class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, cancalable?: boolean }> implements ZModalController {
 
     key = randomKey();
     contents: any;
@@ -160,9 +160,9 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
 export function showBlanketModal(render: (ctx: ZModalController) => React.ReactElement<{}>, cancalable?: boolean) {
     showModal((modal) => {
         return (
-            <SSafeAreaContext.Consumer>
+            <ASSafeAreaContext.Consumer>
                 {safe => (<BlanketModal ctx={modal} modal={render} safe={safe} cancalable={cancalable} />)}
-            </SSafeAreaContext.Consumer>
+            </ASSafeAreaContext.Consumer>
         )
     });
 }

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { ZModalController, showModal, ZModal } from './ZModal';
-import { View, TouchableWithoutFeedback, Platform, Animated, LayoutChangeEvent, BackHandler } from 'react-native';
-import { SSafeAreaContext, SSafeArea } from 'react-native-s/SSafeArea';
+import { View, TouchableWithoutFeedback, LayoutChangeEvent, BackHandler } from 'react-native';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
+import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 
-class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: SSafeArea }> implements ZModalController {
+class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea }> implements ZModalController {
 
     key = randomKey();
     contents: any;
@@ -134,9 +134,9 @@ class SheetModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalControl
 export function showSheetModal(render: (ctx: ZModalController) => React.ReactElement<{}>) {
     showModal((modal) => {
         return (
-            <SSafeAreaContext.Consumer>
+            <ASSafeAreaContext.Consumer>
                 {safe => (<SheetModal ctx={modal} modal={render} safe={safe} />)}
-            </SSafeAreaContext.Consumer>
+            </ASSafeAreaContext.Consumer>
         )
     });
 }

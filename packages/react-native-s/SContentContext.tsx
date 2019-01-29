@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
 import { NativeSyntheticEvent, Platform, View, Keyboard } from 'react-native';
-import { SDevice } from '../../SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
+import { SDevice } from './SDevice';
+import { randomKey } from './utils/randomKey';
 
-export interface PageKeyboardProps {
-    contextKey: string;
-}
-
-export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keyboardHeight: number, acessoryHeight: number }> {
-    constructor(props: PageKeyboardProps) {
+export class SContentContext extends React.PureComponent<{}, { keyboardHeight: number, acessoryHeight: number }> {
+    contextKey = randomKey();
+    constructor(props: {}) {
         super(props);
         this.state = {
             keyboardHeight: 0,
@@ -51,7 +49,7 @@ export class PageKeyboard extends React.PureComponent<PageKeyboardProps, { keybo
                 <View style={{ width: '100%', height: '100%' }}>
                     <ASKeyboardContext
                         style={{ width: '100%', height: '100%' }}
-                        contextKey={this.props.contextKey}
+                        contextKey={this.contextKey}
                         onKeyboardChanged={this.handleKeyboard}
                         bottomSafeInset={SDevice.safeArea.bottom}
                     >
