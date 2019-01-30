@@ -3,8 +3,13 @@ import { Request, Response } from './api/Request';
 import { OpenApolloClient, buildClient } from 'openland-y-graphql/apolloClient';
 import { Observable } from 'apollo-link';
 
+var client!: OpenApolloClient;
+
+function postMessage(msg: Response) {
+    self.postMessage(JSON.stringify(msg));
+}
+
 class ApolloSubscription {
-    private readonly client: OpenApolloClient;
     private readonly id: string;
     private source?: Observable<any>;
     private sourceSubscription?: ZenObservable.Subscription;
@@ -13,8 +18,7 @@ class ApolloSubscription {
     private vars: any;
     private stopped = false;
 
-    constructor(client2: OpenApolloClient, id: string, subscription: any, vars?: any) {
-        this.client = client2;
+    constructor(id: string, subscription: any, vars?: any) {
         this.vars = vars;
         this.subscription = subscription;
         this.id = id;
@@ -40,7 +44,7 @@ class ApolloSubscription {
         if (this.source) {
             return;
         }
-        this.source = this.client.client.subscribe({ query: this.subscription, variables: this.vars });
+        this.source = client.client.subscribe({ query: this.subscription, variables: this.vars });
         this.sourceSubscription = this.source.subscribe({
             next: this.handleNext,
             error: this.handleError,
@@ -94,11 +98,7 @@ class ApolloSubscription {
     }
 }
 
-var client!: OpenApolloClient;
-
-function postMessage(msg: Response) {
-    self.postMessage(JSON.stringify(msg));
-}
+const subscriptions = new Map<string, ApolloSubscription>();
 
 self.onmessage = (message: string) => {
     let msg = JSON.parse(message) as Request;
@@ -164,6 +164,18 @@ self.onmessage = (message: string) => {
         //     }
         // }
     } else if (msg.type === 'subscribe') {
-        let s = new ApolloSubscription(client, msg.id, msg.body, msg.variables);
+        let s = new ApolloSubscription(msg.id, msg.body, msg.variables);
+        subscriptions.set(msg.id, s);
+    } else if (msg.type === 'subscribe-destroy') {
+        if (subscriptions.has(msg.id)) {
+            let s = subscriptions.get(msg.id)!;
+            subscriptions.delete(msg.id);
+            s.destroy();
+        }
+    } else if (msg.type === 'subscribe-update') {
+        if (subscriptions.has(msg.id)) {
+            let s = subscriptions.get(msg.id)!;
+            s.updateVariables(msg.variables);
+        }
     }
 };

@@ -10,7 +10,9 @@ export type Request = {
         { type: 'refetch', body: any, variables: any } |
         { type: 'mutate', body: any, variables: any } |
         { type: 'watch', body: any, variables: any } |
-        { type: 'subscribe', body: any, variables: any }
+        { type: 'subscribe', body: any, variables: any } |
+        { type: 'subscribe-update', variables: any } |
+        { type: 'subscribe-destroy' }
     );
 
 export type ResponseType = 'result' | 'error';

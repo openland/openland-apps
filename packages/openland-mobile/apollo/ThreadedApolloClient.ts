@@ -3,10 +3,8 @@ import { GraphqlClient, GraphqlActiveSubscription, GraphqlQuery, GraphqlMutation
 import { Thread } from 'react-native-threads';
 import { Request, Response } from './api/Request';
 import { randomKey } from 'openland-mobile/utils/randomKey';
-import { delay } from 'openland-y-utils/timer';
 import { keyFromObject } from 'openland-graphql/utils/keyFromObject';
 import { Queue } from 'openland-graphql/utils/Queue';
-import { any } from 'glamor';
 
 class QueryWatch {
 
@@ -181,10 +179,10 @@ export class WorkerApolloClient implements GraphqlClient {
         return {
             get: queue.get,
             updateVariables: (src?: any) => {
-                //
+                this.thread.postMessage(JSON.stringify({ type: 'subscribe-update', variables: vars, id: key } as Request));
             },
             destroy: () => {
-                //
+                this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
             }
         } as GraphqlActiveSubscription;
     }
