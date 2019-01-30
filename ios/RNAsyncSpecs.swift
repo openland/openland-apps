@@ -338,7 +338,7 @@ func parseSpec(_ spec: String) -> AsyncViewSpec {
   return resolveSpec(src)
 }
 
-private func resolveColorR(_ rgbValue: UInt64) -> UIColor {
+public func resolveColorR(_ rgbValue: UInt64) -> UIColor {
   
   // &  binary AND operator to zero out other color values
   // >>  bitwise right shift operator

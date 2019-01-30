@@ -17,6 +17,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   private var state: RNAsyncDataViewState = RNAsyncDataViewState(items: [], completed: false, inited: false)
   private var headerPadding: Float = 0.0
+  private var overflowColor: UInt64? = nil
   private var dataView: RNAsyncDataViewWindow!
   private var dataViewUnsubscribe: (()->Void)? = nil
   
@@ -262,6 +263,21 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         DispatchQueue.main.async {
           self.node.performBatch(animated: false, updates: {
             self.headerPadding = padding
+            self.node.reloadSections(IndexSet(integer: 0))
+          }, completion: nil)
+        }
+      }
+    }
+  }
+  
+  func setOverflowColor(color: UInt64) {
+    if !self.loaded {
+      self.overflowColor = color
+    } else {
+      if self.overflowColor != color {
+        DispatchQueue.main.async {
+          self.node.performBatch(animated: false, updates: {
+            self.overflowColor = color
             self.node.reloadSections(IndexSet(integer: 0))
           }, completion: nil)
         }
@@ -535,6 +551,12 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let w = self.bounds.size.width
       return { () -> ASCellNode in
         let res = ASCellNode()
+//        res.layoutMargins=UIEdgeInsetsMake(CGFloat(0), CGFloat(0), CGFloat(-1000), CGFloat(0));
+//        res.preservesSuperviewLayoutMargins = false
+//        if(self.overflowColor != nil){
+//          res.backgroundColor = resolveColorR(self.overflowColor!)
+//        }
+       
         res.automaticallyManagesSubnodes = true
         res.layoutSpecBlock = { node, constrainedSize in
           let res = ASStackLayoutSpec()

@@ -30,6 +30,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                                 contentPaddingBottom={0}
                                 style={{ flexGrow: 1 }}
                                 headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
+                                overflowColor="#ffffff"
                             />
                         )}
                     </MobileMessengerContext.Consumer>

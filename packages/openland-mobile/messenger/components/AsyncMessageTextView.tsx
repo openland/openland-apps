@@ -103,8 +103,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
                                     lineHeight={20}
                                     letterSpacing={-0.3}
                                     fontSize={12}
-                                    fontWeight={TextStyles.weight.medium}
                                     onPress={() => this.props.onUserPress(m.sender.id)}
+                                    fontWeight={TextStyles.weight.regular}
                                 >
                                     {m.sender.name || ''}
                                 </ASText>
@@ -114,7 +114,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
                                     color={this.props.message.isOut ? '#fff' : '#000'}
                                     lineHeight={20}
                                     fontSize={14}
-                                    fontWeight={TextStyles.weight.medium}
+                                    fontWeight={TextStyles.weight.regular}
                                 >
                                     {preprocessText(m.message, this.props.message.mentions).map(this.prprocessedRender)}
                                     {(!this.props.message.text && this.props.message.isOut) ? paddedTextOut : paddedText}
