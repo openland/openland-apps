@@ -56,7 +56,7 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
                 <ASFlex
                     width={40}
                     height={40}
-                    backgroundColor={this.props.parent.isOut ? '#11b2ff' : 'rgba(224, 227, 231, 0.5)'}
+                    backgroundColor={this.props.parent.isOut ? '#5555ea' : 'rgba(224, 227, 231, 0.5)'}
                     borderRadius={20}
                     marginLeft={10}
                     marginTop={10}
