@@ -43,6 +43,11 @@ RCT_EXTERN_METHOD(setConfig:(NSString *)key config:(NSString *)config)
 RCT_EXTERN_METHOD(setSuspended:(NSString *)key suspended:(nonnull BOOL)suspended)
 @end
 
+@interface RCT_EXTERN_MODULE(RNBackgroundTask, NSObject)
+RCT_EXTERN_METHOD(startTask)
+RCT_EXTERN_METHOD(stopTask)
+@end
+
 @interface RCT_EXTERN_MODULE(RNAsyncViewEventEmitter, RCTEventEmitter)
 RCT_EXTERN_METHOD(supportedEvents)
 @end

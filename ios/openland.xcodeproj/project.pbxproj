@@ -84,6 +84,7 @@
 		AA0D751F215ED5E400BDE84E /* ProximaNova-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D751E215ED5E400BDE84E /* ProximaNova-Regular.ttf */; };
 		AA0D7521215ED69C00BDE84E /* ProximaNova-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AA0D7520215ED69C00BDE84E /* ProximaNova-Bold.ttf */; };
 		AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AA260848220074F100A69D84 /* index.thread.jsbundle */; };
+		AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300DC6220186A400C54930 /* RNBackgroundTask.swift */; };
 		AA5ACBC82107642B004798B4 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5ACBC521076417004798B4 /* libRCTPushNotification.a */; };
 		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
@@ -853,6 +854,7 @@
 		AA0D751E215ED5E400BDE84E /* ProximaNova-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Regular.ttf"; sourceTree = "<group>"; };
 		AA0D7520215ED69C00BDE84E /* ProximaNova-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ProximaNova-Bold.ttf"; sourceTree = "<group>"; };
 		AA260848220074F100A69D84 /* index.thread.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = index.thread.jsbundle; sourceTree = "<group>"; };
+		AA300DC6220186A400C54930 /* RNBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBackgroundTask.swift; sourceTree = "<group>"; };
 		AA5ACBBF21076417004798B4 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedEventEmitter.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
@@ -1586,6 +1588,7 @@
 			isa = PBXGroup;
 			children = (
 				AAE56DC12129F9B9003706B3 /* AggressiveImage.swift */,
+				AA300DC6220186A400C54930 /* RNBackgroundTask.swift */,
 			);
 			name = hacks;
 			sourceTree = "<group>";
@@ -2717,6 +2720,7 @@
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
+				AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
 				AAB0EF852137197B00FBCB75 /* RNAsyncConfigManager.swift in Sources */,
 				AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */,
