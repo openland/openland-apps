@@ -15,9 +15,7 @@ class AsyncViewEventEmitter {
   
   // When React Native instantiates the emitter it is registered here.
   func registerEventEmitter(eventEmitter: RNAsyncViewEventEmitter) {
-    if self.nativeInstance == nil {
-      self.nativeInstance = eventEmitter
-    }
+    self.nativeInstance = eventEmitter
   }
   
   func dispatchOnPress(key: String, frame: CGRect, instanceKey: String?) {
@@ -28,7 +26,9 @@ class AsyncViewEventEmitter {
     dict["y"] = frame.origin.y
     dict["w"] = frame.width
     dict["h"] = frame.height
-    nativeInstance.sendEvent(withName: "onPress", body: dict)
+    if nativeInstance.bridge != nil {
+      nativeInstance.sendEvent(withName: "onPress", body: dict)
+    }
   }
   
   func dispatchOnLongPress(key: String, frame: CGRect, instanceKey: String?) {
@@ -39,11 +39,15 @@ class AsyncViewEventEmitter {
     dict["y"] = frame.origin.y
     dict["w"] = frame.width
     dict["h"] = frame.height
-    nativeInstance.sendEvent(withName: "onLongPress", body: dict)
+    if nativeInstance.bridge != nil {
+      nativeInstance.sendEvent(withName: "onLongPress", body: dict)
+    }
   }
   
   func dispatchOnLoadMore(key: String) {
-    nativeInstance.sendEvent(withName: "onLoadMore", body: key)
+    if nativeInstance.bridge != nil {
+      nativeInstance.sendEvent(withName: "onLoadMore", body: key)
+    }
   }
 }
 
