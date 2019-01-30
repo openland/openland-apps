@@ -27,6 +27,7 @@ class AsyncPatch {
 class AsyncViewStyle {
     var height: Float? = null
     var width: Float? = null
+    var maxWidth: Float? = null
     var flexGrow: Float = 0.0f
     var flexShrink: Float = 0.0f
     var flexBasis: Float? = null
@@ -128,6 +129,9 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
 
     (props["width"] as? Number)?.let {
         res.width = it.toFloat()
+    }
+    (props["maxWidth"] as? Number)?.let {
+        res.maxWidth = it.toFloat()
     }
     (props["height"] as? Number)?.let {
         res.height = it.toFloat()

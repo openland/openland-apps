@@ -29,7 +29,9 @@ object LithoSectionSpec {
                                   @Prop dataViewKey: String,
                                   @Prop dataModel: List<AsyncDataViewItem>,
                                   @Prop loading: Boolean,
-                                  @Prop headerPadding: Float): Children {
+                                  @Prop headerPadding: Float,
+                                  @Prop(optional = true) overflowColor: Int?
+                                  ): Children {
 
         var footer = Row.create(c)
                 .heightDip(64.0f)
@@ -44,9 +46,13 @@ object LithoSectionSpec {
                     .color(0xFF4747EC.toInt()))
         }
 
+        var header = Row.create(c).heightDip(headerPadding);
+        if(overflowColor !== null){
+            header = header.backgroundColor(overflowColor);
+        }
         return Children.create()
                 .child(SingleComponentSection.create(c)
-                        .component(Row.create(c).heightDip(headerPadding)))
+                        .component(header))
                 .child(DataDiffSection.create<AsyncDataViewItem>(c)
                         .data(dataModel)
                         .renderEventHandler(LithoSection.onRenderEdge(c)))

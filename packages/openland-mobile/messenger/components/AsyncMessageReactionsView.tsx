@@ -39,7 +39,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
         }
 
         return (
-            <ASFlex flexDirection="row" marginRight={7} backgroundColor="white" alignSelf="stretch" justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
+            <ASFlex flexDirection="row" marginRight={7} backgroundColor="white" alignSelf="stretch" flexGrow={1} justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
                 {[...reactions.values()].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => (
                     <ASFlex flexDirection="row" marginTop={5} marginBottom={5}>
                         <ASText fontSize={14} key={i} marginLeft={7}>{r.reaction}</ASText>

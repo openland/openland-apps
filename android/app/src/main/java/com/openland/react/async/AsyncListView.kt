@@ -28,6 +28,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
     private var dataViewSubscription: (() -> Unit)? = null
     private var inverted: Boolean = false
     private var headerPadding: Float = 0.0f
+    private var overflowColor: Int? = null
     private val scrollListener = object : RecyclerView.OnScrollListener() {
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -90,12 +91,20 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
         }
     }
 
+     fun setOverflowColor(value: Int) {
+        this.overflowColor = value
+        if (inited) {
+            updateData()
+        }
+    }
+
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
                 .disablePTR(true)
                 .section(LithoSection.create(SectionContext(asyncContext))
                         .dataModel(this.state.items)
                         .headerPadding(this.headerPadding)
+                        .overflowColor(this.overflowColor)
                         .reactContext(context as ReactContext)
                         .loading(!this.state.competed)
                         .dataViewKey(this.dataViewKey!!))
@@ -140,6 +149,11 @@ class AsyncListViewManager : SimpleViewManager<AsyncListView>() {
     @ReactProp(name = "headerPadding")
     fun setHeaderPadding(view: AsyncListView, value: Float) {
         view.setHeaderPadding(value)
+    }
+
+    @ReactProp(name = "overflowColor")
+    fun setOverflowColor(view: AsyncListView, value: Int) {
+        view.setOverflowColor(value)
     }
 
     override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
