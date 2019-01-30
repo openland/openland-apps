@@ -21,7 +21,7 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 if (this.props.isOut) {
                     capInsets = { top: 22, left: 22, right: 22, bottom: 22 };
                 } else {
-                    capInsets = { top: 22, left: 22, right: 22, bottom: 22 };
+                    capInsets = { top: 20, left: 29, right: 20, bottom: 20 };
                 }
             }
         } else {
@@ -31,7 +31,7 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 if (this.props.isOut) {
                     capInsets = { top: 21, left: 21, right: 21, bottom: 21 };
                 } else {
-                    capInsets = { top: 21, left: 21, right: 21, bottom: 21 };
+                    capInsets = { top: 19, left: 29, right: 19, bottom: 19 };
                 }
             }
         }
