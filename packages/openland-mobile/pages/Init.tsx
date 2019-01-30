@@ -152,6 +152,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             );
         }
 
-        return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
+        // return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
+        return <ZLoader appearance="large" />;
     }
 }
