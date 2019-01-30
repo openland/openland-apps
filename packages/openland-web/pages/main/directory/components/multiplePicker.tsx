@@ -126,29 +126,23 @@ class EntriesComponent extends React.Component<EntriesComponentProps> {
                     flexGrow={1}
                 >
                     {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
-                        <div
-                            key={e.value}
+                        <EntryItem
                             onMouseEnter={() =>
                                 this.props.onHover ? this.props.onHover(i) : false
                             }
+                            hover={!this.props.onHover}
+                            innerRef={i === this.props.selected ? this.captureTargetRef : undefined}
+                            selected={i === this.props.selected}
+                            onClick={() =>
+                                this.props.onPick({
+                                    value: e.value,
+                                    label: e.label,
+                                })
+                            }
+                            key={i}
                         >
-                            <EntryItem
-                                hover={!this.props.onHover}
-                                innerRef={
-                                    i === this.props.selected ? this.captureTargetRef : undefined
-                                }
-                                selected={i === this.props.selected}
-                                onClick={() =>
-                                    this.props.onPick({
-                                        value: e.value,
-                                        label: e.label,
-                                    })
-                                }
-                                key={e + '_' + i}
-                            >
-                                {e.label}
-                            </EntryItem>
-                        </div>
+                            {e.label}
+                        </EntryItem>
                     ))}
                 </EntryScrollable>
             </EntryWrapper>
