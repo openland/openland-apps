@@ -15,7 +15,16 @@ class RNSAnimatedEventEmitter: RCTEventEmitter {
   
   override init() {
     super.init()
+  }
+  
+  override func startObserving() {
     RNSAnimatedEventEmitter.sharedInstance = self
+  }
+  
+  override func stopObserving() {
+    if RNSAnimatedEventEmitter.sharedInstance == self {
+      RNSAnimatedEventEmitter.sharedInstance = nil
+    }
   }
   
   func onAnimationCompleted(key: String) {

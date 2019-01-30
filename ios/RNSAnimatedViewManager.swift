@@ -128,7 +128,9 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
       CATransaction.begin()
       if spec.transactionKey != nil {
         CATransaction.setCompletionBlock {
-          RNSAnimatedEventEmitter.sharedInstance.onAnimationCompleted(key: spec.transactionKey!)
+          if RNSAnimatedEventEmitter.sharedInstance != nil {
+            RNSAnimatedEventEmitter.sharedInstance.onAnimationCompleted(key: spec.transactionKey!)
+          }
         }
       }
       CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
@@ -214,7 +216,9 @@ class RNSAnimatedViewManager: RCTViewManager, RCTUIManagerObserver {
       CATransaction.commit()
     } else {
       if spec.transactionKey != nil {
-        RNSAnimatedEventEmitter.sharedInstance.onAnimationCompleted(key: spec.transactionKey!)
+        if RNSAnimatedEventEmitter.sharedInstance != nil {
+          RNSAnimatedEventEmitter.sharedInstance.onAnimationCompleted(key: spec.transactionKey!)
+        }
       }
     }
   }

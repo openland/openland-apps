@@ -17,6 +17,11 @@ class AsyncViewEventEmitter {
   func registerEventEmitter(eventEmitter: RNAsyncViewEventEmitter) {
     self.nativeInstance = eventEmitter
   }
+  func unregisterEventEmitter(eventEmitter: RNAsyncViewEventEmitter) {
+    if self.nativeInstance == eventEmitter {
+      self.nativeInstance = nil
+    }
+  }
   
   func dispatchOnPress(key: String, frame: CGRect, instanceKey: String?) {
     var dict:[String:Any] = [:]
@@ -26,7 +31,7 @@ class AsyncViewEventEmitter {
     dict["y"] = frame.origin.y
     dict["w"] = frame.width
     dict["h"] = frame.height
-    if nativeInstance.bridge != nil {
+    if nativeInstance != nil && nativeInstance.bridge != nil {
       nativeInstance.sendEvent(withName: "onPress", body: dict)
     }
   }
@@ -39,13 +44,13 @@ class AsyncViewEventEmitter {
     dict["y"] = frame.origin.y
     dict["w"] = frame.width
     dict["h"] = frame.height
-    if nativeInstance.bridge != nil {
+    if nativeInstance != nil && nativeInstance.bridge != nil {
       nativeInstance.sendEvent(withName: "onLongPress", body: dict)
     }
   }
   
   func dispatchOnLoadMore(key: String) {
-    if nativeInstance.bridge != nil {
+    if nativeInstance != nil && nativeInstance.bridge != nil {
       nativeInstance.sendEvent(withName: "onLoadMore", body: key)
     }
   }
@@ -56,7 +61,17 @@ class RNAsyncViewEventEmitter: RCTEventEmitter {
   
   override init() {
     super.init()
+    
+  }
+  
+  override func startObserving() {
+    print("startObserving")
     AsyncViewEventEmitter.sharedInstance.registerEventEmitter(eventEmitter: self)
+  }
+  
+  override func stopObserving() {
+    print("stopObserving")
+    AsyncViewEventEmitter.sharedInstance.unregisterEventEmitter(eventEmitter: self)
   }
   
   override func supportedEvents() -> [String]! {
