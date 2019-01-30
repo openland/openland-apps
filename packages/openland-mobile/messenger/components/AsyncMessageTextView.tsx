@@ -19,7 +19,7 @@ import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
 import { AsyncReplyMessageDocumentView } from './AsyncReplyMessageDocumentView';
 
 const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
-const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }))}</ASText>;
+const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
 
 export class AsyncMessageTextView extends React.PureComponent<{
     message: DataSourceMessageItem,
@@ -86,8 +86,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
                 <ASFlex
                     marginLeft={marginHorizontal}
                     marginRight={marginHorizontal}
-                    marginTop={7}
-                    marginBottom={8}
+                    marginTop={10}
+                    marginBottom={10}
                     flexDirection="column"
                 >
                     {!this.props.message.isOut && !this.props.message.attachTop && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
@@ -182,8 +182,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
                     overlay={true}
                     alignItems="flex-end"
                     justifyContent="flex-end"
-                    marginRight={this.props.message.isOut ? 4 : 8}
-                    marginBottom={6}
+                    marginRight={this.props.message.isOut ? 9 : 11}
+                    marginBottom={this.props.message.isOut ? 11 : 9}
                 >
                     <ASFlex
                         flexDirection="row"

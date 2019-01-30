@@ -1,6 +1,8 @@
 package com.openland.app;
 
 import android.app.Application;
+import android.content.Intent;
+import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
@@ -106,5 +108,11 @@ public class MainApplication extends Application implements ReactApplication {
         // App Center
         AppCenterReactNativeShared.configureAppCenter(this);
         AppCenter.start(Distribute.class);
+
+        // Start keep alive service
+        Intent service = new Intent(getApplicationContext(), MainService.class);
+        Bundle bundle = new Bundle();
+        service.putExtras(bundle);
+        startService(service);
     }
 }

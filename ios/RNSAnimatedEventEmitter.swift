@@ -15,15 +15,15 @@ class RNSAnimatedEventEmitter: RCTEventEmitter {
   
   override init() {
     super.init()
-    if RNSAnimatedEventEmitter.sharedInstance == nil {
-      RNSAnimatedEventEmitter.sharedInstance = self
-    }
+    RNSAnimatedEventEmitter.sharedInstance = self
   }
   
   func onAnimationCompleted(key: String) {
     var dict:[String:Any] = [:]
     dict["key"] = key
-    self.sendEvent(withName: "onAnimationCompleted", body: dict)
+    if self.bridge != nil {
+      self.sendEvent(withName: "onAnimationCompleted", body: dict)
+    }
   }
   
   override func supportedEvents() -> [String]! {

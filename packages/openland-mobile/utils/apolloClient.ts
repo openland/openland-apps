@@ -11,6 +11,10 @@ export function saveClient(client: OpenlandClient) {
     Track.setClient(cachedClient);
 }
 
+export function hasClient() {
+    return !!cachedClient;
+}
+
 export function getClient(): OpenlandClient {
     if (!cachedClient) {
         throw Error('Apollo is not inited');
@@ -19,10 +23,13 @@ export function getClient(): OpenlandClient {
 }
 
 export function buildNativeClient(token: string) {
-    // return new OpenlandClient(new ApolloGraphqlClient(buildClient({
-    //     token: token,
-    //     endpoint: 'https://api.openland.com/api',
-    //     wsEndpoint: 'wss://api.openland.com/api'
-    // })));
+    if (__DEV__) {
+        return new OpenlandClient(new ApolloGraphqlClient(buildClient({
+            token: token,
+            endpoint: 'https://api.openland.com/api',
+            wsEndpoint: 'wss://api.openland.com/api'
+        })));
+    }
+
     return new OpenlandClient(new WorkerApolloClient(token));
 }

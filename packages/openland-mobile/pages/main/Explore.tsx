@@ -11,6 +11,7 @@ import { AvailableRooms_rooms_SharedRoom } from 'openland-api/Types';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 const RoomsList = React.memo((props) => {
 
@@ -107,7 +108,9 @@ const ExplorePage = (props: PageProps) => {
             />
             <SSearchControler searchRender={(p) => null}>
                 <SScrollView>
-                    <RoomsList />
+                    <SDeferred>
+                        <RoomsList />
+                    </SDeferred>
                 </SScrollView>
             </SSearchControler>
         </>

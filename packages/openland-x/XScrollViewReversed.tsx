@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XScrollView } from './XScrollView';
+import { XFlexStyles } from './basics/Flex';
 import throttle from 'lodash/throttle';
 interface Dimensions {
     scrollTop: number;
@@ -7,12 +8,16 @@ interface Dimensions {
     offsetHeight: number;
 }
 
+interface XScrollViewReversedProps extends XFlexStyles {
+    getScrollElement?: Function;
+}
+
 export class XScrollViewReversed extends React.PureComponent<
+    XScrollViewReversedProps,
     {
-        getScrollElement?: Function;
-    },
-    { inited: boolean }
-    > {
+        inited: boolean;
+    }
+> {
     state = {
         inited: false,
     };
@@ -112,7 +117,7 @@ export class XScrollViewReversed extends React.PureComponent<
 
     componentDidUpdate() {
         let dimensions = this.getDimensions();
-        if (this.lastDimensions && (this.lastDimensions.scrollHeight !== dimensions.scrollHeight)) {
+        if (this.lastDimensions && this.lastDimensions.scrollHeight !== dimensions.scrollHeight) {
             this.restorePreviousScroll();
         } else {
             this.restoreScroll();
@@ -126,6 +131,7 @@ export class XScrollViewReversed extends React.PureComponent<
                 onScroll={this.handleScroll}
                 opacity={this.state.inited ? 1 : 0}
                 optimize={true}
+                {...this.props}
             >
                 {this.props.children}
             </XScrollView>

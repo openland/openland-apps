@@ -38,5 +38,11 @@ import { AppRegistry } from 'react-native';
 import { withGlobalLoader } from './components/ZGlobalLoader';
 import { Init } from './pages/Init';
 import { SNativeConfig } from 'react-native-s/SNativeConfig';
+import { delay } from 'openland-y-utils/timer';
 SNativeConfig.loader = <ZLoader />;
 AppRegistry.registerComponent('openland', () => withGlobalLoader(Init));
+AppRegistry.registerHeadlessTask('KeepAlive', () => async () => {
+    while (true) {
+        await delay(15000);
+    }
+});

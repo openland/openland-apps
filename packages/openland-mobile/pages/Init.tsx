@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AsyncStorage, View, Linking } from 'react-native';
-import { buildNativeClient, saveClient, getClient } from '../utils/apolloClient';
+import { buildNativeClient, saveClient, getClient, hasClient } from '../utils/apolloClient';
 import { AccountQuery } from 'openland-api';
 import { buildMessenger, setMessenger, getMessenger } from '../utils/messenger';
 import { ZLoader } from '../components/ZLoader';
@@ -52,42 +52,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         (async () => {
             try {
-                let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
-                let userAccount: string | undefined = undefined; // await AsyncStorage.getItem('openland-account-3');
-                let res: any;
-                if (userToken) {
-                    this.setState({ state: 'loading' });
-                    let client = buildNativeClient(userToken);
-                    saveClient(client);
-                    res = userAccount ? JSON.parse(userAccount) : (await backoff(async () => await getClient().queryAccount()));
-
-                    // Refresh
-                    if (userAccount) {
-                        getClient().client.updateQuery((data) => res, AccountQuery);
-                        backoff(async () => await getClient().queryAccount())
-                    }
-
-                    let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState, 'SignupUser') : undefined;
-                    this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
-                    if (res.me) {
-                        let messenger = buildMessenger(getClient(), res.me);
-                        setMessenger(new MobileMessenger(messenger, this.history));
-                        await messenger.awaitLoading();
-                    }
-
-                    if (!res.sessionState.isLoggedIn) {
-                        userToken = undefined;
-                    }
-
-                }
-
-                // Reset badge if not authenticated
-                if (!userToken) {
-                    AppBadge.setBadge(0);
-                }
-
-                // Launch app or login sequence
-                if (userToken) {
+                if (hasClient()) {
+                    let res = (await backoff(async () => await getClient().queryAccount()));
                     if (res && res.me) {
                         await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                         this.setState({ state: 'app' });
@@ -96,7 +62,52 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         this.setState({ state: 'signup' });
                     }
                 } else {
-                    this.setState({ state: 'initial' });
+                    let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+                    let userAccount: string | undefined = undefined; // await AsyncStorage.getItem('openland-account-3');
+                    let res: any;
+                    if (userToken) {
+                        this.setState({ state: 'loading' });
+                        let client = buildNativeClient(userToken);
+                        saveClient(client);
+                        res = userAccount ? JSON.parse(userAccount) : (await backoff(async () => await getClient().queryAccount()));
+
+                        // Refresh
+                        if (userAccount) {
+                            getClient().client.updateQuery((data) => res, AccountQuery);
+                            backoff(async () => await getClient().queryAccount())
+                        }
+
+                        let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState, 'SignupUser') : undefined;
+                        this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
+                        if (res.me) {
+                            let messenger = buildMessenger(getClient(), res.me);
+                            setMessenger(new MobileMessenger(messenger, this.history));
+                            await messenger.awaitLoading();
+                        }
+
+                        if (!res.sessionState.isLoggedIn) {
+                            userToken = undefined;
+                        }
+
+                    }
+
+                    // Reset badge if not authenticated
+                    if (!userToken) {
+                        AppBadge.setBadge(0);
+                    }
+
+                    // Launch app or login sequence
+                    if (userToken) {
+                        if (res && res.me) {
+                            await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
+                            this.setState({ state: 'app' });
+                            // this.tryResolveLink();
+                        } else {
+                            this.setState({ state: 'signup' });
+                        }
+                    } else {
+                        this.setState({ state: 'initial' });
+                    }
                 }
             } catch (e) {
                 Alert.alert(e.message);

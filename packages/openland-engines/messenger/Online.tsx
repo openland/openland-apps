@@ -37,11 +37,12 @@ export class OnlineWatcher {
     onDialogListChange(conversations: string[]) {
         this.destroy();
 
-        this.sub = this.client.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
+        let s = this.client.client.subscribe(SUBSCRIBE_ONLINES, { conversations });
+        this.sub = s;
 
         (async () => {
             while (true) {
-                let event = await this.sub!.get();
+                let event = await s.get();
                 if (!event || !event.data) {
                     continue;
                 }

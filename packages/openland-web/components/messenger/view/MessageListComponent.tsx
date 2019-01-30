@@ -45,12 +45,11 @@ const messagesWrapperEmptyClassName = css`
     align-self: center;
     justify-content: center;
     flex-grow: 1;
-    padding-top: 20px;
     padding-bottom: 0px;
     width: 100%;
-    maxwidth: 930px;
+    max-width: 930px;
     @media (min-width: 750px) {
-        minwidth: 512px;
+        min-width: 512px;
     }
 `;
 
@@ -195,7 +194,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         return (
             <>
                 {this.isEmpty() && (
-                    <XScrollViewReversed ref={this.scroller}>
+                    <XScrollViewReversed ref={this.scroller} flexGrow={1}>
                         <MessagesWrapperEmpty>
                             <EmptyBlock
                                 conversationType={this.props.conversationType}

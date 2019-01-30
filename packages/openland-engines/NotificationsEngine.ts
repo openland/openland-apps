@@ -1,7 +1,6 @@
 import { MessengerEngine } from './MessengerEngine';
 import { SettingsQuery, RoomQuery } from 'openland-api';
 import {
-    Settings as SettingsQueryType,
     Room_room_SharedRoom,
     Room_room_PrivateRoom,
 } from 'openland-api/Types';
@@ -11,53 +10,53 @@ import { doSimpleHash } from 'openland-y-utils/hash';
 
 export class NotificationsEngine {
     readonly engine: MessengerEngine;
-    private blinkingAlreadyStarted: boolean;
+    // private blinkingAlreadyStarted: boolean;
 
     constructor(engine: MessengerEngine) {
         this.engine = engine;
 
-        this.blinkingAlreadyStarted = false;
+        // this.blinkingAlreadyStarted = false;
     }
 
     handleGlobalCounterChanged = (counter: number) => {
         AppBadge.setBadge(counter);
     };
 
-    private blinkDocumentTitle = () => {
-        if (!document.hasFocus() && !this.blinkingAlreadyStarted) {
-            this.blinkingAlreadyStarted = true;
+    // private blinkDocumentTitle = () => {
+    //     if (!document.hasFocus() && !this.blinkingAlreadyStarted) {
+    //         this.blinkingAlreadyStarted = true;
 
-            let prevTitle = document.title;
+    //         let prevTitle = document.title;
 
-            let isBlinkedTitle = false;
-            let interval = setInterval(() => {
-                isBlinkedTitle = !isBlinkedTitle;
+    //         let isBlinkedTitle = false;
+    //         let interval = setInterval(() => {
+    //             isBlinkedTitle = !isBlinkedTitle;
 
-                if (!document.hasFocus() && localStorage.getItem('blinkingStarted') !== 'stoped') {
-                    localStorage.setItem('blinkingStarted', 'started');
+    //             if (!document.hasFocus() && localStorage.getItem('blinkingStarted') !== 'stoped') {
+    //                 localStorage.setItem('blinkingStarted', 'started');
 
-                    document.title = isBlinkedTitle ? 'New message · Openland' : prevTitle;
-                } else {
-                    localStorage.setItem('blinkingStarted', 'stoped');
+    //                 document.title = isBlinkedTitle ? 'New message · Openland' : prevTitle;
+    //             } else {
+    //                 localStorage.setItem('blinkingStarted', 'stoped');
 
-                    if (localStorage.getItem('blinkingStopStarted') !== 'true') {
-                        localStorage.setItem('blinkingStopStarted', 'true');
+    //                 if (localStorage.getItem('blinkingStopStarted') !== 'true') {
+    //                     localStorage.setItem('blinkingStopStarted', 'true');
 
-                        setTimeout(() => {
-                            localStorage.setItem('blinkingStarted', 'cleared');
-                            localStorage.setItem('blinkingStopStarted', 'false');
-                        }, 2000);
-                    }
+    //                     setTimeout(() => {
+    //                         localStorage.setItem('blinkingStarted', 'cleared');
+    //                         localStorage.setItem('blinkingStopStarted', 'false');
+    //                     }, 2000);
+    //                 }
 
-                    document.title = prevTitle;
+    //                 document.title = prevTitle;
 
-                    this.blinkingAlreadyStarted = false;
+    //                 this.blinkingAlreadyStarted = false;
 
-                    clearInterval(interval);
-                }
-            }, 1000);
-        }
-    };
+    //                 clearInterval(interval);
+    //             }
+    //         }, 1000);
+    //     }
+    // };
 
     handleIncomingMessage = async (cid: string, msg: any) => {
         let settings = (await this.engine.client.client.readQuery(SettingsQuery))!.settings;
@@ -103,7 +102,7 @@ export class NotificationsEngine {
                 });
             }
 
-            this.blinkDocumentTitle();
+            // this.blinkDocumentTitle();
         }
     };
 }
