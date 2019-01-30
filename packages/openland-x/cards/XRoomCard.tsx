@@ -4,7 +4,7 @@ import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
-import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
+import { SharedRoomKind, Room_room_SharedRoom, AvailableRooms_rooms } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
@@ -36,7 +36,7 @@ interface XRoomCardProps {
     customButton?: any;
     customMenu?: any;
     extraMenu?: any;
-    iMember?: boolean;
+    isMember?: boolean;
 }
 
 export const XRoomCard = React.memo<XRoomCardProps>(props => {
@@ -63,27 +63,28 @@ export const XRoomCard = React.memo<XRoomCardProps>(props => {
 
     let buttonPath = '/mail/' + room.id;
 
-    if (props.iMember === false) {
+    if (props.isMember === false) {
         buttonPath = '/directory/r/' + room.id;
     }
 
-    let button = typeof customButton === 'undefined' ? (
-        <div className={isHovered ? ButtonHoverWrapper : ButtonWrapper}>
-            {room.membership && (
-                <XButton
-                    text={TextProfiles.Room.status[room.membership]}
-                    path={buttonPath}
-                    style={
-                        ['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1
-                            ? 'primary'
-                            : 'ghost'
-                    }
-                />
-            )}
-        </div>
-    ) : (
-        customButton
-    );
+    let button =
+        typeof customButton === 'undefined' ? (
+            <div className={isHovered ? ButtonHoverWrapper : ButtonWrapper}>
+                {room.membership && (
+                    <XButton
+                        text={TextProfiles.Room.status[room.membership]}
+                        path={buttonPath}
+                        style={
+                            ['REQUESTED', 'KICKED', 'LEFT'].indexOf(room.membership) > -1
+                                ? 'primary'
+                                : 'ghost'
+                        }
+                    />
+                )}
+            </div>
+        ) : (
+            customButton
+        );
 
     let menu =
         typeof customMenu === 'undefined' ? (
@@ -143,9 +144,7 @@ export const XRoomCard = React.memo<XRoomCardProps>(props => {
                 flexShrink={1}
             >
                 <XAvatar2
-                    src={
-                        room.photo || (room.organization ? room.organization.photo : undefined)
-                    }
+                    src={room.photo || (room.organization ? room.organization.photo : undefined)}
                     title={room.title}
                     id={room.id}
                 />

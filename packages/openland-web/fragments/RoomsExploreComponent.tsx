@@ -43,7 +43,7 @@ export const Rooms = withChatSearchChannels(props => {
                             key={c.node.id}
                             room={room}
                             path={'/directory/p/' + room.id}
-                            iMember={room.membership === 'MEMBER'}
+                            isMember={room.membership === 'MEMBER'}
                         />
                     );
                 })}
