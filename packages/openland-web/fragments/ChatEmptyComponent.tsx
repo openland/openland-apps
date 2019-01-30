@@ -31,9 +31,9 @@ interface EmptyBlockProps {
 }
 
 export const EmptyBlock = (props: EmptyBlockProps) => (
-    <XView position="relative" alignItems="center" justifyContent="center" marginTop={-100}>
+    <XView position="relative" alignItems="center" justifyContent="center" flexGrow={1}>
         <XView zIndex={1} justifyContent="center" alignItems="center">
-            <XView alignItems="center" justifyContent="center" marginTop={64}>
+            <XView alignItems="center" justifyContent="center">
                 {props.conversationType === 'PUBLIC' && <ImageRoom />}
                 {props.conversationType !== 'PUBLIC' && <ImagePrivate />}
             </XView>
