@@ -11,6 +11,7 @@ interface TextAreaStyledProps {
     minHeight?: number | string;
     format?: 'large' | 'default';
     rounded?: boolean;
+    padding?: number;
 }
 
 let sizeStyles = styleResolver({
@@ -42,13 +43,14 @@ const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
             props.bordered === false
                 ? 'none'
                 : `1px solid ${props.invalid ? '#e26363' : '#ececec'}`,
-        borderRadius: props.rounded ? 20 : 10,
+        borderRadius: props.bordered === false ? 0 : props.rounded ? 20 : 10,
         outline: 'none',
         appearance: 'none',
         msOverflowStyle: 'none',
         resize: props.resize === false ? 'none' : undefined,
         color: 'rgba(0, 0, 0, 0.9)',
         letterSpacing: 0,
+        padding: props.padding !== undefined ? `${props.padding}px !important` : undefined,
         '&:focus': {
             boxShadow:
                 props.bordered === false
@@ -60,7 +62,12 @@ const TextAreaStyled = Glamorous.textarea<TextAreaStyledProps & XFlexStyles>([
                 props.bordered === false ? 'none' : props.invalid ? undefined : '1px solid #74bcff',
         },
         '&::placeholder': {
-            color: 'rgba(0, 0, 0, 0.4)',
+            color:
+                props.bordered === false
+                    ? props.invalid
+                        ? 'rgb(226, 99, 99)'
+                        : 'rgba(0, 0, 0, 0.4)'
+                    : 'rgba(0, 0, 0, 0.4)',
         },
     }),
     props => applyFlex(props),
@@ -78,6 +85,7 @@ export interface XTextAreaBasicProps extends XFlexStyles {
     rounded?: boolean;
     minHeight?: number | string;
     size?: 'large' | 'default';
+    padding?: number;
     onChange?: (value: string) => void;
     onEnter?: () => void;
 }
@@ -133,6 +141,7 @@ export class XTextAreaBasic extends React.PureComponent<XTextAreaBasicProps> {
                 format={this.props.size}
                 minHeight={this.props.minHeight}
                 rounded={this.props.rounded}
+                padding={this.props.padding}
             />
         );
     }

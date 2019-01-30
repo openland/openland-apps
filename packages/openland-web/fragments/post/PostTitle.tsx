@@ -161,33 +161,20 @@ class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputStat
     }
 }
 
-const MobileWrapper = css`
+const MobileInputWrapper = css`
     z-index: 1;
-    & *,
-    & input,
-    & *:focus-within,
-    & *:focus {
+    & * {
         font-size: 22px;
         font-weight: 600;
-        border: none !important;
-        box-shadow: none !important;
-        line-height: normal;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        min-height: 30px;
-        display: block;
-    }
-`;
-
-const MobileInvalid = css`
-    & * {
-        color: #e26363 !important;
+        line-height: 1.36;
+        padding: 0 !important;
     }
 `;
 
 const MobilePostTitle = (props: TextInputProps) => (
-    <div className={cx(MobileWrapper, props.invalid && MobileInvalid)}>
-        <XInput {...props} />
+    <div className={MobileInputWrapper}>
+        {console.log(props)}
+        <XInput {...props} color="flat" minHeight={30} height={30} attach="both" />
     </div>
 );
 

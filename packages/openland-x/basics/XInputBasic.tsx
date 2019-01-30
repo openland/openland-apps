@@ -8,7 +8,7 @@ import ClearIcon from 'openland-icons/ic-close.svg';
 
 type XInputSize = 'large' | 'default' | 'small';
 type XInputAttach = 'left' | 'right' | 'both';
-type XInputStyle = 'default';
+type XInputStyle = 'default' | 'flat';
 
 export interface XInputBasicProps extends XFlexStyles {
     title?: string;
@@ -38,151 +38,165 @@ export interface XInputBasicProps extends XFlexStyles {
 }
 
 let sizeStyles = styleResolver({
-    'large': {
+    large: {
         height: 40,
         fontSize: 14,
         '> .icon': {
             fontSize: 20,
             left: 14,
-            top: 'calc(50% - 10px)'
+            top: 'calc(50% - 10px)',
         },
         '> .icon-right': {
             left: 'auto',
             right: 16,
         },
         '> span': {
-            right: 16
-        }
+            right: 16,
+        },
     },
-    'default': {
+    default: {
         height: 32,
         fontSize: 14,
         '> .icon': {
             fontSize: 16,
             left: 12,
-            top: 'calc(50% - 8px)'
+            top: 'calc(50% - 8px)',
         },
         '> .icon-right': {
             left: 'auto',
             right: 12,
         },
         '> span': {
-            right: 12
-        }
+            right: 12,
+        },
     },
-    'small': {
+    small: {
         height: 28,
         fontSize: 12,
         '> .icon': {
             fontSize: 14,
             left: 8,
-            top: 'calc(50% - 7px)'
+            top: 'calc(50% - 7px)',
         },
         '> .icon-right': {
             left: 'auto',
             right: 8,
         },
         '> span': {
-            right: 8
-        }
+            right: 8,
+        },
     },
 });
 
 let IconPaddingStyles = styleResolver({
-    'large': {
-        paddingLeft: 40
+    large: {
+        paddingLeft: 40,
     },
-    'default': {
-        paddingLeft: 32
+    default: {
+        paddingLeft: 32,
     },
-    'small': {
-        paddingLeft: 28
-    }
+    small: {
+        paddingLeft: 28,
+    },
 });
 
 let NonIconPaddingStyles = styleResolver({
-    'large': {
-        paddingLeft: 16
+    large: {
+        paddingLeft: 16,
     },
-    'default': {
-        paddingLeft: 16
+    default: {
+        paddingLeft: 16,
     },
-    'small': {
-        paddingLeft: 12
-    }
+    small: {
+        paddingLeft: 12,
+    },
 });
 
 let IconRightPaddingStyles = styleResolver({
-    'large': {
-        paddingRight: 40
+    large: {
+        paddingRight: 40,
     },
-    'default': {
-        paddingRight: 32
+    default: {
+        paddingRight: 32,
     },
-    'small': {
-        paddingRight: 28
-    }
+    small: {
+        paddingRight: 28,
+    },
 });
 
 let NonIconRightPaddingStyles = styleResolver({
-    'large': {
-        paddingRight: 20
+    large: {
+        paddingRight: 20,
     },
-    'default': {
-        paddingRight: 16
+    default: {
+        paddingRight: 16,
     },
-    'small': {
-        paddingRight: 12
-    }
+    small: {
+        paddingRight: 12,
+    },
 });
 
 let RequiredPaddingStyles = styleResolver({
-    'large': {
-        paddingRight: 50
+    large: {
+        paddingRight: 50,
     },
-    'default': {
-        paddingRight: 36
+    default: {
+        paddingRight: 36,
     },
-    'small': {
-        paddingRight: 28
-    }
+    small: {
+        paddingRight: 28,
+    },
 });
 
 let NonRequiredPaddingStyles = styleResolver({
-    'large': {
-        paddingRight: 16
+    large: {
+        paddingRight: 16,
     },
-    'default': {
-        paddingRight: 10
+    default: {
+        paddingRight: 10,
     },
-    'small': {
-        paddingRight: 8
-    }
+    small: {
+        paddingRight: 8,
+    },
 });
 
-let borderRadiusStyles = styleResolverWithProps((props: { attach?: XInputAttach, rounded?: boolean }) => ({
-    'large': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : (props.rounded ? 20 : 10),
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : (props.rounded ? 20 : 10),
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : (props.rounded ? 20 : 10),
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : (props.rounded ? 20 : 10),
-    },
-    'default': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : (props.rounded ? 16 : 8),
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : (props.rounded ? 16 : 8),
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : (props.rounded ? 16 : 8),
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : (props.rounded ? 16 : 8),
-    },
-    'small': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : (props.rounded ? 14 : 6),
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : (props.rounded ? 14 : 6),
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : (props.rounded ? 14 : 6),
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : (props.rounded ? 14 : 6),
-    }
-}));
+let borderRadiusStyles = styleResolverWithProps(
+    (props: { attach?: XInputAttach; rounded?: boolean }) => ({
+        large: {
+            borderTopLeftRadius:
+                props.attach === 'both' || props.attach === 'left' ? 0 : props.rounded ? 20 : 10,
+            borderBottomLeftRadius:
+                props.attach === 'both' || props.attach === 'left' ? 0 : props.rounded ? 20 : 10,
+            borderTopRightRadius:
+                props.attach === 'both' || props.attach === 'right' ? 0 : props.rounded ? 20 : 10,
+            borderBottomRightRadius:
+                props.attach === 'both' || props.attach === 'right' ? 0 : props.rounded ? 20 : 10,
+        },
+        default: {
+            borderTopLeftRadius:
+                props.attach === 'both' || props.attach === 'left' ? 0 : props.rounded ? 16 : 8,
+            borderBottomLeftRadius:
+                props.attach === 'both' || props.attach === 'left' ? 0 : props.rounded ? 16 : 8,
+            borderTopRightRadius:
+                props.attach === 'both' || props.attach === 'right' ? 0 : props.rounded ? 16 : 8,
+            borderBottomRightRadius:
+                props.attach === 'both' || props.attach === 'right' ? 0 : props.rounded ? 16 : 8,
+        },
+        small: {
+            borderTopLeftRadius:
+                props.attach === 'both' || props.attach === 'left' ? 0 : props.rounded ? 14 : 6,
+            borderBottomLeftRadius:
+                props.attach === 'both' || props.attach === 'left' ? 0 : props.rounded ? 14 : 6,
+            borderTopRightRadius:
+                props.attach === 'both' || props.attach === 'right' ? 0 : props.rounded ? 14 : 6,
+            borderBottomRightRadius:
+                props.attach === 'both' || props.attach === 'right' ? 0 : props.rounded ? 14 : 6,
+        },
+    }),
+);
 
 let colorStyles = styleResolver({
-    'default': {
+    default: {
         borderColor: '#ececec',
         '> .icon': {
             color: 'rgba(0, 0, 0, 0.3)',
@@ -191,41 +205,55 @@ let colorStyles = styleResolver({
             boxShadow: '0 0 0 2px rgba(23, 144, 255, 0.2)',
             borderColor: '#74bcff',
             '> .icon': {
-                color: 'rgba(23, 144, 255, 0.5)'
+                color: 'rgba(23, 144, 255, 0.5)',
             },
-        }
-    }
+        },
+    },
+    flat: {
+        '> .icon': {
+            color: 'rgba(0, 0, 0, 0.3)',
+        },
+        '&:focus-within': {
+            '> .icon': {
+                color: 'rgba(23, 144, 255, 0.5)',
+            },
+        },
+    },
 });
 
 let titleStyles = styleResolver({
-    'large': {
+    large: {
         top: -11,
         left: 13,
         height: 20,
         fontSize: 12,
         lineHeight: '20px',
     },
-    'default': {
+    default: {
         top: -11,
         left: 13,
         height: 20,
         fontSize: 12,
         lineHeight: '20px',
     },
-    'small': {
+    small: {
         top: -8,
         left: 9,
         height: 14,
         fontSize: 11,
         lineHeight: '14px',
-    }
+    },
 });
 
-const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyle, invalid?: boolean, format?: XInputSize, attach?: XInputAttach }>([
-    (props) => ({
+interface RootContainerProps extends XInputBasicProps {
+    format?: XInputSize;
+}
+
+const RootContainer = Glamorous.div<RootContainerProps>([
+    props => ({
         position: 'relative',
         background: props.disabled ? '#f8f8f8' : '#ffffff',
-        border: '1px solid',
+        border: props.color === 'flat' ? 'none' : '1px solid',
         boxSizing: 'border-box',
         color: 'rgba(0, 0, 0, 0.9)',
         letterSpacing: 0,
@@ -233,34 +261,36 @@ const RootContainer = Glamorous.div<XInputBasicProps & { inputStyle?: XInputStyl
             position: 'absolute',
         },
         '& .popper': {
-            color: '#d4dae7'
+            color: '#d4dae7',
         },
         '&:focus-within': {
             '& .popper': {
-                color: '#8A80E7'
-            }
-        },
-        '& input[type="number"], & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
-            appearance: 'none'
-        }
-    }),
-    (props) => colorStyles(props.inputStyle),
-    (props) => (props.invalid && {
-        borderColor: '#e26363',
-        '> .icon': {
-            color: '#e26363'
-        },
-        '&:focus-within': {
-            boxShadow: '0 0 0 2px rgba(226, 99, 99, 0.2)',
-            borderColor: '#e26363',
-            '> .icon': {
-                color: '#e26363'
+                color: '#8A80E7',
             },
         },
-    } || {}),
-    (props) => sizeStyles(props.format),
-    (props) => borderRadiusStyles({ attach: props.attach, rounded: props.rounded }, props.format),
-    (props) => applyFlex(props)
+        '& input[type="number"], & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            appearance: 'none',
+        },
+    }),
+    props => colorStyles(props.color),
+    props =>
+        (props.invalid && {
+            borderColor: props.color !== 'flat' ? '#e26363' : undefined,
+            '> .icon': {
+                color: '#e26363',
+            },
+            '&:focus-within': {
+                boxShadow: props.color !== 'flat' ? '0 0 0 2px rgba(226, 99, 99, 0.2)' : undefined,
+                borderColor: props.color !== 'flat' ? '#e26363' : undefined,
+                '> .icon': {
+                    color: '#e26363',
+                },
+            },
+        }) ||
+        {},
+    props => sizeStyles(props.format),
+    props => borderRadiusStyles({ attach: props.attach, rounded: props.rounded }, props.format),
+    props => applyFlex(props),
 ]);
 
 const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
@@ -271,19 +301,19 @@ const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
         alignSelf: 'stretch',
         outline: 'none',
         '&::placeholder': {
-            color: '#9d9d9d'
-        }
+            color: '#9d9d9d',
+        },
     },
-    (props) => IconPaddingStyles(props.format, !!props.icon),
-    (props) => NonIconPaddingStyles(props.format, !props.icon),
-    (props) => RequiredPaddingStyles(props.format, !!props.required),
-    (props) => NonRequiredPaddingStyles(props.format, !props.required),
-    (props) => IconRightPaddingStyles(props.format, !!props.iconRight),
-    (props) => NonIconRightPaddingStyles(props.format, !props.iconRight),
+    props => IconPaddingStyles(props.format, !!props.icon),
+    props => NonIconPaddingStyles(props.format, !props.icon),
+    props => RequiredPaddingStyles(props.format, !!props.required),
+    props => NonRequiredPaddingStyles(props.format, !props.required),
+    props => IconRightPaddingStyles(props.format, !!props.iconRight),
+    props => NonIconRightPaddingStyles(props.format, !props.iconRight),
 ]);
 
 const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize }>([
-    () => ({
+    props => ({
         display: 'flex',
         alignItems: 'center',
         whiteSpace: 'nowrap',
@@ -292,13 +322,13 @@ const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize 
         position: 'absolute',
         top: 0,
         left: 0,
-        color: 'rgba(0, 0, 0, 0.4)',
+        color: props.invalid && props.color === 'flat' ? '#e26363' : 'rgba(0, 0, 0, 0.4)',
         pointerEvents: 'none',
         fontWeight: 400,
         letterSpacing: 0,
     }),
-    (props) => IconPaddingStyles(props.format, !!props.icon),
-    (props) => NonIconPaddingStyles(props.format, !props.icon),
+    props => IconPaddingStyles(props.format, !!props.icon),
+    props => NonIconPaddingStyles(props.format, !props.icon),
 ]);
 
 const Title = Glamorous.div<{ format?: XInputSize }>([
@@ -307,9 +337,9 @@ const Title = Glamorous.div<{ format?: XInputSize }>([
         paddingLeft: 3,
         paddingRight: 3,
         backgroundColor: 'white',
-        color: 'rgba(0, 0, 0, 0.4)'
+        color: 'rgba(0, 0, 0, 0.4)',
     },
-    (props) => titleStyles(props.format),
+    props => titleStyles(props.format),
 ]);
 
 const PopperPlaceholder = Glamorous.div({
@@ -320,7 +350,7 @@ const PopperPlaceholder = Glamorous.div({
     '& > i': {
         fontSize: 18,
         // color: '#8A80E7'
-    }
+    },
 });
 
 const RequireElement = Glamorous.span({
@@ -329,7 +359,7 @@ const RequireElement = Glamorous.span({
     fontSize: 14,
     marginLeft: 1,
     marginTop: -10,
-    color: '#1790ff'
+    color: '#1790ff',
 });
 
 const ClearButton = Glamorous.a({
@@ -341,7 +371,7 @@ const ClearButton = Glamorous.a({
     top: 'calc(50% - 8px)',
     width: 16,
     height: 16,
-    cursor: 'pointer'
+    cursor: 'pointer',
 });
 
 interface XInputBasicState {
@@ -360,13 +390,13 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
             this.state = {
                 value: this.props.value,
                 titleInside: false,
-                isFocused: false
+                isFocused: false,
             };
         } else {
             this.state = {
                 value: '',
                 titleInside: true,
-                isFocused: false
+                isFocused: false,
             };
         }
     }
@@ -375,12 +405,12 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (props.value && props.value.length > 0) {
             this.setState({
                 value: props.value,
-                titleInside: false
+                titleInside: false,
             });
         } else {
             this.setState({
                 value: '',
-                titleInside: !this.state.isFocused
+                titleInside: !this.state.isFocused,
             });
         }
     }
@@ -395,7 +425,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         if (e) {
             this.inputRef = e;
         }
-    }
+    };
 
     handleChange = (e: any) => {
         if (this.props.onChange) {
@@ -403,9 +433,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         }
 
         this.setState({
-            value: e.target.value
+            value: e.target.value,
         });
-    }
+    };
 
     handleClear = () => {
         if (this.props.onChange) {
@@ -413,9 +443,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         }
 
         this.setState({
-            value: ''
+            value: '',
         });
-    }
+    };
 
     handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
@@ -423,7 +453,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                 this.props.onEnter();
             }
         }
-    }
+    };
 
     focus() {
         this.inputRef.focus();
@@ -432,24 +462,24 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
     handleFocus = () => {
         this.setState({
             titleInside: false,
-            isFocused: true
+            isFocused: true,
         });
 
         if (this.props.onFocus) {
             this.props.onFocus();
         }
-    }
+    };
 
     handleBlur = () => {
         this.setState({
             titleInside: this.state.value.length <= 0,
-            isFocused: false
+            isFocused: false,
         });
 
         if (this.props.onBlur) {
             this.props.onBlur();
         }
-    }
+    };
 
     render() {
         const {
@@ -485,7 +515,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
         return (
             <RootContainer
                 {...other}
-                inputStyle={color}
+                color={color}
                 format={size}
                 invalid={invalid}
                 disabled={disabled}
@@ -495,7 +525,9 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                         {!this.state.titleInside && (
                             <Title format={size}>
                                 {title}
-                                {required && <RequireElement className="required-star">*</RequireElement>}
+                                {required && (
+                                    <RequireElement className="required-star">*</RequireElement>
+                                )}
                             </Title>
                         )}
                         {this.state.titleInside && (
@@ -505,21 +537,25 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                                 format={size}
                             >
                                 <span>{title}</span>
-                                {required && <RequireElement className="required-star">*</RequireElement>}
+                                {required && (
+                                    <RequireElement className="required-star">*</RequireElement>
+                                )}
                             </InputPlaceholder>
                         )}
                     </>
                 )}
-                {icon && (
-                    typeof (icon) === 'string'
-                        ? <XIcon icon={icon} className="icon" />
-                        : <i className="icon">{icon}</i>
-                )}
-                {iconRight && (
-                    typeof (iconRight) === 'string'
-                        ? <XIcon icon={iconRight} className="icon icon-right" />
-                        : <i className="icon icon-right">iconRight</i>
-                )}
+                {icon &&
+                    (typeof icon === 'string' ? (
+                        <XIcon icon={icon} className="icon" />
+                    ) : (
+                        <i className="icon">{icon}</i>
+                    ))}
+                {iconRight &&
+                    (typeof iconRight === 'string' ? (
+                        <XIcon icon={iconRight} className="icon icon-right" />
+                    ) : (
+                        <i className="icon icon-right">iconRight</i>
+                    ))}
                 <Input
                     disabled={disabled}
                     icon={icon}
@@ -537,36 +573,38 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     onBlur={this.handleBlur}
                     data-test-id={dataTestId}
                 />
-                {(placeholder && (!v || v === '')) && (
-                    <InputPlaceholder
-                        className="input-placeholder"
-                        icon={icon}
-                        format={size}
-                    >
-                        <span>{placeholder}</span>
-                        {required && <RequireElement className="required-star">*</RequireElement>}
-                    </InputPlaceholder>
-                )}
+                {placeholder &&
+                    (!v || v === '') && (
+                        <InputPlaceholder
+                            className="input-placeholder"
+                            icon={icon}
+                            format={size}
+                            color={color}
+                            invalid={invalid}
+                        >
+                            <span>{placeholder}</span>
+                            {required && (
+                                <RequireElement className="required-star">*</RequireElement>
+                            )}
+                        </InputPlaceholder>
+                    )}
                 {tooltipContent && (
-                    <XPopper
-                        placement="bottom"
-                        content={tooltipContent}
-                        showOnHover={true}
-                    >
+                    <XPopper placement="bottom" content={tooltipContent} showOnHover={true}>
                         <PopperPlaceholder>
                             <XIcon icon="error" className="popper" />
                         </PopperPlaceholder>
                     </XPopper>
                 )}
-                {(cleanable && v !== '') && (
-                    <ClearButton
-                        onClick={() => {
-                            this.handleClear();
-                        }}
-                    >
-                        <ClearIcon />
-                    </ClearButton>
-                )}
+                {cleanable &&
+                    v !== '' && (
+                        <ClearButton
+                            onClick={() => {
+                                this.handleClear();
+                            }}
+                        >
+                            <ClearIcon />
+                        </ClearButton>
+                    )}
             </RootContainer>
         );
     }

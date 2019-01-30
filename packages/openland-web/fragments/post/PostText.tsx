@@ -116,42 +116,19 @@ class DesktopPostText extends React.PureComponent<TextInputProps, TextInputState
     }
 }
 
-const MobileWrapper = css`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-    align-items: stretch;
-    & textarea {
-        min-height: 100%;
-        height: 100%;
-        flex-shrink: 0;
-        font-size: 14px;
-        border: none;
-        line-height: 1.57;
-        resize: none;
-        padding: 0;
-        flex-grow: 1;
-        display: block;
-        border-radius: 0;
-        &:focus,
-        &:active {
-            box-shadow: none;
-            border: none;
-        }
-    }
-`;
-
-const MobileInvalid = css`
-    & textarea::placeholder {
-        color: rgb(226, 99, 99);
-    }
-`;
-
 const MobilePostText = (props: TextInputProps) => (
-    <div className={cx(MobileWrapper, props.invalid && MobileInvalid)}>
-        <XTextArea {...props} />
-    </div>
+    <XView flexDirection="column" flexGrow={1} alignItems="stretch">
+        <XTextArea
+            {...props}
+            bordered={false}
+            flexGrow={1}
+            flexShrink={0}
+            height="100%"
+            minHeight="100%"
+            padding={0}
+            resize={false}
+        />
+    </XView>
 );
 
 export const EmojiSelectButton = React.memo(() => {
