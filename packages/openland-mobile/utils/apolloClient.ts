@@ -11,6 +11,10 @@ export function saveClient(client: OpenlandClient) {
     Track.setClient(cachedClient);
 }
 
+export function hasClient() {
+    return !!cachedClient;
+}
+
 export function getClient(): OpenlandClient {
     if (!cachedClient) {
         throw Error('Apollo is not inited');
