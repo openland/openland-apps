@@ -8,6 +8,9 @@ import { Platform } from 'react-native';
 let cachedClient: OpenlandClient | null;
 
 export function saveClient(client: OpenlandClient) {
+    if (cachedClient) {
+        throw Error('Apollo already inited');
+    }
     cachedClient = client;
     Track.setClient(cachedClient);
 }
