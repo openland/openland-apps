@@ -105,6 +105,9 @@ export class WorkerApolloClient implements GraphqlClient {
     }
 
     private useQueryRaw<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): QueryWatch {
+        if (!query.document) {
+            throw Error('Broken request');
+        }
         return React.useMemo(() => {
             let key = keyFromObject(vars);
 
@@ -140,12 +143,21 @@ export class WorkerApolloClient implements GraphqlClient {
     }
 
     query<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+        if (!query.document) {
+            throw Error('Broken request');
+        }
         return this.postCall({ type: 'query', body: query.document, variables: vars, id: this.nextId() });
     }
     refetch<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery> {
+        if (!query.document) {
+            throw Error('Broken request');
+        }
         return this.postCall({ type: 'refetch', body: query.document, variables: vars, id: this.nextId() });
     }
     mutate<TMutation, TVars>(mutation: GraphqlMutation<TMutation, TVars>, vars?: TVars): Promise<TMutation> {
+        if (!mutation.document) {
+            throw Error('Broken request');
+        }
         return this.postCall({ type: 'mutate', body: mutation.document, variables: vars, id: this.nextId() });
     }
 
@@ -179,7 +191,7 @@ export class WorkerApolloClient implements GraphqlClient {
         return {
             get: queue.get,
             updateVariables: (src?: any) => {
-                this.thread.postMessage(JSON.stringify({ type: 'subscribe-update', variables: vars, id: key } as Request));
+                this.thread.postMessage(JSON.stringify({ type: 'subscribe-update', variables: src, id: key } as Request));
             },
             destroy: () => {
                 this.thread.postMessage(JSON.stringify({ type: 'subscribe-destroy', id: key } as Request));
@@ -239,10 +251,16 @@ export class WorkerApolloClient implements GraphqlClient {
         return false;
     }
     async readQuery<TQuery, TVars>(query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
+        if (!query.document) {
+            throw Error('Broken request');
+        }
         return this.postCall({ type: 'read', body: query.document, variables: vars, id: this.nextId() });
     }
 
     async writeQuery<TQuery, TVars>(data: any, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<TQuery | null> {
+        if (!query.document) {
+            throw Error('Broken request');
+        }
         return this.postCall({ type: 'write', body: query.document, variables: vars, id: this.nextId(), data });
     }
 }
