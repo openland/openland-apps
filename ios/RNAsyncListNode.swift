@@ -551,12 +551,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let w = self.bounds.size.width
       return { () -> ASCellNode in
         let res = ASCellNode()
-//        res.layoutMargins=UIEdgeInsetsMake(CGFloat(0), CGFloat(0), CGFloat(-1000), CGFloat(0));
-//        res.preservesSuperviewLayoutMargins = false
-//        if(self.overflowColor != nil){
-//          res.backgroundColor = resolveColorR(self.overflowColor!)
-//        }
-       
+        res.clipsToBounds = false
         res.automaticallyManagesSubnodes = true
         res.layoutSpecBlock = { node, constrainedSize in
           let res = ASStackLayoutSpec()
@@ -565,6 +560,17 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           res.justifyContent = ASStackLayoutJustifyContent.center
           res.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
           res.style.height = ASDimension(unit: ASDimensionUnit.points, value: CGFloat(padding))
+          if(self.overflowColor != nil){
+            let overflow = ASDisplayNode()
+            overflow.backgroundColor = resolveColorR(self.overflowColor!)
+            overflow.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
+            overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 1000)
+            overflow.clipsToBounds = false
+            
+            let insets = UIEdgeInsets(top: 0, left: 0, bottom: CGFloat(padding - 1000), right: 0)
+            let container = ASInsetLayoutSpec(insets: insets, child: overflow)
+            res.setChild(container, at: 0)
+          }
           return res
         }
         res.layoutThatFits(range)
