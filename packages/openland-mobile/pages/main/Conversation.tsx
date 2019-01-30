@@ -26,6 +26,7 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { RoomTinyQuery } from 'openland-api';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import LinearGradient from 'react-native-linear-gradient';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -121,20 +122,19 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 <Deferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
-                            <ASView
+                            {/* <ASView
                                 style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                             >
                                 <ASFlex
                                     width={Dimensions.get('window').width}
                                     height={Dimensions.get('window').height}
+                                    backgroundColor="green"
                                 >
-                                    <ASImage
-                                        source={require('assets/img-chat-3.jpg')}
-                                        width={Dimensions.get('window').width}
-                                        height={Dimensions.get('window').height}
-                                    />
+                                 
                                 </ASFlex>
-                            </ASView>
+                            </ASView> */}
+                            <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={['#1970ff', '#11b2ff']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
+
                             <ConversationView engine={this.engine} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}
