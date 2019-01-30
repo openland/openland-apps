@@ -173,7 +173,6 @@ const MobileInputWrapper = css`
 
 const MobilePostTitle = (props: TextInputProps) => (
     <div className={MobileInputWrapper}>
-        {console.log(props)}
         <XInput {...props} color="flat" minHeight={30} height={30} attach="both" />
     </div>
 );
