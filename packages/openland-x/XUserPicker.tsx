@@ -152,48 +152,42 @@ class EntriesComponentInner extends React.Component<EntriesComponentProps & { is
                     maxHeight={maxHeight}
                 >
                     {filterOptions(this.props.options, this.props.query || '').map((e, i) => (
-                        <div
+                        <EntryItem
                             key={e.value}
                             onMouseEnter={() =>
                                 this.props.onHover ? this.props.onHover(i) : false
                             }
+                            hover={!this.props.onHover}
+                            innerRef={i === this.props.selected ? this.captureTargetRef : undefined}
+                            selected={i === this.props.selected}
+                            onClick={() =>
+                                this.props.onPick({
+                                    type: e.type,
+                                    value: e.value,
+                                    label: e.label,
+                                })
+                            }
                         >
-                            <EntryItem
-                                hover={!this.props.onHover}
-                                innerRef={
-                                    i === this.props.selected ? this.captureTargetRef : undefined
-                                }
-                                selected={i === this.props.selected}
-                                onClick={() =>
-                                    this.props.onPick({
-                                        type: e.type,
-                                        value: e.value,
-                                        label: e.label,
-                                    })
-                                }
-                                key={e + '_' + i}
-                            >
-                                <XHorizontal separator={6} alignItems="center">
-                                    <XAvatar
-                                        objectId={e.value}
-                                        objectName={e.label}
-                                        style={
-                                            e.type
-                                                ? e.type === 'Organization'
-                                                    ? 'organization'
-                                                    : 'user'
+                            <XHorizontal separator={6} alignItems="center">
+                                <XAvatar
+                                    objectId={e.value}
+                                    objectName={e.label}
+                                    style={
+                                        e.type
+                                            ? e.type === 'Organization'
+                                                ? 'organization'
                                                 : 'user'
-                                        }
-                                        src={e.photo || ''}
-                                        size="small"
-                                    />
-                                    <XVertical separator={3}>
-                                        <UserName>{e.label}</UserName>
-                                        {e.org && <UserOrg>{e.org}</UserOrg>}
-                                    </XVertical>
-                                </XHorizontal>
-                            </EntryItem>
-                        </div>
+                                            : 'user'
+                                    }
+                                    src={e.photo || ''}
+                                    size="small"
+                                />
+                                <XVertical separator={3}>
+                                    <UserName>{e.label}</UserName>
+                                    {e.org && <UserOrg>{e.org}</UserOrg>}
+                                </XVertical>
+                            </XHorizontal>
+                        </EntryItem>
                     ))}
                 </EntryScrollable>
             </EntryWrapper>
