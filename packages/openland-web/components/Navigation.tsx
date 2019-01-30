@@ -20,6 +20,15 @@ type PageInnerProps = {
     cid: string | null | undefined;
 };
 
+const showClassName = css`
+    display: flex;
+    flex-grow: 1;
+`;
+
+const hideClassName = css`
+    display: none;
+`;
+
 const MobilePageInner = React.memo(
     ({
         tab,
@@ -38,12 +47,13 @@ const MobilePageInner = React.memo(
                 alignItems="stretch"
                 height="100vh"
             >
-                {tab === tabs.empty ? (
+                <div className={tab === tabs.empty ? showClassName : hideClassName}>
                     <XView position="relative" flexGrow={1} width="100%" height="100%">
                         {firstFragmentMenu}
                         {swapFragmentsOnMobile ? secondFragment : firstFragment}
                     </XView>
-                ) : (
+                </div>
+                <div className={tab !== tabs.empty ? showClassName : hideClassName}>
                     <XView
                         position="relative"
                         flexDirection="column"
@@ -54,7 +64,7 @@ const MobilePageInner = React.memo(
                         {secondFragmentHeader}
                         {swapFragmentsOnMobile ? firstFragment : secondFragment}
                     </XView>
-                )}
+                </div>
             </XView>
         );
     },
