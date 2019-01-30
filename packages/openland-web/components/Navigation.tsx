@@ -45,7 +45,7 @@ const MobilePageInner = React.memo(
                 flexShrink={0}
                 overflow="hidden"
                 alignItems="stretch"
-                height="100vh"
+                height="100%"
             >
                 <div className={tab === tabs.empty ? showClassName : hideClassName}>
                     <XView position="relative" flexGrow={1} width="100%" height="100%">
