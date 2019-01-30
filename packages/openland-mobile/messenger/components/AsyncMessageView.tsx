@@ -10,6 +10,7 @@ import { AsyncMessageIntroView, renderButtons } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { Platform } from 'react-native';
+import { ASView } from 'react-native-async-view/ASView';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -52,32 +53,46 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         let buttonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
         buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 22 : 0;
         let ios = Platform.OS === 'ios';
+        let isMedia = !specialMessage && this.props.message.file && this.props.message.file.isImage;
         return (
-            <ASFlex flexDirection="row" marginLeft={!this.props.message.isOut && this.props.message.attachBottom ? (ios ? 33 : 51) : 4} marginRight={4} marginTop={this.props.message.attachTop ? 2 : 14} marginBottom={2} alignItems="flex-end" onLongPress={this.handleLongPress}>
-                {!this.props.message.isOut && !this.props.message.attachBottom &&
-                    <ASFlex marginRight={ios ? -1 : 3} marginLeft={ios ? 4 : 7} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin}>
-                        <AsyncAvatar
-                            size={ios ? 28 : 36}
-                            src={this.props.message.senderPhoto}
-                            placeholderKey={this.props.message.senderId}
-                            placeholderTitle={this.props.message.senderName}
-                        />
-                    </ASFlex>
-                }
-                <ASFlex flexDirection="column" alignItems={this.props.message.isOut ? 'flex-end' : 'flex-start'} flexGrow={1} flexBasis={0} marginLeft={this.props.message.isOut ? 50 : 0} marginRight={this.props.message.isOut ? 0 : 50}>
-                    {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
-                        <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
-                    )}
-                    {!specialMessage && this.props.message.file && this.props.message.file.isImage && (
-                        <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
-                    )}
-                    {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
-                        <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
-                    )}
-                    {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
+            <ASFlex flexDirection="column" alignItems="stretch" onLongPress={this.handleLongPress} backgroundColor={!this.props.message.isOut ? 'white' : undefined}>
 
-                    {specialMessage}
+                {/* marginTop={ ? 2 : 14} marginBottom={2}  */}
+                <ASFlex key="margin-top" backgroundColor="white" height={this.props.message.attachTop ? 2 : 14} />
+                <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
+                    <ASFlex key="margin-left" backgroundColor="white" width={(!this.props.message.isOut && this.props.message.attachBottom ? (ios ? 33 : 51) : 4) + (isMedia ? 5 : this.props.message.isOut ? 10 : 0)} />
+
+                    {!this.props.message.isOut && !this.props.message.attachBottom &&
+                        <ASFlex marginRight={ios ? -1 : 3} marginLeft={ios ? 4 : 7} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin} alignItems="flex-end">
+                            <AsyncAvatar
+                                size={ios ? 28 : 36}
+                                src={this.props.message.senderPhoto}
+                                placeholderKey={this.props.message.senderId}
+                                placeholderTitle={this.props.message.senderName}
+                            />
+                        </ASFlex>
+                    }
+
+                    {this.props.message.isOut && <ASFlex backgroundColor="white" flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
+                    <ASFlex flexDirection="column" alignItems={this.props.message.isOut ? 'flex-end' : 'flex-start'}>
+                        {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
+                            <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
+                        )}
+                        {isMedia && (
+                            <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
+                        )}
+                        {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
+                            <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
+                        )}
+                        {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
+
+                        {specialMessage}
+                    </ASFlex>
+                    <ASFlex key="margin-right" backgroundColor="white" width={(isMedia ? 5 : 0) + 4} />
+
                 </ASFlex>
+                <ASFlex key="margin-bottom" backgroundColor="white" height={2} />
+
             </ASFlex>
         );
     }

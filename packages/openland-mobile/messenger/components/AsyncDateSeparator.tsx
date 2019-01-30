@@ -29,7 +29,7 @@ export class AsyncDateSeparator extends React.PureComponent<{ year: number, mont
             date = this.props.year + ', ' + months[this.props.month] + ' ' + this.props.date;
         }
         return (
-            <ASFlex alignItems="center" justifyContent="center">
+            <ASFlex alignItems="center" justifyContent="center" backgroundColor="white">
                 <ASFlex marginTop={16} height={20} backgroundColor="rgba(153,162,176,0.6)" borderRadius={10}>
                     <ASText color="#fff" fontSize={12} lineHeight={17} height={20} marginLeft={6} marginRight={6}>{date}</ASText>
                 </ASFlex>
