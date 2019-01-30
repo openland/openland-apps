@@ -8,20 +8,22 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XTextArea } from 'openland-x/XTextArea';
 import { TextProfiles } from 'openland-text/TextProfiles';
 
-export const CreateAppModal = withAppProfile(props => {
+const { App } = TextProfiles;
+
+export const CreateAppModal = withAppProfile(({ createApp }) => {
     return (
         <XModalForm
             useTopCloser={true}
             submitBtnText="Create"
-            title={TextProfiles.App.create}
+            title={App.create}
             targetQuery="createApp"
-            defaultAction={async data => {
-                await props.createApp({
+            defaultAction={async ({ input: { name, shortname, photoRef, about } }) => {
+                await createApp({
                     variables: {
-                        name: data.input.name,
-                        shortname: data.input.shortname,
-                        photoRef: data.input.photoRef,
-                        about: data.input.about,
+                        name,
+                        shortname,
+                        photoRef,
+                        about,
                     },
                 });
             }}
@@ -42,21 +44,17 @@ export const CreateAppModal = withAppProfile(props => {
                         <XInput
                             field="input.name"
                             size="large"
-                            title={TextProfiles.App.inputs.name}
+                            title={App.inputs.name}
                             autofocus={true}
                         />
-                        <XInput
-                            field="input.shortname"
-                            size="large"
-                            title={TextProfiles.App.inputs.shortname}
-                        />
+                        <XInput field="input.shortname" size="large" title={App.inputs.shortname} />
                     </XVertical>
                 </XView>
             </XView>
 
             <XTextArea
                 valueStoreKey="fields.input.about"
-                placeholder={TextProfiles.App.inputs.about}
+                placeholder={App.inputs.about}
                 resize={false}
             />
         </XModalForm>

@@ -6,16 +6,19 @@ import { XView } from 'react-mental';
 import { XAppCard } from 'openland-x/cards/XAppCard';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { CreateAppModal } from 'openland-web/components/apps/CreateAppModal';
-import { EditAppModal } from 'openland-web/components/apps/EditAppModal';
+import { CreateAppModal } from 'openland-web/pages/main/settings/modals/CreateAppModal';
+import { AddBotToChat } from 'openland-web/pages/main/settings/modals/AddBotToChat';
+import { EditAppModal } from 'openland-web/pages/main/settings/modals/EditAppModal';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { SettingsNavigation } from './components/SettingsNavigation';
+
+const { App } = TextProfiles;
 
 export default withApp(
     'My Apps',
     'feature-non-production',
     withMyApps(
-        withQueryLoader(props => (
+        withQueryLoader(({ data: { apps } }) => (
             <SettingsNavigation title="My Apps">
                 <XView
                     paddingTop={20}
@@ -33,10 +36,10 @@ export default withApp(
                             field: 'createApp',
                             value: 'true',
                         }}
-                        text={TextProfiles.App.create}
+                        text={App.create}
                     />
 
-                    {props.data.apps.map(app => (
+                    {apps.map(app => (
                         <XAppCard
                             key={'app_' + app.id}
                             app={app}
@@ -48,7 +51,15 @@ export default withApp(
                                             value: app.id,
                                         }}
                                     >
-                                        {TextProfiles.App.edit}
+                                        {App.edit}
+                                    </XMenuItem>
+                                    <XMenuItem
+                                        query={{
+                                            field: 'addBotToChat',
+                                            value: app.id,
+                                        }}
+                                    >
+                                        {App.addBotToChat}
                                     </XMenuItem>
                                 </>
                             }
@@ -57,7 +68,8 @@ export default withApp(
                 </XView>
 
                 <CreateAppModal />
-                <EditAppModal apps={props.data.apps} />
+                <AddBotToChat apps={apps} />
+                <EditAppModal apps={apps} />
             </SettingsNavigation>
         )),
     ),

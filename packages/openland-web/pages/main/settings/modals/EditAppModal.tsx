@@ -10,34 +10,38 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XTextArea } from 'openland-x/XTextArea';
 import { TextProfiles } from 'openland-text/TextProfiles';
 
-export const EditAppModal = withAppProfile(props => {
-    let app = (props as any).apps.filter(
-        (a: AppFull) => a.id === props.router.query.editApp || '',
-    )[0];
+const { App } = TextProfiles;
+
+export const EditAppModal = withAppProfile(({ updateApp, apps, router: { query } }) => {
+    let [app] = apps.filter((a: AppFull) => a.id === query.editApp || '');
+
     if (!app) {
         return null;
     }
+
+    const { name, shortname, photoRef, about } = app;
+
     return (
         <XModalForm
-            title={TextProfiles.App.edit}
+            title={App.edit}
             targetQuery="editApp"
             defaultData={{
                 input: {
-                    name: app.name,
-                    shortname: app.shortname,
-                    photoRef: sanitizeImageRef(app.photoRef),
-                    about: app.about,
+                    name,
+                    shortname,
+                    about,
+                    photoRef: sanitizeImageRef(photoRef),
                 },
             }}
-            defaultAction={async data => {
-                await props.updateApp({
+            defaultAction={async ({ input }) => {
+                await updateApp({
                     variables: {
                         appId: app.id,
                         input: {
-                            name: data.input.name,
-                            shortname: data.input.shortname,
-                            photoRef: data.input.photoRef,
-                            about: data.input.about,
+                            name: input.name,
+                            shortname: input.shortname,
+                            photoRef: input.photoRef,
+                            about: input.about,
                         },
                     },
                 });
@@ -48,23 +52,15 @@ export const EditAppModal = withAppProfile(props => {
 
                 <XView flexGrow={1} paddingLeft={16}>
                     <XVertical>
-                        <XInput
-                            field="input.name"
-                            size="large"
-                            title={TextProfiles.App.inputs.name}
-                        />
-                        <XInput
-                            field="input.shortname"
-                            size="large"
-                            title={TextProfiles.App.inputs.shortname}
-                        />
+                        <XInput field="input.name" size="large" title={App.inputs.name} />
+                        <XInput field="input.shortname" size="large" title={App.inputs.shortname} />
                     </XVertical>
                 </XView>
             </XView>
 
             <XTextArea
                 valueStoreKey="fields.input.about"
-                placeholder={TextProfiles.App.inputs.about}
+                placeholder={App.inputs.about}
                 resize={false}
             />
         </XModalForm>

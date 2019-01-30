@@ -5,6 +5,8 @@ export const TextProfiles = {
 
     App: {
         edit: 'Edit app',
+        addBotToChat: 'Add bot to chat',
+
         create: 'Create app',
 
         inputs: {
