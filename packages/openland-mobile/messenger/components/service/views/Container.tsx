@@ -3,7 +3,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 
 export const Container = (props: { children?: any }) => (
-    <ASFlex alignItems="center" justifyContent="center" flexDirection="column">
+    <ASFlex alignItems="center" justifyContent="center" flexDirection="column" backgroundColor="white">
         <ASFlex
             marginTop={16}
             backgroundColor="rgba(153,162,176,0.6)"
