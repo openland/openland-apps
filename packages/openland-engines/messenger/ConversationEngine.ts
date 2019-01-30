@@ -1,5 +1,5 @@
 import { MessengerEngine } from '../MessengerEngine';
-import { RoomReadMutation, RoomHistoryQuery, AccountQuery, RoomQuery } from 'openland-api';
+import { RoomReadMutation, RoomHistoryQuery, RoomQuery } from 'openland-api';
 import { backoff } from 'openland-y-utils/timer';
 import { MessageFull } from 'openland-api/fragments/MessageFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
@@ -10,8 +10,6 @@ import { PendingMessage, isPendingMessage, isServerMessage, UploadingFile, Model
 import { MessageSendHandler } from './MessageSender';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { SequenceModernWatcher } from 'openland-engines/core/SequenceModernWatcher';
-import { isLoaded } from 'google-maps';
-import { number } from 'prop-types';
 
 const CHAT_SUBSCRIPTION = gql`
   subscription ChatSubscription($conversationId: ID!, $state: String) {
@@ -539,11 +537,6 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received new message');
 
             // Write message to store
-            await this.engine.client.client.updateQuery((data) => {
-                data.messages = [event.message, ...data.messages];
-                return data;
-            }, RoomHistoryQuery, { roomId: this.conversationId });
-
             if (event.message.repeatKey) {
                 // Try to replace message inplace
                 let existing = this.messages.findIndex((v) => isPendingMessage(v) && v.key === event.message.repeatKey);
@@ -570,12 +563,6 @@ export class ConversationEngine implements MessageSendHandler {
         } else if (event.__typename === 'ConversationMessageDeleted') {
             // Handle message
             console.info('Received delete message');
-            // Write message to store
-            await this.engine.client.client.updateQuery((data) => {
-                data.messages = data.messages.filter((m) => m.id !== event.message.id);
-                return data;
-            }, RoomHistoryQuery, { roomId: this.conversationId });
-
             this.messages = this.messages.filter((m: any) => m.id !== event.message.id);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
@@ -592,11 +579,6 @@ export class ConversationEngine implements MessageSendHandler {
             console.info('Received edit message');
 
             // Write message to store
-            await this.engine.client.client.updateQuery((data) => {
-                data.messages = data.messages.map((m) => m.id !== event.message.id ? m : event.message);
-                return data;
-            }, RoomHistoryQuery, { roomId: this.conversationId });
-
             this.messages = this.messages.map((m: any) => m.id !== event.message.id ? m : event.message);
 
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
