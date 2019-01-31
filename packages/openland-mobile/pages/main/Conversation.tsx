@@ -24,11 +24,7 @@ import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { RoomTinyQuery } from 'openland-api';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import LinearGradient from 'react-native-linear-gradient';
-import { ZStyles } from 'openland-mobile/components/ZStyles';
-import { doSimpleHash } from 'openland-y-utils/hash';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -115,7 +111,6 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 </SHeaderButton>
             );
         }
-        let style = ZStyles.avatars[doSimpleHash(this.engine.conversationId) % ZStyles.avatars.length];
         return (
             <>
                 <SHeaderView>
@@ -136,8 +131,6 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                                  
                                 </ASFlex>
                             </ASView> */}
-                            <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={[style.placeholderColorEnd, style.placeholderColorStart]} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
-
                             <ConversationView engine={this.engine} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}

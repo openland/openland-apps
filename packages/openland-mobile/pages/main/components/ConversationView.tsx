@@ -9,6 +9,9 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import LinearGradient from 'react-native-linear-gradient';
+import { ZStyles } from 'openland-mobile/components/ZStyles';
+import { doSimpleHash } from 'openland-y-utils/hash';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -60,8 +63,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     render() {
+        let style = ZStyles.avatars[doSimpleHash(this.props.engine.conversationId) % ZStyles.avatars.length];
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
+                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={[style.placeholderColorEnd, style.placeholderColorStart]} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
 
                 <ConversationMessagesView
                     ref={this.listRef}
