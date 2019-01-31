@@ -1,6 +1,7 @@
 package com.openland.react.anim
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
@@ -28,6 +29,7 @@ class RNSAnimatedViewViewManager : ReactViewManager() {
     }
 
     fun registerViewManager(manager: RNSAnimatedViewManager) {
+        Log.d("RNAnimatedView", "Register Manager")
         this.manager = manager
     }
 

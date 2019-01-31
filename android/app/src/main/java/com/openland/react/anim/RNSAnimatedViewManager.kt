@@ -124,7 +124,7 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
     }
 
     private fun doAnimations(spec: RNSAnimationTransactionSpec, views: Map<String, RNSAnimatedView>) {
-        for(s in spec.valueSets) {
+        for (s in spec.valueSets) {
             val view = views[s.viewKey]
             if (view != null) {
                 when {
@@ -194,7 +194,8 @@ class RNSAnimatedViewManager(reactContext: ReactApplicationContext) : ReactConte
         }
     }
 
-    private fun onCompleted(key:String) {
+    private fun onCompleted(key: String) {
+        Log.d("RNAnimationView", "Animation completed: $key")
         val map = WritableNativeMap()
         map.putString("key", key)
         this.reactApplicationContext

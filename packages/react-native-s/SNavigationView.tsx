@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, BackHandler, Dimensions } from 'react-native';
+import { View, BackHandler, Dimensions, Platform } from 'react-native';
 import { SRouting } from './SRouting';
 import { NavigationContainer } from './navigation/NavigationContainer';
 import { PresentationManager } from './navigation/PresentationManager';
@@ -38,11 +38,19 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
         let unlock1 = this.props.routing.navigationManager.beginLock();
         let unlock2 = manager.beginLock();
         SAnimated.beginTransaction();
-        SAnimated.spring('presented-' + this.key, {
-            property: 'translateY',
-            from: Dimensions.get('window').height,
-            to: 0
-        });
+        if (Platform.OS === 'ios') {
+            SAnimated.spring('presented-' + this.key, {
+                property: 'translateY',
+                from: Dimensions.get('window').height,
+                to: 0
+            });
+        } else {
+            SAnimated.timing('presented-' + this.key, {
+                property: 'translateY',
+                from: Dimensions.get('window').height,
+                to: 0
+            });
+        }
         SAnimated.commitTransaction(() => {
             unlock1();
             unlock2();

@@ -83,6 +83,7 @@ class SAnimatedImpl {
     private _dynamic = new Map<string, SAnimatedDynamic>();
 
     constructor() {
+        console.log('RNAnimatedView: Register SAnimated')
         if (Platform.OS === 'ios') {
             RNSAnimatedEventEmitter.addListener('onAnimationCompleted', (args: { key: string }) => {
                 let clb = this._callbacks.get(args.key);
@@ -95,12 +96,15 @@ class SAnimatedImpl {
             });
         } else if (Platform.OS === 'android') {
             DeviceEventEmitter.addListener('react_s_animation_completed', (args: { key: string }) => {
+                console.log('RNAnimatedView: Completed received: ' + args.key);
                 let clb = this._callbacks.get(args.key);
                 if (clb) {
                     this._callbacks.delete(args.key);
                     for (let c of clb) {
                         c();
                     }
+                } else {
+                    console.log('RNAnimatedView: No callbacks for ' + args.key);
                 }
             });
         }
@@ -238,6 +242,8 @@ class SAnimatedImpl {
         if (!this._inTransaction) {
             callback();
         }
+
+        console.log('RNAnimatedView: Await completion: ' + this._transactionKey);
 
         if (this._callbacks.has(this._transactionKey!)) {
             this._callbacks.get(this._transactionKey!)!.push(callback);

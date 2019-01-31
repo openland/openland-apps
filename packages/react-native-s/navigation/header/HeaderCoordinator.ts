@@ -107,7 +107,7 @@ export class HeaderCoordinator {
             SAnimated.beginTransaction();
             if (animated !== false) {
                 SAnimated.setPropertyAnimator((name, prop, from, to) => {
-                    SAnimated.spring(name, {
+                    SAnimated.timing(name, {
                         property: prop,
                         from: from,
                         to: to

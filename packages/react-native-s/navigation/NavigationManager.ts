@@ -4,8 +4,6 @@ import { NavigationPage } from './NavigationPage';
 import { SRoutes } from '../SRoutes';
 import { PresentationManager } from './PresentationManager';
 import { randomKey } from '../utils/randomKey';
-import { Alert } from 'react-native';
-import { push } from 'react-burger-menu';
 
 export interface NavigationManagerListener {
     onPushed(page: NavigationPage, state: NavigationState): void;
@@ -94,12 +92,15 @@ export class NavigationManager {
     }
 
     push = (route: string, params?: any) => {
+        console.log('push');
         if (this.customHandler) {
             if (this.customHandler(route, params)) {
+                console.log('RNNavigation: Custom handler');
                 return;
             }
         }
         if (this.locksCount > 0) {
+            console.log('RNNavigation: lock still active');
             return;
         }
         let record = new NavigationPage(this, this.state.history.length, route, params, this.state.history[this.state.history.length - 1].key);
@@ -141,25 +142,27 @@ export class NavigationManager {
 
     watch(watcher: NavigationManagerListener): WatchSubscription {
         this.watchers.push(watcher);
+        console.info('RNNavigation: Watch Add (' + this.watchers.length + ')');
         return () => {
-            return () => {
-                let index = this.watchers.indexOf(watcher);
-                if (index < 0) {
-                    console.warn('Double unsubscribe detected!');
-                } else {
-                    this.watchers.splice(index, 1);
-                }
-            };
+            let index = this.watchers.indexOf(watcher);
+            if (index < 0) {
+                console.warn('RNNavigation: Double unsubscribe detected!');
+            } else {
+                this.watchers.splice(index, 1);
+                console.info('RNNavigation: Watch Remove (' + this.watchers.length + ')');
+            }
         };
     }
 
     beginLock = () => {
         var locked = true;
         this.locksCount++;
+        console.log('RNNavigation: Lock (' + this.locksCount + ')');
         return () => {
             if (locked) {
                 locked = false;
                 this.locksCount--;
+                console.log('RNNavigation: Unlock (' + this.locksCount + ')');
             }
         };
     }
