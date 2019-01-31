@@ -109,10 +109,10 @@ public class MainApplication extends Application implements ReactApplication {
         AppCenterReactNativeShared.configureAppCenter(this);
         AppCenter.start(Distribute.class);
 
-        // Start keep alive service
-        Intent service = new Intent(getApplicationContext(), MainService.class);
-        Bundle bundle = new Bundle();
-        service.putExtras(bundle);
-        startService(service);
+//        // Start keep alive service
+//        Intent service = new Intent(getApplicationContext(), MainService.class);
+//        Bundle bundle = new Bundle();
+//        service.putExtras(bundle);
+//        startService(service);
     }
 }

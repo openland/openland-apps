@@ -1,5 +1,7 @@
 package com.openland.app;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.react.ReactActivity;
@@ -45,5 +47,16 @@ public class MainActivity extends ReactActivity {
                 Log.d("MainActivity","onDestroy");
             }
         };
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Start keep alive service
+        Intent service = new Intent(getApplicationContext(), MainService.class);
+        Bundle bundle = new Bundle();
+        service.putExtras(bundle);
+        startService(service);
     }
 }
