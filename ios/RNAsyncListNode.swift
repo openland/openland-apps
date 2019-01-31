@@ -378,7 +378,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       self.activeCellsStrong[state.items[index].key] = cell
       
       DispatchQueue.main.async {
-        self.node.performBatchUpdates({
+        self.node.performBatch(animated: false, updates: {
           self.state = state
           self.activeCells.set(key: state.items[index].key, value: cell)
           self.node.insertItems(at: [IndexPath(row: index, section: 1)])
@@ -390,7 +390,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onMoved(from: Int, to: Int, state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
-        self.node.performBatchUpdates({
+        self.node.performBatch(animated: false, updates: {
           self.state = state
           self.node.moveItem(at: IndexPath(item: from, section: 1), to: IndexPath(item: to, section: 1))
         }, completion: nil)
