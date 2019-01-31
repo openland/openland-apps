@@ -1,5 +1,7 @@
 package com.openland.app;
 
+import android.util.Log;
+
 import com.facebook.react.ReactActivity;
 
 import com.facebook.react.ReactActivityDelegate;
@@ -23,6 +25,24 @@ public class MainActivity extends ReactActivity {
             @Override
             protected ReactRootView createRootView() {
                 return new RNGestureHandlerEnabledRootView(MainActivity.this);
+            }
+
+            @Override
+            protected void onPause() {
+                super.onPause();
+                Log.d("MainActivity","onPause");
+            }
+
+            @Override
+            protected void onResume() {
+                super.onResume();
+                Log.d("MainActivity","onResume");
+            }
+
+            @Override
+            protected void onDestroy() {
+                super.onDestroy();
+                Log.d("MainActivity","onDestroy");
             }
         };
     }
