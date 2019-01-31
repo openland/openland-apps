@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import Editor from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
@@ -8,7 +9,7 @@ import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { XInput } from 'openland-x/XInput';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
-const DesktopWrapper = css`
+const desktopWrapperClassName = css`
     flex-shrink: 0;
     z-index: 2;
     & .emoji-wrapper {
@@ -32,13 +33,13 @@ const DesktopWrapper = css`
     }
 `;
 
-export const DesktopInvalid = css`
+export const desktopInvalidClassName = css`
     & .DraftEditor-root .public-DraftEditorPlaceholder-root {
         color: #e26363 !important;
     }
 `;
 
-const EmojiPosition = css`
+const emojiPositionClassName = css`
     position: absolute;
     top: 6px;
     right: 12px;
@@ -49,7 +50,7 @@ const EmojiPosition = css`
     },
 `;
 
-export const EmojiWrapper = css`
+export const emojiWrapperClassName = css`
     & > div {
         display: block;
     }
@@ -143,7 +144,7 @@ class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputStat
         if (canUseDOM) {
             const { invalid } = this.props;
             return (
-                <div className={cx(DesktopWrapper, invalid && DesktopInvalid)}>
+                <div className={cx(desktopWrapperClassName, invalid && desktopInvalidClassName)}>
                     <Editor
                         editorState={this.state.editorState}
                         onChange={this.onChange}
@@ -151,7 +152,7 @@ class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputStat
                         ref={this.editorRef}
                         plugins={[emojiPlugin]}
                     />
-                    <div className={`${EmojiWrapper} ${EmojiPosition} emoji-wrapper`}>
+                    <div className={`${emojiWrapperClassName} ${emojiPositionClassName} emoji-wrapper`}>
                         <EmojiSelect />
                     </div>
                 </div>
@@ -161,20 +162,20 @@ class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputStat
     }
 }
 
-const MobileInputWrapper = css`
-    z-index: 1;
-    & * {
-        font-size: 22px;
-        font-weight: 600;
-        line-height: 1.36;
-        padding: 0 !important;
-    }
-`;
-
 const MobilePostTitle = (props: TextInputProps) => (
-    <div className={MobileInputWrapper}>
-        <XInput {...props} color="flat" minHeight={30} height={30} attach="both" />
-    </div>
+    <XView zIndex={1}>
+        <XInput
+            {...props}
+            color="flat"
+            minHeight={30}
+            height={30}
+            attach="both"
+            fontSize={22}
+            fontWeight={600}
+            lineHeight={1.36}
+            padding={0}
+        />
+    </XView>
 );
 
 export const PostTitle = React.memo<TextInputProps>(props => {

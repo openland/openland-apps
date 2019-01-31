@@ -35,6 +35,10 @@ export interface XInputBasicProps extends XFlexStyles {
     onBlur?: () => void;
     dataTestId?: string;
     className?: string;
+    fontSize?: number;
+    fontWeight?: number;
+    lineHeight?: number;
+    padding?: number;
 }
 
 let sizeStyles = styleResolver({
@@ -256,7 +260,10 @@ const RootContainer = Glamorous.div<RootContainerProps>([
         border: props.color === 'flat' ? 'none' : '1px solid',
         boxSizing: 'border-box',
         color: 'rgba(0, 0, 0, 0.9)',
-        letterSpacing: 0,
+        padding: props.padding !== undefined ? `${props.padding}px !important` : undefined,
+        fontSize: props.fontSize ? `${props.fontSize}px !important` : 'inherit',
+        fontWeight: props.fontWeight ? props.fontWeight : undefined,
+        lineHeight: props.lineHeight ? `${props.lineHeight} !important` : undefined,
         '> .icon': {
             position: 'absolute',
         },
@@ -294,16 +301,19 @@ const RootContainer = Glamorous.div<RootContainerProps>([
 ]);
 
 const Input = Glamorous.input<XInputBasicProps & { format?: XInputSize }>([
-    {
+    props => ({
         width: '100%',
         height: '100%',
-        fontSize: 'inherit',
         alignSelf: 'stretch',
         outline: 'none',
+        padding: props.padding !== undefined ? `${props.padding}px !important` : undefined,
+        fontSize: props.fontSize ? `${props.fontSize}px !important` : 'inherit',
+        fontWeight: props.fontWeight ? props.fontWeight : undefined,
+        lineHeight: props.lineHeight ? `${props.lineHeight} !important` : undefined,
         '&::placeholder': {
             color: '#9d9d9d',
         },
-    },
+    }),
     props => IconPaddingStyles(props.format, !!props.icon),
     props => NonIconPaddingStyles(props.format, !props.icon),
     props => RequiredPaddingStyles(props.format, !!props.required),
@@ -322,10 +332,12 @@ const InputPlaceholder = Glamorous.div<XInputBasicProps & { format?: XInputSize 
         position: 'absolute',
         top: 0,
         left: 0,
-        color: props.invalid && props.color === 'flat' ? '#e26363' : 'rgba(0, 0, 0, 0.4)',
         pointerEvents: 'none',
-        fontWeight: 400,
-        letterSpacing: 0,
+        color: props.invalid && props.color === 'flat' ? '#e26363' : 'rgba(0, 0, 0, 0.4)',
+        padding: props.padding !== undefined ? `${props.padding}px !important` : undefined,
+        fontSize: props.fontSize ? `${props.fontSize}px !important` : 'inherit',
+        fontWeight: props.fontWeight ? props.fontWeight : 400,
+        lineHeight: props.lineHeight ? `${props.lineHeight} !important` : undefined,
     }),
     props => IconPaddingStyles(props.format, !!props.icon),
     props => NonIconPaddingStyles(props.format, !props.icon),
@@ -572,6 +584,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
                     data-test-id={dataTestId}
+                    {...other}
                 />
                 {placeholder &&
                     (!v || v === '') && (
@@ -581,6 +594,7 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                             format={size}
                             color={color}
                             invalid={invalid}
+                            {...other}
                         >
                             <span>{placeholder}</span>
                             {required && (

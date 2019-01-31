@@ -585,11 +585,8 @@ export class CreatePostComponent extends React.Component<
                                     <span>Document</span>
                                 </AttachmentButton>
                             </XView>
-                            <XView
-                                flexDirection="row"
-                                alignItems="center"
-                            >
-                                <EmojiSelectButton/>
+                            <XView flexDirection="row" alignItems="center">
+                                <EmojiSelectButton />
                                 {!props.editData && (
                                     <SendPostButton
                                         conversationId={props.conversationId}

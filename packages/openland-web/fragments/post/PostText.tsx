@@ -6,11 +6,11 @@ import createEmojiPlugin from 'draft-js-emoji-plugin';
 import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
-import { DesktopInvalid, EmojiWrapper } from './PostTitle';
+import { desktopInvalidClassName, emojiWrapperClassName } from './PostTitle';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { XTextArea } from 'openland-x/XTextArea';
 
-const DesktopWrapper = css`
+const desktopWrapperClassName = css`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -101,7 +101,7 @@ class DesktopPostText extends React.PureComponent<TextInputProps, TextInputState
         if (canUseDOM) {
             const { invalid } = this.props;
             return (
-                <div className={cx(DesktopWrapper, invalid && DesktopInvalid)}>
+                <div className={cx(desktopWrapperClassName, invalid && desktopInvalidClassName)}>
                     <Editor
                         editorState={this.state.editorState}
                         onChange={this.onChange}
@@ -136,7 +136,7 @@ export const EmojiSelectButton = React.memo(() => {
     if (!isMobile) {
         return (
             <XView flexDirection="row" alignItems="center" marginRight={10}>
-                <div className={EmojiWrapper}>
+                <div className={emojiWrapperClassName}>
                     <EmojiSelect />
                 </div>
             </XView>

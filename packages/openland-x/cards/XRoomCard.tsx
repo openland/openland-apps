@@ -4,7 +4,7 @@ import { XButton } from 'openland-x/XButton';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { XOverflow } from '../../openland-web/components/XOverflow';
 import { XMenuTitle } from 'openland-x/XMenuItem';
-import { SharedRoomKind, Room_room_SharedRoom, AvailableRooms_rooms } from 'openland-api/Types';
+import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
