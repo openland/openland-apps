@@ -2,10 +2,10 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import { withAppProfile } from 'openland-web/api/withAppProfile';
 import { AppFull } from 'openland-api/Types';
+import { XButton } from 'openland-x/XButton';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { XInput } from 'openland-x/XInput';
 import { TextProfiles } from 'openland-text/TextProfiles';
-import { DirectoryContent } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
+import { SearchCardsOrShowProfile } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 import { RoomsWithSort } from 'openland-web/fragments/RoomsExploreComponent';
 
 const { App } = TextProfiles;
@@ -17,32 +17,51 @@ export const AddBotToChat = withAppProfile(({ updateApp, apps, router: { query }
         return null;
     }
 
-    const { name } = app;
+    const RoomsWithAddToChatButton = React.memo((props: any) => {
+        return (
+            <RoomsWithSort
+                {...props}
+                otherProps={{
+                    CustomButtonComponent: (xRoomCardProps: any) => {
+                        return (
+                            <XButton
+                                text={'Add'}
+                                style={'primary'}
+                                onClick={(e: any) => {
+                                    e.stopPropagation();
+                                    console.log('add bot to ' + xRoomCardProps.id);
+                                }}
+                            />
+                        );
+                    },
+                    customMenu: null,
+                }}
+            />
+        );
+    });
+
+    //  await updateApp({
+    //                     variables: {
+    //                         appId: app.id,
+    //                         input: {
+    //                             name: input.name,
+    //                         },
+    //                     },
+    //                 });
 
     return (
         <XModalForm
+            customFooter={null}
             title={App.addBotToChat}
             targetQuery="addBotToChat"
-            defaultData={{
-                input: {
-                    name,
-                },
-            }}
-            defaultAction={async ({ input }) => {
-                await updateApp({
-                    variables: {
-                        appId: app.id,
-                        input: {
-                            name: input.name,
-                        },
-                    },
-                });
+            defaultData={{}}
+            defaultAction={() => {
+                //
             }}
         >
             <XView flexDirection="column">
-                <XInput field="input.name" size="large" title={App.inputs.name} />
-                <DirectoryContent
-                    CardsComponent={RoomsWithSort}
+                <SearchCardsOrShowProfile
+                    CardsComponent={RoomsWithAddToChatButton}
                     searchPlaceholder={'Search rooms'}
                     noQueryText={'Featured rooms'}
                     hasQueryText={'Rooms'}

@@ -5,11 +5,14 @@ import { EmptyComponent } from './directory/RoomEmptyComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import {
-    DirectoryContent,
+    SearchCardsOrShowProfile,
     ComponentWithSort,
 } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 
 interface WithChatSearchRoomsProps {
+    customButton?: any;
+    CustomButtonComponent?: any;
+    customMenu?: any;
     variables: {
         query: string;
         sort: string;
@@ -18,28 +21,40 @@ interface WithChatSearchRoomsProps {
 }
 
 export const Rooms = withChatSearchChannels(props => {
-    if (!(props.data && props.data.items)) {
+    const {
+        data,
+        error,
+        tagsCount,
+        customMenu,
+        customButton,
+        CustomButtonComponent,
+    } = props as typeof props & WithChatSearchRoomsProps;
+
+    if (!(data && data.items)) {
         return <XLoader loading={true} />;
     }
 
     if (
         !(
-            props.error ||
-            props.data === undefined ||
-            props.data.items === undefined ||
-            props.data.items === null ||
-            props.data.items.edges.length === 0
+            error ||
+            data === undefined ||
+            data.items === undefined ||
+            data.items === null ||
+            data.items.edges.length === 0
         )
     ) {
-        (props as any).tagsCount(props.data.items.pageInfo.itemsCount);
+        tagsCount(data.items.pageInfo.itemsCount);
 
         return (
             <XContentWrapper withPaddingBottom={true}>
-                {props.data.items.edges.map(c => {
+                {data.items.edges.map(c => {
                     let room = c.node;
 
                     return (
                         <XRoomCard
+                            customMenu={customMenu}
+                            customButton={customButton}
+                            CustomButtonComponent={CustomButtonComponent}
                             key={c.node.id}
                             room={room}
                             path={'/directory/p/' + room.id}
@@ -50,7 +65,7 @@ export const Rooms = withChatSearchChannels(props => {
             </XContentWrapper>
         );
     } else {
-        (props as any).tagsCount(0);
+        tagsCount(0);
 
         return <EmptyComponent />;
     }
@@ -60,7 +75,7 @@ export const RoomsWithSort = ComponentWithSort({ Component: Rooms });
 
 export const RoomsExploreComponent = () => {
     return (
-        <DirectoryContent
+        <SearchCardsOrShowProfile
             CardsComponent={RoomsWithSort}
             searchPlaceholder={'Search rooms'}
             noQueryText={'Featured rooms'}
