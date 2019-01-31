@@ -49,10 +49,10 @@ export const AboutPlaceholder = withMyOrganizationProfile(props => {
 export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
     let router = React.useContext(XViewRouterContext);
     let ctx = React.useContext(UserInfoContext);
-    if (!(props.data && props.data.organizationProfile && !!ctx )) {
+    if (!(props.data && props.data.organizationProfile && !!ctx)) {
         return null;
     }
-    const {user} = ctx
+    const { user } = ctx;
 
     if (!user) {
         return null;
@@ -60,8 +60,11 @@ export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
 
     return (
         <XModalForm
+            submitProps={{
+                text: 'Leave Organization',
+                style: 'danger',
+            }}
             title={'Leave Organization'}
-            useTopCloser={true}
             defaultData={{}}
             defaultAction={async () => {
                 await props.organizationMemberRemove({
@@ -97,8 +100,11 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
 
     return (
         <XModalForm
+            submitProps={{
+                text: 'Remove Organization',
+                style: 'danger',
+            }}
             title={'Remove Organization'}
-            useTopCloser={true}
             defaultData={{}}
             defaultAction={async () => {
                 await props.deleteOrganization({

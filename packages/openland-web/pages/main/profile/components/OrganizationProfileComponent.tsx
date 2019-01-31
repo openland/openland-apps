@@ -22,7 +22,7 @@ import {
     AboutPlaceholder,
     SocialPlaceholder,
     WebsitePlaceholder,
-} from './placeholders';
+} from './modals';
 import { XLoader } from 'openland-x/XLoader';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XScrollView2 } from 'openland-x/XScrollView2';
@@ -124,7 +124,7 @@ const HeaderAddWebsite = Glamorous.div({
 
 export const HeaderTools = Glamorous(XHorizontal)({
     paddingTop: 13,
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const EditButtonWrapper = Glamorous(XButton)<XButtonProps & { big?: boolean }>(props => ({
