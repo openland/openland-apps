@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
+import { messageBgColor } from './AsyncMessageView';
 
-const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 60, 400);
+const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50, 400);
 export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text' }> {
     render() {
         const isMedia = this.props.appearance === 'media';
@@ -10,8 +11,8 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
         const image = isMedia
             ? require('assets/chat-bubble-media.png')
             : (compact
-                ? (this.props.isOut ? require('assets/bubble.png') : require('assets/chat-bubble-in-compact.png'))
-                : (this.props.isOut ? require('assets/bubble_tail.png') : require('assets/chat-bubble-in.png')));
+                ? (this.props.isOut ? require('assets/bubble-outgoing.png') : require('assets/bubble-incoming.png'))
+                : (this.props.isOut ? require('assets/bubble-outgoing-tail.png') : require('assets/bubble-incoming-tail.png')));
 
         let capInsets: { left: number, right: number, top: number, bottom: number };
         if (Platform.OS === 'ios') {
@@ -19,9 +20,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 capInsets = { top: 12, left: 12, right: 12, bottom: 12 };
             } else {
                 if (this.props.isOut) {
-                    capInsets = { top: 22, left: 22, right: 22, bottom: 22 };
+                    capInsets = { top: 18, left: 24, right: 24, bottom: 18 };
                 } else {
-                    capInsets = { top: 20, left: 29, right: 20, bottom: 20 };
+                    capInsets = { top: 18, left: 24, right: 18, bottom: 18 };
                 }
             }
         } else {
@@ -29,9 +30,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 capInsets = { top: 12, left: 12, right: 12, bottom: 12 };
             } else {
                 if (this.props.isOut) {
-                    capInsets = { top: 21, left: 21, right: 21, bottom: 21 };
+                    capInsets = { top: 17, left: 23, right: 23, bottom: 17 };
                 } else {
-                    capInsets = { top: 19, left: 29, right: 19, bottom: 19 };
+                    capInsets = { top: 17, left: 23, right: 17, bottom: 17 };
                 }
             }
         }
@@ -49,9 +50,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
 
         let resolved = Image.resolveAssetSource(image);
         return (
-            <ASFlex flexDirection="column" alignItems="stretch" maxWidth={bubbleMaxWidth}>
+            <ASFlex flexDirection="column" alignItems="stretch" maxWidth={bubbleMaxWidth} backgroundColor={isMedia ? messageBgColor : undefined}>
                 <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" >
-                    <ASFlex marginTop={contentInsets.top + (this.props.isOut ? 4 : 0)} marginBottom={contentInsets.bottom + (this.props.isOut ? 2 : 0)} marginLeft={contentInsets.left + (this.props.isOut ? 7 : 0)} marginRight={contentInsets.right + (this.props.isOut ? 3 : 0)} flexDirection="column" alignItems="stretch">
+                    <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch">
                         {this.props.children}
                     </ASFlex>
                 </ASFlex>
