@@ -37,8 +37,8 @@ class ZKeyboardAwareBarComponent extends React.PureComponent<{ context?: { updat
                             }}
                             onLayout={this.handleLayout}
                         >
-                            <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} />
-                            <ZBlurredView intensity="high" alignItems="stretch" flexDirection="column" paddingBottom={SDevice.safeArea.bottom}>
+                            {/* <View height={0.5} backgroundColor="#b7bdc6" opacity={0.3} /> */}
+                            <ZBlurredView intensity="normal" alignItems="stretch" flexDirection="column" paddingBottom={SDevice.safeArea.bottom}>
                                 {this.props.children}
                             </ZBlurredView>
                         </View>

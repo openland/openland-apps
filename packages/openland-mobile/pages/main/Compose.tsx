@@ -41,7 +41,7 @@ const UserSearchComponent = React.memo<PageProps & { query: string }>((props) =>
 const ComposeComponent = React.memo<PageProps>((props) => {
     return (
         <>
-            <SHeader title="New message" />
+            <SHeader title="New message" hairline="hidden" />
             <SSearchControler
                 searchRender={(p) => (
                     <SScrollView keyboardDismissMode="interactive">
@@ -55,7 +55,7 @@ const ComposeComponent = React.memo<PageProps>((props) => {
                     <SScrollView keyboardDismissMode="interactive">
                         <ZListItemGroup divider={false}>
                             <ZListItem leftIcon={require('assets/ic-group-24.png')} text="Create room" path="CreateChannel" pathRemove={true} />
-                            <ZListItem leftIcon={require('assets/ic-lock-24.png')} text="Create private group" path="CreateGroupAttrs" pathRemove={true} />
+                            <ZListItem leftIcon={require('assets/ic-lock-24.png')} text="Create secret group" path="CreateGroupAttrs" pathRemove={true} />
                         </ZListItemGroup>
                         <UserSearchComponent query="" router={props.router} />
                     </SScrollView>
