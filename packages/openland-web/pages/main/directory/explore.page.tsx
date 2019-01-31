@@ -43,6 +43,31 @@ interface RoomsCardsProps {
 //     organization: AvailableRooms_rooms_SharedRoom_organization | null;
 //   }
 
+// const RoomsCards1 = withAvailableRooms(
+//     withQueryLoader(({ data: { rooms } }) => {
+//         return (
+//             <>
+//                 {rooms
+//                     .filter(v => v.__typename === 'SharedRoom')
+//                     .map(v => v as AvailableRooms_rooms_SharedRoom)
+//                     .filter((a, i, s) => s.findIndex(v => v.id === a.id) === i)
+//                     .filter(v => v.membersCount && v.membersCount > 0)
+//                     .sort((a, b) => {
+//                         if (b.membersCount === a.membersCount) {
+//                             return a.title.localeCompare(b.title);
+//                         }
+//                         return b.membersCount! - a.membersCount!;
+//                     })
+//                     .map(v => (
+//                         <XView as="a" path={'/mail/' + v.id} key={v.id}>
+//                             {v.title} ({v.membersCount + ''}/{v.membership})
+//                         </XView>
+//                     ))}
+//             </>
+//         );
+//     }),
+// );
+
 export const RoomsCards = withAvailableRooms(
     withQueryLoader(props => {
         if (!props.data) {
@@ -83,31 +108,6 @@ export const RoomsCards = withAvailableRooms(
         );
     }),
 ) as React.ComponentType<RoomsCardsProps>;
-
-const RoomsCards1 = withAvailableRooms(
-    withQueryLoader(({ data: { rooms } }) => {
-        return (
-            <>
-                {rooms
-                    .filter(v => v.__typename === 'SharedRoom')
-                    .map(v => v as AvailableRooms_rooms_SharedRoom)
-                    .filter((a, i, s) => s.findIndex(v => v.id === a.id) === i)
-                    .filter(v => v.membersCount && v.membersCount > 0)
-                    .sort((a, b) => {
-                        if (b.membersCount === a.membersCount) {
-                            return a.title.localeCompare(b.title);
-                        }
-                        return b.membersCount! - a.membersCount!;
-                    })
-                    .map(v => (
-                        <XView as="a" path={'/mail/' + v.id} key={v.id}>
-                            {v.title} ({v.membersCount + ''}/{v.membership})
-                        </XView>
-                    ))}
-            </>
-        );
-    }),
-);
 
 export default withApp('Explore', 'viewer', () => {
     let CardsComponent = ComponentWithSort({ Component: RoomsCards, queryToPrefix: true });
