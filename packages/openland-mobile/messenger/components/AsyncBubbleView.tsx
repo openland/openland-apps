@@ -20,9 +20,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 capInsets = { top: 12, left: 12, right: 12, bottom: 12 };
             } else {
                 if (this.props.isOut) {
-                    capInsets = { top: 18, left: 24, right: 24, bottom: 18 };
+                    capInsets = { top: 18, left: 25, right: 24, bottom: 18 };
                 } else {
-                    capInsets = { top: 18, left: 24, right: 18, bottom: 18 };
+                    capInsets = { top: 18, left: 23, right: 18, bottom: 18 };
                 }
             }
         } else {
@@ -30,9 +30,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 capInsets = { top: 12, left: 12, right: 12, bottom: 12 };
             } else {
                 if (this.props.isOut) {
-                    capInsets = { top: 17, left: 23, right: 23, bottom: 17 };
+                    capInsets = { top: 17, left: 24, right: 24, bottom: 17 };
                 } else {
-                    capInsets = { top: 17, left: 23, right: 17, bottom: 17 };
+                    capInsets = { top: 17, left: 22, right: 17, bottom: 17 };
                 }
             }
         }
@@ -42,9 +42,9 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
             contentInsets = { left: 2, right: 2, top: 2, bottom: 2 };
         } else {
             if (this.props.isOut) {
-                contentInsets = { left: 1, right: 5, top: 1, bottom: 1 };
+                contentInsets = { left: 6 + 12, right: 6 + 12, top: 7, bottom: 9 };
             } else {
-                contentInsets = { left: 5, right: 1, top: 1, bottom: 1 };
+                contentInsets = { left: 5 + 12, right: 12, top: 7, bottom: 9 };
             }
         }
 
