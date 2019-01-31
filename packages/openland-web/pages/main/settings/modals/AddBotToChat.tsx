@@ -23,31 +23,29 @@ export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { quer
         return (
             <RoomsWithSort
                 {...props}
-                otherProps={{
-                    CustomButtonComponent: (xRoomCardProps: any) => {
-                        return (
-                            <XButton
-                                text={'Add'}
-                                style={'primary'}
-                                onClick={(e: any) => {
-                                    e.stopPropagation();
+                CustomButtonComponent={(xRoomCardProps: any) => {
+                    return (
+                        <XButton
+                            text={'Add'}
+                            style={'primary'}
+                            onClick={(e: any) => {
+                                e.stopPropagation();
 
-                                    addAppToChat({
-                                        variables: {
-                                            appId: app.id,
-                                            chatId: xRoomCardProps.room.id,
-                                        },
-                                    });
-                                    // hack to navigate after modal closing navigation
-                                    setTimeout(() => {
-                                        router!.navigate(`/mail/${xRoomCardProps.room.id}`);
-                                    });
-                                }}
-                            />
-                        );
-                    },
-                    customMenu: null,
+                                addAppToChat({
+                                    variables: {
+                                        appId: app.id,
+                                        chatId: xRoomCardProps.room.id,
+                                    },
+                                });
+                                // hack to navigate after modal closing navigation
+                                setTimeout(() => {
+                                    router!.navigate(`/mail/${xRoomCardProps.room.id}`);
+                                });
+                            }}
+                        />
+                    );
                 }}
+                customMenu={null}
             />
         );
     });

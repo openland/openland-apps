@@ -229,7 +229,8 @@ export const ComponentWithSort = ({
     orderBy,
     variables,
     tagsCount,
-    otherProps,
+    customMenu,
+    CustomButtonComponent,
 }: {
     featuredFirst: boolean;
     orderBy: string;
@@ -237,7 +238,8 @@ export const ComponentWithSort = ({
         query: string;
     };
     tagsCount: Function;
-    otherProps: any;
+    customMenu: any;
+    CustomButtonComponent: any;
 }) => {
     return (
         <Component
@@ -249,7 +251,8 @@ export const ComponentWithSort = ({
                     { [orderBy]: { order: 'desc' } },
                 ]),
             }}
-            {...otherProps}
+            customMenu={customMenu}
+            CustomButtonComponent={CustomButtonComponent}
         />
     );
 };
