@@ -13,15 +13,22 @@ class RNBackgroundTask: NSObject {
   
   var task: UIBackgroundTaskIdentifier? = nil
   
-  @objc(startTask)
-  func startTask() -> Void {
+  @objc(startTask:)
+  func startTask(duration: NSNumber) -> Void {
     if self.task == nil {
-      UIApplication.shared.beginBackgroundTask(withName: "RNBackgroundTask") {
+      let t = UIApplication.shared.beginBackgroundTask(withName: "RNBackgroundTask") {
         if self.task != nil {
           UIApplication.shared.endBackgroundTask(self.task!)
         }
         self.task = nil
       }
+      DispatchQueue.main.asyncAfter(deadline: .now() + (duration.doubleValue / 1000.0)) {
+        if self.task == t {
+          UIApplication.shared.endBackgroundTask(t)
+          self.task = nil
+        }
+      }
+      self.task = t
     }
   }
   

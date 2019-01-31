@@ -7,7 +7,7 @@ class AppVisibilityStub implements AppVisibilityApi {
 
     isVisible = true;
     private watchers: ((isVisible: boolean) => void)[] = [];
-    private pendingTimer?: number;
+    // private pendingTimer?: number;
 
     constructor() {
         this.isVisible = AppState.currentState === 'active';
@@ -35,26 +35,26 @@ class AppVisibilityStub implements AppVisibilityApi {
     private handleVisible() {
         if (Platform.OS === 'ios') {
             console.log('[VISIBILITY] Visible');
-            if (this.pendingTimer) {
-                window.clearTimeout(this.pendingTimer)
-                this.pendingTimer = undefined;
-            }
-            IOSTimer.startTask();
+            // if (this.pendingTimer) {
+            //     window.clearTimeout(this.pendingTimer)
+            //     this.pendingTimer = undefined;
+            // }
+            IOSTimer.stopTask();
         }
     }
 
     private handleInvisible() {
         if (Platform.OS === 'ios') {
             console.log('[VISIBILITY] Invisible');
-            if (this.pendingTimer) {
-                window.clearTimeout(this.pendingTimer)
-                this.pendingTimer = undefined;
-            }
-            IOSTimer.startTask();
-            this.pendingTimer = window.setTimeout(() => {
-                console.log('[VISIBILITY] Paused');
-                IOSTimer.stopTask();
-            }, 15000);
+            // if (this.pendingTimer) {
+            //     window.clearTimeout(this.pendingTimer)
+            //     this.pendingTimer = undefined;
+            // }
+            IOSTimer.startTask(15000);
+            // this.pendingTimer = window.setTimeout(() => {
+            //     console.log('[VISIBILITY] Paused');
+            //     IOSTimer.stopTask();
+            // }, 15000);
         }
     }
 
