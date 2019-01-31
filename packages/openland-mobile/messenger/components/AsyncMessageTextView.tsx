@@ -53,8 +53,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
         }
         let marginHorizontal = Platform.select({
-            default: 8,
-            ios: 10
+            default: 0,
+            ios: 0
         });
         let placeholderIndex = 0;
         if (this.props.message.senderId) {
@@ -86,10 +86,11 @@ export class AsyncMessageTextView extends React.PureComponent<{
                 <ASFlex
                     marginLeft={marginHorizontal}
                     marginRight={marginHorizontal}
-                    marginTop={10}
-                    marginBottom={10}
+                    marginTop={0}
+                    marginBottom={0}
                     flexDirection="column"
                 >
+
                     {!this.props.message.isOut && !this.props.message.attachTop && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
 
                     {/* forward/reply */}
@@ -182,8 +183,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
                     overlay={true}
                     alignItems="flex-end"
                     justifyContent="flex-end"
-                    marginRight={this.props.message.isOut ? 9 : 11}
-                    marginBottom={this.props.message.isOut ? 11 : 9}
+                    marginRight={8}
+                    marginBottom={5}
                 >
                     <ASFlex
                         flexDirection="row"

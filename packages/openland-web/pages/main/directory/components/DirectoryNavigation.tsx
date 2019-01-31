@@ -18,7 +18,7 @@ import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from '../../../../components/Navigation';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 
-export const DirectoryContent = React.memo(
+export const SearchCardsOrShowProfile = React.memo(
     ({
         id,
         searchPlaceholder,
@@ -199,7 +199,7 @@ export const DirectoryNavigation = React.memo(
                                 {children ? (
                                     children
                                 ) : (
-                                    <DirectoryContent
+                                    <SearchCardsOrShowProfile
                                         id={id}
                                         ProfileComponent={ProfileComponent}
                                         CardsComponent={CardsComponent}
@@ -229,6 +229,7 @@ export const ComponentWithSort = ({
     orderBy,
     variables,
     tagsCount,
+    otherProps,
 }: {
     featuredFirst: boolean;
     orderBy: string;
@@ -236,6 +237,7 @@ export const ComponentWithSort = ({
         query: string;
     };
     tagsCount: Function;
+    otherProps: any;
 }) => {
     return (
         <Component
@@ -247,6 +249,7 @@ export const ComponentWithSort = ({
                     { [orderBy]: { order: 'desc' } },
                 ]),
             }}
+            {...otherProps}
         />
     );
 };
