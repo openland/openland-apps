@@ -178,34 +178,36 @@ export class AsyncMessageTextView extends React.PureComponent<{
 
                         </ASFlex>
                     )}
-                </ASFlex>
-                <ASFlex
-                    overlay={true}
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                    marginRight={8}
-                    marginBottom={5}
-                >
+
                     <ASFlex
-                        flexDirection="row"
-                        height={14}
+                        overlay={true}
+                        alignItems="flex-end"
+                        justifyContent="flex-end"
+                        marginRight={this.props.message.isOut ? -8 : 0}
+                        marginBottom={-4}
                     >
-                        <ASText
-                            fontSize={11}
-                            lineHeight={13}
-                            color={this.props.message.isOut ? '#fff' : '#8a8a8f'}
-                            opacity={this.props.message.isOut ? 0.7 : 0.6}
+                        <ASFlex
+                            flexDirection="row"
+                            height={14}
                         >
-                            {formatTime(this.props.message.date)}
-                        </ASText>
-                        {this.props.message.isOut && (
-                            <ASFlex width={18} height={13} marginLeft={2} marginTop={1} justifyContent="flex-start" alignItems="center">
-                                {this.props.message.isSending && <ASImage source={require('assets/ic-sending.png')} width={13} height={13} />}
-                                {!this.props.message.isSending && <ASImage source={require('assets/ic-sent.png')} width={9} height={8} />}
-                            </ASFlex>
-                        )}
+                            <ASText
+                                fontSize={11}
+                                lineHeight={13}
+                                color={this.props.message.isOut ? '#fff' : '#8a8a8f'}
+                                opacity={this.props.message.isOut ? 0.7 : 0.6}
+                            >
+                                {formatTime(this.props.message.date)}
+                            </ASText>
+                            {this.props.message.isOut && (
+                                <ASFlex width={18} height={13} marginLeft={2} marginTop={1} justifyContent="flex-start" alignItems="center">
+                                    {this.props.message.isSending && <ASImage source={require('assets/ic-sending.png')} width={13} height={13} />}
+                                    {!this.props.message.isSending && <ASImage source={require('assets/ic-sent.png')} width={9} height={8} />}
+                                </ASFlex>
+                            )}
+                        </ASFlex>
                     </ASFlex>
                 </ASFlex>
+
             </AsyncBubbleView >
         );
     }
