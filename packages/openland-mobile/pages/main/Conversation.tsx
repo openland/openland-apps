@@ -7,7 +7,6 @@ import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
 import { ConversationView } from './components/ConversationView';
 import { PageProps } from '../../components/PageProps';
-import { Deferred } from '../../components/Deferred';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { ChatHeader } from './components/ChatHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -25,6 +24,7 @@ import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { SDeferred } from 'react-native-s/SDeferred';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -117,7 +117,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                     {header}
                 </SHeaderView>
                 {button}
-                <Deferred>
+                <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
                             {/* <ASView
@@ -140,7 +140,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                             />
                         </View>
                     </KeyboardSafeAreaView>
-                </Deferred>
+                </SDeferred>
             </>
         );
     }
