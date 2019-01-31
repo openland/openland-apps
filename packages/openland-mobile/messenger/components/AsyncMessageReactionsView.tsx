@@ -39,15 +39,15 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
         }
 
         return (
-            <ASFlex flexDirection="row" marginRight={7} backgroundColor="white" alignSelf="stretch" flexGrow={1} justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
+            <ASFlex flexDirection="row" backgroundColor="white" justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
                 {[...reactions.values()].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => (
-                    <ASFlex flexDirection="row" marginTop={5} marginBottom={5}>
+                    <ASFlex flexDirection="row" marginTop={5} marginBottom={5} >
                         <ASText fontSize={14} key={i} marginLeft={7}>{r.reaction}</ASText>
                         <ASText fontSize={14} key={i + '-counter'} color={r.my ? 'rgb(23, 144, 255)' : 'rgba(0, 0, 0, 0.5)'}>{r.count}</ASText>
                     </ASFlex>
                 )
                 )}
-                {users.length > 0 && <ASText marginLeft={5} marginTop={5} marginBottom={5} fontSize={14} key={'users'} color={'rgba(0, 0, 0, 0.5)'}>{usersString}</ASText>}
+                {users.length > 0 && <ASText marginLeft={5} marginRight={7} marginTop={5} marginBottom={5} fontSize={14} key={'users'} color={'rgba(0, 0, 0, 0.5)'}>{usersString}</ASText>}
 
             </ ASFlex>
         );
