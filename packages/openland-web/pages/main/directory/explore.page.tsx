@@ -66,7 +66,7 @@ export const RoomsCards = withAvailableRooms(
                             return (
                                 <XRoomCard
                                     key={key}
-                                    room={room}
+                                    room={room as any}
                                     path={'/directory/p/' + room.id}
                                     isMember={room.membership === 'MEMBER'}
                                 />
