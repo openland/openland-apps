@@ -564,6 +564,9 @@ export class OpenlandClient {
     async mutateRefreshAppToken(variables: Types.RefreshAppTokenVariables): Promise<Types.RefreshAppToken> {
         return this.client.mutate(Source.RefreshAppTokenMutation, variables);
     }
+    async mutateAddAppToChat(variables: Types.AddAppToChatVariables): Promise<Types.AddAppToChat> {
+        return this.client.mutate(Source.AddAppToChatMutation, variables);
+    }
     async mutateMessageSetReaction(variables: Types.MessageSetReactionVariables): Promise<Types.MessageSetReaction> {
         return this.client.mutate(Source.MessageSetReactionMutation, variables);
     }

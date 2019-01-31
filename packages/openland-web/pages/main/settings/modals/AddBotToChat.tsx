@@ -7,10 +7,12 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { SearchCardsOrShowProfile } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 import { RoomsWithSort } from 'openland-web/fragments/RoomsExploreComponent';
+import { XViewRouterContext } from 'react-mental';
 
 const { App } = TextProfiles;
 
-export const AddBotToChat = withAppProfile(({ updateApp, apps, router: { query } }) => {
+export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { query } }) => {
+    let router = React.useContext(XViewRouterContext);
     let [app] = apps.filter((a: AppFull) => a.id === query.addBotToChat || '');
 
     if (!app) {
@@ -29,7 +31,17 @@ export const AddBotToChat = withAppProfile(({ updateApp, apps, router: { query }
                                 style={'primary'}
                                 onClick={(e: any) => {
                                     e.stopPropagation();
-                                    console.log('add bot to ' + xRoomCardProps.id);
+
+                                    addAppToChat({
+                                        variables: {
+                                            appId: app.id,
+                                            chatId: xRoomCardProps.room.id,
+                                        },
+                                    });
+                                    // hack to navigate after modal closing navigation
+                                    setTimeout(() => {
+                                        router!.navigate(`/mail/${xRoomCardProps.room.id}`);
+                                    });
                                 }}
                             />
                         );
@@ -39,15 +51,6 @@ export const AddBotToChat = withAppProfile(({ updateApp, apps, router: { query }
             />
         );
     });
-
-    //  await updateApp({
-    //                     variables: {
-    //                         appId: app.id,
-    //                         input: {
-    //                             name: input.name,
-    //                         },
-    //                     },
-    //                 });
 
     return (
         <XModalForm

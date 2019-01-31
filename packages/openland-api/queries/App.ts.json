@@ -3,6 +3,7 @@
         { "name": "MyAppsQuery", "type": "query", "hasVariables": false },
         { "name": "CreateAppMutation", "type": "mutation", "hasVariables": true },
         { "name": "UpdateAppMutation", "type": "mutation", "hasVariables": true },
-        { "name": "RefreshAppTokenMutation", "type": "mutation", "hasVariables": true }
+        { "name": "RefreshAppTokenMutation", "type": "mutation", "hasVariables": true },
+        { "name": "AddAppToChatMutation", "type": "mutation", "hasVariables": true }
     ]
 }

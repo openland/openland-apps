@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { AppFull } from '../fragments/AppFull';
+import { AppChat } from '../fragments/AppChat';
 
 export const MyAppsQuery = gql`
     query MyApps {
@@ -40,4 +41,13 @@ export const RefreshAppTokenMutation = gql`
         }
     }
     ${AppFull}
+`;
+
+export const AddAppToChatMutation = gql`
+    mutation AddAppToChat($appId: ID!, $chatId: ID!) {
+        addAppToChat(appId: $appId, chatId: $chatId) {
+            ...AppChat
+        }
+    }
+    ${AppChat}
 `;

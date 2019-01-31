@@ -35,6 +35,7 @@ export const MyAppsQuery = typedQuery<Types.MyApps, {}>(App.MyAppsQuery);
 export const CreateAppMutation = typedMutation<Types.CreateApp, Types.CreateAppVariables>(App.CreateAppMutation);
 export const UpdateAppMutation = typedMutation<Types.UpdateApp, Types.UpdateAppVariables>(App.UpdateAppMutation);
 export const RefreshAppTokenMutation = typedMutation<Types.RefreshAppToken, Types.RefreshAppTokenVariables>(App.RefreshAppTokenMutation);
+export const AddAppToChatMutation = typedMutation<Types.AddAppToChat, Types.AddAppToChatVariables>(App.AddAppToChatMutation);
 export const DialogsQuery = typedQuery<Types.Dialogs, Types.DialogsVariables>(Chats.DialogsQuery);
 export const RoomQuery = typedQuery<Types.Room, Types.RoomVariables>(Chats.RoomQuery);
 export const RoomTinyQuery = typedQuery<Types.RoomTiny, Types.RoomTinyVariables>(Chats.RoomTinyQuery);
