@@ -100,6 +100,8 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
 
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
+                .clipToPadding(false)
+                .clipChildren(false)
                 .disablePTR(true)
                 .section(LithoSection.create(SectionContext(asyncContext))
                         .dataModel(this.state.items)

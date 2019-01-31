@@ -63,6 +63,7 @@ fun resolveNode(context: ComponentContext, spec: AsyncViewSpec, reactContext: Re
         is AsyncFlexSpec -> return LithoFlex.create(context)
                 .spec(spec)
                 .reactContext(reactContext)
+                .clipToOutline(false)
                 .build()
         is AsyncTextSpec -> {
             return LithoText.create(context)
