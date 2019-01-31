@@ -3,7 +3,7 @@ import { withApp } from 'openland-web/components/withApp';
 import { XView } from 'react-mental';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withAvailableRooms } from 'openland-web/api/withAvailableRooms';
-import { AvailableRooms_rooms_SharedRoom, AvailableRooms_rooms } from 'openland-api/Types';
+import { AvailableRooms_rooms } from 'openland-api/Types';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 // import { PagePagination } from './components/PagePagination';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
@@ -87,7 +87,7 @@ export const RoomsCards = withAvailableRooms(
             <>
                 {!noData && (
                     <XContentWrapper withPaddingBottom={true}>
-                        {props.data.rooms.map((room: AvailableRooms_rooms_SharedRoom, key) => {
+                        {props.data.rooms.map((room: AvailableRooms_rooms, key) => {
                             return (
                                 <XRoomCard
                                     key={key}

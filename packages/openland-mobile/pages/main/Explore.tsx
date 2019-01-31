@@ -7,43 +7,47 @@ import { CenteredHeader } from './components/CenteredHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-import { AvailableRooms_rooms_SharedRoom } from 'openland-api/Types';
+import { AvailableRooms_rooms } from 'openland-api/Types';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 
-const RoomsList = React.memo((props) => {
-
-    let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms_SharedRoom[];
-    let featureds = getClient().useRoomSearch({ sort: JSON.stringify([{ featured: { order: 'desc' } }, { createdAt: { order: 'desc' } }]) }).items.edges.map((v) => v.node);
+const RoomsList = React.memo(props => {
+    let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms[];
+    let featureds = getClient()
+        .useRoomSearch({
+            sort: JSON.stringify([
+                { featured: { order: 'desc' } },
+                { createdAt: { order: 'desc' } },
+            ]),
+        })
+        .items.edges.map(v => v.node);
 
     let src = rooms
-        .filter((v) => !!v.membersCount)
-        .sort((a, b) => ((b.membersCount || 0) - (a.membersCount || 0)));
+        .filter(v => !!v.membersCount)
+        .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
 
-    let newRooms = src
-        .filter((v) => v.membership === 'NONE' || v.membership === 'REQUESTED')
-    let existingRooms = src
-        .filter((v) => v.membership === 'MEMBER')
+    let newRooms = src.filter(v => v.membership === 'NONE' || v.membership === 'REQUESTED');
+    let existingRooms = src.filter(v => v.membership === 'MEMBER');
 
     let featured = featureds
-        .filter((v) => newRooms.find((v2) => v.id !== v2.id))
-        .filter((v) => existingRooms.find((v2) => v.id !== v2.id))
-        .sort((a, b) => ((b.membersCount || 0) - (a.membersCount || 0)));
+        .filter(v => newRooms.find(v2 => v.id !== v2.id))
+        .filter(v => existingRooms.find(v2 => v.id !== v2.id))
+        .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
 
     return (
         <>
             <ZListItem text="Organizations" path="ExploreOrganizations" />
             <ZListItemGroup header="Available Groups">
-                {newRooms.map((v) => (
+                {newRooms.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
                         leftAvatar={{
                             photo: v.photo,
                             key: v.id,
-                            title: v.title
+                            title: v.title,
                         }}
                         title={v.organization!.name}
                         description={v.membersCount + ' members'}
@@ -54,14 +58,14 @@ const RoomsList = React.memo((props) => {
             </ZListItemGroup>
 
             <ZListItemGroup header="Your Groups" divider={false}>
-                {existingRooms.map((v) => (
+                {existingRooms.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
                         leftAvatar={{
                             photo: v.photo,
                             key: v.id,
-                            title: v.title
+                            title: v.title,
                         }}
                         title={v.organization!.name}
                         description={v.membersCount + ' members'}
@@ -72,14 +76,14 @@ const RoomsList = React.memo((props) => {
             </ZListItemGroup>
 
             <ZListItemGroup header="Featured" divider={false}>
-                {featured.map((v) => (
+                {featured.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
                         leftAvatar={{
                             photo: v.photo,
                             key: v.id,
-                            title: v.title
+                            title: v.title,
                         }}
                         title={v.organization!.name}
                         description={v.membersCount + ' members'}
@@ -89,24 +93,24 @@ const RoomsList = React.memo((props) => {
                 ))}
             </ZListItemGroup>
         </>
-    )
+    );
 });
 
 const ExplorePage = (props: PageProps) => {
     return (
         <>
-            {Platform.OS === 'ios' && (
-                <SHeader title="Browse" />
-            )}
-            {Platform.OS === 'android' && (
-                <CenteredHeader title="Browse" padding={48} />
-            )}
+            {Platform.OS === 'ios' && <SHeader title="Browse" />}
+            {Platform.OS === 'android' && <CenteredHeader title="Browse" padding={48} />}
             <SHeaderButton
                 title="New"
-                icon={Platform.OS === 'ios' ? require('assets/ic-compose-26.png') : require('assets/ic-edit.png')}
+                icon={
+                    Platform.OS === 'ios'
+                        ? require('assets/ic-compose-26.png')
+                        : require('assets/ic-edit.png')
+                }
                 onPress={() => props.router.push('Compose')}
             />
-            <SSearchControler searchRender={(p) => null}>
+            <SSearchControler searchRender={p => null}>
                 <SScrollView>
                     <SDeferred>
                         <RoomsList />
@@ -115,6 +119,6 @@ const ExplorePage = (props: PageProps) => {
             </SSearchControler>
         </>
     );
-}
+};
 
 export const Explore = withApp(ExplorePage, { navigationAppearance: 'large' });
