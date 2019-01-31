@@ -496,19 +496,19 @@ const Header = (props: { organization: Organization_organization }) => {
     );
 
     const deleteOrganizationButton = (
-        <XWithRole role={['feature-non-production']}>
-            <XMenuItem style="danger" query={{ field: 'deleteOrganization', value: 'true' }}>
-                Delete organization
-            </XMenuItem>
-        </XWithRole>
+        // <XWithRole role={['feature-non-production']}>
+        <XMenuItem style="danger" query={{ field: 'deleteOrganization', value: 'true' }}>
+            Delete organization
+        </XMenuItem>
+        // </XWithRole>
     );
 
     const leaveOrganizationButton = (
-        <XWithRole role={['feature-non-production']}>
-            <XMenuItem style="danger" query={{ field: 'leaveOrganization', value: 'true' }}>
-                Leave organization
-            </XMenuItem>
-        </XWithRole>
+        // <XWithRole role={['feature-non-production']}>
+        <XMenuItem style="danger" query={{ field: 'leaveOrganization', value: 'true' }}>
+            Leave organization
+        </XMenuItem>
+        // </XWithRole>
     );
 
     return (
@@ -561,38 +561,27 @@ const Header = (props: { organization: Organization_organization }) => {
                         </XWithRole>
                     )}
 
-                    <XWithRole role={['editor', 'super-admin']} negate={true}>
-                        <XWithRole role="admin" orgPermission={organization.id}>
-                            <XOverflow
-                                placement="bottom-end"
-                                flat={true}
-                                content={
-                                    <>
-                                        {editButton}
-                                        {leaveOrganizationButton}
-                                        {deleteOrganizationButton}
-                                    </>
-                                }
-                            />
-                        </XWithRole>
-                    </XWithRole>
-
-                    <XWithRole role={['editor', 'super-admin']}>
-                        <XOverflow
-                            placement="bottom-end"
-                            flat={true}
-                            content={
-                                <>
+                    <XOverflow
+                        placement="bottom-end"
+                        flat={true}
+                        content={
+                            <>
+                                <XWithRole role="admin" orgPermission={organization.id}>
                                     {editButton}
+                                </XWithRole>
+
+                                <XWithRole role={['editor', 'super-admin']}>
                                     <XMenuItem path={'/super/orgs/' + organization.superAccountId}>
                                         {TextProfiles.Organization.superEdit}
                                     </XMenuItem>
-                                    {leaveOrganizationButton}
+                                </XWithRole>
+                                {leaveOrganizationButton}
+                                <XWithRole role="admin" orgPermission={organization.id}>
                                     {deleteOrganizationButton}
-                                </>
-                            }
-                        />
-                    </XWithRole>
+                                </XWithRole>
+                            </>
+                        }
+                    />
                 </HeaderTools>
             </XContentWrapper>
         </HeaderWrapper>

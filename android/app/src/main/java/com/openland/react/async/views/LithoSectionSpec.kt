@@ -18,6 +18,7 @@ import com.facebook.litho.widget.Progress
 import com.facebook.litho.widget.RenderInfo
 import com.facebook.react.bridge.ReactContext
 import com.facebook.yoga.YogaAlign
+import com.facebook.yoga.YogaEdge
 import com.facebook.yoga.YogaJustify
 import com.openland.react.async.*
 
@@ -33,22 +34,45 @@ object LithoSectionSpec {
                                   @Prop(optional = true) overflowColor: Int?
                                   ): Children {
 
-        var footer = Row.create(c)
+        var footer = Column.create(c)
                 .heightDip(64.0f)
                 .widthPercent(100.0f)
                 .alignItems(YogaAlign.CENTER)
                 .justifyContent(YogaJustify.CENTER)
 
-        if (loading && dataModel.isNotEmpty()) {
-            footer.child(Progress.create(c)
-                    .heightDip(32.0f)
-                    .widthDip(32.0f)
-                    .color(0xFF4747EC.toInt()))
+
+
+        val progress = Progress.create(c)
+                .heightDip(32.0f)
+                .widthDip(32.0f)
+                .color(0xFF0084fe.toInt())
+                .marginDip(YogaEdge.BOTTOM, 16.0f)
+
+        if(overflowColor != null){
+            footer.backgroundColor(overflowColor)
+                    .justifyContent(YogaJustify.FLEX_END)
+                    .clipToOutline(false)
+            var overflow = Row.create(c)
+                    .heightDip(1000.0f)
+                    .marginDip(YogaEdge.TOP, -1000.0f)
+                    .backgroundColor(overflowColor)
+                    .alignSelf(YogaAlign.STRETCH)
+                    .clipToOutline(false)
+
+            footer.child(overflow)
+            if (loading && dataModel.isNotEmpty()) {
+                footer.child(progress)
+            }
+
+        }else{
+            if (loading && dataModel.isNotEmpty()) {
+                footer.child(progress)
+            }
         }
 
-        var header = Row.create(c).heightDip(headerPadding);
+        var header = Row.create(c).heightDip(headerPadding)
         if(overflowColor !== null){
-            header = header.backgroundColor(overflowColor);
+            header.backgroundColor(overflowColor)
         }
         return Children.create()
                 .child(SingleComponentSection.create(c)
@@ -82,6 +106,7 @@ object LithoSectionSpec {
                 .component(Column.create(c)
                         .child(resolveNode(c, model.spec, reactContext))
                         .alignItems(YogaAlign.STRETCH)
+                        .clipToOutline(false)
                         .widthPercent(100.0f))
                 .build()
     }

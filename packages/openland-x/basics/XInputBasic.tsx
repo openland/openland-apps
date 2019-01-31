@@ -584,7 +584,10 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                     onFocus={this.handleFocus}
                     onBlur={this.handleBlur}
                     data-test-id={dataTestId}
-                    {...other}
+                    fontSize={this.props.fontSize}
+                    padding={this.props.padding}
+                    lineHeight={this.props.lineHeight}
+                    fontWeight={this.props.fontWeight}
                 />
                 {placeholder &&
                     (!v || v === '') && (
@@ -594,7 +597,10 @@ export class XInputBasic extends React.PureComponent<XInputBasicProps, XInputBas
                             format={size}
                             color={color}
                             invalid={invalid}
-                            {...other}
+                            fontSize={this.props.fontSize}
+                            padding={this.props.padding}
+                            lineHeight={this.props.lineHeight}
+                            fontWeight={this.props.fontWeight}
                         >
                             <span>{placeholder}</span>
                             {required && (
