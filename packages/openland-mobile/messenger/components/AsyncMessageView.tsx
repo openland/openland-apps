@@ -84,10 +84,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                         {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
                             <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
                         )}
-                        <ASFlex flexDirection="row" alignItems="stretch" alignSelf="stretch" backgroundColor="white" flexGrow={1}>
-                            {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
-
-                        </ASFlex>
+                        {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
 
                         {specialMessage}
                     </ASFlex>

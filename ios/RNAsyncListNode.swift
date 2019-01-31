@@ -273,6 +273,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func setOverflowColor(color: UInt64) {
     if !self.loaded {
       self.overflowColor = color
+      self.loadingCell.overflowColor = color
     } else {
       if self.overflowColor != color {
         DispatchQueue.main.async {
@@ -544,6 +545,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
       let n = self.loadingCell
       return { () -> ASCellNode in
         n.layoutThatFits(range)
+        n.automaticallyManagesSubnodes = true
         return n
       }
     } else if indexPath.section == 0 {
