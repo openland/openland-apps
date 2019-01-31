@@ -17,46 +17,48 @@ const Shadow = Glamorous.div<{ active: boolean }>(props => ({
 }));
 
 interface DottedMenuButtonStyleProps {
+    small?: boolean;
     active?: boolean;
     horizontal?: boolean;
     flat?: boolean;
 }
 
-const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(props => ({
-    width: 4,
-    height: 17,
-    display: 'flex',
-    flexDirection: props.horizontal ? 'row' : 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-    cursor: 'pointer',
-    borderRadius: 5,
-    backgroundColor: props.flat ? 'transparent' : props.active ? '#654bfa' : 'transparent',
-    border: props.flat ? 'none' : 'solid 1px transparent',
-    transition: 'background-color .2s',
-    '&:hover': {
-        border: props.flat ? 'none' : props.active ? 'solid 1px transparent' : 'solid 1px #dcdee4',
+const DottedMenuButtonStyle = Glamorous.div<DottedMenuButtonStyleProps>(
+    ({ small, horizontal, flat, active }) => ({
+        width: small ? 4 : 22,
+        height: 17,
+        display: 'flex',
+        flexDirection: horizontal ? 'row' : 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        cursor: 'pointer',
+        borderRadius: 5,
+        backgroundColor: flat ? 'transparent' : active ? '#654bfa' : 'transparent',
+        border: flat ? 'none' : 'solid 1px transparent',
+        transition: 'background-color .2s',
+        '&:hover': {
+            border: flat ? 'none' : active ? 'solid 1px transparent' : 'solid 1px #dcdee4',
 
+            '& > div': {
+                backgroundColor: flat ? '#1790ff' : undefined,
+            },
+        },
         '& > div': {
-            backgroundColor: props.flat ? '#1790ff' : undefined,
+            backgroundColor: flat && active ? '#1790ff' : active ? '#fff' : 'rgba(0, 0, 0, 0.2)',
+            width: 4,
+            height: 4,
+            borderRadius: 100,
+            marginBottom: horizontal ? undefined : 2,
+            marginRight: horizontal ? 2 : undefined,
+            '&:last-child': {
+                marginBottom: horizontal ? undefined : 0,
+                marginRight: horizontal ? 0 : undefined,
+            },
         },
-    },
-    '& > div': {
-        backgroundColor:
-            props.flat && props.active ? '#1790ff' : props.active ? '#fff' : 'rgba(0, 0, 0, 0.2)',
-        width: 4,
-        height: 4,
-        borderRadius: 100,
-        marginBottom: props.horizontal ? undefined : 2,
-        marginRight: props.horizontal ? 2 : undefined,
-        '&:last-child': {
-            marginBottom: props.horizontal ? undefined : 0,
-            marginRight: props.horizontal ? 0 : undefined,
-        },
-    },
-    zIndex: props.active ? 11 : undefined,
-}));
+        zIndex: active ? 11 : undefined,
+    }),
+);
 
 const NotificationButton = Glamorous.div<{ active: boolean }>(props => ({
     width: 32,
@@ -85,6 +87,7 @@ const NotificationButton = Glamorous.div<{ active: boolean }>(props => ({
 }));
 
 interface XOverflowProps {
+    small?: boolean;
     placement?: Placement;
     show?: boolean;
     content: any;
@@ -131,7 +134,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
     };
 
     render() {
-        const { target, shadow } = this.props;
+        const { target, shadow, small } = this.props;
 
         let targetElement: any;
 
@@ -170,6 +173,7 @@ export class XOverflow extends React.PureComponent<XOverflowProps, { show: boole
                         <DottedMenuButtonStyle
                             onClick={this.switch}
                             active={show}
+                            small={small}
                             innerRef={this.createRef}
                             horizontal={this.props.horizontal}
                             flat={this.props.flat}

@@ -8,6 +8,7 @@ import { Room_room_SharedRoom } from 'openland-api/Types';
 export const HeaderMenu = (props: { room: Room_room_SharedRoom }) => (
     <XOverflow
         flat={true}
+        small={true}
         placement="bottom-end"
         content={
             <>
