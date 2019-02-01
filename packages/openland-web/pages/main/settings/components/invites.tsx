@@ -287,6 +287,7 @@ const OwnerLinkOrganization = withAppInvite(
 ) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
 interface InvitesModalRawProps {
+    organizationId: string;
     mutation?: any;
     useRoles?: boolean;
     global: boolean;
@@ -336,12 +337,13 @@ class InvitesModalRaw extends React.Component<
     };
 
     render() {
-        let { mutation, submitProps, ...modalFormProps } = this.props;
+        let { mutation, submitProps, organizationId, ...modalFormProps } = this.props;
+
         let footer = (
             <FooterWrap>
                 <XHorizontal flexGrow={1}>
                     {!this.state.showLink && (
-                        <XWithRole role="admin" orgPermission={'primary'}>
+                        <XWithRole role={['admin', 'owner']} orgPermission={organizationId}>
                             <InviteButton
                                 onClick={() => this.setState({ showLink: true })}
                                 icon={<LinkIcon />}
@@ -502,32 +504,53 @@ class InvitesModalRaw extends React.Component<
     }
 }
 
-export const InvitesToOrganizationModal = withOrganizationInviteMembers(props => (
-    <InvitesModalRaw
-        mutation={props.sendInvite}
-        targetQuery={(props as any).targetQuery}
-        target={(props as any).target}
-        title={TextInvites.modalTitle}
-        submitProps={{ text: TextInvites.modalAction }}
-        global={false}
-    />
-)) as React.ComponentType<{
+type InvitesToOrganizationModalProps = {
     targetQuery?: string;
     target?: any;
     refetchVars?: { orgId: string };
-}>;
+};
 
-export const InvitesGlobalModal = (props: {
+export const InvitesToOrganizationModal = withOrganizationInviteMembers(props => {
+    const {
+        sendInvite,
+        targetQuery,
+        target,
+        router: {
+            routeQuery: { organizationId },
+        },
+    } = props as typeof props & InvitesToOrganizationModalProps;
+
+    return (
+        <InvitesModalRaw
+            organizationId={organizationId}
+            mutation={sendInvite}
+            targetQuery={targetQuery}
+            target={target}
+            title={TextInvites.modalTitle}
+            submitProps={{ text: TextInvites.modalAction }}
+            global={false}
+        />
+    );
+}) as React.ComponentType<InvitesToOrganizationModalProps>;
+
+type InvitesGlobalModalProps = {
     targetQuery?: string;
     target?: any;
     refetchVars?: { orgId: string };
-}) => (
-    <InvitesModalRaw
-        targetQuery={(props as any).targetQuery}
-        target={(props as any).target}
-        title={TextInvites.modalGlobalTitle}
-        submitProps={{ text: TextInvites.modalGloabalAction }}
-        useRoles={false}
-        global={true}
-    />
-);
+};
+
+export const InvitesGlobalModal = (props: InvitesGlobalModalProps) => {
+    const { targetQuery, target } = props as typeof props & InvitesGlobalModalProps;
+
+    return (
+        <InvitesModalRaw
+            organizationId={'primary'}
+            targetQuery={targetQuery}
+            target={target}
+            title={TextInvites.modalGlobalTitle}
+            submitProps={{ text: TextInvites.modalGloabalAction }}
+            useRoles={false}
+            global={true}
+        />
+    );
+};
