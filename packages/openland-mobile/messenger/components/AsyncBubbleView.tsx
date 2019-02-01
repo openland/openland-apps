@@ -38,13 +38,16 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
         }
 
         let contentInsets: { left: number, right: number, top: number, bottom: number };
+        let contentInsetsHorizontal = 12;
+        let contentInsetsTop = 8;
+        let contentInsetsBottom = 9;
         if (isMedia) {
             contentInsets = { left: 2, right: 2, top: 2, bottom: 2 };
         } else {
             if (this.props.isOut) {
-                contentInsets = { left: 6 + 12, right: 6 + 12, top: 7, bottom: 9 };
+                contentInsets = { left: 6 + contentInsetsHorizontal, right: 6 + contentInsetsHorizontal, top: contentInsetsTop, bottom: contentInsetsBottom };
             } else {
-                contentInsets = { left: 5 + 12, right: 12, top: 7, bottom: 9 };
+                contentInsets = { left: 5 + contentInsetsHorizontal, right: contentInsetsHorizontal, top: contentInsetsTop, bottom: contentInsetsBottom };
             }
         }
 
