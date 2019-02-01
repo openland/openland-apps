@@ -1,6 +1,7 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import RNFetchBlob from 'rn-fetch-blob';
 import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
+import { URL } from 'url';
 
 export class DownloadManager implements DownloadManagerInterface {
 
@@ -24,6 +25,9 @@ export class DownloadManager implements DownloadManagerInterface {
     }
 
     watch(uuid: string, resize: { width: number, height: number } | null, handler: (state: DownloadState) => void, initDownload?: boolean) {
+        if (uuid.includes('https://ucarecdn.com/')) {
+            uuid = uuid.split('https://ucarecdn.com/')[1].split('/')[0];
+        }
         if (initDownload !== false) {
             this.init(uuid, resize);
         }
