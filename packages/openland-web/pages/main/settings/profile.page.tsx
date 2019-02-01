@@ -290,7 +290,6 @@ export default withApp(
                                                                 format="humanize"
                                                             />
                                                         }
-                                                        {console.log(props.data.profile.joinedAt)}
                                                     </XView>
                                                 </CardText>
                                             )}
