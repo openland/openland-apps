@@ -11,6 +11,7 @@ import { AddBotToChat } from 'openland-web/pages/main/settings/modals/AddBotToCh
 import { EditAppModal } from 'openland-web/pages/main/settings/modals/EditAppModal';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { SettingsNavigation } from './components/SettingsNavigation';
+import { Content } from './components/SettingComponents';
 
 const { App } = TextProfiles;
 
@@ -20,13 +21,7 @@ export default withApp(
     withMyApps(
         withQueryLoader(({ data: { apps } }) => (
             <SettingsNavigation title="My Apps">
-                <XView
-                    paddingTop={20}
-                    paddingBottom={20}
-                    paddingLeft={30}
-                    paddingRight={30}
-                    flexGrow={1}
-                >
+                <Content>
                     <XView fontSize={18} fontWeight="600" color="#000000" marginBottom={20}>
                         My Apps
                     </XView>
@@ -65,7 +60,7 @@ export default withApp(
                             }
                         />
                     ))}
-                </XView>
+                </Content>
 
                 <CreateAppModal />
                 <AddBotToChat apps={apps} />

@@ -74,7 +74,7 @@ export const SearchBox = React.memo<SearchBoxProps>(props => {
                         />
                     </XHorizontal>
                     {props.value.length > 0 && <XButton text="Clear" onClick={onClear} />}
-                    <XButton text="Search" style="primary" enabled={props.value.length > 0} />
+                    <XButton text="Search" style="primary" />
                 </SearchInner>
             </XContentWrapper>
         </SearchWrapper>

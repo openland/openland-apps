@@ -27,6 +27,7 @@ export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { quer
                     return (
                         <XButton
                             text={'Add'}
+                            flexShrink={0}
                             style={'primary'}
                             onClick={(e: any) => {
                                 e.stopPropagation();
