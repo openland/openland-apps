@@ -17,10 +17,12 @@ const ProfileUserContent = React.memo<PageProps>((props) => {
     let online = getClient().useOnline({ userId: props.router.params.id }).user;
 
     let sub = undefined;
+    let subColor = undefined;
     if (!online.online && online.lastSeen) {
         sub = formatLastSeen(online.lastSeen);
     } else {
-        sub = 'online'
+        sub = 'online';
+        subColor = '#0084fe';
     }
 
     return (
@@ -31,6 +33,7 @@ const ProfileUserContent = React.memo<PageProps>((props) => {
                 userId={user.user.id}
                 title={user.user.name}
                 subtitle={sub}
+                subtitleColor={subColor}
                 action="Send message"
                 onPress={() => { props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id }); }}
             />

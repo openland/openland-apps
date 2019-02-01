@@ -55,6 +55,7 @@ export class ZListItemHeader extends React.PureComponent<{
     titleIcon?: any;
     titleColor?: string;
     subtitle?: string | null,
+    subtitleColor?: string,
     subsubtitle?: string | null,
     path?: string,
     onPress?: () => void;
@@ -71,7 +72,7 @@ export class ZListItemHeader extends React.PureComponent<{
                             {this.props.titleIcon && <Image source={this.props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: this.props.titleColor || '#000' }} />}
                             <Text style={[styles.title, this.props.titleColor ? { color: this.props.titleColor } : undefined]} numberOfLines={1}>{this.props.title}</Text>
                         </View>
-                        <Text style={styles.subtitle} numberOfLines={1}>{this.props.subtitle}</Text>
+                        <Text style={[styles.subtitle, this.props.subtitleColor ? { color: this.props.subtitleColor } : undefined]} numberOfLines={1}>{this.props.subtitle}</Text>
                         {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
                     </View>
                     {this.props.action && (
