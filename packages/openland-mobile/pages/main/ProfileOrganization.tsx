@@ -159,12 +159,12 @@ const ProfileOrganizationContent = React.memo<PageProps>((props) => {
                                 let builder = new ActionSheetBuilder();
 
                                 if (v.user.id !== getMessenger().engine.user.id && organization.isOwner) {
-                                    builder.action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke admin status',
+                                    builder.action(v.role === 'MEMBER' ? 'Make Admin' : 'Remove as Admin',
                                         () => {
                                             Alert.builder()
-                                                .title(`Are you sure you want to make ${v.user.name} ${v.role === 'MEMBER' ? 'admin' : 'member'}?`)
+                                                .title(`Change role for ${v.user.name} to ${v.role === 'MEMBER' ? 'Admin? Admins have full control over the organization account.' : 'Member? Members can participate in the organization\'s chats.'}`)
                                                 .button('Cancel', 'cancel')
-                                                .action(v.role === 'MEMBER' ? 'Make admin' : 'Revoke', 'default', async () => {
+                                                .action('Change role', 'default', async () => {
                                                     await getClient().mutateOrganizationChangeMemberRole({
                                                         memberId: v.user.id,
                                                         organizationId: props.router.params.id,
@@ -179,7 +179,7 @@ const ProfileOrganizationContent = React.memo<PageProps>((props) => {
                                     builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
                                         () => {
                                             Alert.builder()
-                                                .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}?`)
+                                                .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}? They will be removed from all internal chats at ${organization.name}.`)
                                                 .button('Cancel', 'cancel')
                                                 .action(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
                                                     await getClient().mutateOrganizationRemoveMember({
