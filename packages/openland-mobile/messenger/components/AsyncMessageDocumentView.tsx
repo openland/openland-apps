@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { AsyncBubbleView } from './AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASText } from 'react-native-async-view/ASText';
@@ -58,7 +58,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                     <ASFlex
                         width={40}
                         height={40}
-                        backgroundColor={this.props.message.isOut ? '#11b2ff' : 'rgba(224, 227, 231, 0.5)'}
+                        backgroundColor={'rgba(224, 227, 231, 0.5)'}
                         borderRadius={20}
                         marginLeft={10}
                         marginTop={10}
@@ -87,26 +87,6 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                         </ASFlex>}
                     </ASFlex>
 
-                    {/* Ugly fix - text overflows parent if flexDirection="row" is somewhere above in hierarchy */}
-                    <ASFlex
-                        overlay={true}
-                        flexDirection="column"
-                        marginTop={12}
-                        marginLeft={60}
-                        marginRight={this.props.message.isOut ? 10 : 12}
-                        marginBottom={10}
-                    >
-                        <ASText
-                            color={this.props.message.isOut ? '#ffffff' : '#000000'}
-                            height={18}
-                            fontSize={15}
-                            lineHeight={18}
-                            numberOfLines={1}
-                        >
-                            {this.props.message.file!!.fileName}{this.props.message.isOut ? paddedTextOut : paddedText}
-                        </ASText>
-                    </ASFlex>
-
                     <ASFlex
                         flexGrow={1}
                         flexDirection="column"
@@ -115,9 +95,9 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                         marginRight={14}
                         alignSelf="center"
                     >
-                        {/* Ugly fix - text overflows parent if flexDirection="row" is somewhere above in hierarchy */}
                         <ASText
-                            color="rgba(0,0,1,0)"
+                            maxWidth={bubbleMaxWidth}
+                            color={this.props.message.isOut ? '#ffffff' : '#000000'}
                             height={18}
                             fontSize={15}
                             lineHeight={18}
@@ -137,34 +117,35 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                             {formatBytes(this.props.message.file!!.fileSize)}
                         </ASText>
                     </ASFlex>
-                </ASFlex>
-                <ASFlex
-                    overlay={true}
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                    marginRight={this.props.message.isOut ? 10 : 12}
-                    marginBottom={10}
-                >
                     <ASFlex
-                        flexDirection="row"
-                        height={14}
+                        overlay={true}
+                        alignItems="flex-end"
+                        justifyContent="flex-end"
+                        marginRight={this.props.message.isOut ? -8 : 0}
+                        marginBottom={-4}
                     >
-                        <ASText
-                            fontSize={11}
-                            lineHeight={13}
-                            color={this.props.message.isOut ? '#fff' : '#8a8a8f'}
-                            opacity={this.props.message.isOut ? 0.7 : 0.6}
+                        <ASFlex
+                            flexDirection="row"
+                            height={14}
                         >
-                            {formatTime(this.props.message.date)}
-                        </ASText>
-                        {this.props.message.isOut && (
-                            <ASFlex width={18} height={13} marginLeft={2} marginTop={1} justifyContent="flex-start" alignItems="center">
-                                {this.props.message.isSending && <ASImage source={require('assets/ic-sending.png')} width={13} height={13} />}
-                                {!this.props.message.isSending && <ASImage source={require('assets/ic-sent.png')} width={9} height={8} />}
-                            </ASFlex>
-                        )}
+                            <ASText
+                                fontSize={11}
+                                lineHeight={13}
+                                color={this.props.message.isOut ? '#fff' : '#8a8a8f'}
+                                opacity={this.props.message.isOut ? 0.7 : 0.6}
+                            >
+                                {formatTime(this.props.message.date)}
+                            </ASText>
+                            {this.props.message.isOut && (
+                                <ASFlex width={18} height={13} marginLeft={2} marginTop={1} justifyContent="flex-start" alignItems="center">
+                                    {this.props.message.isSending && <ASImage source={require('assets/ic-sending.png')} width={13} height={13} />}
+                                    {!this.props.message.isSending && <ASImage source={require('assets/ic-sent.png')} width={9} height={8} />}
+                                </ASFlex>
+                            )}
+                        </ASFlex>
                     </ASFlex>
                 </ASFlex>
+
             </AsyncBubbleView>
         );
     }
