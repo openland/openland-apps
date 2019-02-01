@@ -22,8 +22,8 @@ export const SettingsNavigation = React.memo(
                     </>
                 }
                 secondFragment={
-                    <XView flexGrow={1} height="100%" position="relative">
-                        <XScrollView2 height="100%">{children}</XScrollView2>
+                    <XView flexGrow={1} position="relative">
+                        <XScrollView2 height="100%" flexGrow={1}>{children}</XScrollView2>
                     </XView>
                 }
             />

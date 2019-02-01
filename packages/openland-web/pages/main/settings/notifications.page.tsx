@@ -26,12 +26,7 @@ import LockIcon from 'openland-icons/ic-lock-settings.svg';
 import NotificationsIcon from 'openland-icons/ic-notifications.svg';
 import NotificationsFirefoxIcon from 'openland-icons/ic-notifications-firefox-2.svg';
 import { SettingsNavigation } from './components/SettingsNavigation';
-
-const Container = (props: { children?: any }) => (
-    <XView paddingTop={16} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
-        {props.children}
-    </XView>
-);
+import { Content } from './components/SettingComponents';
 
 const Header = (props: { children?: any }) => (
     <XView fontSize={22} lineHeight="24px" opacity={0.9} marginBottom={25}>
@@ -150,79 +145,84 @@ class BrowserNotifications extends React.Component<
                         </div>
                     )}
 
-                    {notificationsState !== 'granted' && !SupportedBrowsers && (
-                        <div className={GroupText}>
-                            Notifications are turned off in this browser.
-                            <br />
-                            You can always change it in your browser preferences.
-                        </div>
-                    )}
-
-                    {notificationsState !== 'granted' && SupportedBrowsers && (
-                        <>
+                    {notificationsState !== 'granted' &&
+                        !SupportedBrowsers && (
                             <div className={GroupText}>
-                                Notifications are disabled for this browser.
+                                Notifications are turned off in this browser.
+                                <br />
+                                You can always change it in your browser preferences.
                             </div>
+                        )}
 
-                            {notificationsState === 'default' && (
-                                <XButton
-                                    alignSelf="flex-start"
-                                    style="warning"
-                                    size="small"
-                                    text="Enable"
-                                    onClick={this.handleEnableClick}
-                                />
-                            )}
+                    {notificationsState !== 'granted' &&
+                        SupportedBrowsers && (
+                            <>
+                                <div className={GroupText}>
+                                    Notifications are disabled for this browser.
+                                </div>
 
-                            {notificationsState !== 'default' && (
-                                <XModal
-                                    title="Turn on browser notifications for Openland"
-                                    useTopCloser={true}
-                                    target={
-                                        <XButton
-                                            alignSelf="flex-start"
-                                            style="warning"
-                                            size="small"
-                                            text="Enable"
-                                        />
-                                    }
-                                    footer={
-                                        <XModalFooter>
+                                {notificationsState === 'default' && (
+                                    <XButton
+                                        alignSelf="flex-start"
+                                        style="warning"
+                                        size="small"
+                                        text="Enable"
+                                        onClick={this.handleEnableClick}
+                                    />
+                                )}
+
+                                {notificationsState !== 'default' && (
+                                    <XModal
+                                        title="Turn on browser notifications for Openland"
+                                        useTopCloser={true}
+                                        target={
                                             <XButton
-                                                text="Got it"
-                                                style="primary"
-                                                autoClose={true}
+                                                alignSelf="flex-start"
+                                                style="warning"
+                                                size="small"
+                                                text="Enable"
                                             />
-                                        </XModalFooter>
-                                    }
-                                >
-                                    {isChrome && (
-                                        <Instruction>
-                                            <div className={InstructionItem}>
-                                                1. Click <LockIcon /> in your browser's address bar.
-                                            </div>
-                                            <div className={InstructionItem}>
-                                                2. Locate <NotificationsIcon />{' '}
-                                                <strong>Notifications</strong> and select "Allow".
-                                            </div>
-                                        </Instruction>
-                                    )}
-                                    {isFirefox && (
-                                        <Instruction>
-                                            <div className={InstructionItem}>
-                                                1. Click <LockIcon /> in your browser's address bar.
-                                            </div>
-                                            <div className={InstructionItem}>
-                                                2. Locate <NotificationsFirefoxIcon />{' '}
-                                                <strong>Receive notifications</strong> and select{' '}
-                                                <CloseIcon /> next to «Blocked».
-                                            </div>
-                                        </Instruction>
-                                    )}
-                                </XModal>
-                            )}
-                        </>
-                    )}
+                                        }
+                                        footer={
+                                            <XModalFooter>
+                                                <XButton
+                                                    text="Got it"
+                                                    style="primary"
+                                                    autoClose={true}
+                                                />
+                                            </XModalFooter>
+                                        }
+                                    >
+                                        {isChrome && (
+                                            <Instruction>
+                                                <div className={InstructionItem}>
+                                                    1. Click <LockIcon /> in your browser's address
+                                                    bar.
+                                                </div>
+                                                <div className={InstructionItem}>
+                                                    2. Locate <NotificationsIcon />{' '}
+                                                    <strong>Notifications</strong> and select
+                                                    "Allow".
+                                                </div>
+                                            </Instruction>
+                                        )}
+                                        {isFirefox && (
+                                            <Instruction>
+                                                <div className={InstructionItem}>
+                                                    1. Click <LockIcon /> in your browser's address
+                                                    bar.
+                                                </div>
+                                                <div className={InstructionItem}>
+                                                    2. Locate <NotificationsFirefoxIcon />{' '}
+                                                    <strong>Receive notifications</strong> and
+                                                    select <CloseIcon /> next to «Blocked».
+                                                </div>
+                                            </Instruction>
+                                        )}
+                                    </XModal>
+                                )}
+                            </>
+                        )}
                 </Group>
             );
         } else {
@@ -324,7 +324,7 @@ class NotificationsSettingsPageInner extends React.Component<
 
         return (
             <SettingsNavigation title="Notifications">
-                <Container>
+                <Content>
                     <Header>Notifications</Header>
                     <XVertical separator={15}>
                         <XForm
@@ -457,7 +457,7 @@ class NotificationsSettingsPageInner extends React.Component<
                         <BrowserNotifications />
                         <MobileApps />
                     </XVertical>
-                </Container>
+                </Content>
             </SettingsNavigation>
         );
     }

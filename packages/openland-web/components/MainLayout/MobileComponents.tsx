@@ -37,7 +37,7 @@ const ShowMenuItems = ({
         flexDirection="column"
         alignItems="stretch"
         backgroundColor="#fff"
-        top={53}
+        top={56}
         height="auto"
     >
         <div className={backgroundClassName} onClick={onBackgroundClick} />
@@ -140,6 +140,11 @@ export const MobileMenu = ({ title, rightContent, children }: MenuPropsT) => {
                     <XView />
                 </XView>
             </XView>
+            <XView
+                height={1}
+                width="100%"
+                backgroundColor="#ececec"
+            />
 
             {finalChildren && (
                 <MenuItems onBackgroundClick={close}>

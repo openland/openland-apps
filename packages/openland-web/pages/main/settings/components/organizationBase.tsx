@@ -15,26 +15,8 @@ import { XCheckbox } from 'openland-x/XCheckbox';
 import { withSuperAccountActions } from '../../../../api/withSuperAccountActions';
 import { DateFormater } from 'openland-x/XDate';
 import { XFormError } from 'openland-x-forms/XFormError';
-import { XView } from 'react-mental';
 import { SettingsNavigation } from './SettingsNavigation';
-
-const Content = (props: { children?: any }) => (
-    <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
-        {props.children}
-    </XView>
-);
-
-const HeadTitle = (props: { children?: any }) => (
-    <XView fontSize={18} fontWeight="600" color="#000000">
-        {props.children}
-    </XView>
-);
-
-let shiftArray = (array: any[]) => {
-    let res = [...array];
-    res.shift();
-    return res;
-};
+import { Content, HeadTitle } from './SettingComponents';
 
 const SACreatedBlock = Glamorous.div({
     padding: 16,

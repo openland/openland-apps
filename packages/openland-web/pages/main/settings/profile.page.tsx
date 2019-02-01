@@ -17,20 +17,20 @@ import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { Query } from '../../../../../node_modules/react-apollo';
 import { MyOrganizationsQuery } from 'openland-api';
 import { XInput } from 'openland-x/XInput';
-import { DateFormater } from 'openland-x/XDate';
+import { XDate } from 'openland-x/XDate';
 import { SettingsNavigation } from './components/SettingsNavigation';
+import { Content, HeadTitle } from './components/SettingComponents';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
-const Content = (props: { children?: any }) => (
-    <XView paddingTop={20} paddingBottom={20} paddingLeft={30} paddingRight={30} flexGrow={1}>
-        {props.children}
-    </XView>
-);
+const CardsWrapper = React.memo<{ children: any }>(props => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
 
-const HeadTitle = (props: { children?: any }) => (
-    <XView fontSize={18} fontWeight="600" color="#000000">
-        {props.children}
-    </XView>
-);
+    return isMobile ? (
+        <XVertical separator={8}>{props.children}</XVertical>
+    ) : (
+        <XHorizontal separator={8}>{props.children}</XHorizontal>
+    );
+});
 
 const CardText = (props: { children?: any }) => (
     <XView
@@ -276,32 +276,43 @@ export default withApp(
                             <XVertical separator={12}>
                                 <XWithRole role="super-admin">
                                     <HeadTitle>Super admin</HeadTitle>
-                                    <XHorizontal separator={8}>
-                                        {props.data.profile && props.data.profile.joinedAt && (
-                                            <CardText>
-                                                Joined
-                                                <XView fontWeight="600" paddingLeft={4}>
-                                                    {DateFormater(props.data.profile.joinedAt)}
-                                                </XView>
-                                            </CardText>
-                                        )}
-                                        {props.data.profile && !props.data.profile.invitedBy && (
-                                            <CardText>Self-registered</CardText>
-                                        )}
-                                        {props.data.profile && props.data.profile.invitedBy && (
-                                            <CardText>
-                                                Invited by
-                                                <XView
-                                                    fontWeight="600"
-                                                    paddingLeft={4}
-                                                    color="#1790ff"
-                                                >
-                                                    {props.data.profile.invitedBy.name ||
-                                                        'First name Last name'}
-                                                </XView>
-                                            </CardText>
-                                        )}
-                                    </XHorizontal>
+                                    <CardsWrapper>
+                                        {props.data.profile &&
+                                            props.data.profile.joinedAt && (
+                                                <CardText>
+                                                    Joined
+                                                    <XView fontWeight="600" paddingLeft={4}>
+                                                        {
+                                                            <XDate
+                                                                value={String(
+                                                                    props.data.profile.joinedAt,
+                                                                )}
+                                                                format="humanize"
+                                                            />
+                                                        }
+                                                        {console.log(props.data.profile.joinedAt)}
+                                                    </XView>
+                                                </CardText>
+                                            )}
+                                        {props.data.profile &&
+                                            !props.data.profile.invitedBy && (
+                                                <CardText>Self-registered</CardText>
+                                            )}
+                                        {props.data.profile &&
+                                            props.data.profile.invitedBy && (
+                                                <CardText>
+                                                    Invited by
+                                                    <XView
+                                                        fontWeight="600"
+                                                        paddingLeft={4}
+                                                        color="#1790ff"
+                                                    >
+                                                        {props.data.profile.invitedBy.name ||
+                                                            'First name Last name'}
+                                                    </XView>
+                                                </CardText>
+                                            )}
+                                    </CardsWrapper>
                                 </XWithRole>
                             </XVertical>
                         </XVertical>

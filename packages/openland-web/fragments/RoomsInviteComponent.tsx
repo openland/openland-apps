@@ -24,6 +24,7 @@ const Root = Glamorous(XScrollView)({
     height: '100%',
     flexShrink: 0,
     backgroundColor: '#ffffff',
+    flexGrow: 1,
 });
 
 const MainContent = Glamorous.div({

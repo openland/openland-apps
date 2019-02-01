@@ -15,7 +15,7 @@ export interface XAvatarUploadBasicProps {
     placeholder?: { add: any; change: any };
     file?: UploadedFile | null;
     onChanged?: (file: UploadedFile | null) => void;
-    size?: 'small' | 'normal' | 'large' | 'default';
+    size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     initialUrl?: string | null;
     cropParams?: string;
     dataTestId?: string;
@@ -25,6 +25,10 @@ let DrowAreaSize = styleResolver({
     small: {
         width: 96,
         height: 96,
+    },
+    xSmall: {
+        width: 100,
+        height: 100,
     },
     default: {
         width: 110,
@@ -42,7 +46,7 @@ let DrowAreaSize = styleResolver({
 
 const DropAreaWrapper = Glamorous.div<{
     hasImage: boolean;
-    avatarSize?: 'small' | 'normal' | 'large' | 'default';
+    avatarSize?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
 }>([
     {
         position: 'relative',
@@ -113,7 +117,7 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
         add: any;
         change: any;
     };
-    size?: 'small' | 'normal' | 'large' | 'default';
+    size?: 'small' | 'xSmall' | 'normal' | 'large' | 'default';
     dataTestId?: string;
 }
 
