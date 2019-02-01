@@ -4,6 +4,8 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getMessenger } from '../../utils/messenger';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import { Dimensions } from 'react-native';
+import { bubbleMaxWidth } from './AsyncBubbleView';
 const maxReactionsNames = 3;
 
 export class AsyncMessageReactionsView extends React.PureComponent<{ message: DataSourceMessageItem }> {
@@ -31,7 +33,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
         let usersString = users.map(u => u.name).join(', ');
         if (users.length > maxReactionsNames) {
             users = users
-                // polaceholder
+                // polaceholder\
                 .map((u, index) => index === maxReactionsNames - 1 ? { ...u, name: 'and ' + (users.length - maxReactionsNames + 1) + ' more' } : u)
                 // reduce
                 .filter((u, index) => index < maxReactionsNames);
@@ -39,7 +41,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
         }
 
         return (
-            <ASFlex flexDirection="row" backgroundColor="white" justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
+            <ASFlex flexDirection="row" maxHeight={30} maxWidth={bubbleMaxWidth} backgroundColor="white" justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
                 {[...reactions.values()].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => (
                     <ASFlex flexDirection="row" marginTop={5} marginBottom={5} >
                         <ASText fontSize={14} key={i} marginLeft={7}>{r.reaction}</ASText>

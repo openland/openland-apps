@@ -14,6 +14,7 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
     style.width?.let { res.widthDip(it) }
     style.maxWidth?.let { res.maxWidthDip(it) }
     style.height?.let { res.heightDip(it) }
+    style.maxHeight?.let { res.maxHeightDip(it) }
     style.flexBasis?.let { res.flexBasisDip(it) }
     style.flexGrow.let { res.flexGrow(it) }
     style.flexShrink.let { res.flexShrink(it) }

@@ -28,6 +28,7 @@ class AsyncViewStyle {
     var height: Float? = null
     var width: Float? = null
     var maxWidth: Float? = null
+    var maxHeight: Float? = null
     var flexGrow: Float = 0.0f
     var flexShrink: Float = 0.0f
     var flexBasis: Float? = null
@@ -135,6 +136,9 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
     }
     (props["height"] as? Number)?.let {
         res.height = it.toFloat()
+    }
+    (props["maxHeight"] as? Number)?.let {
+        res.maxHeight = it.toFloat()
     }
 
     (props["flexGrow"] as? Number)?.let {

@@ -53,7 +53,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
 
         // fix needed - layour breaks if wraped in one more flex
         let buttonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
-        buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 22 : 0;
+        buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 30 : 0;
         let ios = Platform.OS === 'ios';
         let isMedia = !specialMessage && this.props.message.file && this.props.message.file.isImage;
         return (
