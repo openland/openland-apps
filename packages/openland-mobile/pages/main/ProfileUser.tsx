@@ -43,6 +43,7 @@ const ProfileUserContent = React.memo<PageProps>((props) => {
                 {!!user.user.phone && <ZListItem title="Phone" text={'tel:' + user.user.phone} copy={true} />}
                 {!!user.user.website && <ZListItem title="Website" text={user.user.website} copy={true} />}
                 {!!user.user.location && <ZListItem title="Location" text={user.user.location} copy={true} />}
+                {!!user.user.linkedin && <ZListItem title="Linkedin" text={user.user.linkedin} copy={true} />}
             </ZListItemGroup>
 
             <ZListItemGroup header="Organization" footer={null} divider={false}>
