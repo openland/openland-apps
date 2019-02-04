@@ -68,7 +68,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevTypography', Typography)
   .addRoute('DevComponents', Components)
   .addRoute('DevNavigation', Navigation)
-  .addRoute('DevBenchmark', Benchmark)
+  .addRoute('DevBenchmarks', Benchmark)
   .addRoute('DevLoader', Loader)
 
   .build();
