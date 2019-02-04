@@ -41,6 +41,7 @@ class ApolloSubscription implements GraphqlActiveSubscription {
         if (this.source) {
             return;
         }
+        console.log('trying to start');
         this.source = this.client.client.client.subscribe({ query: this.subscription, variables: this.vars });
         this.sourceSubscription = this.source.subscribe({
             next: this.handleNext,
@@ -53,6 +54,7 @@ class ApolloSubscription implements GraphqlActiveSubscription {
         if (!this.source) {
             return;
         }
+        console.log('trying to stop');
         try {
             if (!this.sourceSubscription!.closed) {
                 this.sourceSubscription!.unsubscribe();
@@ -73,6 +75,7 @@ class ApolloSubscription implements GraphqlActiveSubscription {
     }
 
     private handleNext = (src: any) => {
+        console.log('next');
         if (this.pending) {
             if (this.queue.length > 0) {
                 this.queue.push(src);
@@ -86,12 +89,14 @@ class ApolloSubscription implements GraphqlActiveSubscription {
         }
     }
 
-    private handleError = () => {
+    private handleError = (err?: any) => {
+        console.log('error');
+        console.log(err);
         this.tryStop();
         this.tryStart();
     }
 
-    async get() {
+    get = async () => {
         if (this.queue.length > 0) {
             return this.queue.shift();
         } else {
@@ -102,11 +107,11 @@ class ApolloSubscription implements GraphqlActiveSubscription {
         }
     }
 
-    updateVariables(src?: any) {
+    updateVariables = (src?: any) => {
         this.vars = src;
     }
 
-    destroy() {
+    destroy = () => {
         if (this.stopped) {
             return;
         }
@@ -216,7 +221,7 @@ export class ApolloGraphqlClient implements GraphqlClient {
 
         return currentResult.data as TQuery
     }
-    
+
     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
         let r = this.client.client.readQuery<TQuery>({ query: query.document, variables: vars });
         if (r) {
