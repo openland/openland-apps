@@ -51,7 +51,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
                         <ASFlex overlay={true} flexDirection={'column'} marginTop={(Platform.OS === 'ios' ? -3 : 2)}>
                             {[...reactions].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => {
                                 return (
-                                    <ASFlex key={r.reaction + '_' + r.count} marginTop={-i * reactionSize} marginLeft={(reactions.length - i - 1) * (reactionSize - 5)} backgroundColor="white" borderRadius={10} alignItems="center" justifyContent="center" width={20} height={20} >
+                                    <ASFlex key={r.reaction + '_' + r.count} marginTop={i === 0 ? 0 : -reactionSize} marginLeft={(reactions.length - i - 1) * (reactionSize - 5)} backgroundColor="white" borderRadius={10} alignItems="center" justifyContent="center" width={20} height={20} >
                                         <ASText width={18} height={22} marginTop={Platform.OS === 'ios' ? 3 : -2} fontSize={Platform.OS === 'ios' ? 13 : 14} key={i} marginLeft={1}>{r.reaction}</ASText>
                                     </ASFlex>
                                 );
