@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import { ConferenceFull } from 'openland-api/fragments/ConferenceFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 import { View } from 'react-native';
+import { SRouterContext } from 'react-native-s/SRouterContext';
+import { STouchable } from 'react-native-s/STouchable';
 
 const ConferenceWatchSubscription = gql`
     subscription ConferenceWatch($id: ID!) {
@@ -28,7 +30,11 @@ export const CallBarComponent = React.memo<{ id: string }>((props) => {
     if (conference && conference.conference && conference.conference.peers.length > 0) {
         return (
             <View alignSelf="stretch" height={56} backgroundColor="green">
-                {}
+                <SRouterContext.Consumer>
+                    {r => (
+                        <STouchable onPress={() => r!!.present('Call', { id: props.id })} style={{ width: 100, height: 100 }} />
+                    )}
+                </SRouterContext.Consumer>
             </View>
         );
     }
