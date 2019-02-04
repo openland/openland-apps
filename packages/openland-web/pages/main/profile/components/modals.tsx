@@ -122,7 +122,8 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
-                    Are you sure you want to delete {props.data.organizationProfile.name}?
+                    Are you sure you want to delete {props.data.organizationProfile.name}? This
+                    cannot be undone.
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>
