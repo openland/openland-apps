@@ -22,6 +22,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                     action={async (src) => {
                         let client = getClient();
                         await client.mutateCreateOrganization({ input: { name: '', personal: false, ...src.input }, });
+                        await getClient().refetchAccount();
                         await client.refetchAccountSettings();
                     }}
                     onSuccess={async () => {

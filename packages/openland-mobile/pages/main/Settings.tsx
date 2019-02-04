@@ -13,6 +13,12 @@ import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
 let SettingsContent = React.memo<PageProps>((props) => {
+    const handleLogout = () => {
+        (async () => {
+            AsyncStorage.clear();
+            RNRestart.Restart();
+        })();
+    }
     let resp = getClient().useAccountSettings();
     let primary = resp.me!.primaryOrganization;
     let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
@@ -67,6 +73,16 @@ let SettingsContent = React.memo<PageProps>((props) => {
                     }}
                 />
             </ZListItemGroup>
+
+            {__DEV__ && (
+                <ZListItemGroup header="Dev Tools">
+                    <ZListItem text="Typography" path="DevTypography" />
+                    <ZListItem text="Components" path="DevComponents" />
+                    <ZListItem text="Navigation" path="DevNavigation" />
+                    <ZListItem text="Loader" path="DevLoader" />
+                    <ZListItem text="Log out" onPress={handleLogout} />
+                </ZListItemGroup>
+            )}
             <ZListItemGroup header="Organizations" divider={false} actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
