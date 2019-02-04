@@ -2831,6 +2831,19 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ATWUYU6747;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Auth0\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINCache\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINOperation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINRemoteImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SimpleKeychain\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Texture\"",
+					"\"${PODS_ROOT}/AppCenter/AppCenter-SDK-Apple/iOS\"",
+					"\"${PODS_ROOT}/AppCenterReactNativeShared/AppCenterReactNativeShared\"",
+					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -2864,6 +2877,7 @@
 				);
 				INFOPLIST_FILE = openland/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-webrtc/ios/**";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -2892,6 +2906,19 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = ATWUYU6747;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Auth0\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINCache\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINOperation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/PINRemoteImage\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SimpleKeychain\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyJSON\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Texture\"",
+					"\"${PODS_ROOT}/AppCenter/AppCenter-SDK-Apple/iOS\"",
+					"\"${PODS_ROOT}/AppCenterReactNativeShared/AppCenterReactNativeShared\"",
+					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -2925,6 +2952,7 @@
 				);
 				INFOPLIST_FILE = openland/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-webrtc/ios/**";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
