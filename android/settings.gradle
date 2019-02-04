@@ -1,4 +1,6 @@
 rootProject.name = 'openland'
+include ':react-native-auth0'
+project(':react-native-auth0').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-auth0/android')
 include ':react-native-threads'
 project(':react-native-threads').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-threads/android')
 include ':react-native-restart'
