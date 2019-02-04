@@ -50,7 +50,7 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
     private _imagePreviewLoaded = false;
 
     private _loadingOpacity = new Animated.Value(0);
-    private _transitionOpacity = new Animated.Value(1);
+    private _transitionOpacity = new Animated.Value(0);
     private _transitionOpacityMain = this._transitionOpacity.interpolate({
         inputRange: [0.2, 1],
         outputRange: [0, 1],
