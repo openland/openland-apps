@@ -27,20 +27,15 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
-import com.entria.views.RNViewOverflowPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
 import com.microsoft.codepush.react.CodePush;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.auth0.react.A0Auth0Package;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -81,10 +76,8 @@ public class MainApplication extends Application implements ReactApplication {
                     new CodePush("", getApplicationContext(), true),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
-                    new VectorIconsPackage(),
                     new A0Auth0Package(),
-                    new RNSPackage(),
-                    new ReactNativeDialogsPackage()
+                    new RNSPackage()
             );
         }
 

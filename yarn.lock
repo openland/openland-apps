@@ -3823,7 +3823,7 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
-base-64@0.1.0, base-64@^0.1.0:
+base-64@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
 
@@ -9445,7 +9445,7 @@ lodash@4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
-lodash@^4.0.0, lodash@^4.1.1, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.1, lodash@~4.17.10, lodash@~4.17.4:
+lodash@^4.1.1, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.1, lodash@~4.17.10, lodash@~4.17.4:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -12092,13 +12092,6 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-auth0@^1.3.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-auth0/-/react-native-auth0-1.3.1.tgz#ee3c9502a4d23ba5074bd7d0b173768ad76d9d58"
-  dependencies:
-    base-64 "^0.1.0"
-    url "^0.11.0"
-
 react-native-blur@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/react-native-blur/-/react-native-blur-3.2.2.tgz#5bfb50638d148982c9560436554ed01d77d6d07d"
@@ -12119,15 +12112,6 @@ react-native-code-push@^5.4.0:
 react-native-device-info@^0.22.0:
   version "0.22.6"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.6.tgz#32a674b0484d31214fdcfbbb0e677621e83ba69d"
-
-react-native-dialogs@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-dialogs/-/react-native-dialogs-1.0.2.tgz#d16d68cecbd57f74904fb2d58fd846622d5fec9a"
-  integrity sha512-3hH6s67RD6w9MVttqWARnto3wnmSgnwPCzsk4aVaQbFjtgVZQecn+oP+jqj01G6OvxAtuG7aSe62fYGs5xileA==
-
-react-native-extra-dimensions-android@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/react-native-extra-dimensions-android/-/react-native-extra-dimensions-android-0.21.0.tgz#2992384a90df738cf678a452cadbf251052ce7bc"
 
 react-native-fast-image@^5.1.2:
   version "5.1.2"
@@ -12237,18 +12221,6 @@ react-native-threads@^0.0.15:
   version "0.0.15"
   resolved "https://registry.yarnpkg.com/react-native-threads/-/react-native-threads-0.0.15.tgz#7dee96658065aa74ca65a27995e29d97da3aae34"
   integrity sha512-WfVQMtqzOfrY4QcMkuCjr37EHE0E4aIgCTVttZzz8fm3WIJKAAfIiuK1hupULQqn3J8VO3+3PuuZh8SMkvtvEw==
-
-react-native-vector-icons@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.6.0.tgz#e4014311ffa6de397d914ffc31b7097a874cc8d5"
-  dependencies:
-    lodash "^4.0.0"
-    prop-types "^15.5.10"
-    yargs "^8.0.2"
-
-react-native-view-overflow@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-view-overflow/-/react-native-view-overflow-0.0.3.tgz#d7b08e8c1e5047a2cf07f3ece82025899f930674"
 
 react-native-web@^0.9.0:
   version "0.9.8"
@@ -15497,24 +15469,6 @@ yargs@^12.0.5:
     which-module "^2.0.0"
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
-
-yargs@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-8.0.2.tgz#6299a9055b1cefc969ff7e79c1d918dceb22c360"
-  dependencies:
-    camelcase "^4.1.0"
-    cliui "^3.2.0"
-    decamelize "^1.1.1"
-    get-caller-file "^1.0.1"
-    os-locale "^2.0.0"
-    read-pkg-up "^2.0.0"
-    require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
-    set-blocking "^2.0.0"
-    string-width "^2.0.0"
-    which-module "^2.0.0"
-    y18n "^3.2.1"
-    yargs-parser "^7.0.0"
 
 yargs@^9.0.0:
   version "9.0.1"

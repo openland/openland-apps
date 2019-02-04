@@ -199,18 +199,13 @@ dependencies {
     compile project(':lottie-react-native')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-blur')
-    compile project(':react-native-view-overflow')
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-fast-image')
     compile project(':rn-fetch-blob')
     compile project(':react-native-image-picker')
-    compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-code-push')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-auth0')
-    compile project(':react-native-dialogs')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     compile 'com.facebook.react:react-native:+'
