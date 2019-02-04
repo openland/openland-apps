@@ -62,6 +62,7 @@ const SignupUserContent = React.memo<PageProps>((props) => {
                         return;
                     }
                     await getClient().mutateProfileCreate({ input: { firstName: src.input.firstName, lastName: src.input.lastName } });
+                    await getClient().refetchAccount();
                     await next(props.router);
                 }}
             >
