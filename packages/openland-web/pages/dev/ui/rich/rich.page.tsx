@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withApp } from '../../../../components/withApp';
 import {
     Editor,
     EditorState,
@@ -8,9 +9,15 @@ import {
     CompositeDecorator,
     ContentBlock,
 } from 'draft-js';
+import { DevDocsScaffold } from '../components/DevDocsScaffold';
+import { XContent } from 'openland-x-layout/XContent';
+import { XVertical } from 'openland-x-layout/XVertical';
+import { XTitle } from 'openland-x/XTitle';
+import { XView } from 'react-mental';
+import { XButton } from 'openland-x/XButton';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 
-function findActiveWordStart(state: EditorState): number {
+const findActiveWordStart = (state: EditorState): number => {
     let content = state.getCurrentContent();
     let selection = state.getSelection();
     if (selection.getStartKey() !== selection.getEndKey()) {
@@ -27,9 +34,9 @@ function findActiveWordStart(state: EditorState): number {
         }
     }
     return startIndex + 1;
-}
+};
 
-function findActiveWord(state: EditorState): string | undefined {
+const findActiveWord = (state: EditorState): string | undefined => {
     let content = state.getCurrentContent();
     let selection = state.getSelection();
     if (!selection.getHasFocus()) {
@@ -43,18 +50,18 @@ function findActiveWord(state: EditorState): string | undefined {
     } else {
         return res;
     }
-}
+};
 
-export interface XRichTextInput2Props {
-    onCurrentWordChanged?: (word: string | undefined) => void;
-}
-
-function findLinkMention(contentBlock: ContentBlock, callback: any, contentState: ContentState) {
+const findLinkMention = (contentBlock: ContentBlock, callback: any, contentState: ContentState) => {
     contentBlock.findEntityRanges(character => {
         const entityKey = character.getEntity();
         return entityKey !== null && contentState.getEntity(entityKey).getType() === 'MENTION';
     }, callback);
-}
+};
+
+type XRichTextInput2Props = {
+    onCurrentWordChanged?: (word: string | undefined) => void;
+};
 
 export class XRichTextInput2 extends React.PureComponent<
     XRichTextInput2Props,
@@ -105,12 +112,10 @@ export class XRichTextInput2 extends React.PureComponent<
                     entity.getLastCreatedEntityKey(),
                 );
 
-                // let stext = src.name;
                 if (
                     selection.getEndOffset() === text.length ||
                     text.charAt(selection.getEndOffset()) !== ' '
                 ) {
-                    // stext = src.name + ' ';
                     replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
                 }
 
@@ -143,3 +148,42 @@ export class XRichTextInput2 extends React.PureComponent<
         );
     }
 }
+
+// Things to check:
+// 1) focus test
+// 2) backspace all - write test
+// 3) test mobile well
+
+// TODO:
+// 0) refactor MessageComposeComponentMobile and MessageComposeComponent to minimize them,
+//    maybe merge with master
+// 1) wrap up and finalize UI with mentions list (use simple input stub)
+// 2) mentions support
+// 3) emojies support
+// 4) support paste files
+// 5) emoji picker
+//
+
+export default withApp('UI Framework - Rich Input', 'viewer', () => {
+    let [currentWord, setCurrentWord] = React.useState<string | undefined>(undefined);
+    let ref = React.useRef<XRichTextInput2>(null);
+    return (
+        <DevDocsScaffold title="Rich Input">
+            <XContent>
+                {/* <XVertical>
+                    <XTitle>Simple</XTitle>
+                    <XView height={24}>{currentWord}</XView>
+                    <XButton
+                        text="set mention"
+                        onClick={() => {
+                            ref.current!.applyMention({ id: 'someid', name: 'Fabulous developer' });
+                        }}
+                    />
+                    <XView backgroundColor="rgba(0,0,0,0.1)">
+                        <XRichTextInput2 ref={ref} onCurrentWordChanged={setCurrentWord} />
+                    </XView>
+                </XVertical> */}
+            </XContent>
+        </DevDocsScaffold>
+    );
+});

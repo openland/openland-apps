@@ -2,16 +2,16 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
+import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
+import { XView } from 'react-mental';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { canUseDOM } from 'openland-x-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
-import createMentionPlugin, { MentionT, defaultSuggestionsFilter } from 'draft-js-mention-plugin';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { XAvatar } from 'openland-x/XAvatar';
-import { XView } from 'react-mental';
 
 const EmojiWrapper = Glamorous.div({
     position: 'absolute',

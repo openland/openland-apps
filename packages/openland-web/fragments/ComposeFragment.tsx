@@ -3,7 +3,7 @@ import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../routes';
-import { MessageComposeComponent } from './MessageComposeComponent';
+import { MessageComposeComponent } from './MessageComposeComponent/MessageComposeComponentDesktop';
 import { MessagesContainer } from '../components/messenger/view/MessagesContainer';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
@@ -19,7 +19,6 @@ import { TextCompose } from 'openland-text/TextCompose';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { withExplorePeople } from '../api/withExplorePeople';
 import { MessageFull_mentions } from 'openland-api/Types';
-import { RoomCreateMutation } from 'openland-api';
 
 const HeadButton = css`
     & > a svg {

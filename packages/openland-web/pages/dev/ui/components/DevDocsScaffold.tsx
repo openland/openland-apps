@@ -117,7 +117,6 @@ export function DevDocsScaffold(props: {
                             <Sidebar.Subitem path="/ui/subscriptions">
                                 Subscriptions
                             </Sidebar.Subitem>
-                            <Sidebar.Item path="/ui/mentions">Mentions</Sidebar.Item>
                         </Sidebar>
                     </Scaffold.Menu>
                 )}
