@@ -3,7 +3,8 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
 import { messageBgColor } from './AsyncMessageView';
 
-export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 55, 400);
+export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50, 400);
+export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 50 - 45, 400);
 export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text' }> {
     render() {
         const isMedia = this.props.appearance === 'media';
@@ -53,7 +54,7 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
 
         let resolved = Image.resolveAssetSource(image);
         return (
-            <ASFlex flexDirection="column" alignItems="stretch" maxWidth={bubbleMaxWidth} backgroundColor={isMedia ? messageBgColor : undefined}>
+            <ASFlex flexDirection="column" alignItems="stretch" maxWidth={this.props.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming} backgroundColor={isMedia ? messageBgColor : undefined}>
                 <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" >
                     <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch">
                         {this.props.children}

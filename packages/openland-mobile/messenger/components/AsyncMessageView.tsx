@@ -51,9 +51,6 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
     render() {
         let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager, this.props.onDocumentPress);
 
-        // fix needed - layour breaks if wraped in one more flex
-        let buttonsAvatarHackMargin = renderButtons(this.props.message, this.props.navigationManager).length * 36;
-        buttonsAvatarHackMargin += (!specialMessage && this.props.message.reactions && !!(this.props.message.reactions.length)) ? 30 : 0;
         let ios = Platform.OS === 'ios';
         let isMedia = !specialMessage && this.props.message.file && this.props.message.file.isImage;
         return (
@@ -61,38 +58,44 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
 
                 {/* marginTop={ ? 2 : 14} marginBottom={2}  */}
                 <ASFlex key="margin-top" backgroundColor={messageBgColor} height={this.props.message.attachTop ? 2 : 14} />
-                <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                    <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? (Platform.select({ default: 36, ios: 28, android: 36 }) + 5) : 0) + 4} />
 
-                    {!this.props.message.isOut && !this.props.message.attachBottom &&
-                        <ASFlex backgroundColor={messageBgColor} marginRight={1} marginLeft={4} onPress={this.handleAvatarPress} marginBottom={buttonsAvatarHackMargin} alignItems="flex-end">
-                            <AsyncAvatar
-                                size={ios ? 28 : 36}
-                                src={this.props.message.senderPhoto}
-                                placeholderKey={this.props.message.senderId}
-                                placeholderTitle={this.props.message.senderName}
-                            />
+                <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
+
+                    <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
+                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? (Platform.select({ default: 36, ios: 28, android: 36 }) + 5) : 0) + 4} />
+
+                        {!this.props.message.isOut && !this.props.message.attachBottom &&
+                            <ASFlex backgroundColor={messageBgColor} marginRight={1} marginLeft={4} onPress={this.handleAvatarPress} alignItems="flex-end">
+                                <AsyncAvatar
+                                    size={ios ? 28 : 36}
+                                    src={this.props.message.senderPhoto}
+                                    placeholderKey={this.props.message.senderId}
+                                    placeholderTitle={this.props.message.senderName}
+                                />
+                            </ASFlex>
+                        }
+                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(isMedia ? 5 : this.props.message.isOut ? 10 : 0)} />
+
+                        {this.props.message.isOut && <ASFlex backgroundColor={messageBgColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
+                        <ASFlex flexDirection="column" alignItems="stretch" marginLeft={this.props.message.isOut ? -4 : 0}>
+                            {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
+                                <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
+                            )}
+                            {isMedia && (
+                                <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
+                            )}
+                            {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
+                                <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
+                            )}
+
                         </ASFlex>
-                    }
-                    <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(isMedia ? 5 : this.props.message.isOut ? 10 : 0)} />
+                        <ASFlex key="margin-right" backgroundColor={messageBgColor} width={(isMedia ? 5 : 0) + 4} />
 
-                    {this.props.message.isOut && <ASFlex backgroundColor={messageBgColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
-                    <ASFlex flexDirection="column" alignItems="stretch" marginLeft={this.props.message.isOut ? -4 : 0}>
-                        {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
-                            <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
-                        )}
-                        {isMedia && (
-                            <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
-                        )}
-                        {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
-                            <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
-                        )}
-                        {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
-
-                        {specialMessage}
                     </ASFlex>
-                    <ASFlex key="margin-right" backgroundColor={messageBgColor} width={(isMedia ? 5 : 0) + 4} />
 
+                    {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
+
+                    {specialMessage}
                 </ASFlex>
                 <ASFlex key="margin-bottom" backgroundColor={messageBgColor} height={2} />
 

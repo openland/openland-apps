@@ -54,15 +54,21 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
-                <ASFlex height={40} flexDirection="row" onPress={this.handlePress}>
+                <ASFlex
+                    height={40}
+                    flexDirection="row"
+                    onPress={this.handlePress}
+                    marginTop={2}
+                    marginBottom={1}
+                    marginLeft={-2}
+                >
                     <ASFlex
                         width={40}
                         height={40}
-                        backgroundColor={'rgba(224, 227, 231, 0.5)'}
+                        backgroundColor={this.props.message.isOut ? 'rgba(0,0,0,0.15)' : 'rgba(185,192,202,0.20)'}
+                        opacity={this.props.message.isOut ? 0.15 : 0.2}
                         borderRadius={20}
-                        marginTop={2}
-                        marginBottom={1}
-                        marginLeft={-2}
+
                         marginRight={10}
                         alignItems="center"
                         justifyContent="center"
