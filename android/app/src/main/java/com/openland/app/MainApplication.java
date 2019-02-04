@@ -67,16 +67,13 @@ public class MainApplication extends Application implements ReactApplication {
                     new LottiePackage(),
                     new LinearGradientPackage(),
                     new BlurViewPackage(),
-                    new RNViewOverflowPackage(),
                     new PickerPackage(),
                     new FastImageViewPackage(),
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
-                    new ExtraDimensionsPackage(),
                     new CodePush("", getApplicationContext(), true),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
-                    new A0Auth0Package(),
                     new RNSPackage()
             );
         }

@@ -30,6 +30,7 @@ import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroup
 import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
 import { Developer } from './pages/dev/Developer';
 import { Worker } from './pages/dev/Worker';
+import { Benchmark } from './pages/dev/Benchmark';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -67,6 +68,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevTypography', Typography)
   .addRoute('DevComponents', Components)
   .addRoute('DevNavigation', Navigation)
+  .addRoute('DevBenchmark', Benchmark)
   .addRoute('DevLoader', Loader)
 
   .build();
