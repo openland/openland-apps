@@ -34,7 +34,7 @@ interface NavigatorItemProps {
     children?: any;
 }
 
-const DesktopNavigatorItemClassname = css`
+const desktopNavigatorItemClassname = css`
     display: flex;
     flex-direction: column;
     align-self: stretch;
@@ -62,7 +62,7 @@ const DesktopNavigatorItem = (props: NavigatorItemProps) => {
             onClick={onClick}
             hoverTextDecoration="none"
         >
-            <div className={cx(DesktopNavigatorItemClassname, counterBorderHoverClassname)}>
+            <div className={cx(desktopNavigatorItemClassname, counterBorderHoverClassname)}>
                 {children}
             </div>
         </XView>
