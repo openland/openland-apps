@@ -31,6 +31,7 @@ import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
 import { Developer } from './pages/dev/Developer';
 import { Worker } from './pages/dev/Worker';
 import { Benchmark } from './pages/dev/Benchmark';
+import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -69,6 +70,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevComponents', Components)
   .addRoute('DevNavigation', Navigation)
   .addRoute('DevBenchmarks', Benchmark)
+  .addRoute('DevBenchmarksAsync', BenchmarkAsync)
   .addRoute('DevLoader', Loader)
 
   .build();

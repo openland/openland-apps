@@ -28,6 +28,7 @@ export const Developer = withApp(() => {
                     <ZListItem text="Worker" path="DevWorker" />
                     <ZListItem text="Components" path="DevComponents" />
                     <ZListItem text="Benchmarks" path="DevBenchmarks" />
+                    <ZListItem text="Benchmarks Async" path="DevBenchmarksAsync" />
                 </ZListItemGroup>
             </SScrollView>
         </>
