@@ -18,17 +18,19 @@ import { MobileScaffold, MobileScafoldMenuItem } from './MobileComponents';
 import { MobileSidebarContext } from './MobileSidebarContext';
 
 const CounterWrapper = (props: { count: number }) => (
-    <XView
-        position="absolute"
-        right={14}
-        top={12}
-        borderWidth={2}
-        borderColor="#f6f6f6"
-        borderRadius={8}
-        selectedBorderColor="#ececec"
-    >
-        <XCounter count={props.count} />
-    </XView>
+    <div className="unread-messages-counter">
+        <XView
+            position="absolute"
+            right={14}
+            top={12}
+            borderWidth={2}
+            borderColor="#f6f6f6"
+            borderRadius={8}
+            selectedBorderColor="#ececec"
+        >
+            <XCounter count={props.count} />
+        </XView>
+    </div>
 );
 
 //

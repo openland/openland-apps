@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { css } from 'linaria';
 
 type XCounterProps = {
     big?: boolean;
@@ -52,6 +53,12 @@ const XCounterSmall = (props: XCounterProps) => (
         {props.count}
     </XView>
 );
+
+export const counterBorderHoverClassname = css`
+    &:hover .unread-messages-counter > div {
+        border-color: #ececec;
+    }
+`;
 
 export const XCounter = (props: XCounterProps) => {
     if (props.big) {

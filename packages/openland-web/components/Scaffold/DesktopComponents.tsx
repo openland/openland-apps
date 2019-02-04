@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { XView, XImage } from 'react-mental';
 import * as Cookie from 'js-cookie';
 import { Query } from 'react-apollo';
+import { counterBorderHoverClassname } from 'openland-x/XCounter';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { TextAppBar } from 'openland-text/TextAppBar';
@@ -33,7 +34,7 @@ interface NavigatorItemProps {
     children?: any;
 }
 
-const counterBorderHoverClassname = css`
+const DesktopNavigatorItemClassname = css`
     display: flex;
     flex-direction: column;
     align-self: stretch;
@@ -41,37 +42,32 @@ const counterBorderHoverClassname = css`
     justify-content: center;
     flex-shrink: 0;
     flex-grow: 1;
-    &:hover > div {
-        border-color: #ececec;
-    }
 `;
 
-class DesktopNavigatorItem extends React.Component<NavigatorItemProps> {
-    render() {
-        const { path, onClick, children } = this.props;
-        return (
-            <XView
-                as="a"
-                position="relative"
-                height={55}
-                flexShrink={0}
-                cursor="pointer"
-                color="#b4b8bd"
-                selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
-                hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
-                linkSelectable={path ? true : undefined}
-                linkStrict={path ? true : undefined}
-                path={path}
-                onClick={onClick}
-                hoverTextDecoration="none"
-            >
-                <div className={counterBorderHoverClassname}>
-                    {children}
-                </div>
-            </XView>
-        );
-    }
-}
+const DesktopNavigatorItem = (props: NavigatorItemProps) => {
+    const { path, onClick, children } = props;
+    return (
+        <XView
+            as="a"
+            position="relative"
+            height={55}
+            flexShrink={0}
+            cursor="pointer"
+            color="#b4b8bd"
+            selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
+            hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+            linkSelectable={path ? true : undefined}
+            linkStrict={path ? true : undefined}
+            path={path}
+            onClick={onClick}
+            hoverTextDecoration="none"
+        >
+            <div className={cx(DesktopNavigatorItemClassname, counterBorderHoverClassname)}>
+                {children}
+            </div>
+        </XView>
+    );
+};
 
 const MenuItemWithPopper = ({
     menuItems,
