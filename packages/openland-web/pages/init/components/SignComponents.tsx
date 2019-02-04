@@ -1414,9 +1414,9 @@ const NewOrganizationButton = ({
     onClick?: (event: React.MouseEvent<any>) => void;
     title: string;
 }) => {
-    let text = 'New organization';
+    let text = 'New';
     if (title !== '') {
-        text = `${title} (New organization)`;
+        text = `${title} (New)`;
     }
     return (
         <NewOrganizationButtonWrapper

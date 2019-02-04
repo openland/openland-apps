@@ -20,18 +20,18 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         fontWeight: '400',
         color: '#000',
-        opacity: 0.9
-    } as TextStyle
+        opacity: 0.9,
+    } as TextStyle,
 });
 
 let email = '';
 let session = '';
 
-const http = async (params: { url: string, body?: any, method: 'POST' | 'GET' }) => {
+const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
         method: params.method,
         headers: [['Content-Type', 'application/json']],
-        body: JSON.stringify(params.body)
+        body: JSON.stringify(params.body),
     });
     if (!res.ok) {
         throw new UserError(res.statusText || 'Unexpected error');
@@ -50,7 +50,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
     private submitForm = () => {
         this.ref.current!.submitForm();
-    }
+    };
 
     render() {
         return (
@@ -60,7 +60,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
                 <ZForm
                     ref={this.ref}
-                    action={async (src) => {
+                    action={async src => {
                         Keyboard.dismiss();
                         email = src.email;
                         let res = await http({
@@ -68,7 +68,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                             body: {
                                 email: email,
                             },
-                            method: 'POST'
+                            method: 'POST',
                         });
                         session = res.session;
                     }}
@@ -101,7 +101,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
     private submitForm = () => {
         this.ref.current!.submitForm();
-    }
+    };
 
     render() {
         return (
@@ -110,35 +110,39 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm
                     ref={this.ref}
-                    action={async (src) => {
+                    action={async src => {
                         Keyboard.dismiss();
                         let res = await http({
                             url: 'https://api.openland.com/auth/checkCode',
                             body: {
                                 session: session,
-                                code: src.code
+                                code: src.code,
                             },
-                            method: 'POST'
+                            method: 'POST',
                         });
                         let res2 = await http({
                             url: 'https://api.openland.com/auth/getAccessToken',
                             body: {
                                 session: session,
-                                authToken: res.authToken
+                                authToken: res.authToken,
                             },
-                            method: 'POST'
+                            method: 'POST',
                         });
 
                         await AsyncStorage.setItem('openland-token', res2.accessToken);
-
                     }}
                     onError={e => {
-                        new AlertBlanketBuilder().title('Activation').message(formatError(e)).button('Try again').show();
+                        new AlertBlanketBuilder()
+                            .title('Activation')
+                            .message(formatError(e))
+                            .button('Try again')
+                            .show();
                     }}
                     onSuccess={() => RNRestart.Restart()}
                 >
-
-                    <Text style={styles.hint}>Enter your activation code that was just sent to {email}</Text>
+                    <Text style={styles.hint}>
+                        Enter activation code that was just sent to {email}
+                    </Text>
                     <ZTextInput
                         field="code"
                         style={signupStyles.input}
