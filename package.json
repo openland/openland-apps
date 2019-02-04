@@ -156,6 +156,7 @@
         "react-native-super-ellipse-mask": "^1.0.7",
         "react-native-threads": "^0.0.15",
         "react-native-web": "^0.9.0",
+        "react-native-webrtc": "^1.69.0",
         "react-reconciler": "^0.12.0",
         "react-resize-aware": "^2.7.1",
         "react-resize-detector": "^3.2.1",
