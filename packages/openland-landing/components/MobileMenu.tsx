@@ -46,6 +46,7 @@ let menuAppClass = css`
 interface MobileMenuLinkProps {
     path: string;
     content: string;
+    onClick: () => void;
 }
 
 const MobileMenuLink = (props: MobileMenuLinkProps) => (
@@ -63,6 +64,7 @@ const MobileMenuLink = (props: MobileMenuLinkProps) => (
         hoverOpacity={1}
         hoverTextDecoration="none"
         selectedOpacity={1}
+        onClick={props.onClick}
     >
         {props.content}
     </XView>
@@ -95,9 +97,21 @@ export const MobileMenu = (props: MobileMenuProps) => {
             </XView>
             <div className={menuInnerClass}>
                 <Container>
-                    <MobileMenuLink path={LandingLinks.home} content="Messenger" />
-                    <MobileMenuLink path={LandingLinks.about} content="About" />
-                    <MobileMenuLink path={LandingLinks.signin} content="Sign in" />
+                    <MobileMenuLink
+                        path={LandingLinks.home}
+                        content="Messenger"
+                        onClick={props.onClose}
+                    />
+                    <MobileMenuLink
+                        path={LandingLinks.about}
+                        content="About"
+                        onClick={props.onClose}
+                    />
+                    <MobileMenuLink
+                        path={LandingLinks.signin}
+                        content="Sign in"
+                        onClick={props.onClose}
+                    />
                 </Container>
             </div>
             <XView position="absolute" bottom={14} left={10} flexDirection="row">
