@@ -5,9 +5,6 @@ import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
-import { MessageFull_mentions, SharedRoomKind, PostMessageType } from 'openland-api/Types';
-import { ModelMessage } from 'openland-engines/messenger/types';
 import { DropZone } from './FileUploading/DropZone';
 import { FileUploader } from './FileUploading/FileUploader';
 import { UploadContext } from './FileUploading/UploadContext';
@@ -37,24 +34,6 @@ const InputPlaceholder = css`
     color: rgba(0, 0, 0, 0.5);
 `;
 
-interface MessageComposeComponentProps {
-    conversationType?: SharedRoomKind | 'PRIVATE';
-    conversationId?: string;
-    conversation?: ConversationEngine;
-    enabled?: boolean;
-    onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
-    onSendFile?: (file: UploadCare.File) => void;
-    onChange?: (text: string) => void;
-    handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
-    getMessages?: () => ModelMessage[];
-    fileRemover: Function;
-    handleDrop: (file: any) => void;
-}
-
-interface MessageComposeComponentInnerState {
-    message: string;
-}
-
 const entityMap = {
     '&': '&amp;',
     '<': '&lt;',
@@ -73,26 +52,86 @@ function escapeHtml(str: string) {
     });
 }
 
-const SendMessage = ({
-    message,
-    handleChange,
-    onPaste,
-    inputRef,
+export const MobileMessageCompose = ({
+    onSendFile,
+    onSend,
     enabled,
     handleHideChat,
-    handleDialogDone,
-    handleSend,
+    onChange,
 }: {
-    message: any;
-    handleChange: any;
-    onPaste: any;
-    inputRef: any;
-    enabled: any;
-    handleHideChat: any;
-    handleDialogDone: any;
-    handleSend: any;
+    onSendFile: Function;
+    onSend: Function;
+    enabled: boolean;
+    handleHideChat: (show: boolean, postType: any) => void;
+    onChange: Function;
 }) => {
+    const [message, setMessage] = React.useState('');
+    const { file, fileRemover } = React.useContext(UploadContext);
     const { handleDrop } = React.useContext(UploadContext);
+    const inputRef = React.createRef<HTMLDivElement>();
+
+    const closeEditor = () => {
+        setMessage('');
+        fileRemover();
+
+        if (inputRef.current) {
+            inputRef.current.innerText = '';
+        }
+    };
+
+    const onUploadCareSendFile = (fileToUpload: UploadCare.File) => {
+        const ucFile = UploadCare.fileFrom('object', fileToUpload);
+        if (onSendFile) {
+            onSendFile(ucFile);
+        }
+    };
+
+    const handleSend = () => {
+        if (message.trim().length > 0) {
+            let msg = message.trim();
+            if (onSend) {
+                onSend(msg, null);
+
+                if (file) {
+                    onUploadCareSendFile(file);
+                }
+            }
+        } else if (file) {
+            onUploadCareSendFile(file);
+        }
+        closeEditor();
+    };
+
+    const handleDialogDone = (r: UploadCare.File) => {
+        setMessage('');
+        if (onSendFile) {
+            onSendFile(r);
+        }
+    };
+
+    const onPaste = (e: any) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData('text/plain');
+        document.execCommand('insertHTML', false, escapeHtml(text));
+        if (inputRef.current) {
+            inputRef.current.scrollTop = inputRef.current.scrollHeight;
+        }
+    };
+
+    const handleChange = () => {
+        if (!inputRef.current) {
+            return;
+        }
+
+        const msg = inputRef.current.innerText;
+
+        setMessage(msg);
+
+        if (onChange) {
+            onChange(msg);
+        }
+    };
+
     return (
         <SendMessageWrapper>
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
@@ -131,110 +170,3 @@ const SendMessage = ({
         </SendMessageWrapper>
     );
 };
-
-export class MobileMessageCompose extends React.PureComponent<
-    MessageComposeComponentProps,
-    MessageComposeComponentInnerState
-> {
-    inputRef = React.createRef<HTMLDivElement>();
-
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            message: '',
-        };
-    }
-
-    handleDialogDone = (r: UploadCare.File) => {
-        this.setState({ message: '' }, () => {
-            if (this.props.onSendFile) {
-                this.props.onSendFile(r);
-            }
-        });
-    };
-
-    private onUploadCareSendFile = (file: UploadCare.File) => {
-        const ucFile = UploadCare.fileFrom('object', file);
-        if (this.props.onSendFile) {
-            this.props.onSendFile(ucFile);
-        }
-    };
-
-    private handleSend = () => {
-        let { message, file } = this.state;
-
-        if (message.trim().length > 0) {
-            let msg = message.trim();
-            if (this.props.onSend) {
-                this.props.onSend(msg, null);
-
-                if (file) {
-                    this.onUploadCareSendFile(file);
-                }
-            }
-        } else if (file) {
-            this.onUploadCareSendFile(file);
-        }
-        this.closeEditor();
-    };
-
-    private handleChange = () => {
-        if (!this.inputRef.current) {
-            return;
-        }
-
-        const msg = this.inputRef.current.innerText;
-
-        this.setState({
-            message: msg,
-        });
-
-        if (this.props.onChange) {
-            this.props.onChange(msg);
-        }
-    };
-
-    private closeEditor = () => {
-        this.setState({
-            message: '',
-        });
-        this.props.fileRemover();
-
-        if (this.inputRef.current) {
-            this.inputRef.current.innerText = '';
-        }
-    };
-
-    private onPaste = (e: any) => {
-        e.preventDefault();
-        const text = e.clipboardData.getData('text/plain');
-        document.execCommand('insertHTML', false, escapeHtml(text));
-        if (this.inputRef.current) {
-            this.inputRef.current.scrollTop = this.inputRef.current.scrollHeight;
-        }
-    };
-
-    componentDidMount() {
-        if (this.inputRef.current) {
-            this.inputRef.current.innerText = this.state.message;
-        }
-    }
-
-    render() {
-        let { message } = this.state;
-
-        return (
-            <SendMessage
-                message={message}
-                handleChange={this.handleChange}
-                onPaste={this.onPaste}
-                inputRef={this.inputRef}
-                enabled={this.props.enabled}
-                handleHideChat={this.props.handleHideChat}
-                handleDialogDone={this.handleDialogDone}
-                handleSend={this.handleSend}
-            />
-        );
-    }
-}

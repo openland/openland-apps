@@ -8,7 +8,7 @@ export interface ContextT {
     file: FileT;
     fileSrc: FileSrcT;
     fileName: FileNameT;
-    fileRemover?: (() => void) | undefined;
+    fileRemover: (() => void);
     handleDrop?: (file: any) => void;
 }
 

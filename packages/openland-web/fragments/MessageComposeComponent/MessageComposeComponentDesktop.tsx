@@ -28,6 +28,7 @@ import {
     SharedRoomKind,
     RoomMembers_members,
     PostMessageType,
+    UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { PostIntroModal } from '../../components/messenger/message/content/attachments/introMessage/PostIntroModal';
@@ -35,6 +36,7 @@ import { AttachmentButtons } from './AttachmentButtons';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { FileUploader } from './FileUploading/FileUploader';
 import { EditView } from './EditView';
+import * as DraftStore from './MessageComposing/DraftStore';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -92,15 +94,6 @@ interface MessageComposeComponentInnerProps
     handleDrop: (file: any) => void;
 }
 
-interface MessageComposeComponentInnerState {
-    message: string;
-    floatingMessage: string;
-    forwardMessageReply?: string;
-    forwardMessageId?: Set<string> | string;
-    forwardMessageSender?: string;
-    beDrafted: boolean;
-}
-
 export const convertChannelMembersDataToMentionsData = (data: any) => {
     if (!data) {
         return [];
@@ -118,116 +111,227 @@ export const convertChannelMembersDataToMentionsData = (data: any) => {
     });
 };
 
-class MessageComposeComponentInner extends React.PureComponent<
-    MessageComposeComponentInnerProps,
-    MessageComposeComponentInnerState
-> {
-    listOfMembersNames: string[];
-    constructor(props: any) {
-        super(props);
-
-        let message =
-            window.localStorage.getItem('conversation_draft_1_' + props.conversationId) || '';
-        let draftKey = 'conversation_draft_1_' + this.props.conversationId;
-
-        if (message === draftKey) {
-            message = '';
-        }
-
-        this.state = {
-            message,
-            floatingMessage: message,
-            forwardMessageReply: undefined,
-            forwardMessageId: undefined,
-            forwardMessageSender: undefined,
-            beDrafted: false,
-        };
-        this.listOfMembersNames = [];
+const getMentions = (
+    str: string,
+    listOfMembersNames: string[],
+    members?: RoomMembers_members[],
+) => {
+    if (!members) {
+        return null;
     }
 
-    private input = React.createRef<XRichTextInput>();
-    private wasFocused = false;
+    const mentionsNames = listOfMembersNames.filter((name: string) => str.includes(name));
+    return members
+        .filter(({ user: { name } }) => mentionsNames.indexOf(`@${name}`) !== -1)
+        .map(({ user }) => user);
+};
 
-    handleDialogDone = (r: UploadCare.File) => {
-        this.setState({ message: '' }, () => {
-            if (this.props.onSendFile) {
-                this.props.onSendFile(r);
-            }
-        });
-    };
-
-    getMentions = (str: string) => {
-        if (!this.props.members) {
-            return null;
+function useKeydownHandler({
+    forwardMessagesId,
+    setEditMessage,
+    inputValue,
+    quoteMessagesId,
+    hasFocus,
+    conversation,
+    user,
+}: {
+    forwardMessagesId: Set<string>;
+    setEditMessage: (id: string | null, message: string | null) => void;
+    inputValue: string;
+    quoteMessagesId: string[];
+    hasFocus: boolean;
+    conversation?: ConversationEngine;
+    user: UserShort | null;
+}) {
+    const keydownHandler = (e: any) => {
+        if (forwardMessagesId && forwardMessagesId.size > 0) {
+            return;
         }
 
-        const mentionsNames = this.getListOfMembersNames().filter((name: string) =>
-            str.includes(name),
+        if (
+            inputValue.length === 0 &&
+            conversation &&
+            ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) &&
+            !quoteMessagesId
+        ) {
+            let messages = conversation
+                .getState()
+                .messages.filter(
+                    (m: any) => isServerMessage(m) && m.message && user && m.sender.id === user.id,
+                );
+            let messageData = messages[messages.length - 1];
+            if (messageData && isServerMessage(messageData)) {
+                e.preventDefault();
+                setEditMessage(messageData.id, messageData.message);
+            }
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener('keydown', keydownHandler);
+
+        return function cleanup() {
+            window.removeEventListener('keydown', keydownHandler);
+        };
+    });
+}
+
+const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInnerProps) => {
+    const {
+        enabled,
+        fileRemover,
+        members,
+        getMessages,
+        replyMessage,
+        conversationId,
+        conversation,
+        user,
+        onSend,
+        onSendFile,
+        saveDraft,
+        onChange,
+        handleDrop,
+        handleHideChat,
+    } = props;
+
+    const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
+
+    const [inputValue, setInputValue] = React.useState(DraftStore.getDraftMessage(conversationId));
+    const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
+    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
+    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
+        undefined,
+    );
+    const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
+    const [beDrafted, setBeDrafted] = React.useState(false);
+
+    useKeydownHandler({
+        forwardMessagesId: messagesContext.forwardMessagesId,
+        setEditMessage: messagesContext.setEditMessage,
+        inputValue,
+        quoteMessagesId,
+        hasFocus,
+        conversation,
+        user,
+    });
+
+    let wasFocused = false;
+    let listOfMembersNames: string[] = [];
+    let inputRef = React.createRef<XRichTextInput>();
+    // let hasFocus = input && input.state.editorState.getSelection().getHasFocus();
+
+    const hasQuoteInState = () => {
+        return quoteMessageReply && quoteMessagesId && quoteMessageSender;
+    };
+
+    const getEditViewMessage = () => {
+        if (inputValue) {
+            return inputValue;
+        }
+        if (quoteMessageReply) {
+            return quoteMessageReply;
+        }
+        return undefined;
+    };
+
+    const getEditViewTitle = () => {
+        return quoteMessageSender !== undefined ? quoteMessageSender : 'Edit message';
+    };
+
+    const getForwardText = ({ forwardMessagesId }: { forwardMessagesId: Set<string> }) => {
+        return (
+            `Forward ${forwardMessagesId.size} ` +
+            (forwardMessagesId.size === 1 ? 'message' : 'messages')
         );
-        return this.props.members
-            .filter(({ user: { name } }) => {
-                return mentionsNames.indexOf(`@${name}`) !== -1;
-            })
-            .map(({ user }) => user);
     };
 
-    private onUploadCareSendFile = (file: UploadCare.File) => {
-        const ucFile = UploadCare.fileFrom('object', file);
-        if (this.props.onSendFile) {
-            this.props.onSendFile(ucFile);
+    const getReplyText = ({ replyMessagesId }: { replyMessagesId: Set<string> }) => {
+        return (
+            `Reply ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages')
+        );
+    };
+
+    const hasReply = ({
+        replyMessagesSender,
+        replyMessages,
+    }: {
+        replyMessagesSender: Set<string>;
+        replyMessages: Set<string>;
+    }) => {
+        return replyMessages.size && replyMessagesSender.size;
+    };
+
+    const getFirstInSet = (set: Set<string>) => {
+        return [...set][0];
+    };
+
+    const getForwardOrReply = (): 'forward' | 'reply' => {
+        // TODO implement this
+        return 'forward';
+    };
+
+    const getQuoteMessageReply = () => {
+        const mode = getForwardOrReply();
+
+        if (mode === 'forward') {
+            return hasForward(messagesContext) ? getForwardText(messagesContext) : '';
+        }
+        return hasReply(messagesContext)
+            ? getFirstInSet(messagesContext.replyMessages)
+            : getReplyText(messagesContext);
+    };
+
+    const getQuoteMessageId = () => {
+        const mode = getForwardOrReply();
+
+        if (mode === 'forward') {
+            return hasForward(messagesContext)
+                ? [getFirstInSet(messagesContext.forwardMessagesId)]
+                : [];
+        }
+        return hasReply(messagesContext)
+            ? [getFirstInSet(messagesContext.replyMessagesId)]
+            : [...messagesContext.replyMessagesId];
+    };
+
+    const getQuoteMessageSender = () => {
+        const mode = getForwardOrReply();
+
+        if (mode === 'forward') {
+            return hasForward(messagesContext) ? 'Forward' : '';
+        }
+        return hasReply(messagesContext)
+            ? getFirstInSet(messagesContext.replyMessagesSender)
+            : 'Reply';
+    };
+
+    const hasForward = ({
+        useForwardMessages,
+        forwardMessagesId,
+    }: {
+        useForwardMessages: boolean;
+        forwardMessagesId: Set<string>;
+    }) => {
+        return useForwardMessages && forwardMessagesId.size;
+    };
+
+    const handleDialogDone = (r: UploadCare.File) => {
+        setInputValue('');
+        if (onSendFile) {
+            onSendFile(r);
         }
     };
 
-    private handleSend = () => {
-        let { message, floatingMessage, forwardMessageReply, forwardMessageId, file } = this
-            .state as MessageComposeComponentInnerState;
+    const replyMessagesProc = () => {
+        if (quoteMessagesId.length > 0) {
+            let mentions = getMentions(inputValue, listOfMembersNames, members);
+            const currentMessages = getMessages ? getMessages() : [];
 
-        if (message.trim().length > 0) {
-            let msg = message.trim();
-            if (this.props.onSend && !forwardMessageId) {
-                let mentions = this.getMentions(msg);
+            const messagesToReply = currentMessages.filter(
+                (item: MessageFull) => quoteMessagesId.indexOf(item.id) !== -1,
+            );
 
-                this.props.onSend(msg, mentions);
-                this.setState({
-                    beDrafted: false,
-                });
-
-                if (file) {
-                    this.onUploadCareSendFile(file);
-                }
-            }
-            if ((floatingMessage || forwardMessageReply) && forwardMessageId) {
-                this.replyMessages();
-            }
-        } else if (forwardMessageReply && forwardMessageId) {
-            this.replyMessages();
-        } else if (file) {
-            this.onUploadCareSendFile(file);
-        }
-        this.closeEditor();
-        this.changeDraft('');
-        this.localDraftCleaner();
-    };
-
-    private replyMessages = () => {
-        let { message, forwardMessageId } = this.state;
-
-        let messages: string[] = [];
-        if (typeof forwardMessageId === 'string') {
-            messages = [forwardMessageId];
-        } else if (typeof forwardMessageId === 'object') {
-            messages = [...forwardMessageId];
-        }
-
-        if (messages.length > 0) {
-            let mentions = this.getMentions(message);
-            const currentMessages = this.props.getMessages ? this.props.getMessages() : [];
-
-            const replyMessages = currentMessages.filter((item: MessageFull) => {
-                return messages.indexOf(item.id) !== -1;
-            });
-
-            const replyMentions = replyMessages.reduce(
+            const replyMentions = messagesToReply.reduce(
                 (accumulator: string[], currentValue: ModelMessage) => {
                     if (!currentValue.mentions) {
                         return accumulator;
@@ -244,357 +348,248 @@ class MessageComposeComponentInner extends React.PureComponent<
                 mentions ? mentions.map(({ id }) => id) : [],
             );
 
-            this.props.replyMessage({
+            replyMessage({
                 variables: {
-                    roomId: this.props.conversationId,
-                    message: message,
+                    roomId: conversationId,
+                    message: inputValue,
                     mentions: replyMentions,
-                    replyMessages: messages,
+                    replyMessages: quoteMessagesId,
                 },
             });
         }
     };
 
-    private handleChange = (src: string) => {
-        let { forwardMessageId, beDrafted } = this.state;
-
-        this.setState({
-            message: src,
-        });
-
-        if (src.length > 0) {
-            this.setState({
-                beDrafted: true,
-            });
-
-            this.localDraftSaver(src);
+    const onUploadCareSendFile = (fileForUc: UploadCare.File) => {
+        const ucFile = UploadCare.fileFrom('object', fileForUc);
+        if (onSendFile) {
+            onSendFile(ucFile);
         }
-
-        if (src.length === 0) {
-            this.localDraftCleaner();
-        }
-
-        if (this.props.onChange) {
-            this.props.onChange(src);
-        }
-
-        if (forwardMessageId || !beDrafted) {
-            return;
-        }
-
-        this.changeDraft(src);
     };
 
-    private localDraftSaver = (src: string) => {
-        let draftKey = 'conversation_draft_1_' + this.props.conversationId;
-        window.localStorage.setItem(draftKey, src);
-    };
-
-    private localDraftCleaner = () => {
-        let draftKey = 'conversation_draft_1_' + this.props.conversationId;
-        window.localStorage.setItem(draftKey, draftKey);
-    };
-
-    private changeDraft = (src: string) => {
-        this.props.saveDraft({
+    const changeDraft = (message: string) => {
+        saveDraft({
             variables: {
-                conversationId: this.props.conversationId,
-                message: src,
+                conversationId,
+                message,
             },
         });
     };
 
-    private focusIfNeeded = () => {
-        if (this.props.enabled !== false && !this.wasFocused) {
-            this.wasFocused = true;
-            if (this.input.current) {
-                this.input.current.focus();
+    const handleSend = () => {
+        if (inputValue.trim().length > 0) {
+            let msg = inputValue.trim();
+            if (onSend && !hasQuoteInState()) {
+                let mentions = getMentions(msg, listOfMembersNames, props.members);
+
+                onSend(msg, mentions);
+                setBeDrafted(false);
+
+                if (file) {
+                    onUploadCareSendFile(file);
+                }
             }
+            if (inputValue && hasQuoteInState()) {
+                replyMessagesProc();
+            }
+        } else if (hasQuoteInState()) {
+            replyMessagesProc();
+        } else if (file) {
+            onUploadCareSendFile(file);
         }
+        closeEditor();
+        changeDraft('');
+        DraftStore.cleanDraftMessage(conversationId);
     };
 
-    private closeEditor = () => {
-        this.props.messagesContext.resetAll();
-        this.setState({
-            message: '',
-            floatingMessage: '',
-            forwardMessageReply: undefined,
-            forwardMessageId: undefined,
-            forwardMessageSender: undefined,
-        });
-        this.props.fileRemover();
-        if (this.input.current) {
-            this.input.current!!.resetAndFocus();
-        }
-    };
+    const handleChange = (value: string) => {
+        setInputValue(value);
 
-    keydownHandler = (e: any) => {
-        let { forwardMessagesId } = this.props.messagesContext;
-        if (forwardMessagesId && forwardMessagesId.size > 0) {
+        if (value.length > 0) {
+            setBeDrafted(true);
+            DraftStore.setDraftMessage(conversationId, value);
+        }
+
+        if (value.length === 0) {
+            DraftStore.cleanDraftMessage(conversationId);
+        }
+
+        if (onChange) {
+            onChange(value);
+        }
+
+        if (quoteMessagesId || !beDrafted) {
             return;
         }
 
-        let { message, forwardMessageId } = this.state;
-        const input = this.input.current;
-        let hasFocus = input && input.state.editorState.getSelection().getHasFocus();
+        changeDraft(value);
+    };
 
-        if (
-            message.length === 0 &&
-            this.props.conversation &&
-            ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) &&
-            !forwardMessageId
-        ) {
-            let messages = this.props.conversation
-                .getState()
-                .messages.filter(
-                    m =>
-                        isServerMessage(m) &&
-                        m.message &&
-                        this.props.user &&
-                        m.sender.id === this.props.user.id,
-                );
-            let messageData = messages[messages.length - 1];
-            if (messageData && isServerMessage(messageData)) {
-                e.preventDefault();
-                this.props.messagesContext.setEditMessage(messageData.id, messageData.message);
-            }
+    const focus = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
         }
     };
 
-    setListOfMembersNames = (newListOfMembersNames: any) => {
-        this.listOfMembersNames = newListOfMembersNames;
+    const resetAndFocus = () => {
+        if (inputRef.current) {
+            inputRef.current.resetAndFocus();
+        }
     };
 
-    getListOfMembersNames = () => {
-        return this.listOfMembersNames;
+    const closeEditor = () => {
+        messagesContext.resetAll();
+        setInputValue('');
+        setQuoteMessageReply(undefined);
+        setQuoteMessageSender(undefined);
+        setQuoteMessagesId([]);
+
+        fileRemover();
+        resetAndFocus();
     };
 
-    componentDidMount() {
-        const { messagesContext } = this.props;
-        if (messagesContext.useForwardMessages && messagesContext.forwardMessagesId) {
-            messagesContext.changeForwardConverstion();
-            this.setState({
-                message: '',
-                floatingMessage: '',
-                forwardMessageReply:
-                    `Forward ${messagesContext.forwardMessagesId.size} ` +
-                    (messagesContext.forwardMessagesId.size === 1 ? 'message' : 'messages'),
-                forwardMessageId: messagesContext.forwardMessagesId,
-                forwardMessageSender: 'Forward',
-            });
+    const focusIfNeeded = () => {
+        if (enabled !== false && !wasFocused) {
+            wasFocused = true;
+            focus();
         }
-        this.focusIfNeeded();
-        window.addEventListener('keydown', this.keydownHandler);
-    }
+    };
 
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.keydownHandler);
-    }
+    const shouldBeDrafted = () => {
+        const { replyMessages, replyMessagesId, replyMessagesSender } = messagesContext;
+        return !(replyMessages && replyMessagesId && replyMessagesSender);
+    };
 
-    componentDidUpdate() {
-        this.focusIfNeeded();
-    }
+    const getNextDraft = (nextProps: MessageComposeComponentInnerProps) => {
+        let draft = DraftStore.getDraftMessage(conversationId);
 
-    componentWillReceiveProps(nextProps: MessageComposeComponentInnerProps) {
-        const {
-            editMessage,
-            editMessageId,
-            replyMessages,
-            replyMessagesId,
-            replyMessagesSender,
-            forwardMessagesId,
-            useForwardMessages,
-        } = nextProps.messagesContext;
-
-        if (nextProps.members && nextProps.members !== this.props.members) {
-            this.setListOfMembersNames(
-                nextProps.members.map(
-                    ({ user: { name } }: { user: { name: string } }) => `@${name}`,
-                ),
-            );
+        if (draft === '' && nextProps.draft && nextProps.draft !== '') {
+            draft = nextProps.draft;
         }
+        return draft;
+    };
 
-        let newState: any = {};
+    const shouldHaveQuote = () => {
+        const { replyMessagesId } = messagesContext;
+        // return replyMessagesId || hasConversationChanged(nextProps);
+        return replyMessagesId;
+    };
 
-        if (this.props.conversationId !== nextProps.conversationId) {
-            newState = {
-                ...newState,
-                forwardMessageReply: '',
-                forwardMessageId: null,
-                forwardMessageSender: '',
-            };
-            if (useForwardMessages && forwardMessagesId) {
-                this.props.messagesContext.changeForwardConverstion();
-                newState = {
-                    ...newState,
-                    forwardMessageReply:
-                        `Forward ${forwardMessagesId.size} ` +
-                        (forwardMessagesId.size === 1 ? 'message' : 'messages'),
-                    forwardMessageId: forwardMessagesId,
-                    forwardMessageSender: 'Forward',
-                };
+    React.useEffect(
+        () => {
+            setInputValue(shouldBeDrafted() ? getNextDraft(props) : '');
+
+            setQuoteMessageReply(shouldHaveQuote() ? getQuoteMessageReply() : undefined);
+            setQuoteMessagesId(shouldHaveQuote() ? getQuoteMessageId() : []);
+            setQuoteMessageSender(shouldHaveQuote() ? getQuoteMessageSender() : undefined);
+
+            setBeDrafted(shouldBeDrafted());
+        },
+        [conversationId],
+    );
+
+    React.useEffect(
+        () => {
+            if (hasForward(messagesContext)) {
+                messagesContext.changeForwardConverstion();
             }
+        },
+        [conversationId],
+    );
+
+    // rewrote to effect correctly
+    // updateFocus(nextProps: MessageComposeComponentInnerProps) {
+    //     const { messagesContext, focus } = nextProps;
+    //     const { editMessage, editMessageId, replyMessagesId } = messagesContext;
+
+    //     if (
+    //         replyMessagesId ||
+    //         (this.hasConversationChanged(nextProps) && !editMessage && !editMessageId)
+    //     ) {
+    //         focus();
+    //     }
+    // }
+    //
+
+    React.useEffect(
+        () => {
+            listOfMembersNames = props.members
+                ? props.members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
+                : [];
+        },
+        [props.members],
+    );
+
+    // emulate componentDidMount
+    React.useEffect(() => {
+        const { changeForwardConverstion } = messagesContext;
+
+        if (hasForward(messagesContext)) {
+            changeForwardConverstion();
+
+            setInputValue('');
+            setQuoteMessageReply(getQuoteMessageReply());
+            setQuoteMessageSender(getQuoteMessageSender());
+            setQuoteMessagesId(getQuoteMessageId());
         }
+    });
 
-        if (replyMessagesId) {
-            if (replyMessages && replyMessagesSender) {
-                const messageReply = [...replyMessages!][0];
-                const messageId = [...replyMessagesId!][0];
-                const messageSender = [...replyMessagesSender!][0];
-                newState = {
-                    ...newState,
-                    forwardMessageReply: messageReply,
-                    forwardMessageId: messageId,
-                    forwardMessageSender: messageSender,
-                };
-            } else {
-                newState = {
-                    ...newState,
-                    forwardMessageReply:
-                        `Reply ${replyMessagesId.size} ` +
-                        (replyMessagesId.size === 1 ? 'message' : 'messages'),
-                    forwardMessageId: replyMessagesId,
-                    forwardMessageSender: 'Reply',
-                };
-            }
-            if (this.input.current) {
-                this.input.current!!.focus();
-            }
-        }
+    React.useEffect(() => {
+        focusIfNeeded();
+    });
 
-        let draftChecker = !(replyMessages && replyMessagesId && replyMessagesSender);
+    const editViewMessage = getEditViewMessage();
+    const editViewTitle = getEditViewTitle();
+    const mentionsData = convertChannelMembersDataToMentionsData(members);
 
-        if (draftChecker) {
-            let draft =
-                window.localStorage.getItem('conversation_draft_1_' + this.props.conversationId) ||
-                '';
-            let draftKey = 'conversation_draft_1_' + this.props.conversationId;
-
-            if (!draft && nextProps.draft) {
-                draft = nextProps.draft;
-            }
-
-            if (draft === draftKey) {
-                newState = {
-                    ...newState,
-                    message: '',
-                    floatingMessage: '',
-                    beDrafted: true,
-                };
-            } else if (draft !== draftKey) {
-                newState = {
-                    ...newState,
-                    message: draft,
-                    floatingMessage: draft,
-                    beDrafted: true,
-                };
-            }
-        }
-
-        let focusChecker =
-            this.props.conversationId !== nextProps.conversationId &&
-            !editMessage &&
-            !editMessageId;
-
-        if (focusChecker) {
-            if (this.input.current) {
-                this.input.current!!.focus();
-            }
-        }
-
-        this.setState(newState);
-    }
-
-    render() {
-        let {
-            floatingMessage,
-            forwardMessageReply,
-            forwardMessageId,
-            forwardMessageSender,
-        } = this.state;
-
-        let stateMessage = undefined;
-        if (floatingMessage) {
-            stateMessage = floatingMessage;
-        }
-        if (forwardMessageReply) {
-            stateMessage = forwardMessageReply;
-        }
-
-        const mentionsData = convertChannelMembersDataToMentionsData(this.props.members);
-
-        return (
-            <SendMessageWrapper>
-                <DropZone height="calc(100% - 115px)" onFileDrop={this.props.handleDrop} />
-                <SendMessageContent separator={4} alignItems="center">
-                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage && forwardMessageId && (
-                            <EditView
-                                message={stateMessage}
-                                title={
-                                    forwardMessageSender !== undefined
-                                        ? forwardMessageSender
-                                        : 'Edit message'
-                                }
-                                onCancel={this.closeEditor}
-                            />
-                        )}
-                        <TextInputWrapper>
-                            <XRichTextInput
-                                mentionsData={mentionsData}
-                                placeholder="Write a message..."
-                                flexGrow={1}
-                                onChange={this.handleChange}
-                                onSubmit={this.handleSend}
-                                ref={this.input}
-                                value={floatingMessage}
-                                onPasteFile={this.props.handleDrop}
-                            />
-                        </TextInputWrapper>
-                        <XHorizontal
-                            alignItems="center"
-                            justifyContent="space-between"
+    return (
+        <SendMessageWrapper>
+            <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
+            <SendMessageContent separator={4} alignItems="center">
+                <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                    {editViewMessage && (
+                        <EditView
+                            message={editViewMessage}
+                            title={editViewTitle}
+                            onCancel={closeEditor}
+                        />
+                    )}
+                    <TextInputWrapper>
+                        <XRichTextInput
+                            mentionsData={mentionsData}
+                            placeholder="Write a message..."
                             flexGrow={1}
-                        >
-                            <AttachmentButtons
-                                enabled={this.props.enabled}
-                                handleHideChat={this.props.handleHideChat}
-                                handleDialogDone={this.handleDialogDone}
-                            />
+                            onChange={handleChange}
+                            onSubmit={handleSend}
+                            ref={inputRef}
+                            value={inputValue}
+                            onPasteFile={handleDrop}
+                        />
+                    </TextInputWrapper>
+                    <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
+                        <AttachmentButtons
+                            enabled={enabled}
+                            handleHideChat={handleHideChat}
+                            handleDialogDone={handleDialogDone}
+                        />
 
-                            <XButton
-                                text="Send"
-                                style="primary"
-                                action={this.handleSend}
-                                iconRight="send"
-                                enabled={this.props.enabled !== false}
-                            />
-                        </XHorizontal>
-                        <FileUploader />
-                    </XVertical>
-                </SendMessageContent>
-                <PostIntroModal
-                    targetQuery="addItro"
-                    conversationId={this.props.conversationId || ''}
-                />
-            </SendMessageWrapper>
-        );
-    }
-}
+                        <XButton
+                            text="Send"
+                            style="primary"
+                            action={handleSend}
+                            iconRight="send"
+                            enabled={enabled !== false}
+                        />
+                    </XHorizontal>
+                    <FileUploader />
+                </XVertical>
+            </SendMessageContent>
+            <PostIntroModal targetQuery="addItro" conversationId={conversationId || ''} />
+        </SendMessageWrapper>
+    );
+};
 
 export const MessageComposeComponent = withMessageState(
-    withUserInfo(props => {
-        const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
-        return (
-            <MessageComposeComponentInner
-                {...props}
-                messagesContext={state}
-                replyMessage={props.replyMessage}
-                saveDraft={props.saveDraft}
-                draft={props.draft}
-            />
-        );
-    }),
+    withUserInfo(MessageComposeComponentInnerWithHooks),
 ) as React.ComponentType<MessageComposeWithChannelMembers>;
 
 type MessageComposeComponentChannelMembersProps = MessageComposeComponentProps & {
