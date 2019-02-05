@@ -15,6 +15,7 @@ type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 export class AlertBlanketBuilder {
     _title?: string;
     _message?: string;
+    _view?: any;
     _cancalable?: boolean;
     _actions: { name: string, callback?: () => void, style?: BlanketButtonsStyle, action?: () => void, onActionSuccess?: () => void, onActionError?: (e: Error) => void }[] = [];
 
@@ -36,6 +37,11 @@ export class AlertBlanketBuilder {
 
     message(message: string): AlertBlanketBuilder {
         this._message = message;
+        return this;
+    }
+
+    view(view: any): AlertBlanketBuilder {
+        this._view = view;
         return this;
     }
 
