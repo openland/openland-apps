@@ -115,6 +115,10 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async src => {
+                        if (!src.code) {
+                            Alert.builder().title('Please check your email and enter activation code').button('GOT IT!').show();
+                            return
+                        }
                         Keyboard.dismiss();
                         let res = await http({
                             url: 'https://api.openland.com/auth/checkCode',
