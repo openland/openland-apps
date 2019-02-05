@@ -62,7 +62,7 @@ const styleEditLabel = css`
 `;
 
 const styleInsane = css`
-    background: url(/static/X/insane.gif);
+    background: url(https://cdn.openland.com/shared/web/insane.gif);
     background-clip: text, border;
     -webkit-background-clip: text;
     color: transparent;
