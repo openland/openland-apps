@@ -61,10 +61,10 @@ export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
     return (
         <XModalForm
             submitProps={{
-                text: 'Leave Organization',
+                text: 'Leave organization',
                 style: 'danger',
             }}
-            title={'Leave Organization'}
+            title={`Leave ${props.data.organizationProfile.name}`}
             defaultData={{}}
             defaultAction={async () => {
                 await props.organizationMemberRemove({
@@ -101,10 +101,10 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
     return (
         <XModalForm
             submitProps={{
-                text: 'Remove Organization',
+                text: 'Delete organization',
                 style: 'danger',
             }}
-            title={'Remove Organization'}
+            title={`Delete ${props.data.organizationProfile.name}`}
             defaultData={{}}
             defaultAction={async () => {
                 await props.deleteOrganization({
