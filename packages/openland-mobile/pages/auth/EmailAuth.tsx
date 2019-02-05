@@ -9,7 +9,7 @@ import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
 import { UserError, formatError } from 'openland-y-forms/errorHandling';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { AlertBlanketBuilder, Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     hint: {
@@ -61,6 +61,10 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async src => {
+                        if (!src.email) {
+                            Alert.builder().title('Please enter your email address').button('GOT IT!').show();
+                            return
+                        }
                         Keyboard.dismiss();
                         email = src.email;
                         let res = await http({
@@ -75,7 +79,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                     onSuccess={() => this.props.router.push('EmailCode')}
                 >
                     <Text style={styles.hint}>
-                        Enter your email address to sign in or create a new account
+                        Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
                     </Text>
                     <ZTextInput
                         field="email"
