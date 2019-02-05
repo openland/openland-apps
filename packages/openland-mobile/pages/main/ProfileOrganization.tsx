@@ -71,6 +71,25 @@ const ProfileOrganizationContent = React.memo<PageProps>((props) => {
                         }}
                     />
                 )}
+
+                {organization.isAdmin && (
+                    <ZListItem
+                        text="Delete organization"
+                        appearance="danger"
+                        onPress={() => {
+                            Alert.builder()
+                                .title(`Delete ${organization.name}`)
+                                .message(`Are you sure you want to delete ${organization.name}? This cannot be undone.`)
+                                .button('Cancel', 'cancel')
+                                .action('Delete', 'destructive', async () => {
+                                    await getClient().mutateDeleteOrganization({ organizationId: organization.id });
+                                    await getClient().refetchAccountSettings();
+
+                                    props.router.back();
+                                }).show();
+                        }}
+                    />
+                )}
             </ZListItemGroup>
 
             <ZListItemGroup header="About" divider={false}>
