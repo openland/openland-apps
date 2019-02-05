@@ -8,7 +8,7 @@ import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
-import { UserError, formatError } from 'openland-y-forms/errorHandling';
+import { UserError, formatError, SilentError } from 'openland-y-forms/errorHandling';
 import { AlertBlanketBuilder, Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
@@ -63,7 +63,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                     action={async src => {
                         if (!src.email) {
                             Alert.builder().title('Please enter your email address').button('GOT IT!').show();
-                            return
+                            throw new SilentError();
                         }
                         Keyboard.dismiss();
                         email = src.email;
@@ -117,7 +117,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                     action={async src => {
                         if (!src.code) {
                             Alert.builder().title('Please check your email and enter activation code').button('GOT IT!').show();
-                            return
+                            throw new SilentError();
                         }
                         Keyboard.dismiss();
                         let res = await http({

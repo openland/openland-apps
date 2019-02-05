@@ -10,6 +10,7 @@ import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { SilentError } from 'openland-y-forms/errorHandling';
 
 class NewOrganizationComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
@@ -23,7 +24,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
                     action={async (src) => {
                         if (!src.input.name) {
                             Alert.builder().title('Name can\'t be empty').button('GOT IT!').show();
-                            return
+                            throw new SilentError();
                         }
                         let client = getClient();
                         await client.mutateCreateOrganization({ input: { name: '', personal: false, ...src.input }, });
