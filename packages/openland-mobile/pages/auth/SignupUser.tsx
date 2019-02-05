@@ -58,7 +58,7 @@ const SignupUserContent = React.memo<PageProps>((props) => {
                 action={async (src) => {
                     // await delay(1000);
                     if (!src.input.firstName) {
-                        Alert.alert('Name can\'t be empty');
+                        Alert.builder().title('Name can\'t be empty').button('GOT IT!').show();
                         return;
                     }
                     await getClient().mutateProfileCreate({ input: { firstName: src.input.firstName, lastName: src.input.lastName } });
