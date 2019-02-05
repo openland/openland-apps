@@ -6,10 +6,13 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { View, Text } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
+import { CallController } from 'openland-mobile/calls/CallController';
 
 let Content = React.memo<{ id: string }>((props) => {
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
     let conference = getClient().useConference({ id: props.id }).conference!!
+    useWatchCall(conference && conference.id);
 
     let title = room.__typename === 'PrivateRoom' ? room.user.name : room.title;
     let placeholderKey = room.id
@@ -22,6 +25,7 @@ let Content = React.memo<{ id: string }>((props) => {
                     <Text style={{ fontSize: 32, height: 36 }} numberOfLines={1}>{title}</Text>
                 </View>
             </View>
+            <CallController id={conference.id} conference={conference} />
             {/* <View flexDirection="row" paddingHorizontal={16} paddingVertical={16}>
                 {conference.peers.map((v) => (<View><Text>{v.user.name}</Text></View>))}
             </View> */}

@@ -46,7 +46,7 @@ declare module 'react-map-gl' {
         onViewportChange?: (viewport: ViewPortChanged) => void;
     }>;
 
-    export class FlyToInterpolator {}
+    export class FlyToInterpolator { }
     export let StaticMap: React.ComponentClass<StaticMapProps>;
     export let InteractiveMap: React.ComponentClass<InteractiveMapProps>;
 }
@@ -61,7 +61,7 @@ declare module 'mixpanel-browser' {
 }
 
 declare module 'isomorphic-unfetch' {
-    export default function(input: RequestInfo, init?: RequestInit): Promise<Response>;
+    export default function (input: RequestInfo, init?: RequestInit): Promise<Response>;
 }
 
 declare module 'deck.gl' {
@@ -91,7 +91,7 @@ declare module 'deck.gl' {
     }
 
     interface Layer<T extends LayerProps> {
-        new (props: T): Layer<T>;
+        new(props: T): Layer<T>;
         context: any;
         state: any;
         props: T;
@@ -185,7 +185,7 @@ declare module 'react-localstorage-hoc' {
     export default ReturnType;
 }
 
-declare module 'lodash.flowright' {}
+declare module 'lodash.flowright' { }
 
 declare namespace UploadCare {
     interface Dialog {
@@ -280,15 +280,15 @@ declare module 'react-lottie' {
      */
     interface BodymovinEvent {
         eventName:
-            | 'complete'
-            | 'loopComplete'
-            | 'enterFrame'
-            | 'segmentStart'
-            | 'config_ready'
-            | 'data_ready'
-            | 'loaded_images'
-            | 'DOMLoaded'
-            | 'destroy';
+        | 'complete'
+        | 'loopComplete'
+        | 'enterFrame'
+        | 'segmentStart'
+        | 'config_ready'
+        | 'data_ready'
+        | 'loaded_images'
+        | 'DOMLoaded'
+        | 'destroy';
         callback: () => void;
     }
 
@@ -320,12 +320,12 @@ declare module 'react-lottie' {
      * @component Lottie is a component that allow you to use animation from JSON file that created by
      * Bodymovin on Adobe After Effect
      */
-    class Lottie extends React.Component<LottiePropsType, any> {}
+    class Lottie extends React.Component<LottiePropsType, any> { }
     export default Lottie;
 }
 
 declare module 'react-lorem-component' {
-    class Lorem extends React.Component<{ count: number }, any> {}
+    class Lorem extends React.Component<{ count: number }, any> { }
     export default Lorem;
 }
 
@@ -515,19 +515,19 @@ declare module 'ifvisible.js' {
     export = ifvisible;
 }
 
-declare module 'favico.js' {}
+declare module 'favico.js' { }
 
 declare module 'draft-js-plugins-editor' {
     export type PluginsEditorProps =
         | Draft.EditorProps
         | {
-              plugins: any;
-          };
+            plugins: any;
+        };
 
     export default class PluginsEditor extends React.Component<
         PluginsEditorProps,
         Draft.EditorState
-    > {
+        > {
         // Force focus back onto the editor node.
         focus(): void;
         // Remove focus from the editor node.
@@ -582,4 +582,25 @@ declare module 'react-native-extra-dimensions-android' {
 
 declare module 'react-navigation-material-bottom-tabs' {
     export function createMaterialBottomTabNavigator(arg1: any, arg2?: any): any;
+}
+
+declare module 'react-native-webrtc' {
+    export const mediaDevices: {
+        getUserMedia(args: any): Promise<any>;
+    }
+    export class RTCPeerConnection {
+        constructor(args: any);
+
+        onicecandidate: (src: any) => void
+
+        close(): void;
+    }
+
+    export const RTCView: any
+    export class RTCSessionDescription {
+        constructor(src: any);
+    }
+    export class RTCIceCandidate {
+        constructor(src: any);
+    }
 }

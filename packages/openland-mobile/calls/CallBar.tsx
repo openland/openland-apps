@@ -1,38 +1,26 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import gql from 'graphql-tag';
-import { ConferenceFull } from 'openland-api/fragments/ConferenceFull';
-import { UserShort } from 'openland-api/fragments/UserShort';
-import { View } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
-import { STouchable } from 'react-native-s/STouchable';
-
-const ConferenceWatchSubscription = gql`
-    subscription ConferenceWatch($id: ID!) {
-        alphaConferenceWatch(id: $id) {
-            ...ConferenceFull
-        }
-    }
-    ${ConferenceFull}
-    ${UserShort}
-`;
+import { useWatchCall } from './useWatchCall';
 
 export const CallBarComponent = React.memo<{ id: string }>((props) => {
     let conference = getClient().useWithoutLoaderConference({ id: props.id })
-    React.useEffect(() => {
-        if (!conference) {
-            return;
-        }
-        let s = getClient().client.subscribe(ConferenceWatchSubscription, { id: conference!.conference.id });
-        return () => s.destroy()
-    }, [conference && conference.conference.id])
 
+    useWatchCall(conference && conference.conference.id);
+    
     if (conference && conference.conference && conference.conference.peers.length > 0) {
         return (
-            <View alignSelf="stretch" height={56} backgroundColor="green">
+            <View alignSelf="stretch" alignItems="center" justifyContent="center" height={56} backgroundColor="green" flexDirection="row">
                 <SRouterContext.Consumer>
                     {r => (
-                        <STouchable onPress={() => r!!.present('Call', { id: props.id })} style={{ width: 100, height: 100 }} />
+                        <TouchableOpacity
+                            onPress={() => r!!.present('Call', { id: props.id })}
+                            style={{ height: 48, paddingHorizontal: 16, marginHorizontal: 16, backgroundColor: 'rgba(0,0,0,0.3)', borderRadius: 24, alignItems: 'center' }}
+                            delayPressIn={0}
+                        >
+                            <Text style={{ fontSize: 18, color: '#fff' }} >Join</Text>
+                        </TouchableOpacity>
                     )}
                 </SRouterContext.Consumer>
             </View>
