@@ -107,8 +107,6 @@
 		AAD8F15A2208A60E007C4FE3 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1592208A60E007C4FE3 /* libc++.tbd */; };
 		AAD8F15C2208A619007C4FE3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F15B2208A619007C4FE3 /* libsqlite3.tbd */; };
 		AAD8F15E2208A7C3007C4FE3 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F15D2208A7C3007C4FE3 /* WebRTC.framework */; };
-		AAD8F15F2208A7E1007C4FE3 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F15D2208A7C3007C4FE3 /* WebRTC.framework */; };
-		AAD8F1602208A7E1007C4FE3 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F15D2208A7C3007C4FE3 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AAD8F1612208A7E7007C4FE3 /* libRCTWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAD8F1232208A576007C4FE3 /* libRCTWebRTC.a */; };
 		AAE10483212C29E30034DA0F /* RNAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE10482212C29E30034DA0F /* RNAsyncView.swift */; };
 		AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE104D0212C311B0034DA0F /* RNAsyncSpecs.swift */; };
@@ -745,7 +743,6 @@
 				AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 				AA9046A0210F2F0F00F989BC /* RSKImageCropper.framework in Embed Frameworks */,
-				AAD8F1602208A7E1007C4FE3 /* WebRTC.framework in Embed Frameworks */,
 				AA006CD0211A581D0093F7EF /* Lottie.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -958,7 +955,6 @@
 				0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */,
 				77C26823F63D9A6C64F8159B /* Pods_openland.framework in Frameworks */,
 				741F0B17B3EB48369BC4FD7D /* libAppCenterReactNative.a in Frameworks */,
-				AAD8F15F2208A7E1007C4FE3 /* WebRTC.framework in Frameworks */,
 				A2961A4D0B20429DB990F4F6 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
 				B02A0AF667B34341A5D3DCB1 /* libAppCenterReactNativeCrashes.a in Frameworks */,
 				17EC74006E9C4F66BA180D9E /* libRCTRestart.a in Frameworks */,
