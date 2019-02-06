@@ -235,10 +235,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         return quoteMessageReply && quoteMessagesId.length !== 0 && quoteMessageSender;
     };
 
-    const getEditViewTitle = () => {
-        return quoteMessageSender !== undefined ? quoteMessageSender : 'Edit message';
-    };
-
     const handleDialogDone = (r: UploadCare.File) => {
         setInputValue('');
         if (onSendFile) {
@@ -433,7 +429,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         [members],
     );
 
-    const editViewTitle = getEditViewTitle();
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 
     return (
@@ -444,7 +439,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
                     {quoteMessageReply && (
                         <EditView
                             message={quoteMessageReply}
-                            title={editViewTitle}
+                            title={quoteMessageSender || 'Edit message'}
                             onCancel={closeEditor}
                         />
                     )}
