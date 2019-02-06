@@ -4,7 +4,7 @@ import UploadCare from 'uploadcare-widget';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { XRichTextInput } from 'openland-x/XRichTextInput';
+import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { MutationFunc } from 'react-apollo';
@@ -148,7 +148,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     } = props;
 
     let listOfMembersNames: string[] = [];
-    const inputRef = React.useRef<XRichTextInput>(null);
+    const inputRef = React.useRef<XRichTextInput2>(null);
 
     const { focusIfNeeded, resetAndFocus, hasFocus } = useInputMethods({ inputRef, enabled });
 
@@ -169,43 +169,31 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     const [inputValue, setInputValue] = React.useState(getDefaultValue());
 
-    const {
-        quoteMessagesId,
-        setQuoteMessagesId,
-        quoteMessageReply,
-        setQuoteMessageReply,
-        quoteMessageSender,
-        setQuoteMessageSender,
-    } = useQuote({
+    const quoteState = useQuote({
         conversationId,
     });
 
     const { handleSend, closeEditor } = useHandleSend({
         conversationId,
-        quoteMessagesId,
         replyMessage,
         getMessages,
         listOfMembersNames,
         members,
         inputValue,
         onSendFile,
-        quoteMessageReply,
-        quoteMessageSender,
         onSend,
         resetAndFocus,
         setBeDrafted,
         cleanDraft,
         setInputValue,
-        setQuoteMessageReply,
-        setQuoteMessageSender,
-        setQuoteMessagesId,
+        ...quoteState,
     });
 
     useKeydownHandler({
         forwardMessagesId: messagesContext.forwardMessagesId,
         setEditMessage: messagesContext.setEditMessage,
         inputValue,
-        quoteMessagesId,
+        quoteMessagesId: quoteState.quoteMessagesId,
         hasFocus,
         conversation,
         user,
@@ -218,7 +206,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
             onChange(value);
         }
 
-        if (!quoteMessagesId.length && beDrafted) {
+        if (!quoteState.quoteMessagesId.length && beDrafted) {
             changeDraft(value);
         }
     };
@@ -262,15 +250,15 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             <SendMessageContent separator={4} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                    {quoteMessageReply && (
+                    {quoteState.quoteMessageReply && (
                         <EditView
-                            message={quoteMessageReply}
-                            title={quoteMessageSender || 'Edit message'}
+                            message={quoteState.quoteMessageReply}
+                            title={quoteState.quoteMessageSender || 'Edit message'}
                             onCancel={closeEditor}
                         />
                     )}
                     <TextInputWrapper>
-                        <XRichTextInput
+                        <XRichTextInput2
                             mentionsData={mentionsData}
                             placeholder="Write a message..."
                             flexGrow={1}
