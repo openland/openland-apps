@@ -56,18 +56,17 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         return (
             <ASFlex flexDirection="column" alignItems="stretch" onLongPress={this.handleLongPress} backgroundColor={!this.props.message.isOut ? messageBgColor : undefined}>
 
-                {/* marginTop={ ? 2 : 14} marginBottom={2}  */}
                 <ASFlex key="margin-top" backgroundColor={messageBgColor} height={this.props.message.attachTop ? 2 : 14} />
 
                 <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
 
                     <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? (Platform.select({ default: 36, ios: 28, android: 36 }) + 5) : 0) + 4} />
+                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? 32 : 0) + 10} />
 
                         {!this.props.message.isOut && !this.props.message.attachBottom &&
-                            <ASFlex backgroundColor={messageBgColor} marginRight={1} marginLeft={4} onPress={this.handleAvatarPress} alignItems="flex-end">
+                            <ASFlex marginRight={3} onPress={this.handleAvatarPress} alignItems="flex-end">
                                 <AsyncAvatar
-                                    size={ios ? 28 : 36}
+                                    size={32}
                                     src={this.props.message.senderPhoto}
                                     placeholderKey={this.props.message.senderId}
                                     placeholderTitle={this.props.message.senderName}

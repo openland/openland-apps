@@ -28,10 +28,11 @@ export interface ConversationTheme {
     spiral: boolean;
 }
 
-class DefaultTheme implements ConversationTheme {
-    // not used for now
+class DefaultConversationTheme implements ConversationTheme {
     bubbleColorIn = '#f3f5f7';
     bubbleColorOut = ['#1970ff', '#11b2ff'];
+
+    senderNameColor = '#0084fe';
 
     textColorIn = '#000000';
     textColorOut = '#ffffff';
@@ -53,11 +54,11 @@ class DefaultTheme implements ConversationTheme {
 }
 
 export let getDefaultConversationTheme = (id: string) => {
-    let res = new DefaultTheme();
-    let colors = ZStyles.avatars[doSimpleHash(id) % ZStyles.avatars.length];
+    let res = new DefaultConversationTheme();
     return res;
     // disable for now
-    // return { ...res, bubbleColorOut: [colors.placeholderColorEnd, colors.placeholderColorStart] };
+    // let colors = ZStyles.avatars[doSimpleHash(id) % ZStyles.avatars.length];
+    // return { ...res, senderNameColor: colors.nameColor, bubbleColorOut: [colors.placeholderColorEnd, colors.placeholderColorStart] };
 }
 
 type ConversationThemeListener = (theme: ConversationTheme) => void;

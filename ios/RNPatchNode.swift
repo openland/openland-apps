@@ -40,6 +40,10 @@ class RNPatchNode: ASDisplayNode {
         _baseImage = val
       } else {
         _baseImage = try! UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale)
+        if(spec.tint != nil){
+          _baseImage?.withRenderingMode(.alwaysTemplate)
+          node.tintColor = spec.tint
+        }
         if _baseImage != nil {
           patchBaseCache[spec.source] = _baseImage
         }

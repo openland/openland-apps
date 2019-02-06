@@ -60,7 +60,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
         if (v.type === 'new_line') {
             return <ASText key={'br-' + i} >{'\n'}</ASText>;
         } else if (v.type === 'link') {
-            return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
+            return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
         } else if (v.type === 'mention_user') {
             return <ASText key={'mention-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
         } else {
@@ -159,7 +159,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
 
                     {/* url augmentation */}
                     {this.props.message.urlAugmentation && (
-                        <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={15} marginBottom={15} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
+                        <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={15} marginBottom={5} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
                             {this.props.message.urlAugmentation.imageURL && this.augLayout && (
                                 <ASFlex>
                                     <ASImage

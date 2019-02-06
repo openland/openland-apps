@@ -42,6 +42,8 @@ class AsyncViewStyle {
     var backgroundColor: Int? = null
     var borderRadius: Float? = null
     var backgroundPatch: AsyncPatch? = null
+    var backgroundPatchTintColor: Int? = null
+
 //    var backgroundGradient: [UIColor]?
 }
 
@@ -180,6 +182,9 @@ private fun resolveStyle(src: JsonObject, res: AsyncViewStyle, context: ReactCon
 
     (props["backgroundColor"] as? Number)?.let {
         res.backgroundColor = it.toInt()
+    }
+    (props["backgroundPatchTintColor"] as? Number)?.let {
+        res.backgroundPatchTintColor = it.toInt()
     }
     (props["backgroundPatch"] as? JsonObject)?.let {
         val patch = AsyncPatch()

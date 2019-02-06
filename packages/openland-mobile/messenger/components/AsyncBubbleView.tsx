@@ -39,7 +39,7 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
         }
 
         let contentInsets: { left: number, right: number, top: number, bottom: number };
-        let contentInsetsHorizontal = 12;
+        let contentInsetsHorizontal = 13;
         let contentInsetsTop = 8;
         let contentInsetsBottom = 9;
         if (isMedia) {

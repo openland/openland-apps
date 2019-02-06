@@ -69,10 +69,11 @@ export class ASFlex extends React.Component<ASFlexProps> {
     }
 
     render() {
-        let { children, highlightColor, onPress, ...other } = this.props;
+        let { children, highlightColor, onPress, backgroundPatchTintColor, ...other } = this.props;
         let realProps = other;
         realProps = {
             ...baseStyleProcessor(other),
+            backgroundPatchTintColor: backgroundPatchTintColor ? (processColor(backgroundPatchTintColor)) : undefined,
             touchableKey: (this.props.onPress || this.props.onLongPress) && this.tag,
             highlightColor: (this.props.onPress || this.props.onLongPress) && (highlightColor ? processColor(highlightColor) : undefined),
         } as any;

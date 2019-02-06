@@ -16,6 +16,7 @@ export interface ASViewStyle {
     backgroundColor?: string;
     backgroundGradient?: { start: string, end: string };
     backgroundPatch?: { top: number, right: number, bottom: number, left: number, source: string, scale: number };
+    backgroundPatchTintColor?: string;
     borderRadius?: number;
     opacity?: number;
 }
