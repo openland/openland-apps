@@ -38,10 +38,10 @@ import { AttachmentButtons } from './AttachmentButtons';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { FileUploader } from './FileUploading/FileUploader';
 import { EditView } from './EditView';
-// import * as DraftStore from './DraftStore';
 import { useKeydownHandler } from './useKeydownHandler';
 import { useDraft } from './useDraft';
 import { useReply } from './useReply';
+import { useInputMethods } from './useInputMethods';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -153,6 +153,8 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     let listOfMembersNames: string[] = [];
     const inputRef = React.useRef<XRichTextInput>(null);
 
+    const { focus, resetAndFocus, hasFocus } = useInputMethods({ inputRef });
+
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const {
@@ -170,6 +172,11 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     const [inputValue, setInputValue] = React.useState(getDefaultValue());
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
+    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
+    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
+        undefined,
+    );
+
     const { replyMessagesProc } = useReply({
         conversationId,
         quoteMessagesId,
@@ -179,19 +186,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         members,
         inputValue,
     });
-    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
-    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
-        undefined,
-    );
     const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
-
-    const hasFocus = () => {
-        return !!(
-            inputRef &&
-            inputRef.current &&
-            inputRef.current.state.editorState.getSelection().getHasFocus()
-        );
-    };
 
     useKeydownHandler({
         forwardMessagesId: messagesContext.forwardMessagesId,
@@ -221,22 +216,10 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         }
     };
 
-    const focus = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
-
     const focusIfNeeded = () => {
         if (enabled !== false && !wasFocused) {
             wasFocused = true;
             focus();
-        }
-    };
-
-    const resetAndFocus = () => {
-        if (inputRef.current) {
-            inputRef.current.resetAndFocus();
         }
     };
 
@@ -278,23 +261,13 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     const handleChange = (value: string) => {
         setInputValue(value);
 
-        if (value.length > 0) {
-            changeDraft(value);
-        }
-
-        if (value.length === 0) {
-            cleanDraft();
-        }
-
         if (onChange) {
             onChange(value);
         }
 
-        if (quoteMessagesId || !beDrafted) {
-            return;
+        if (!quoteMessagesId.length && beDrafted) {
+            changeDraft(value);
         }
-
-        changeDraft(value);
     };
 
     const shouldBeDrafted = () => {

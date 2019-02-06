@@ -15,7 +15,10 @@ export function useDraft({
     const [beDrafted, setBeDrafted] = React.useState(false);
 
     const changeDraft = (message: string) => {
-        setBeDrafted(true);
+        if (!beDrafted) {
+            setBeDrafted(true);
+        }
+
         DraftStore.setDraftMessage(conversationId, message);
         saveDraft({
             variables: {
