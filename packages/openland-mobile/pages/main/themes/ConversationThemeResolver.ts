@@ -5,7 +5,12 @@ import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { doSimpleHash } from 'openland-y-utils/hash';
 
 export interface ConversationTheme {
-    // not used for now
+    // conversation
+    mainColor: string;
+    chatBackgroundColor: string;
+    spiral: boolean;
+
+    // messages
     bubbleColorIn: string;
     bubbleColorOut: string[];
 
@@ -28,10 +33,16 @@ export interface ConversationTheme {
     reactionTextColorIn: string;
     reactionTextColorOut: string;
 
-    spiral: boolean;
+    // service messages
+    serviceTextColor: string
+
 }
 
-class DefaultConversationTheme implements ConversationTheme {
+export class DefaultConversationTheme implements ConversationTheme {
+    mainColor = '#0084fe';
+    chatBackgroundColor = 'white';
+    spiral = false;
+
     bubbleColorIn = '#f3f5f7';
     bubbleColorOut = ['#1970ff', '#11b2ff'];
 
@@ -45,7 +56,7 @@ class DefaultConversationTheme implements ConversationTheme {
 
     backgroundColor = '#fff';
 
-    linkColorIn = AppStyles.primaryColor;
+    linkColorIn = '#0084fe';
     linkColorOut = '#fff';
 
     timeColorIn = 'rgba(138,138,143, 0.6)';
@@ -54,7 +65,8 @@ class DefaultConversationTheme implements ConversationTheme {
     reactionTextColorIn = '#99a2b0';
     reactionTextColorOut = '#99a2b0';
 
-    spiral = false;
+    serviceTextColor = '#8a8a8f';
+
 }
 
 export let getDefaultConversationTheme = (id: string) => {

@@ -27,16 +27,28 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from './themes/ConversationThemeResolver';
 
-class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
+class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string, theme: ConversationTheme }> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
+    private themeSub?: () => void;
 
     constructor(props: { router: any, engine: MessengerEngine, chat: Room_room }) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.chat.id);
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
-        this.state = { text: '' };
+        this.state = { text: '', theme: getDefaultConversationTheme(this.props.chat.id) };
+    }
+
+    componentWillUnmount() {
+        if (this.themeSub) {
+            this.themeSub();
+        }
+    }
+
+    componentWillMount() {
+        ConversationThemeResolver.subscribe(this.props.chat.id, t => this.setState({ theme: t })).then(s => this.themeSub = s);
     }
 
     handleTextChange = (src: string) => {
@@ -115,7 +127,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
         }
         return (
             <>
-                <SHeaderView>
+                <SHeaderView accentColor={this.state.theme.mainColor}>
                     {header}
                 </SHeaderView>
                 {button}
@@ -133,12 +145,13 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                                  
                                 </ASFlex>
                             </ASView> */}
-                            <ConversationView engine={this.engine} />
+                            <ConversationView engine={this.engine} theme={this.state.theme} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
                                 text={this.state.text}
+                                theme={this.state.theme}
                             />
                         </View>
                     </KeyboardSafeAreaView>

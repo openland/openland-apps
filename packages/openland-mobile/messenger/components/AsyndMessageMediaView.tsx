@@ -54,7 +54,7 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
         });
         let layout = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, maxSize, maxSize);
         return (
-            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom} appearance="media">
+            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom} appearance="media" colorIn="#f3f5f7">
                 <ASImage
                     onPress={this.handlePress}
                     source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}

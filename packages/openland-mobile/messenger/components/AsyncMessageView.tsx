@@ -11,7 +11,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
-import { ConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { ConversationTheme, ConversationThemeResolver, getDefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -41,6 +41,23 @@ export const messageBgColor = 'white';
 
 export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps> {
 
+    themeSub?: () => void;
+
+    constructor(props: AsyncMessageViewProps) {
+        super(props);
+        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+    }
+
+    componentWillMount() {
+        ConversationThemeResolver.subscribe(this.props.engine.conversationId, theme => this.setState({ theme: theme })).then(sub => this.themeSub = sub);
+
+    }
+
+    componentWillUnmount() {
+        if (this.themeSub) {
+            this.themeSub();
+        }
+    }
     private handleAvatarPress = () => {
         this.props.onAvatarPress(this.props.message.senderId);
     }

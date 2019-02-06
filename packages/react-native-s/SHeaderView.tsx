@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
 
-export class SHeaderView extends React.PureComponent {
+export class SHeaderView extends React.PureComponent<{ accentColor?: string }> {
 
     renderHeader = () => {
         return (
@@ -12,6 +12,6 @@ export class SHeaderView extends React.PureComponent {
     }
 
     render() {
-        return <HeaderConfigRegistrator config={{ titleView: this.renderHeader }} />;
+        return <HeaderConfigRegistrator config={{ titleView: this.renderHeader, accentColor: this.props.accentColor }} />;
     }
 }

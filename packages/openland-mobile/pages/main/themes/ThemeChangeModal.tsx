@@ -20,7 +20,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     lastColor?: string = undefined;
     counter = 0;
     onThemeSelect = (theme: ConversationTheme) => {
-        this.setState(theme)
+        this.setState({ ...theme, spiral: this.state.spiral })
 
         if (theme.bubbleColorIn[0] === this.lastColor) {
             this.counter++;
@@ -45,7 +45,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     render() {
         let colorPickerSze = 40;
 
-        const themes = ZStyles.avatars.map(a => ({ ...getDefaultConversationTheme(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, }))
+        const themes = ZStyles.avatars.map(a => ({ ...getDefaultConversationTheme(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor }))
 
         return (
             <View marginBottom={14}>

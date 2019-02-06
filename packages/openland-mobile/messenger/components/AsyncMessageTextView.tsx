@@ -41,7 +41,6 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
     constructor(props: AsyncMessageTextViewProps) {
         super(props);
         this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
-
     }
 
     componentWillMount() {
