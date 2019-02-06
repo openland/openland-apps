@@ -90,7 +90,6 @@ interface MessageComposeComponentInnerProps
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
     draft?: string | null;
-    fileRemover: Function;
     handleDrop: (file: any) => void;
 }
 
@@ -139,7 +138,7 @@ function useKeydownHandler({
     setEditMessage: (id: string | null, message: string | null) => void;
     inputValue: string;
     quoteMessagesId: string[];
-    hasFocus: boolean;
+    hasFocus: () => boolean;
     conversation?: ConversationEngine;
     user: UserShort | null;
 }) {
@@ -151,7 +150,8 @@ function useKeydownHandler({
         if (
             inputValue.length === 0 &&
             conversation &&
-            ((e.code === 'ArrowUp' && !e.altKey && hasFocus) || (e.code === 'KeyE' && e.ctrlKey)) &&
+            ((e.code === 'ArrowUp' && !e.altKey && hasFocus()) ||
+                (e.code === 'KeyE' && e.ctrlKey)) &&
             !quoteMessagesId
         ) {
             let messages = conversation
@@ -176,10 +176,9 @@ function useKeydownHandler({
     });
 }
 
-const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInnerProps) => {
+const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) => {
     const {
         enabled,
-        fileRemover,
         members,
         getMessages,
         replyMessage,
@@ -194,6 +193,10 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
         handleHideChat,
     } = props;
 
+    let wasFocused = false;
+    let listOfMembersNames: string[] = [];
+    let inputRef = React.createRef<XRichTextInput>();
+
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const [inputValue, setInputValue] = React.useState(DraftStore.getDraftMessage(conversationId));
@@ -205,6 +208,14 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
     const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
     const [beDrafted, setBeDrafted] = React.useState(false);
 
+    const hasFocus = () => {
+        return !!(
+            inputRef &&
+            inputRef.current &&
+            inputRef.current.state.editorState.getSelection().getHasFocus()
+        );
+    };
+
     useKeydownHandler({
         forwardMessagesId: messagesContext.forwardMessagesId,
         setEditMessage: messagesContext.setEditMessage,
@@ -214,11 +225,6 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
         conversation,
         user,
     });
-
-    let wasFocused = false;
-    let listOfMembersNames: string[] = [];
-    let inputRef = React.createRef<XRichTextInput>();
-    // let hasFocus = input && input.state.editorState.getSelection().getHasFocus();
 
     const hasQuoteInState = () => {
         return quoteMessageReply && quoteMessagesId && quoteMessageSender;
@@ -379,7 +385,7 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
         if (inputValue.trim().length > 0) {
             let msg = inputValue.trim();
             if (onSend && !hasQuoteInState()) {
-                let mentions = getMentions(msg, listOfMembersNames, props.members);
+                let mentions = getMentions(msg, listOfMembersNames, members);
 
                 onSend(msg, mentions);
                 setBeDrafted(false);
@@ -442,8 +448,7 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
         setQuoteMessageReply(undefined);
         setQuoteMessageSender(undefined);
         setQuoteMessagesId([]);
-
-        fileRemover();
+        setFile(undefined);
         resetAndFocus();
     };
 
@@ -456,14 +461,15 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
 
     const shouldBeDrafted = () => {
         const { replyMessages, replyMessagesId, replyMessagesSender } = messagesContext;
-        return !(replyMessages && replyMessagesId && replyMessagesSender);
+        const result = !(replyMessages.size && replyMessagesId.size && replyMessagesSender.size);
+        return result;
     };
 
-    const getNextDraft = (nextProps: MessageComposeComponentInnerProps) => {
+    const getNextDraft = () => {
         let draft = DraftStore.getDraftMessage(conversationId);
 
-        if (draft === '' && nextProps.draft && nextProps.draft !== '') {
-            draft = nextProps.draft;
+        if (draft === '' && props.draft && props.draft !== '') {
+            draft = props.draft;
         }
         return draft;
     };
@@ -476,7 +482,8 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
 
     React.useEffect(
         () => {
-            setInputValue(shouldBeDrafted() ? getNextDraft(props) : '');
+            console.log('useEffect conversationId');
+            setInputValue(shouldBeDrafted() ? getNextDraft() : '');
 
             setQuoteMessageReply(shouldHaveQuote() ? getQuoteMessageReply() : undefined);
             setQuoteMessagesId(shouldHaveQuote() ? getQuoteMessageId() : []);
@@ -512,11 +519,11 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
 
     React.useEffect(
         () => {
-            listOfMembersNames = props.members
-                ? props.members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
+            listOfMembersNames = members
+                ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
                 : [];
         },
-        [props.members],
+        [members],
     );
 
     // emulate componentDidMount
@@ -540,6 +547,8 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
     const editViewMessage = getEditViewMessage();
     const editViewTitle = getEditViewTitle();
     const mentionsData = convertChannelMembersDataToMentionsData(members);
+
+    console.log('render');
 
     return (
         <SendMessageWrapper>
@@ -589,7 +598,7 @@ const MessageComposeComponentInnerWithHooks = (props: MessageComposeComponentInn
 };
 
 export const MessageComposeComponent = withMessageState(
-    withUserInfo(MessageComposeComponentInnerWithHooks),
+    withUserInfo(MessageComposeComponentInner),
 ) as React.ComponentType<MessageComposeWithChannelMembers>;
 
 type MessageComposeComponentChannelMembersProps = MessageComposeComponentProps & {

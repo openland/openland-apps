@@ -1,22 +1,23 @@
+const getDraftKey = (conversationId?: string): string => {
+    if (!conversationId) {
+        return '';
+    }
+    return 'conversation_draft_1_' + conversationId;
+};
+
 export const getDraftMessage = (conversationId?: string): string => {
     if (!conversationId) {
         return '';
     }
 
-    const message = window.localStorage.getItem('conversation_draft_1_' + conversationId) || '';
+    const message = window.localStorage.getItem(getDraftKey(conversationId)) || '';
     let draftKey = getDraftKey(conversationId);
 
     if (message === draftKey) {
         return '';
     }
+    console.log('getDraftMessage');
     return message;
-};
-
-export const getDraftKey = (conversationId?: string): string => {
-    if (!conversationId) {
-        return '';
-    }
-    return 'conversation_draft_1_' + conversationId;
 };
 
 export const setDraftMessage = (conversationId?: string, src?: string): void => {
@@ -26,16 +27,15 @@ export const setDraftMessage = (conversationId?: string, src?: string): void => 
     if (!src) {
         throw Error('no src');
     }
+    console.log('setDraftMessage');
     window.localStorage.setItem(getDraftKey(conversationId), src);
 };
 
-export const cleanDraftMessage = (conversationId?: string, src?: string): void => {
+export const cleanDraftMessage = (conversationId?: string): void => {
     if (!conversationId) {
         throw Error('no conversationId');
     }
-    if (!src) {
-        throw Error('no src');
-    }
+
     let draftKey = getDraftKey(conversationId);
-    window.localStorage.setItem(draftKey, src);
+    window.localStorage.setItem(draftKey, draftKey);
 };
