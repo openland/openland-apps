@@ -14,7 +14,7 @@ import { emoji } from 'openland-y-utils/emoji';
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
-    
+
     title: string;
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
     photo?: string;
@@ -33,6 +33,7 @@ export interface DialogDataSourceItem {
     sender?: string;
     isOut?: boolean;
     fileMeta?: { isImage?: boolean };
+    showSenderName?: boolean;
 }
 
 export function formatMessage(
@@ -81,6 +82,13 @@ export const extractDialog = (
     uid: string,
 ): DialogDataSourceItem => {
     let msg = formatMessage(betaTopMessage);
+    let isOut = topMessage ? topMessage!!.sender.id === uid : undefined;
+    let sender = topMessage
+        ? topMessage!!.sender.id === uid
+            ? 'You'
+            : topMessage!!.sender.name
+        : undefined;
+    let isService = betaTopMessage && betaTopMessage.isService || undefined;
     return {
         online: undefined,
         haveMention,
@@ -96,17 +104,14 @@ export const extractDialog = (
             ? betaTopMessage.fileMetadata || undefined
             : undefined,
         isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
-        sender: topMessage
-            ? topMessage!!.sender.id === uid
-                ? 'You'
-                : topMessage!!.sender.name
-            : undefined,
+        sender: sender,
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
         messageEmojified: msg
             ? emoji(msg, 13)
             : undefined,
-        isService: betaTopMessage && betaTopMessage.isService || undefined
+        isService: isService,
+        showSenderName: !!(msg && ((isOut || kind !== 'PRIVATE')) && sender) && !isService
     };
 };
 
@@ -321,6 +326,7 @@ export class DialogListEngine {
                     : undefined,
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
+                showSenderName: !!(msg && ((isOut || res.kind !== 'PRIVATE')) && sender) && !event.message.isService
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
@@ -378,6 +384,7 @@ export class DialogListEngine {
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,
                     online: privateRoom ? privateRoom.user.online : false,
+                    showSenderName: !!(msg && ((isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE')) && sender) && !event.message.isService
                 },
                 0,
             );

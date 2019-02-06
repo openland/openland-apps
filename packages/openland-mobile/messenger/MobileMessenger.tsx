@@ -138,7 +138,6 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
 
     render() {
         let item = this.props.item;
-        let showSenderName = !!(item.message && ((item.isOut || item.kind !== 'PRIVATE')) && item.sender) && !item.isService;
         let isUser = item.kind === 'PRIVATE';
         let height = this.props.compact ? 48 : 80;
         let avatarSize = this.props.compact ? 30 : 60;
@@ -167,7 +166,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                     {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                         {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
                             <ASText fontSize={14} lineHeight={18} height={36} color="#181818" numberOfLines={2}>
-                                {showSenderName && `${item.sender}: `}
+                                {item.showSenderName && `${item.sender}: `}
                                 <ASText fontSize={14} height={36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={2}>{item.message}</ASText>
                             </ASText>
                         </ASFlex>}
