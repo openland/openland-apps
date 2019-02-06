@@ -500,11 +500,11 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
             updateQuote();
             setInputValue(shouldBeDrafted() ? getNextDraft() : '');
             setBeDrafted(shouldBeDrafted());
+            focusIfNeeded();
         },
         [conversationId],
     );
 
-    // rewrote to effect correctly
     React.useEffect(
         () => {
             listOfMembersNames = members
@@ -513,10 +513,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         },
         [members],
     );
-
-    React.useEffect(() => {
-        focusIfNeeded();
-    });
 
     const editViewMessage = getEditViewMessage();
     const editViewTitle = getEditViewTitle();
