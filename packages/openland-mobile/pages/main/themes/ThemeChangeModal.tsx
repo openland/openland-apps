@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConversationThemeResolver, ConversationTheme } from './ConversationThemeResolver';
+import { ConversationThemeResolver, ConversationTheme, getDefaultConversationTheme } from './ConversationThemeResolver';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { View, TouchableOpacity, Switch, Text } from 'react-native';
@@ -11,18 +11,18 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { ZText } from 'openland-mobile/components/ZText';
 
-class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, onChanged: (changes: Partial<ConversationTheme>) => void }, ConversationTheme & { easter: boolean }> {
-    constructor(props: { theme: ConversationTheme, onChanged: (changes: Partial<ConversationTheme>) => void }) {
+class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, onChanged: (changes: Partial<ConversationTheme>) => void, conversationId: string }, ConversationTheme & { easter: boolean }> {
+    constructor(props: { theme: ConversationTheme, onChanged: (changes: Partial<ConversationTheme>) => void, conversationId: string }) {
         super(props);
         this.state = { ...props.theme, easter: false || props.theme.spiral };
     }
 
     lastColor?: string = undefined;
     counter = 0;
-    onColorSelect = (color: string[]) => {
-        this.setState({ bubbleColorOut: color })
+    onThemeSelect = (theme: ConversationTheme) => {
+        this.setState(theme)
 
-        if (color[0] === this.lastColor) {
+        if (theme.bubbleColorIn[0] === this.lastColor) {
             this.counter++;
         } else {
             this.counter = 0;
@@ -31,7 +31,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
         if (this.counter > 3) {
             this.setState({ easter: true });
         }
-        this.lastColor = color[0];
+        this.lastColor = theme.bubbleColorIn[0];
     }
 
     onSpiralSwitch = (val: boolean) => {
@@ -43,28 +43,29 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     }
 
     render() {
-        let colorSets = ZStyles.avatars;
         let colorPickerSze = 40;
+
+        const themes = ZStyles.avatars.map(a => ({ ...getDefaultConversationTheme(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, }))
 
         return (
             <View marginBottom={14}>
                 <ZListItemGroup divider={false}>
                     <View marginLeft={-2} flexDirection="row">
-                        {colorSets.map(cs => (
-                            <TouchableOpacity onPress={() => this.onColorSelect([cs.placeholderColorEnd, cs.placeholderColorStart])}>
-                                <View borderRadius={colorPickerSze} borderWidth={2} borderColor={cs.placeholderColorEnd === this.state.bubbleColorOut[0] ? AppStyles.primaryColor : '#fff'}>
+                        {themes.map(theme => (
+                            <TouchableOpacity onPress={() => this.onThemeSelect(theme)}>
+                                <View borderRadius={colorPickerSze} borderWidth={2} borderColor={theme.bubbleColorOut[0] === this.state.bubbleColorOut[0] ? AppStyles.primaryColor : '#fff'}>
                                     <AndroidAliaser
                                         width={colorPickerSze}
                                         height={colorPickerSze}
                                         borderRadius={colorPickerSze / 2}
-                                        color={cs.placeholderColorEnd === this.state.bubbleColorOut[0] ? AppStyles.primaryColor : '#fff'}
+                                        color={theme.bubbleColorOut[0] === this.state.bubbleColorOut[0] ? AppStyles.primaryColor : '#fff'}
                                     >
                                         <ZLinearGradient
                                             width={colorPickerSze}
                                             height={colorPickerSze}
                                             borderRadius={colorPickerSze / 2}
-                                            fallbackColor={cs.placeholderColor}
-                                            colors={[cs.placeholderColorEnd, cs.placeholderColorStart]}
+                                            fallbackColor={theme.senderNameColor}
+                                            colors={theme.bubbleColorOut}
                                             start={{ x: 0, y: 0 }}
                                             end={{ x: 1, y: 1 }}
                                         />
@@ -91,7 +92,7 @@ export let changeThemeModal = async (id: string) => {
     Alert.builder()
         .title('Change theme')
         .view((
-            <ChangeThemeView theme={currentTheme} onChanged={c => changes = c} />
+            <ChangeThemeView theme={currentTheme} onChanged={c => changes = c} conversationId={id} />
         ))
         .button('Cancel', 'cancel')
         .action('Save', 'default', async () => await ConversationThemeResolver.update(id, changes))

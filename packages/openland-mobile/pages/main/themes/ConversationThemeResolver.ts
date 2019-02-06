@@ -9,6 +9,9 @@ export interface ConversationTheme {
     bubbleColorIn: string;
     bubbleColorOut: string[];
 
+    senderNameColor: string;
+    senderNameColorOut: string;
+
     textColorIn: string;
     textColorOut: string;
     textColorSecondaryIn: string;
@@ -33,6 +36,7 @@ class DefaultConversationTheme implements ConversationTheme {
     bubbleColorOut = ['#1970ff', '#11b2ff'];
 
     senderNameColor = '#0084fe';
+    senderNameColorOut = '#fff';
 
     textColorIn = '#000000';
     textColorOut = '#ffffff';
@@ -112,18 +116,18 @@ class ConversationThemeResolverInner {
     }
 }
 
+let conversationThemeResolver = new ConversationThemeResolverInner();
 export class ConversationThemeResolver {
-    static conversationThemeResolver = new ConversationThemeResolverInner();
 
     static get = async (id: string) => {
-        return await ConversationThemeResolver.conversationThemeResolver.resolveTheme(id);
+        return await conversationThemeResolver.resolveTheme(id);
     }
 
     static subscribe = async (id: string, listener: ConversationThemeListener) => {
-        return await ConversationThemeResolver.conversationThemeResolver.subscribeTheme(id, listener);
+        return await conversationThemeResolver.subscribeTheme(id, listener);
     }
 
     static update = async (id: string, changes: Partial<ConversationTheme>) => {
-        await ConversationThemeResolver.conversationThemeResolver.updateTheme(id, changes);
+        await conversationThemeResolver.updateTheme(id, changes);
     }
 }

@@ -25,7 +25,7 @@ class RNPatchNode: ASDisplayNode {
   func setSpec(spec: AsyncPatch) {
     
     // Nothing to update
-    if self.spec != nil && (spec.source == self.spec!.source && spec.left == self.spec?.left && spec.right == self.spec?.right && spec.top == self.spec?.top && spec.bottom == self.spec?.bottom) {
+    if self.spec != nil && (spec.source == self.spec!.source && spec.left == self.spec?.left && spec.right == self.spec?.right && spec.top == self.spec?.top && spec.bottom == self.spec?.bottom && spec.tint == self.spec?.tint) {
       return
     }
     

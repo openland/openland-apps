@@ -11,6 +11,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
+import { ConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -78,7 +79,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                         {this.props.message.isOut && <ASFlex backgroundColor={messageBgColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
                         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={this.props.message.isOut ? -4 : 0}>
                             {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
-                                <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
+                                <AsyncMessageTextView engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
                             )}
                             {isMedia && (
                                 <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
