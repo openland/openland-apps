@@ -11,6 +11,7 @@ import { XFormLoadingContent } from './XFormLoadingContent';
 import { XModalContext, XModalContextValue } from 'openland-x-modal/XModalContext';
 import { formatError, exportWrongFields } from './errorHandling';
 import { delay } from 'openland-y-utils/timer';
+import { applyFlex, extractFlexProps, XFlexStyles } from 'openland-x/basics/Flex';
 
 const LOGGING = false;
 
@@ -35,10 +36,13 @@ interface XFormControllerProps {
     resetAfterSubmit?: boolean;
 }
 
-const FormContainer = Glamorous.form({
-    display: 'flex',
-    flexDirection: 'column',
-});
+const FormContainer = Glamorous.form<XFlexStyles>([
+    {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    applyFlex,
+]);
 
 type XFormControllerState = {
     loading: boolean;
@@ -47,10 +51,11 @@ type XFormControllerState = {
 };
 
 class XFormController extends React.PureComponent<
-    XFormControllerProps & {
-        modal?: XModalContextValue;
-        autoClose?: boolean | number;
-    },
+    XFormControllerProps &
+        XFlexStyles & {
+            modal?: XModalContextValue;
+            autoClose?: boolean | number;
+        },
     XFormControllerState
 > {
     // Keep local copy since setState is async
@@ -219,9 +224,12 @@ class XFormController extends React.PureComponent<
         return (
             <XFormContext.Provider value={{ ...this.contextValue, submited: this.state.submited }}>
                 {this.props.defaultLayout !== false && (
-                    <FormContainer className={this.props.className}>
-                        <XFormLoadingContent>
-                            <XVertical separator="none">
+                    <FormContainer
+                        className={this.props.className}
+                        {...extractFlexProps(this.props)}
+                    >
+                        <XFormLoadingContent {...this.props}>
+                            <XVertical separator="none" {...this.props}>
                                 <XFormError />
                                 {this.props.children}
                             </XVertical>
@@ -229,7 +237,11 @@ class XFormController extends React.PureComponent<
                     </FormContainer>
                 )}
                 {this.props.defaultLayout === false && (
-                    <FormContainer className={this.props.className} onSubmit={this.onSubmit}>
+                    <FormContainer
+                        className={this.props.className}
+                        onSubmit={this.onSubmit}
+                        {...extractFlexProps(this.props)}
+                    >
                         {this.props.children}
                     </FormContainer>
                 )}
@@ -238,10 +250,10 @@ class XFormController extends React.PureComponent<
     }
 }
 
-export class XForm extends React.PureComponent<XFormProps> {
+export class XForm extends React.PureComponent<XFormProps & XFlexStyles> {
     private defaultData: any;
 
-    constructor(props: XFormProps) {
+    constructor(props: XFormProps & XFlexStyles) {
         super(props);
         this.defaultData = {
             fields: this.props.defaultData || {},
@@ -259,17 +271,7 @@ export class XForm extends React.PureComponent<XFormProps> {
                     {store => (
                         <XModalContext.Consumer>
                             {modal => (
-                                <XFormController
-                                    validate={this.props.validate}
-                                    staticData={this.props.staticData}
-                                    defaultAction={this.props.defaultAction}
-                                    store={store!!}
-                                    modal={modal}
-                                    autoClose={this.props.autoClose}
-                                    className={this.props.className}
-                                    defaultLayout={this.props.defaultLayout}
-                                    resetAfterSubmit={this.props.resetAfterSubmit}
-                                >
+                                <XFormController store={store!!} modal={modal} {...this.props}>
                                     {this.props.children}
                                 </XFormController>
                             )}

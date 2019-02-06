@@ -22,7 +22,7 @@ export function XFormLoadingContent(props: XFlexStyles & { children?: any }) {
                 }
                 let loading = form.store.readValue('form.loading');
                 return (
-                    <DefaultContainer loading={!!loading}>
+                    <DefaultContainer loading={!!loading} {...props}>
                         {props.children}
                     </DefaultContainer>
                 );
