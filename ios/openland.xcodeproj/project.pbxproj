@@ -92,6 +92,8 @@
 		AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8C21371A8B00FBCB75 /* RNAsyncListView.swift */; };
 		AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */; };
 		AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EF90213D8CF500FBCB75 /* Utils.swift */; };
+		AAB23E18220B808C00BFD222 /* RNLithoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB23E17220B808C00BFD222 /* RNLithoResolver.swift */; };
+		AAB23E1A220B814900BFD222 /* RNLithoSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB23E19220B814900BFD222 /* RNLithoSpec.swift */; };
 		AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */; };
 		AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B51215AE40C005E09BA /* RNSAuth0.swift */; };
 		AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAC60B54215AE445005E09BA /* RNSAuth0-Bridge.m */; };
@@ -844,6 +846,8 @@
 		AAB0EF8C21371A8B00FBCB75 /* RNAsyncListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListView.swift; sourceTree = "<group>"; };
 		AAB0EF8E213D819C00FBCB75 /* RNImageNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNImageNode.swift; sourceTree = "<group>"; };
 		AAB0EF90213D8CF500FBCB75 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		AAB23E17220B808C00BFD222 /* RNLithoResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLithoResolver.swift; sourceTree = "<group>"; };
+		AAB23E19220B814900BFD222 /* RNLithoSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNLithoSpec.swift; sourceTree = "<group>"; };
 		AAC113B1213EA154002E0D18 /* RNAsyncTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncTextNode.swift; sourceTree = "<group>"; };
 		AAC60B51215AE40C005E09BA /* RNSAuth0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAuth0.swift; sourceTree = "<group>"; };
 		AAC60B53215AE422005E09BA /* RNSAuth0-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSAuth0-Bridge.h"; sourceTree = "<group>"; };
@@ -1079,6 +1083,7 @@
 			children = (
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
+				AAB23E16220B803F00BFD222 /* RNLithoView */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
@@ -1439,6 +1444,15 @@
 				AAA8A6EB211F77920025A392 /* libRNSuperEllipseMask.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AAB23E16220B803F00BFD222 /* RNLithoView */ = {
+			isa = PBXGroup;
+			children = (
+				AAB23E17220B808C00BFD222 /* RNLithoResolver.swift */,
+				AAB23E19220B814900BFD222 /* RNLithoSpec.swift */,
+			);
+			name = RNLithoView;
 			sourceTree = "<group>";
 		};
 		AAC60B06215AE3F0005E09BA /* RNSAuth0 */ = {
@@ -2629,6 +2643,7 @@
 				AAB0EF8B21371A5D00FBCB75 /* RNAsyncViewEventEmitter.swift in Sources */,
 				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
+				AAB23E1A220B814900BFD222 /* RNLithoSpec.swift in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
@@ -2658,6 +2673,7 @@
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
 				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
+				AAB23E18220B808C00BFD222 /* RNLithoResolver.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
