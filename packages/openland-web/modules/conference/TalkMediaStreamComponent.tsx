@@ -41,7 +41,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 credential: v.credential ? v.credential : undefined,
                 username: v.username ? v.username : undefined,
             })),
-            iceTransportPolicy: 'relay',
+            // iceTransportPolicy: 'relay',
         });
         this.peerConnection.onicecandidate = ev => {
             backoff(async () => {

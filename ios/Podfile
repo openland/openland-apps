@@ -10,4 +10,5 @@ target 'openland' do
 
   # Pods for AppCenter
   pod 'AppCenterReactNativeShared', '~> 1.11.0'
+  
 end

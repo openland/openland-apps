@@ -25,16 +25,12 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
     }
 
     handleOpenClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-
         this.setState({
             showMenu: true,
         });
     };
 
     handleCloseClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-
         this.setState({
             showMenu: false,
         });
@@ -53,11 +49,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                                     height={42}
                                 />
                             </a>
-                            <a
-                                href="#"
-                                className={HeaderStyles.opener}
-                                onClick={this.handleOpenClick}
-                            >
+                            <a className={HeaderStyles.opener} onClick={this.handleOpenClick}>
                                 <BurgerIcon />
                             </a>
                             <nav className={HeaderStyles.navigation}>

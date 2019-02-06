@@ -194,11 +194,10 @@ const Title = Glamorous.div<{ roomView: boolean }>(({ roomView }) => {
 
 const RootContainer = Glamorous.div({
     display: 'flex',
-    height: '100vh',
     width: '100%',
 });
 
-const LeftContainer = Glamorous.div({
+const RootContainerContent = Glamorous.div({
     backgroundColor: '#fff',
     boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
     height: '100%',
@@ -216,11 +215,8 @@ const LeftContainer = Glamorous.div({
 });
 
 const Footer = Glamorous.div({
-    position: 'absolute',
-    margin: 'auto',
-    left: 0,
-    right: 0,
-    bottom: 20,
+    marginTop: 'auto',
+    flexShrink: 0,
 });
 
 const FooterText = Glamorous.div({
@@ -255,11 +251,13 @@ const Logo = Glamorous(XLink)({
     backgroundSize: 'contain',
     width: 145,
     height: 42,
+    flexShrink: 0,
 });
 
 const HeaderStyled = Glamorous.div({
     display: 'flex',
     justifyContent: 'space-between',
+    flexShrink: 0,
     '@media(max-width: 600px)': {
         flexDirection: 'column',
         justifyContent: 'center',
@@ -338,6 +336,11 @@ interface SignContainerProps extends HeaderProps {
 const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
     return {
         width: 522,
+        display: 'flex',
+        flexGrow: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         ...(pageMode === 'CreateProfile'
             ? { margin: 'auto' }
             : {
@@ -353,47 +356,26 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
     };
 });
 
-const MainContentInner = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
-    if (pageMode === 'CreateProfile') {
-        return {};
-    }
-    return {
-        position: 'absolute',
-        top: '35%',
-        left: 0,
-        right: 0,
-    };
-});
-
-export const WebSignUpContainer = React.memo<SignContainerProps>(props => {
-    return (
-        <RootContainer>
-            <LeftContainer>
-                <Header text={props.text} path={props.path} linkText={props.linkText} />
-                <MainContent pageMode={props.pageMode}>
-                    <MainContentInner pageMode={props.pageMode}>{props.children}</MainContentInner>
-                </MainContent>
-                <Footer>
-                    {props.showTerms ? (
-                        <FooterText>
-                            By creating an account you are accepting our{' '}
-                            <FooterLink href="https://openland.com/terms">
-                                Terms of Service
-                            </FooterLink>{' '}
-                            and{' '}
-                            <FooterLink href="https://openland.com/privacy">
-                                Privacy Policy
-                            </FooterLink>
-                            .
-                        </FooterText>
-                    ) : (
-                        <FooterText>© {new Date().getFullYear()} Openland</FooterText>
-                    )}
-                </Footer>
-            </LeftContainer>
-        </RootContainer>
-    );
-});
+export const WebSignUpContainer = (props: SignContainerProps) => (
+    <RootContainer>
+        <RootContainerContent>
+            <Header text={props.text} path={props.path} linkText={props.linkText} />
+            <MainContent pageMode={props.pageMode}>{props.children}</MainContent>
+            <Footer>
+                {props.showTerms ? (
+                    <FooterText>
+                        By creating an account you are accepting our{' '}
+                        <FooterLink href="https://openland.com/terms">Terms of Service</FooterLink>{' '}
+                        and{' '}
+                        <FooterLink href="https://openland.com/privacy">Privacy Policy</FooterLink>.
+                    </FooterText>
+                ) : (
+                    <FooterText>© {new Date().getFullYear()} Openland</FooterText>
+                )}
+            </Footer>
+        </RootContainerContent>
+    </RootContainer>
+);
 
 // WebSignUpContainer end
 // RoomSignup start
@@ -421,27 +403,23 @@ const RoomSignupWrapper = Glamorous.div({
     background:
         'rgba(255, 255, 255, 0.8) url(/static/X/signup/background-blur-light.jpg) no-repeat',
     backgroundSize: 'cover',
-    height: '100vh',
     width: '100%',
-    // minWidth: 670,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
     flexDirection: 'column',
     paddingLeft: 20,
     paddingRight: 20,
-    '@media(max-width: 480px)': {},
+    paddingTop: 20,
+    paddingBottom: 20,
 });
 
 const RoomToggler = Glamorous.div({
-    position: 'absolute',
-    top: 28,
-    right: 37,
+    alignSelf: 'flex-end',
     display: 'flex',
     color: '#ffffff',
-    '@media(max-width: 500px)': {
-        top: 15,
-        right: 20,
+    marginBottom: -24,
+    '@media(max-height: 600px)': {
+        marginBottom: 20,
     },
 });
 
@@ -470,6 +448,7 @@ const RoomSignupBox = Glamorous.div({
     borderRadius: 10,
     maxWidth: 650,
     width: '100%',
+    margin: 'auto',
 });
 
 const RoomSignupHeader = Glamorous.div<{
@@ -555,22 +534,20 @@ interface RoomSignupContainerProps {
     children?: any;
 }
 
-export const RoomSignupContainer = React.memo<RoomSignupContainerProps>(props => {
-    return (
-        <RoomSignupWrapper>
-            {props.text && (
-                <RoomToggler>
-                    <RoomTogglerText>{props.text}</RoomTogglerText>
-                    <RoomTogglerLink path={props.path}>{props.linkText}</RoomTogglerLink>
-                </RoomToggler>
-            )}
-            <RoomSignupBox>
-                <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
-                {props.children}
-            </RoomSignupBox>
-        </RoomSignupWrapper>
-    );
-});
+export const RoomSignupContainer = (props: RoomSignupContainerProps) => (
+    <RoomSignupWrapper>
+        {props.text && (
+            <RoomToggler>
+                <RoomTogglerText>{props.text}</RoomTogglerText>
+                <RoomTogglerLink path={props.path}>{props.linkText}</RoomTogglerLink>
+            </RoomToggler>
+        )}
+        <RoomSignupBox>
+            <RoomSignupHeader headerStyle={props.headerStyle || 'signin'} />
+            {props.children}
+        </RoomSignupBox>
+    </RoomSignupWrapper>
+);
 
 // RoomSignup end
 const SeparatorStyle = Glamorous.div<{
@@ -1414,9 +1391,9 @@ const NewOrganizationButton = ({
     onClick?: (event: React.MouseEvent<any>) => void;
     title: string;
 }) => {
-    let text = 'New organization';
+    let text = 'New';
     if (title !== '') {
-        text = `${title} (New organization)`;
+        text = `${title} (New)`;
     }
     return (
         <NewOrganizationButtonWrapper
@@ -1656,5 +1633,3 @@ export class CreateOrganizationFormInner extends React.Component<
         );
     }
 }
-
-// CreateOrganization end

@@ -30,10 +30,14 @@ import { ProfileOrganizationGroups } from './pages/main/ProfileOrganizationGroup
 import { ExploreOrganizations } from './pages/main/ExploreOrganizations';
 import { Developer } from './pages/dev/Developer';
 import { Worker } from './pages/dev/Worker';
+import { Benchmark } from './pages/dev/Benchmark';
+import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
+import { Call } from './pages/main/Call';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
   .addRoute('Conversation', Conversation)
+  .addRoute('Call', Call)
   .addRoute('ProfileUser', ProfileUser)
   .addRoute('ProfileOrganization', ProfileOrganization)
   .addRoute('ProfileGroup', ProfileGroup)
@@ -67,6 +71,8 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevTypography', Typography)
   .addRoute('DevComponents', Components)
   .addRoute('DevNavigation', Navigation)
+  .addRoute('DevBenchmarks', Benchmark)
+  .addRoute('DevBenchmarksAsync', BenchmarkAsync)
   .addRoute('DevLoader', Loader)
 
   .build();

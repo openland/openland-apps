@@ -44,30 +44,32 @@ const desktopNavigatorItemClassname = css`
     flex-grow: 1;
 `;
 
-const DesktopNavigatorItem = (props: NavigatorItemProps) => {
-    const { path, onClick, children } = props;
-    return (
-        <XView
-            as="a"
-            position="relative"
-            height={55}
-            flexShrink={0}
-            cursor="pointer"
-            color="#b4b8bd"
-            selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
-            hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
-            linkSelectable={path ? true : undefined}
-            linkStrict={path ? true : undefined}
-            path={path}
-            onClick={onClick}
-            hoverTextDecoration="none"
-        >
-            <div className={cx(desktopNavigatorItemClassname, counterBorderHoverClassname)}>
-                {children}
-            </div>
-        </XView>
-    );
-};
+class DesktopNavigatorItem extends React.Component<NavigatorItemProps> {
+    render() {
+        const { path, onClick, children } = this.props;
+        return (
+            <XView
+                as="a"
+                position="relative"
+                height={55}
+                flexShrink={0}
+                cursor="pointer"
+                color="#b4b8bd"
+                selectedBackgroundColor="rgba(0, 0, 0, 0.04)"
+                hoverBackgroundColor="rgba(0, 0, 0, 0.04)"
+                linkSelectable={path ? true : undefined}
+                linkStrict={path ? true : undefined}
+                path={path}
+                onClick={onClick}
+                hoverTextDecoration="none"
+            >
+                <div className={cx(desktopNavigatorItemClassname, counterBorderHoverClassname)}>
+                    {children}
+                </div>
+            </XView>
+        );
+    }
+}
 
 const MenuItemWithPopper = ({
     menuItems,

@@ -69,7 +69,7 @@ export class AlertBlanketComponent extends React.PureComponent<{ builder: AlertB
         return <View
             flexDirection="column"
             justifyContent="center"
-            backgroundColor={this.state.state === 'done' ? '#69d06d' : this.state.state === 'error' ? '#d75454' : 'white'}
+            backgroundColor={this.state.state === 'error' ? '#d75454' : 'white'}
             borderRadius={16}
         >
             <SAnimated.View
@@ -83,6 +83,7 @@ export class AlertBlanketComponent extends React.PureComponent<{ builder: AlertB
             >
                 {this.props.builder._title && <Text style={{ marginBottom: this.props.builder._message ? 12 : 16, color: '#000', fontSize: 20, fontWeight: TextStyles.weight.medium as any }}>{this.props.builder._title}</Text>}
                 {this.props.builder._message && <Text style={{ marginBottom: 16, color: '#000', fontSize: 16 }}>{this.props.builder._message}</Text>}
+                {this.props.builder._view}
                 <View flexDirection="row" alignItems="flex-end" alignSelf="flex-end" >
                     {this.props.builder._actions.map((a, i) => (
                         <>
@@ -108,7 +109,7 @@ export class AlertBlanketComponent extends React.PureComponent<{ builder: AlertB
                     ))}
                 </View>
             </SAnimated.View>
-            <View position="absolute" alignSelf="center">
+            <View position="absolute" alignSelf="center" pointerEvents="none">
                 <SAnimated.View
                     name={this.key + '--overlay'}
                     style={{ opacity: 0 }}

@@ -54,21 +54,27 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
         return (
             <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
-                <ASFlex height={60} flexDirection="row" onPress={this.handlePress}>
+                <ASFlex
+                    height={40}
+                    flexDirection="row"
+                    onPress={this.handlePress}
+                    marginTop={2}
+                    marginBottom={1}
+                    marginLeft={-2}
+                >
                     <ASFlex
                         width={40}
                         height={40}
-                        backgroundColor={'rgba(224, 227, 231, 0.5)'}
+                        backgroundColor={this.props.message.isOut ? 'rgba(0,0,0,0.15)' : 'rgba(185,192,202,0.20)'}
+                        opacity={this.props.message.isOut ? 0.15 : 0.2}
                         borderRadius={20}
-                        marginLeft={10}
-                        marginTop={10}
-                        marginBottom={10}
+
                         marginRight={10}
                         alignItems="center"
                         justifyContent="center"
                     >
                         <ASImage
-                            source={downloaded ? require('assets/img-file.png') : this.props.message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png')}
+                            source={downloaded ? (this.props.message.isOut ? require('assets/ic-file-white-ios.png') : require('assets/img-file.png')) : (this.props.message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png'))}
                             width={16}
                             height={20}
                         />
@@ -90,8 +96,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                     <ASFlex
                         flexGrow={1}
                         flexDirection="column"
-                        marginTop={12}
-                        marginBottom={12}
+                        marginTop={4}
                         marginRight={14}
                         alignSelf="center"
                     >

@@ -8,8 +8,8 @@ import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
-import { UserError, formatError } from 'openland-y-forms/errorHandling';
-import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
+import { UserError, formatError, SilentError } from 'openland-y-forms/errorHandling';
+import { AlertBlanketBuilder, Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     hint: {
@@ -20,18 +20,18 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         fontWeight: '400',
         color: '#000',
-        opacity: 0.9
-    } as TextStyle
+        opacity: 0.9,
+    } as TextStyle,
 });
 
 let email = '';
 let session = '';
 
-const http = async (params: { url: string, body?: any, method: 'POST' | 'GET' }) => {
+const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' }) => {
     let res = await fetch(params.url, {
         method: params.method,
         headers: [['Content-Type', 'application/json']],
-        body: JSON.stringify(params.body)
+        body: JSON.stringify(params.body),
     });
     if (!res.ok) {
         throw new UserError(res.statusText || 'Unexpected error');
@@ -50,7 +50,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
     private submitForm = () => {
         this.ref.current!.submitForm();
-    }
+    };
 
     render() {
         return (
@@ -60,7 +60,11 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
                 <ZForm
                     ref={this.ref}
-                    action={async (src) => {
+                    action={async src => {
+                        if (!src.email) {
+                            Alert.builder().title('Please enter your email address').button('GOT IT!').show();
+                            throw new SilentError();
+                        }
                         Keyboard.dismiss();
                         email = src.email;
                         let res = await http({
@@ -68,14 +72,14 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                             body: {
                                 email: email,
                             },
-                            method: 'POST'
+                            method: 'POST',
                         });
                         session = res.session;
                     }}
                     onSuccess={() => this.props.router.push('EmailCode')}
                 >
                     <Text style={styles.hint}>
-                        Enter your email address to sign in or create a new account
+                        Enter your email address to sign in or create a{'\u00A0'}new{'\u00A0'}account
                     </Text>
                     <ZTextInput
                         field="email"
@@ -101,7 +105,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
     private submitForm = () => {
         this.ref.current!.submitForm();
-    }
+    };
 
     render() {
         return (
@@ -110,35 +114,43 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                 <SHeaderButton title="Next" onPress={this.submitForm} />
                 <ZForm
                     ref={this.ref}
-                    action={async (src) => {
+                    action={async src => {
+                        if (!src.code) {
+                            Alert.builder().title('Please check your email and enter activation code').button('GOT IT!').show();
+                            throw new SilentError();
+                        }
                         Keyboard.dismiss();
                         let res = await http({
                             url: 'https://api.openland.com/auth/checkCode',
                             body: {
                                 session: session,
-                                code: src.code
+                                code: src.code,
                             },
-                            method: 'POST'
+                            method: 'POST',
                         });
                         let res2 = await http({
                             url: 'https://api.openland.com/auth/getAccessToken',
                             body: {
                                 session: session,
-                                authToken: res.authToken
+                                authToken: res.authToken,
                             },
-                            method: 'POST'
+                            method: 'POST',
                         });
 
                         await AsyncStorage.setItem('openland-token', res2.accessToken);
-
                     }}
                     onError={e => {
-                        new AlertBlanketBuilder().title('Activation').message(formatError(e)).button('Try again').show();
+                        new AlertBlanketBuilder()
+                            .title('Activation')
+                            .message(formatError(e))
+                            .button('Try again')
+                            .show();
                     }}
                     onSuccess={() => RNRestart.Restart()}
                 >
-
-                    <Text style={styles.hint}>Enter your activation code that was just sent to {email}</Text>
+                    <Text style={styles.hint}>
+                        Enter activation code that was just sent to {email}
+                    </Text>
                     <ZTextInput
                         field="code"
                         style={signupStyles.input}

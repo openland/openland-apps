@@ -10,6 +10,7 @@ import { next } from './signup';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { SilentError } from 'openland-y-forms/errorHandling';
 
 export const signupStyles = StyleSheet.create({
     input: {
@@ -58,10 +59,11 @@ const SignupUserContent = React.memo<PageProps>((props) => {
                 action={async (src) => {
                     // await delay(1000);
                     if (!src.input.firstName) {
-                        Alert.alert('Name can\'t be empty');
-                        return;
+                        Alert.builder().title('Name can\'t be empty').button('GOT IT!').show();
+                        throw new SilentError();
                     }
                     await getClient().mutateProfileCreate({ input: { firstName: src.input.firstName, lastName: src.input.lastName } });
+                    await getClient().refetchAccount();
                     await next(props.router);
                 }}
             >

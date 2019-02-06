@@ -29,7 +29,8 @@ class RNSPackage : ReactPackage {
                 AsyncDataViewManager(reactContext),
                 RNSAnimatedViewManager(reactContext),
                 RNSWindowManager(reactContext),
-                BottomSafeAreaProvider(reactContext)
+                BottomSafeAreaProvider(reactContext),
+                BenchmarkModule(reactContext)
         )
     }
 

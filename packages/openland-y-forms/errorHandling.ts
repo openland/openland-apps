@@ -1,5 +1,11 @@
 // import { trackError } from 'openland-x-analytics';
 
+export class SilentError extends Error {
+    constructor() {
+        super();
+    }
+}
+
 export function formatError(error: any): string {
     if (error.networkError) {
         if (Math.ceil(error.networkError.statusCode / 100) === 5) {
@@ -13,6 +19,8 @@ export function formatError(error: any): string {
     } else if (error.userMessage) {
         // Return first message
         return error.userMessage;
+    } else if (error instanceof SilentError) {
+        return '';
     }
 
     // Track unexpected errors

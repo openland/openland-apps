@@ -264,6 +264,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.node.performBatch(animated: false, updates: {
             self.headerPadding = padding
             self.node.reloadSections(IndexSet(integer: 0))
+            self.node.reloadSections(IndexSet(integer: 2))
           }, completion: nil)
         }
       }
@@ -280,6 +281,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
           self.node.performBatch(animated: false, updates: {
             self.overflowColor = color
             self.node.reloadSections(IndexSet(integer: 0))
+            self.node.reloadSections(IndexSet(integer: 2))
           }, completion: nil)
         }
       }
@@ -351,7 +353,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
               self.node.insertItems(at: indexPaths)
             }, completion: nil)
           }
-          self.node.reloadSections(IndexSet(integer: 2))
+          self.node.performBatch(animated: false, updates: {
+            self.node.reloadSections(IndexSet(integer: 2))
+          }, completion: nil)
           if self.batchContext != nil {
             DispatchQueue.main.async {
               self.batchContext?.completeBatchFetching(true)
@@ -483,7 +487,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   func onRemoved(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
       DispatchQueue.main.async {
-        self.node.performBatch(animated: true, updates: {
+        self.node.performBatch(animated: false, updates: {
           self.state = state
           self.node.deleteItems(at: [IndexPath(item: index, section: 1)])
         }, completion: nil)

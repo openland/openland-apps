@@ -84,11 +84,11 @@ class ApolloSubscription {
         this.tryStart();
     }
 
-    updateVariables(src?: any) {
+    updateVariables = (src?: any) => {
         this.vars = src;
     }
 
-    destroy() {
+    destroy = () => {
         if (this.stopped) {
             return;
         }

@@ -61,10 +61,10 @@ export const LeaveOrganizationModal = withMyOrganizationProfile(props => {
     return (
         <XModalForm
             submitProps={{
-                text: 'Leave Organization',
+                text: 'Leave organization',
                 style: 'danger',
             }}
-            title={'Leave Organization'}
+            title={`Leave ${props.data.organizationProfile.name}`}
             defaultData={{}}
             defaultAction={async () => {
                 await props.organizationMemberRemove({
@@ -101,10 +101,10 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
     return (
         <XModalForm
             submitProps={{
-                text: 'Remove Organization',
+                text: 'Delete organization',
                 style: 'danger',
             }}
-            title={'Remove Organization'}
+            title={`Delete ${props.data.organizationProfile.name}`}
             defaultData={{}}
             defaultAction={async () => {
                 await props.deleteOrganization({
@@ -122,7 +122,8 @@ export const RemoveOrganizationModal = withMyOrganizationProfile(props => {
         >
             <XFormLoadingContent>
                 <XVertical flexGrow={1} separator={8}>
-                    Are you sure you want to delete {props.data.organizationProfile.name}?
+                    Are you sure you want to delete {props.data.organizationProfile.name}? This
+                    cannot be undone.
                 </XVertical>
             </XFormLoadingContent>
         </XModalForm>

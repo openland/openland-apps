@@ -2,7 +2,6 @@ import { SessionStateFull } from 'openland-api/Types';
 import { SRouter } from 'react-native-s/SRouter';
 import { backoff } from 'openland-y-utils/timer';
 import { getClient } from '../../utils/apolloClient';
-import { AccountQuery } from 'openland-api';
 import RNRestart from 'react-native-restart';
 
 export const resolveNextPage: (session: SessionStateFull, current: string) => string = (session: SessionStateFull, current: string) => {

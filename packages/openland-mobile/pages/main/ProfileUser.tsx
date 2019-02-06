@@ -11,9 +11,14 @@ import { User_conversation_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { getMessenger } from 'openland-mobile/utils/messenger';
 
 const ProfileUserContent = React.memo<PageProps>((props) => {
-    let user = getClient().useUser({ userId: props.router.params.id });
+    let userQuery = getClient().useUser({ userId: props.router.params.id });
+    let user = userQuery.user;
+    let conversation = userQuery.conversation;
+
+    let myID = getMessenger().engine.user.id;
     let online = getClient().useOnline({ userId: props.router.params.id }).user;
 
     let sub = undefined;
@@ -28,45 +33,58 @@ const ProfileUserContent = React.memo<PageProps>((props) => {
     return (
         <>
             <ZListItemHeader
-                photo={user.user.photo}
-                id={user.user.id}
-                userId={user.user.id}
-                title={user.user.name}
+                photo={user.photo}
+                id={user.id}
+                userId={user.id}
+                title={user.name}
                 subtitle={sub}
                 subtitleColor={subColor}
-                action="Send message"
-                onPress={() => { props.router.pushAndReset('Conversation', { 'flexibleId': props.router.params.id }); }}
+                action={(myID === user.id) ? 'Edit profile' : 'Send message'}
+                onPress={() => {
+                    if (myID === user.id) {
+                        props.router.push('SettingsProfile');
+                    } else {
+                        props.router.pushAndReset('Conversation', {
+                            flexibleId: props.router.params.id,
+                        });
+                    }
+                }}
             />
 
             <ZListItemGroup header="About" divider={false}>
-                {!!user.user.about && <ZListItem multiline={true} text={user.user.about} copy={true} />}
-                {!!user.user.about && <View height={10} />}
-                {!!user.user.shortname && <ZListItem title="Username" text={'@' + user.user.shortname} copy={true} />}
-                {!!user.user.email && <ZListItem title="Email" text={user.user.email} copy={true} />}
-                {!!user.user.phone && <ZListItem title="Phone" text={'tel:' + user.user.phone} copy={true} />}
-                {!!user.user.website && <ZListItem title="Website" text={user.user.website} copy={true} />}
-                {!!user.user.location && <ZListItem title="Location" text={user.user.location} copy={true} />}
-                {!!user.user.linkedin && <ZListItem title="Linkedin" text={user.user.linkedin} copy={true} />}
+                {!!user.about && <ZListItem multiline={true} text={user.about} copy={true} />}
+                {!!user.about && <View height={10} />}
+                {!!user.shortname && (<ZListItem title="Username" text={'@' + user.shortname} copy={true} />)}
+                {!!user.email && <ZListItem title="Email" text={user.email} copy={true} />}
+                {!!user.phone && <ZListItem title="Phone" text={'tel:' + user.phone} copy={true} />}
+                {!!user.website && <ZListItem title="Website" text={user.website} copy={true} />}
+                {!!user.location && <ZListItem title="Location" text={user.location} copy={true} />}
+                {!!user.linkedin && <ZListItem title="Linkedin" text={user.linkedin} copy={true} />}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Organization" footer={null} divider={false}>
-                {!!user.user.primaryOrganization && (
+            {!!user.primaryOrganization && (
+                <ZListItemGroup header="Organization" footer={null} divider={false}>
                     <ZListItem
                         leftAvatar={{
-                            photo: user.user.primaryOrganization.photo,
-                            key: user.user.primaryOrganization.id,
-                            title: user.user.primaryOrganization.name
+                            photo: user.primaryOrganization.photo,
+                            key: user.primaryOrganization.id,
+                            title: user.primaryOrganization.name,
                         }}
-                        text={user.user.primaryOrganization.name}
+                        text={user.primaryOrganization.name}
                         path="ProfileOrganization"
-                        pathParams={{ id: user.user.primaryOrganization.id }}
+                        pathParams={{ id: user.primaryOrganization.id }}
                     />
-                )}
-            </ZListItemGroup>
+                </ZListItemGroup>
+            )}
 
-            <ZListItemGroup header="Settings" footer={null} divider={false}>
-                <NotificationSettings id={(user.conversation as User_conversation_PrivateRoom).id} mute={!!(user.conversation as User_conversation_PrivateRoom).settings.mute} />
-            </ZListItemGroup>
+            {(myID !== user.id) && (
+                <ZListItemGroup header="Settings" footer={null} divider={false}>
+                    <NotificationSettings
+                        id={(conversation as User_conversation_PrivateRoom).id}
+                        mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
+                    />
+                </ZListItemGroup>
+            )}
         </>
     );
 });

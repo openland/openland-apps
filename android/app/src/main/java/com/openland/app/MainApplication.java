@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.auth0.react.A0Auth0Package;
 import com.reactlibrary.RNThreadPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.microsoft.appcenter.AppCenter;
@@ -27,20 +28,15 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.cmcewen.blurview.BlurViewPackage;
-import com.entria.views.RNViewOverflowPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
-import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 
 import com.microsoft.codepush.react.CodePush;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.auth0.react.A0Auth0Package;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -62,6 +58,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new A0Auth0Package(),
                     new RNThreadPackage(mReactNativeHost),
                     new ReactNativeRestartPackage(),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),
@@ -72,19 +69,14 @@ public class MainApplication extends Application implements ReactApplication {
                     new LottiePackage(),
                     new LinearGradientPackage(),
                     new BlurViewPackage(),
-                    new RNViewOverflowPackage(),
                     new PickerPackage(),
                     new FastImageViewPackage(),
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
-                    new ExtraDimensionsPackage(),
                     new CodePush("", getApplicationContext(), true),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
-                    new VectorIconsPackage(),
-                    new A0Auth0Package(),
-                    new RNSPackage(),
-                    new ReactNativeDialogsPackage()
+                    new RNSPackage()
             );
         }
 

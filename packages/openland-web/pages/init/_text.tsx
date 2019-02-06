@@ -23,7 +23,7 @@ export const InitTexts = {
         signupWebSignUpEmail: 'Sign up for Openland',
         signinRoomSignUpEmail: 'Sign in and join the conversation',
         signupRoomSignUpEmail: 'Sign up and join the conversation',
-        enterActivationCode: 'Enter your activation code',
+        enterActivationCode: 'Enter activation code',
         resend: 'Resend.',
         haveNotReceiveCode: "Haven't received our email?",
         emailInvalid: 'Invalid email address',

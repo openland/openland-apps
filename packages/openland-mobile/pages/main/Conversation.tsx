@@ -25,6 +25,8 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { CallBarComponent } from 'openland-mobile/calls/CallBar';
+import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string }> {
     engine: ConversationEngine;
@@ -242,6 +244,9 @@ const ConversationComponent = React.memo<PageProps>((props) => {
     return (
         <View flexDirection={'column'} height="100%" width="100%">
             <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger!!} chat={(sharedRoom || privateRoom)!} />
+            <ASSafeAreaContext.Consumer>
+                {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
+            </ASSafeAreaContext.Consumer>
         </View>
     );
 });

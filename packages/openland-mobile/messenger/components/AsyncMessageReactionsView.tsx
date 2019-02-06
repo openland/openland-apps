@@ -4,13 +4,18 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getMessenger } from '../../utils/messenger';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 import { bubbleMaxWidth } from './AsyncBubbleView';
+import { messageBgColor } from './AsyncMessageView';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 const maxReactionsNames = 3;
 
 export class AsyncMessageReactionsView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
-        let reactions = this.props.message.reactions!.reduce(
+        if (!this.props.message.reactions || this.props.message.reactions!.length === 0) {
+            return null;
+        }
+        let reactionsMap = this.props.message.reactions!.reduce(
             (res, r) => {
                 let data = res.get(r.reaction) || { reaction: r.reaction, count: 0, my: false };
                 data.count++;
@@ -20,6 +25,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
             },
             new Map<string, { count: number, my: boolean, reaction: string }>()
         );
+        let reactions = [...reactionsMap.values()].sort((a, b) => a.count - b.count);
         let users = this.props.message.reactions!
             .reduce(
                 (res, r) => res.find(u => u.id === r.user.id) ? res : [...res, r.user],
@@ -30,27 +36,32 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
             // replace user name to 'You';
             .map(u => u.id === getMessenger().engine.user.id ? { ...u, name: 'You' } : u);
         // reduce
-        let usersString = users.map(u => u.name).join(', ');
-        if (users.length > maxReactionsNames) {
-            users = users
-                // polaceholder\
-                .map((u, index) => index === maxReactionsNames - 1 ? { ...u, name: 'and ' + (users.length - maxReactionsNames + 1) + ' more' } : u)
-                // reduce
-                .filter((u, index) => index < maxReactionsNames);
-            usersString = users.map(u => u.name).join(maxReactionsNames < 3 ? ' ' : ', ');
-        }
+        let usersString = (users.find(r => r.name === 'You') ? 'You' : users[0].name) + (users.length > 1 ? ' + ' + (users.length - 1) : '');
 
+        let reactionSize = 20;
         return (
-            <ASFlex flexDirection="row" maxHeight={30} maxWidth={bubbleMaxWidth} backgroundColor="white" justifyContent={this.props.message.isOut ? 'flex-start' : 'flex-end'}>
-                {[...reactions.values()].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => (
-                    <ASFlex flexDirection="row" marginTop={5} marginBottom={5} >
-                        <ASText fontSize={14} key={i} marginLeft={7}>{r.reaction}</ASText>
-                        <ASText fontSize={14} key={i + '-counter'} color={r.my ? 'rgb(23, 144, 255)' : 'rgba(0, 0, 0, 0.5)'}>{r.count}</ASText>
+            <ASFlex alignItems="stretch" flexDirection="row" maxHeight={30} backgroundColor={messageBgColor} >
+                <ASFlex flexGrow={1} justifyContent={this.props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={this.props.message.isOut ? 14 : 0} marginLeft={this.props.message.isOut ? 0 : 60} marginTop={5}>
+                    <ASFlex flexDirection="row">
+                        {/* moks */}
+                        {[...reactions].map(() => (
+                            <ASFlex marginTop={Platform.OS === 'ios' ? -3 : 2} width={reactionSize} height={reactionSize} marginRight={-3} />
+                        )
+                        )}
+                        <ASFlex overlay={true} flexDirection={'column'} marginTop={(Platform.OS === 'ios' ? -3 : 2)}>
+                            {[...reactions].map(r => ({ ...r, reaction: r.reaction === 'respondPost' ? '↩️' : r.reaction })).map((r, i) => {
+                                return (
+                                    <ASFlex key={r.reaction + '_' + r.count} marginTop={i === 0 ? 0 : -reactionSize} marginLeft={(reactions.length - i - 1) * (reactionSize - 5)} backgroundColor="white" borderRadius={10} alignItems="center" justifyContent="center" width={20} height={20} >
+                                        <ASText width={18} height={22} marginTop={Platform.OS === 'ios' ? 3 : -2} fontSize={Platform.OS === 'ios' ? 13 : 14} key={i} marginLeft={1}>{r.reaction}</ASText>
+                                    </ASFlex>
+                                );
+                            }
+                            )}
+                        </ASFlex>
                     </ASFlex>
-                )
-                )}
-                {users.length > 0 && <ASText marginLeft={5} marginRight={7} marginTop={5} marginBottom={5} fontSize={14} key={'users'} color={'rgba(0, 0, 0, 0.5)'}>{usersString}</ASText>}
 
+                    {users.length > 0 && <ASText fontWeight={TextStyles.weight.medium} marginLeft={5} marginRight={7} marginBottom={5} fontSize={13} key={'users'} color={'#99a2b0'}>{usersString}</ASText>}
+                </ASFlex>
             </ ASFlex>
         );
     }

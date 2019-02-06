@@ -39,7 +39,10 @@ export class ZForm extends React.PureComponent<ZFormProps> {
             if (this.props.onError) {
                 this.props.onError(e);
             } else {
-                Alert.alert(formatError(e));
+                let error = formatError(e);
+                if (error) {
+                    Alert.alert(error);
+                }
             }
         } finally {
             stopLoader();
