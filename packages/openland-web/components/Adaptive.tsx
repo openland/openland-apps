@@ -160,31 +160,30 @@ export const AdaptiveHOC = ({
     const Component: any = (props: any) => {
         const { renderedOnce, isMobile } = React.useContext(MobileSidebarContext);
 
+        const Wrapper = ({ children, className }: any) => (
+            <div
+                className={cx(
+                    className,
+                    noFlexShrinkClassName,
+                    fullWidth && fullWidthClassName,
+                    fullHeight && fullHeightClassName,
+                )}
+            >
+                {children}
+            </div>
+        );
+
         return (
             <>
                 {shouldRenderForMobile({ renderedOnce, isMobile }) && (
-                    <div
-                        className={cx(
-                            showMobileClassName,
-                            noFlexShrinkClassName,
-                            fullWidth && fullWidthClassName,
-                            fullHeight && fullHeightClassName,
-                        )}
-                    >
+                    <Wrapper className={showMobileClassName}>
                         <MobileComponent {...props} />
-                    </div>
+                    </Wrapper>
                 )}
                 {shouldRenderForDesktop({ renderedOnce, isMobile }) && (
-                    <div
-                        className={cx(
-                            showDesktopClassName,
-                            noFlexShrinkClassName,
-                            fullWidth && fullWidthClassName,
-                            fullHeight && fullHeightClassName,
-                        )}
-                    >
+                    <Wrapper className={showDesktopClassName}>
                         <DesktopComponent {...props} />
-                    </div>
+                    </Wrapper>
                 )}
             </>
         );
