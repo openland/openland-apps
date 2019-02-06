@@ -3,7 +3,7 @@ import { Platform, Linking, Image, Dimensions } from 'react-native';
 import { DataSourceMessageItem, convertMessage } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText, Span } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
-import { AsyncBubbleView } from './AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
@@ -36,11 +36,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
 
     componentWillMount() {
         if (this.props.message.urlAugmentation && this.props.message.urlAugmentation.imageURL) {
-            let maxSize = Platform.select({
-                default: 400,
-                ios: Math.min(Dimensions.get('window').width - 120, 400),
-                android: Math.min(Dimensions.get('window').width - 120, 400)
-            });
+            let maxSize = (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidth) - 90
+
             console.warn('boom', JSON.stringify(this.props.message.urlAugmentation));
             let width = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageWidth || maxSize;
             let height = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageHeight || maxSize;
