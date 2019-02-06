@@ -79,7 +79,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                 <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
 
                     <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? 32 : 0) + 10} />
+                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? 36 : 0) + 10} />
 
                         {!this.props.message.isOut && !this.props.message.attachBottom &&
                             <ASFlex marginRight={3} onPress={this.handleAvatarPress} alignItems="flex-end">
