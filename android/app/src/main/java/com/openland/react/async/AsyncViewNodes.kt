@@ -52,7 +52,7 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
                 style.backgroundPatch!!.source!!.width - (scale * style.backgroundPatch!!.right).toInt(),
                 null)
         if(style.backgroundPatchTintColor !== null){
-            bg.colorFilter = PorterDuffColorFilter(style.backgroundPatchTintColor!!, PorterDuff.Mode.MULTIPLY)
+            bg.colorFilter = PorterDuffColorFilter(style.backgroundPatchTintColor!!, PorterDuff.Mode.SRC_IN)
         }
         res.background(bg)
     } else {
