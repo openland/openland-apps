@@ -169,3 +169,67 @@ export class MessageStateProviderComponent extends React.PureComponent<
         );
     }
 }
+const getFirstInSet = (set: Set<string>) => {
+    return [...set][0];
+};
+
+const getForwardText = ({ forwardMessagesId }: MessagesStateContextProps) => {
+    return (
+        `Forward ${forwardMessagesId.size} ` +
+        (forwardMessagesId.size === 1 ? 'message' : 'messages')
+    );
+};
+
+const getReplyText = ({ replyMessagesId }: MessagesStateContextProps) => {
+    return `Reply ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages');
+};
+
+const hasReply = ({ replyMessagesSender, replyMessages }: MessagesStateContextProps) => {
+    return replyMessages.size && replyMessagesSender.size;
+};
+
+const getForwardOrReply = ({
+    forwardMessagesId,
+}: MessagesStateContextProps): 'forward' | 'reply' => {
+    if (forwardMessagesId.size !== 0) {
+        return 'forward';
+    }
+    return 'reply';
+};
+
+const hasForward = ({ useForwardMessages, forwardMessagesId }: MessagesStateContextProps) => {
+    return useForwardMessages && forwardMessagesId.size;
+};
+
+export const getQuoteMessageReply = (messagesContext: MessagesStateContextProps) => {
+    const mode = getForwardOrReply(messagesContext);
+
+    if (mode === 'forward') {
+        return hasForward(messagesContext) ? getForwardText(messagesContext) : '';
+    }
+    return hasReply(messagesContext)
+        ? getFirstInSet(messagesContext.replyMessages)
+        : getReplyText(messagesContext);
+};
+
+export const getQuoteMessageId = (messagesContext: MessagesStateContextProps) => {
+    const mode = getForwardOrReply(messagesContext);
+
+    if (mode === 'forward') {
+        return hasForward(messagesContext)
+            ? [getFirstInSet(messagesContext.forwardMessagesId)]
+            : [];
+    }
+    return hasReply(messagesContext)
+        ? [getFirstInSet(messagesContext.replyMessagesId)]
+        : [...messagesContext.replyMessagesId];
+};
+
+export const getQuoteMessageSender = (messagesContext: MessagesStateContextProps) => {
+    const mode = getForwardOrReply(messagesContext);
+
+    if (mode === 'forward') {
+        return hasForward(messagesContext) ? 'Forward' : '';
+    }
+    return hasReply(messagesContext) ? getFirstInSet(messagesContext.replyMessagesSender) : 'Reply';
+};

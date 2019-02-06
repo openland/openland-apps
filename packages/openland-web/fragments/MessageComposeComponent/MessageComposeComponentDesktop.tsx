@@ -14,6 +14,9 @@ import { withUserInfo, UserInfo } from '../../components/UserInfo';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
+    getQuoteMessageReply,
+    getQuoteMessageId,
+    getQuoteMessageSender,
 } from '../../components/messenger/MessagesStateContext';
 import { withMessageState } from '../../api/withMessageState';
 import { withGetDraftMessage } from '../../api/withMessageState';
@@ -113,10 +116,6 @@ export const convertChannelMembersDataToMentionsData = (data: any) => {
     });
 };
 
-const getFirstInSet = (set: Set<string>) => {
-    return [...set][0];
-};
-
 const getMentions = (
     str: string,
     listOfMembersNames: string[],
@@ -202,8 +201,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     let wasFocused = false;
     let listOfMembersNames: string[] = [];
-    let inputRef = React.createRef<XRichTextInput>();
-
+    const inputRef = React.useRef<XRichTextInput>(null);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const [inputValue, setInputValue] = React.useState(DraftStore.getDraftMessage(conversationId));
@@ -234,90 +232,11 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     });
 
     const hasQuoteInState = () => {
-        return quoteMessageReply && quoteMessagesId && quoteMessageSender;
-    };
-
-    const getEditViewMessage = () => {
-        return quoteMessageReply;
+        return quoteMessageReply && quoteMessagesId.length !== 0 && quoteMessageSender;
     };
 
     const getEditViewTitle = () => {
         return quoteMessageSender !== undefined ? quoteMessageSender : 'Edit message';
-    };
-
-    const getForwardText = ({ forwardMessagesId }: { forwardMessagesId: Set<string> }) => {
-        return (
-            `Forward ${forwardMessagesId.size} ` +
-            (forwardMessagesId.size === 1 ? 'message' : 'messages')
-        );
-    };
-
-    const getReplyText = ({ replyMessagesId }: { replyMessagesId: Set<string> }) => {
-        return (
-            `Reply ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages')
-        );
-    };
-
-    const hasReply = ({
-        replyMessagesSender,
-        replyMessages,
-    }: {
-        replyMessagesSender: Set<string>;
-        replyMessages: Set<string>;
-    }) => {
-        return replyMessages.size && replyMessagesSender.size;
-    };
-
-    const getForwardOrReply = (): 'forward' | 'reply' => {
-        if (messagesContext.forwardMessagesId.size !== 0) {
-            return 'forward';
-        }
-        return 'reply';
-    };
-
-    const hasForward = ({
-        useForwardMessages,
-        forwardMessagesId,
-    }: {
-        useForwardMessages: boolean;
-        forwardMessagesId: Set<string>;
-    }) => {
-        return useForwardMessages && forwardMessagesId.size;
-    };
-
-    const getQuoteMessageReply = () => {
-        const mode = getForwardOrReply();
-
-        if (mode === 'forward') {
-            return hasForward(messagesContext) ? getForwardText(messagesContext) : '';
-        }
-        return hasReply(messagesContext)
-            ? getFirstInSet(messagesContext.replyMessages)
-            : getReplyText(messagesContext);
-    };
-
-    const getQuoteMessageId = () => {
-        const mode = getForwardOrReply();
-
-        if (mode === 'forward') {
-            return hasForward(messagesContext)
-                ? [getFirstInSet(messagesContext.forwardMessagesId)]
-                : [];
-        }
-        return hasReply(messagesContext)
-            ? [getFirstInSet(messagesContext.replyMessagesId)]
-            : [...messagesContext.replyMessagesId];
-    };
-
-    const getQuoteMessageSender = () => {
-        const mode = getForwardOrReply();
-
-        if (mode === 'forward') {
-            return hasForward(messagesContext) ? 'Forward' : '';
-        }
-        return hasReply(messagesContext)
-            ? getFirstInSet(messagesContext.replyMessagesSender)
-            : 'Reply';
     };
 
     const handleDialogDone = (r: UploadCare.File) => {
@@ -481,9 +400,9 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     const updateQuote = () => {
         if (shouldHaveQuote()) {
-            setQuoteMessageReply(getQuoteMessageReply());
-            setQuoteMessagesId(getQuoteMessageId());
-            setQuoteMessageSender(getQuoteMessageSender());
+            setQuoteMessageReply(getQuoteMessageReply(messagesContext));
+            setQuoteMessagesId(getQuoteMessageId(messagesContext));
+            setQuoteMessageSender(getQuoteMessageSender(messagesContext));
         }
     };
 
@@ -514,7 +433,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         [members],
     );
 
-    const editViewMessage = getEditViewMessage();
     const editViewTitle = getEditViewTitle();
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 
@@ -523,9 +441,9 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             <SendMessageContent separator={4} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                    {editViewMessage && (
+                    {quoteMessageReply && (
                         <EditView
-                            message={editViewMessage}
+                            message={quoteMessageReply}
                             title={editViewTitle}
                             onCancel={closeEditor}
                         />
