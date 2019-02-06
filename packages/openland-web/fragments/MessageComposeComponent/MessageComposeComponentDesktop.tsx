@@ -110,6 +110,10 @@ export const convertChannelMembersDataToMentionsData = (data: any) => {
     });
 };
 
+const getFirstInSet = (set: Set<string>) => {
+    return [...set][0];
+};
+
 const getMentions = (
     str: string,
     listOfMembersNames: string[],
@@ -231,13 +235,7 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     };
 
     const getEditViewMessage = () => {
-        if (inputValue) {
-            return inputValue;
-        }
-        if (quoteMessageReply) {
-            return quoteMessageReply;
-        }
-        return undefined;
+        return quoteMessageReply;
     };
 
     const getEditViewTitle = () => {
@@ -267,13 +265,11 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         return replyMessages.size && replyMessagesSender.size;
     };
 
-    const getFirstInSet = (set: Set<string>) => {
-        return [...set][0];
-    };
-
     const getForwardOrReply = (): 'forward' | 'reply' => {
-        // TODO implement this
-        return 'forward';
+        if (messagesContext.forwardMessagesId.size !== 0) {
+            return 'forward';
+        }
+        return 'reply';
     };
 
     const getQuoteMessageReply = () => {
@@ -461,8 +457,8 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     const shouldBeDrafted = () => {
         const { replyMessages, replyMessagesId, replyMessagesSender } = messagesContext;
-        const result = !(replyMessages.size && replyMessagesId.size && replyMessagesSender.size);
-        return result;
+
+        return !(replyMessages.size && replyMessagesId.size && replyMessagesSender.size);
     };
 
     const getNextDraft = () => {
@@ -476,47 +472,36 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
 
     const shouldHaveQuote = () => {
         const { replyMessagesId } = messagesContext;
-        // return replyMessagesId || hasConversationChanged(nextProps);
-        return replyMessagesId;
+
+        return !!replyMessagesId.size;
+    };
+
+    const updateQuote = () => {
+        if (shouldHaveQuote()) {
+            setQuoteMessageReply(getQuoteMessageReply());
+            setQuoteMessagesId(getQuoteMessageId());
+            setQuoteMessageSender(getQuoteMessageSender());
+        }
     };
 
     React.useEffect(
         () => {
-            console.log('useEffect conversationId');
+            updateQuote();
+        },
+        [messagesContext.replyMessages],
+    );
+
+    React.useEffect(
+        () => {
+            messagesContext.changeForwardConverstion();
+            updateQuote();
             setInputValue(shouldBeDrafted() ? getNextDraft() : '');
-
-            setQuoteMessageReply(shouldHaveQuote() ? getQuoteMessageReply() : undefined);
-            setQuoteMessagesId(shouldHaveQuote() ? getQuoteMessageId() : []);
-            setQuoteMessageSender(shouldHaveQuote() ? getQuoteMessageSender() : undefined);
-
             setBeDrafted(shouldBeDrafted());
         },
         [conversationId],
     );
 
-    React.useEffect(
-        () => {
-            if (hasForward(messagesContext)) {
-                messagesContext.changeForwardConverstion();
-            }
-        },
-        [conversationId],
-    );
-
     // rewrote to effect correctly
-    // updateFocus(nextProps: MessageComposeComponentInnerProps) {
-    //     const { messagesContext, focus } = nextProps;
-    //     const { editMessage, editMessageId, replyMessagesId } = messagesContext;
-
-    //     if (
-    //         replyMessagesId ||
-    //         (this.hasConversationChanged(nextProps) && !editMessage && !editMessageId)
-    //     ) {
-    //         focus();
-    //     }
-    // }
-    //
-
     React.useEffect(
         () => {
             listOfMembersNames = members
@@ -526,20 +511,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         [members],
     );
 
-    // emulate componentDidMount
-    React.useEffect(() => {
-        const { changeForwardConverstion } = messagesContext;
-
-        if (hasForward(messagesContext)) {
-            changeForwardConverstion();
-
-            setInputValue('');
-            setQuoteMessageReply(getQuoteMessageReply());
-            setQuoteMessageSender(getQuoteMessageSender());
-            setQuoteMessagesId(getQuoteMessageId());
-        }
-    });
-
     React.useEffect(() => {
         focusIfNeeded();
     });
@@ -547,8 +518,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     const editViewMessage = getEditViewMessage();
     const editViewTitle = getEditViewTitle();
     const mentionsData = convertChannelMembersDataToMentionsData(members);
-
-    console.log('render');
 
     return (
         <SendMessageWrapper>

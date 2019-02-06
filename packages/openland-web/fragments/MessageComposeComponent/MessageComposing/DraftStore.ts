@@ -16,7 +16,7 @@ export const getDraftMessage = (conversationId?: string): string => {
     if (message === draftKey) {
         return '';
     }
-    console.log('getDraftMessage');
+
     return message;
 };
 
@@ -27,7 +27,7 @@ export const setDraftMessage = (conversationId?: string, src?: string): void => 
     if (!src) {
         throw Error('no src');
     }
-    console.log('setDraftMessage');
+
     window.localStorage.setItem(getDraftKey(conversationId), src);
 };
 
