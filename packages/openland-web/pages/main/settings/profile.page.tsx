@@ -122,22 +122,33 @@ export default withApp(
                                                 <XFormError onlyGeneralErrors={true} />
                                                 <XVertical separator={12}>
                                                     <XFormLoadingContent>
-                                                        <XHorizontal separator={13}>
-                                                            <XVertical
-                                                                flexGrow={1}
-                                                                maxWidth={480}
-                                                                separator={10}
-                                                            >
-                                                                <XInput
-                                                                    title="First name"
-                                                                    field="input.firstName"
-                                                                    size="large"
+                                                        <XVertical
+                                                            flexGrow={1}
+                                                            maxWidth={480}
+                                                            separator={10}
+                                                        >
+                                                            <XHorizontal separator={13}>
+                                                                <XVertical
+                                                                    flexGrow={1}
+                                                                    separator={10}
+                                                                >
+                                                                    <XInput
+                                                                        title="First name"
+                                                                        field="input.firstName"
+                                                                        size="large"
+                                                                    />
+                                                                    <XInput
+                                                                        title="Last name"
+                                                                        field="input.lastName"
+                                                                        size="large"
+                                                                    />
+                                                                </XVertical>
+                                                                <XAvatarUpload
+                                                                    field="input.photoRef"
+                                                                    size="xSmall"
                                                                 />
-                                                                <XInput
-                                                                    title="Last name"
-                                                                    field="input.lastName"
-                                                                    size="large"
-                                                                />
+                                                            </XHorizontal>
+                                                            <XVertical flexGrow={1} separator={10}>
                                                                 <XSelect
                                                                     title="Primary organization"
                                                                     field="input.primaryOrganizationId"
@@ -164,8 +175,7 @@ export default withApp(
                                                                     />
                                                                 </XView>
                                                             </XVertical>
-                                                            <XAvatarUpload field="input.photoRef" />
-                                                        </XHorizontal>
+                                                        </XVertical>
                                                     </XFormLoadingContent>
                                                     <XFormSubmit
                                                         text="Save changes"

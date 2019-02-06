@@ -123,15 +123,13 @@ interface AvatarRenderProps extends XFileUploadRenderProps {
 
 let AvatarImageSize = {
     small: 96,
+    xSmall: 100,
     default: 110,
     normal: 159,
     large: 241,
 };
 
-class AvatarRender extends React.PureComponent<
-    AvatarRenderProps,
-    { srcLoading: boolean }
-> {
+class AvatarRender extends React.PureComponent<AvatarRenderProps, { srcLoading: boolean }> {
     constructor(props: AvatarRenderProps) {
         super(props);
         this.state = { srcLoading: false };
@@ -180,10 +178,7 @@ class AvatarRender extends React.PureComponent<
                     <AvatarImage
                         width={AvatarImageSize[this.props.size || 'normal']}
                         height={AvatarImageSize[this.props.size || 'normal']}
-                        srcCloud={prepareSrc(
-                            this.props.file!!.uuid,
-                            this.props.file!!.crop,
-                        )}
+                        srcCloud={prepareSrc(this.props.file!!.uuid, this.props.file!!.crop)}
                         resize={isFreeCrop ? undefined : 'fill'}
                         onLoad={this.handleOnLoad}
                     />
@@ -193,31 +188,24 @@ class AvatarRender extends React.PureComponent<
                     <PlaceholderImage icon="photo_camera" hasImage={hasImage} />
                     <PlaceholderHoint hasImage={hasImage}>
                         {this.props.placeholder &&
-                            (hasImage
-                                ? this.props.placeholder.change
-                                : this.props.placeholder.add)}
+                            (hasImage ? this.props.placeholder.change : this.props.placeholder.add)}
                         {!this.props.placeholder && (
                             <>
                                 {' '}
-                                <p>{hasImage ? 'Change' : 'Add'} your</p>{' '}
-                                <p>profile photo</p>
+                                <p>{hasImage ? 'Change' : 'Add'} your</p> <p>profile photo</p>
                             </>
                         )}
                     </PlaceholderHoint>
                 </Placeholder>
                 {(this.props.isLoading || this.state.srcLoading) && (
-                    <XLoader
-                        loading={this.props.isLoading || this.state.srcLoading}
-                    />
+                    <XLoader loading={this.props.isLoading || this.state.srcLoading} />
                 )}
             </DropAreaWrapper>
         );
     }
 }
 
-export class XAvatarUploadBasic extends React.PureComponent<
-    XAvatarUploadBasicProps
-> {
+export class XAvatarUploadBasic extends React.PureComponent<XAvatarUploadBasicProps> {
     render() {
         return (
             <XFileUpload
