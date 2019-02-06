@@ -13,9 +13,6 @@ import { withUserInfo, UserInfo } from '../../components/UserInfo';
 import {
     MessagesStateContext,
     MessagesStateContextProps,
-    getQuoteMessageReply,
-    getQuoteMessageId,
-    getQuoteMessageSender,
 } from '../../components/messenger/MessagesStateContext';
 import { withMessageState } from '../../api/withMessageState';
 import { withGetDraftMessage } from '../../api/withMessageState';
@@ -40,8 +37,9 @@ import { FileUploader } from './FileUploading/FileUploader';
 import { EditView } from './EditView';
 import { useKeydownHandler } from './useKeydownHandler';
 import { useDraft } from './useDraft';
-import { useReply } from './useReply';
+import { useHandleSend } from './useHandleSend';
 import { useInputMethods } from './useInputMethods';
+import { useQuote } from './useQuote';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -149,11 +147,10 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         draft,
     } = props;
 
-    let wasFocused = false;
     let listOfMembersNames: string[] = [];
     const inputRef = React.useRef<XRichTextInput>(null);
 
-    const { focus, resetAndFocus, hasFocus } = useInputMethods({ inputRef });
+    const { focusIfNeeded, resetAndFocus, hasFocus } = useInputMethods({ inputRef, enabled });
 
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
@@ -171,13 +168,19 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
     });
 
     const [inputValue, setInputValue] = React.useState(getDefaultValue());
-    const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
-    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
-    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
-        undefined,
-    );
 
-    const { replyMessagesProc } = useReply({
+    const {
+        quoteMessagesId,
+        setQuoteMessagesId,
+        quoteMessageReply,
+        setQuoteMessageReply,
+        quoteMessageSender,
+        setQuoteMessageSender,
+    } = useQuote({
+        conversationId,
+    });
+
+    const { handleSend, closeEditor } = useHandleSend({
         conversationId,
         quoteMessagesId,
         replyMessage,
@@ -185,8 +188,18 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         listOfMembersNames,
         members,
         inputValue,
+        onSendFile,
+        quoteMessageReply,
+        quoteMessageSender,
+        onSend,
+        resetAndFocus,
+        setBeDrafted,
+        cleanDraft,
+        setInputValue,
+        setQuoteMessageReply,
+        setQuoteMessageSender,
+        setQuoteMessagesId,
     });
-    const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
 
     useKeydownHandler({
         forwardMessagesId: messagesContext.forwardMessagesId,
@@ -197,66 +210,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         conversation,
         user,
     });
-
-    const hasQuoteInState = () => {
-        return quoteMessageReply && quoteMessagesId.length !== 0 && quoteMessageSender;
-    };
-
-    const handleDialogDone = (r: UploadCare.File) => {
-        setInputValue('');
-        if (onSendFile) {
-            onSendFile(r);
-        }
-    };
-
-    const onUploadCareSendFile = (fileForUc: UploadCare.File) => {
-        const ucFile = UploadCare.fileFrom('object', fileForUc);
-        if (onSendFile) {
-            onSendFile(ucFile);
-        }
-    };
-
-    const focusIfNeeded = () => {
-        if (enabled !== false && !wasFocused) {
-            wasFocused = true;
-            focus();
-        }
-    };
-
-    const closeEditor = () => {
-        messagesContext.resetAll();
-        setInputValue('');
-        setQuoteMessageReply(undefined);
-        setQuoteMessageSender(undefined);
-        setQuoteMessagesId([]);
-        setFile(undefined);
-        resetAndFocus();
-    };
-
-    const handleSend = () => {
-        if (inputValue.trim().length > 0) {
-            let msg = inputValue.trim();
-            if (onSend && !hasQuoteInState()) {
-                let mentions = getMentions(msg, listOfMembersNames, members);
-
-                onSend(msg, mentions);
-                setBeDrafted(false);
-
-                if (file) {
-                    onUploadCareSendFile(file);
-                }
-            }
-            if (inputValue && hasQuoteInState()) {
-                replyMessagesProc();
-            }
-        } else if (hasQuoteInState()) {
-            replyMessagesProc();
-        } else if (file) {
-            onUploadCareSendFile(file);
-        }
-        closeEditor();
-        cleanDraft();
-    };
 
     const handleChange = (value: string) => {
         setInputValue(value);
@@ -276,31 +229,9 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         return !(replyMessages.size && replyMessagesId.size && replyMessagesSender.size);
     };
 
-    const shouldHaveQuote = () => {
-        const { replyMessagesId } = messagesContext;
-
-        return !!replyMessagesId.size;
-    };
-
-    const updateQuote = () => {
-        if (shouldHaveQuote()) {
-            setQuoteMessageReply(getQuoteMessageReply(messagesContext));
-            setQuoteMessagesId(getQuoteMessageId(messagesContext));
-            setQuoteMessageSender(getQuoteMessageSender(messagesContext));
-        }
-    };
-
-    React.useEffect(
-        () => {
-            updateQuote();
-        },
-        [messagesContext.replyMessages],
-    );
-
     React.useEffect(
         () => {
             messagesContext.changeForwardConverstion();
-            updateQuote();
             setInputValue(shouldBeDrafted() ? getNextDraft() : '');
             setBeDrafted(shouldBeDrafted());
             focusIfNeeded();
@@ -316,6 +247,13 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         },
         [members],
     );
+
+    const handleDialogDone = (r: UploadCare.File) => {
+        setInputValue('');
+        if (onSendFile) {
+            onSendFile(r);
+        }
+    };
 
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 

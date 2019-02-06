@@ -1,9 +1,21 @@
 import { XRichTextInput } from 'openland-x/XRichTextInput';
 
-export function useInputMethods({ inputRef }: { inputRef: XRichTextInput | any }) {
+export function useInputMethods({
+    inputRef,
+    enabled,
+}: {
+    enabled?: boolean;
+    inputRef: XRichTextInput | any;
+}) {
     const focus = () => {
         if (inputRef.current) {
             inputRef.current.focus();
+        }
+    };
+
+    const focusIfNeeded = () => {
+        if (enabled !== false) {
+            focus();
         }
     };
 
@@ -25,5 +37,6 @@ export function useInputMethods({ inputRef }: { inputRef: XRichTextInput | any }
         focus,
         resetAndFocus,
         hasFocus,
+        focusIfNeeded,
     };
 }
