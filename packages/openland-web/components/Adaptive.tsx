@@ -162,30 +162,30 @@ export const AdaptiveHOC = ({
 
         return (
             <>
-                <div
-                    className={cx(
-                        showMobileClassName,
-                        noFlexShrinkClassName,
-                        fullWidth && fullWidthClassName,
-                        fullHeight && fullHeightClassName,
-                    )}
-                >
-                    {shouldRenderForMobile({ renderedOnce, isMobile }) && (
+                {shouldRenderForMobile({ renderedOnce, isMobile }) && (
+                    <div
+                        className={cx(
+                            showMobileClassName,
+                            noFlexShrinkClassName,
+                            fullWidth && fullWidthClassName,
+                            fullHeight && fullHeightClassName,
+                        )}
+                    >
                         <MobileComponent {...props} />
-                    )}
-                </div>
-                <div
-                    className={cx(
-                        showDesktopClassName,
-                        noFlexShrinkClassName,
-                        fullWidth && fullWidthClassName,
-                        fullHeight && fullHeightClassName,
-                    )}
-                >
-                    {shouldRenderForDesktop({ renderedOnce, isMobile }) && (
+                    </div>
+                )}
+                {shouldRenderForDesktop({ renderedOnce, isMobile }) && (
+                    <div
+                        className={cx(
+                            showDesktopClassName,
+                            noFlexShrinkClassName,
+                            fullWidth && fullWidthClassName,
+                            fullHeight && fullHeightClassName,
+                        )}
+                    >
                         <DesktopComponent {...props} />
-                    )}
-                </div>
+                    </div>
+                )}
             </>
         );
     };
