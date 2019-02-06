@@ -10,6 +10,7 @@ import { FileUploader } from './FileUploading/FileUploader';
 import { UploadContext } from './FileUploading/UploadContext';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { AttachmentButtons } from './AttachmentButtons';
+import { MessageFull_mentions, PostMessageType } from 'openland-api/Types';
 
 const TextArea = css`
     border-radius: 10px;
@@ -59,20 +60,20 @@ export const MobileMessageCompose = ({
     handleHideChat,
     onChange,
 }: {
-    onSendFile: Function;
-    onSend: Function;
-    enabled: boolean;
-    handleHideChat: (show: boolean, postType: any) => void;
-    onChange: Function;
+    onSendFile?: ((file: UploadCare.File) => void) | undefined;
+    onSend?: ((text: string, mentions: MessageFull_mentions[] | null) => void) | undefined;
+    enabled?: boolean | undefined;
+    handleHideChat?: ((show: boolean, postType: PostMessageType | null) => void) | undefined;
+    onChange?: ((text: string) => void) | undefined;
 }) => {
     const [message, setMessage] = React.useState('');
-    const { file, setFile } = React.useContext(UploadContext);
+    const { file, fileRemover } = React.useContext(UploadContext);
     const { handleDrop } = React.useContext(UploadContext);
     const inputRef = React.createRef<HTMLDivElement>();
 
     const closeEditor = () => {
         setMessage('');
-        setFile(undefined);
+        fileRemover();
 
         if (inputRef.current) {
             inputRef.current.innerText = '';

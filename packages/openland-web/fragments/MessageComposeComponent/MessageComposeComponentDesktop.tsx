@@ -24,6 +24,8 @@ import {
     ReplyMessage,
     SaveDraftMessageVariables,
     SaveDraftMessage,
+    RoomEditMessageVariables,
+    RoomEditMessage,
     MessageFull_mentions,
     SharedRoomKind,
     RoomMembers_members,
@@ -36,7 +38,7 @@ import { AttachmentButtons } from './AttachmentButtons';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { FileUploader } from './FileUploading/FileUploader';
 import { EditView } from './EditView';
-import * as DraftStore from './MessageComposing/DraftStore';
+import * as DraftStore from './DraftStore';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -89,6 +91,7 @@ interface MessageComposeComponentInnerProps
     messagesContext: MessagesStateContextProps;
     replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
+    editMessage: MutationFunc<RoomEditMessage, Partial<RoomEditMessageVariables>>;
     draft?: string | null;
     handleDrop: (file: any) => void;
 }
@@ -272,6 +275,16 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         return 'reply';
     };
 
+    const hasForward = ({
+        useForwardMessages,
+        forwardMessagesId,
+    }: {
+        useForwardMessages: boolean;
+        forwardMessagesId: Set<string>;
+    }) => {
+        return useForwardMessages && forwardMessagesId.size;
+    };
+
     const getQuoteMessageReply = () => {
         const mode = getForwardOrReply();
 
@@ -305,16 +318,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         return hasReply(messagesContext)
             ? getFirstInSet(messagesContext.replyMessagesSender)
             : 'Reply';
-    };
-
-    const hasForward = ({
-        useForwardMessages,
-        forwardMessagesId,
-    }: {
-        useForwardMessages: boolean;
-        forwardMessagesId: Set<string>;
-    }) => {
-        return useForwardMessages && forwardMessagesId.size;
     };
 
     const handleDialogDone = (r: UploadCare.File) => {
@@ -377,6 +380,35 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         });
     };
 
+    const focus = () => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
+    const focusIfNeeded = () => {
+        if (enabled !== false && !wasFocused) {
+            wasFocused = true;
+            focus();
+        }
+    };
+
+    const resetAndFocus = () => {
+        if (inputRef.current) {
+            inputRef.current.resetAndFocus();
+        }
+    };
+
+    const closeEditor = () => {
+        messagesContext.resetAll();
+        setInputValue('');
+        setQuoteMessageReply(undefined);
+        setQuoteMessageSender(undefined);
+        setQuoteMessagesId([]);
+        setFile(undefined);
+        resetAndFocus();
+    };
+
     const handleSend = () => {
         if (inputValue.trim().length > 0) {
             let msg = inputValue.trim();
@@ -424,35 +456,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         }
 
         changeDraft(value);
-    };
-
-    const focus = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    };
-
-    const resetAndFocus = () => {
-        if (inputRef.current) {
-            inputRef.current.resetAndFocus();
-        }
-    };
-
-    const closeEditor = () => {
-        messagesContext.resetAll();
-        setInputValue('');
-        setQuoteMessageReply(undefined);
-        setQuoteMessageSender(undefined);
-        setQuoteMessagesId([]);
-        setFile(undefined);
-        resetAndFocus();
-    };
-
-    const focusIfNeeded = () => {
-        if (enabled !== false && !wasFocused) {
-            wasFocused = true;
-            focus();
-        }
     };
 
     const shouldBeDrafted = () => {

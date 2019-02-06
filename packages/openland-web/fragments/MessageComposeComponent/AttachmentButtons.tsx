@@ -19,6 +19,52 @@ interface PostButtonProps {
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
 }
 
+export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
+    paddingLeft: 12,
+    paddingRight: 12,
+    height: 32,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    borderRadius: 20,
+    fontSize: 13,
+    fontWeight: 600,
+    letterSpacing: 0,
+    lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.4)',
+    opacity: props.disable ? 0.7 : undefined,
+    cursor: props.disable ? 'default !important' : 'pointer',
+    '&:first-child': {
+        marginLeft: 6,
+    },
+    '@media (max-width: 1230px)': {
+        fontSize: 0,
+        '& > svg': {
+            marginRight: '0!important',
+        },
+    },
+    '&:hover': {
+        textDecoration: 'none',
+        color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
+        '& > svg > *': {
+            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
+        },
+    },
+    '&.shortcuts-button > svg, &.document-button > svg': {
+        marginTop: 1,
+        marginBottom: -1,
+    },
+    '& > svg': {
+        flexShrink: 0,
+        marginRight: 10,
+        '& > *': {
+            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
+        },
+    },
+}));
+
 export class PostButton extends React.PureComponent<PostButtonProps> {
     state = {
         show: false,
@@ -114,52 +160,6 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
         );
     }
 }
-
-export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
-    paddingLeft: 12,
-    paddingRight: 12,
-    height: 32,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-    borderRadius: 20,
-    fontSize: 13,
-    fontWeight: 600,
-    letterSpacing: 0,
-    lineHeight: '20px',
-    color: 'rgba(0, 0, 0, 0.4)',
-    opacity: props.disable ? 0.7 : undefined,
-    cursor: props.disable ? 'default !important' : 'pointer',
-    '&:first-child': {
-        marginLeft: 6,
-    },
-    '@media (max-width: 1230px)': {
-        fontSize: 0,
-        '& > svg': {
-            marginRight: '0!important',
-        },
-    },
-    '&:hover': {
-        textDecoration: 'none',
-        color: props.disable ? '#a3acb8' : 'rgba(0, 0, 0, 0.5)',
-        backgroundColor: props.disable ? 'transparent' : 'rgba(0, 0, 0, 0.03)',
-        '& > svg > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.3)',
-        },
-    },
-    '&.shortcuts-button > svg, &.document-button > svg': {
-        marginTop: 1,
-        marginBottom: -1,
-    },
-    '& > svg': {
-        flexShrink: 0,
-        marginRight: 10,
-        '& > *': {
-            fill: props.disable ? '#c1c7cf' : 'rgba(0, 0, 0, 0.2)',
-        },
-    },
-}));
 
 export const AttachmentButtons = ({
     enabled,
