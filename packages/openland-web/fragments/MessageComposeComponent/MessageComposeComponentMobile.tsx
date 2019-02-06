@@ -66,13 +66,13 @@ export const MobileMessageCompose = ({
     onChange: Function;
 }) => {
     const [message, setMessage] = React.useState('');
-    const { file, fileRemover } = React.useContext(UploadContext);
+    const { file, setFile } = React.useContext(UploadContext);
     const { handleDrop } = React.useContext(UploadContext);
     const inputRef = React.createRef<HTMLDivElement>();
 
     const closeEditor = () => {
         setMessage('');
-        fileRemover();
+        setFile(undefined);
 
         if (inputRef.current) {
             inputRef.current.innerText = '';
