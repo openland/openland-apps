@@ -24,7 +24,7 @@ export const setDraftMessage = (conversationId?: string, src?: string): void => 
     if (!conversationId) {
         throw Error('no conversationId');
     }
-    if (!src) {
+    if (src === undefined) {
         throw Error('no src');
     }
 

@@ -7,7 +7,6 @@ import { XButton } from 'openland-x/XButton';
 import { XRichTextInput } from 'openland-x/XRichTextInput';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
-import { isServerMessage } from 'openland-engines/messenger/types';
 import { MutationFunc } from 'react-apollo';
 import { DropZone } from './FileUploading/DropZone';
 import { withUserInfo, UserInfo } from '../../components/UserInfo';
@@ -22,7 +21,6 @@ import { withMessageState } from '../../api/withMessageState';
 import { withGetDraftMessage } from '../../api/withMessageState';
 import { withChannelMembers } from '../../api/withChannelMembers';
 import {
-    MessageFull,
     ReplyMessageVariables,
     ReplyMessage,
     SaveDraftMessageVariables,
@@ -33,7 +31,6 @@ import {
     SharedRoomKind,
     RoomMembers_members,
     PostMessageType,
-    UserShort,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { PostIntroModal } from '../../components/messenger/message/content/attachments/introMessage/PostIntroModal';
@@ -41,7 +38,10 @@ import { AttachmentButtons } from './AttachmentButtons';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { FileUploader } from './FileUploading/FileUploader';
 import { EditView } from './EditView';
-import * as DraftStore from './DraftStore';
+// import * as DraftStore from './DraftStore';
+import { useKeydownHandler } from './useKeydownHandler';
+import { useDraft } from './useDraft';
+import { useReply } from './useReply';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -116,7 +116,7 @@ export const convertChannelMembersDataToMentionsData = (data: any) => {
     });
 };
 
-const getMentions = (
+export const getMentions = (
     str: string,
     listOfMembersNames: string[],
     members?: RoomMembers_members[],
@@ -130,57 +130,6 @@ const getMentions = (
         .filter(({ user: { name } }) => mentionsNames.indexOf(`@${name}`) !== -1)
         .map(({ user }) => user);
 };
-
-function useKeydownHandler({
-    forwardMessagesId,
-    setEditMessage,
-    inputValue,
-    quoteMessagesId,
-    hasFocus,
-    conversation,
-    user,
-}: {
-    forwardMessagesId: Set<string>;
-    setEditMessage: (id: string | null, message: string | null) => void;
-    inputValue: string;
-    quoteMessagesId: string[];
-    hasFocus: () => boolean;
-    conversation?: ConversationEngine;
-    user: UserShort | null;
-}) {
-    const keydownHandler = (e: any) => {
-        if (forwardMessagesId && forwardMessagesId.size > 0) {
-            return;
-        }
-
-        if (
-            inputValue.length === 0 &&
-            conversation &&
-            ((e.code === 'ArrowUp' && !e.altKey && hasFocus()) ||
-                (e.code === 'KeyE' && e.ctrlKey)) &&
-            !quoteMessagesId
-        ) {
-            let messages = conversation
-                .getState()
-                .messages.filter(
-                    (m: any) => isServerMessage(m) && m.message && user && m.sender.id === user.id,
-                );
-            let messageData = messages[messages.length - 1];
-            if (messageData && isServerMessage(messageData)) {
-                e.preventDefault();
-                setEditMessage(messageData.id, messageData.message);
-            }
-        }
-    };
-
-    React.useEffect(() => {
-        window.addEventListener('keydown', keydownHandler);
-
-        return function cleanup() {
-            window.removeEventListener('keydown', keydownHandler);
-        };
-    });
-}
 
 const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) => {
     const {
@@ -197,21 +146,44 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         onChange,
         handleDrop,
         handleHideChat,
+        draft,
     } = props;
 
     let wasFocused = false;
     let listOfMembersNames: string[] = [];
     const inputRef = React.useRef<XRichTextInput>(null);
+
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
-    const [inputValue, setInputValue] = React.useState(DraftStore.getDraftMessage(conversationId));
+    const {
+        getDefaultValue,
+        cleanDraft,
+        changeDraft,
+        getNextDraft,
+        beDrafted,
+        setBeDrafted,
+    } = useDraft({
+        conversationId,
+        saveDraft,
+        draft,
+    });
+
+    const [inputValue, setInputValue] = React.useState(getDefaultValue());
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
+    const { replyMessagesProc } = useReply({
+        conversationId,
+        quoteMessagesId,
+        replyMessage,
+        getMessages,
+        listOfMembersNames,
+        members,
+        inputValue,
+    });
     const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
     const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
         undefined,
     );
     const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
-    const [beDrafted, setBeDrafted] = React.useState(false);
 
     const hasFocus = () => {
         return !!(
@@ -242,57 +214,11 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         }
     };
 
-    const replyMessagesProc = () => {
-        if (quoteMessagesId.length > 0) {
-            let mentions = getMentions(inputValue, listOfMembersNames, members);
-            const currentMessages = getMessages ? getMessages() : [];
-
-            const messagesToReply = currentMessages.filter(
-                (item: MessageFull) => quoteMessagesId.indexOf(item.id) !== -1,
-            );
-
-            const replyMentions = messagesToReply.reduce(
-                (accumulator: string[], currentValue: ModelMessage) => {
-                    if (!currentValue.mentions) {
-                        return accumulator;
-                    }
-
-                    currentValue.mentions.forEach(mention => {
-                        if (accumulator.indexOf(mention.id) === -1) {
-                            accumulator.push(mention.id);
-                        }
-                    });
-
-                    return accumulator;
-                },
-                mentions ? mentions.map(({ id }) => id) : [],
-            );
-
-            replyMessage({
-                variables: {
-                    roomId: conversationId,
-                    message: inputValue,
-                    mentions: replyMentions,
-                    replyMessages: quoteMessagesId,
-                },
-            });
-        }
-    };
-
     const onUploadCareSendFile = (fileForUc: UploadCare.File) => {
         const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
             onSendFile(ucFile);
         }
-    };
-
-    const changeDraft = (message: string) => {
-        saveDraft({
-            variables: {
-                conversationId,
-                message,
-            },
-        });
     };
 
     const focus = () => {
@@ -346,20 +272,18 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
             onUploadCareSendFile(file);
         }
         closeEditor();
-        changeDraft('');
-        DraftStore.cleanDraftMessage(conversationId);
+        cleanDraft();
     };
 
     const handleChange = (value: string) => {
         setInputValue(value);
 
         if (value.length > 0) {
-            setBeDrafted(true);
-            DraftStore.setDraftMessage(conversationId, value);
+            changeDraft(value);
         }
 
         if (value.length === 0) {
-            DraftStore.cleanDraftMessage(conversationId);
+            cleanDraft();
         }
 
         if (onChange) {
@@ -377,15 +301,6 @@ const MessageComposeComponentInner = (props: MessageComposeComponentInnerProps) 
         const { replyMessages, replyMessagesId, replyMessagesSender } = messagesContext;
 
         return !(replyMessages.size && replyMessagesId.size && replyMessagesSender.size);
-    };
-
-    const getNextDraft = () => {
-        let draft = DraftStore.getDraftMessage(conversationId);
-
-        if (draft === '' && props.draft && props.draft !== '') {
-            draft = props.draft;
-        }
-        return draft;
     };
 
     const shouldHaveQuote = () => {
@@ -503,7 +418,7 @@ type MessageComposeComponentDraftProps = MessageComposeComponentProps & {
         conversationId?: string;
         organizationId: string | null;
     };
-    getMessages?: Function;
+    getMessages?: () => ModelMessage[];
 };
 
 export const MessageComposeComponentDraft = withGetDraftMessage(props => {

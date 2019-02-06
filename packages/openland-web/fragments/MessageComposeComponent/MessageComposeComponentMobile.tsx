@@ -69,7 +69,7 @@ export const MobileMessageCompose = ({
     const [message, setMessage] = React.useState('');
     const { file, fileRemover } = React.useContext(UploadContext);
     const { handleDrop } = React.useContext(UploadContext);
-    const inputRef = React.createRef<HTMLDivElement>();
+    const inputRef = React.useRef<HTMLDivElement>(null);
 
     const closeEditor = () => {
         setMessage('');
