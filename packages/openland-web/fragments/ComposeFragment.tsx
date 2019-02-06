@@ -314,12 +314,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                             />
                         </div>
                     </XView>
-                    <XView
-                        flexDirection="column"
-                        width="100%"
-                        maxHeight="calc(100% - 50px)"
-                        flexGrow={1}
-                    >
+                    <XView flexDirection="column" flexGrow={1} flexShrink={1}>
                         <XView
                             maxWidth={832}
                             marginTop={10}
@@ -340,39 +335,39 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                                 }}
                             />
                         </XView>
-                        <MessagesContainer>
-                            {!this.state.conversationId && (
+
+                        {!this.state.conversationId && (
+                            <XView
+                                alignItems="center"
+                                justifyContent="center"
+                                flexDirection="column"
+                                flexGrow={1}
+                                zIndex={1}
+                                paddingTop={30}
+                                paddingBottom={30}
+                                marginLeft={-16}
+                                marginRight={-16}
+                            >
                                 <XView
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    flexDirection="column"
-                                    flexGrow={1}
-                                    zIndex={1}
-                                    paddingTop={30}
-                                    paddingBottom={30}
-                                    marginLeft={-16}
-                                    marginRight={-16}
-                                >
-                                    <XView
-                                        as="img"
-                                        width={358}
-                                        src="/static/X/messenger/compose-empty.png"
-                                        srcSet="/static/X/messenger/compose-empty@2x.png"
-                                    />
-                                </XView>
-                            )}
-                            {this.state.conversationId && (
-                                <ConversationMessagesComponent
-                                    messages={this.state.messages}
-                                    loading={this.state.loading}
-                                    me={this.props.me}
-                                    conversation={this.props.messenger.getConversation(
-                                        this.state.conversationId!!,
-                                    )}
-                                    conversationId={this.state.conversationId}
+                                    as="img"
+                                    width={358}
+                                    src="/static/X/messenger/compose-empty.png"
+                                    srcSet="/static/X/messenger/compose-empty@2x.png"
                                 />
-                            )}
-                        </MessagesContainer>
+                            </XView>
+                        )}
+                        {this.state.conversationId && (
+                            <ConversationMessagesComponent
+                                messages={this.state.messages}
+                                loading={this.state.loading}
+                                me={this.props.me}
+                                conversation={this.props.messenger.getConversation(
+                                    this.state.conversationId!!,
+                                )}
+                                conversationId={this.state.conversationId}
+                            />
+                        )}
+
                         <MessageComposeComponent
                             onSend={this.handleSend}
                             enabled={this.state.values.length > 0}
