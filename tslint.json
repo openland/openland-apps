@@ -1,5 +1,5 @@
 {
-    "extends": ["tslint-react", "tslint-config-prettier"],
+    "extends": ["tslint-react", "tslint-config-prettier", "tslint-react-hooks"],
     "rules": {
         "ban": false,
         "class-name": true,
@@ -14,11 +14,7 @@
         "jsx-no-multiline-js": false,
         "jsx-alignment": true,
         "label-position": true,
-        "member-ordering": [
-            true,
-            "private-before-public",
-            "static-before-instance"
-        ],
+        "member-ordering": [true, "private-before-public", "static-before-instance"],
         "no-any": false,
         "no-arg": true,
         "no-bitwise": false,
@@ -34,13 +30,7 @@
         "no-trailing-whitespace": false,
         "no-unused-expression": true,
         "no-use-before-declare": true,
-        "one-line": [
-            true,
-            "check-catch",
-            "check-else",
-            "check-open-brace",
-            "check-whitespace"
-        ],
+        "one-line": [true, "check-catch", "check-else", "check-open-brace", "check-whitespace"],
         "radix": true,
         "switch-default": true,
         "triple-equals": [true, "allow-null-check"],
