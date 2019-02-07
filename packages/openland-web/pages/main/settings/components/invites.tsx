@@ -261,7 +261,7 @@ const RenewButton = Glamorous(XButton)({
 
 const RenewInviteLinkButton = withPublicInvite(props => (
     <XMutation mutation={props.createPublicInvite}>
-        <RenewButton text="Renew link" style="link" />
+        <RenewButton text="Revoke link" style="link" />
     </XMutation>
 ));
 

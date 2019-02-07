@@ -260,7 +260,7 @@ const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
 
 const RenewInviteLinkButton = withChannelnviteLink(props => (
     <XMutation mutation={props.renew}>
-        <RenewButton text="Renew link" style="link" />
+        <RenewButton text="Revoke link" style="link" />
     </XMutation>
 )) as React.ComponentType<{
     variables: { roomId: string };
