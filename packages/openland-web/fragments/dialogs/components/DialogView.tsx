@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
+import { DialogDataSourceItem, emojifyMessage } from 'openland-engines/messenger/DialogListEngine';
 import { XDate } from 'openland-x/XDate';
 import PhotoIcon from 'openland-icons/ic-photo.svg';
 import FileIcon from 'openland-icons/ic-file-2.svg';
@@ -54,12 +54,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : isPrivate ? (
         ''
     ) : dialog.sender ? (
-        <>
-            {emoji(dialog.sender, 14, {
-                marginTop: -4,
-            })}
-            :{' '}
-        </>
+        <>{emojifyMessage(dialog.sender)}: </>
     ) : (
         ''
     );

@@ -11,7 +11,7 @@ import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 
-const emojifyMessage = (msg: string) => {
+export const emojifyMessage = (msg: string) => {
     return emoji(msg, 14, {
         marginTop: -4,
     })
