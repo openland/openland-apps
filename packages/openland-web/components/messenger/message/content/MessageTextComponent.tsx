@@ -126,6 +126,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
         } else {
             let mentions = preprocessMentions(v.text!, null, props.mentions);
             let smileSize = isBig ? 44 : 18;
+            let smileStyle = isBig ? { marginBottom: 8 } : { marginTop: -3, marginBottom: 4 };
             let res: any[] = [];
             let i2 = 0;
             for (let m of mentions) {
@@ -135,7 +136,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                             className={isInsane ? styleInsane : undefined}
                             key={'text-' + i + '-' + i2}
                         >
-                            {emoji(m.text, smileSize)}
+                            {emoji(m.text, smileSize, smileStyle)}
                         </span>,
                     );
                 } else {
@@ -146,7 +147,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                             user={m.user}
                             hasPopper={true}
                         >
-                            {emoji(m.text, smileSize)}
+                            {emoji(m.text, smileSize, smileStyle)}
                         </MentionComponentInner>,
                     );
                 }

@@ -54,7 +54,12 @@ export const DialogView = React.memo<DialogViewProps>(props => {
     ) : isPrivate ? (
         ''
     ) : dialog.sender ? (
-        <>{emoji(dialog.sender, 13)}: </>
+        <>
+            {emoji(dialog.sender, 14, {
+                marginTop: -4,
+            })}
+            :{' '}
+        </>
     ) : (
         ''
     );
@@ -172,7 +177,11 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {emoji(dialog.title, 14)}
+                        <span>
+                            {emoji(dialog.title, 14, {
+                                marginTop: -2,
+                            })}
+                        </span>
                     </XView>
                     {dialog.date && (
                         <XView

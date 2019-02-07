@@ -11,6 +11,11 @@ import { DialogsQuery, RoomQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 
+const emojifyMessage = (msg: string) => {
+    return emoji(msg, 14, {
+        marginTop: -4,
+    })
+}
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
@@ -108,7 +113,7 @@ export const extractDialog = (
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
         messageEmojified: msg
-            ? emoji(msg, 13)
+            ? emojifyMessage(msg)
             : undefined,
         isService: isService,
         showSenderName: !!(msg && ((isOut || kind !== 'PRIVATE')) && sender) && !isService
@@ -322,7 +327,7 @@ export class DialogListEngine {
                 messageId: event.message.id,
                 message: msg,
                 messageEmojified: msg
-                    ? emoji(msg, 13)
+                    ? emojifyMessage(msg)
                     : undefined,
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
@@ -379,7 +384,7 @@ export class DialogListEngine {
                     messageId: event.message.id,
                     message: msg,
                     messageEmojified: msg
-                        ? emoji(msg, 13)
+                        ? emojifyMessage(msg)
                         : undefined,
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,
