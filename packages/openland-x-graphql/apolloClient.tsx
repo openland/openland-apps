@@ -1,4 +1,4 @@
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import { OpenApolloClient, buildClient } from 'openland-y-graphql/apolloClient';
 import { Track } from 'openland-engines/Tracking';

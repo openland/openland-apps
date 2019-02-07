@@ -18,7 +18,7 @@ import {
 } from './components/SignComponents';
 import { AuthRouter } from '../root/AuthRouter';
 import { InitTexts } from './_text';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XLoader } from 'openland-x/XLoader';
 import { createAuth0Client } from 'openland-x-graphql/Auth0Client';
 import { withAppInviteInfo } from '../../api/withAppInvite';

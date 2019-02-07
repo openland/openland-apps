@@ -11,7 +11,7 @@ import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const LoadingWrapper = Glamorous.div({
     height: 60,

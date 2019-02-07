@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 const emojione = require('emojione');
 
 // let shortnames = emojione.shortnames as string; // add |:some_custom_emoji: for custom emoji

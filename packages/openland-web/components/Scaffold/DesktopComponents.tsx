@@ -12,7 +12,7 @@ import { TextGlobal } from 'openland-text/TextGlobal';
 import { XPopper } from 'openland-x/XPopper';
 import { XScrollView } from 'openland-x/XScrollView';
 import { XMenuItem, XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XModalContext } from 'openland-x-modal/XModalContext';
 import { MyOrganizationsQuery } from 'openland-api';
 import AddIcon from 'openland-icons/add-3.svg';

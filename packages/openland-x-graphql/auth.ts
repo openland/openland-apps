@@ -1,5 +1,5 @@
 import * as Cookie from 'js-cookie';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 //
 // Token Loading

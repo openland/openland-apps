@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import PopperJS from 'popper.js';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XPopperRender, PopperRendererProps } from './popper/XPopperRender';
 import { XPopperArrow } from './popper/XPopperArrow';
 import { XPopperContent } from './popper/XPopperContent';

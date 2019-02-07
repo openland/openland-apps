@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Editor, EditorState, Modifier, SelectionState, ContentState, CompositeDecorator, ContentBlock } from 'draft-js';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();

@@ -11,7 +11,7 @@ import { withChannelJoin } from '../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
 import { TextRoom } from 'openland-text/TextRoom';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';
 import { isMobileUserAgent } from 'openland-web/utils/isMobileUserAgent';
@@ -298,8 +298,8 @@ export class RoomsInviteComponent extends React.Component<RoomsInviteComponentPr
                             <Text>{this.props.invite.invitedByUser.name} invites you to join</Text>
                         </UserInfoWrapper>
                     ) : (
-                        <div style={{ height: 50 }} />
-                    )}
+                            <div style={{ height: 50 }} />
+                        )}
                     <InfoCardWrapper>
                         <InfoCardHeader separator={8} haveDescription={!!room.description}>
                             <RoomAvatar

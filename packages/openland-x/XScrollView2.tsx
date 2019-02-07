@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import Scrollbars from 'react-custom-scrollbars';
 

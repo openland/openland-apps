@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';

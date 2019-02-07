@@ -1,5 +1,5 @@
 import { Config } from 'openland-x-config/Config';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 
 let cachedConfig: Config | undefined;

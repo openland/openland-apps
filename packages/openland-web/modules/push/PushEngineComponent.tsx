@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { initPushEngine } from './PushEngine';
 
 class PushEngineComponentMounted extends React.PureComponent<{

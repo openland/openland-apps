@@ -21,7 +21,7 @@ import { withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;

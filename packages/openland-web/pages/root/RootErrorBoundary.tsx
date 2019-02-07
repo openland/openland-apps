@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { trackError } from 'openland-x-analytics';
 import { ErrorPage } from './ErrorPage';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import { buildConfig } from 'openland-web/config';
 import * as Sentry from '@sentry/browser';

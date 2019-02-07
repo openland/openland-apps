@@ -4,7 +4,7 @@ import { css, cx } from 'linaria';
 import Editor from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { XInput } from 'openland-x/XInput';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';

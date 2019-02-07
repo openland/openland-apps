@@ -4,7 +4,7 @@ import Glamorous from 'glamorous';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, getDefaultKeyBinding, ContentState, DraftHandleValue } from 'draft-js';
 import { MessageFull_mentions } from 'openland-api/Types';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles, applyFlex, extractFlexProps } from './basics/Flex';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
@@ -178,12 +178,12 @@ export const MentionComponentInnerText = Glamorous.span(
     ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
         const paddings = inCompose
             ? {
-                  paddingTop: 1,
-                  paddingBottom: 1,
-                  paddingLeft: 4,
-                  paddingRight: 4,
-                  borderRadius: 5,
-              }
+                paddingTop: 1,
+                paddingBottom: 1,
+                paddingLeft: 4,
+                paddingRight: 4,
+                borderRadius: 5,
+            }
             : {};
 
         if (isYou) {

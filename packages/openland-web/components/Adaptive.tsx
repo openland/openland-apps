@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { css, cx } from 'linaria';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const noFlexShrinkClassName = css`
     flex-shrink: 0;

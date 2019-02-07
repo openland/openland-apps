@@ -1,4 +1,4 @@
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { AppNotifications } from 'openland-y-runtime-web/AppNotifications';
 import { Router } from './routes';
 import { Howler } from 'howler';
