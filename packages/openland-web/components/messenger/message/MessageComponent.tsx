@@ -688,8 +688,10 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         }
         if (message.urlAugmentation && !isPost) {
             if (
-                message.urlAugmentation.url.startsWith('https://app.openland.com/o') &&
-                message.urlAugmentation.url.includes('listings#')
+                (
+                    message.urlAugmentation.url.startsWith('https://app.openland.com/o') || 
+                    message.urlAugmentation.url.startsWith('https://openland.com/o')
+                ) && message.urlAugmentation.url.includes('listings#')
             ) {
                 content = [];
             }

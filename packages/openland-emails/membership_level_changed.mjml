@@ -16,7 +16,7 @@
                     Your role&nbsp;at <strong>{{organizationName}}</strong> was updated&nbsp;to <strong>{{levelName}}</strong>
                 </mj-text>
 
-                <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
+                <mj-button mj-class="button" href="https://openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/footer-registered.mjml" />

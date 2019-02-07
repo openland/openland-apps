@@ -15,7 +15,7 @@
                 <mj-text mj-class="text">
                     We&nbsp;are excited to&nbsp;have you on&nbsp;board! Now you can use Openland to&nbsp;seek and share advice, discover new opportunities, and collaborate with other organizations.
                 </mj-text>
-                <mj-button mj-class="button" href="http://app.openland.com/directory">Start exploring</mj-button>
+                <mj-button mj-class="button" href="http://openland.com/directory">Start exploring</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/footer-registered.mjml" />

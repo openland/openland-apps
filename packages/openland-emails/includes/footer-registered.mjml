@@ -9,7 +9,7 @@
         <mj-table>
             <tr style="font-size: 0; line-height: 0;">
                 <td valign="top">
-                    <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
+                    <a href="https://openland.com/settings/notifications" style="display: inline-block; vertical-align: top; text-decoration: none; font-size: 13px; line-height: 20px; color: #1790ff;">
                         Email settings
                     </a>
                     <span style="display: inline-block; vertical-align: top; font-size: 10px; line-height: 20px; color: rgba(23, 144, 255, 0.5); padding-left: 4px; padding-right: 4px;">•</span>
