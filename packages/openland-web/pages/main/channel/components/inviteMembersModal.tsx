@@ -92,7 +92,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                             ref={this.handleRef}
                             value={'https://openland.com' + '/joinChannel/' + this.props.invite}
                         />
-                        <InviteText>Anyone with the link will be able to join</InviteText>
+                        <InviteText>Anyone with link can join Openland</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
