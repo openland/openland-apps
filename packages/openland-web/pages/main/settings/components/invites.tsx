@@ -263,29 +263,30 @@ const RenewInviteLinkButton = withPublicInvite(props => (
     <XMutation mutation={props.createPublicInvite}>
         <RenewButton text="Revoke link" style="link" />
     </XMutation>
-));
+)) as React.ComponentType<{
+    variables: { organizationId: string };
+    refetchVars: { organizationId: string };
+}>;
 
 const OwnerLink = withPublicInvite(
     withRouter(props => (
         <OwnerLinkComponent
             ref={(props as any).innerRef}
-            router={props.router}
             invite={props.data ? props.data.publicInvite : null}
             organization={false}
+            router={props.router}
         />
     )),
 ) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
-const OwnerLinkOrganization = withAppInvite(
-    withRouter(props => (
-        <OwnerLinkComponent
-            ref={(props as any).innerRef}
-            router={props.router}
-            appInvite={props.data ? props.data.invite : null}
-            organization={true}
-        />
-    )),
-) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
+const OwnerLinkOrganization = withAppInvite(props => (
+    <OwnerLinkComponent
+        ref={(props as any).innerRef}
+        appInvite={props.data ? props.data.invite : null}
+        organization={true}
+        router={props.router}
+    />
+)) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
 interface InvitesModalRawProps {
     organizationId: string;
@@ -367,7 +368,13 @@ class InvitesModalRaw extends React.Component<
                         )}
                 </XHorizontal>
 
-                {this.state.showLink && !this.props.global && <RenewInviteLinkButton />}
+                {this.state.showLink &&
+                    !this.props.global && (
+                        <RenewInviteLinkButton
+                            variables={{ organizationId: this.props.organizationId }}
+                            refetchVars={{ organizationId: this.props.organizationId }}
+                        />
+                    )}
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
