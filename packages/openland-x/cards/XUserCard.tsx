@@ -199,7 +199,10 @@ export const XUserCard = ({
                             {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
                             <XView minWidth={0} flexShrink={1}>
                                 <div className={userNameClassname}>
-                                    {emoji(user.name || '', 14)}
+                                    {emoji({
+                                        src: user.name || '',
+                                        size: 14,
+                                    })}
                                 </div>
                             </XView>
                             {!isMobile && organizationElem}

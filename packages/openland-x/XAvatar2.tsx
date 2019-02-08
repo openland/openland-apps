@@ -50,7 +50,10 @@ const AvatarPlaceholder = (props: XAvatar2Props) => {
             overflow="hidden"
             hoverTextDecoration="none"
         >
-            {emoji(ph, 20)}
+            {emoji({
+                src: ph,
+                size: 20,
+            })}
         </XView>
     );
 };
