@@ -12,9 +12,24 @@ export default withApp('UI Framework - Files', 'viewer', props => {
             <XContent>
                 <XVertical>
                     <XTitle>Simple</XTitle>
-                    <span>{emoji(':unicorn:🦄🌈👷🏽‍♂️')}</span>
-                    <span>{emoji('🦄🌈👷🏽‍♂️', 18)}</span>
-                    <span>{emoji('🦄🌈👷🏽‍♂️', 44)}</span>
+                    <span>
+                        {emoji({
+                            src: ':unicorn:🦄🌈👷🏽‍♂️',
+                            size: 14,
+                        })}
+                    </span>
+                    <span>
+                        {emoji({
+                            src: '🦄🌈👷🏽‍♂️',
+                            size: 18,
+                        })}
+                    </span>
+                    <span>
+                        {emoji({
+                            src: '🦄🌈👷🏽‍♂️',
+                            size: 44,
+                        })}
+                    </span>
                 </XVertical>
             </XContent>
         </DevDocsScaffold>

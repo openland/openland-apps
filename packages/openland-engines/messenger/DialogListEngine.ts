@@ -12,10 +12,11 @@ import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 
 export const emojifyMessage = (msg: string) => {
-    return emoji(msg, 14, {
-        marginTop: -4,
-    })
-}
+    return emoji({
+        src: msg,
+        size: 14,
+    });
+};
 export interface DialogDataSourceItem {
     key: string;
     flexibleId: string;
@@ -41,9 +42,7 @@ export interface DialogDataSourceItem {
     showSenderName?: boolean;
 }
 
-export function formatMessage(
-    message: Dialogs_dialogs_items_topMessage | any,
-): string {
+export function formatMessage(message: Dialogs_dialogs_items_topMessage | any): string {
     if (!message) {
         return '';
     }
@@ -93,7 +92,7 @@ export const extractDialog = (
             ? 'You'
             : topMessage!!.sender.name
         : undefined;
-    let isService = betaTopMessage && betaTopMessage.isService || undefined;
+    let isService = (betaTopMessage && betaTopMessage.isService) || undefined;
     return {
         online: undefined,
         haveMention,
@@ -105,18 +104,14 @@ export const extractDialog = (
         flexibleId: fid,
         unread: unreadCount,
         message: msg,
-        fileMeta: betaTopMessage
-            ? betaTopMessage.fileMetadata || undefined
-            : undefined,
+        fileMeta: betaTopMessage ? betaTopMessage.fileMetadata || undefined : undefined,
         isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
         sender: sender,
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
-        messageEmojified: msg
-            ? emojifyMessage(msg)
-            : undefined,
+        messageEmojified: msg ? emojifyMessage(msg) : undefined,
         isService: isService,
-        showSenderName: !!(msg && ((isOut || kind !== 'PRIVATE')) && sender) && !isService
+        showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
     };
 };
 
@@ -163,9 +158,7 @@ export class DialogListEngine {
             if (res && res.typing !== typing) {
                 this.dataSource.updateItem({
                     ...res,
-                    typing:
-                        typing &&
-                        (res.kind === 'PRIVATE' ? 'typing...' : typing),
+                    typing: typing && (res.kind === 'PRIVATE' ? 'typing...' : typing),
                 });
             }
         });
@@ -209,11 +202,7 @@ export class DialogListEngine {
         this.next = next;
     };
 
-    handleUserRead = (
-        conversationId: string,
-        unread: number,
-        visible: boolean,
-    ) => {
+    handleUserRead = (conversationId: string, unread: number, visible: boolean) => {
         // Write counter to datasource
         let res = this.dataSource.getItem(conversationId);
         if (res) {
@@ -263,47 +252,47 @@ export class DialogListEngine {
                 date: undefined,
             });
         }
-    }
+    };
 
     handleTitleUpdated = (cid: string, title: string) => {
         let existing = this.dataSource.getItem(cid);
         if (existing) {
             this.dataSource.updateItem({
                 ...existing,
-                title: title
+                title: title,
             });
         }
-    }
+    };
 
     handleMuteUpdated = (cid: string, mute: boolean) => {
         let existing = this.dataSource.getItem(cid);
         if (existing) {
             this.dataSource.updateItem({
                 ...existing,
-                isMuted: mute
+                isMuted: mute,
             });
         }
-    }
+    };
 
     handleHaveMentionUpdated = (cid: string, haveMention: boolean) => {
         let existing = this.dataSource.getItem(cid);
         if (existing) {
             this.dataSource.updateItem({
                 ...existing,
-                haveMention: haveMention
+                haveMention: haveMention,
             });
         }
-    }
+    };
 
     handlePhotoUpdated = (cid: string, photo: string) => {
         let existing = this.dataSource.getItem(cid);
         if (existing) {
             this.dataSource.updateItem({
                 ...existing,
-                photo: photo
+                photo: photo,
             });
         }
-    }
+    };
 
     handleNewMessage = async (event: any, visible: boolean) => {
         const conversationId = event.cid as string;
@@ -318,27 +307,23 @@ export class DialogListEngine {
             this.dataSource.updateItem({
                 ...res,
                 isService: event.message.isService,
-                unread:
-                    !visible || res.unread > unreadCount
-                        ? unreadCount
-                        : res.unread,
+                unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
                 isOut: isOut,
                 sender: sender,
                 messageId: event.message.id,
                 message: msg,
-                messageEmojified: msg
-                    ? emojifyMessage(msg)
-                    : undefined,
+                messageEmojified: msg ? emojifyMessage(msg) : undefined,
                 date: parseInt(event.message.date, 10),
                 fileMeta: event.message.fileMetadata,
-                showSenderName: !!(msg && ((isOut || res.kind !== 'PRIVATE')) && sender) && !event.message.isService
+                showSenderName:
+                    !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
+                    !event.message.isService,
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
             if (
                 event.message.serviceMetadata &&
-                event.message.serviceMetadata.__typename ===
-                'KickServiceMetadata'
+                event.message.serviceMetadata.__typename === 'KickServiceMetadata'
             ) {
                 return;
             }
@@ -348,9 +333,7 @@ export class DialogListEngine {
             });
 
             let sharedRoom =
-                info.room!.__typename === 'SharedRoom'
-                    ? (info.room as Room_room_SharedRoom)
-                    : null;
+                info.room!.__typename === 'SharedRoom' ? (info.room as Room_room_SharedRoom) : null;
             let privateRoom =
                 info.room!.__typename === 'PrivateRoom'
                     ? (info.room as Room_room_PrivateRoom)
@@ -367,29 +350,28 @@ export class DialogListEngine {
                     haveMention: event.message.haveMention,
                     flexibleId: room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
-                    title: sharedRoom
-                        ? sharedRoom.title
-                        : privateRoom
-                            ? privateRoom.user.name
-                            : '',
+                    title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom
                             ? sharedRoom.photo
                             : privateRoom
-                                ? privateRoom.user.photo
-                                : undefined) || undefined,
+                            ? privateRoom.user.photo
+                            : undefined) || undefined,
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,
                     messageId: event.message.id,
                     message: msg,
-                    messageEmojified: msg
-                        ? emojifyMessage(msg)
-                        : undefined,
+                    messageEmojified: msg ? emojifyMessage(msg) : undefined,
                     date: parseInt(event.message.date, 10),
                     fileMeta: event.message.fileMetadata,
                     online: privateRoom ? privateRoom.user.online : false,
-                    showSenderName: !!(msg && ((isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE')) && sender) && !event.message.isService
+                    showSenderName:
+                        !!(
+                            msg &&
+                            (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
+                            sender
+                        ) && !event.message.isService,
                 },
                 0,
             );
@@ -404,9 +386,7 @@ export class DialogListEngine {
                 try {
                     return await backoff(async () => {
                         return await this.engine.client.client.query(DialogsQuery, {
-                            ...(this.next !== undefined
-                                ? { after: this.next }
-                                : {}),
+                            ...(this.next !== undefined ? { after: this.next } : {}),
                         });
                     });
                 } catch (e) {

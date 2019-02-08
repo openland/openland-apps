@@ -4,13 +4,6 @@ import { Room_room_PrivateRoom_user_primaryOrganization } from 'openland-api/Typ
 import { css } from 'linaria';
 import { emoji } from 'openland-y-utils/emoji';
 
-const titleInnerClass = css`
-    height: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-`;
-
 export const HeaderTitle = (props: {
     value: string;
     path?: string;
@@ -27,8 +20,17 @@ export const HeaderTitle = (props: {
             minWidth={0}
             flexShrink={1}
             hoverTextDecoration="none"
+            height={18}
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
         >
-            <div className={titleInnerClass}>{emoji(props.value, 14)}</div>
+            <span>
+                {emoji({
+                    src: props.value,
+                    size: 14,
+                })}
+            </span>
         </XView>
         {props.organization && (
             <XView
@@ -41,7 +43,10 @@ export const HeaderTitle = (props: {
                 path={'/mail/o/' + props.organization.id}
                 hoverTextDecoration="none"
             >
-                {emoji(props.organization.name, 14)}
+                {emoji({
+                    src: props.organization.name,
+                    size: 14,
+                })}
             </XView>
         )}
     </XView>

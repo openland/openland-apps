@@ -18,14 +18,6 @@ const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     lineHeight: '17px',
 }));
 
-const Name = Glamorous.div({
-    marginTop: 12,
-    fontSize: 16,
-    fontWeight: 600,
-    color: 'rgba(0, 0, 0, 0.9)',
-    lineHeight: '19px',
-});
-
 const OrgTitle = Glamorous.div({
     marginTop: 6,
     fontSize: 14,
@@ -38,24 +30,19 @@ const Buttons = Glamorous(XHorizontal)({
     width: 224,
 });
 
-const Status = withOnline(props => {
-    if (
-        props.data.user &&
-        (props.data.user.lastSeen &&
-            props.data.user.lastSeen !== 'online' &&
-            !props.data.user.online)
-    ) {
+const Status = withOnline(({ data: { user } }) => {
+    if (user && (user.lastSeen && user.lastSeen !== 'online' && !user.online)) {
         return (
             <StatusWrapper online={false}>
                 last seen{' '}
-                {props.data.user.lastSeen === 'never_online' ? (
+                {user.lastSeen === 'never_online' ? (
                     'moments ago'
                 ) : (
-                    <XDate value={props.data.user.lastSeen} format="humanize_cute" />
+                    <XDate value={user.lastSeen} format="humanize_cute" />
                 )}
             </StatusWrapper>
         );
-    } else if (props.data.user && props.data.user.online) {
+    } else if (user && user.online) {
         return <StatusWrapper online={true}>Online</StatusWrapper>;
     } else {
         return null;
@@ -71,7 +58,7 @@ const Wrapper = Glamorous.div({
     position: 'relative',
 });
 
-export default React.memo(
+const UserPopperContent = React.memo(
     ({
         noCardOnMe,
         isMe,
@@ -117,7 +104,17 @@ export default React.memo(
                         />
                         <Status variables={{ userId: user.id }} />
                     </XHorizontal>
-                    <Name>{emoji(user.name, 16)}</Name>
+                    <XView
+                        flexDirection="row"
+                        fontSize={14}
+                        fontWeight="600"
+                        color="rgba(0, 0, 0, 0.8)"
+                    >
+                        {emoji({
+                            src: user.name,
+                            size: 16,
+                        })}
+                    </XView>
                     <OrgTitle>{organizationName}</OrgTitle>
                     <Buttons separator={6}>
                         {!isMe && (
@@ -140,3 +137,5 @@ export default React.memo(
         }
     },
 );
+
+export default UserPopperContent;

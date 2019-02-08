@@ -8,7 +8,8 @@ import { XPopperContent } from './popper/XPopperContent';
 
 export type XPopperStyleType = 'default' | 'dark';
 
-export type Placement = 'auto-start'
+export type Placement =
+    | 'auto-start'
     | 'auto'
     | 'auto-end'
     | 'top-start'
@@ -72,7 +73,9 @@ const PlacementBottom = '&[x-placement^="bottom"]';
 const PlacementRight = '&[x-placement^="right"]';
 const PlacementLeft = '&[x-placement^="left"]';
 
-export const XPopperContext = React.createContext<{ invalidate: () => void } | undefined>(undefined);
+export const XPopperContext = React.createContext<{ invalidate: () => void } | undefined>(
+    undefined,
+);
 
 class XPopperInvalidatorRender extends React.Component<{ invalidate?: () => void }> {
     componentDidUpdate() {
@@ -88,12 +91,15 @@ class XPopperInvalidatorRender extends React.Component<{ invalidate?: () => void
 export const XPopperInvalidator = () => {
     return (
         <XPopperContext.Consumer>
-            {(context) => <XPopperInvalidatorRender invalidate={context && context.invalidate} />}
+            {context => <XPopperInvalidatorRender invalidate={context && context.invalidate} />}
         </XPopperContext.Consumer>
     );
 };
 
-export class XPopperGrouped extends React.Component<PopperRendererProps & { parent: XPopper }, { currentPopper: XPopper }> {
+export class XPopperGrouped extends React.Component<
+    PopperRendererProps & { parent: XPopper },
+    { currentPopper: XPopper }
+> {
     static activePoppers = new Map<string, Set<XPopperGrouped>>();
     static currnetPopper = new Map<string, XPopper>();
     static getGroup(groupId: string) {
@@ -111,7 +117,7 @@ export class XPopperGrouped extends React.Component<PopperRendererProps & { pare
         super(props);
         if (props.groupId) {
             this.state = {
-                currentPopper: XPopperGrouped.currnetPopper[props.groupId]
+                currentPopper: XPopperGrouped.currnetPopper[props.groupId],
             };
         }
     }
@@ -124,14 +130,12 @@ export class XPopperGrouped extends React.Component<PopperRendererProps & { pare
                 XPopperGrouped.activePoppers[this.props.groupId] = group;
             }
             group.delete(this.props.parent);
-
         }
-
     }
 
     render() {
-
-        let pendingAnimation: 'static' | 'hide' | 'show' = this.props.animation === null ? 'static' : this.props.willHide ? 'hide' : 'show';
+        let pendingAnimation: 'static' | 'hide' | 'show' =
+            this.props.animation === null ? 'static' : this.props.willHide ? 'hide' : 'show';
         let renderProps = { ...this.props };
 
         if (renderProps.groupId) {
@@ -147,7 +151,13 @@ export class XPopperGrouped extends React.Component<PopperRendererProps & { pare
                 renderProps.show = false;
             }
 
-            if (pendingAnimation === 'show' && (group.size > 1 || renderProps.willHide || renderProps.willHide || this.prevAnimation === 'static')) {
+            if (
+                pendingAnimation === 'show' &&
+                (group.size > 1 ||
+                    renderProps.willHide ||
+                    renderProps.willHide ||
+                    this.prevAnimation === 'static')
+            ) {
                 pendingAnimation = 'static';
             }
         }
@@ -156,15 +166,11 @@ export class XPopperGrouped extends React.Component<PopperRendererProps & { pare
 
         renderProps.animationClass = pendingAnimation;
 
-        return (
-            <XPopperRender {...renderProps} />
-        );
-
+        return <XPopperRender {...renderProps} />;
     }
 }
 
 export class XPopper extends React.Component<XPopperProps, XPopperState> {
-
     static PlacementTop = PlacementTop;
     static PlacementBottom = PlacementBottom;
     static PlacementRight = PlacementRight;
@@ -192,21 +198,25 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
 
         this.state = {
             showPopper: this.props.show === true,
-            willHide: false
+            willHide: false,
         };
-        this.arrow = props.arrow === undefined ? (
-            <XPopperArrow />
-        ) : props.arrow === null ? null : props.arrow;
+        this.arrow =
+            props.arrow === undefined ? (
+                <XPopperArrow />
+            ) : props.arrow === null ? null : (
+                props.arrow
+            );
 
-        this.contentContainer = props.contentContainer === undefined ? (
-            <XPopperContent />
-        ) : props.contentContainer;
+        this.contentContainer =
+            props.contentContainer === undefined ? <XPopperContent /> : props.contentContainer;
     }
 
     caputureTargetNode = (node: any | null) => {
         if (node) {
             let newTargetNode = ReactDOM.findDOMNode(node);
-            newTargetNode = this.props.nodeSelector ? this.props.nodeSelector(newTargetNode) : newTargetNode;
+            newTargetNode = this.props.nodeSelector
+                ? this.props.nodeSelector(newTargetNode)
+                : newTargetNode;
             if (newTargetNode !== this._targetNode) {
                 this._targetNode = newTargetNode as Element;
                 if (this._targetNode && this.props.showOnHover) {
@@ -217,7 +227,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 this.initPopperIfNeeded();
             }
         }
-    }
+    };
     caputurePopperNode = (node: any | null) => {
         if (node) {
             if (this._node) {
@@ -229,7 +239,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._node = node;
             this.initPopperIfNeeded();
         }
-    }
+    };
 
     caputurePopperArrowNode = (node: any | null) => {
         if (node) {
@@ -242,7 +252,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._arrowNode = node;
             this.initPopperIfNeeded();
         }
-    }
+    };
 
     caputurePopperContentNode = (node: any | null) => {
         if (node) {
@@ -255,12 +265,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._contentNode = node;
             this.initPopperIfNeeded();
         }
-    }
+    };
 
     captureMounted = () => {
         this.mounted = true;
         this.initPopperIfNeeded();
-    }
+    };
 
     captureUnmounted = () => {
         this.mounted = false;
@@ -268,10 +278,17 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._popper.destroy();
             this._popper = undefined;
         }
-    }
+    };
 
     initPopperIfNeeded = () => {
-        if (this._node && (this.arrow === null || this._arrowNode) && this._targetNode && this._contentNode && this.mounted && !this._popper) {
+        if (
+            this._node &&
+            (this.arrow === null || this._arrowNode) &&
+            this._targetNode &&
+            this._contentNode &&
+            this.mounted &&
+            !this._popper
+        ) {
             this._popper = new PopperJS(this._targetNode, this._node, {
                 modifiers: {
                     arrow: {
@@ -279,12 +296,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                         element: this._arrowNode,
                     },
                     computeStyle: {
-                        gpuAcceleration: false
+                        gpuAcceleration: false,
                     },
                     preventOverflow: {
                         order: 99,
                         boundariesElement: 'viewport',
-                        padding: 10
+                        padding: 10,
                     },
                 },
                 onCreate: (data: PopperJS.Data) => {
@@ -309,20 +326,24 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                         this._contentNode.setAttribute('x-placement', data.placement);
                     }
                 },
-                placement: this.props.placement !== undefined ? this.props.placement : 'auto'
+                placement: this.props.placement !== undefined ? this.props.placement : 'auto',
             });
         }
-    }
+    };
 
     onMouseOverContent = () => {
         if (this.props.showOnHoverContent !== false) {
             this.onMouseOverTarget();
         }
-    }
+    };
 
     onMouseOverTarget = () => {
-        if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
-        if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+        }
+        if (this.willHideTimeout) {
+            clearTimeout(this.willHideTimeout);
+        }
         this.setState({ showPopper: true, willHide: false }, () => {
             if (this._popper) {
                 this._popper.scheduleUpdate();
@@ -336,47 +357,60 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                 item.setState({ currentPopper: this });
             }
         }
-    }
+    };
 
     onMouseOutContent = () => {
         if (this.props.showOnHoverContent !== false) {
             this.onMouseOutTarget();
         }
-    }
+    };
 
     onMouseOutTarget = () => {
-        if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
-        if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
-        const animationDurationOut = this.props.animation === null ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
-
-        this.willHideTimeout = window.setTimeout(
-            () => {
-                this.setState({ willHide: true }, () => {
-                    if (this._popper) {
-                        this._popper.scheduleUpdate();
-                    }
-                });
-            },
-            50);
-        this.hideTimeout = window.setTimeout(
-            () => {
-                this.setState({ showPopper: false }, () => {
-                    if (this._popper) {
-                        this._popper.scheduleUpdate();
-                    }
-                });
-            },
-            (animationDurationOut));
-    }
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+        }
+        if (this.willHideTimeout) {
+            clearTimeout(this.willHideTimeout);
+        }
+        const animationDurationOut =
+            this.props.animation === null
+                ? 0
+                : this.props.animationDurationOut !== undefined
+                ? this.props.animationDurationOut
+                : 150;
+        this.willHideTimeout = window.setTimeout(() => {
+            this.setState({ willHide: true }, () => {
+                if (this._popper) {
+                    this._popper.scheduleUpdate();
+                }
+            });
+        }, 50);
+        this.hideTimeout = window.setTimeout(() => {
+            this.setState({ showPopper: false }, () => {
+                if (this._popper) {
+                    this._popper.scheduleUpdate();
+                }
+            });
+        }, animationDurationOut);
+    };
 
     onMouseDown = (e: any) => {
-        if (this.props.onClickOutside && this._contentNode && !this._contentNode.contains(e.target) && this._targetNode && !this._targetNode.contains(e.target) && (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))) {
+        if (
+            this.props.onClickOutside &&
+            this._contentNode &&
+            !this._contentNode.contains(e.target) &&
+            this._targetNode &&
+            !this._targetNode.contains(e.target) &&
+            (this.props.arrow === null || (this._arrowNode && !this._arrowNode.contains(e.target)))
+        ) {
             this.props.onClickOutside();
         }
-    }
+    };
 
     dispose = () => {
-        if (this.hideTimeout) { clearTimeout(this.hideTimeout!); }
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout!);
+        }
         if (this._targetNode) {
             this._targetNode.removeEventListener('mouseover', this.onMouseOverTarget);
             this._targetNode.removeEventListener('mouseout', this.onMouseOutTarget);
@@ -386,13 +420,13 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             this._popper.destroy();
             this._popper = undefined;
         }
-    }
+    };
 
     invalidate = () => {
         if (this._popper) {
             this._popper.scheduleUpdate();
         }
-    }
+    };
 
     componentDidMount() {
         if (this.props.onClickOutside) {
@@ -415,8 +449,12 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             target.push(React.cloneElement(c as any, { ref: this.caputureTargetNode }));
         }
 
-        let isVertical = (this.props.placement || '').includes('top') || (this.props.placement || '').includes('bottom');
-        let isHorizontal = (this.props.placement || '').includes('left') || (this.props.placement || '').includes('right');
+        let isVertical =
+            (this.props.placement || '').includes('top') ||
+            (this.props.placement || '').includes('bottom');
+        let isHorizontal =
+            (this.props.placement || '').includes('left') ||
+            (this.props.placement || '').includes('right');
 
         let renderProps = {
             content: this.props.content,
@@ -429,10 +467,26 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             maxHeight: this.props.maxHeight,
             minWidth: this.props.minWidth,
             minHeight: this.props.minHeight,
-            marginLeft: (this.props.marginLeft) ? this.props.marginLeft : (isHorizontal ? this.props.padding || 10 : undefined),
-            marginRight: (this.props.marginRight) ? this.props.marginRight : (isHorizontal ? this.props.padding || 10 : undefined),
-            marginTop: (this.props.marginTop) ? this.props.marginTop : (isVertical ? this.props.padding || 10 : undefined),
-            marginBottom: (this.props.marginBottom) ? this.props.marginBottom : (isVertical ? this.props.padding || 10 : undefined),
+            marginLeft: this.props.marginLeft
+                ? this.props.marginLeft
+                : isHorizontal
+                ? this.props.padding || 10
+                : undefined,
+            marginRight: this.props.marginRight
+                ? this.props.marginRight
+                : isHorizontal
+                ? this.props.padding || 10
+                : undefined,
+            marginTop: this.props.marginTop
+                ? this.props.marginTop
+                : isVertical
+                ? this.props.padding || 10
+                : undefined,
+            marginBottom: this.props.marginBottom
+                ? this.props.marginBottom
+                : isVertical
+                ? this.props.padding || 10
+                : undefined,
 
             groupId: this.props.groupId,
             animation: this.props.animation,
@@ -454,20 +508,21 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
             onMounted: this.captureMounted,
             onUnmounted: this.captureUnmounted,
 
-            orientation: (isVertical) ? 'vertical' : 'horizontal',
+            orientation: isVertical ? 'vertical' : 'horizontal',
 
-            zIndex: this.props.zIndex
+            zIndex: this.props.zIndex,
         };
 
         return (
             <XPopperContext.Provider value={{ invalidate: this.invalidate }}>
                 {target}
-                {((this.state.showPopper || this.props.show === true) && canUseDOM && ReactDOM.createPortal(
-                    <XPopperGrouped {...renderProps} parent={this} />,
-                    document.body
-                ))}
+                {(this.state.showPopper || this.props.show === true) &&
+                    canUseDOM &&
+                    ReactDOM.createPortal(
+                        <XPopperGrouped {...renderProps} parent={this} />,
+                        document.body,
+                    )}
             </XPopperContext.Provider>
         );
     }
-
 }

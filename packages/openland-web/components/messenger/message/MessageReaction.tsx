@@ -7,6 +7,7 @@ import { withSetReaction, withUnsetReaction } from '../../../api/withSetReaction
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emoji } from 'openland-y-utils/emoji';
+import { renderDevPortal } from 'openland-web/pages/dev/components/renderDevPortal';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 6px',
@@ -44,6 +45,32 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
     },
 }));
 
+const emojifyReactions = (r: string) => {
+    const reactionsSize = 24;
+    if (r === '👍') {
+        return emoji({
+            src: r,
+            size: reactionsSize,
+            crop: {
+                width: 18,
+                marginLeft: -3,
+            },
+        });
+    } else if (r === '😱') {
+        return emoji({
+            src: r,
+            size: reactionsSize,
+            crop: {
+                width: 22,
+                marginLeft: -1,
+            },
+        });
+    }
+    return emoji({
+        src: r,
+        size: reactionsSize,
+    });
+};
 class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
     defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
     state = {
@@ -80,7 +107,7 @@ class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
                             this.handleSetReaction(r);
                         }}
                     >
-                        {emoji(r, 24)}
+                        {emojifyReactions(r)}
                     </ReactionItem>
                 ))}
             </XHorizontal>
@@ -170,7 +197,7 @@ const ReactionsInner = Glamorous.div({
 const UsersLabel = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)',
     fontSize: 12,
-    paddingLeft: 5,
+    paddingLeft: 3,
 });
 
 class SingleReaction extends React.PureComponent<{
@@ -262,7 +289,12 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
         }
 
         return usersLabel.length > 0 ? (
-            <UsersLabel key={key}>{emoji(usersLabel, 12)}</UsersLabel>
+            <UsersLabel key={key}>
+                {emoji({
+                    src: usersLabel,
+                    size: 12,
+                })}
+            </UsersLabel>
         ) : null;
     };
 
@@ -298,7 +330,12 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
 
                             return (
                                 <div key={k + '-' + i.user.name}>
-                                    {i.user.id === meId ? 'You' : emoji(i.user.name, 12)}
+                                    {i.user.id === meId
+                                        ? 'You'
+                                        : emoji({
+                                              src: i.user.name,
+                                              size: 12,
+                                          })}
                                 </div>
                             );
                         })}
@@ -308,7 +345,10 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={true}
                         >
-                            {emoji(reactionsMap[k][0].reaction, 16)}
+                            {emoji({
+                                src: reactionsMap[k][0].reaction,
+                                size: 16,
+                            })}
                         </SingleReactionUnset>
                     </XPopper>,
                 );
@@ -326,7 +366,12 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
 
                             return (
                                 <div key={k + '-' + i.user.name}>
-                                    {i.user.id === meId ? 'You' : emoji(i.user.name, 12)}
+                                    {i.user.id === meId
+                                        ? 'You'
+                                        : emoji({
+                                              src: i.user.name,
+                                              size: 12,
+                                          })}
                                 </div>
                             );
                         })}
@@ -336,7 +381,10 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
                             reaction={reactionsMap[k][0].reaction}
                             isMy={false}
                         >
-                            {emoji(reactionsMap[k][0].reaction, 16)}
+                            {emoji({
+                                src: reactionsMap[k][0].reaction,
+                                size: 16,
+                            })}
                         </SingleReactionSet>
                     </XPopper>,
                 );

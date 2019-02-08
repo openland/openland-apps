@@ -173,8 +173,9 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         textOverflow="ellipsis"
                     >
                         <span>
-                            {emoji(dialog.title, 14, {
-                                marginTop: -2,
+                            {emoji({
+                                src: dialog.title,
+                                size: 14,
                             })}
                         </span>
                     </XView>
