@@ -261,7 +261,9 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
             }
         }
 
-        return usersLabel.length > 0 ? <UsersLabel key={key}>{usersLabel}</UsersLabel> : null;
+        return usersLabel.length > 0 ? (
+            <UsersLabel key={key}>{emoji(usersLabel, 12)}</UsersLabel>
+        ) : null;
     };
 
     reactionsRender = () => {
@@ -296,7 +298,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
 
                             return (
                                 <div key={k + '-' + i.user.name}>
-                                    {i.user.id === meId ? 'You' : i.user.name}
+                                    {i.user.id === meId ? 'You' : emoji(i.user.name, 12)}
                                 </div>
                             );
                         })}
@@ -324,7 +326,7 @@ export class Reactions extends React.PureComponent<ReactionsInnerProps> {
 
                             return (
                                 <div key={k + '-' + i.user.name}>
-                                    {i.user.id === meId ? 'You' : i.user.name}
+                                    {i.user.id === meId ? 'You' : emoji(i.user.name, 12)}
                                 </div>
                             );
                         })}
