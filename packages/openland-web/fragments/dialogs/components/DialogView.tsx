@@ -139,7 +139,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
         >
             <XAvatar2
                 title={dialog.title}
-                id={dialog.flexibleId}
+                id={dialog.key}
                 src={dialog.photo}
                 online={dialog.online}
             />

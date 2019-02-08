@@ -157,7 +157,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
         }
         modals = (
             <>
-                <RoomAddMemberModal roomId={room.id} />
+                <RoomAddMemberModal roomId={room.id} target={<div>asdasdasdasd</div>} />
                 <RoomEditModal
                     title={sharedRoom.title}
                     description={sharedRoom.description}
@@ -177,7 +177,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
 
     const photo = sharedRoom ? sharedRoom.photo : privateRoom!!.user.photo;
     const avatarTitle = sharedRoom ? sharedRoom.title : privateRoom!!.user.name;
-    const id = sharedRoom ? sharedRoom.id : privateRoom!!.user.id;
+    const id = sharedRoom ? sharedRoom.id : privateRoom ? privateRoom.user.id : '';
 
     const avatar = <XAvatar2 size={36} src={photo} title={avatarTitle} id={id} />;
     const title = sharedRoom ? (
@@ -209,9 +209,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
                     {!isMobile && threeDots}
                 </RowWithSeparators>
             }
-        >
-            {modals}
-        </ChatHeaderViewAbstract>
+        />
     );
 });
 
