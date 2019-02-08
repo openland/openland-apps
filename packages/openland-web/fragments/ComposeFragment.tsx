@@ -39,7 +39,6 @@ const HeadButton = css`
 
 const SearchPeopleModule = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
-        console.warn(props);
         return (
             <XSelect
                 creatable={true}
@@ -81,6 +80,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                 <XSelectCustomUsersRender
                     autoFocus
                     multi={true}
+                    popper={true}
                     placeholder={TextCompose.searchPlaceholder}
                     rounded={true}
                     onInputChange={data => (props as any).onChangeInput(data)}
