@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView, XImage } from 'react-mental';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { emoji } from 'openland-y-utils/emoji';
 
 type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 28 | 24;
 
@@ -30,7 +31,7 @@ const PlaceholderFontSize = {
     32: 15,
     28: 13,
     24: 12,
-}
+};
 
 const AvatarPlaceholder = (props: XAvatar2Props) => {
     let ph = extractPlaceholder(props.title);
@@ -49,7 +50,7 @@ const AvatarPlaceholder = (props: XAvatar2Props) => {
             overflow="hidden"
             hoverTextDecoration="none"
         >
-            {ph}
+            {emoji(ph, 20)}
         </XView>
     );
 };
@@ -59,18 +60,13 @@ const AvatarImage = (props: XAvatar2Props) => {
     let size = props.size || 40;
 
     let ops = '-/format/jpeg/-/scale_crop/' + (size + 'x' + size) + '/center/-/progressive/yes/';
-    let opsRetina = '-/format/jpeg/-/scale_crop/' + ((size * 2) + 'x' + (size * 2)) + '/center/-/quality/lighter/-/progressive/yes/ 2x';
+    let opsRetina =
+        '-/format/jpeg/-/scale_crop/' +
+        (size * 2 + 'x' + size * 2) +
+        '/center/-/quality/lighter/-/progressive/yes/ 2x';
 
-    return (
-        <XImage
-            width="100%"
-            height="100%"
-
-            src={baseUrl + ops}
-            srcSet={baseUrl + opsRetina}
-        />
-    );
-}
+    return <XImage width="100%" height="100%" src={baseUrl + ops} srcSet={baseUrl + opsRetina} />;
+};
 
 const OnlineDot74 = () => (
     <XView
