@@ -157,7 +157,7 @@ export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => 
         }
         modals = (
             <>
-                <RoomAddMemberModal roomId={room.id} target={<div>asdasdasdasd</div>} />
+                {/*<RoomAddMemberModal roomId={room.id} target={<div>asdasdasdasd</div>} />*/}
                 <RoomEditModal
                     title={sharedRoom.title}
                     description={sharedRoom.description}
