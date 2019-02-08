@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 enum RNLithoFlexDirection {
   case row
@@ -58,16 +59,16 @@ private func resolveViewSpec(_ spec: JSON) {
 }
 
 private func resolveLithoSpec(_ spec: JSON) {
-  if (src.array != nil) {
+  if (spec.array != nil) {
     fatalError("Spec can't be an array")
   }
-  if (src["type"].string == nil) {
+  if (spec["type"].string == nil) {
     fatalError("Type can't be empty")
   }
   
-  let type = src["type"].stringValue
+  let type = spec["type"].stringValue
   if type == "tview" {
-    resolveViewSpec(src)
+    resolveViewSpec(spec)
   } else if type == "ttext" {
     
   } else if type == "tif" {
