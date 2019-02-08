@@ -366,27 +366,32 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
     };
 
     onMouseOutTarget = () => {
-        // if (this.hideTimeout) { clearTimeout(this.hideTimeout); }
-        // if (this.willHideTimeout) { clearTimeout(this.willHideTimeout); }
-        // const animationDurationOut = this.props.animation === null ? 0 : this.props.animationDurationOut !== undefined ? this.props.animationDurationOut : 150;
-        // this.willHideTimeout = window.setTimeout(
-        //     () => {
-        //         this.setState({ willHide: true }, () => {
-        //             if (this._popper) {
-        //                 this._popper.scheduleUpdate();
-        //             }
-        //         });
-        //     },
-        //     50);
-        // this.hideTimeout = window.setTimeout(
-        //     () => {
-        //         this.setState({ showPopper: false }, () => {
-        //             if (this._popper) {
-        //                 this._popper.scheduleUpdate();
-        //             }
-        //         });
-        //     },
-        //     (animationDurationOut));
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+        }
+        if (this.willHideTimeout) {
+            clearTimeout(this.willHideTimeout);
+        }
+        const animationDurationOut =
+            this.props.animation === null
+                ? 0
+                : this.props.animationDurationOut !== undefined
+                ? this.props.animationDurationOut
+                : 150;
+        this.willHideTimeout = window.setTimeout(() => {
+            this.setState({ willHide: true }, () => {
+                if (this._popper) {
+                    this._popper.scheduleUpdate();
+                }
+            });
+        }, 50);
+        this.hideTimeout = window.setTimeout(() => {
+            this.setState({ showPopper: false }, () => {
+                if (this._popper) {
+                    this._popper.scheduleUpdate();
+                }
+            });
+        }, animationDurationOut);
     };
 
     onMouseDown = (e: any) => {
