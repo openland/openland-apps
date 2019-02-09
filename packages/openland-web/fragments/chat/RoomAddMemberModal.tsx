@@ -13,6 +13,7 @@ export const RoomAddMemberModal = withRoomAddMembers(props => {
             mutationDirect={true}
             actionName="Add"
             targetQuery="addMember"
+            target={(props as any).target}
             defaultValues={{ roomId: (props as any).roomId }}
         >
             <XFormField title="User">
@@ -20,4 +21,4 @@ export const RoomAddMemberModal = withRoomAddMembers(props => {
             </XFormField>
         </XModalFormOld>
     );
-}) as React.ComponentType<{ roomId: string }>;
+}) as React.ComponentType<{ roomId: string, target?: any }>;

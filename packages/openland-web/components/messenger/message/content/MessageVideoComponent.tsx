@@ -13,7 +13,14 @@ export const MessageVideoComponent = (props: MessageVideoComponentProps) => {
         href = `https://ucarecdn.com/${props.file}/${props.fileName ? props.fileName!! : ''}`;
     }
     return (
-        <XView minWidth={250} maxWidth={550} maxHeight={300}>
+        <XView
+            minWidth={250}
+            maxWidth={550}
+            minHeight={300}
+            maxHeight={300}
+            height={300}
+            flexShrink={0}
+        >
             <video controls={true}>
                 <source src={href} type="video/mp4" />
             </video>
