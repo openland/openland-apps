@@ -376,8 +376,8 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                ? props.handleHideChat
-                : undefined;
+                    ? props.handleHideChat
+                    : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -511,8 +511,7 @@ class MessageComposeComponentInner extends React.PureComponent<
     };
 
     private handleSend = () => {
-        let { message, floatingMessage, forwardMessageReply, forwardMessageId, file } = this
-            .state as MessageComposeComponentInnerState;
+        let { message, floatingMessage, forwardMessageReply, forwardMessageId } = this.state;
 
         if (message.trim().length > 0) {
             let msg = message.trim();
@@ -524,23 +523,15 @@ class MessageComposeComponentInner extends React.PureComponent<
                     beDrafted: false,
                 });
 
-                if (file) {
-                    const ucFile = UploadCare.fileFrom('object', file);
-                    if (this.props.onSendFile) {
-                        this.props.onSendFile(ucFile);
-                    }
-                }
+                this.sendFile();
             }
             if ((floatingMessage || forwardMessageReply) && forwardMessageId) {
                 this.replyMessages();
             }
         } else if (forwardMessageReply && forwardMessageId) {
             this.replyMessages();
-        } else if (file) {
-            const ucFile = UploadCare.fileFrom('object', file);
-            if (this.props.onSendFile) {
-                this.props.onSendFile(ucFile);
-            }
+        } else if (!forwardMessageId) {
+            this.sendFile();
         }
         this.closeEditor();
         this.changeDraft('');
@@ -553,6 +544,17 @@ class MessageComposeComponentInner extends React.PureComponent<
             fileName: null,
             fileSrc: null,
         });
+    };
+
+    private sendFile = () => {
+        const { file } = this.state;
+
+        if (file) {
+            const ucFile = UploadCare.fileFrom('object', file);
+            if (this.props.onSendFile) {
+                this.props.onSendFile(ucFile);
+            }
+        }
     };
 
     private replyMessages = () => {
@@ -598,6 +600,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                     replyMessages: messages,
                 },
             });
+            this.sendFile();
         }
     };
 
@@ -911,17 +914,18 @@ class MessageComposeComponentInner extends React.PureComponent<
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage && forwardMessageId && (
-                            <EditView
-                                message={stateMessage}
-                                title={
-                                    forwardMessageSender !== undefined
-                                        ? forwardMessageSender
-                                        : 'Edit message'
-                                }
-                                onCancel={this.closeEditor}
-                            />
-                        )}
+                        {stateMessage &&
+                            forwardMessageId && (
+                                <EditView
+                                    message={stateMessage}
+                                    title={
+                                        forwardMessageSender !== undefined
+                                            ? forwardMessageSender
+                                            : 'Edit message'
+                                    }
+                                    onCancel={this.closeEditor}
+                                />
+                            )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}
@@ -997,31 +1001,33 @@ class MessageComposeComponentInner extends React.PureComponent<
                                 enabled={this.props.enabled !== false}
                             />
                         </XHorizontal>
-                        {file && fileSrc && (
-                            <CoverWrapper>
-                                <img src={fileSrc} />
-                                <CoverDelButton onClick={this.fileRemover}>
-                                    <RemoveIcon />
-                                </CoverDelButton>
-                            </CoverWrapper>
-                        )}
-                        {file && fileName && (
-                            <FileItem key={'file' + fileName} separator={4} alignItems="center">
-                                <FileImage />
-                                <XHorizontal alignItems="center" separator={4}>
-                                    <div>
-                                        {fileName} <span>•</span> {niceBytes(Number(file.size))}
-                                    </div>
-                                    <XHorizontal
-                                        alignItems="center"
-                                        className="remove"
-                                        onClick={this.fileRemover}
-                                    >
+                        {file &&
+                            fileSrc && (
+                                <CoverWrapper>
+                                    <img src={fileSrc} />
+                                    <CoverDelButton onClick={this.fileRemover}>
                                         <RemoveIcon />
+                                    </CoverDelButton>
+                                </CoverWrapper>
+                            )}
+                        {file &&
+                            fileName && (
+                                <FileItem key={'file' + fileName} separator={4} alignItems="center">
+                                    <FileImage />
+                                    <XHorizontal alignItems="center" separator={4}>
+                                        <div>
+                                            {fileName} <span>•</span> {niceBytes(Number(file.size))}
+                                        </div>
+                                        <XHorizontal
+                                            alignItems="center"
+                                            className="remove"
+                                            onClick={this.fileRemover}
+                                        >
+                                            <RemoveIcon />
+                                        </XHorizontal>
                                     </XHorizontal>
-                                </XHorizontal>
-                            </FileItem>
-                        )}
+                                </FileItem>
+                            )}
                     </XVertical>
                 </SendMessageContent>
                 <PostIntroModal
