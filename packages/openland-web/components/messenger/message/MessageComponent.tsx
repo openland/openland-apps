@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Glamorous from 'glamorous';
@@ -9,10 +8,14 @@ import { MessageAnimationComponent } from './content/MessageAnimationComponent';
 import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
+import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
 import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
-import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
+import {
+    ConversationEngine,
+    DataSourceMessageItem,
+} from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
 import {
     MessageFull,
@@ -137,8 +140,7 @@ interface MessageComponentInnerProps extends MessageComponentProps {
 class DesktopMessageComponentInner extends React.PureComponent<
     MessageComponentInnerProps,
     { isEditView: boolean }
-    > {
-
+> {
     static getDerivedStateFromProps = (props: MessageComponentInnerProps) => {
         if (!props.message.isSending) {
             if (props.messagesContext.editMessageId === props.message.id) {
@@ -173,7 +175,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
     private setEditMessage = (e: any) => {
         let { message, messagesContext } = this.props;
         if (!message.isSending) {
-
             e.stopPropagation();
             messagesContext.resetAll();
             messagesContext.setEditMessage(message.id!, message.text!);
@@ -183,7 +184,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
     private setEditPostMessage = (e: any) => {
         let { message, editPostHandler } = this.props;
         if (!message.isSending && editPostHandler && message.title && message.text) {
-
             let postFiles: Set<File> = new Set();
             let file: File | null = null;
 
@@ -280,7 +280,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
         let { message } = this.props;
         let out = message.isOut;
         if (!message.isSending) {
-
             const isPost = message.text && message.title && message.messageType === 'POST';
 
             const isNotIntro =
@@ -303,13 +302,14 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out && message.text && (
-                            <IconButton
-                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        )}
+                        {out &&
+                            message.text && (
+                                <IconButton
+                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -322,7 +322,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
         let { message } = this.props;
 
         if (!message.isSending) {
-
             if (
                 !message.urlAugmentation ||
                 (message.urlAugmentation && message.urlAugmentation!.type !== 'intro')
@@ -331,7 +330,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
                     <Reactions
                         messageId={message.id!}
                         reactions={message.reactions || []}
-                        meId={this.props.me && this.props.me.id || ''}
+                        meId={(this.props.me && this.props.me.id) || ''}
                     />
                 );
             }
@@ -341,7 +340,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
     };
 
     render() {
-        console.warn('MEssage render');
         let { message } = this.props;
         let content: any[] = [];
         let date: any = null;
@@ -359,7 +357,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
         }
 
         if (!message.isSending) {
-
             if (message.text && message.title && message.messageType === MessageType.POST) {
                 isPost = true;
                 let meId = this.props.me ? this.props.me.id : '';
@@ -417,9 +414,8 @@ class DesktopMessageComponentInner extends React.PureComponent<
 
                 const { file } = message;
                 if (file && !message.urlAugmentation) {
-
-                    if (message.file!!.isImage && file.imageSize) {
-                        if (message.file!.isGif) {
+                    if (file.isImage && file.imageSize) {
+                        if (file.isGif) {
                             content.push(
                                 <MessageAnimationComponent
                                     key={'file'}
@@ -439,6 +435,14 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 />,
                             );
                         }
+                    } else if (file.fileName.endsWith('.mp4') || file.fileName.endsWith('.mov')) {
+                        content.push(
+                            <MessageVideoComponent
+                                key={'file'}
+                                file={file.fileId}
+                                fileName={file.fileName}
+                            />,
+                        );
                     } else {
                         content.push(
                             <MessageFileComponent
@@ -605,7 +609,6 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
     let isPost = false;
 
     if (!message.isSending) {
-
         if (message.text && message.title && message.messageType === MessageType.POST) {
             isPost = true;
             let meId = props.me ? props.me.id : '';
@@ -651,47 +654,53 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
             }
         }
 
-        if (message.file) {
-
-            if (message.file!!.isImage && message.file.imageSize) {
-                if (message.file!!.isGif) {
+        const { file } = message;
+        if (file && !message.urlAugmentation) {
+            if (file.isImage && file.imageSize) {
+                if (file.isGif) {
                     content.push(
                         <MessageAnimationComponent
                             key={'file'}
-                            file={message.file.fileId!}
-                            fileName={message.file.fileName}
-                            {...message.file.imageSize}
+                            file={file.fileId!}
+                            fileName={file.fileName}
+                            {...file.imageSize}
                         />,
                     );
                 } else {
                     content.push(
                         <MessageImageComponent
                             key={'file'}
-                            file={message.file.fileId!}
-                            fileName={message.file.fileName}
+                            file={file.fileId!}
+                            fileName={file.fileName}
                             startSelected={hideMenu}
-                            {...message.file.imageSize}
-
+                            {...file.imageSize}
                         />,
                     );
                 }
+            } else if (file.fileName.endsWith('.mp4') || file.fileName.endsWith('.mov')) {
+                content.push(
+                    <MessageVideoComponent
+                        key={'file'}
+                        file={file.fileId}
+                        fileName={file.fileName}
+                    />,
+                );
             } else {
                 content.push(
                     <MessageFileComponent
                         key={'file'}
-                        file={message.file.fileId}
-                        fileName={message.file.fileName}
-                        fileSize={message.file.fileSize}
+                        file={file.fileId}
+                        fileName={file.fileName}
+                        fileSize={file.fileSize}
                     />,
                 );
             }
         }
         if (message.urlAugmentation && !isPost) {
             if (
-                (
-                    message.urlAugmentation.url.startsWith('https://app.openland.com/o') || 
-                    message.urlAugmentation.url.startsWith('https://openland.com/o')
-                ) && message.urlAugmentation.url.includes('listings#')
+                (message.urlAugmentation.url.startsWith('https://app.openland.com/o') ||
+                    message.urlAugmentation.url.startsWith('https://openland.com/o')) &&
+                message.urlAugmentation.url.includes('listings#')
             ) {
                 content = [];
             }
@@ -707,28 +716,26 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         if (message.reply && message.reply!.length > 0) {
             content.push(
                 <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message
-                        .reply!.sort((a, b) => a.date - b.date)
-                        .map((item, index, array) => {
-                            let isCompact =
-                                index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
+                        let isCompact =
+                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
-                            return (
-                                <MessageReplyComponent
-                                    mentions={message.mentions || []}
-                                    sender={item.sender}
-                                    date={item.date}
-                                    message={item.message}
-                                    id={item.id}
-                                    key={'reply_message' + item.id + index}
-                                    edited={item.edited}
-                                    file={item.file}
-                                    fileMetadata={item.fileMetadata}
-                                    startSelected={hideMenu}
-                                    compact={isCompact || undefined}
-                                />
-                            );
-                        })}
+                        return (
+                            <MessageReplyComponent
+                                mentions={message.mentions || []}
+                                sender={item.sender}
+                                date={item.date}
+                                message={item.message}
+                                id={item.id}
+                                key={'reply_message' + item.id + index}
+                                edited={item.edited}
+                                file={item.file}
+                                fileMetadata={item.fileMetadata}
+                                startSelected={hideMenu}
+                                compact={isCompact || undefined}
+                            />
+                        );
+                    })}
                 </ReplyMessageWrapper>,
             );
         }
@@ -747,9 +754,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         if (message.progress !== undefined) {
             let progress = Math.round(message.progress * 100);
             let title = 'Uploading ' + message.file + ' (' + progress + '%)';
-            content.push(
-                <MessageUploadComponent key={'file'} progress={progress} title={title} />,
-            );
+            content.push(<MessageUploadComponent key={'file'} progress={progress} title={title} />);
         }
         // if (message.failed) {
         //     let key = message.key;
@@ -821,6 +826,6 @@ export const MessageComponent = React.memo<MessageComponentProps>(props => {
     return isMobile ? (
         <MobileMessageComponentInner {...props} />
     ) : (
-            <DesktopMessageComponentInner {...props} messagesContext={messagesContextProps} />
-        );
+        <DesktopMessageComponentInner {...props} messagesContext={messagesContextProps} />
+    );
 });
