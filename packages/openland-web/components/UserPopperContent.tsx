@@ -105,10 +105,11 @@ const UserPopperContent = React.memo(
                         <Status variables={{ userId: user.id }} />
                     </XHorizontal>
                     <XView
-                        flexDirection="row"
-                        fontSize={14}
+                        marginTop={12}
+                        fontSize={16}
                         fontWeight="600"
-                        color="rgba(0, 0, 0, 0.8)"
+                        flexDirection="row"
+                        color="rgba(0, 0, 0, 0.9)"
                     >
                         {emoji({
                             src: user.name,
