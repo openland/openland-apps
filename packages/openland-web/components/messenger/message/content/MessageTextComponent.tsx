@@ -125,7 +125,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
             );
         } else {
             let mentions = preprocessMentions(v.text!, null, props.mentions);
-            let smileSize: 44 | 14 = isBig ? 44 : 14;
+            let smileSize: 36 | 14 = isBig ? 36 : 14;
 
             let res: any[] = [];
             let i2 = 0;
@@ -165,9 +165,8 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
         }
     });
 
-    let wrapperClassName = isBig ? TextLargeStyle : TextStyle;
     return (
-        <span className={wrapperClassName}>
+        <span className={isBig ? TextLargeStyle : TextStyle}>
             {parts}
             {props.isEdited && <span className={styleEditLabel}>(Edited)</span>}
         </span>
