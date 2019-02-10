@@ -39,7 +39,7 @@ import { withOrganizationMemberChangeRole } from '../../../../api/withOrganizati
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XRoomCard } from 'openland-x/cards/XRoomCard';
 import { XUserCard } from 'openland-x/cards/XUserCard';

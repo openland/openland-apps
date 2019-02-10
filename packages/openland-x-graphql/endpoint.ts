@@ -1,4 +1,4 @@
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import * as url from 'url-parse';
 declare global {
     interface Window { server: { endpoint: string; }; }

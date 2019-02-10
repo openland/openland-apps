@@ -11,6 +11,7 @@ import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { css } from 'linaria';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { emoji } from 'openland-y-utils/emoji';
 
 const StatusWrapperOffline = css`
     color: rgba(0, 0, 0, 0.5);
@@ -139,19 +140,18 @@ export const XUserCard = ({
             customMenu
         );
 
-    const organizationElem = !hideOrganization &&
-        user.primaryOrganization && (
-            <XView
-                fontSize={12}
-                lineHeight="22px"
-                fontWeight="600"
-                color="rgba(0, 0, 0, 0.4)"
-                marginTop={1}
-                marginBottom={-1}
-            >
-                {user.primaryOrganization.name}
-            </XView>
-        );
+    const organizationElem = !hideOrganization && user.primaryOrganization && (
+        <XView
+            fontSize={12}
+            lineHeight="22px"
+            fontWeight="600"
+            color="rgba(0, 0, 0, 0.4)"
+            marginTop={1}
+            marginBottom={-1}
+        >
+            {user.primaryOrganization.name}
+        </XView>
+    );
 
     return (
         <XView
@@ -173,11 +173,7 @@ export const XUserCard = ({
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <XAvatar2
-                    src={user.photo}
-                    title={user.name || ''}
-                    id={user.id || ''}
-                />
+                <XAvatar2 src={user.photo} title={user.name || ''} id={user.id || ''} />
                 <XView
                     flexDirection="row"
                     justifyContent="space-between"
@@ -202,7 +198,12 @@ export const XUserCard = ({
                         >
                             {(isAdmin || isOwner) && <Tooltip isOwner={isOwner} />}
                             <XView minWidth={0} flexShrink={1}>
-                                <div className={userNameClassname}>{user.name}</div>
+                                <div className={userNameClassname}>
+                                    {emoji({
+                                        src: user.name || '',
+                                        size: 14,
+                                    })}
+                                </div>
                             </XView>
                             {!isMobile && organizationElem}
                         </XView>

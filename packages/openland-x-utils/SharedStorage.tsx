@@ -1,5 +1,5 @@
 import * as Cookie from 'js-cookie';
-import { canUseDOM } from './canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 export interface SharedStorage {
     readValue(key: string): string | null;
@@ -33,12 +33,12 @@ class SharedClientStorage implements SharedStorage {
     writeValue = (key: string, value: string | null, expires?: number) => {
         if (value) {
             if (expires) {
-                Cookie.set(CookiePrefix + key, value, { expires: expires / (24 * 60.0 * 60.0), path: '/'});
+                Cookie.set(CookiePrefix + key, value, { expires: expires / (24 * 60.0 * 60.0), path: '/' });
             } else {
-                Cookie.set(CookiePrefix + key, value, {path: '/'});
+                Cookie.set(CookiePrefix + key, value, { path: '/' });
             }
         } else {
-            Cookie.remove(CookiePrefix + key, {path: '/'});
+            Cookie.remove(CookiePrefix + key, { path: '/' });
         }
     }
 }

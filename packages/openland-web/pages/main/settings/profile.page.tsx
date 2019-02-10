@@ -21,6 +21,9 @@ import { XDate } from 'openland-x/XDate';
 import { SettingsNavigation } from './components/SettingsNavigation';
 import { Content, HeadTitle } from './components/SettingComponents';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { XCheckbox } from 'openland-x/XCheckbox';
+import { EmojiFlags } from 'openland-y-utils/emoji';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const CardsWrapper = React.memo<{ children: any }>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
@@ -28,8 +31,8 @@ const CardsWrapper = React.memo<{ children: any }>(props => {
     return isMobile ? (
         <XVertical separator={8}>{props.children}</XVertical>
     ) : (
-        <XHorizontal separator={8}>{props.children}</XHorizontal>
-    );
+            <XHorizontal separator={8}>{props.children}</XHorizontal>
+        );
 });
 
 const CardText = (props: { children?: any }) => (
@@ -69,6 +72,24 @@ const TextAreaTitle = (props: { children?: any }) => (
         {props.children}
     </XView>
 );
+
+class MakeWebFastCheckbox extends React.PureComponent<{}, { fast: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = { fast: canUseDOM && localStorage.getItem('meke_web_great_again') === 'true' }
+    }
+
+    onChange = (checked: { label: string, checked: boolean }) => {
+        localStorage.setItem('meke_web_great_again', checked.checked ? 'true' : 'false');
+        this.setState({ fast: checked.checked });
+        EmojiFlags.ignoreEmojione = checked.checked;
+    }
+
+    render() {
+        return <XCheckbox label="Make web great again" checked={this.state.fast} onChange={this.onChange} />
+
+    }
+}
 
 export default withApp(
     'Profile',
@@ -122,22 +143,33 @@ export default withApp(
                                                 <XFormError onlyGeneralErrors={true} />
                                                 <XVertical separator={12}>
                                                     <XFormLoadingContent>
-                                                        <XHorizontal separator={13}>
-                                                            <XVertical
-                                                                flexGrow={1}
-                                                                maxWidth={480}
-                                                                separator={10}
-                                                            >
-                                                                <XInput
-                                                                    title="First name"
-                                                                    field="input.firstName"
-                                                                    size="large"
+                                                        <XVertical
+                                                            flexGrow={1}
+                                                            maxWidth={480}
+                                                            separator={10}
+                                                        >
+                                                            <XHorizontal separator={13}>
+                                                                <XVertical
+                                                                    flexGrow={1}
+                                                                    separator={10}
+                                                                >
+                                                                    <XInput
+                                                                        title="First name"
+                                                                        field="input.firstName"
+                                                                        size="large"
+                                                                    />
+                                                                    <XInput
+                                                                        title="Last name"
+                                                                        field="input.lastName"
+                                                                        size="large"
+                                                                    />
+                                                                </XVertical>
+                                                                <XAvatarUpload
+                                                                    field="input.photoRef"
+                                                                    size="xSmall"
                                                                 />
-                                                                <XInput
-                                                                    title="Last name"
-                                                                    field="input.lastName"
-                                                                    size="large"
-                                                                />
+                                                            </XHorizontal>
+                                                            <XVertical flexGrow={1} separator={10}>
                                                                 <XSelect
                                                                     title="Primary organization"
                                                                     field="input.primaryOrganizationId"
@@ -164,8 +196,7 @@ export default withApp(
                                                                     />
                                                                 </XView>
                                                             </XVertical>
-                                                            <XAvatarUpload field="input.photoRef" />
-                                                        </XHorizontal>
+                                                        </XVertical>
                                                     </XFormLoadingContent>
                                                     <XFormSubmit
                                                         text="Save changes"
@@ -311,6 +342,7 @@ export default withApp(
                                                     </XView>
                                                 </CardText>
                                             )}
+                                        <MakeWebFastCheckbox />
                                     </CardsWrapper>
                                 </XWithRole>
                             </XVertical>

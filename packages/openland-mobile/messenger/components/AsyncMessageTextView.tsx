@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Platform, Linking, Image, Dimensions } from 'react-native';
-import { DataSourceMessageItem, convertMessage } from 'openland-engines/messenger/ConversationEngine';
+import { DataSourceMessageItem, convertMessage, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText, Span } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
-import { AsyncBubbleView } from './AsyncBubbleView';
+import { AsyncBubbleView, bubbleMaxWidth } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { formatTime } from '../../utils/formatTime';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
-import { TextStyles } from '../../styles/AppStyles';
+import { TextStyles, AppStyles } from '../../styles/AppStyles';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { AsyncReplyMessageMediaView } from './AsyndReplyMessageMediaView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
@@ -20,27 +20,33 @@ import { AsyncReplyMessageDocumentView } from './AsyncReplyMessageDocumentView';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
+import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
 
-export class AsyncMessageTextView extends React.PureComponent<{
-    message: DataSourceMessageItem,
+interface AsyncMessageTextViewProps {
+    engine: ConversationEngine;
+    message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
-}, { downloadState: DownloadState }> {
+}
+export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextViewProps, { downloadState?: DownloadState, theme: ConversationTheme }> {
 
     private downloadManagerWatch?: WatchSubscription;
     private augLayout?: { width: number, height: number };
+    themeSub?: () => void;
+
+    constructor(props: AsyncMessageTextViewProps) {
+        super(props);
+        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+    }
 
     componentWillMount() {
         if (this.props.message.urlAugmentation && this.props.message.urlAugmentation.imageURL) {
-            let maxSize = Platform.select({
-                default: 400,
-                ios: Math.min(Dimensions.get('window').width - 120, 400),
-                android: Math.min(Dimensions.get('window').width - 120, 400)
-            });
+            let maxSize = (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidth) - 90
+
             console.warn('boom', JSON.stringify(this.props.message.urlAugmentation));
             let width = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageWidth || maxSize;
             let height = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageHeight || maxSize;
@@ -51,11 +57,15 @@ export class AsyncMessageTextView extends React.PureComponent<{
                 this.setState({ downloadState: state });
             });
         }
+        ConversationThemeResolver.subscribe(this.props.engine.conversationId, theme => this.setState({ theme: theme })).then(sub => this.themeSub = sub);
     }
 
     componentWillUnmount() {
         if (this.downloadManagerWatch) {
             this.downloadManagerWatch();
+        }
+        if (this.themeSub) {
+            this.themeSub();
         }
     }
 
@@ -63,9 +73,9 @@ export class AsyncMessageTextView extends React.PureComponent<{
         if (v.type === 'new_line') {
             return <ASText key={'br-' + i} >{'\n'}</ASText>;
         } else if (v.type === 'link') {
-            return <ASText key={'link-' + i} color={this.props.message.isOut ? '#fff' : '#654bfa'} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
+            return <ASText key={'link-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
         } else if (v.type === 'mention_user') {
-            return <ASText key={'mention-' + i} color={this.props.message.isOut ? '#fff' : '#0084fe'} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
+            return <ASText key={'mention-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
         } else {
             return <ASText key={'text-' + i}>{v.text}</ASText>;
         }
@@ -83,56 +93,54 @@ export class AsyncMessageTextView extends React.PureComponent<{
             parts.unshift(<ASText key={'br-title'} >{'\n'}</ASText>);
             parts.unshift(<ASText key={'text-title'} fontWeight={Platform.select({ ios: '600', android: '500' })}>{this.props.message.title}</ASText>);
         }
-        let marginHorizontal = Platform.select({
-            default: 0,
-            ios: 0
-        });
         let placeholderIndex = 0;
         if (this.props.message.senderId) {
             placeholderIndex = doSimpleHash(this.props.message.senderId);
         }
         let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
-        let resolved: any;
+        let lineBAckgroundPatch: any;
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
 
         if (this.props.message.urlAugmentation || this.props.message.reply) {
             // for left accent line
-            let image = this.props.message.isOut ? require('assets/chat-link-line-my.png') : require('assets/chat-link-line-foreign.png');
-            resolved = Image.resolveAssetSource(image);
+            let image = require('assets/chat-link-line-my.png');
+            lineBAckgroundPatch = Image.resolveAssetSource(image);
         }
 
+        let mainTextColor = this.props.message.isOut ? this.state.theme.textColorOut : this.state.theme.textColorIn;
+
         return (
-            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
+            <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom} colorIn={this.state.theme.bubbleColorIn}>
                 <ASFlex
-                    marginLeft={marginHorizontal}
-                    marginRight={marginHorizontal}
-                    marginTop={0}
-                    marginBottom={0}
                     flexDirection="column"
                 >
 
-                    {!this.props.message.isOut && !this.props.message.attachTop && <ASText color={placeholderStyle.placeholderColorEnd}>{this.props.message.senderName}</ASText>}
+                    {!this.props.message.isOut && !this.props.message.attachTop && <ASText key={'name-' + this.state.theme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={this.props.message.isOut ? this.state.theme.senderNameColorOut : this.state.theme.senderNameColor}>{this.props.message.senderName}</ASText>}
 
                     {/* forward/reply */}
                     {this.props.message.reply && (
 
                         this.props.message.reply.map(m => (
-                            <ASFlex flexDirection="column" marginLeft={1} marginTop={6} marginBottom={6} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
+                            <ASFlex flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn}>
+
                                 <ASText
+                                    marginTop={-2}
+                                    height={15}
+                                    textAlign="center"
+                                    lineHeight={15}
                                     marginLeft={10}
-                                    color={this.props.message.isOut ? '#fff' : ZStyles.avatars[doSimpleHash(m.sender.id) % ZStyles.avatars.length].placeholderColorEnd}
-                                    lineHeight={20}
+                                    color={this.props.message.isOut ? this.state.theme.senderNameColorOut : this.state.theme.senderNameColor}
                                     letterSpacing={-0.3}
                                     fontSize={12}
                                     onPress={() => this.props.onUserPress(m.sender.id)}
-                                    fontWeight={TextStyles.weight.regular}
+                                    fontWeight={TextStyles.weight.medium}
                                 >
                                     {m.sender.name || ''}
                                 </ASText>
 
                                 {!!m.message && <ASText
                                     marginLeft={10}
-                                    color={this.props.message.isOut ? '#fff' : '#000'}
+                                    color={mainTextColor}
                                     lineHeight={20}
                                     fontSize={14}
                                     fontWeight={TextStyles.weight.regular}
@@ -150,7 +158,8 @@ export class AsyncMessageTextView extends React.PureComponent<{
 
                     {/* main content */}
                     {this.props.message.text && <ASText
-                        color={this.props.message.isOut ? '#fff' : '#000'}
+                        key={'text-' + this.state.theme.senderNameColor}
+                        color={mainTextColor}
                         lineHeight={big ? 60 : 20}
                         letterSpacing={-0.3}
                         fontSize={big ? 52 : 16}
@@ -162,9 +171,9 @@ export class AsyncMessageTextView extends React.PureComponent<{
 
                     {/* url augmentation */}
                     {this.props.message.urlAugmentation && (
-                        <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={15} marginBottom={15} backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }}>
+                        <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={12} marginBottom={5} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? 'rgba(255,255,255, 0.5)' : this.state.theme.linkColorIn}>
                             {this.props.message.urlAugmentation.imageURL && this.augLayout && (
-                                <ASFlex>
+                                <ASFlex marginBottom={8}>
                                     <ASImage
                                         marginLeft={10}
                                         source={{ uri: (this.state && this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
@@ -190,11 +199,11 @@ export class AsyncMessageTextView extends React.PureComponent<{
 
                             {!!this.props.message.urlAugmentation.title && <ASText
                                 marginLeft={10}
-                                color={this.props.message.isOut ? '#fff' : '#000'}
+                                color={mainTextColor}
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
                                 fontSize={18}
-                                marginTop={10}
+                                marginTop={-3}
                                 fontWeight={TextStyles.weight.medium}
                             >
                                 {this.props.message.urlAugmentation.title}
@@ -203,7 +212,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
                             }
                             {!!this.props.message.urlAugmentation.description && <ASText
                                 marginLeft={10}
-                                color={this.props.message.isOut ? '#fff' : '#000'}
+                                color={mainTextColor}
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
                                 fontSize={big ? 52 : 16}
@@ -229,7 +238,7 @@ export class AsyncMessageTextView extends React.PureComponent<{
                             <ASText
                                 fontSize={11}
                                 lineHeight={13}
-                                color={this.props.message.isOut ? '#fff' : '#8a8a8f'}
+                                color={this.props.message.isOut ? this.state.theme.textColorSecondaryOut : this.state.theme.textColorSecondaryIn}
                                 opacity={this.props.message.isOut ? 0.7 : 0.6}
                             >
                                 {formatTime(this.props.message.date)}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XWithRole } from 'openland-x-permissions/XWithRole';
-import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XModalCloser } from 'openland-x-modal/XModal';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
@@ -33,20 +32,6 @@ const ChannelName = Glamorous.div({
     fontWeight: 500,
     letterSpacing: -0.3,
     color: '#1790ff',
-});
-
-const InviteLinkField = Glamorous.div({
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: 20,
-    paddingRight: 20,
-    height: 40,
-    borderRadius: 24,
-    backgroundColor: '#f5f7f9',
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: -0.2,
-    color: '#5c6a81',
 });
 
 const InviteText = Glamorous.div({
@@ -92,7 +77,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                             ref={this.handleRef}
                             value={'https://openland.com' + '/joinChannel/' + this.props.invite}
                         />
-                        <InviteText>Anyone with the link will be able to join</InviteText>
+                        <InviteText>Anyone with link can join Openland</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -260,20 +245,22 @@ const InviteButton = (props: XLinkProps & InviteButtonStylesProps) => (
 
 const RenewInviteLinkButton = withChannelnviteLink(props => (
     <XMutation mutation={props.renew}>
-        <RenewButton text="Renew link" style="link" />
+        <RenewButton text="Revoke link" style="link" />
     </XMutation>
 )) as React.ComponentType<{
     variables: { roomId: string };
     refetchVars: { roomId: string };
 }>;
 
+interface InviteMembersModalRawProps {
+    channelTitle: string;
+    roomId: string;
+    sendInviteMutation: any;
+    target: any;
+}
+
 class InviteMembersModalRaw extends React.Component<
-    {
-        channelTitle: string;
-        roomId: string;
-        sendInviteMutation: any;
-        target: any;
-    },
+    InviteMembersModalRawProps,
     InvitesMoadalRawState
 > {
     linkComponent?: any;

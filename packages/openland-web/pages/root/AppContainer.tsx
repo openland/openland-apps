@@ -4,7 +4,7 @@ import { UserInfoProvider } from 'openland-web/components/UserInfo';
 import { MessengerProvider } from 'openland-web/components/messenger/MessengerProvider';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { XLoader } from 'openland-x/XLoader';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { TalkProviderComponent } from 'openland-web/modules/conference/TalkProviderComponent';
 import { withAccountQuery } from 'openland-web/api/withAccountQuery';

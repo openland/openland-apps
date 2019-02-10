@@ -28,18 +28,6 @@ interface ImgButtonStylesProps {
     title: string;
 }
 
-interface SearchPeopleProps {
-    user?: {
-        id: string;
-        name: string;
-        photo: string | null;
-        primaryOrganization: {
-            id?: string | null;
-            name?: string | null;
-        } | null;
-    } | null;
-}
-
 const ImgButtonStyles = Glamorous(XLink)<ImgButtonStylesProps>(props => ({
     fontSize: 13,
     fontWeight: 600,
@@ -86,13 +74,11 @@ const SearchPeopleModule = withExplorePeople(props => {
     if (!(props.data && props.data.items)) {
         return (
             <XSelect
-                creatable={true}
                 multi={false}
                 field="input.uid"
                 options={[]}
                 render={
                     <XSelectCustomUsersRender
-                        multi={false}
                         popper={true}
                         placeholder="Whom do you want to introduce?"
                         rounded={true}
@@ -106,7 +92,6 @@ const SearchPeopleModule = withExplorePeople(props => {
     return (
         <XFormField field="input.uid">
             <XSelect
-                creatable={true}
                 multi={false}
                 field="input.uid"
                 options={
@@ -119,7 +104,7 @@ const SearchPeopleModule = withExplorePeople(props => {
                 }
                 render={
                     <XSelectCustomUsersRender
-                        multi={false}
+                        popper={true}
                         placeholder="Whom do you want to introduce?"
                         rounded={true}
                         onInputChange={data => (props as any).onChangeInput(data)}
@@ -129,11 +114,23 @@ const SearchPeopleModule = withExplorePeople(props => {
         </XFormField>
     );
 }) as React.ComponentType<
-    SearchPeopleProps & {
+    {
         variables: { query?: string; sort?: string };
         onChangeInput: (data: string) => void;
     }
 >;
+
+interface SearchPeopleProps {
+    user?: {
+        id: string;
+        name: string;
+        photo: string | null;
+        primaryOrganization: {
+            id?: string | null;
+            name?: string | null;
+        } | null;
+    } | null;
+}
 
 class SearchPeople extends React.PureComponent<SearchPeopleProps> {
     state = {
@@ -150,7 +147,6 @@ class SearchPeople extends React.PureComponent<SearchPeopleProps> {
         return (
             <SearchPeopleModule
                 onChangeInput={this.handleSearchText}
-                user={this.props.user}
                 variables={{
                     query: this.state.query,
                 }}
@@ -426,7 +422,7 @@ const MutationProvider = withIntro(props => (
                 await props.editIntro({
                     variables: {
                         messageId: (props as any).messageId,
-                        uid: input.uid[0],
+                        uid: input.uid[0].value,
                         about: input.about,
                         file: input.file,
                     },
@@ -435,7 +431,7 @@ const MutationProvider = withIntro(props => (
                 await props.createIntro({
                     variables: {
                         roomId: (props as any).conversationId,
-                        uid: input.uid[0],
+                        uid: input.uid[0].value,
                         about: input.about,
                         file: input.file,
                     },

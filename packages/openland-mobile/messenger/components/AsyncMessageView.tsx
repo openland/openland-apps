@@ -11,6 +11,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
+import { ConversationTheme, ConversationThemeResolver, getDefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -40,6 +41,23 @@ export const messageBgColor = 'white';
 
 export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps> {
 
+    themeSub?: () => void;
+
+    constructor(props: AsyncMessageViewProps) {
+        super(props);
+        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+    }
+
+    componentWillMount() {
+        ConversationThemeResolver.subscribe(this.props.engine.conversationId, theme => this.setState({ theme: theme })).then(sub => this.themeSub = sub);
+
+    }
+
+    componentWillUnmount() {
+        if (this.themeSub) {
+            this.themeSub();
+        }
+    }
     private handleAvatarPress = () => {
         this.props.onAvatarPress(this.props.message.senderId);
     }
@@ -56,18 +74,17 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         return (
             <ASFlex flexDirection="column" alignItems="stretch" onLongPress={this.handleLongPress} backgroundColor={!this.props.message.isOut ? messageBgColor : undefined}>
 
-                {/* marginTop={ ? 2 : 14} marginBottom={2}  */}
                 <ASFlex key="margin-top" backgroundColor={messageBgColor} height={this.props.message.attachTop ? 2 : 14} />
 
                 <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
 
                     <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? (Platform.select({ default: 36, ios: 28, android: 36 }) + 5) : 0) + 4} />
+                        <ASFlex key="margin-left" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? 36 : 0) + 10} />
 
                         {!this.props.message.isOut && !this.props.message.attachBottom &&
-                            <ASFlex backgroundColor={messageBgColor} marginRight={1} marginLeft={4} onPress={this.handleAvatarPress} alignItems="flex-end">
+                            <ASFlex marginRight={3} onPress={this.handleAvatarPress} alignItems="flex-end">
                                 <AsyncAvatar
-                                    size={ios ? 28 : 36}
+                                    size={32}
                                     src={this.props.message.senderPhoto}
                                     placeholderKey={this.props.message.senderId}
                                     placeholderTitle={this.props.message.senderName}
@@ -79,7 +96,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                         {this.props.message.isOut && <ASFlex backgroundColor={messageBgColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
                         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={this.props.message.isOut ? -4 : 0}>
                             {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
-                                <AsyncMessageTextView message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
+                                <AsyncMessageTextView engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
                             )}
                             {isMedia && (
                                 <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />

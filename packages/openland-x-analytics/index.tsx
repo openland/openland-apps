@@ -1,5 +1,5 @@
 import * as Mixpanel from 'mixpanel-browser';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { loadConfig } from 'openland-x-config';
 import * as Sentry from '@sentry/browser';
 import { Track } from 'openland-engines/Tracking';

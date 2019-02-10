@@ -5,7 +5,7 @@ import { messageBgColor } from './AsyncMessageView';
 
 export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50, 400);
 export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 50 - 45, 400);
-export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text' }> {
+export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text', colorIn: string }> {
     render() {
         const isMedia = this.props.appearance === 'media';
         const compact = this.props.compact;
@@ -37,9 +37,8 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
                 }
             }
         }
-
         let contentInsets: { left: number, right: number, top: number, bottom: number };
-        let contentInsetsHorizontal = 12;
+        let contentInsetsHorizontal = 13;
         let contentInsetsTop = 8;
         let contentInsetsBottom = 9;
         if (isMedia) {
@@ -55,8 +54,8 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
         let resolved = Image.resolveAssetSource(image);
         return (
             <ASFlex flexDirection="column" alignItems="stretch" maxWidth={this.props.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming} backgroundColor={isMedia ? messageBgColor : undefined}>
-                <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" >
-                    <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch">
+                <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" backgroundPatchTintColor={this.props.isOut ? undefined : this.props.colorIn}>
+                    <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch" >
                         {this.props.children}
                     </ASFlex>
                 </ASFlex>

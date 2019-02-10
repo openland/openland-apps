@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { MessageComponent } from '../message/MessageComponent';
 import { XScrollViewReversed } from 'openland-x/XScrollViewReversed';
 import {

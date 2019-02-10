@@ -1,5 +1,5 @@
 import { AppBadgeAPi } from 'openland-y-runtime-api/AppBadgeApi';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 class BadgeStub implements AppBadgeAPi {
     private readonly isDesktop = canUseDOM && !!(global as any).require;

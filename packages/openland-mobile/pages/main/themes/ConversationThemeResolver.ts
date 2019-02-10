@@ -5,9 +5,17 @@ import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { doSimpleHash } from 'openland-y-utils/hash';
 
 export interface ConversationTheme {
-    // not used for now
+    // conversation
+    mainColor: string;
+    chatBackgroundColor: string;
+    spiral: boolean;
+
+    // messages
     bubbleColorIn: string;
     bubbleColorOut: string[];
+
+    senderNameColor: string;
+    senderNameColorOut: string;
 
     textColorIn: string;
     textColorOut: string;
@@ -25,13 +33,21 @@ export interface ConversationTheme {
     reactionTextColorIn: string;
     reactionTextColorOut: string;
 
-    spiral: boolean;
+    // service messages
+    serviceTextColor: string
+
 }
 
-class DefaultTheme implements ConversationTheme {
-    // not used for now
+export class DefaultConversationTheme implements ConversationTheme {
+    mainColor = '#0084fe';
+    chatBackgroundColor = 'white';
+    spiral = false;
+
     bubbleColorIn = '#f3f5f7';
     bubbleColorOut = ['#1970ff', '#11b2ff'];
+
+    senderNameColor = '#0084fe';
+    senderNameColorOut = '#fff';
 
     textColorIn = '#000000';
     textColorOut = '#ffffff';
@@ -40,7 +56,7 @@ class DefaultTheme implements ConversationTheme {
 
     backgroundColor = '#fff';
 
-    linkColorIn = AppStyles.primaryColor;
+    linkColorIn = '#0084fe';
     linkColorOut = '#fff';
 
     timeColorIn = 'rgba(138,138,143, 0.6)';
@@ -49,15 +65,16 @@ class DefaultTheme implements ConversationTheme {
     reactionTextColorIn = '#99a2b0';
     reactionTextColorOut = '#99a2b0';
 
-    spiral = false;
+    serviceTextColor = '#8a8a8f';
+
 }
 
 export let getDefaultConversationTheme = (id: string) => {
-    let res = new DefaultTheme();
-    let colors = ZStyles.avatars[doSimpleHash(id) % ZStyles.avatars.length];
+    let res = new DefaultConversationTheme();
     return res;
     // disable for now
-    // return { ...res, bubbleColorOut: [colors.placeholderColorEnd, colors.placeholderColorStart] };
+    // let colors = ZStyles.avatars[doSimpleHash(id) % ZStyles.avatars.length];
+    // return { ...res, senderNameColor: colors.nameColor, bubbleColorOut: [colors.placeholderColorEnd, colors.placeholderColorStart] };
 }
 
 type ConversationThemeListener = (theme: ConversationTheme) => void;
@@ -111,18 +128,18 @@ class ConversationThemeResolverInner {
     }
 }
 
+let conversationThemeResolver = new ConversationThemeResolverInner();
 export class ConversationThemeResolver {
-    static conversationThemeResolver = new ConversationThemeResolverInner();
 
     static get = async (id: string) => {
-        return await ConversationThemeResolver.conversationThemeResolver.resolveTheme(id);
+        return await conversationThemeResolver.resolveTheme(id);
     }
 
     static subscribe = async (id: string, listener: ConversationThemeListener) => {
-        return await ConversationThemeResolver.conversationThemeResolver.subscribeTheme(id, listener);
+        return await conversationThemeResolver.subscribeTheme(id, listener);
     }
 
     static update = async (id: string, changes: Partial<ConversationTheme>) => {
-        await ConversationThemeResolver.conversationThemeResolver.updateTheme(id, changes);
+        await conversationThemeResolver.updateTheme(id, changes);
     }
 }

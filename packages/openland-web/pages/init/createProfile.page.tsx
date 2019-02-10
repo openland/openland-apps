@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { withApp } from '../../components/withApp';
 import { withProfileCreate } from '../../api/withProfileCreate';

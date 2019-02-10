@@ -2,7 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'glamor';
 import { XFlexStyles, extractFlexProps, applyFlex } from './basics/Flex';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 //
 // Styles

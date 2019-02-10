@@ -194,21 +194,41 @@ const ProfileOrganizationContent = React.memo<PageProps>((props) => {
                                         },
                                     );
                                 }
-                                if (organization.isOwner || organization.isAdmin || v.user.id !== getMessenger().engine.user.id) {
-                                    builder.action(v.user.id === getMessenger().engine.user.id ? 'Leave organization' : 'Remove from organization',
+
+                                if (v.user.id === getMessenger().engine.user.id) {
+                                    builder.action('Leave organization',
                                         () => {
                                             Alert.builder()
-                                                .title(v.user.id === getMessenger().engine.user.id ? 'Are you sure want to leave?' : `Are you sure want to remove ${v.user.name}? They will be removed from all internal chats at ${organization.name}.`)
+                                                .title('Are you sure want to leave?')
                                                 .button('Cancel', 'cancel')
-                                                .action(v.user.id === getMessenger().engine.user.id ? 'Leave' : 'Remove', 'destructive', async () => {
+                                                .action('Leave', 'destructive', async () => {
+                                                    await getClient().mutateOrganizationRemoveMember({
+                                                        memberId: v.user.id,
+                                                        organizationId: props.router.params.id,
+                                                    });
+                                                    await getClient().refetchOrganization({ organizationId: props.router.params.id });
+                                                    await getClient().refetchAccountSettings();
+                                                })
+                                                .show();
+                                        },
+                                        true,
+                                    );
+                                }
+
+                                if ((organization.isOwner || organization.isAdmin) && v.user.id !== getMessenger().engine.user.id) {
+                                    builder.action('Remove from organization',
+                                        () => {
+                                            Alert.builder()
+                                                .title(`Are you sure want to remove ${v.user.name}? They will be removed from all internal chats at ${organization.name}.`)
+                                                .button('Cancel', 'cancel')
+                                                .action('Remove', 'destructive', async () => {
                                                     await getClient().mutateOrganizationRemoveMember({
                                                         memberId: v.user.id,
                                                         organizationId: props.router.params.id,
                                                     });
                                                     await getClient().refetchOrganization({ organizationId: props.router.params.id });
                                                 })
-                                                .show()
-
+                                                .show();
                                         },
                                         true,
                                     );

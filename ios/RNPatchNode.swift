@@ -25,7 +25,7 @@ class RNPatchNode: ASDisplayNode {
   func setSpec(spec: AsyncPatch) {
     
     // Nothing to update
-    if self.spec != nil && (spec.source == self.spec!.source && spec.left == self.spec?.left && spec.right == self.spec?.right && spec.top == self.spec?.top && spec.bottom == self.spec?.bottom) {
+    if self.spec != nil && (spec.source == self.spec!.source && spec.left == self.spec?.left && spec.right == self.spec?.right && spec.top == self.spec?.top && spec.bottom == self.spec?.bottom && spec.tint == self.spec?.tint) {
       return
     }
     
@@ -40,6 +40,10 @@ class RNPatchNode: ASDisplayNode {
         _baseImage = val
       } else {
         _baseImage = try! UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale)
+        if(spec.tint != nil){
+          _baseImage?.withRenderingMode(.alwaysTemplate)
+          node.tintColor = spec.tint
+        }
         if _baseImage != nil {
           patchBaseCache[spec.source] = _baseImage
         }
@@ -48,6 +52,9 @@ class RNPatchNode: ASDisplayNode {
     
     // Result image
     self.node.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(spec.top), left: CGFloat(spec.left), bottom: CGFloat(spec.bottom), right: CGFloat(spec.right)), resizingMode: UIImageResizingMode.stretch)
+    if(spec.tint != nil){
+      self.node.imageModificationBlock = ASImageNodeTintColorModificationBlock(spec.tint!)
+    }
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

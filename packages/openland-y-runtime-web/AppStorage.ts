@@ -1,5 +1,5 @@
 import { AppStorageApi } from "openland-y-runtime-api/AppStorageApi";
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 class AppStorageImpl implements AppStorageApi {
     async readKey(key: string) {

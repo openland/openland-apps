@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { UserShort } from 'openland-api/Types';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
 import { MessengerEngine, MessengerContext } from 'openland-engines/MessengerEngine';

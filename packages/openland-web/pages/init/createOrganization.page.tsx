@@ -12,7 +12,7 @@ import {
     RoomSignupContainer,
     CreateOrganizationFormInner,
 } from './components/SignComponents';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { withExploreOrganizations } from '../../api/withExploreOrganizations';
 import * as Cookie from 'js-cookie';
 

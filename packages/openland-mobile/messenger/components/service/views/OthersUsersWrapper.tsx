@@ -3,6 +3,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { UserShort } from 'openland-api/Types';
 import { TextStyles } from '../../../../styles/AppStyles';
 import { ActionSheetBuilder } from '../../../../components/ActionSheet';
+import { ThemeContext } from '../../AsyncServiceMessageView';
 
 interface OthersUsersWrapperProps {
     users: UserShort[];
@@ -24,17 +25,22 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
 
     render() {
         return (
-            <ASText
-                color="#fff"
-                fontWeight={TextStyles.weight.medium}
-                fontSize={12}
-                lineHeight={17}
-                marginLeft={6}
-                marginRight={6}
-                onPress={() => this.handlePress()}
-            >
-                {this.props.users.length} others
-            </ASText>
+            <ThemeContext.Consumer>
+                {theme => (
+                    <ASText
+                        key={'service_text' + theme.theme.linkColorIn}
+                        color={theme.theme.linkColorIn}
+                        fontWeight={TextStyles.weight.medium}
+                        fontSize={12}
+                        lineHeight={17}
+                        marginLeft={6}
+                        marginRight={6}
+                        onPress={() => this.handlePress()}
+                    >
+                        {this.props.users.length} others
+                    </ASText>
+                )}
+            </ThemeContext.Consumer>
         );
     }
 }

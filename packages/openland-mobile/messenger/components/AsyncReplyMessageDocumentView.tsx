@@ -52,20 +52,20 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
     render() {
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
         return (
-            <ASFlex height={50} flexDirection="row" onPress={this.handlePress}>
+            <ASFlex height={40} marginTop={5} flexDirection="row" onPress={this.handlePress}>
                 <ASFlex
                     width={40}
                     height={40}
-                    backgroundColor={'rgba(224, 227, 231, 0.5)'}
+                    backgroundColor={this.props.message.isOut ? 'rgba(0,0,0,0.15)' : 'rgba(185,192,202,0.20)'}
+                    opacity={this.props.message.isOut ? 0.15 : 0.2}
                     borderRadius={20}
                     marginLeft={10}
-                    marginTop={10}
                     marginRight={10}
                     alignItems="center"
                     justifyContent="center"
                 >
                     <ASImage
-                        source={downloaded ? require('assets/img-file.png') : this.props.parent.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png')}
+                        source={downloaded ? (this.props.message.isOut ? require('assets/ic-file-white-ios.png') : require('assets/img-file.png')) : (this.props.message.isOut ? require('assets/ic-file-download-out.png') : require('assets/ic-file-download.png'))}
                         width={16}
                         height={20}
                     />
@@ -84,37 +84,14 @@ export class AsyncReplyMessageDocumentView extends React.PureComponent<{ message
                     </ASFlex>}
                 </ASFlex>
 
-                {/* Ugly fix - text overflows parent if flexDirection="row" is somewhere above in hierarchy */}
-                <ASFlex
-                    overlay={true}
-                    flexDirection="column"
-                    marginTop={12}
-                    marginLeft={60}
-                    marginRight={this.props.parent.isOut ? 10 : 12}
-                    marginBottom={10}
-                >
-                    <ASText
-                        color={this.props.parent.isOut ? '#ffffff' : '#000000'}
-                        height={18}
-                        fontSize={15}
-                        lineHeight={18}
-                        numberOfLines={1}
-                    >
-                        {this.props.message.file!!.fileName}{this.props.message.isOut ? paddedTextOut : paddedText}
-                    </ASText>
-                </ASFlex>
-
                 <ASFlex
                     flexGrow={1}
                     flexDirection="column"
-                    marginTop={12}
                     marginBottom={12}
                     marginRight={14}
-                    alignSelf="center"
                 >
-                    {/* Ugly fix - text overflows parent if flexDirection="row" is somewhere above in hierarchy */}
                     <ASText
-                        color="rgba(0,0,1,0)"
+                        color={this.props.parent.isOut ? '#ffffff' : '#000000'}
                         height={18}
                         fontSize={15}
                         lineHeight={18}

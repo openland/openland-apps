@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as humanize from 'humanize';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XStorageContext } from 'openland-x-routing/XStorageContext';
 import moment from 'moment-timezone';
 

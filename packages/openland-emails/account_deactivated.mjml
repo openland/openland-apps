@@ -16,7 +16,7 @@
                     The account&nbsp;of <strong>{{organizationName}}</strong> was deactivated by&nbsp;Openland staff. To&nbsp;contact support, simply reply to&nbsp;this email.
                 </mj-text>
 
-                <mj-button mj-class="button" href="https://app.openland.com/">Visit Openland</mj-button>
+                <mj-button mj-class="button" href="https://openland.com/">Visit Openland</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/footer-registered.mjml" />

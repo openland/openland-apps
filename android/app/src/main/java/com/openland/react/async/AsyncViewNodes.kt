@@ -7,6 +7,11 @@ import com.facebook.yoga.YogaAlign
 import com.facebook.yoga.YogaEdge
 import com.openland.react.async.views.*
 import dk.madslee.imageCapInsets.utils.NinePatchBitmapFactory
+import android.graphics.PorterDuff
+import android.R.color
+import android.graphics.PorterDuffColorFilter
+
+
 
 fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, style: AsyncViewStyle): Component {
     var res = component
@@ -38,14 +43,18 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
 
     if (style.backgroundPatch != null) {
         val scale = style.backgroundPatch!!.scale
-        res.background(NinePatchBitmapFactory.createNinePathWithCapInsets(
+        val bg = NinePatchBitmapFactory.createNinePathWithCapInsets(
                 context.resources,
                 style.backgroundPatch!!.source,
                 (scale * style.backgroundPatch!!.top).toInt(),
                 (scale * style.backgroundPatch!!.left).toInt(),
                 style.backgroundPatch!!.source!!.height - (scale * style.backgroundPatch!!.bottom).toInt(),
                 style.backgroundPatch!!.source!!.width - (scale * style.backgroundPatch!!.right).toInt(),
-                null))
+                null)
+        if(style.backgroundPatchTintColor !== null){
+            bg.colorFilter = PorterDuffColorFilter(style.backgroundPatchTintColor!!, PorterDuff.Mode.SRC_IN)
+        }
+        res.background(bg)
     } else {
         style.backgroundColor?.let {
             if (style.borderRadius != null) {

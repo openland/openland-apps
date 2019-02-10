@@ -11,7 +11,7 @@ import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { XButton } from 'openland-x/XButton';
 import { XSelect } from 'openland-x/XSelect';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import {
     NotificationMessages,
     Settings_settings,

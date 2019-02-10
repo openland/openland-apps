@@ -55,3 +55,13 @@ declare module 'react-native-dialogs' {
     export function prompt(title?: string | null, content?: string | null, options?: { content?: string | null }): Promise<{ action: string, text: string }>
 }
 
+
+
+declare namespace JSX {
+    interface IntrinsicElements {
+        tview: any
+        tif: any
+        ttext: any
+        ttextbind: any
+    }
+}

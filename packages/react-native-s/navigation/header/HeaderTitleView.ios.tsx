@@ -85,7 +85,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                         <SEquisiteCentered style={{ width: '100%' }}>
                             <SAnimated.View name={'header-left--' + v.page.key} pointerEvents={'box-none'}>
                                 {(!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                                {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
+                                {(!this.props.manager.parent || this.props.page.page.startIndex !== 0) && <SBackButton onPress={this.props.manager.pop} tintColor={this.props.page.config.accentColor || this.props.style.accentColor} />}
                             </SAnimated.View>
                             <SAnimated.View name={'header-title--' + v.page.key} style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0, flexDirection: 'column' }}>
                                 {!v.config.titleView && v.config.title && <Text numberOfLines={1} style={[styles.title, { color: this.props.style.textColor }]}>{v.config.title}</Text>}

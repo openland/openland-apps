@@ -8,7 +8,7 @@ import { TextDirectory } from 'openland-text/TextDirectory';
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/Components';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from '../../../../components/Navigation';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {

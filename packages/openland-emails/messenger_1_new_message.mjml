@@ -16,7 +16,7 @@
                     You have a&nbsp;message from <strong>{{firstName}} {{lastName}}</strong>. Visit Openland to&nbsp;see it&nbsp;now.
                 </mj-text>
 
-                <mj-button mj-class="button" href="https://app.openland.com/mail">View message</mj-button>
+                <mj-button mj-class="button" href="https://openland.com/mail">View message</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/install-app.mjml" />

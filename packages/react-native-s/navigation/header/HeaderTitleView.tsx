@@ -94,7 +94,6 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
 
     render() {
         let v = this.props.page;
-        console.warn('fooo', this.props.manager.parent, this.props.page.page.startIndex);
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
         title = (v.config.titleView && v.config.titleView()) || title;
         return (

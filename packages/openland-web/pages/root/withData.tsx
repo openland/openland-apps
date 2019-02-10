@@ -4,7 +4,7 @@ import { getToken } from 'openland-x-graphql/auth';
 import Head from 'next/head';
 import { apolloClient } from 'openland-x-graphql/apolloClient';
 import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { getDataFromTree } from 'react-apollo';
 import { SharedStorage, getServerStorage, getClientStorage } from 'openland-x-utils/SharedStorage';
 import { isPageChanged } from 'openland-x-routing/NextRouting';

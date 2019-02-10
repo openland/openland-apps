@@ -24,6 +24,7 @@ import LinkIcon from 'openland-icons/ic-link.svg';
 import EmailIcon from 'openland-icons/ic-email.svg';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { withAppInvite } from '../../../../api/withAppInvite';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,
@@ -246,7 +247,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                                 (this.props.appInvite || this.props.invite!.key)
                             }
                         />
-                        <InviteText>Anyone with the link will be able to join</InviteText>
+                        <InviteText>Anyone with link can join Openland</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -260,37 +261,39 @@ const RenewButton = Glamorous(XButton)({
 
 const RenewInviteLinkButton = withPublicInvite(props => (
     <XMutation mutation={props.createPublicInvite}>
-        <RenewButton text="Renew link" style="link" />
+        <RenewButton text="Revoke link" style="link" />
     </XMutation>
-));
+)) as React.ComponentType<{
+    variables: { organizationId: string };
+    refetchVars: { organizationId: string };
+}>;
 
 const OwnerLink = withPublicInvite(
     withRouter(props => (
         <OwnerLinkComponent
             ref={(props as any).innerRef}
-            router={props.router}
             invite={props.data ? props.data.publicInvite : null}
             organization={false}
+            router={props.router}
         />
     )),
 ) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
-const OwnerLinkOrganization = withAppInvite(
-    withRouter(props => (
-        <OwnerLinkComponent
-            ref={(props as any).innerRef}
-            router={props.router}
-            appInvite={props.data ? props.data.invite : null}
-            organization={true}
-        />
-    )),
-) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
+const OwnerLinkOrganization = withAppInvite(props => (
+    <OwnerLinkComponent
+        ref={(props as any).innerRef}
+        appInvite={props.data ? props.data.invite : null}
+        organization={true}
+        router={props.router}
+    />
+)) as React.ComponentType<{ onBack: () => void; innerRef: any }>;
 
 interface InvitesModalRawProps {
     organizationId: string;
     mutation?: any;
     useRoles?: boolean;
     global: boolean;
+    isMobile: boolean;
 }
 
 interface InvitesModalRawState {
@@ -337,7 +340,7 @@ class InvitesModalRaw extends React.Component<
     };
 
     render() {
-        let { mutation, submitProps, organizationId, ...modalFormProps } = this.props;
+        let { mutation, submitProps, organizationId, isMobile, ...modalFormProps } = this.props;
 
         let footer = (
             <FooterWrap>
@@ -353,18 +356,25 @@ class InvitesModalRaw extends React.Component<
                             />
                         </XWithRole>
                     )}
-                    {this.state.showLink && !this.props.global && (
-                        <InviteButton
-                            onClick={() => this.setState({ showLink: false })}
-                            icon={<EmailIcon />}
-                            marginLeft={4}
-                            marginRight={10}
-                            title={TextInvites.backToEmailInvites}
-                        />
-                    )}
+                    {this.state.showLink &&
+                        !this.props.global && (
+                            <InviteButton
+                                onClick={() => this.setState({ showLink: false })}
+                                icon={<EmailIcon />}
+                                marginLeft={4}
+                                marginRight={10}
+                                title={TextInvites.backToEmailInvites}
+                            />
+                        )}
                 </XHorizontal>
 
-                {this.state.showLink && !this.props.global && <RenewInviteLinkButton />}
+                {this.state.showLink &&
+                    !this.props.global && (
+                        <RenewInviteLinkButton
+                            variables={{ organizationId: this.props.organizationId }}
+                            refetchVars={{ organizationId: this.props.organizationId }}
+                        />
+                    )}
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
@@ -390,6 +400,8 @@ class InvitesModalRaw extends React.Component<
                 autoClose={1500}
                 useTopCloser={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
+                flexGrow={isMobile ? 1 : undefined}
+                maxHeight={isMobile ? '100%' : undefined}
                 defaultAction={async data => {
                     if (!this.state.showLink) {
                         let invites = data.inviteRequests
@@ -486,18 +498,20 @@ class InvitesModalRaw extends React.Component<
                             )}
                         </XVertical>
                     )}
-                    {this.state.showLink && !this.props.global && (
-                        <OwnerLink
-                            innerRef={this.handleLinkComponentRef}
-                            onBack={() => this.setState({ showLink: false })}
-                        />
-                    )}
-                    {this.state.showLink && this.props.global && (
-                        <OwnerLinkOrganization
-                            innerRef={this.handleLinkComponentRef}
-                            onBack={() => this.setState({ showLink: false })}
-                        />
-                    )}
+                    {this.state.showLink &&
+                        !this.props.global && (
+                            <OwnerLink
+                                innerRef={this.handleLinkComponentRef}
+                                onBack={() => this.setState({ showLink: false })}
+                            />
+                        )}
+                    {this.state.showLink &&
+                        this.props.global && (
+                            <OwnerLinkOrganization
+                                innerRef={this.handleLinkComponentRef}
+                                onBack={() => this.setState({ showLink: false })}
+                            />
+                        )}
                 </ModalContentWrapper>
             </XModalForm>
         );
@@ -519,6 +533,7 @@ export const InvitesToOrganizationModal = withOrganizationInviteMembers(props =>
             routeQuery: { organizationId },
         },
     } = props as typeof props & InvitesToOrganizationModalProps;
+    const { isMobile } = React.useContext(MobileSidebarContext);
 
     return (
         <InvitesModalRaw
@@ -526,6 +541,7 @@ export const InvitesToOrganizationModal = withOrganizationInviteMembers(props =>
             mutation={sendInvite}
             targetQuery={targetQuery}
             target={target}
+            isMobile={isMobile}
             title={TextInvites.modalTitle}
             submitProps={{ text: TextInvites.modalAction }}
             global={false}
@@ -541,12 +557,14 @@ type InvitesGlobalModalProps = {
 
 export const InvitesGlobalModal = (props: InvitesGlobalModalProps) => {
     const { targetQuery, target } = props as typeof props & InvitesGlobalModalProps;
+    const { isMobile } = React.useContext(MobileSidebarContext);
 
     return (
         <InvitesModalRaw
             organizationId={'primary'}
             targetQuery={targetQuery}
             target={target}
+            isMobile={isMobile}
             title={TextInvites.modalGlobalTitle}
             submitProps={{ text: TextInvites.modalGloabalAction }}
             useRoles={false}

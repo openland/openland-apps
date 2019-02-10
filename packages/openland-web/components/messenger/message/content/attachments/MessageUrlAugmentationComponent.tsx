@@ -162,7 +162,14 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
                 />
             );
         } else {
-            return <span key={'text-' + i}>{emoji(v.text!!, 18)}</span>;
+            return (
+                <span key={'text-' + i}>
+                    {emoji({
+                        src: v.text!!,
+                        size: 18,
+                    })}
+                </span>
+            );
         }
     });
 

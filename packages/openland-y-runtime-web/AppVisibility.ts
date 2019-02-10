@@ -1,5 +1,5 @@
 import { backoff } from 'openland-y-utils/timer';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { AppVisibilityApi } from 'openland-y-runtime-api/AppVisibilityApi';
 
 class AppVisibilityWeb implements AppVisibilityApi {

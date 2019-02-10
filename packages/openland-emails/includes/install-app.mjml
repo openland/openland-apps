@@ -18,7 +18,7 @@
                     <a href="https://oplnd.com/android" style="display: inline-block; vertical-align: top; margin-top: 1px; margin-right: 18px; margin-bottom: 18px;">
                         <img src="https://cdn.openland.com/shared/email/googleplay-2@2x.png" width="108" height="32" />
                     </a>
-                    <a href="https://app.openland.com/settings/notifications" style="display: inline-block; vertical-align: top; margin-bottom: 18px; border-radius: 5px; color: #000000; border: 1px solid rgba(0, 0, 0, 0.17); padding: 9px 12px; font-size: 12px; line-height: 14px; text-decoration: none;">Email settings</a>
+                    <a href="https://openland.com/settings/notifications" style="display: inline-block; vertical-align: top; margin-bottom: 18px; border-radius: 5px; color: #000000; border: 1px solid rgba(0, 0, 0, 0.17); padding: 9px 12px; font-size: 12px; line-height: 14px; text-decoration: none;">Email settings</a>
                 </div>
             </div>
         </mj-text>

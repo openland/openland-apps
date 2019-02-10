@@ -16,7 +16,7 @@
                     {{text}} Visit Openland to&nbsp;see them now.
                 </mj-text>
 
-                <mj-button mj-class="button" href="https://app.openland.com/mail">View messages</mj-button>
+                <mj-button mj-class="button" href="https://openland.com/mail">View messages</mj-button>
             </mj-column>
         </mj-section>
         <mj-include path="./includes/install-app.mjml" />

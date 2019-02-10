@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
+import { ConversationTheme } from '../themes/ConversationThemeResolver';
 
 let styles = StyleSheet.create({
     textInput: {
@@ -33,6 +34,7 @@ export interface MessageInputBarProps {
     enabled?: boolean;
     attachesEnabled?: boolean;
     text: string;
+    theme: ConversationTheme;
 }
 
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
@@ -46,7 +48,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress}>
                                 <View width={48} height={50} alignItems="center" justifyContent="center">
-                                    <View width={30} height={30} borderRadius={24} backgroundColor="#0084fe" alignItems="center" justifyContent="center">
+                                    <View width={30} height={30} borderRadius={24} backgroundColor={this.props.theme.mainColor} alignItems="center" justifyContent="center">
                                         <Image source={iconAttach} style={{ width: 24, height: 24, tintColor: '#fff' }} />
                                     </View>
                                 </View>
@@ -68,7 +70,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         />
                         <TouchableOpacity disabled={!hasText} onPress={this.props.onSubmitPress}>
                             <View alignItems="center" justifyContent="center" width={50} height={50}>
-                                <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && this.props.enabled !== false ? AppStyles.primaryColor : '#C8C7CC' }} />
+                                <Image source={icon} style={{ width: 26, height: 26, tintColor: hasText && this.props.enabled !== false ? this.props.theme.mainColor : '#C8C7CC' }} />
                             </View>
                         </TouchableOpacity>
                     </View>

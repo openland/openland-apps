@@ -7,6 +7,7 @@ import ImageViewCapInsets from 'react-native-image-capinsets';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import { ConversationTheme } from '../themes/ConversationThemeResolver';
 
 let styles = StyleSheet.create({
     textInputContainer: {
@@ -52,6 +53,7 @@ export interface MessageInputBarProps {
     enabled?: boolean;
     attachesEnabled?: boolean;
     text: string;
+    theme: ConversationTheme;
 }
 
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
@@ -77,7 +79,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                     width={30}
                                     height={30}
                                     borderRadius={15}
-                                    backgroundColor="#0084fe"
+                                    backgroundColor={this.props.theme.mainColor}
                                     alignItems="center"
                                     justifyContent="center"
                                 >
@@ -131,7 +133,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                     width={30}
                                     height={30}
                                     borderRadius={30}
-                                    backgroundColor={hasText && this.props.enabled !== false ? '#0084fe' : '#ebebeb'}
+                                    backgroundColor={hasText && this.props.enabled !== false ? this.props.theme.mainColor : '#ebebeb'}
                                     marginHorizontal={6}
                                 >
                                     <Image

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { preprocessText } from '../../../../utils/TextProcessor';
-import { MessageFull_mentions, MessageFull_alphaMentions } from 'openland-api/Types';
+import { MessageFull_alphaMentions } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { isEmoji } from '../../../../utils/isEmoji';
@@ -125,7 +125,8 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
             );
         } else {
             let mentions = preprocessMentions(v.text!, null, props.mentions);
-            let smileSize = isBig ? 44 : 18;
+            let smileSize: 44 | 14 = isBig ? 44 : 14;
+
             let res: any[] = [];
             let i2 = 0;
             for (let m of mentions) {
@@ -135,7 +136,10 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                             className={isInsane ? styleInsane : undefined}
                             key={'text-' + i + '-' + i2}
                         >
-                            {emoji(m.text, smileSize)}
+                            {emoji({
+                                src: m.text,
+                                size: smileSize,
+                            })}
                         </span>,
                     );
                 } else {
@@ -146,7 +150,10 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
                             user={m.user}
                             hasPopper={true}
                         >
-                            {emoji(m.text, smileSize)}
+                            {emoji({
+                                src: m.text,
+                                size: smileSize,
+                            })}
                         </MentionComponentInner>,
                     );
                 }
