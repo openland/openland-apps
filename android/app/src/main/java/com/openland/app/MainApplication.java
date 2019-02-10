@@ -34,7 +34,6 @@ import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 
 
-import com.microsoft.codepush.react.CodePush;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.facebook.react.ReactNativeHost;
@@ -73,7 +72,6 @@ public class MainApplication extends Application implements ReactApplication {
                     new FastImageViewPackage(),
                     new RNFetchBlobPackage(),
                     new ImagePickerPackage(),
-                    new CodePush("", getApplicationContext(), true),
                     new RNDeviceInfo(),
                     new ReactNativePushNotificationPackage(),
                     new RNSPackage()

@@ -208,7 +208,6 @@ dependencies {
     compile project(':react-native-fast-image')
     compile project(':rn-fetch-blob')
     compile project(':react-native-image-picker')
-    compile project(':react-native-code-push')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
     compile fileTree(include: ['*.jar'], dir: 'libs')
