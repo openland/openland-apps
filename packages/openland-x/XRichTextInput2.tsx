@@ -11,7 +11,7 @@ import {
     DraftHandleValue,
 } from 'draft-js';
 
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { extractFlexProps, XFlexStyles, applyFlex } from './basics/Flex';
 import Glamorous from 'glamorous';
 

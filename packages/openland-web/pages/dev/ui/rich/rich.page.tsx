@@ -15,7 +15,7 @@ import { XVertical } from 'openland-x-layout/XVertical';
 import { XTitle } from 'openland-x/XTitle';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
-import { canUseDOM } from 'openland-x-utils/canUseDOM';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const findActiveWordStart = (state: EditorState): number => {
     let content = state.getCurrentContent();
