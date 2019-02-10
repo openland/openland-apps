@@ -2,35 +2,39 @@ import * as React from 'react';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { isServerMessage } from 'openland-engines/messenger/types';
 import { UserShort } from 'openland-api/Types';
+import { QuoteStateT } from './useQuote';
+import {
+    MessagesStateContext,
+    MessagesStateContextProps,
+} from '../../components/messenger/MessagesStateContext';
+import { InputMethodsStateT } from './useInputMethods';
 
 export function useKeydownHandler({
-    forwardMessagesId,
-    setEditMessage,
     inputValue,
-    quoteMessagesId,
-    hasFocus,
+    inputMethodsState,
+    quoteState,
     conversation,
     user,
 }: {
-    forwardMessagesId: Set<string>;
-    setEditMessage: (id: string | null, message: string | null) => void;
+    inputMethodsState: InputMethodsStateT;
     inputValue: string;
-    quoteMessagesId: string[];
-    hasFocus: () => boolean;
+    quoteState: QuoteStateT;
     conversation?: ConversationEngine;
     user: UserShort | null;
 }) {
+    const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
+
     const keydownHandler = (e: any) => {
-        if (forwardMessagesId && forwardMessagesId.size > 0) {
+        if (messagesContext.forwardMessagesId && messagesContext.forwardMessagesId.size > 0) {
             return;
         }
 
         if (
             inputValue.length === 0 &&
             conversation &&
-            ((e.code === 'ArrowUp' && !e.altKey && hasFocus()) ||
+            ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.hasFocus()) ||
                 (e.code === 'KeyE' && e.ctrlKey)) &&
-            !quoteMessagesId
+            !quoteState.quoteMessagesId
         ) {
             let messages = conversation
                 .getState()
@@ -40,7 +44,7 @@ export function useKeydownHandler({
             let messageData = messages[messages.length - 1];
             if (messageData && isServerMessage(messageData)) {
                 e.preventDefault();
-                setEditMessage(messageData.id, messageData.message);
+                messagesContext.setEditMessage(messageData.id, messageData.message);
             }
         }
     };

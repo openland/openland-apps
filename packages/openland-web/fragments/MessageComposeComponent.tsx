@@ -22,7 +22,7 @@ import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { ShortcutsModal } from '../components/messenger/view/ShortcutsModal';
-import { DropZone } from './DropZone';
+import { DropZone } from './MessageComposeComponent/FileUploading/DropZone';
 import { withUserInfo, UserInfo } from '../components/UserInfo';
 import {
     MessagesStateContext,
@@ -376,8 +376,8 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                    ? props.handleHideChat
-                    : undefined;
+                ? props.handleHideChat
+                : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -671,7 +671,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                     file: file,
                     fileSrc: reader.result,
                     fileName: null,
-                });
+                } as any);
             } else {
                 this.setState({
                     file: file,
@@ -914,18 +914,17 @@ class MessageComposeComponentInner extends React.PureComponent<
                 <DropZone height="calc(100% - 115px)" onFileDrop={this.handleDrop} />
                 <SendMessageContent separator={4} alignItems="center">
                     <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {stateMessage &&
-                            forwardMessageId && (
-                                <EditView
-                                    message={stateMessage}
-                                    title={
-                                        forwardMessageSender !== undefined
-                                            ? forwardMessageSender
-                                            : 'Edit message'
-                                    }
-                                    onCancel={this.closeEditor}
-                                />
-                            )}
+                        {stateMessage && forwardMessageId && (
+                            <EditView
+                                message={stateMessage}
+                                title={
+                                    forwardMessageSender !== undefined
+                                        ? forwardMessageSender
+                                        : 'Edit message'
+                                }
+                                onCancel={this.closeEditor}
+                            />
+                        )}
                         <TextInputWrapper>
                             <XRichTextInput
                                 mentionsData={mentionsData}
@@ -1001,33 +1000,31 @@ class MessageComposeComponentInner extends React.PureComponent<
                                 enabled={this.props.enabled !== false}
                             />
                         </XHorizontal>
-                        {file &&
-                            fileSrc && (
-                                <CoverWrapper>
-                                    <img src={fileSrc} />
-                                    <CoverDelButton onClick={this.fileRemover}>
+                        {file && fileSrc && (
+                            <CoverWrapper>
+                                <img src={fileSrc} />
+                                <CoverDelButton onClick={this.fileRemover}>
+                                    <RemoveIcon />
+                                </CoverDelButton>
+                            </CoverWrapper>
+                        )}
+                        {file && fileName && (
+                            <FileItem key={'file' + fileName} separator={4} alignItems="center">
+                                <FileImage />
+                                <XHorizontal alignItems="center" separator={4}>
+                                    <div>
+                                        {fileName} <span>•</span> {niceBytes(Number(file.size))}
+                                    </div>
+                                    <XHorizontal
+                                        alignItems="center"
+                                        className="remove"
+                                        onClick={this.fileRemover}
+                                    >
                                         <RemoveIcon />
-                                    </CoverDelButton>
-                                </CoverWrapper>
-                            )}
-                        {file &&
-                            fileName && (
-                                <FileItem key={'file' + fileName} separator={4} alignItems="center">
-                                    <FileImage />
-                                    <XHorizontal alignItems="center" separator={4}>
-                                        <div>
-                                            {fileName} <span>•</span> {niceBytes(Number(file.size))}
-                                        </div>
-                                        <XHorizontal
-                                            alignItems="center"
-                                            className="remove"
-                                            onClick={this.fileRemover}
-                                        >
-                                            <RemoveIcon />
-                                        </XHorizontal>
                                     </XHorizontal>
-                                </FileItem>
-                            )}
+                                </XHorizontal>
+                            </FileItem>
+                        )}
                     </XVertical>
                 </SendMessageContent>
                 <PostIntroModal

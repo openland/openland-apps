@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XThemeDefault } from 'openland-x/XTheme';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';

@@ -4,7 +4,6 @@ import { css } from 'linaria';
 import { OnChangeHandler, Option, OptionValues } from 'react-select';
 import { Router } from '../routes';
 import { MessageComposeComponent } from './MessageComposeComponent/MessageComposeComponentDesktop';
-import { MessagesContainer } from '../components/messenger/view/MessagesContainer';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';

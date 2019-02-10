@@ -1,33 +1,62 @@
+import { MutationFunc } from 'react-apollo';
+import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
 import { MessageFull } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { ReplyMessageVariables, ReplyMessage, RoomMembers_members } from 'openland-api/Types';
-import { MutationFunc } from 'react-apollo';
-import { getMentions } from './MessageComposeComponentDesktop';
+import { QuoteStateT } from './useQuote';
+import { MentionsStateT } from './useMentions';
 
-export function useReply({
-    conversationId,
-    quoteMessagesId,
-    replyMessage,
-    getMessages,
-    listOfMembersNames,
-    members,
-    inputValue,
-}: {
-    quoteMessagesId: string[];
+export type useReplyPropsT = {
+    replyMessage?: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     conversationId?: string;
-    replyMessage: MutationFunc<ReplyMessage, Partial<ReplyMessageVariables>>;
     getMessages?: () => ModelMessage[];
     members?: RoomMembers_members[];
-    listOfMembersNames: string[];
+    mentionsState?: MentionsStateT;
+    quoteState?: QuoteStateT;
     inputValue: string;
-}) {
+};
+
+export function useReply({
+    quoteState,
+    inputValue,
+    mentionsState,
+    replyMessage,
+    members,
+    getMessages,
+    conversationId,
+}: useReplyPropsT) {
+    const supportReply = () => {
+        return !!replyMessage;
+    };
+
+    const supportMentions = () => {
+        return !!mentionsState && !!members;
+    };
+
+    const finalQuoteMessagesId = quoteState ? quoteState.quoteMessagesId || [] : [];
+    if (supportReply()) {
+        return {
+            replyMessagesProc: () => {
+                console.log('reply is not supported');
+            },
+        };
+    }
+
     const replyMessagesProc = () => {
-        if (quoteMessagesId.length > 0) {
-            let mentions = getMentions(inputValue, listOfMembersNames, members);
+        if (finalQuoteMessagesId.length > 0) {
+            let mentions = null;
+            // TODO simplify here
+            if (supportMentions() && mentionsState!!.getMentions) {
+                mentions = mentionsState!!.getMentions(
+                    inputValue,
+                    mentionsState!!.listOfMembersNames!!,
+                    members,
+                );
+            }
+
             const currentMessages = getMessages ? getMessages() : [];
 
             const messagesToReply = currentMessages.filter(
-                (item: MessageFull) => quoteMessagesId.indexOf(item.id) !== -1,
+                (item: MessageFull) => finalQuoteMessagesId.indexOf(item.id) !== -1,
             );
 
             const replyMentions = messagesToReply.reduce(
@@ -44,15 +73,15 @@ export function useReply({
 
                     return accumulator;
                 },
-                mentions ? mentions.map(({ id }) => id) : [],
+                mentions ? mentions.map(({ id }: any) => id) : [],
             );
 
-            replyMessage({
+            replyMessage!!({
                 variables: {
                     roomId: conversationId,
                     message: inputValue,
                     mentions: replyMentions,
-                    replyMessages: quoteMessagesId,
+                    replyMessages: finalQuoteMessagesId,
                 },
             });
         }

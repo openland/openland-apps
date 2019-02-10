@@ -3,6 +3,16 @@ import { SaveDraftMessageVariables, SaveDraftMessage } from 'openland-api/Types'
 import { MutationFunc } from 'react-apollo';
 import * as DraftStore from './DraftStore';
 
+export type DraftStateT = {
+    getNextDraft: Function;
+    beDrafted: boolean;
+    setBeDrafted: Function;
+    getDefaultValue: Function;
+    changeDraft: Function;
+    cleanDraft: Function;
+};
+
+// TODO decalare state object
 export function useDraft({
     conversationId,
     saveDraft,

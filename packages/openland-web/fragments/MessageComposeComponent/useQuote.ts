@@ -8,6 +8,15 @@ import {
     getQuoteMessageSender,
 } from '../../components/messenger/MessagesStateContext';
 
+export type QuoteStateT = {
+    setQuoteMessageReply?: Function;
+    setQuoteMessageSender?: Function;
+    setQuoteMessagesId?: Function;
+    quoteMessageReply?: any;
+    quoteMessageSender?: any;
+    quoteMessagesId?: string[];
+};
+
 export function useQuote({ conversationId }: { conversationId?: string }) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
@@ -31,19 +40,13 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
         }
     };
 
-    React.useEffect(
-        () => {
-            updateQuote();
-        },
-        [messagesContext.replyMessages],
-    );
+    React.useEffect(() => {
+        updateQuote();
+    }, [messagesContext.replyMessages]);
 
-    React.useEffect(
-        () => {
-            updateQuote();
-        },
-        [conversationId],
-    );
+    React.useEffect(() => {
+        updateQuote();
+    }, [conversationId]);
 
     return {
         quoteMessagesId,

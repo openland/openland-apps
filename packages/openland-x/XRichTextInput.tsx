@@ -61,59 +61,6 @@ const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element
     return getRelativeParent(element.parentElement!!);
 };
 
-const emojiPlugin = createEmojiPlugin({
-    selectButtonContent: <EmojiIcon />,
-    positionSuggestions: (args: any) => {
-        let { state, filteredEmojis, popover, decoratorRect } = args;
-        const relativeParent = getRelativeParent(popover.parentElement);
-        let relativeRect: any = {};
-        if (relativeParent) {
-            relativeRect.scrollLeft = relativeParent.scrollLeft;
-            relativeRect.scrollTop = relativeParent.scrollTop;
-
-            const relativeParentRect = relativeParent.getBoundingClientRect();
-            relativeRect.left = decoratorRect.left - relativeParentRect.left;
-            relativeRect.top =
-                decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
-            console.warn(relativeParentRect);
-        } else {
-            relativeRect.scrollTop =
-                window.pageYOffset ||
-                (document.documentElement ? document.documentElement.scrollTop : undefined);
-            relativeRect.scrollLeft =
-                window.pageXOffset ||
-                (document.documentElement ? document.documentElement.scrollLeft : undefined);
-
-            relativeRect.top = decoratorRect.top;
-            relativeRect.left = decoratorRect.left;
-        }
-
-        const left = relativeRect.left + relativeRect.scrollLeft;
-        const top = relativeRect.top - relativeRect.scrollTop + 8;
-
-        let transform;
-        let transition;
-        if (state.isActive) {
-            if (filteredEmojis.size > 0) {
-                transform = 'scale(1)';
-                transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
-            } else {
-                transform = 'scale(0)';
-                transition = 'all 0.35s cubic-bezier(.3,1,.2,1)';
-            }
-        }
-
-        return {
-            left: `${left}px`,
-            bottom: `${top}px`,
-            transform,
-            transformOrigin: '1em 0%',
-            transition,
-        };
-    },
-});
-const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
-
 const Container = Glamorous.div<XFlexStyles>([
     {
         position: 'relative',
@@ -178,12 +125,12 @@ export const MentionComponentInnerText = Glamorous.span(
     ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
         const paddings = inCompose
             ? {
-                paddingTop: 1,
-                paddingBottom: 1,
-                paddingLeft: 4,
-                paddingRight: 4,
-                borderRadius: 5,
-            }
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  borderRadius: 5,
+              }
             : {};
 
         if (isYou) {
@@ -216,25 +163,6 @@ export class MentionComponentInner extends React.Component<MentionComponentInner
         }
     }
 }
-
-const mentionPlugin = createMentionPlugin({
-    mentionPrefix: '@',
-    mentionTrigger: '@',
-    entityMutability: 'IMMUTABLE',
-    positionSuggestions,
-
-    mentionComponent: (props: any) => {
-        return (
-            <MentionComponentInner
-                isYou={props.mention.isYou}
-                className={props.className}
-                inCompose
-            >
-                {props.children}
-            </MentionComponentInner>
-        );
-    },
-});
 
 const MentionSuggestionsWrapper = Glamorous.div(({ width }: any) => ({
     '& ': {
@@ -333,7 +261,6 @@ export const MentionEntry = (props: any) => {
     );
 };
 
-const { MentionSuggestions } = mentionPlugin;
 export interface XRichTextInputProps extends XFlexStyles {
     onChange?: (value: string) => void;
     value: string;
@@ -352,26 +279,111 @@ type XRichTextInputState = {
 };
 
 /// End Mentions
-export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRichTextInputState> {
+import { convertToRaw } from 'draft-js';
+
+export class XRichTextInput extends React.Component<XRichTextInputProps, XRichTextInputState> {
+    mentionPlugin: any;
+    emojiPlugin: any;
     private editorRef = React.createRef<Editor>();
     private containerRef = React.createRef<ContainerWrapper>();
-
-    constructor(props: XRichTextInputProps) {
+    constructor(props: any) {
         super(props);
+
+        this.mentionPlugin = createMentionPlugin({
+            mentionPrefix: '@',
+            mentionTrigger: '@',
+            entityMutability: 'IMMUTABLE',
+            positionSuggestions,
+            mentionComponent: (myProps: any) => {
+                return (
+                    <MentionComponentInner
+                        isYou={myProps.mention.isYou}
+                        className={myProps.className}
+                        inCompose
+                    >
+                        {myProps.children}
+                    </MentionComponentInner>
+                );
+            },
+        });
+
+        this.emojiPlugin = createEmojiPlugin({
+            selectButtonContent: <EmojiIcon />,
+            positionSuggestions: (args: any) => {
+                let { state, filteredEmojis, popover, decoratorRect } = args;
+                const relativeParent = getRelativeParent(popover.parentElement);
+                let relativeRect: any = {};
+                if (relativeParent) {
+                    relativeRect.scrollLeft = relativeParent.scrollLeft;
+                    relativeRect.scrollTop = relativeParent.scrollTop;
+
+                    const relativeParentRect = relativeParent.getBoundingClientRect();
+                    relativeRect.left = decoratorRect.left - relativeParentRect.left;
+                    relativeRect.top =
+                        decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
+                    console.warn(relativeParentRect);
+                } else {
+                    relativeRect.scrollTop =
+                        window.pageYOffset ||
+                        (document.documentElement ? document.documentElement.scrollTop : undefined);
+                    relativeRect.scrollLeft =
+                        window.pageXOffset ||
+                        (document.documentElement
+                            ? document.documentElement.scrollLeft
+                            : undefined);
+
+                    relativeRect.top = decoratorRect.top;
+                    relativeRect.left = decoratorRect.left;
+                }
+
+                const left = relativeRect.left + relativeRect.scrollLeft;
+                const top = relativeRect.top - relativeRect.scrollTop + 8;
+
+                let transform;
+                let transition;
+                if (state.isActive) {
+                    if (filteredEmojis.size > 0) {
+                        transform = 'scale(1)';
+                        transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
+                    } else {
+                        transform = 'scale(0)';
+                        transition = 'all 0.35s cubic-bezier(.3,1,.2,1)';
+                    }
+                }
+
+                return {
+                    left: `${left}px`,
+                    bottom: `${top}px`,
+                    transform,
+                    transformOrigin: '1em 0%',
+                    transition,
+                };
+            },
+        });
 
         this.state = {
             widthOfContainer: 200,
             suggestions: this.props.mentionsData || [],
-            editorState: EditorState.createWithContent(ContentState.createFromText(props.value)),
+            editorState: EditorState.createEmpty(),
             plainText: props.value,
         };
     }
 
-    componentDidMount() {
-        if (this.props.autofocus) {
-            this.focus();
+    onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
+        if (command === 'x-editor-submit') {
+            if (this.props.onSubmit) {
+                this.props.onSubmit();
+                return 'handled';
+            }
         }
-    }
+        return 'not-handled';
+    };
+
+    onChange = (editorState: any) => {
+        this.setState({
+            editorState,
+        });
+    };
 
     onSearchChange = ({ value }: any) => {
         const mentionsData = this.props.mentionsData || [];
@@ -387,7 +399,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             this.setState({
                 editorState: EditorState.moveFocusToEnd(this.state.editorState),
             });
-
             if (this.editorRef.current) {
                 this.editorRef.current.focus();
             }
@@ -423,31 +434,6 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
         });
     };
 
-    onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
-        if (command === 'x-editor-submit') {
-            if (this.props.onSubmit) {
-                this.props.onSubmit();
-                return 'handled';
-            }
-        }
-        return 'not-handled';
-    };
-
-    onChange = (editorState: EditorState) => {
-        const plainText = editorState.getCurrentContent().getPlainText();
-        this.setState(
-            {
-                editorState,
-                plainText,
-            },
-            () => {
-                if (this.props.onChange) {
-                    this.props.onChange(plainText);
-                }
-            },
-        );
-    };
-
     onPasteFiles = (data: any) => {
         let file = data[0];
         if (!file) {
@@ -464,11 +450,13 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
         if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(
-                    EditorState.createWithContent(ContentState.createFromText(nextValue)),
-                ),
-                plainText: nextValue,
+            window.requestAnimationFrame(() => {
+                this.setState({
+                    editorState: EditorState.moveFocusToEnd(
+                        EditorState.createWithContent(ContentState.createFromText(nextValue)),
+                    ),
+                    plainText: nextValue,
+                });
             });
         }
     }
@@ -479,22 +467,22 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
             this.containerRef.current &&
             (ReactDOM.findDOMNode(this.containerRef.current) as Element);
         const widthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
-        this.setState({
-            widthOfContainer,
-        });
+
+        if (this.state.widthOfContainer !== widthOfContainer) {
+            this.setState({
+                widthOfContainer,
+            });
+        }
     }
 
     render() {
+        const { MentionSuggestions } = this.mentionPlugin;
+        const { EmojiSuggestions, EmojiSelect } = this.emojiPlugin;
+        const plugins = [this.emojiPlugin, this.mentionPlugin];
+
         if (canUseDOM) {
             return (
                 <ContainerWrapper {...extractFlexProps(this.props)} ref={this.containerRef}>
-                    <MentionSuggestionsWrapper width={this.state.widthOfContainer}>
-                        <MentionSuggestions
-                            onSearchChange={this.onSearchChange}
-                            suggestions={this.state.suggestions}
-                            entryComponent={MentionEntry}
-                        />
-                    </MentionSuggestionsWrapper>
                     <Editor
                         editorState={this.state.editorState}
                         onChange={this.onChange}
@@ -502,18 +490,23 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
                         keyBindingFn={keyBinding}
                         handleKeyCommand={this.onHandleKey}
                         ref={this.editorRef}
-                        plugins={[emojiPlugin, mentionPlugin]}
+                        plugins={plugins}
                         handlePastedFiles={this.onPasteFiles}
                     />
-
+                    <MentionSuggestionsWrapper width={this.state.widthOfContainer}>
+                        <MentionSuggestions
+                            onSearchChange={this.onSearchChange}
+                            suggestions={this.state.suggestions}
+                            entryComponent={MentionEntry}
+                        />
+                    </MentionSuggestionsWrapper>
                     <EmojiSuggestions />
                     <EmojiWrapper className="emoji-button">
                         <EmojiSelect />
                     </EmojiWrapper>
                 </ContainerWrapper>
             );
-        } else {
-            return <ContainerWrapper {...extractFlexProps(this.props)} />;
         }
+        return <ContainerWrapper {...extractFlexProps(this.props)} />;
     }
 }

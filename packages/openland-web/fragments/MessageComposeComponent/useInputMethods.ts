@@ -1,5 +1,12 @@
 import { XRichTextInput } from 'openland-x/XRichTextInput';
 
+export type InputMethodsStateT = {
+    focus: Function;
+    resetAndFocus: Function;
+    hasFocus: Function;
+    focusIfNeeded: Function;
+};
+
 export function useInputMethods({
     inputRef,
     enabled,
