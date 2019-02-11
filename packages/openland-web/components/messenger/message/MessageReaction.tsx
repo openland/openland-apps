@@ -53,24 +53,23 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 16 }) => {
                 size === 25
                     ? {
                           figureStyle: {
-                              width: 18,
+                              width: 19,
                               marginBottom: -4,
-                              marginLeft: -2,
-                              marginRight: -1,
                           },
                           imgStyle: {
-                              marginLeft: -3,
+                              marginLeft: -2,
+                              marginRight: -1,
                           },
                       }
                     : {
                           figureStyle: {
                               width: 12,
-                              marginLeft: -2,
-                              marginRight: -1,
+
                               marginBottom: -3,
                           },
                           imgStyle: {
                               marginLeft: -2,
+                              marginRight: -1,
                           },
                       },
         });
@@ -82,7 +81,7 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 16 }) => {
                 size === 25
                     ? {
                           figureStyle: {
-                              width: 22,
+                              width: 23,
                               marginBottom: -2,
                           },
                           imgStyle: {
