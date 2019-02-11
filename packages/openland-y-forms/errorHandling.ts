@@ -54,3 +54,20 @@ export class UserError extends Error {
         this.userMessage = message;
     }
 }
+
+export class NamedError extends Error {
+    name: string;
+    code: number | undefined;
+    constructor(message: string) {
+        super(message);
+        this.name = message;
+    }
+}
+
+export class NumberedError extends Error {
+    code?: number;
+    constructor(code: number) {
+        super();
+        this.code = code;
+    }
+}

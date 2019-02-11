@@ -8,8 +8,9 @@ import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
-import { UserError, formatError, SilentError } from 'openland-y-forms/errorHandling';
-import { AlertBlanketBuilder, Alert } from 'openland-mobile/components/AlertBlanket';
+import { UserError, NamedError, NumberedError } from 'openland-y-forms/errorHandling';
+import { ShowAuthError } from './ShowAuthError';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     hint: {
@@ -38,7 +39,11 @@ const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' })
     } else {
         let body = await res.json();
         if (body.ok === false) {
-            throw new UserError(body.errorText || 'Unexpected error');
+            if (body.errorCode) {
+                throw new NumberedError(body.errorCode);
+            } else {
+                throw new UserError(body.errorText || 'Unexpected error');
+            }
         } else {
             return body;
         }
@@ -62,9 +67,21 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                     ref={this.ref}
                     action={async src => {
                         if (!src.email) {
-                            Alert.builder().title('Please enter your email address').button('GOT IT!').show();
-                            throw new SilentError();
+                            throw new NamedError('no_email_or_phone');
                         }
+                        
+                        // email validation start
+
+                        let lastAtPos = src.email.lastIndexOf('@');
+                        let lastDotPos = src.email.lastIndexOf('.');
+                        let isEmailValid = lastAtPos < lastDotPos && lastAtPos > 0 && src.email.indexOf('@@') === -1 && lastDotPos > 2 && (src.email.length - lastDotPos) > 2;
+
+                        if (!isEmailValid) {
+                            throw new NamedError('invalid_email');
+                        }
+
+                        // email validation end
+
                         Keyboard.dismiss();
                         email = src.email;
                         let res = await http({
@@ -75,6 +92,9 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                             method: 'POST',
                         });
                         session = res.session;
+                    }}
+                    onError={(e) => {
+                        ShowAuthError(e);
                     }}
                     onSuccess={() => this.props.router.push('EmailCode')}
                 >
@@ -116,8 +136,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                     ref={this.ref}
                     action={async src => {
                         if (!src.code) {
-                            Alert.builder().title('Please check your email and enter activation code').button('GOT IT!').show();
-                            throw new SilentError();
+                            throw new NamedError('no_code');
                         }
                         Keyboard.dismiss();
                         let res = await http({
@@ -139,12 +158,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
                         await AsyncStorage.setItem('openland-token', res2.accessToken);
                     }}
-                    onError={e => {
-                        new AlertBlanketBuilder()
-                            .title('Activation')
-                            .message(formatError(e))
-                            .button('Try again')
-                            .show();
+                    onError={(e: Error) => {
+                        ShowAuthError(e);
                     }}
                     onSuccess={() => RNRestart.Restart()}
                 >
