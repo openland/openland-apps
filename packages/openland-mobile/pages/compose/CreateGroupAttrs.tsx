@@ -50,7 +50,7 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                                         photoRef: src.photoRef,
                                         members: users.map(u => u.id)
                                     });
-                                    this.props.router.pushAndReset('Conversation', { id: (res as any).data.room.id });
+                                    this.props.router.pushAndReset('Conversation', { id: res.room.id });
                                 }
                             },
                             src.title);
