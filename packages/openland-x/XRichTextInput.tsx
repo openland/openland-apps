@@ -178,12 +178,12 @@ export const MentionComponentInnerText = Glamorous.span(
     ({ isYou, inCompose }: MentionComponentInnerTextProps) => {
         const paddings = inCompose
             ? {
-                paddingTop: 1,
-                paddingBottom: 1,
-                paddingLeft: 4,
-                paddingRight: 4,
-                borderRadius: 5,
-            }
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  borderRadius: 5,
+              }
             : {};
 
         if (isYou) {
@@ -464,11 +464,13 @@ export class XRichTextInput extends React.PureComponent<XRichTextInputProps, XRi
     componentWillReceiveProps(nextProps: XRichTextInputProps) {
         const nextValue = nextProps.value;
         if (this.props.value !== nextValue && this.state.plainText !== nextValue) {
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(
-                    EditorState.createWithContent(ContentState.createFromText(nextValue)),
-                ),
-                plainText: nextValue,
+            window.requestAnimationFrame(() => {
+                this.setState({
+                    editorState: EditorState.moveFocusToEnd(
+                        EditorState.createWithContent(ContentState.createFromText(nextValue)),
+                    ),
+                    plainText: nextValue,
+                });
             });
         }
     }
