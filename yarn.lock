@@ -11914,6 +11914,11 @@ react-moment-proptypes@^1.5.0:
   dependencies:
     moment ">=1.6.0"
 
+react-native-android-open-settings@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-android-open-settings/-/react-native-android-open-settings-1.2.0.tgz#95d045df5da51f52a9ade939ae3c4f28d7d9dec0"
+  integrity sha512-rCr98aK7ryqfRsHvVQY08RUH0Uj4jiqLRjzo/tMt5SU/oB+1tgB0bPtzRxcK6sYPtDb/I7Ct2xv+9q/h3+dKAg==
+
 react-native-animatable@^1.2.4:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.0.tgz#b5c3940fc758cfd9b2fe54613a457c4b6962b46e"
