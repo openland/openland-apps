@@ -18,7 +18,6 @@
 		09371D7CC1B24CBEA73971D3 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EC2FD3E40F4887822E0BE1 /* libRNImagePicker.a */; };
 		0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7023E2C8438941E08C21ED1F /* libRNShare.a */; };
 		0FD808C613CD4EF4AA342A55 /* libRNRate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B3868FD2FDC437B84669D3B /* libRNRate.a */; };
-		119F458A3B3A476488899E74 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 980DAD5006ED468493C3E79E /* Lottie.framework */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -931,7 +930,6 @@
 				E4A436BC73984B43B9A547F2 /* libRNSearchBar.a in Frameworks */,
 				02136319CF55454E90C40A2F /* libRNBlur.a in Frameworks */,
 				2E34A29453EA4DDA94378D2D /* libBVLinearGradient.a in Frameworks */,
-				119F458A3B3A476488899E74 /* Lottie.framework in Frameworks */,
 				6DA947124120484DA2DD9B89 /* libLottie.a in Frameworks */,
 				2ACD53F3CF6A44B2953C2FEE /* libLottieReactNative.a in Frameworks */,
 				00D6797578F243AEA38C10EF /* libRNSuperEllipseMask.a in Frameworks */,
