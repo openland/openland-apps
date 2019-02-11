@@ -125,7 +125,7 @@ class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
 
     render() {
         return (
-            <XHorizontal separator={5} alignItems="center">
+            <XHorizontal separator={6} alignItems="center">
                 {this.defaultReactions.map((src: string) => (
                     <ReactionItem
                         key={'msg_reaction' + src}
