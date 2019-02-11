@@ -48,13 +48,11 @@ export function emoji({
     if (size === 14) {
         style = {
             marginTop: -1,
-            marginLeft: 1,
         };
     }
     if (size === 16) {
         style = {
             marginTop: -2,
-            marginLeft: 1,
         };
     }
     if (size === 18) {

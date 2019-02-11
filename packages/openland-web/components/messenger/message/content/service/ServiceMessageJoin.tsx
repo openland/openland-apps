@@ -5,7 +5,7 @@ import { OthersPopper } from './views/OthersPopper';
 import { UserShort } from 'openland-api/Types';
 import { emoji } from 'openland-y-utils/emoji';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
-
+import { XView } from 'react-mental';
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
 const emojifyJoinEmojies = ({ src, size }: { src: string; size: 16 }) => {
@@ -15,7 +15,8 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 16 }) => {
             size,
             crop: {
                 figureStyle: {
-                    width: 12,
+                    width: 14,
+                    marginBottom: -2,
                 },
                 imgStyle: {
                     marginLeft: -1,
@@ -28,7 +29,8 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 16 }) => {
             size,
             crop: {
                 figureStyle: {
-                    width: 12,
+                    width: 14,
+                    marginBottom: -2,
                 },
                 imgStyle: {
                     marginLeft: -1,
@@ -40,7 +42,9 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 16 }) => {
             src,
             size,
             crop: {
-                figureStyle: {},
+                figureStyle: {
+                    marginBottom: -2,
+                },
                 imgStyle: {},
             },
         });
@@ -50,7 +54,8 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 16 }) => {
             size,
             crop: {
                 figureStyle: {
-                    width: 12,
+                    width: 14,
+                    marginBottom: -2,
                 },
                 imgStyle: {
                     marginLeft: -1,
@@ -63,7 +68,8 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 16 }) => {
             size,
             crop: {
                 figureStyle: {
-                    width: 12,
+                    width: 14,
+                    marginBottom: -2,
                 },
                 imgStyle: {
                     marginLeft: -1,
@@ -102,28 +108,6 @@ const JoinOneServiceMessage = ({
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
     return (
         <Container>
-            {/* <XHorizontal separator={1}>
-                {emojifyJoinEmojies({
-                    src: '👋',
-                    size: 16,
-                })}
-                {emojifyJoinEmojies({
-                    src: '🖖',
-                    size: 16,
-                })}
-                {emojifyJoinEmojies({
-                    src: '👏',
-                    size: 16,
-                })}
-                {emojifyJoinEmojies({
-                    src: '✋',
-                    size: 16,
-                })}
-                {emojifyJoinEmojies({
-                    src: '🖐️',
-                    size: 16,
-                })}
-            </XHorizontal> */}
             {joinedByUser.id === firstUser.id ? (
                 <>
                     {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
