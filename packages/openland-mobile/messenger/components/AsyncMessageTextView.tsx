@@ -115,7 +115,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                     flexDirection="column"
                 >
 
-                    {!this.props.message.isOut && !this.props.message.attachTop && <ASText key={'name-' + this.state.theme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={this.props.message.isOut ? this.state.theme.senderNameColorOut : this.state.theme.senderNameColor}>{this.props.message.senderName}</ASText>}
+                    {!this.props.message.isOut && !this.props.message.attachTop && <ASText fontSize={13} key={'name-' + this.state.theme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={this.props.message.isOut ? this.state.theme.senderNameColorOut : this.state.theme.senderNameColor}>{this.props.message.senderName}</ASText>}
 
                     {/* forward/reply */}
                     {this.props.message.reply && (
@@ -162,7 +162,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                         color={mainTextColor}
                         lineHeight={big ? 60 : 20}
                         letterSpacing={-0.3}
-                        fontSize={big ? 52 : 16}
+                        fontSize={big ? 52 : 17}
                         fontWeight={TextStyles.weight.regular}
                     >
                         {parts}
