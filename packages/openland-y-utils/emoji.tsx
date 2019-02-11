@@ -28,6 +28,7 @@ export function emoji({
         };
         imgStyle: {
             marginLeft?: number;
+            marginRight?: number;
         };
     };
 }) {
@@ -91,6 +92,7 @@ export function emoji({
                                     <img
                                         style={{
                                             position: 'absolute',
+                                            left: 0,
                                             alignSelf: 'center',
                                             verticalAlign: 'middle',
                                             // background: 'white',
