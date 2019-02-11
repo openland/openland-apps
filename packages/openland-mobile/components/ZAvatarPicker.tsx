@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, ActivityIndicator, Alert, Text } from 'react-native';
+import { View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
@@ -19,7 +19,6 @@ export interface ZAvatarPickerProps {
     valueStoreKey?: string;
     value?: AvatarImageRef | null;
     onChanged?: (value: AvatarImageRef | null) => void;
-    showLoaderOnUpload?: boolean;
     render?: React.ComponentType<{ url?: string, file?: string, loading: boolean, showPicker: () => void }>;
 }
 
@@ -100,10 +99,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 // Ignore
             }
             if (res) {
-                if (this.props.showLoaderOnUpload) {
-                    this.upload(res);
-                }
-
+                this.upload(res);
             }
         } catch (e) {
             console.log(e);
