@@ -10,7 +10,7 @@ export class EmojiFlags {
     static ignoreEmojione = canUseDOM && localStorage.getItem('meke_web_great_again') === 'true';
 }
 
-type SizeT = 10 | 12 | 14 | 16 | 18 | 20 | 24 | 36;
+type SizeT = 10 | 12 | 14 | 16 | 18 | 20 | 25 | 36;
 
 export function emoji({
     src,
@@ -20,8 +20,15 @@ export function emoji({
     src: string;
     size?: SizeT;
     crop?: {
-        marginLeft?: number;
-        width?: number;
+        figureStyle: {
+            marginLeft?: number;
+            marginRight?: number;
+            width?: number;
+            marginBottom?: number;
+        };
+        imgStyle: {
+            marginLeft?: number;
+        };
     };
 }) {
     if (EmojiFlags.ignoreEmojione) {
@@ -76,8 +83,9 @@ export function emoji({
                                         display: 'inline-block',
                                         position: 'relative',
                                         overflow: 'hidden',
-                                        width: crop.width,
                                         height,
+                                        width: height,
+                                        ...crop.figureStyle,
                                     }}
                                 >
                                     <img
@@ -85,7 +93,8 @@ export function emoji({
                                             position: 'absolute',
                                             alignSelf: 'center',
                                             verticalAlign: 'middle',
-                                            marginLeft: crop.marginLeft,
+                                            // background: 'white',
+                                            ...crop.imgStyle,
                                         }}
                                         width={height}
                                         height={height}
