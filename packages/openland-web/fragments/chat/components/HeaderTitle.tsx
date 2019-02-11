@@ -28,7 +28,7 @@ export const HeaderTitle = (props: {
             <span>
                 {emoji({
                     src: props.value,
-                    size: 14,
+                    size: 16,
                 })}
             </span>
         </XView>
@@ -45,7 +45,7 @@ export const HeaderTitle = (props: {
             >
                 {emoji({
                     src: props.organization.name,
-                    size: 14,
+                    size: 16,
                 })}
             </XView>
         )}

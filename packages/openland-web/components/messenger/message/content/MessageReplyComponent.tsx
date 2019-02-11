@@ -127,7 +127,7 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
                             >
                                 {emoji({
                                     src: props.sender!!.name,
-                                    size: 14,
+                                    size: 16,
                                 })}
                             </XView>
                             {props.sender!!.primaryOrganization && (

@@ -15,7 +15,7 @@ export default withApp('UI Framework - Files', 'viewer', props => {
                     <span>
                         {emoji({
                             src: ':unicorn:🦄🌈👷🏽‍♂️',
-                            size: 14,
+                            size: 16,
                         })}
                     </span>
                     <span>
@@ -27,7 +27,7 @@ export default withApp('UI Framework - Files', 'viewer', props => {
                     <span>
                         {emoji({
                             src: '🦄🌈👷🏽‍♂️',
-                            size: 36,
+                            size: 38,
                         })}
                     </span>
                 </XVertical>

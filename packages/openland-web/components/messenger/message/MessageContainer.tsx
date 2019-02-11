@@ -193,7 +193,7 @@ export const DesktopMessageContainer = React.memo<DesktopMessageContainerProps>(
                             >
                                 {emoji({
                                     src: props.sender.name,
-                                    size: 14,
+                                    size: 16,
                                 })}
                             </XView>
                             {props.sender.primaryOrganization && (
@@ -301,7 +301,7 @@ export const MobileMessageContainer = (props: MobileMessageContainerProps) => {
                     >
                         {emoji({
                             src: props.sender.name,
-                            size: 14,
+                            size: 16,
                         })}
                     </XView>
                     {props.sender.primaryOrganization && (

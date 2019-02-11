@@ -44,8 +44,10 @@ const ReactionItem = Glamorous.div<{ isMy?: boolean }>(props => ({
     },
 }));
 
-const emojifyReactions = ({ src, size }: { src: string; size: 25 | 16 }) => {
+const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
     if (src === '👍') {
+        // margin-right: -2px;
+        // margin-left: -2px;
         return emoji({
             src,
             size,
@@ -53,23 +55,22 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 16 }) => {
                 size === 25
                     ? {
                           figureStyle: {
-                              width: 19,
+                              width: 20,
                               marginBottom: -4,
                           },
                           imgStyle: {
-                              marginLeft: -2,
+                              marginLeft: -3,
                               marginRight: -1,
                           },
                       }
                     : {
                           figureStyle: {
-                              width: 12,
-
-                              marginBottom: -3,
+                              width: 14,
+                              marginBottom: -4,
                           },
                           imgStyle: {
                               marginLeft: -2,
-                              marginRight: -1,
+                              marginRight: -2,
                           },
                       },
         });
@@ -88,15 +89,7 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 16 }) => {
                               marginLeft: -1,
                           },
                       }
-                    : {
-                          figureStyle: {
-                              width: 14,
-                              marginBottom: -3,
-                          },
-                          imgStyle: {
-                              marginLeft: -1,
-                          },
-                      },
+                    : undefined,
         });
     }
 
@@ -238,7 +231,7 @@ const ReactionsInnerWrapper = Glamorous.div({
 const UsersLabel = Glamorous.div({
     color: 'rgba(0, 0, 0, 0.5)',
     fontSize: 12,
-    paddingLeft: 8,
+    paddingLeft: 7,
 });
 
 class SingleReaction extends React.PureComponent<{
@@ -385,7 +378,7 @@ const ReactionsInner = ({ reactions, meId, messageId }: ReactionsInnerProps) => 
                                     ? 'You'
                                     : emoji({
                                           src: i.user.name,
-                                          size: 12,
+                                          size: 13,
                                       })}
                             </div>
                         );
@@ -398,7 +391,7 @@ const ReactionsInner = ({ reactions, meId, messageId }: ReactionsInnerProps) => 
                     >
                         {emojifyReactions({
                             src: reactionsMap[k][0].reaction,
-                            size: 16,
+                            size: 18,
                         })}
                     </SingleReactionUnset>
                 </XPopper>,
@@ -421,7 +414,7 @@ const ReactionsInner = ({ reactions, meId, messageId }: ReactionsInnerProps) => 
                                     ? 'You'
                                     : emoji({
                                           src: i.user.name,
-                                          size: 12,
+                                          size: 13,
                                       })}
                             </div>
                         );
@@ -434,7 +427,7 @@ const ReactionsInner = ({ reactions, meId, messageId }: ReactionsInnerProps) => 
                     >
                         {emojifyReactions({
                             src: reactionsMap[k][0].reaction,
-                            size: 16,
+                            size: 18,
                         })}
                     </SingleReactionSet>
                 </XPopper>,

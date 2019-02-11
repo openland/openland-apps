@@ -10,7 +10,7 @@ export const MentionedUser = ({ user, isYou }: { user: UserShort; isYou: boolean
             <MentionComponentInnerText isYou={isYou}>
                 {emoji({
                     src: user.name,
-                    size: 14,
+                    size: 16,
                 })}
             </MentionComponentInnerText>
         </UserPopper>

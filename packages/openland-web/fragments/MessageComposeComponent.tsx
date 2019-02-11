@@ -926,7 +926,7 @@ class MessageComposeComponentInner extends React.PureComponent<
                                     forwardMessageSender !== undefined
                                         ? emoji({
                                               src: forwardMessageSender,
-                                              size: 14,
+                                              size: 16,
                                           })
                                         : 'Edit message'
                                 }

@@ -125,7 +125,7 @@ export const MessageTextComponent = React.memo<MessageTextComponentProps>(props 
             );
         } else {
             let mentions = preprocessMentions(v.text!, null, props.mentions);
-            let smileSize: 36 | 14 = isBig ? 36 : 14;
+            let smileSize: 38 | 16 = isBig ? 38 : 16;
 
             let res: any[] = [];
             let i2 = 0;

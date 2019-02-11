@@ -175,7 +175,7 @@ export const DialogView = React.memo<DialogViewProps>(props => {
                         <span>
                             {emoji({
                                 src: dialog.title,
-                                size: 14,
+                                size: 16,
                             })}
                         </span>
                     </XView>
