@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Image, TouchableOpacity, ActivityIndicator, Linking, Platform } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
@@ -7,6 +7,8 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { ZAvatar } from './ZAvatar';
+import { Alert } from './AlertBlanket';
+import AndroidOpenSettings from 'react-native-android-open-settings';
 
 interface AvatarImageRef {
     uuid: string;
@@ -95,6 +97,20 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 }
                 console.log(r);
             } catch (e) {
+                if (e.code === 'E_PERMISSION_MISSING') {
+                    Alert.builder()
+                        .title('Permission denied')
+                        .button('Open settings', 'default', Platform.select({
+                            ios: () => {
+                                Linking.openURL('app-settings:');
+                            },
+                            android: () => {
+                                AndroidOpenSettings.appDetailsSettings();
+                            }
+                        }))
+                        .show();
+                }
+
                 console.log(e);
                 // Ignore
             }

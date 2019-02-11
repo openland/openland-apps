@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.auth0.react.A0Auth0Package;
 import com.reactlibrary.RNThreadPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
@@ -57,6 +58,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new AndroidOpenSettingsPackage(),
             new A0Auth0Package(),
                     new RNThreadPackage(mReactNativeHost),
                     new ReactNativeRestartPackage(),
