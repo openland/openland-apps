@@ -3,6 +3,7 @@ import { Container } from './views/Container';
 import { MentionedUser } from './views/MentionedUser';
 import { OthersPopper } from './views/OthersPopper';
 import { UserShort } from 'openland-api/Types';
+import { emoji } from 'openland-y-utils/emoji';
 
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
@@ -23,7 +24,12 @@ const JoinOneServiceMessage = ({
     firstUser: UserShort;
     myUserId: string;
 }) => {
-    let [handEmoji] = React.useState(GetRandomJoinEmoji());
+    let [handEmoji] = React.useState(
+        emoji({
+            src: GetRandomJoinEmoji(),
+            size: 14,
+        }),
+    );
     return (
         <Container>
             {joinedByUser.id === firstUser.id ? (
