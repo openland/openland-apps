@@ -45,12 +45,18 @@ export function emoji({
     let res = emojione.toShort(src) as string;
 
     let style: any = null;
+    if (size === 14) {
+        style = {
+            marginTop: -1,
+            marginLeft: 1,
+        };
+    }
     if (size === 16) {
         style = {
             marginTop: -2,
+            marginLeft: 1,
         };
     }
-
     if (size === 18) {
         style = {
             marginTop: -4,

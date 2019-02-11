@@ -15,7 +15,7 @@ import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 export let iconClass = css`
     display: inline-block;
     vertical-align: top;
-    margin: 1px 5px -1px 1px;
+    margin: 2px 5px -1px 1px;
 
     path {
         fill: rgba(0, 0, 0, 0.3);
@@ -25,7 +25,7 @@ export let iconClass = css`
 export let iconActiveClass = css`
     display: inline-block;
     vertical-align: top;
-    margin: 1px 5px -1px 1px;
+    margin: 2px 5px -1px 1px;
 
     path {
         fill: rgba(255, 255, 255, 0.9);

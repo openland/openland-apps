@@ -384,7 +384,7 @@ export class XPopper extends React.Component<XPopperProps, XPopperState> {
                     this._popper.scheduleUpdate();
                 }
             });
-        }, 50);
+        }, 110);
         this.hideTimeout = window.setTimeout(() => {
             this.setState({ showPopper: false }, () => {
                 if (this._popper) {
