@@ -64,7 +64,7 @@ export const XSubHeader = (props: XSubHeaderProps) => {
             <Content>
                 <Title>
                     {title}
-                    {counter && (<Counter>{counter}</Counter>)}
+                    {!!counter && (<Counter>{counter}</Counter>)}
                 </Title>
                 {right && (<Right>{right}</Right>)}
             </Content>

@@ -737,63 +737,34 @@ const Members = ({ organization, router }: MembersProps) => {
 const Rooms = (props: { organization: Organization_organization }) => {
     let { organization } = props;
 
-    // let publicRooms = rooms.filter(c => c && !c.hidden);
-    let privateRooms = organization.rooms;
+    let groups = organization.rooms;
 
     return (
-        <>
-            {/* publicRooms && (publicRooms.length > 0) && (
-                <Section separator={0}>
-                    <XSubHeader
-                        title={TextProfiles.Organization.publicRooms}
-                        counter={publicRooms.length}
-                        paddingBottom={0}
+        <Section separator={0}>
+            <XSubHeader
+                title={TextProfiles.Organization.publicRooms}
+                counter={groups.length}
+                paddingBottom={0}
+            />
+            <SectionContent>
+                {organization.isMine && (
+                    <XCreateCard
+                        query={{
+                            field: 'createRoom',
+                            value: organization.id,
+                        }}
+                        text={TextProfiles.Organization.createPublicRoom}
                     />
-                    <SectionContent>
-                        {organization.isMine && (
-                            <XWithRole role="admin" orgPermission={organization.id}>
-                                <XCreateCard query={{ field: 'createRoom', value: 'true' }} text={TextProfiles.Organization.createPublicRoom} />
-                            </XWithRole>
-                        )}
-                        <XMoreCards>
-                            {publicRooms.map((c: any, i: any) => (
-                                <XRoomCard
-                                    key={i}
-                                    room={c}
-                                />
-                            ))}
-                        </XMoreCards>
-                    </SectionContent>
-                </Section>
-            ) */}
-            {privateRooms && privateRooms.length > 0 && (
-                <Section separator={0}>
-                    <XSubHeader
-                        title={TextProfiles.Organization.publicRooms}
-                        counter={privateRooms.length}
-                        paddingBottom={0}
-                    />
-                    <SectionContent>
-                        {organization.isMine && (
-                            <XWithRole role="admin" orgPermission={organization.id}>
-                                <XCreateCard
-                                    query={{
-                                        field: 'createRoom',
-                                        value: 'true',
-                                    }}
-                                    text={TextProfiles.Organization.createPublicRoom}
-                                />
-                            </XWithRole>
-                        )}
-                        <XMoreCards>
-                            {privateRooms.map((c: any, i: any) => (
-                                <XRoomCard key={i} room={c} />
-                            ))}
-                        </XMoreCards>
-                    </SectionContent>
-                </Section>
-            )}
-        </>
+                )}
+                {groups.length > 0 && (
+                    <XMoreCards>
+                        {groups.map((c: any, i: any) => (
+                            <XRoomCard key={i} room={c} />
+                        ))}
+                    </XMoreCards>
+                )}
+            </SectionContent>
+        </Section>
     );
 };
 
