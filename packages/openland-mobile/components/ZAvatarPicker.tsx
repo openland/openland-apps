@@ -98,17 +98,26 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 console.log(r);
             } catch (e) {
                 if (e.code === 'E_PERMISSION_MISSING') {
-                    Alert.builder()
-                        .title('Permission denied')
-                        .button('Open settings', 'default', Platform.select({
-                            ios: () => {
+                    if (Platform.OS === 'ios') {
+                        Alert.builder()
+                            .title('Allow Openland access to your photos')
+                            .message('In iPhone settings, tap Openland and turn on Photos.')
+                            .button('Open settings', 'default', () => {
                                 Linking.openURL('app-settings:');
-                            },
-                            android: () => {
+                            })
+                            .show();
+                    }
+
+                    if (Platform.OS === 'android') {
+                        Alert.builder()
+                            .title('Allow Openland to access your phone\'s storage?')
+                            .message('To share photos, allow Openland access to your library. Tap Settings > Permissions, and turn on Storage.')
+                            .button('Settings', 'default', () => {
                                 AndroidOpenSettings.appDetailsSettings();
-                            }
-                        }))
-                        .show();
+                            })
+                            .show();
+
+                    }
                 }
 
                 console.log(e);
