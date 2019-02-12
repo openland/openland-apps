@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NamedError } from 'openland-y-forms/errorHandling';
+import { ACTIVATION_CODE_LENGTH } from './EmailAuth';
 
 export const ShowAuthError = (error: NamedError) => {
     if (error.name === 'no_email_or_phone') {
@@ -19,7 +20,7 @@ export const ShowAuthError = (error: NamedError) => {
             .button('TRY AGAIN').show();
     } else if (error.name === 'no_code') {
         Alert.builder()
-            .title('Please enter the 5-digit code we\'ve just sent to your email')
+            .title('Please enter the ' + ACTIVATION_CODE_LENGTH + '-digit code we\'ve just sent to your email')
             .button('GOT IT!').show();
     } else {
         Alert.builder()

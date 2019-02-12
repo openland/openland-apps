@@ -12,6 +12,8 @@ import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 
+export const ACTIVATION_CODE_LENGTH = 5;
+
 const styles = StyleSheet.create({
     hint: {
         paddingHorizontal: 16,
@@ -156,7 +158,7 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
             throw new NamedError('no_code');
         }
 
-        if (value.length !== 5) {
+        if (value.length !== ACTIVATION_CODE_LENGTH) {
             throw new NamedError('wrong_code_length');
         }
 
