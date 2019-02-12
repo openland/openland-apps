@@ -3,6 +3,7 @@ import { ASText } from 'react-native-async-view/ASText';
 import { UserShort } from 'openland-api/Types';
 import { TextStyles } from '../../../../styles/AppStyles';
 import { ThemeContext } from '../../AsyncServiceMessageView';
+import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 
 interface UserWrapperProps {
     user:
@@ -28,7 +29,7 @@ export const UserWrapper = (props: UserWrapperProps) => (
                 marginRight={6}
                 onPress={() => props.onUserPress(props.user.id)}
             >
-                {props.user.id === props.myUserId ? 'You' : props.user.name}
+                {props.user.id === props.myUserId ? 'You' : useNonBreakingSpaces(props.user.name)}
             </ASText>
         )}
     </ThemeContext.Consumer>

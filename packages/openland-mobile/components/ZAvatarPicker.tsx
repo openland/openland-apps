@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, TouchableOpacity, ActivityIndicator, Alert, Text } from 'react-native';
+import { View, Image, TouchableOpacity, ActivityIndicator, Linking, Platform } from 'react-native';
 import ImagePicker, { Image as PickerImage } from 'react-native-image-crop-picker';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus } from 'openland-engines/messenger/types';
@@ -7,6 +7,8 @@ import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
 import { startLoader, stopLoader } from './ZGlobalLoader';
 import { ZAvatar } from './ZAvatar';
+import { Alert } from './AlertBlanket';
+import AndroidOpenSettings from 'react-native-android-open-settings';
 
 interface AvatarImageRef {
     uuid: string;
@@ -19,7 +21,6 @@ export interface ZAvatarPickerProps {
     valueStoreKey?: string;
     value?: AvatarImageRef | null;
     onChanged?: (value: AvatarImageRef | null) => void;
-    showLoaderOnUpload?: boolean;
     render?: React.ComponentType<{ url?: string, file?: string, loading: boolean, showPicker: () => void }>;
 }
 
@@ -96,14 +97,25 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 }
                 console.log(r);
             } catch (e) {
+                if (e.code === 'E_PERMISSION_MISSING') {
+                    Alert.builder()
+                        .title('Permission denied')
+                        .button('Open settings', 'default', Platform.select({
+                            ios: () => {
+                                Linking.openURL('app-settings:');
+                            },
+                            android: () => {
+                                AndroidOpenSettings.appDetailsSettings();
+                            }
+                        }))
+                        .show();
+                }
+
                 console.log(e);
                 // Ignore
             }
             if (res) {
-                if (this.props.showLoaderOnUpload) {
-                    this.upload(res);
-                }
-
+                this.upload(res);
             }
         } catch (e) {
             console.log(e);
@@ -145,7 +157,11 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                     {valueUrl && <ZAvatar src={valueUrl} size={size} />}
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2, borderWidth: 1, borderColor: '#eff0f2' }}>
                         {!this.state.loading && <Image style={{ tintColor: valueUrl ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
-                        {this.state.loading && <ActivityIndicator color="#fff" />}
+                        {this.state.loading && (
+                            <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={17} justifyContent="center">
+                                <ActivityIndicator color="rgba(0, 0, 0, 0.4)" />
+                            </View>
+                        )}
                     </View>
                 </View>
             </TouchableOpacity>

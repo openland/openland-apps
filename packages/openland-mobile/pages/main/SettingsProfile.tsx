@@ -92,10 +92,7 @@ const SettingsProfileContent = React.memo<PageProps>((props) => {
             >
                 <ZListItemBase height={96} separator={false}>
                     <View paddingHorizontal={16} marginTop={15}>
-                        <ZAvatarPicker
-                            field="input.photoRef"
-                            showLoaderOnUpload={true}
-                        />
+                        <ZAvatarPicker field="input.photoRef" />
                     </View>
                     <View
                         flexDirection="column"

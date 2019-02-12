@@ -3,10 +3,97 @@ import { Container } from './views/Container';
 import { MentionedUser } from './views/MentionedUser';
 import { OthersPopper } from './views/OthersPopper';
 import { UserShort } from 'openland-api/Types';
-
+import { emoji } from 'openland-y-utils/emoji';
+import { XHorizontal } from 'openland-x-layout/XHorizontal';
+import { XView } from 'react-mental';
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
-const GetRandomJoinEmoji = () => joinEmojiList[Math.floor(Math.random() * joinEmojiList.length)];
+const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
+    if (src === '👋') {
+        return emoji({
+            src,
+            size,
+            crop: {
+                figureStyle: {
+                    width: 16,
+                    marginBottom: -2,
+                    marginRight: 2,
+                },
+                imgStyle: {
+                    marginLeft: -1,
+                },
+            },
+        });
+    } else if (src === '🖖') {
+        return emoji({
+            src,
+            size,
+            crop: {
+                figureStyle: {
+                    width: 16,
+                    marginBottom: -2,
+                    marginRight: 2,
+                },
+                imgStyle: {
+                    marginLeft: -1,
+                },
+            },
+        });
+    } else if (src === '👏') {
+        return emoji({
+            src,
+            size,
+            crop: {
+                figureStyle: {
+                    marginBottom: -2,
+                    marginRight: 2,
+                },
+                imgStyle: {},
+            },
+        });
+    } else if (src === '✋') {
+        return emoji({
+            src,
+            size,
+            crop: {
+                figureStyle: {
+                    width: 15,
+                    marginBottom: -2,
+                    marginRight: 2,
+                },
+                imgStyle: {
+                    marginLeft: -1,
+                },
+            },
+        });
+    } else if (src === '🖐️') {
+        return emoji({
+            src,
+            size,
+            crop: {
+                figureStyle: {
+                    width: 16,
+                    marginBottom: -2,
+                    marginRight: 2,
+                },
+                imgStyle: {
+                    marginLeft: -1,
+                },
+            },
+        });
+    }
+
+    return emoji({
+        src,
+        size,
+    });
+};
+
+const GetRandomJoinEmoji = () =>
+    emojifyJoinEmojies({
+        src: joinEmojiList[Math.floor(Math.random() * joinEmojiList.length)],
+        size: 18,
+    });
 
 const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
     return (serviceMetadata.users
@@ -26,6 +113,30 @@ const JoinOneServiceMessage = ({
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
     return (
         <Container>
+            {/* <XView backgroundColor="grey">
+                <XHorizontal separator={1}>
+                    {emojifyJoinEmojies({
+                        src: '👋',
+                        size: 18,
+                    })}
+                    {emojifyJoinEmojies({
+                        src: '🖖',
+                        size: 18,
+                    })}
+                    {emojifyJoinEmojies({
+                        src: '👏',
+                        size: 18,
+                    })}
+                    {emojifyJoinEmojies({
+                        src: '✋',
+                        size: 18,
+                    })}
+                    {emojifyJoinEmojies({
+                        src: '🖐️',
+                        size: 18,
+                    })}
+                </XHorizontal>
+            </XView> */}
             {joinedByUser.id === firstUser.id ? (
                 <>
                     {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}

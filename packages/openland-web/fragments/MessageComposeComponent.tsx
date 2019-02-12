@@ -46,6 +46,7 @@ import { ModelMessage } from 'openland-engines/messenger/types';
 import { PostIntroModal } from '../components/messenger/message/content/attachments/introMessage/PostIntroModal';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
+import { emoji } from 'openland-y-utils/emoji';
 
 export const SendMessageWrapper = Glamorous.div({
     display: 'flex',
@@ -200,7 +201,11 @@ const EditCloseBtn = Glamorous.div({
     },
 });
 
-const EditView = (props: { title: string; message: string; onCancel: () => void }) => (
+const EditView = (props: {
+    title: string | JSX.Element;
+    message: string;
+    onCancel: () => void;
+}) => (
     <EditWrapper justifyContent="space-between" alignItems="center" separator={5}>
         <BlueLine />
         <HorizontalHidden
@@ -919,7 +924,10 @@ class MessageComposeComponentInner extends React.PureComponent<
                                 message={stateMessage}
                                 title={
                                     forwardMessageSender !== undefined
-                                        ? forwardMessageSender
+                                        ? emoji({
+                                              src: forwardMessageSender,
+                                              size: 16,
+                                          })
                                         : 'Edit message'
                                 }
                                 onCancel={this.closeEditor}

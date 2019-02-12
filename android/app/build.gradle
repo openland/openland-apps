@@ -186,6 +186,8 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-webrtc')
+    compile project(':react-native-android-open-settings')
     compile project(':react-native-auth0')
     compile project(':react-native-threads')
     compile project(':react-native-restart')
@@ -208,7 +210,6 @@ dependencies {
     compile project(':react-native-fast-image')
     compile project(':rn-fetch-blob')
     compile project(':react-native-image-picker')
-    compile project(':react-native-code-push')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
     compile fileTree(include: ['*.jar'], dir: 'libs')

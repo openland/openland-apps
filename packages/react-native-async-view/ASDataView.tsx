@@ -6,6 +6,8 @@ import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { SQueue } from 'react-native-s/SQueue';
 import { throttledMap } from 'react-native-s/SThrottler';
+import { ASFlex } from './ASFlex';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
@@ -39,27 +41,61 @@ class ItemRenderHolder<T extends DataSourceItem> {
     }
 }
 
+class MountListener extends React.PureComponent<{ onReady?: () => void }> {
+    componentDidMount() {
+        if (this.props.onReady) {
+            Alert.alert('onListReady');
+            this.props.onReady();
+        }
+    }
+
+    componentWillUnmount() {
+        Alert.alert('componentWillUnmount');
+    }
+    render() {
+        return <ASFlex />
+    }
+}
+
 export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T> {
     private readonly dataSource: DataSource<T>;
-    private readonly render: (src: T) => React.ReactElement<{}>;
+    private readonly render: (src: T) => (React.ReactElement<{}>);
     private items: ItemRenderHolder<T>[] = [];
     readonly key = UUID();
     private readonly queue = new SQueue();
+    private isReady = false;
+    private onReady?: () => void;
 
-    constructor(dataSource: DataSource<T>, render: (src: T) => React.ReactElement<{}>) {
+    constructor(dataSource: DataSource<T>, render: (src: T, ) => React.ReactElement<{}>, onReady?: () => void) {
         this.render = render;
         this.dataSource = dataSource;
         this.dataSource.watch(this);
-
+        this.onReady = onReady;
         // Register for load more events
         ASEventEmitter.registerOnLoadMore(this.key, () => { this.dataSource.needMore(); });
     }
 
+    onReadyInner = () => {
+        if (this.onReady) {
+            this.isReady = true;
+            this.onReady();
+        }
+    }
+
+    bindReady = (onReady: () => void) => {
+        this.onReady = onReady;
+        if (this.isReady) {
+            onReady();
+        }
+    };
+
     onDataSourceInited = (data: T[], completed: boolean) => {
         this.queue.push(async () => {
+
             // Create initial items
             this.items = await throttledMap(data, (v) => new ItemRenderHolder(this, v, this.render));
-
+            // register ready lisener
+            this.items.unshift(new ItemRenderHolder(this, { key: 'mount_listener' } as any, (v) => <MountListener key={'mount_listener'} onReady={this.onReadyInner} />));
             // Forward initial state to native
             let config = JSON.stringify(await throttledMap(this.items, (v) => ({
                 key: v.item.key,

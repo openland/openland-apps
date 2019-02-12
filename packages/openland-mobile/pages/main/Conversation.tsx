@@ -79,7 +79,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
             });
         });
-        builder.action(Platform.select({ ios: 'Photo or Video', android: 'Photo' }), () => {
+        builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), () => {
             Picker.launchImageLibrary({ mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed' }, (response) => {
                 if (response.didCancel) {
                     return;

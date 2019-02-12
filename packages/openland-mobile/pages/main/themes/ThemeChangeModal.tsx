@@ -17,12 +17,13 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
         this.state = { ...props.theme, easter: false || props.theme.spiral };
     }
 
-    lastColor?: string = undefined;
+    lastThemeIndex = -1;
     counter = 0;
-    onThemeSelect = (theme: ConversationTheme) => {
-        this.setState({ ...theme, spiral: this.state.spiral })
+    onThemeSelect = (theme: ConversationTheme & { index: number }) => {
+        let { index, ...t } = theme;
+        this.setState({ ...t, spiral: this.state.spiral })
 
-        if (theme.bubbleColorIn[0] === this.lastColor) {
+        if (index === this.lastThemeIndex) {
             this.counter++;
         } else {
             this.counter = 0;
@@ -31,7 +32,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
         if (this.counter > 3) {
             this.setState({ easter: true });
         }
-        this.lastColor = theme.bubbleColorIn[0];
+        this.lastThemeIndex = index;
     }
 
     onSpiralSwitch = (val: boolean) => {
@@ -45,7 +46,7 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     render() {
         let colorPickerSze = 40;
 
-        const themes = ZStyles.avatars.map(a => ({ ...getDefaultConversationTheme(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor }))
+        const themes = ZStyles.avatars.map((a, i) => ({ ...getDefaultConversationTheme(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor, index: i }))
 
         return (
             <View marginBottom={14}>

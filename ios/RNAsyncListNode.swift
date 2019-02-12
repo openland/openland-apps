@@ -570,10 +570,10 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
             let overflow = ASDisplayNode()
             overflow.backgroundColor = resolveColorR(self.overflowColor!)
             overflow.style.width = ASDimension(unit: ASDimensionUnit.points, value: w)
-            overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 1000)
+            overflow.style.height = ASDimension(unit: ASDimensionUnit.points, value: 10001)
             overflow.clipsToBounds = false
             
-            let insets = UIEdgeInsets(top: 0, left: 0, bottom: CGFloat(padding - 1000), right: 0)
+            let insets = UIEdgeInsets(top: 0, left: 0, bottom: CGFloat(padding - 10000), right: 0)
             let container = ASInsetLayoutSpec(insets: insets, child: overflow)
             res.setChild(container, at: 0)
           }

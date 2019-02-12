@@ -10,7 +10,7 @@ export class EmojiFlags {
     static ignoreEmojione = canUseDOM && localStorage.getItem('meke_web_great_again') === 'true';
 }
 
-type SizeT = 10 | 12 | 14 | 16 | 18 | 20 | 24 | 44;
+type SizeT = 10 | 12 | 13 | 14 | 16 | 18 | 20 | 25 | 38;
 
 export function emoji({
     src,
@@ -20,8 +20,16 @@ export function emoji({
     src: string;
     size?: SizeT;
     crop?: {
-        marginLeft?: number;
-        width?: number;
+        figureStyle: {
+            marginLeft?: number;
+            marginRight?: number;
+            width?: number;
+            marginBottom?: number;
+        };
+        imgStyle: {
+            marginLeft?: number;
+            marginRight?: number;
+        };
     };
 }) {
     if (EmojiFlags.ignoreEmojione) {
@@ -39,18 +47,27 @@ export function emoji({
     let style: any = null;
     if (size === 14) {
         style = {
+            marginTop: -1,
+        };
+    }
+    if (size === 16) {
+        style = {
             marginTop: -2,
         };
     }
-
-    if (size === 16) {
+    if (size === 18) {
         style = {
-            marginTop: -3,
+            marginTop: -4,
         };
     }
     if (size === 12) {
         style = {
             marginTop: -2,
+        };
+    }
+    if (size === 38) {
+        style = {
+            marginTop: -6,
         };
     }
     return (
@@ -71,16 +88,19 @@ export function emoji({
                                         display: 'inline-block',
                                         position: 'relative',
                                         overflow: 'hidden',
-                                        width: crop.width,
                                         height,
+                                        width: height,
+                                        ...crop.figureStyle,
                                     }}
                                 >
                                     <img
                                         style={{
                                             position: 'absolute',
+                                            left: 0,
                                             alignSelf: 'center',
                                             verticalAlign: 'middle',
-                                            marginLeft: crop.marginLeft,
+                                            // background: 'white',
+                                            ...crop.imgStyle,
                                         }}
                                         width={height}
                                         height={height}

@@ -12,6 +12,7 @@ import { MessageAnimationComponent } from './MessageAnimationComponent';
 import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
+import { emoji } from 'openland-y-utils/emoji';
 
 interface ReplyMessageProps {
     sender: MessageFull_reply_sender;
@@ -124,7 +125,10 @@ export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
                                 lineHeight="16px"
                                 color="rgba(0, 0, 0, 0.8)"
                             >
-                                {props.sender!!.name}
+                                {emoji({
+                                    src: props.sender!!.name,
+                                    size: 16,
+                                })}
                             </XView>
                             {props.sender!!.primaryOrganization && (
                                 <XView

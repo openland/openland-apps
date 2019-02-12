@@ -38,7 +38,7 @@ class NewOrganizationComponent extends React.PureComponent<PageProps> {
 
                     <View>
                         <View alignSelf="center" marginTop={30} marginBottom={10}>
-                            <ZAvatarPicker field="input.photoRef" showLoaderOnUpload={true} />
+                            <ZAvatarPicker field="input.photoRef" />
                         </View>
                         <ZTextInput marginLeft={16} marginTop={21} placeholder="Organization name" field="input.name" height={44} style={{ fontSize: 16 }} />
                         <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />

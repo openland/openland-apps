@@ -2,13 +2,73 @@ use_frameworks!
 platform :ios, '9.0'
 
 target 'openland' do
-  pod 'AppCenter/Crashes', '~> 1.12.0'
-  pod 'AppCenter/Analytics', '~> 1.12.0'
+    
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'Core',
+    'CxxBridge', # Include this for RN >= 0.47
+    'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
+    'RCTText',
+    'RCTImage',
+    'RCTNetwork',
+    'RCTWebSocket',
+    'RCTAnimation',
+    'RCTBlob',
+    'RCTGeolocation',
+    'RCTLinkingIOS',
+    'RCTSettings',
+    'RCTVibration',
+    'RCTPushNotification'
+  ]
+  # Explicitly include Yoga if you are using RN >= 0.42.0
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+    
+  # Third party deps podspec link
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+    
   pod 'Texture'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.0'
 
-  # Pods for AppCenter
+#  pod 'appcenter', :path => '../node_modules/appcenter/ios'
+#  pod 'appcenter-crashes', :path => '../node_modules/appcenter-crashes/ios'
+#  pod 'appcenter-analytics', :path => '../node_modules/appcenter-analytics/ios'
+  pod 'AppCenter/Crashes', '~> 1.12.0'
+  pod 'AppCenter/Analytics', '~> 1.12.0'
   pod 'AppCenterReactNativeShared', '~> 1.11.0'
+
+  pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
+
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
+  pod 'lottie-react-native', :path => '../node_modules/lottie-react-native'
+
+  pod 'A0Auth0', :path => '../node_modules/react-native-auth0'
+
+  pod 'react-native-blur', :path => '../node_modules/react-native-blur'
+
+  pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
+
+  pod 'react-native-haptic-feedback', :path => '../node_modules/react-native-haptic-feedback'
+
+  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
+
+  pod 'RNShare', :path => '../node_modules/react-native-share'
+
+
+  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
   
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
+  
+  pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
+  
+  pod 'RNThread', :path => '../node_modules/react-native-threads/ios'
 end

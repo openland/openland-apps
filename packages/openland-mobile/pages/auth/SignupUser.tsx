@@ -68,7 +68,7 @@ const SignupUserContent = React.memo<PageProps>((props) => {
                 }}
             >
                 <View alignSelf="center" marginTop={30} marginBottom={10}>
-                    <ZAvatarPicker field="input.photoRef" showLoaderOnUpload={true} initialUrl={prefill && prefill.picture || undefined} />
+                    <ZAvatarPicker field="input.photoRef" initialUrl={prefill && prefill.picture || undefined} />
                 </View>
                 <ZTextInput
                     field="input.firstName"

@@ -201,7 +201,7 @@ export const XUserCard = ({
                                 <div className={userNameClassname}>
                                     {emoji({
                                         src: user.name || '',
-                                        size: 14,
+                                        size: 16,
                                     })}
                                 </div>
                             </XView>

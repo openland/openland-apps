@@ -42,7 +42,7 @@ const ProfileOrganizationContent = React.memo<PageProps>((props) => {
 
     return (
         <>
-            {organization.isOwner && <SHeaderButton title="Edit" onPress={() => props.router.push('EditOrganization', { id: props.router.params.id })} />}
+            {(organization.isOwner || organization.isAdmin) && <SHeaderButton title="Edit" onPress={() => props.router.push('EditOrganization', { id: props.router.params.id })} />}
 
             <ZListItemHeader
                 photo={organization.photo}

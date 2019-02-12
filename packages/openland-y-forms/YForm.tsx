@@ -43,6 +43,10 @@ class YFormController extends React.PureComponent<YFormControllerProps, { loadin
         this.submit();
     }
 
+    setField = (field: string, value?: string) => {
+        this.contextValue.store.writeValue(field, value);
+    }
+
     componentWillReceiveProps(nextProps: YFormControllerProps) {
         if (this.props.store !== nextProps.store) {
             this.contextValue = {
@@ -144,6 +148,12 @@ export class YForm extends React.PureComponent<YFormProps> {
     submit = () => {
         if (this.ref.current) {
             this.ref.current!!.submitForm();
+        }
+    }
+
+    setField = (field: string, value?: string) => {
+        if (this.ref.current) {
+            this.ref.current!!.setField(field, value);
         }
     }
 
