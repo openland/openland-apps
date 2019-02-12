@@ -7,7 +7,6 @@ import { ASEventEmitter } from './platform/ASEventEmitter';
 import { SQueue } from 'react-native-s/SQueue';
 import { throttledMap } from 'react-native-s/SThrottler';
 import { ASFlex } from './ASFlex';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
@@ -44,14 +43,10 @@ class ItemRenderHolder<T extends DataSourceItem> {
 class MountListener extends React.PureComponent<{ onReady?: () => void }> {
     componentDidMount() {
         if (this.props.onReady) {
-            Alert.alert('onListReady');
             this.props.onReady();
         }
     }
 
-    componentWillUnmount() {
-        Alert.alert('componentWillUnmount');
-    }
     render() {
         return <ASFlex />
     }
