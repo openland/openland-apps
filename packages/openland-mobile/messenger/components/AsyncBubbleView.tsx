@@ -3,7 +3,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { Image, Platform, Dimensions } from 'react-native';
 import { messageBgColor } from './AsyncMessageView';
 
-export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50, 400);
+export const bubbleMaxWidth = Math.min(Dimensions.get('window').width - 50 - 10, 400);
 export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 50 - 45, 400);
 export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text', colorIn: string }> {
     render() {
