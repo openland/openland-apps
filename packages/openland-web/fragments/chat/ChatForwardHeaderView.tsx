@@ -81,19 +81,21 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                                <DeleteMessagesButton
-                                    roomId={props.roomId}
-                                    messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                                    onSuccess={state.resetAll}
-                                >
-                                    <XButton text="Delete" style="default" />
-                                </DeleteMessagesButton>
-                            )}
+                            <DeleteMessagesButton
+                                roomId={props.roomId}
+                                messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                                onSuccess={state.resetAll}
+                            >
+                                <XButton text="Delete" style="default" />
+                            </DeleteMessagesButton>
+                        )}
                     </XWithRole>
                     <XButton
                         text="Reply"
                         style="primary"
-                        onClick={() => state.setReplyMessages(state.forwardMessagesId, null, null)}
+                        onClick={() =>
+                            state.setReplyMessages(state.forwardMessagesId, new Set(), new Set())
+                        }
                     />
                     <XButton
                         text="Forward"

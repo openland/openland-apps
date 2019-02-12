@@ -39,7 +39,7 @@ const DropAreaContent = Glamorous.div<{ dragUnder: boolean }>(props => ({
 
 interface DropZoneProps {
     height: string | number;
-    onFileDrop: (file: any) => void;
+    onFileDrop?: (file: any) => void;
 }
 
 interface DropZoneState {
@@ -71,7 +71,9 @@ export class DropZone extends React.PureComponent<DropZoneProps, DropZoneState> 
             return;
         }
 
-        this.props.onFileDrop(file);
+        if (this.props.onFileDrop) {
+            this.props.onFileDrop(file);
+        }
     };
 
     private handleWindowDragover = (e: any) => {
