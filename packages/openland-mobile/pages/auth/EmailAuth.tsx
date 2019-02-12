@@ -56,6 +56,20 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
         this.ref.current!.submitForm();
     };
 
+    private validateEmail = (value?: string) => {
+        if (!value) {
+            throw new NamedError('no_email_or_phone');
+        }
+
+        let lastAtPos = value.lastIndexOf('@');
+        let lastDotPos = value.lastIndexOf('.');
+        let isEmailValid = lastAtPos < lastDotPos && lastAtPos > 0 && value.indexOf('@@') === -1 && lastDotPos > 2 && (value.length - lastDotPos) > 2 && !value.includes(' ');
+
+        if (!isEmailValid) {
+            throw new NamedError('invalid_email');
+        }
+    }
+
     render() {
         return (
             <>
@@ -65,21 +79,7 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async src => {
-                        if (!src.email) {
-                            throw new NamedError('no_email_or_phone');
-                        }
-                        
-                        // email validation start
-
-                        let lastAtPos = src.email.lastIndexOf('@');
-                        let lastDotPos = src.email.lastIndexOf('.');
-                        let isEmailValid = lastAtPos < lastDotPos && lastAtPos > 0 && src.email.indexOf('@@') === -1 && lastDotPos > 2 && (src.email.length - lastDotPos) > 2;
-
-                        if (!isEmailValid) {
-                            throw new NamedError('invalid_email');
-                        }
-
-                        // email validation end
+                        this.validateEmail(src.email);
 
                         Keyboard.dismiss();
                         email = src.email;
@@ -126,6 +126,12 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
         this.ref.current!.submitForm();
     };
 
+    private validateCode = (value?: string) => {
+        if (!value) {
+            throw new NamedError('no_code');
+        }
+    }
+
     render() {
         return (
             <>
@@ -134,9 +140,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async src => {
-                        if (!src.code) {
-                            throw new NamedError('no_code');
-                        }
+                        this.validateCode(src.code);
+
                         Keyboard.dismiss();
                         let res = await http({
                             url: 'https://api.openland.com/auth/checkCode',
