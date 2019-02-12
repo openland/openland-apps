@@ -13,7 +13,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
 
-const RoomsList = React.memo(props => {
+const RoomsList = () => {
     let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms[];
     let featureds = getClient()
         .useRoomSearch({
@@ -94,7 +94,7 @@ const RoomsList = React.memo(props => {
             </ZListItemGroup>
         </>
     );
-});
+};
 
 const ExplorePage = (props: PageProps) => {
     return (
