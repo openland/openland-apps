@@ -75,7 +75,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
         } else if (v.type === 'link') {
             return <ASText key={'link-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
         } else if (v.type === 'mention_user') {
-            return <ASText key={'mention-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
+            return <ASText key={'mention-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}>{v.text}</ASText >;
         } else {
             return <ASText key={'text-' + i}>{v.text}</ASText>;
         }
