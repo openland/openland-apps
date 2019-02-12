@@ -101,6 +101,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 
     const { handleChange, handleDialogDone } = useGeneralCompose({
         onChange: messageComposeProps.onChange,
+        onSendFile: messageComposeProps.onSendFile,
         setInputValue,
         quoteState,
         draftState,
