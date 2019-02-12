@@ -3,6 +3,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import Glamorous from 'glamorous';
 import FileIcon from 'openland-icons/ic-file-3.svg';
+import UploadCare from 'uploadcare-widget';
 import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
