@@ -33,7 +33,7 @@ export function useReply({
     };
 
     const finalQuoteMessagesId = quoteState ? quoteState.quoteMessagesId || [] : [];
-    if (supportReply()) {
+    if (!supportReply()) {
         return {
             replyMessagesProc: () => {
                 console.log('reply is not supported');
