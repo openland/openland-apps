@@ -1251,7 +1251,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
-					"YOGA=false",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1339,7 +1338,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
-					"YOGA=false",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
