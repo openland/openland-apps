@@ -11948,9 +11948,10 @@ react-native-fast-image@^5.1.2:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-5.1.2.tgz#c9b909993e9304736c3d9806df80f7a9705ef829"
   integrity sha512-NZsuW36I4fqnlOuxh0ZY31Q7wGWSqZMOC0wtp7ZcSG2dmjXSFaSFTdxX2vJx4Dhm0tMT3qG4yrn2ob3BiZEudA==
 
-react-native-gesture-handler@^1.0.7:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.10.tgz#160e55e4886471931b7f7d52e22d94007540ab83"
+react-native-gesture-handler@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.15.tgz#7e0d0a457820a3c9325a3d492daaed14400508a6"
+  integrity sha512-BePn+YOKcspHb1xPkUdJs+H6jiaECrT2c98txADBYWHwuUeundE+uUJG0r3FQLFvM2MoGeiJeD96sePzk+WSvQ==
   dependencies:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.2"
@@ -11982,10 +11983,6 @@ react-native-image-zoom-viewer@^2.2.13:
   resolved "https://registry.yarnpkg.com/react-native-image-zoom-viewer/-/react-native-image-zoom-viewer-2.2.24.tgz#a405852fad76e543ed5345e8b55cf859b67c182e"
   dependencies:
     react-native-image-pan-zoom "^2.1.9"
-
-react-native-keyboard-tracking-view@^5.4.4:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-tracking-view/-/react-native-keyboard-tracking-view-5.5.0.tgz#87d28639f30e5b511de510e4063e476f23d6e4f2"
 
 react-native-lightbox@^0.7.0:
   version "0.7.0"
@@ -12033,19 +12030,9 @@ react-native-safe-module@^1.1.0:
   dependencies:
     dedent "^0.6.0"
 
-react-native-search-bar@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-search-bar/-/react-native-search-bar-3.4.2.tgz#8606bb1d6b29a26dd5ee86cfae00f7253181736d"
-  dependencies:
-    prop-types "^15.5.10"
-
 react-native-share@^1.1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-1.1.3.tgz#513ea61075e2bb945d33cfda120e12592916299e"
-
-react-native-super-ellipse-mask@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-super-ellipse-mask/-/react-native-super-ellipse-mask-1.0.7.tgz#31e01b95ce1ff43904554c4a20875988eda9c212"
 
 react-native-threads@^0.0.15:
   version "0.0.15"

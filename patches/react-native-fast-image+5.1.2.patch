@@ -60,14 +60,3 @@ patch-package
          }
      }
  
---- a/node_modules/react-native-fast-image/react-native-fast-image.podspec
-+++ b/node_modules/react-native-fast-image/react-native-fast-image.podspec
-@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
-   s.source_files = "ios/**/*.{h,m}"
-   s.exclude_files = "ios/Vendor/**/*.{h,m}"
- 
--  s.dependency 'React'
-+  # s.dependency 'React'
-   s.dependency 'SDWebImage/Core'
-   s.dependency 'SDWebImage/GIF'
-   s.dependency 'FLAnimatedImage'

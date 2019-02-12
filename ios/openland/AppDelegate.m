@@ -20,8 +20,8 @@
    */
   
   [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];  // Initialize AppCenter analytics
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes
   
   /*
    * Bundle location

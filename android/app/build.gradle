@@ -186,6 +186,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-webrtc')
     compile project(':react-native-android-open-settings')
     compile project(':react-native-auth0')
     compile project(':react-native-threads')
