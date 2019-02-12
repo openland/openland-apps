@@ -68,6 +68,18 @@ const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' })
     }
 };
 
+const requestActivationCode = async () => {
+    let res = await http({
+        url: 'https://api.openland.com/auth/sendCode',
+        body: {
+            email: email,
+        },
+        method: 'POST',
+    });
+
+    session = res.session;
+}
+
 class EmailStartComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
 
@@ -102,14 +114,8 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
 
                         Keyboard.dismiss();
                         email = src.email;
-                        let res = await http({
-                            url: 'https://api.openland.com/auth/sendCode',
-                            body: {
-                                email: email,
-                            },
-                            method: 'POST',
-                        });
-                        session = res.session;
+
+                        await requestActivationCode();
                     }}
                     onError={(e) => {
                         ShowAuthError(e);
@@ -160,15 +166,9 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
     }
 
     private resendCode = async () => {
-        let res = await http({
-            url: 'https://api.openland.com/auth/sendCode',
-            body: {
-                email: email,
-            },
-            method: 'POST',
-        });
+        await requestActivationCode();
 
-        session = res.session;
+        this.ref.current!.setField('fields.code');
     }
 
     render() {
