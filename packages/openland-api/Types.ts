@@ -630,52 +630,14 @@ export interface RefreshAppTokenVariables {
 // GraphQL mutation operation: AddAppToChat
 // ====================================================
 
-export interface AddAppToChat_addAppToChat_chat_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface AddAppToChat_addAppToChat_chat_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  shortname: string | null;
-  primaryOrganization: AddAppToChat_addAppToChat_chat_PrivateRoom_user_primaryOrganization | null;
-}
-
 export interface AddAppToChat_addAppToChat_chat_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: AddAppToChat_addAppToChat_chat_PrivateRoom_user;
-}
-
-export interface AddAppToChat_addAppToChat_chat_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface AddAppToChat_addAppToChat_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: AddAppToChat_addAppToChat_chat_SharedRoom_organization | null;
 }
 
 export type AddAppToChat_addAppToChat_chat = AddAppToChat_addAppToChat_chat_PrivateRoom | AddAppToChat_addAppToChat_chat_SharedRoom;
@@ -3909,6 +3871,72 @@ export interface AvailableRooms {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GlobalSearch
+// ====================================================
+
+export interface GlobalSearch_items_Organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface GlobalSearch_items_User_primaryOrganization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+  isCommunity: boolean;
+}
+
+export interface GlobalSearch_items_User {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  photo: string | null;
+  email: string | null;
+  online: boolean;
+  lastSeen: string | null;
+  isYou: boolean;
+  shortname: string | null;
+  primaryOrganization: GlobalSearch_items_User_primaryOrganization | null;
+}
+
+export interface GlobalSearch_items_SharedRoom_organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
+}
+
+export interface GlobalSearch_items_SharedRoom {
+  __typename: "SharedRoom";
+  id: string;
+  kind: SharedRoomKind;
+  title: string;
+  roomPhoto: string;
+  membersCount: number | null;
+  membership: SharedRoomMembershipStatus;
+  organization: GlobalSearch_items_SharedRoom_organization | null;
+}
+
+export type GlobalSearch_items = GlobalSearch_items_Organization | GlobalSearch_items_User | GlobalSearch_items_SharedRoom;
+
+export interface GlobalSearch {
+  items: GlobalSearch_items[];
+}
+
+export interface GlobalSearchVariables {
+  query: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FeatureFlags
 // ====================================================
 
@@ -5825,52 +5853,14 @@ export interface ResolveShortNameVariables {
 // GraphQL fragment: AppChat
 // ====================================================
 
-export interface AppChat_chat_PrivateRoom_user_primaryOrganization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
-}
-
-export interface AppChat_chat_PrivateRoom_user {
-  __typename: "User";
-  id: string;
-  name: string;
-  firstName: string;
-  lastName: string | null;
-  photo: string | null;
-  email: string | null;
-  online: boolean;
-  lastSeen: string | null;
-  isYou: boolean;
-  shortname: string | null;
-  primaryOrganization: AppChat_chat_PrivateRoom_user_primaryOrganization | null;
-}
-
 export interface AppChat_chat_PrivateRoom {
   __typename: "PrivateRoom";
   id: string;
-  user: AppChat_chat_PrivateRoom_user;
-}
-
-export interface AppChat_chat_SharedRoom_organization {
-  __typename: "Organization";
-  id: string;
-  name: string;
-  photo: string | null;
-  isCommunity: boolean;
 }
 
 export interface AppChat_chat_SharedRoom {
   __typename: "SharedRoom";
   id: string;
-  kind: SharedRoomKind;
-  title: string;
-  photo: string;
-  membership: SharedRoomMembershipStatus;
-  membersCount: number | null;
-  organization: AppChat_chat_SharedRoom_organization | null;
 }
 
 export type AppChat_chat = AppChat_chat_PrivateRoom | AppChat_chat_SharedRoom;

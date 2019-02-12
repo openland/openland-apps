@@ -90,6 +90,7 @@ export const ConferenceOfferMutation = typedMutation<Types.ConferenceOffer, Type
 export const ConferenceAnswerMutation = typedMutation<Types.ConferenceAnswer, Types.ConferenceAnswerVariables>(Conferences.ConferenceAnswerMutation);
 export const ConferenceCandidateMutation = typedMutation<Types.ConferenceCandidate, Types.ConferenceCandidateVariables>(Conferences.ConferenceCandidateMutation);
 export const AvailableRoomsQuery = typedQuery<Types.AvailableRooms, {}>(Explore.AvailableRoomsQuery);
+export const GlobalSearchQuery = typedQuery<Types.GlobalSearch, Types.GlobalSearchVariables>(Explore.GlobalSearchQuery);
 export const FeatureFlagsQuery = typedQuery<Types.FeatureFlags, {}>(FeatureFlag.FeatureFlagsQuery);
 export const FeatureFlagAddMutation = typedMutation<Types.FeatureFlagAdd, Types.FeatureFlagAddVariables>(FeatureFlag.FeatureFlagAddMutation);
 export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, Types.FeatureFlagEnableVariables>(FeatureFlag.FeatureFlagEnableMutation);
