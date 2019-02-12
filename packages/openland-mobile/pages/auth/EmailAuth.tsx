@@ -130,6 +130,14 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
         if (!value) {
             throw new NamedError('no_code');
         }
+
+        if (value.length !== 5) {
+            throw new NamedError('wrong_code_length');
+        }
+
+        if (!value.match(/^[0-9]+$/)) {
+            throw new NamedError('wrong_code');
+        }
     }
 
     render() {

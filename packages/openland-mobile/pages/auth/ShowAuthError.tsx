@@ -12,14 +12,14 @@ export const ShowAuthError = (error: NamedError) => {
             .title('The email you entered is incorrect')
             .message('Please check your email address and try again.')
             .button('TRY AGAIN').show();
-    } else if (error.name === 'wrong_code' || error.code === 4) {
+    } else if (error.name === 'wrong_code' || error.name === 'wrong_code_length' || error.code === 4) {
         Alert.builder()
             .title('The code you entered is incorrect')
             .message('Please check the code in the email and try again.')
             .button('TRY AGAIN').show();
     } else if (error.name === 'no_code' || error.code === 7) {
         Alert.builder()
-            .title('Please enter the 6-digit code we\'ve just sent to your email')
+            .title('Please enter the 5-digit code we\'ve just sent to your email')
             .button('GOT IT!').show();
     } else {
         Alert.builder()
