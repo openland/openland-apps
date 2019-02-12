@@ -81,6 +81,8 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         members: messageComposeProps.members,
         getMessages: messageComposeProps.getMessages,
         conversationId: messageComposeProps.conversationId,
+        onSend: messageComposeProps.onSend,
+        onSendFile: messageComposeProps.onSendFile,
         inputValue,
         setInputValue,
         quoteState,

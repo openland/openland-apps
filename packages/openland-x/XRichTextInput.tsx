@@ -379,10 +379,19 @@ export class XRichTextInput extends React.Component<XRichTextInputProps, XRichTe
         return 'not-handled';
     };
 
-    onChange = (editorState: any) => {
-        this.setState({
-            editorState,
-        });
+    onChange = (editorState: EditorState) => {
+        const plainText = editorState.getCurrentContent().getPlainText();
+        this.setState(
+            {
+                editorState,
+                plainText,
+            },
+            () => {
+                if (this.props.onChange) {
+                    this.props.onChange(plainText);
+                }
+            },
+        );
     };
 
     onSearchChange = ({ value }: any) => {
