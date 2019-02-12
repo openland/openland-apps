@@ -34,9 +34,9 @@ target 'openland' do
 #  pod 'appcenter', :path => '../node_modules/appcenter/ios'
 #  pod 'appcenter-crashes', :path => '../node_modules/appcenter-crashes/ios'
 #  pod 'appcenter-analytics', :path => '../node_modules/appcenter-analytics/ios'
-  pod 'AppCenter/Crashes', '~> 1.12.0'
-  pod 'AppCenter/Analytics', '~> 1.12.0'
-  pod 'AppCenterReactNativeShared', '~> 1.11.0'
+#  pod 'AppCenter/Crashes', '~> 1.12.0'
+#  pod 'AppCenter/Analytics', '~> 1.12.0'
+#  pod 'AppCenterReactNativeShared', '~> 1.11.0'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 
@@ -71,4 +71,12 @@ target 'openland' do
   pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
   
   pod 'RNThread', :path => '../node_modules/react-native-threads/ios'
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'NO'
+        end
+    end
 end

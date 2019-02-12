@@ -1,13 +1,6 @@
 PODS:
   - A0Auth0 (1.3.1):
     - React
-  - AppCenter/Analytics (1.12.0):
-    - AppCenter/Core
-  - AppCenter/Core (1.12.0)
-  - AppCenter/Crashes (1.12.0):
-    - AppCenter/Core
-  - AppCenterReactNativeShared (1.11.0):
-    - AppCenter/Core (= 1.12.0)
   - Auth0 (1.13.0):
     - SimpleKeychain
   - boost-for-react-native (1.63.0)
@@ -136,9 +129,6 @@ PODS:
 
 DEPENDENCIES:
   - A0Auth0 (from `../node_modules/react-native-auth0`)
-  - AppCenter/Analytics (~> 1.12.0)
-  - AppCenter/Crashes (~> 1.12.0)
-  - AppCenterReactNativeShared (~> 1.11.0)
   - Auth0 (~> 1.0)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -178,8 +168,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AppCenter
-    - AppCenterReactNativeShared
     - Auth0
     - boost-for-react-native
     - FLAnimatedImage
@@ -240,8 +228,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   A0Auth0: 5cc6d8281f6315742b25d0c2475cc33df6066a22
-  AppCenter: 4d27bdafd74b1b3e90946b9989fd6011a7e39c5e
-  AppCenterReactNativeShared: 74a1c684b8183b3edef0a7e41d567fe8bd31075d
   Auth0: 7e99e1ca69543bc243d9687fd612057072f3eaaf
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 4b3f3bdf1ac1a52a5ef5e65c9585d793a7c3f825
@@ -276,6 +262,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: e4c4ae71017ed30714b13a7e0c3930fc0cc82d10
+PODFILE CHECKSUM: c7bddc5b608dd201ac1a2efa5ada82a0a0e86ee6
 
 COCOAPODS: 1.5.3
