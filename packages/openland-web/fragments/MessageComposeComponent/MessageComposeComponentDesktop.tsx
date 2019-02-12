@@ -126,6 +126,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
             {/* TODO maybe some other pattern here */}
             <DumpSendMessage
                 TextInputComponent={messageComposeProps.TextInputComponent || DesktopSendMessage}
+                quoteState={quoteState}
                 handleDrop={messageComposeProps.handleDrop}
                 handleChange={handleChange}
                 handleSend={handleSend}
