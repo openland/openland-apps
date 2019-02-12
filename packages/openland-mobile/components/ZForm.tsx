@@ -24,6 +24,12 @@ export class ZForm extends React.PureComponent<ZFormProps> {
         }
     }
 
+    setField = (field: string, value?: string) => {
+        if (this.ref.current) {
+            this.ref.current.setField(field, value);
+        }
+    }
+
     handleAction = async (args: any) => {
         try {
             startLoader();

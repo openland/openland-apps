@@ -54,3 +54,12 @@ export class UserError extends Error {
         this.userMessage = message;
     }
 }
+
+export class NamedError extends Error {
+    name: string;
+
+    constructor(name: string) {
+        super(name);
+        this.name = name;
+    }
+}

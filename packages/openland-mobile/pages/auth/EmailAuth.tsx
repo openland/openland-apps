@@ -8,8 +8,9 @@ import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
-import { UserError, formatError, SilentError } from 'openland-y-forms/errorHandling';
-import { AlertBlanketBuilder, Alert } from 'openland-mobile/components/AlertBlanket';
+import { UserError, NamedError } from 'openland-y-forms/errorHandling';
+import { ShowAuthError } from './ShowAuthError';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     hint: {
@@ -38,12 +39,46 @@ const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' })
     } else {
         let body = await res.json();
         if (body.ok === false) {
-            throw new UserError(body.errorText || 'Unexpected error');
+            let errorName: string | undefined;
+
+            switch (body.errorCode) {
+                case 0: errorName = 'wrong_arg'; break;
+                case 1: errorName = 'server_error'; break;
+                case 2: errorName = 'session_not_found'; break;
+                case 3: errorName = 'code_expired'; break;
+                case 4: errorName = 'wrong_code'; break;
+                case 5: errorName = 'no_email_or_phone'; break;
+                case 6: errorName = 'no_session'; break;
+                case 7: errorName = 'no_code'; break;
+                case 8: errorName = 'no_auth_token'; break;
+                case 9: errorName = 'invalid_email'; break;
+                case 10: errorName = 'invalid_auth_token'; break;
+                case 11: errorName = 'session_expired'; break;
+                default: errorName = undefined;
+            }
+
+            if (typeof errorName === 'string') {
+                throw new NamedError(errorName);
+            } else {
+                throw new UserError(body.errorText || 'Unexpected error');
+            }
         } else {
             return body;
         }
     }
 };
+
+const requestActivationCode = async () => {
+    let res = await http({
+        url: 'https://api.openland.com/auth/sendCode',
+        body: {
+            email: email,
+        },
+        method: 'POST',
+    });
+
+    session = res.session;
+}
 
 class EmailStartComponent extends React.PureComponent<PageProps> {
     private ref = React.createRef<ZForm>();
@@ -51,6 +86,20 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
     private submitForm = () => {
         this.ref.current!.submitForm();
     };
+
+    private validateEmail = (value?: string) => {
+        if (!value) {
+            throw new NamedError('no_email_or_phone');
+        }
+
+        let lastAtPos = value.lastIndexOf('@');
+        let lastDotPos = value.lastIndexOf('.');
+        let isEmailValid = lastAtPos < lastDotPos && lastAtPos > 0 && value.indexOf('@@') === -1 && lastDotPos > 2 && (value.length - lastDotPos) > 2 && !value.includes(' ');
+
+        if (!isEmailValid) {
+            throw new NamedError('invalid_email');
+        }
+    }
 
     render() {
         return (
@@ -61,20 +110,15 @@ class EmailStartComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async src => {
-                        if (!src.email) {
-                            Alert.builder().title('Please enter your email address').button('GOT IT!').show();
-                            throw new SilentError();
-                        }
+                        this.validateEmail(src.email);
+
                         Keyboard.dismiss();
                         email = src.email;
-                        let res = await http({
-                            url: 'https://api.openland.com/auth/sendCode',
-                            body: {
-                                email: email,
-                            },
-                            method: 'POST',
-                        });
-                        session = res.session;
+
+                        await requestActivationCode();
+                    }}
+                    onError={(e) => {
+                        ShowAuthError(e);
                     }}
                     onSuccess={() => this.props.router.push('EmailCode')}
                 >
@@ -107,6 +151,26 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
         this.ref.current!.submitForm();
     };
 
+    private validateCode = (value?: string) => {
+        if (!value) {
+            throw new NamedError('no_code');
+        }
+
+        if (value.length !== 5) {
+            throw new NamedError('wrong_code_length');
+        }
+
+        if (!value.match(/^[0-9]+$/)) {
+            throw new NamedError('wrong_code');
+        }
+    }
+
+    private resendCode = async () => {
+        await requestActivationCode();
+
+        this.ref.current!.setField('fields.code');
+    }
+
     render() {
         return (
             <>
@@ -115,10 +179,8 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
                 <ZForm
                     ref={this.ref}
                     action={async src => {
-                        if (!src.code) {
-                            Alert.builder().title('Please check your email and enter activation code').button('GOT IT!').show();
-                            throw new SilentError();
-                        }
+                        this.validateCode(src.code);
+
                         Keyboard.dismiss();
                         let res = await http({
                             url: 'https://api.openland.com/auth/checkCode',
@@ -139,12 +201,19 @@ class EmailCodeComponent extends React.PureComponent<PageProps> {
 
                         await AsyncStorage.setItem('openland-token', res2.accessToken);
                     }}
-                    onError={e => {
-                        new AlertBlanketBuilder()
-                            .title('Activation')
-                            .message(formatError(e))
-                            .button('Try again')
-                            .show();
+                    onError={(e: Error) => {
+                        if (e.name === 'code_expired') {
+                            Alert.builder()
+                                .title('This code has expired')
+                                .message('Please click Resend and we\'ll send you a new verification email.')
+                                .button('Cancel', 'cancel')
+                                .action('Resend Code', 'default', this.resendCode)
+                                .show();
+                            
+                            return;
+                        }
+
+                        ShowAuthError(e);
                     }}
                     onSuccess={() => RNRestart.Restart()}
                 >
