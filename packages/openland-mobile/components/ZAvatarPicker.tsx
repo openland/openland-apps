@@ -157,7 +157,11 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                     {valueUrl && <ZAvatar src={valueUrl} size={size} />}
                     <View position="absolute" alignItems="center" justifyContent="center" style={{ width: size, height: size, borderRadius: size / 2, borderWidth: 1, borderColor: '#eff0f2' }}>
                         {!this.state.loading && <Image style={{ tintColor: valueUrl ? 'white' : 'gray', opacity: 0.8, width: 26, height: 21 }} resizeMode="stretch" source={require('assets/ic-photo-full.png')} />}
-                        {this.state.loading && <ActivityIndicator color="#fff" />}
+                        {this.state.loading && (
+                            <View width={34} height={34} backgroundColor="rgba(255, 255, 255, 0.6)" borderRadius={17} justifyContent="center">
+                                <ActivityIndicator color="rgba(0, 0, 0, 0.4)" />
+                            </View>
+                        )}
                     </View>
                 </View>
             </TouchableOpacity>
