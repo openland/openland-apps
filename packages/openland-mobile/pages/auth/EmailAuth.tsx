@@ -8,9 +8,8 @@ import { signupStyles } from './SignupUser';
 import { ZForm } from '../../components/ZForm';
 import RNRestart from 'react-native-restart';
 import { AsyncStorage, Text, StyleSheet, TextStyle, Keyboard } from 'react-native';
-import { UserError, NamedError, NumberedError } from 'openland-y-forms/errorHandling';
+import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     hint: {
@@ -40,7 +39,7 @@ const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' })
         let body = await res.json();
         if (body.ok === false) {
             if (body.errorCode) {
-                throw new NumberedError(body.errorCode);
+                throw new NamedError(null, body.errorCode);
             } else {
                 throw new UserError(body.errorText || 'Unexpected error');
             }

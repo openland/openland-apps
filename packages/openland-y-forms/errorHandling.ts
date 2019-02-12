@@ -57,17 +57,12 @@ export class UserError extends Error {
 
 export class NamedError extends Error {
     name: string;
-    code: number | undefined;
-    constructor(message: string) {
-        super(message);
-        this.name = message;
-    }
-}
-
-export class NumberedError extends Error {
     code?: number;
-    constructor(code: number) {
-        super();
+
+    constructor(name: string | null, code?: number) {
+        super(name || '');
+
+        this.name = name || '';
         this.code = code;
     }
 }

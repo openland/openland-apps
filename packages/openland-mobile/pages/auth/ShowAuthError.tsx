@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { NumberedError, NamedError } from 'openland-y-forms/errorHandling';
+import { NamedError } from 'openland-y-forms/errorHandling';
 
-export const ShowAuthError = (error: NumberedError | NamedError) => {
+export const ShowAuthError = (error: NamedError) => {
     if (error.name === 'no_email_or_phone' || error.code === 5) {
         Alert.builder()
             .title('Please enter your email address')
