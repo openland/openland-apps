@@ -7,37 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00D6797578F243AEA38C10EF /* libRNSuperEllipseMask.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F5C2C7DD6684B668EDE8F57 /* libRNSuperEllipseMask.a */; };
 		00E356F31AD99517003FC87E /* openlandTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* openlandTests.m */; };
-		02136319CF55454E90C40A2F /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A2DA4661304DEE850FB986 /* libRNBlur.a */; };
-		09371D7CC1B24CBEA73971D3 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EC2FD3E40F4887822E0BE1 /* libRNImagePicker.a */; };
-		0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7023E2C8438941E08C21ED1F /* libRNShare.a */; };
-		0FD808C613CD4EF4AA342A55 /* libRNRate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B3868FD2FDC437B84669D3B /* libRNRate.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		17EC74006E9C4F66BA180D9E /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD66E08746544FAC954BD413 /* libRCTRestart.a */; };
-		1F53B9542EEA4A3CB3AE7809 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7575E5B9294149ECB950973F /* libRNDeviceInfo.a */; };
-		2ACD53F3CF6A44B2953C2FEE /* libLottieReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 140BD70175364845BD979918 /* libLottieReactNative.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* openlandTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* openlandTests.m */; };
-		2E34A29453EA4DDA94378D2D /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DAD0C618B9F41E699CF1155 /* libBVLinearGradient.a */; };
-		31BF43914ABF488487ED441A /* libRNReactNativeHapticFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 936CCCC339C043038F75626F /* libRNReactNativeHapticFeedback.a */; };
-		34A1076DCB0340E5AA164B54 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9261232309A543F49CE4D850 /* libRNFetchBlob.a */; };
 		440BD442C9014A379447F506 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E35F176CD4E46009EB90F2E /* AppCenter-Config.plist */; };
-		49D1D62EDD0547A9AB3383E4 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC04373DF80411497509133 /* libFastImage.a */; };
-		51D70AEAB6A747C08BE764A3 /* libimageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B54BAE5BF85F49A3AE452322 /* libimageCropPicker.a */; };
-		6DA947124120484DA2DD9B89 /* libLottie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DDC5D7B8BC46629B7918F3 /* libLottie.a */; };
-		6EC985A27C094007BDED89C0 /* libA0Auth0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5AB72267448BA8CB99FDA /* libA0Auth0.a */; };
-		70089A5B001040609BA9578A /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1364232686B4C9CBE4687ED /* libRNGestureHandler.a */; };
-		741F0B17B3EB48369BC4FD7D /* libAppCenterReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A938EF8C563947299EE77727 /* libAppCenterReactNative.a */; };
 		77C26823F63D9A6C64F8159B /* Pods_openland.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11517B79440836F86B074F22 /* Pods_openland.framework */; };
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
-		A2961A4D0B20429DB990F4F6 /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7343F041C8954F498DB6F766 /* libAppCenterReactNativeAnalytics.a */; };
 		AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AA260848220074F100A69D84 /* index.thread.jsbundle */; };
 		AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300DC6220186A400C54930 /* RNBackgroundTask.swift */; };
 		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
@@ -46,8 +28,6 @@
 		AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA67E25421492DBE00AE9CAC /* RNSUtils.swift */; };
 		AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA67E2572149318200AE9CAC /* RNSAnimated-Bridge.m */; };
 		AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6D99862171A2E100E04A29 /* RNLoadingCell.swift */; };
-		AA90469D210F2F0600F989BC /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; };
-		AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA904699210F2EDB00F989BC /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA92636D2132D7B5004BFD8D /* RNTouchableNode.swift */; };
 		AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47D72212C45FA00E71A74 /* RNAsyncNodeResolver.swift */; };
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
@@ -93,9 +73,6 @@
 		AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE56DC42129FA3C003706B3 /* Bridge.m */; };
 		AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; };
 		AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AAE56DD3212A0CAC003706B3 /* Nuke.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B02A0AF667B34341A5D3DCB1 /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 225A9B88E13940309EFA3D50 /* libAppCenterReactNativeCrashes.a */; };
-		E4A436BC73984B43B9A547F2 /* libRNSearchBar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D42AFEFF61464D6C82A4A5F5 /* libRNSearchBar.a */; };
-		F27E4A9BFC7B4A91A7D22EF4 /* libRNThread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F85E750CB349B7995263A8 /* libRNThread.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -192,7 +169,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AA90469E210F2F0600F989BC /* QBImagePicker.framework in Embed Frameworks */,
 				AAE56DE5212A0CDC003706B3 /* Nuke.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -325,30 +301,8 @@
 				AAD8F14E2208A5EA007C4FE3 /* CoreGraphics.framework in Frameworks */,
 				AAD8F14C2208A5E5007C4FE3 /* AudioToolbox.framework in Frameworks */,
 				AAD8F14A2208A5DF007C4FE3 /* AVFoundation.framework in Frameworks */,
-				1F53B9542EEA4A3CB3AE7809 /* libRNDeviceInfo.a in Frameworks */,
-				09371D7CC1B24CBEA73971D3 /* libRNImagePicker.a in Frameworks */,
-				34A1076DCB0340E5AA164B54 /* libRNFetchBlob.a in Frameworks */,
-				49D1D62EDD0547A9AB3383E4 /* libFastImage.a in Frameworks */,
-				51D70AEAB6A747C08BE764A3 /* libimageCropPicker.a in Frameworks */,
-				AA90469D210F2F0600F989BC /* QBImagePicker.framework in Frameworks */,
-				E4A436BC73984B43B9A547F2 /* libRNSearchBar.a in Frameworks */,
-				02136319CF55454E90C40A2F /* libRNBlur.a in Frameworks */,
-				2E34A29453EA4DDA94378D2D /* libBVLinearGradient.a in Frameworks */,
-				6DA947124120484DA2DD9B89 /* libLottie.a in Frameworks */,
-				2ACD53F3CF6A44B2953C2FEE /* libLottieReactNative.a in Frameworks */,
-				00D6797578F243AEA38C10EF /* libRNSuperEllipseMask.a in Frameworks */,
-				70089A5B001040609BA9578A /* libRNGestureHandler.a in Frameworks */,
-				31BF43914ABF488487ED441A /* libRNReactNativeHapticFeedback.a in Frameworks */,
 				AAE56DE4212A0CDC003706B3 /* Nuke.framework in Frameworks */,
-				0AC1302EE28142C28558A0E2 /* libRNShare.a in Frameworks */,
 				77C26823F63D9A6C64F8159B /* Pods_openland.framework in Frameworks */,
-				741F0B17B3EB48369BC4FD7D /* libAppCenterReactNative.a in Frameworks */,
-				A2961A4D0B20429DB990F4F6 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
-				B02A0AF667B34341A5D3DCB1 /* libAppCenterReactNativeCrashes.a in Frameworks */,
-				17EC74006E9C4F66BA180D9E /* libRCTRestart.a in Frameworks */,
-				0FD808C613CD4EF4AA342A55 /* libRNRate.a in Frameworks */,
-				F27E4A9BFC7B4A91A7D22EF4 /* libRNThread.a in Frameworks */,
-				6EC985A27C094007BDED89C0 /* libA0Auth0.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
