@@ -84,6 +84,7 @@ export function emoji({
                         if (crop) {
                             return (
                                 <figure
+                                    key={'e-' + i}
                                     style={{
                                         display: 'inline-block',
                                         position: 'relative',
