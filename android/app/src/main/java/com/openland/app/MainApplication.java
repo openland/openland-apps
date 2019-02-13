@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
+import com.facebook.react.bridge.ProxyJavaScriptExecutor;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.auth0.react.A0Auth0Package;
@@ -26,6 +28,7 @@ import com.openland.react.RNSPackage;
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
 import com.openland.react.threads.RNThreadPackage;
+import com.openland.react.v8.V8Executor;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -45,9 +48,17 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Nullable
+        @Override
+        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
+            return  new ProxyJavaScriptExecutor.Factory(V8Executor.Companion);
+        }
 
         @Override
         public boolean getUseDeveloperSupport() {
