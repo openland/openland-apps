@@ -20,6 +20,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XText } from 'openland-x/XText';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 function validateEmail(email: string) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -197,7 +198,7 @@ const RootContainer = Glamorous.div({
     width: '100%',
 });
 
-const RootContainerContent = Glamorous.div<{ mainPage?: boolean }>([
+const RootContainerContentStyles = Glamorous.div<{ mainPage?: boolean; iosChrome: boolean }>([
     {
         backgroundColor: '#fff',
         boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
@@ -221,7 +222,7 @@ const RootContainerContent = Glamorous.div<{ mainPage?: boolean }>([
         },
     },
     props =>
-        props.mainPage
+        props.mainPage || props.iosChrome
             ? {}
             : {
                   '@media(max-width: 700px)': {
@@ -236,6 +237,22 @@ const RootContainerContent = Glamorous.div<{ mainPage?: boolean }>([
                   },
               },
 ]);
+
+const RootContainerContent = (props: { children: any; mainPage?: boolean }) => {
+    let IosChromeChecker = false;
+
+    if (canUseDOM) {
+        if (navigator.userAgent.match('CriOS') && navigator.userAgent.match('iPhone')) {
+            IosChromeChecker = true;
+        }
+    }
+
+    return (
+        <RootContainerContentStyles mainPage={props.mainPage} iosChrome={IosChromeChecker}>
+            {props.children}
+        </RootContainerContentStyles>
+    );
+};
 
 const Footer = Glamorous.div({
     marginTop: 'auto',
@@ -1619,7 +1636,9 @@ export class CreateOrganizationFormInner extends React.Component<
 
         return (
             <ContentWrapper>
-                <MyTitle roomView={roomView} className="title">{InitTexts.create_organization.title}</MyTitle>
+                <MyTitle roomView={roomView} className="title">
+                    {InitTexts.create_organization.title}
+                </MyTitle>
                 <SubTitle className="subtitle">{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={(data: any) => {
