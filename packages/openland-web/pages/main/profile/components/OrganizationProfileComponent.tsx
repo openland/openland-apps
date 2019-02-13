@@ -647,7 +647,7 @@ const Members = ({ organization, router }: MembersProps) => {
             <>
                 {withHeader && (
                     <XSubHeader
-                        title={TextProfiles.Organization.membersTitle(organization.isCommunity)}
+                        title={TextProfiles.Organization.membersTitle}
                         counter={joinedMembers.length}
                         paddingBottom={0}
                         marginBottom={-3}
@@ -658,11 +658,7 @@ const Members = ({ organization, router }: MembersProps) => {
                         <XWithRole role="admin" orgPermission={organization.id}>
                             <InvitesToOrganizationModal
                                 target={
-                                    <XCreateCard
-                                        text={TextProfiles.Organization.addMembers(
-                                            organization.isCommunity,
-                                        )}
-                                    />
+                                    <XCreateCard text={TextProfiles.Organization.addMembers} />
                                 }
                             />
                         </XWithRole>
@@ -682,7 +678,7 @@ const Members = ({ organization, router }: MembersProps) => {
                     <>
                         <XSwitcher style="button">
                             <XSwitcher.Item query={{ field: 'tab' }} counter={joinedMembers.length}>
-                                {TextProfiles.Organization.membersTitle(organization.isCommunity)}
+                                {TextProfiles.Organization.membersTitle}
                             </XSwitcher.Item>
                             <XSwitcher.Item
                                 query={{ field: 'tab', value: 'requests' }}

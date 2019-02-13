@@ -43,13 +43,13 @@ export const TextProfiles = {
 
         addSocialLinks: 'Add social links',
         addAbout: 'Add a short description',
-        addMembers: (isCommunity: boolean) => (isCommunity ? 'Add admin' : 'Invite people'),
+        addMembers: 'Invite people',
 
         edit: 'Edit',
         superEdit: 'Super edit',
 
         aboutTitle: 'About',
-        membersTitle: (isCommunity: boolean) => (isCommunity ? 'Admins' : 'Members'),
+        membersTitle: 'Members',
         requestsTitle: 'Requests',
 
         hideFromSearch: 'Hide from search',
