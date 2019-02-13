@@ -20,6 +20,7 @@ export type useHandleSendT = {
     setInputValue: Function;
     quoteState?: QuoteStateT;
     inputValue: string;
+    inputRef?: any;
 } & useReplyPropsT;
 
 export function useHandleSend({
@@ -35,6 +36,7 @@ export function useHandleSend({
     setInputValue,
     quoteState,
     mentionsState,
+    inputRef
 }: useHandleSendT) {
     const supportMentions = () => {
         return !!mentionsState && !!members;
@@ -87,6 +89,9 @@ export function useHandleSend({
             quoteState!!.setQuoteMessageReply!!(undefined);
             quoteState!!.setQuoteMessageSender!!(undefined);
             quoteState!!.setQuoteMessagesId!!([]);
+        }
+        if (inputRef && inputRef.current) {
+            inputRef.current.innerText = '';
         }
 
         setFile(undefined);
