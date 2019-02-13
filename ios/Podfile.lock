@@ -70,6 +70,8 @@ PODS:
     - React/PrivateDatabase
   - React/jsinspector (0.57.8)
   - React/PrivateDatabase (0.57.8)
+  - React/RCTActionSheet (0.57.8):
+    - React/Core
   - React/RCTAnimation (0.57.8):
     - React/Core
   - React/RCTBlob (0.57.8):
@@ -144,6 +146,7 @@ DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
   - React/RCTBlob (from `../node_modules/react-native`)
   - React/RCTGeolocation (from `../node_modules/react-native`)
@@ -262,6 +265,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: c7bddc5b608dd201ac1a2efa5ada82a0a0e86ee6
+PODFILE CHECKSUM: 7e2d549f70bccdd72a1f78be9b153d75b7bcc2ba
 
 COCOAPODS: 1.5.3
