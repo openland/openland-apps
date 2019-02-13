@@ -222,7 +222,7 @@ const RootContainerContentStyles = Glamorous.div<{ mainPage?: boolean; iosChrome
         },
     },
     props =>
-        props.mainPage || props.iosChrome
+        props.mainPage || props.iosChrome !== true
             ? {}
             : {
                   '@media(max-width: 700px)': {
