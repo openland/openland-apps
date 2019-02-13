@@ -100,6 +100,7 @@ class AsyncListView(context: ReactContext) : FrameLayout(context) {
 
     private fun updateData() {
         val recycler = RecyclerCollectionComponent.create(asyncContext)
+                .backgroundColor(if (this.state.items.isEmpty()) (if (this.overflowColor !== null) this.overflowColor!! else 0x00ffffff) else  0x00ffffff)
                 .clipToPadding(false)
                 .clipChildren(false)
                 .disablePTR(true)

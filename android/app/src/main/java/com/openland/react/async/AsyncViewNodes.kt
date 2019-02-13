@@ -41,7 +41,7 @@ fun resolveStyle(context: ComponentContext, component: Component.Builder<*>, sty
 //        res = res.border(Border.create(context).radiusDip(it).build())
 //    }
 
-    if (style.backgroundPatch != null) {
+    if (style.backgroundPatch != null && style.backgroundPatch!!.source != null) {
         val scale = style.backgroundPatch!!.scale
         val bg = NinePatchBitmapFactory.createNinePathWithCapInsets(
                 context.resources,
