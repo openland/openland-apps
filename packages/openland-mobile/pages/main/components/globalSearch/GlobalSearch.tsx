@@ -37,79 +37,31 @@ export const GlobalSearch = React.memo<GlobalSearchProps>((props) => {
         );
     }
 
-    let itemsList: JSX.Element[] = [];
-    let prevGroupType = '';
-
-    items.map((item, index) => {
-        if (prevGroupType !== item.__typename) {
-            prevGroupType = item.__typename;
-
-            let groupName = '';
-
-            switch (prevGroupType) {
-                case 'Organization':
-                    groupName = 'Organizations'; break;
-                case 'User':
-                    groupName = 'Users'; break;
-                case 'SharedRoom':
-                    groupName = 'Groups'; break;
-                default:
-                    groupName = prevGroupType;
-            }
-
-            itemsList.push(
-                <ASView
-                    key={'search-group-' + index}
-                    style={{ height: 58 }}
-                >
-                    <ASFlex>
-                        <ASText
-                            flexGrow={1}
-                            color={Platform.OS === 'android' ? '#000' : '#99a2b0'}
-                            fontSize={16}
-                            fontWeight={TextStyles.weight.medium}
-                            lineHeight={20}
-                            height={Platform.OS === 'android' ? 21 : 20}
-                            opacity={Platform.OS === 'android' ? 0.7 : 1.0}
-                            marginLeft={16}
-                            marginTop={30}
-                            marginBottom={8}
-                        >
-                            {groupName}
-                        </ASText>
-                    </ASFlex>
-                </ASView>
-            );
-        }
-
-        itemsList.push(
-            <ASView style={{ height: 48 }} key={'search-item-' + index}>
-                {item.__typename === 'Organization' && (
-                    <GlobalSearchItemOrganization
-                        item={item}
-                        onPress={props.onOrganizationPress ? props.onOrganizationPress : () => props.router.push('ProfileOrganization', { id: item.id })}
-                    />
-                )}
-                {item.__typename === 'User' && (
-                    <GlobalSearchItemUser
-                        item={item}
-                        onPress={props.onUserPress ? props.onUserPress : () => props.router.push('Conversation', { id: item.id })}
-                    />
-                )}
-                {item.__typename === 'SharedRoom' && (
-                    <GlobalSearchItemSharedRoom
-                        item={item}
-                        onPress={props.onGroupPress ? props.onGroupPress : () => props.router.push('Conversation', { id: item.id })}
-                    />
-                )}
-            </ASView>
-        );
-    })
-
     return (
         <SScrollView keyboardDismissMode="on-drag">
             <View style={{ flexDirection: 'column', width: '100%' }}>
-                {itemsList}
+                {items.map((item, index) => (
+                    <ASView style={{ height: 48 }} key={'search-item-' + index}>
+                        {item.__typename === 'Organization' && (
+                            <GlobalSearchItemOrganization
+                                item={item}
+                                onPress={props.onOrganizationPress ? props.onOrganizationPress : () => props.router.push('ProfileOrganization', { id: item.id })}
+                            />
+                        )}
+                        {item.__typename === 'User' && (
+                            <GlobalSearchItemUser
+                                item={item}
+                                onPress={props.onUserPress ? props.onUserPress : () => props.router.push('Conversation', { id: item.id })}
+                            />
+                        )}
+                        {item.__typename === 'SharedRoom' && (
+                            <GlobalSearchItemSharedRoom
+                                item={item}
+                                onPress={props.onGroupPress ? props.onGroupPress : () => props.router.push('Conversation', { id: item.id })}
+                            />
+                        )}
+                    </ASView>
+                ))}
             </View>
         </SScrollView>
     );
