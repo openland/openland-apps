@@ -47,14 +47,11 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
     componentWillMount() {
         if (this.props.message.urlAugmentation && this.props.message.urlAugmentation.imageURL) {
             let maxSize = (this.props.message.isOut ? bubbleMaxWidth : bubbleMaxWidth) - 90
-
-            console.warn('boom', JSON.stringify(this.props.message.urlAugmentation));
             let width = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageWidth || maxSize;
             let height = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageHeight || maxSize;
             this.augLayout = layoutMedia(width!, height!, maxSize, maxSize);
 
             this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.urlAugmentation.imageURL, this.augLayout, (state) => {
-                console.warn('boom', JSON.stringify(state));
                 this.setState({ downloadState: state });
             });
         }
@@ -122,7 +119,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                     {this.props.message.reply && (
 
                         this.props.message.reply.map(m => (
-                            <ASFlex flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn}>
+                            <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn}>
 
                                 <ASText
                                     marginTop={-2}
