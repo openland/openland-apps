@@ -40,6 +40,7 @@
         "@types/webpack": "^4.4.20",
         "@zeit/next-typescript": "^1.1.1",
         "add": "^2.0.6",
+        "apollo-cache-hermes": "^0.8.8",
         "apollo-cache-inmemory": "^1.1.4",
         "apollo-cache-logger": "^1.1.1",
         "apollo-client": "2.4.12",

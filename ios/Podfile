@@ -68,8 +68,6 @@ target 'openland' do
   pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
   
   pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
-  
-  pod 'RNThread', :path => '../node_modules/react-native-threads/ios'
 end
 
 post_install do |installer|

@@ -38,6 +38,8 @@
 		AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */; };
 		AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */; };
 		AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */; };
+		AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA6122145CF800BB1781 /* ThreadManager.m */; };
+		AAA4DA6522145D2300BB1781 /* WorkerSelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA6422145D2300BB1781 /* WorkerSelfManager.m */; };
 		AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0219321429D8800927CF0 /* RNAsyncCell.swift */; };
 		AAB021962142ACB300927CF0 /* RNPatchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB021952142ACB300927CF0 /* RNPatchNode.swift */; };
 		AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */; };
@@ -247,6 +249,10 @@
 		AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesUtils.m; sourceTree = "<group>"; };
 		AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeAnalytics.m; sourceTree = "<group>"; };
 		AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeAnalytics.h; sourceTree = "<group>"; };
+		AAA4DA6022145CF800BB1781 /* ThreadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadManager.h; sourceTree = "<group>"; };
+		AAA4DA6122145CF800BB1781 /* ThreadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadManager.m; sourceTree = "<group>"; };
+		AAA4DA6222145CF800BB1781 /* ThreadSelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSelfManager.h; sourceTree = "<group>"; };
+		AAA4DA6422145D2300BB1781 /* WorkerSelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkerSelfManager.m; sourceTree = "<group>"; };
 		AAB0219321429D8800927CF0 /* RNAsyncCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncCell.swift; sourceTree = "<group>"; };
 		AAB021952142ACB300927CF0 /* RNPatchNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPatchNode.swift; sourceTree = "<group>"; };
 		AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncDataView.swift; sourceTree = "<group>"; };
@@ -369,6 +375,7 @@
 				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAB23E16220B803F00BFD222 /* RNLithoView */,
 				AAE104CF212C2A440034DA0F /* RNAsyncView */,
+				AAA4DA5722145C6200BB1781 /* RNThreads */,
 				AAE56DBF2129F997003706B3 /* hacks */,
 				AAE56DC32129FA25003706B3 /* Bridge.h */,
 				AAE56DC42129FA3C003706B3 /* Bridge.m */,
@@ -524,6 +531,17 @@
 				AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */,
 			);
 			name = appcenter;
+			sourceTree = "<group>";
+		};
+		AAA4DA5722145C6200BB1781 /* RNThreads */ = {
+			isa = PBXGroup;
+			children = (
+				AAA4DA6422145D2300BB1781 /* WorkerSelfManager.m */,
+				AAA4DA6022145CF800BB1781 /* ThreadManager.h */,
+				AAA4DA6122145CF800BB1781 /* ThreadManager.m */,
+				AAA4DA6222145CF800BB1781 /* ThreadSelfManager.h */,
+			);
+			name = RNThreads;
 			sourceTree = "<group>";
 		};
 		AAB23E16220B803F00BFD222 /* RNLithoView */ = {
@@ -1032,6 +1050,7 @@
 				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
 				AAE56DC52129FA3C003706B3 /* Bridge.m in Sources */,
+				AAA4DA6522145D2300BB1781 /* WorkerSelfManager.m in Sources */,
 				AAC113B2213EA154002E0D18 /* RNAsyncTextNode.swift in Sources */,
 				AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */,
 				AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */,
@@ -1044,6 +1063,7 @@
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
+				AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */,
 				AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */,
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,

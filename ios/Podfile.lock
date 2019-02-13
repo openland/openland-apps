@@ -121,8 +121,6 @@ PODS:
     - React
   - RNShare (1.1.3):
     - React
-  - RNThread (0.0.15):
-    - React
   - RSKImageCropper (2.2.1)
   - SDWebImage/Core (4.4.3)
   - SDWebImage/GIF (4.4.3):
@@ -178,7 +176,6 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNRate (from `../node_modules/react-native-rate/ios`)
   - RNShare (from `../node_modules/react-native-share`)
-  - RNThread (from `../node_modules/react-native-threads/ios`)
   - SwiftyJSON (~> 4.0)
   - Texture
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -240,8 +237,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-rate/ios"
   RNShare:
     :path: "../node_modules/react-native-share"
-  RNThread:
-    :path: "../node_modules/react-native-threads/ios"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -275,7 +270,6 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
   RNRate: 72b5c9c2e62de9a01710918eb83d75fb99b44c7b
   RNShare: d875e8e37f3e5e8eb7a103ae01e06490af1796f6
-  RNThread: b2d25c0f5e44c83afb78e61ccfcc0f117a9bc601
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   SimpleKeychain: e2485c28d82fcece35e9e41faeac42ebfe614815
@@ -283,6 +277,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 159dc92bfd4c9e2b551d2a463011f2e61c2a327f
+PODFILE CHECKSUM: 1bbfda83443f7f4f8548f3300787ed75290106e0
 
 COCOAPODS: 1.5.3
