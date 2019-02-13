@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ASView } from 'react-native-async-view/ASView';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
@@ -7,9 +7,6 @@ import { SRouter } from 'react-native-s/SRouter';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { GlobalSearchItemOrganization, GlobalSearchItemUser, GlobalSearchItemSharedRoom } from './GlobalSearchItems';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
-import { ASText } from 'react-native-async-view/ASText';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ASFlex } from 'react-native-async-view/ASFlex';
 
 interface GlobalSearchProps {
     query: string;

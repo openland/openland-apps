@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { ASText } from 'react-native-async-view/ASText';
-import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
 
 export class GlobalSearchItemSharedRoom extends React.PureComponent<{
