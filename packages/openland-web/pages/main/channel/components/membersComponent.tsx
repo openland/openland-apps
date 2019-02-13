@@ -21,7 +21,7 @@ import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XText } from 'openland-x/XText';
-import { withRoomAddMembers } from '../../../../api/withRoomAddMembers';
+import { withRoomAddMember } from '../../../../api/withRoomAddMembers';
 
 const MembersWrapper = Glamorous(XScrollView2)({
     height: '100%',
@@ -83,7 +83,7 @@ class DeclineButton extends React.Component<{
     }
 }
 
-const Accept = withRoomAddMembers(props => {
+const Accept = withRoomAddMember(props => {
     return (
         <XMutation mutation={props.addMember}>
             <XButton style={(props as any).isHovered ? 'primary' : 'default'} text="Accept" />

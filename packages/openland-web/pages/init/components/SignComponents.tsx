@@ -197,22 +197,43 @@ const RootContainer = Glamorous.div({
     width: '100%',
 });
 
-const RootContainerContent = Glamorous.div({
-    backgroundColor: '#fff',
-    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
-    height: '100%',
-    flexBasis: '100%',
-    paddingLeft: 32,
-    paddingRight: 32,
-    paddingTop: 19,
-    paddingBottom: 22,
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 1,
-    '@media(max-width: 950px)': {
+const RootContainerContent = Glamorous.div<{ mainPage?: boolean }>([
+    {
+        backgroundColor: '#fff',
+        boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+        height: '100%',
         flexBasis: '100%',
+        paddingLeft: 32,
+        paddingRight: 32,
+        paddingTop: 19,
+        paddingBottom: 22,
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 1,
+        '@media(max-width: 950px)': {
+            flexBasis: '100%',
+        },
+        '@media(max-width: 700px)': {
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 15,
+            paddingBottom: 15,
+        },
     },
-});
+    props =>
+        props.mainPage
+            ? {}
+            : {
+                  '&:focus-within': {
+                      '& .header, & .title, & .subtitle': {
+                          display: 'none',
+                      },
+                      '& .content': {
+                          justifyContent: 'start',
+                      },
+                  },
+              },
+]);
 
 const Footer = Glamorous.div({
     marginTop: 'auto',
@@ -305,10 +326,11 @@ interface HeaderProps {
     text?: string;
     path?: string;
     linkText?: string;
+    className?: string;
 }
 
 const Header = (props: HeaderProps) => (
-    <HeaderStyled>
+    <HeaderStyled className={props.className}>
         <Logo href="https://openland.com" />
         <SignupContainer>
             <SignupStyled>{props.text}</SignupStyled>
@@ -331,6 +353,7 @@ interface SignContainerProps extends HeaderProps {
     showTerms?: boolean;
     signin?: boolean;
     children?: any;
+    mainPage?: boolean;
 }
 
 const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
@@ -358,9 +381,16 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
 
 export const WebSignUpContainer = (props: SignContainerProps) => (
     <RootContainer>
-        <RootContainerContent>
-            <Header text={props.text} path={props.path} linkText={props.linkText} />
-            <MainContent pageMode={props.pageMode}>{props.children}</MainContent>
+        <RootContainerContent mainPage={props.mainPage}>
+            <Header
+                text={props.text}
+                path={props.path}
+                linkText={props.linkText}
+                className="header"
+            />
+            <MainContent pageMode={props.pageMode} className="content">
+                {props.children}
+            </MainContent>
             <Footer>
                 {props.showTerms ? (
                     <FooterText>
@@ -383,11 +413,12 @@ export const WebSignUpContainer = (props: SignContainerProps) => (
 const ButtonsWrapper = Glamorous.div<{
     marginTop?: number;
     marginBottom?: number;
-    width?: number;
+    width?: number | string;
 }>(props => ({
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
     maxWidth: props.width,
+    width: props.width,
     marginLeft: props.width ? 'auto' : undefined,
     marginRight: props.width ? 'auto' : undefined,
     '@media(max-width: 1300px)': {
@@ -763,10 +794,10 @@ type AuthMechanism = {
     loginWithEmail: Function;
 };
 
-const ContentWrapper = Glamorous.div({
-    paddingLeft: 15,
-    paddingRight: 15,
-});
+const ContentWrapper = Glamorous.div<{ noPadding?: boolean }>(props => ({
+    paddingLeft: props.noPadding === true ? 0 : 15,
+    paddingRight: props.noPadding === true ? 0 : 15,
+}));
 
 export const RoomAuthMechanism = ({ signin, loginWithGoogle, loginWithEmail }: AuthMechanism) => {
     const auth = InitTexts.auth;
@@ -901,7 +932,7 @@ export const WebSignUpActivationCode = ({
                     We just sent it to <strong>{emailSendedTo}</strong>
                 </SubTitle>
             )}
-            <ButtonsWrapper marginTop={40} width={330}>
+            <ButtonsWrapper marginTop={40} width="100%">
                 <XFormField2 field="input.code">
                     {({ showError }: { showError: boolean }) => (
                         <>
@@ -914,6 +945,7 @@ export const WebSignUpActivationCode = ({
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
                                 flexGrow={1}
+                                flexShrink={0}
                             />
                             {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
@@ -1160,13 +1192,6 @@ export const RoomCreateWithEmail = ({
     );
 };
 
-const XInputWrapper = Glamorous(XInput)({
-    minWidth: 330,
-    '@media(max-width: 450px)': {
-        minWidth: 200,
-    },
-});
-
 export const WebSignUpCreateWithEmail = ({
     signin,
     emailError,
@@ -1198,16 +1223,17 @@ export const WebSignUpCreateWithEmail = ({
                 });
             }}
             defaultLayout={false}
+            width="100%"
         >
             <Title roomView={false}>
                 {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
             </Title>
             <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={330}>
+            <ButtonsWrapper marginTop={40} width="100%">
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (
                         <>
-                            <XInputWrapper
+                            <XInput
                                 autofocus
                                 invalid={showError}
                                 dataTestId="email"
@@ -1216,6 +1242,7 @@ export const WebSignUpCreateWithEmail = ({
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
                                 flexGrow={1}
+                                flexShrink={0}
                             />
                             {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
@@ -1262,10 +1289,10 @@ export const CreateProfileFormInner = (props: {
     const MyTitle = roomView ? Title : Title;
 
     return (
-        <ContentWrapper>
+        <ContentWrapper noPadding={true}>
             <MyTitle roomView={roomView}>{InitTexts.create_profile.title}</MyTitle>
             <SubTitle>{InitTexts.create_profile.subTitle}</SubTitle>
-            <ButtonsWrapper marginTop={40} width={280} marginBottom={80}>
+            <ButtonsWrapper marginTop={40} width="100%" marginBottom={80}>
                 <XForm
                     defaultData={{
                         input: {
@@ -1306,12 +1333,13 @@ export const CreateProfileFormInner = (props: {
                                 <XFormField2 field="input.firstName">
                                     {({ showError }: { showError: boolean }) => (
                                         <>
-                                            <XInputWrapper
+                                            <XInput
                                                 invalid={showError}
                                                 field="input.firstName"
                                                 size="large"
                                                 title="First name"
                                                 dataTestId="first-name"
+                                                flexGrow={1}
                                             />
 
                                             {showError && <XFormError field="input.firstName" />}
@@ -1324,12 +1352,13 @@ export const CreateProfileFormInner = (props: {
                                 <XFormField2 field="input.lastName">
                                     {({ showError }: { showError: boolean }) => (
                                         <>
-                                            <XInputWrapper
+                                            <XInput
                                                 invalid={showError}
                                                 field="input.lastName"
                                                 size="large"
                                                 title="Last name"
                                                 dataTestId="last-name"
+                                                flexGrow={1}
                                             />
                                             {showError && <XFormError field="input.lastName" />}
                                         </>

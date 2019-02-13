@@ -3,9 +3,9 @@ import { XModalForm as XModalFormOld } from 'openland-x-modal/XModalForm';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XForm } from 'openland-x-forms/XForm';
 import { UserSelect } from 'openland-web/api/UserSelect';
-import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
+import { withRoomAddMember } from 'openland-web/api/withRoomAddMembers';
 
-export const RoomAddMemberModal = withRoomAddMembers(props => {
+export const RoomAddMemberModal = withRoomAddMember(props => {
     return (
         <XModalFormOld
             title="Add member to room"

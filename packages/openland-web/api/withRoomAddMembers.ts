@@ -1,4 +1,5 @@
 import { graphqlMutation } from 'openland-x-graphql/graphqlMutation';
-import { RoomAddMemberMutation } from 'openland-api';
+import { RoomAddMemberMutation, RoomAddMembersMutation } from 'openland-api';
 
-export const withRoomAddMembers = graphqlMutation(RoomAddMemberMutation, 'addMember');
+export const withRoomAddMember = graphqlMutation(RoomAddMemberMutation, 'addMember');
+export const withRoomAddMembers = graphqlMutation(RoomAddMembersMutation, 'addMembers');

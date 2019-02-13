@@ -292,6 +292,7 @@ class SignInComponent extends React.Component<
                 path={(signin ? '/signup' : '/signin') + redirect}
                 linkText={linkText}
                 headerStyle={signin ? 'signin' : 'signup'}
+                mainPage={pageMode === 'AuthMechanism'}
             >
                 {pageMode === 'SignInInvite' && (
                     <InviteInfo
