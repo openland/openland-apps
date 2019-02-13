@@ -75,7 +75,6 @@ class ApolloSubscription implements GraphqlActiveSubscription {
     }
 
     private handleNext = (src: any) => {
-        console.log('next');
         if (this.pending) {
             if (this.queue.length > 0) {
                 this.queue.push(src);
