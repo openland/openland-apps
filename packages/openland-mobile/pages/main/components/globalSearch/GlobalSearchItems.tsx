@@ -22,7 +22,7 @@ export class GlobalSearchItemSharedRoom extends React.PureComponent<{
 
         return (
             <ASFlex height={height} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.handlePress} alignItems={'center'}>
-                <ASFlex marginLeft={12} width={height} height={height} alignItems="center" justifyContent="center">
+                <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
                     <ASAvatar
                         src={item.roomPhoto}
                         size={avatarSize}
@@ -34,9 +34,6 @@ export class GlobalSearchItemSharedRoom extends React.PureComponent<{
                     <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
                         <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={Platform.OS === 'android' ? '#000' : '#181818'} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                     </ASFlex>
-                </ASFlex>
-                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={AppStyles.separatorColor} />
                 </ASFlex>
             </ASFlex>
         );
@@ -58,7 +55,7 @@ export class GlobalSearchItemOrganization extends React.PureComponent<{
 
         return (
             <ASFlex height={height} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.handlePress} alignItems={'center'}>
-                <ASFlex marginLeft={12} width={height} height={height} alignItems="center" justifyContent="center">
+                <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
                     <ASAvatar
                         src={item.photo}
                         size={avatarSize}
@@ -70,9 +67,6 @@ export class GlobalSearchItemOrganization extends React.PureComponent<{
                     <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
                         <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={Platform.OS === 'android' ? '#000' : '#181818'} flexGrow={1} flexBasis={0} marginRight={10}>{item.name}</ASText>
                     </ASFlex>
-                </ASFlex>
-                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={AppStyles.separatorColor} />
                 </ASFlex>
             </ASFlex>
         );
@@ -94,7 +88,7 @@ export class GlobalSearchItemUser extends React.PureComponent<{
 
         return (
             <ASFlex height={height} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.handlePress} alignItems={'center'}>
-                <ASFlex marginLeft={12} width={height} height={height} alignItems="center" justifyContent="center">
+                <ASFlex marginLeft={7} width={height} height={height} alignItems="center" justifyContent="center">
                     <UserAvatar
                         src={item.photo}
                         size={avatarSize}
@@ -107,9 +101,6 @@ export class GlobalSearchItemUser extends React.PureComponent<{
                     <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
                         <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={Platform.OS === 'android' ? '#000' : '#181818'} flexGrow={1} flexBasis={0} marginRight={10}>{item.name}</ASText>
                     </ASFlex>
-                </ASFlex>
-                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={62} backgroundColor={AppStyles.separatorColor} />
                 </ASFlex>
             </ASFlex>
         );
