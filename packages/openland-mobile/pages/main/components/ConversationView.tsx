@@ -18,7 +18,7 @@ export interface MessagesListProps {
 }
 export const androidMessageInputListOverlap = 50;
 
-class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState, listReady?: boolean }> implements ConversationStateHandler {
+class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
     private listRef = React.createRef<ConversationMessagesView>();
@@ -72,19 +72,15 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         this.props.engine.loadBefore();
     }
 
-    onListReady = () => {
-        this.setState({ listReady: true });
-    }
-
     render() {
         let screenHeight = Dimensions.get('window').height;
         let screenWidth = Dimensions.get('window').width;
 
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
-                {!this.state.conversation.loading && this.state.listReady && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleColorOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
+                {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleColorOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
 
-                {this.props.theme.spiral && !this.state.conversation.loading && this.state.listReady && <Animated.View style={{ left: (screenWidth - screenHeight) / 2, position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.2 }] }}>
+                {this.props.theme.spiral && !this.state.conversation.loading && <Animated.View style={{ left: (screenWidth - screenHeight) / 2, position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.2 }] }}>
                     <ASView
                         style={{ opacity: 0.1, left: 0, top: 0, width: screenHeight, height: screenHeight }}
                     >
@@ -102,7 +98,6 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     </ASView>
                 </Animated.View>}
                 <ConversationMessagesView
-                    onReady={this.onListReady}
                     ref={this.listRef}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}

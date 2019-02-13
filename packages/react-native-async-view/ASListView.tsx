@@ -15,15 +15,8 @@ export interface ASListViewProps {
     headerPadding?: number;
     overscrollCompensation?: boolean;
     onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void;
-    readonly onReady?: () => void;
 }
 export class ASListView extends React.PureComponent<ASListViewProps> {
-    constructor(props: ASListViewProps) {
-        super(props);
-        if (this.props.onReady) {
-            this.props.dataView.bindReady(this.props.onReady);
-        }
-    }
     render() {
         return (
             <ASViewListRender

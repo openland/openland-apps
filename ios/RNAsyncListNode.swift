@@ -40,6 +40,7 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   private var keyboard: RNAsyncKeyboardContextView? = nil
   private var overscrollCompensation = false
   private var isApplying = false
+  private var didRenderContent = false
   
   init(parent: RNAsyncListView) {
     self.parent = parent
@@ -272,6 +273,9 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   }
   
   func setOverflowColor(color: UInt64) {
+    if(!self.didRenderContent){
+      self.backgroundColor = resolveColorR(color)
+    }
     if !self.loaded {
       self.overflowColor = color
       self.loadingCell.overflowColor = color
@@ -326,6 +330,8 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
         }
       }
       myGroup.wait()
+      self.didRenderContent = true
+      self.backgroundColor = UIColor.clear
       
       end = DispatchTime.now()
       nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
