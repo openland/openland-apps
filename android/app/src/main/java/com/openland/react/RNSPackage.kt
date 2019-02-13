@@ -13,6 +13,7 @@ import com.openland.react.async.AsyncListViewManager
 import com.openland.react.async.AsyncViewManager
 import com.openland.react.anim.RNSAnimatedViewManager
 import com.openland.react.anim.RNSAnimatedViewViewManager
+import com.openland.react.threads.RNThreadModule
 import com.openland.react.window.BottomSafeAreaProvider
 import com.openland.react.window.RNSWindowManager
 

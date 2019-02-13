@@ -9,7 +9,6 @@ import com.facebook.react.ReactApplication;
 import com.oney.WebRTCModule.WebRTCModulePackage;
 import com.levelasquez.androidopensettings.AndroidOpenSettingsPackage;
 import com.auth0.react.A0Auth0Package;
-import com.reactlibrary.RNThreadPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
@@ -26,6 +25,7 @@ import com.openland.react.RNSPackage;
 
 import dk.madslee.imageCapInsets.RCTImageCapInsetPackage;
 
+import com.openland.react.threads.RNThreadPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;

@@ -27,23 +27,25 @@ export function getClient(): OpenlandClient {
 }
 
 export function buildNativeClient(token: string) {
-    if (__DEV__) {
-        return new OpenlandClient(new ApolloGraphqlClient(buildClient({
-            token: token,
-            endpoint: 'https://api.openland.com/api',
-            wsEndpoint: 'wss://api.openland.com/api'
-        })));
-    }
 
-    if (Platform.OS !== 'android') {
-        return new OpenlandClient(new WorkerApolloClient(token));
-    } else {
-        return new OpenlandClient(new ApolloGraphqlClient(buildClient({
-            token: token,
-            endpoint: 'https://api.openland.com/api',
-            wsEndpoint: 'wss://api.openland.com/api'
-        })));
-    }
+    return new OpenlandClient(new WorkerApolloClient(token));
+    // if (__DEV__) {
+    //     return new OpenlandClient(new ApolloGraphqlClient(buildClient({
+    //         token: token,
+    //         endpoint: 'https://api.openland.com/api',
+    //         wsEndpoint: 'wss://api.openland.com/api'
+    //     })));
+    // }
+
+    // if (Platform.OS !== 'android') {
+    //     return new OpenlandClient(new WorkerApolloClient(token));
+    // } else {
+    //     return new OpenlandClient(new ApolloGraphqlClient(buildClient({
+    //         token: token,
+    //         endpoint: 'https://api.openland.com/api',
+    //         wsEndpoint: 'wss://api.openland.com/api'
+    //     })));
+    // }
     // return new OpenlandClient(new ApolloGraphqlClient(buildClient({
     //     token: token,
     //     endpoint: 'https://api.openland.com/api',
