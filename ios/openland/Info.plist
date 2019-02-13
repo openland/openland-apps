@@ -77,9 +77,9 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
+	<string/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+	<string>To save photos, allow Openland access to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To share photos, allow Openland access to your library.</string>
 	<key>UIAppFonts</key>

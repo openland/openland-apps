@@ -9,6 +9,7 @@ import { startLoader, stopLoader } from './ZGlobalLoader';
 import { ZAvatar } from './ZAvatar';
 import { Alert } from './AlertBlanket';
 import AndroidOpenSettings from 'react-native-android-open-settings';
+import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
 
 interface AvatarImageRef {
     uuid: string;
@@ -100,25 +101,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 console.log(r);
             } catch (e) {
                 if (e.code === 'E_PERMISSION_MISSING') {
-                    if (Platform.OS === 'ios') {
-                        Alert.builder()
-                            .title('Allow Openland access to your photos')
-                            .message('In iPhone settings, tap Openland and turn on Photos.')
-                            .button('Open settings', 'default', () => {
-                                Linking.openURL('app-settings:');
-                            })
-                            .show();
-                    }
-
-                    if (Platform.OS === 'android') {
-                        Alert.builder()
-                            .title('Allow Openland to access your phone\'s storage?')
-                            .message('To share photos, allow Openland access to your library. Tap Settings > Permissions, and turn on Storage.')
-                            .button('Settings', 'default', () => {
-                                AndroidOpenSettings.appDetailsSettings();
-                            })
-                            .show();
-                    }
+                    handlePermissionDismiss('gallery');
                 }
 
                 console.log(e);
