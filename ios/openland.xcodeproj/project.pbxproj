@@ -33,6 +33,11 @@
 		AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */; };
 		AAA47DC3212CB2BC00E71A74 /* RNAsyncColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */; };
 		AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */; };
+		AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */; };
+		AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */; };
+		AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */; };
+		AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */; };
+		AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */; };
 		AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0219321429D8800927CF0 /* RNAsyncCell.swift */; };
 		AAB021962142ACB300927CF0 /* RNPatchNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB021952142ACB300927CF0 /* RNPatchNode.swift */; };
 		AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */; };
@@ -232,6 +237,16 @@
 		AAA47DC0212CB28700E71A74 /* RNAsyncGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncGradient.swift; sourceTree = "<group>"; };
 		AAA47DC2212CB2BC00E71A74 /* RNAsyncColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncColor.swift; sourceTree = "<group>"; };
 		AAA47DC4212CC70000E71A74 /* RNAsyncListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncListNode.swift; sourceTree = "<group>"; };
+		AAA4DA47221457DC00BB1781 /* AppCenterReactNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNative.h; sourceTree = "<group>"; };
+		AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNative.m; sourceTree = "<group>"; };
+		AAA4DA4A2214585D00BB1781 /* AppCenterReactNativeCrashes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashes.h; sourceTree = "<group>"; };
+		AAA4DA4B2214585D00BB1781 /* AppCenterReactNativeCrashesDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashesDelegate.h; sourceTree = "<group>"; };
+		AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesDelegate.m; sourceTree = "<group>"; };
+		AAA4DA4D2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeCrashesUtils.h; sourceTree = "<group>"; };
+		AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashes.m; sourceTree = "<group>"; };
+		AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeCrashesUtils.m; sourceTree = "<group>"; };
+		AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterReactNativeAnalytics.m; sourceTree = "<group>"; };
+		AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterReactNativeAnalytics.h; sourceTree = "<group>"; };
 		AAB0219321429D8800927CF0 /* RNAsyncCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncCell.swift; sourceTree = "<group>"; };
 		AAB021952142ACB300927CF0 /* RNPatchNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPatchNode.swift; sourceTree = "<group>"; };
 		AAB0EE56213438C500FBCB75 /* RNAsyncDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNAsyncDataView.swift; sourceTree = "<group>"; };
@@ -349,6 +364,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AAA4DA46221457BB00BB1781 /* appcenter */,
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
 				AAB23E16220B803F00BFD222 /* RNLithoView */,
@@ -491,6 +507,23 @@
 				AAB021952142ACB300927CF0 /* RNPatchNode.swift */,
 			);
 			name = Nodes;
+			sourceTree = "<group>";
+		};
+		AAA4DA46221457BB00BB1781 /* appcenter */ = {
+			isa = PBXGroup;
+			children = (
+				AAA4DA54221458CB00BB1781 /* AppCenterReactNativeAnalytics.h */,
+				AAA4DA53221458CB00BB1781 /* AppCenterReactNativeAnalytics.m */,
+				AAA4DA4A2214585D00BB1781 /* AppCenterReactNativeCrashes.h */,
+				AAA4DA4E2214585E00BB1781 /* AppCenterReactNativeCrashes.m */,
+				AAA4DA4B2214585D00BB1781 /* AppCenterReactNativeCrashesDelegate.h */,
+				AAA4DA4C2214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m */,
+				AAA4DA4D2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.h */,
+				AAA4DA4F2214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m */,
+				AAA4DA47221457DC00BB1781 /* AppCenterReactNative.h */,
+				AAA4DA48221457DC00BB1781 /* AppCenterReactNative.m */,
+			);
+			name = appcenter;
 			sourceTree = "<group>";
 		};
 		AAB23E16220B803F00BFD222 /* RNLithoView */ = {
@@ -994,6 +1027,7 @@
 				AAB0EF8F213D819C00FBCB75 /* RNImageNode.swift in Sources */,
 				AA92636E2132D7B5004BFD8D /* RNTouchableNode.swift in Sources */,
 				AAB23E1A220B814900BFD222 /* RNLithoSpec.swift in Sources */,
+				AAA4DA502214585E00BB1781 /* AppCenterReactNativeCrashesDelegate.m in Sources */,
 				AAB0EEA321349F8000FBCB75 /* RNAsyncLoadingIndicator.swift in Sources */,
 				AA67E25321492C8400AE9CAC /* RNSAnimatedViewManager.swift in Sources */,
 				AAB0EF8D21371A8B00FBCB75 /* RNAsyncListView.swift in Sources */,
@@ -1006,6 +1040,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				AAB0EE57213438C500FBCB75 /* RNAsyncDataView.swift in Sources */,
 				AAA47DC1212CB28800E71A74 /* RNAsyncGradient.swift in Sources */,
+				AAA4DA55221458CB00BB1781 /* AppCenterReactNativeAnalytics.m in Sources */,
 				AAE56DC22129F9B9003706B3 /* AggressiveImage.swift in Sources */,
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
@@ -1022,11 +1057,14 @@
 				AAE5017E2145219400BEAA04 /* RNAsyncKeyboardViewManager.swift in Sources */,
 				AAE5017C2145040B00BEAA04 /* RNAsyncKeyboardManager.swift in Sources */,
 				AAB0219421429D8800927CF0 /* RNAsyncCell.swift in Sources */,
+				AAA4DA512214585E00BB1781 /* AppCenterReactNativeCrashes.m in Sources */,
 				AAE50182214602D700BEAA04 /* RNSAnimatedView.swift in Sources */,
+				AAA4DA522214585E00BB1781 /* AppCenterReactNativeCrashesUtils.m in Sources */,
 				AAB23E18220B808C00BFD222 /* RNLithoResolver.swift in Sources */,
 				AAA47D73212C45FA00E71A74 /* RNAsyncNodeResolver.swift in Sources */,
 				AAC60B55215AE445005E09BA /* RNSAuth0-Bridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				AAA4DA49221457DC00BB1781 /* AppCenterReactNative.m in Sources */,
 				AAB0EF89213719DB00FBCB75 /* RNAsyncViewNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1136,6 +1174,9 @@
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1204,6 +1245,9 @@
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = openlandTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1254,40 +1298,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
-					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
-					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
-					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
-					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = openland/Info.plist;
@@ -1334,6 +1344,7 @@
 					"\"${PODS_ROOT}/AppCenterReactNativeShared/AppCenterReactNativeShared\"",
 					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
 					"$(PROJECT_DIR)/Vendor/AppCenter",
+					"\"${PODS_ROOT}/AppCenter/AppCenter\"",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1341,40 +1352,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
-					"$(SRCROOT)/../node_modules/rn-fetch-blob/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
-					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-search-bar/ios",
-					"$(SRCROOT)/../node_modules/react-native-blur/ios",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/lottie-ios/lottie-ios/Classes/**",
-					"$(SRCROOT)/../node_modules/lottie-react-native/src/ios/LottieReactNative",
-					"$(SRCROOT)/../node_modules/react-native-super-ellipse-mask/ios",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-haptic-feedback/ios",
-					"$(SRCROOT)/../node_modules/react-native-share/ios",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/react-native-rate/ios",
-					"$(SRCROOT)/../node_modules/react-native-threads/ios",
-					"$(SRCROOT)/../node_modules/react-native-auth0/ios",
-					"$(SRCROOT)/../node_modules/react-native-webrtc/ios/**",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
-					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
-					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
-					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = openland/Info.plist;
@@ -1450,6 +1427,9 @@
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = "openland-tvOS/Info.plist";
@@ -1527,6 +1507,9 @@
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = "openland-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1602,6 +1585,9 @@
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = "openland-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1676,6 +1662,9 @@
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
+					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 				);
 				INFOPLIST_FILE = "openland-tvOSTests/Info.plist";

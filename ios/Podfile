@@ -32,12 +32,10 @@ target 'openland' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.0'
 
-#  pod 'appcenter', :path => '../node_modules/appcenter/ios'
-#  pod 'appcenter-crashes', :path => '../node_modules/appcenter-crashes/ios'
-#  pod 'appcenter-analytics', :path => '../node_modules/appcenter-analytics/ios'
-#  pod 'AppCenter/Crashes', '~> 1.12.0'
-#  pod 'AppCenter/Analytics', '~> 1.12.0'
-#  pod 'AppCenterReactNativeShared', '~> 1.11.0'
+  pod 'AppCenter', '~> 1.13.0'
+  pod 'AppCenter/Crashes', '~> 1.13.0'
+  pod 'AppCenter/Analytics', '~> 1.13.0'
+  pod 'AppCenterReactNativeShared', '~> 1.12.0'
 
   pod 'react-native-webrtc', :path => '../node_modules/react-native-webrtc'
 
