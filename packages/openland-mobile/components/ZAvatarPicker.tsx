@@ -24,11 +24,13 @@ export interface ZAvatarPickerProps {
     render?: React.ComponentType<{ url?: string, file?: string, loading: boolean, showPicker: () => void }>;
 }
 
-class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { loading: boolean }> {
+class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { store?: XStoreState }, { loading: boolean, localPath?: string }> {
 
     state = {
         file: undefined,
-        loading: false
+        loading: false,
+
+        localPath: undefined,
     };
 
     private currentIteration = 0;
@@ -116,7 +118,6 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                                 AndroidOpenSettings.appDetailsSettings();
                             })
                             .show();
-
                     }
                 }
 
@@ -124,6 +125,10 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
                 // Ignore
             }
             if (res) {
+                this.setState({
+                    localPath: res.path
+                });
+
                 this.upload(res);
             }
         } catch (e) {
@@ -157,6 +162,10 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             if (value.crop) {
                 valueUrl += `-/crop/${value.crop.w}x${value.crop.h}/${value.crop.x},${value.crop.y}/`;
             }
+        }
+
+        if (this.state.localPath) {
+            valueUrl = this.state.localPath;
         }
 
         let size = 88;
