@@ -2,6 +2,7 @@ import * as React from 'react';
 import { XView } from 'react-mental';
 import IcClose from 'openland-icons/ic-close.svg';
 import IcFile from 'openland-icons/ic-file.svg';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
@@ -28,7 +29,7 @@ interface MessageFileComponentProps {
     marginTop?: number;
 }
 
-export const MessageFileComponent = React.memo<MessageFileComponentProps>(props => {
+export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
     let href = undefined;
     let marginTop = 8;
     if (props.marginTop !== undefined) {

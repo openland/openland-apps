@@ -11,8 +11,9 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const OrganizationInviteLinkContent = React.memo<PageProps>((props) => {
+const OrganizationInviteLinkContent = XMemo<PageProps>((props) => {
     let invite = getClient().useOrganizationPublicInvite({ organizationId: props.router.params.id }).publicInvite!;
     return (
         <>

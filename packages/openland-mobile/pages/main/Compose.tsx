@@ -12,8 +12,9 @@ import { UserView } from './components/UserView';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const UserSearchComponent = React.memo<PageProps & { query: string }>((props) => {
+const UserSearchComponent = XMemo<PageProps & { query: string }>((props) => {
     // if (props.query.trim().length === 0) {
     //     return null;
     // }
@@ -38,7 +39,7 @@ const UserSearchComponent = React.memo<PageProps & { query: string }>((props) =>
     );
 });
 
-const ComposeComponent = React.memo<PageProps>((props) => {
+const ComposeComponent = XMemo<PageProps>((props) => {
     return (
         <>
             <SHeader title="New message" hairline="hidden" />

@@ -2,6 +2,7 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XLink } from 'openland-x/XLink';
 import InviteIcon from 'openland-icons/ic-invite-plus.svg';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const InviteWrapper = Glamorous(XLink)({
     borderTop: '1px solid #ececec',
@@ -32,7 +33,7 @@ const InviteWrapper = Glamorous(XLink)({
     },
 });
 
-export const DialogsInviteButton = React.memo(() => {
+export const DialogsInviteButton = XMemo(() => {
     return (
         <InviteWrapper query={{ field: 'invite_global', value: 'true' }}>
             <InviteIcon />

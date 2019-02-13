@@ -8,6 +8,7 @@ import { TextProfiles } from 'openland-text/TextProfiles';
 import { SearchCardsOrShowProfile } from 'openland-web/pages/main/directory/components/DirectoryNavigation';
 import { RoomsWithSort } from 'openland-web/fragments/RoomsExploreComponent';
 import { XViewRouterContext } from 'react-mental';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const { App } = TextProfiles;
 
@@ -19,7 +20,7 @@ export const AddBotToChat = withAppProfile(({ addAppToChat, apps, router: { quer
         return null;
     }
 
-    const RoomsWithAddToChatButton = React.memo((props: any) => {
+    const RoomsWithAddToChatButton = XMemo((props: any) => {
         return (
             <RoomsWithSort
                 {...props}

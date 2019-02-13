@@ -3,8 +3,9 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useWatchCall } from './useWatchCall';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const CallBarComponent = React.memo<{ id: string }>((props) => {
+export const CallBarComponent = XMemo<{ id: string }>((props) => {
     let conference = getClient().useWithoutLoaderConference({ id: props.id })
 
     useWatchCall(conference && conference.conference.id);

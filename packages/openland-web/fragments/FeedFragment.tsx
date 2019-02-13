@@ -8,6 +8,7 @@ import { withCreatePost } from 'openland-web/api/withFeed';
 import { XFormField } from 'openland-x-forms/XFormField';
 import { XTextArea } from 'openland-x/XTextArea';
 import { FeedListComponent } from './feed/FeedListComponent';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const NewPostModal = withCreatePost(props => {
     return (
@@ -30,7 +31,7 @@ const NewPostModal = withCreatePost(props => {
     );
 });
 
-export const FeedFragment = React.memo(() => {
+export const FeedFragment = XMemo(() => {
     return (
         <XView flexDirection="row" alignItems="stretch" justifyContent="center">
             <XView flexDirection="column" width={200} alignItems="center" marginTop={32}>

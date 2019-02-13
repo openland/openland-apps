@@ -3,6 +3,7 @@ import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const typingClassName = css`
     opacity: 0.5;
@@ -17,7 +18,7 @@ export interface TypingsViewProps {
     conversationId: string;
 }
 
-export const TypingsView = React.memo<TypingsViewProps>(props => {
+export const TypingsView = XMemo<TypingsViewProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     let messeger = React.useContext(MessengerContext);
     let [typing, setTyping] = React.useState<string | null>(null);

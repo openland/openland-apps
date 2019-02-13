@@ -13,6 +13,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export class ArrowWrapper extends React.PureComponent {
     render() {
@@ -87,7 +88,7 @@ class ChannelsList extends React.PureComponent<{ channels: (Organization_organiz
     }
 }
 
-const ProfileOrganizationGroupsComponent = React.memo<PageProps>((props) => {
+const ProfileOrganizationGroupsComponent = XMemo<PageProps>((props) => {
     let org = getClient().useOrganization({ organizationId: props.router.params.organizationId });
     return (
         <>

@@ -13,8 +13,9 @@ import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { changeThemeModal } from './themes/ThemeChangeModal';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const ProfileUserContent = React.memo<PageProps>((props) => {
+const ProfileUserContent = XMemo<PageProps>((props) => {
     let userQuery = getClient().useUser({ userId: props.router.params.id });
     let user = userQuery.user;
     let conversation = userQuery.conversation;

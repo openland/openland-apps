@@ -27,6 +27,7 @@ import {
     InvitesGlobalModal,
 } from '../../pages/main/settings/components/invites';
 import { CreateOrganization, CreateRoom } from './Modals';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface NavigatorItemProps {
     path?: string;
@@ -156,7 +157,7 @@ const NavigationScrollerDiv = Glamorous(XScrollView)<{ mobile?: boolean }>(({ mo
         flexShrink: 0,
     };
 });
-const NavigationScroller = React.memo<{ children: any }>(props => {
+const NavigationScroller = XMemo<{ children: any }>(props => {
     let theme = React.useContext(ThemeContext);
     return (
         <NavigationScrollerDiv

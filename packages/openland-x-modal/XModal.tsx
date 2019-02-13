@@ -10,6 +10,7 @@ import { XModalContext } from './XModalContext';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import CloseIcon from './ic-close.svg';
 import { XThemeDefault } from 'openland-x/XTheme';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface ModalRenderProps {
     size: 'x-large' | 's-large' | 'large' | 'default' | 'small';
@@ -19,9 +20,11 @@ interface ModalRenderProps {
     closeOnClick?: boolean;
     onCloseRequest: () => void;
     transparent?: boolean;
+
+    children?: any;
 }
 
-const ModalRender = React.memo<ModalRenderProps>(props => {
+const ModalRender = XMemo<ModalRenderProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     let width = 570;
     if (props.sWidth !== undefined) {

@@ -9,6 +9,7 @@ import { XMenuItem } from 'openland-x/XMenuItem';
 import { XAvatar } from 'openland-x/XAvatar';
 import { Reactions } from '../../../MessageReaction';
 import ReplyIcon from 'openland-icons/ic-reply1.svg';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const RespondWrapper = Glamorous(XHorizontal)({
     cursor: 'pointer',
@@ -86,7 +87,7 @@ interface ReactionsRenderProps {
     reactions: MessageFull_reactions[];
 }
 
-export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
+export const ReactionsRender = XMemo<ReactionsRenderProps>(props => {
     let { reactions } = props;
 
     let respondUsers = reactions.filter(i => i.reaction === 'respondPost');

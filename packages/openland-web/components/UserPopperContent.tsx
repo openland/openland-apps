@@ -8,6 +8,7 @@ import { withOnline } from '../api/withOnline';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const StatusWrapper = Glamorous.div<{ online: boolean }>(props => ({
     flex: 1,
@@ -58,7 +59,7 @@ const Wrapper = Glamorous.div({
     position: 'relative',
 });
 
-const UserPopperContent = React.memo(
+const UserPopperContent = XMemo(
     ({
         noCardOnMe,
         isMe,

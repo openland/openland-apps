@@ -28,6 +28,7 @@ import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from './themes/ConversationThemeResolver';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string, theme: ConversationTheme }> {
     engine: ConversationEngine;
@@ -161,7 +162,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
     }
 }
 
-const ConversationComponent = React.memo<PageProps>((props) => {
+const ConversationComponent = XMemo<PageProps>((props) => {
 
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;

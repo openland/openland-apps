@@ -9,6 +9,7 @@ import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/compo
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from '../../../../components/Navigation';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const getId = (myPath: string, substring: string) => {
     if (!myPath.includes(substring)) {
@@ -20,7 +21,7 @@ const getId = (myPath: string, substring: string) => {
     }
     return result;
 };
-export const MessagesNavigation = React.memo(
+export const MessagesNavigation = XMemo(
     ({ path, cid, oid, uid }: { cid?: string; oid?: string; uid?: string; path?: any }) => {
         let tab: tabsT = tabs.empty;
 

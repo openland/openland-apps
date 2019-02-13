@@ -8,6 +8,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { XInput } from 'openland-x/XInput';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const desktopWrapperClassName = css`
     flex-shrink: 0;
@@ -178,7 +179,7 @@ const MobilePostTitle = (props: TextInputProps) => (
     </XView>
 );
 
-export const PostTitle = React.memo<TextInputProps>(props => {
+export const PostTitle = XMemo<TextInputProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     return isMobile ? <MobilePostTitle {...props} /> : <DesktopPostTitle {...props} />;
 });

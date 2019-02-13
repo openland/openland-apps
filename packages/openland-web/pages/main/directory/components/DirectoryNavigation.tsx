@@ -17,8 +17,9 @@ import { SortPicker } from 'openland-web/pages/main/directory/components/sortPic
 import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from '../../../../components/Navigation';
 import { XScrollView2 } from 'openland-x/XScrollView2';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const SearchCardsOrShowProfile = React.memo(
+export const SearchCardsOrShowProfile = XMemo(
     ({
         id,
         searchPlaceholder,
@@ -105,7 +106,7 @@ export const SearchCardsOrShowProfile = React.memo(
     },
 );
 
-export const DirectoryNavigation = React.memo(
+export const DirectoryNavigation = XMemo(
     ({
         title,
         id,

@@ -5,6 +5,7 @@ import RightIcon from 'openland-icons/ic-arrow-rignt.svg';
 import { AdaptiveComponent } from 'openland-web/components/Adaptive';
 import { DesktopMenu } from './DesktopComponents';
 import { MobileMenu } from './MobileComponents';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const MenuItemWrapper = css`
     display: flex;
@@ -103,7 +104,7 @@ export type MenuPropsT = {
     leftContent?: any;
 };
 
-export const Menu = React.memo<MenuPropsT>(props => {
+export const Menu = XMemo<MenuPropsT>(props => {
     return (
         <AdaptiveComponent
             fullWidth={true}

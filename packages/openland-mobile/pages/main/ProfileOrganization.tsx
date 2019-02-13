@@ -17,8 +17,9 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const ProfileOrganizationContent = React.memo<PageProps>((props) => {
+const ProfileOrganizationContent = XMemo<PageProps>((props) => {
     let settings = getClient().useAccountSettings();
     let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
     let handleAddMember = React.useCallback(() => {

@@ -3,6 +3,7 @@ import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
 import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical } from 'openland-x/XMenuItem';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const PopperOptionsButtonWrapper = Glamorous(XButton)({
     '& svg > g > path': {
@@ -14,7 +15,7 @@ const PopperOptionsButtonWrapper = Glamorous(XButton)({
     },
 });
 
-export const PopperOptionsButton = React.memo(
+export const PopperOptionsButton = XMemo(
     ({ content, icon, title, path }: { content?: any; icon: any; title: any; path?: string }) => {
         const [show, setShow] = React.useState(false);
 

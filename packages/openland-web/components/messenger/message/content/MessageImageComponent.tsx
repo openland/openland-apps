@@ -7,6 +7,7 @@ import ModalCloseIcon from 'openland-icons/ic-modal-close.svg';
 import DownloadButtonIcon from 'openland-icons/ic_file_download.svg';
 import { layoutMedia } from 'openland-web/utils/MediaLayout';
 import { MobileSidebarContext } from '../../../Scaffold/MobileSidebarContext';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const ModalBody = css`
     display: flex;
@@ -44,7 +45,7 @@ interface MessageImageComponentProps {
     startSelected: boolean;
 }
 
-export const MessageImageComponent = React.memo<MessageImageComponentProps>(props => {
+export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
     let [isOpen, handleOpen] = React.useState(false);
     const { isMobile } = React.useContext(MobileSidebarContext);
     const openView = (e: any) => {

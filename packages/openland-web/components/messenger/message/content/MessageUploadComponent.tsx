@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const MessageUploadComponent = React.memo((props: { title?: string; progress: number }) => (
+export const MessageUploadComponent = XMemo((props: { title?: string; progress: number }) => (
     <XView
         flexDirection="row"
         justifyContent="center"

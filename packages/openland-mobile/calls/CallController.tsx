@@ -3,6 +3,7 @@ import { mediaDevices, RTCPeerConnection, RTCSessionDescription, RTCIceCandidate
 import { Conference_conference_peers_connection, Conference_conference } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { delay, backoff } from 'openland-y-utils/timer';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface CallMediaStreamProps {
     id: string;
@@ -207,7 +208,7 @@ class CallMediaStreamComponent extends React.PureComponent<CallMediaStreamProps>
     }
 }
 
-export const CallController = React.memo<{ id: string, conference: Conference_conference }>((props) => {
+export const CallController = XMemo<{ id: string, conference: Conference_conference }>((props) => {
     let conference = props.conference;
     let [stream, setStream] = React.useState<any>(null);
 

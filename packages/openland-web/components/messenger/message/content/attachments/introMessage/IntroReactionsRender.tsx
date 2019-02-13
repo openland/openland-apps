@@ -11,6 +11,7 @@ import {
     MessageFull_reactions,
     MessageFull_urlAugmentation_user_User,
 } from 'openland-api/Types';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const SetAccesReactionButton = withSetReaction(
     withRouter(props => (
@@ -69,7 +70,7 @@ interface ReactionsRenderProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
 }
 
-export const ReactionsRender = React.memo<ReactionsRenderProps>(props => {
+export const ReactionsRender = XMemo<ReactionsRenderProps>(props => {
     let { user, reactions, meId, senderId, conversationType, messageId } = props;
     let reactionsMap = {};
     let reactionsLength = reactions.length;

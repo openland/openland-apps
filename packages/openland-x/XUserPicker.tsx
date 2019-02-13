@@ -6,6 +6,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XButton } from 'openland-x/XButton';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const EntryScrollable = Glamorous(XVertical)({
     overflowY: 'scroll',
@@ -195,7 +196,7 @@ class EntriesComponentInner extends React.Component<EntriesComponentProps & { is
     }
 }
 
-const EntriesComponent = React.memo<EntriesComponentProps>(props => {
+const EntriesComponent = XMemo<EntriesComponentProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     return <EntriesComponentInner {...props} isMobile={isMobile} />;

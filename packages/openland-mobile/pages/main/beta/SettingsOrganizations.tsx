@@ -6,8 +6,9 @@ import { ZListItem } from '../../../components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const SettingsOrganizatonsContent = React.memo<PageProps>((props) => {
+const SettingsOrganizatonsContent = XMemo<PageProps>((props) => {
     let account = getClient().useAccountSettings();
     let primary = account.organizations.find((v) => v.id === account.me!.primaryOrganization!.id)!!;
     let secondary = account.organizations.filter((v) => v.id !== primary.id);

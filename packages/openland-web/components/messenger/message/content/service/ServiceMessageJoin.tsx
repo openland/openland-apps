@@ -6,6 +6,7 @@ import { UserShort } from 'openland-api/Types';
 import { emoji } from 'openland-y-utils/emoji';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XView } from 'react-mental';
+import { XMemo } from 'openland-y-utils/XMemo';
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
 const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
@@ -203,7 +204,7 @@ const JoinManyServiceMessage = ({
     );
 };
 
-export const ServiceMessageJoin = React.memo<{
+export const ServiceMessageJoin = XMemo<{
     joinedByUser: UserShort;
     serviceMetadata: any;
     alphaMentions: any;

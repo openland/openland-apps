@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { XButton } from 'openland-x/XButton';
 import { XView, XImage } from 'react-mental';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const MessengerEmptyFragment = React.memo(() => {
+export const MessengerEmptyFragment = XMemo(() => {
     return (
         <XView
             position="relative"

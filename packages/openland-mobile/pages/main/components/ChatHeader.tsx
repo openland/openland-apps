@@ -6,6 +6,7 @@ import { getMessenger } from '../../../utils/messenger';
 import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
 
 });
 
-const ChatHeaderContent = React.memo<{ conversationId: string, router: SRouter, typing?: string }>((props) => {
+const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typing?: string }>((props) => {
     let room = getClient().useRoomTiny({ id: props.conversationId });
 
     let accent = false;

@@ -13,6 +13,7 @@ import { MessageImageComponent } from './MessageImageComponent';
 import { MessageFileComponent } from './MessageFileComponent';
 import { XDate } from 'openland-x/XDate';
 import { emoji } from 'openland-y-utils/emoji';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface ReplyMessageProps {
     sender: MessageFull_reply_sender;
@@ -27,7 +28,7 @@ interface ReplyMessageProps {
     compact?: boolean;
 }
 
-export const MessageReplyComponent = React.memo<ReplyMessageProps>(props => {
+export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
     let date = <XDate value={props.date} format="time" />;
     let content = [];
     if (props.message) {

@@ -7,6 +7,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { GlobalSearchItemOrganization, GlobalSearchItemUser, GlobalSearchItemSharedRoom } from './GlobalSearchItems';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface GlobalSearchProps {
     query: string;
@@ -17,7 +18,7 @@ interface GlobalSearchProps {
     onGroupPress?: (id: string) => void;
 }
 
-export const GlobalSearch = React.memo<GlobalSearchProps>((props) => {
+export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
     if (props.query.trim().length === 0) {
         return null;
     }
