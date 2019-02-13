@@ -224,12 +224,14 @@ const RootContainerContent = Glamorous.div<{ mainPage?: boolean }>([
         props.mainPage
             ? {}
             : {
-                  '&:focus-within': {
-                      '& .header, & .title, & .subtitle': {
-                          display: 'none',
-                      },
-                      '& .content': {
-                          justifyContent: 'start',
+                  '@media(max-width: 700px)': {
+                      '&:focus-within': {
+                          '& .header, & .title, & .subtitle': {
+                              display: 'none',
+                          },
+                          '& .content': {
+                              justifyContent: 'start',
+                          },
                       },
                   },
               },
@@ -418,7 +420,6 @@ const ButtonsWrapper = Glamorous.div<{
     marginTop: props.marginTop,
     marginBottom: props.marginBottom,
     maxWidth: props.width,
-    width: props.width,
     marginLeft: props.width ? 'auto' : undefined,
     marginRight: props.width ? 'auto' : undefined,
     '@media(max-width: 1300px)': {
@@ -1229,7 +1230,7 @@ export const WebSignUpCreateWithEmail = ({
                 {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
             </Title>
             <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
-            <ButtonsWrapper marginTop={40} width="100%">
+            <ButtonsWrapper marginTop={40} width={330}>
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (
                         <>
@@ -1241,8 +1242,6 @@ export const WebSignUpCreateWithEmail = ({
                                 type="email"
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
-                                flexGrow={1}
-                                flexShrink={0}
                             />
                             {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
@@ -1620,8 +1619,8 @@ export class CreateOrganizationFormInner extends React.Component<
 
         return (
             <ContentWrapper>
-                <MyTitle roomView={roomView}>{InitTexts.create_organization.title}</MyTitle>
-                <SubTitle>{InitTexts.create_organization.subTitle}</SubTitle>
+                <MyTitle roomView={roomView} className="title">{InitTexts.create_organization.title}</MyTitle>
+                <SubTitle className="subtitle">{InitTexts.create_organization.subTitle}</SubTitle>
                 <XForm
                     defaultAction={(data: any) => {
                         defaultAction({
