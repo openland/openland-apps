@@ -31,7 +31,7 @@ export const GlobalSearch = React.memo<GlobalSearchProps>((props) => {
         return (
             <KeyboardSafeAreaView>
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'No chats found' + randomEmptyPlaceholderEmoji()}</Text>
+                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
                 </View>
             </KeyboardSafeAreaView>
         );
