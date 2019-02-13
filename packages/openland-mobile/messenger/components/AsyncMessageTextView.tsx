@@ -21,6 +21,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 
 const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
@@ -75,7 +76,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
         } else if (v.type === 'link') {
             return <ASText key={'link-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} onPress={resolveInternalLink(v.link!, () => Linking.openURL(v.link!))} textDecorationLine="underline">{v.text}</ASText>;
         } else if (v.type === 'mention_user') {
-            return <ASText key={'mention-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}> {v.text}</ASText >;
+            return <ASText key={'mention-' + i} color={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn} textDecorationLine={this.props.message.isOut ? 'underline' : 'none'} onPress={() => this.props.onUserPress(v.link!)}>{useNonBreakingSpaces(v.text)}</ASText>;
         } else {
             return <ASText key={'text-' + i}>{v.text}</ASText>;
         }

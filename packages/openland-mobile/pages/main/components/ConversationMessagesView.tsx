@@ -10,6 +10,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 export interface ConversationMessagesViewProps {
     loaded: boolean;
     engine: ConversationEngine;
+    onReady?: () => void;
 }
 
 export class ConversationMessagesView extends React.PureComponent<ConversationMessagesViewProps> {
@@ -26,6 +27,7 @@ export class ConversationMessagesView extends React.PureComponent<ConversationMe
                         {engine => (
                             <View marginTop={Platform.OS === 'ios' ? -500 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
                                 <ASListView
+                                    onReady={this.props.onReady}
                                     dataView={engine.getConversation(this.props.engine.conversationId)}
                                     inverted={true}
                                     contentPaddingTop={area.top + (Platform.OS === 'ios' ? 500 : 0)}

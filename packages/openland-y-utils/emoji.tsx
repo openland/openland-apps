@@ -52,7 +52,7 @@ export function emoji({
     }
     if (size === 16) {
         style = {
-            marginTop: -2,
+            marginTop: -3,
         };
     }
     if (size === 18) {
@@ -84,6 +84,7 @@ export function emoji({
                         if (crop) {
                             return (
                                 <figure
+                                    key={'e-' + i}
                                     style={{
                                         display: 'inline-block',
                                         position: 'relative',

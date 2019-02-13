@@ -12,7 +12,7 @@ import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
-let SettingsContent = React.memo<PageProps>((props) => {
+let SettingsContent = ((props: PageProps) => {
     const handleLogout = () => {
         (async () => {
             AsyncStorage.clear();

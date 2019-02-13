@@ -12,15 +12,14 @@ import { XCloudImage } from 'openland-x/XCloudImage';
 import { withSendPostMessage, withEditPostMessage } from '../../api/withPostMessage';
 import { PostMessageType } from 'openland-api/Types';
 import { EditPostProps } from '../MessengerRootComponent';
-import { DropZone } from '../DropZone';
-import { AttachmentButton } from '../MessageComposeComponent';
+import { DropZone } from '../MessageComposeComponent/FileUploading/DropZone';
+import { AttachmentButton } from '../MessageComposeComponent/AttachmentButtons';
 import CloseIcon from 'openland-icons/ic-close-post.svg';
 import RemoveIcon from 'openland-icons/ic-close.svg';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import FileIcon from 'openland-icons/ic-file-3.svg';
 import { MessageUploadComponent } from 'openland-web/components/messenger/message/content/MessageUploadComponent';
 import { niceBytes } from 'openland-web/components/messenger/message/content/MessageFileComponent';
-import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
 import { postTexts } from './text';
 import { PostTitle } from './PostTitle';
 import { PostText, EmojiSelectButton } from './PostText';
@@ -502,47 +501,44 @@ export class CreatePostComponent extends React.Component<
                                 </CoverWrapper>
                             )}
                         </XHorizontal>
-                        {moreFiles &&
-                            moreFiles.length > 0 && (
-                                <FilesWrapper>
-                                    {moreFiles.map(i => (
-                                        <FileItem
-                                            key={'file' + i.uuid}
-                                            separator={4}
-                                            alignItems="center"
-                                        >
-                                            <XView
-                                                backgroundImage="url('/static/X/file.svg')"
-                                                backgroundRepeat="no-repeat"
-                                                width={11}
-                                                height={14}
-                                                flexShrink={0}
-                                            />
-                                            <XHorizontal alignItems="center" separator={4}>
-                                                <div>
-                                                    {i.name} <span>•</span>{' '}
-                                                    {niceBytes(Number(i.size))}
-                                                </div>
-                                                <XHorizontal
-                                                    alignItems="center"
-                                                    className="remove"
-                                                    onClick={() => this.fileRemover(i)}
-                                                >
-                                                    <RemoveIcon />
-                                                </XHorizontal>
+                        {moreFiles && moreFiles.length > 0 && (
+                            <FilesWrapper>
+                                {moreFiles.map(i => (
+                                    <FileItem
+                                        key={'file' + i.uuid}
+                                        separator={4}
+                                        alignItems="center"
+                                    >
+                                        <XView
+                                            backgroundImage="url('/static/X/file.svg')"
+                                            backgroundRepeat="no-repeat"
+                                            width={11}
+                                            height={14}
+                                            flexShrink={0}
+                                        />
+                                        <XHorizontal alignItems="center" separator={4}>
+                                            <div>
+                                                {i.name} <span>•</span> {niceBytes(Number(i.size))}
+                                            </div>
+                                            <XHorizontal
+                                                alignItems="center"
+                                                className="remove"
+                                                onClick={() => this.fileRemover(i)}
+                                            >
+                                                <RemoveIcon />
                                             </XHorizontal>
-                                        </FileItem>
-                                    ))}
-                                </FilesWrapper>
-                            )}
-                        {!!uploadProgress &&
-                            uploadProgress > 0 && (
-                                <MessageUploadComponent
-                                    key={'file_uploading'}
-                                    progress={Math.round(uploadProgress * 100)}
-                                    title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
-                                />
-                            )}
+                                        </XHorizontal>
+                                    </FileItem>
+                                ))}
+                            </FilesWrapper>
+                        )}
+                        {!!uploadProgress && uploadProgress > 0 && (
+                            <MessageUploadComponent
+                                key={'file_uploading'}
+                                progress={Math.round(uploadProgress * 100)}
+                                title={'Uploading (' + Math.round(uploadProgress * 100) + '%)'}
+                            />
+                        )}
                     </XVertical>
                     <DropZone height="100%" onFileDrop={this.handleDrop} />
                 </XView>

@@ -47,7 +47,7 @@
                         "assets-s": "./packages/react-native-s/assets"
                     }
                 }],
-                // "transform-remove-console"
+                "transform-remove-console"
             ]
         },
         "development": {

@@ -11,8 +11,8 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSid
 import {
     MessageComposeComponentDraft,
     MessageComposeComponentProps,
-} from './MessageComposeComponent';
-import { MobileMessageCompose } from './MessageComposeComponentMobile';
+} from './MessageComposeComponent/MessageComposeComponentDesktop';
+import { MobileMessageCompose } from './MessageComposeComponent/MessageComposeComponentMobile';
 import { ConversationMessagesComponent } from '../components/messenger/ConversationMessagesComponent';
 import { UplaodCareUploading } from '../utils/UploadCareUploading';
 import { UserShort, SharedRoomKind, PostMessageType } from 'openland-api/Types';

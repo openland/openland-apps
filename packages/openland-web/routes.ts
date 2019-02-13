@@ -262,12 +262,10 @@ routes.add('/ui/userprofile-my', '/dev/ui/userprofile-my');
 routes.add('/ui/userprofile-my/', '/dev/ui/userprofile-my');
 routes.add('/ui/lists', '/dev/ui/lists');
 routes.add('/ui/lists/', '/dev/ui/lists');
-routes.add('/ui/mentions', '/dev/ui/mentions');
-routes.add('/ui/mentions/', '/dev/ui/mentions');
 routes.add('/ui/emoji', '/dev/ui/emoji');
 routes.add('/ui/emoji/', '/dev/ui/emoji');
-routes.add('/ui/rich', '/dev/ui/rich');
-routes.add('/ui/rich/', '/dev/ui/rich');
+routes.add('/ui/rich', '/dev/ui/rich/rich');
+routes.add('/ui/rich/', '/dev/ui/rich/rich');
 
 routes.add('/ui/signin/signin-invite', '/dev/ui/signin/signin-invite');
 routes.add('/ui/signin/accept-invitation', '/dev/ui/signin/accept-invitation');

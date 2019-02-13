@@ -12,8 +12,9 @@ import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { SDeferred } from 'react-native-s/SDeferred';
+import { GlobalSearch } from './components/globalSearch/GlobalSearch';
 
-const RoomsList = React.memo(props => {
+const RoomsList = () => {
     let rooms = getClient().useAvailableRooms().rooms as AvailableRooms_rooms[];
     let featureds = getClient()
         .useRoomSearch({
@@ -94,7 +95,7 @@ const RoomsList = React.memo(props => {
             </ZListItemGroup>
         </>
     );
-});
+};
 
 const ExplorePage = (props: PageProps) => {
     return (
@@ -110,7 +111,15 @@ const ExplorePage = (props: PageProps) => {
                 }
                 onPress={() => props.router.push('Compose')}
             />
-            <SSearchControler searchRender={p => null}>
+            <SSearchControler
+                searchRender={(p) => (
+                    <GlobalSearch
+                        query={p.query}
+                        router={props.router}
+                        onUserPress={(id: string) => props.router.push('ProfileUser', { id: id })}
+                    />
+                )}
+            >
                 <SScrollView>
                     <SDeferred>
                         <RoomsList />

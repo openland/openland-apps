@@ -33,6 +33,14 @@ function preprocessSpaces(text: string): string {
     return res;
 }
 
+export function useNonBreakingSpaces (text?: string): string | undefined {
+    if (typeof text === 'string') {
+        return text.replace(/ /g, "\u00a0");
+    }
+
+    return text;
+}
+
 function preprocessRawText(text: string): Span[] {
     let res: Span[] = [];
     for (let p of text.split('\n')) {

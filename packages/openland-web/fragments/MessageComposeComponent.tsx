@@ -22,7 +22,7 @@ import PostIcon from 'openland-icons/ic-add-post.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { ShortcutsModal } from '../components/messenger/view/ShortcutsModal';
-import { DropZone } from './DropZone';
+import { DropZone } from './MessageComposeComponent/FileUploading/DropZone';
 import { withUserInfo, UserInfo } from '../components/UserInfo';
 import {
     MessagesStateContext,

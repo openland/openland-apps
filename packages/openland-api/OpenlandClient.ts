@@ -294,6 +294,18 @@ export class OpenlandClient {
     useWithoutLoaderAvailableRooms(): Types.AvailableRooms | null {
         return this.client.useWithoutLoaderQuery(Source.AvailableRoomsQuery);
     }
+    async queryGlobalSearch(variables: Types.GlobalSearchVariables): Promise<Types.GlobalSearch> {
+        return this.client.query(Source.GlobalSearchQuery, variables);
+    }
+    async refetchGlobalSearch(variables: Types.GlobalSearchVariables): Promise<Types.GlobalSearch> {
+        return this.client.refetch(Source.GlobalSearchQuery, variables);
+    }
+    useGlobalSearch(variables: Types.GlobalSearchVariables): Types.GlobalSearch {
+        return this.client.useQuery(Source.GlobalSearchQuery, variables);
+    }
+    useWithoutLoaderGlobalSearch(variables: Types.GlobalSearchVariables): Types.GlobalSearch | null {
+        return this.client.useWithoutLoaderQuery(Source.GlobalSearchQuery, variables);
+    }
     async queryFeatureFlags(): Promise<Types.FeatureFlags> {
         return this.client.query(Source.FeatureFlagsQuery);
     }
