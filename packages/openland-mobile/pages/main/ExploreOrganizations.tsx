@@ -57,12 +57,7 @@ class DirectoryComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                {Platform.OS === 'ios' && (
-                    <SHeader title="Organizations" />
-                )}
-                {Platform.OS === 'android' && (
-                    <CenteredHeader title="Organizations" padding={98} />
-                )}
+                <SHeader title="Organizations" />
                 <SHeaderButton icon={require('assets/ic-create-ios.png')} title="+ New" onPress={() => this.props.router.push('NewOrganization')} />
                 <SSearchControler searchRender={(props) => (<OrganizationSearchComponent query={props.query} router={this.props.router} />)}>
                     <ZAsyncRoutedList
