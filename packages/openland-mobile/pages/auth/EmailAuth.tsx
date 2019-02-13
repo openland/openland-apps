@@ -12,7 +12,7 @@ import { UserError, NamedError } from 'openland-y-forms/errorHandling';
 import { ShowAuthError } from './ShowAuthError';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 
-export const ACTIVATION_CODE_LENGTH = 5;
+export const ACTIVATION_CODE_LENGTH = 6;
 
 const styles = StyleSheet.create({
     hint: {
@@ -41,26 +41,8 @@ const http = async (params: { url: string; body?: any; method: 'POST' | 'GET' })
     } else {
         let body = await res.json();
         if (body.ok === false) {
-            let errorName: string | undefined;
-
-            switch (body.errorCode) {
-                case 0: errorName = 'wrong_arg'; break;
-                case 1: errorName = 'server_error'; break;
-                case 2: errorName = 'session_not_found'; break;
-                case 3: errorName = 'code_expired'; break;
-                case 4: errorName = 'wrong_code'; break;
-                case 5: errorName = 'no_email_or_phone'; break;
-                case 6: errorName = 'no_session'; break;
-                case 7: errorName = 'no_code'; break;
-                case 8: errorName = 'no_auth_token'; break;
-                case 9: errorName = 'invalid_email'; break;
-                case 10: errorName = 'invalid_auth_token'; break;
-                case 11: errorName = 'session_expired'; break;
-                default: errorName = undefined;
-            }
-
-            if (typeof errorName === 'string') {
-                throw new NamedError(errorName);
+            if (typeof body.errorCode === 'string') {
+                throw new NamedError(body.errorCode);
             } else {
                 throw new UserError(body.errorText || 'Unexpected error');
             }
