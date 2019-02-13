@@ -212,7 +212,7 @@ const ConversationComponent = React.memo<PageProps>((props) => {
                                 <ZRoundedButton
                                     size="big"
                                     uppercase={false}
-                                    title={sharedRoom!.membership === 'REQUESTED' ? 'Invite requested' : 'Request invite'}
+                                    title={sharedRoom!.membership === 'REQUESTED' ? 'Join requested' : 'Join'}
                                     onPress={async () => {
                                         startLoader();
                                         try {
