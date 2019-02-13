@@ -54,6 +54,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
         return (
             <AsyncBubbleView colorIn={"#f3f5f7"} isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
+
                 <ASFlex
                     height={40}
                     flexDirection="row"
@@ -62,6 +63,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                     marginBottom={1}
                     marginLeft={-2}
                 >
+
                     <ASFlex
                         width={40}
                         height={40}
@@ -79,11 +81,9 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                             height={20}
                         />
                         {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                            width={40}
                             backgroundColor="#0008"
                             borderRadius={20}
-                            marginTop={10}
-                            marginBottom={10}
-                            marginLeft={10}
                             marginRight={10}
                             overlay={true}
                             justifyContent="center"
