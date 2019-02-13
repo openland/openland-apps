@@ -305,7 +305,14 @@ private fun resolveSpec(src: JsonObject, context: ReactContext): AsyncViewSpec {
 }
 
 fun parseSpec(src: String, context: ReactContext): AsyncViewSpec {
+    var start = System.currentTimeMillis()
     val parser = Parser()
+    Log.d("SView", "Parser inited in " + (System.currentTimeMillis() - start) + " ms")
+    start = System.currentTimeMillis()
     val parsed = parser.parse(StringBuilder(src)) as JsonObject
-    return resolveSpec(parsed, context)
+    Log.d("SView", "Parsed in " + (System.currentTimeMillis() - start) + " ms")
+    start = System.currentTimeMillis()
+    val res = resolveSpec(parsed, context)
+    Log.d("SView", "Resolved in " + (System.currentTimeMillis() - start) + " ms")
+    return res
 }
