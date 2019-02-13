@@ -1,5 +1,6 @@
 package com.openland.react.v8
 
+import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
@@ -9,15 +10,16 @@ import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Array
 import com.eclipsesource.v8.V8Object
 import com.facebook.react.bridge.JavaJSExecutor
+import java.io.IOException
 import java.lang.Exception
 import java.net.URL
 import java.util.concurrent.CompletableFuture
 
-class V8Executor : JavaJSExecutor {
+class V8Executor(val context: Context) : JavaJSExecutor {
 
-    companion object : JavaJSExecutor.Factory {
+    class Factory(val context: Context): JavaJSExecutor.Factory {
         override fun create(): JavaJSExecutor {
-            return V8Executor()
+            return V8Executor(context)
         }
     }
 
@@ -54,17 +56,47 @@ class V8Executor : JavaJSExecutor {
         Log.d(TAG, "loadApplicationScript: $sourceURL")
         val fut = CompletableFuture<String>()
         handler.post {
-            val data = URL(sourceURL).readText()
-            Log.d(TAG, "downloaded")
-            try {
-                runtime.executeScript(data)
-            } catch (e: Exception) {
-                fut.completeExceptionally(JavaJSExecutor.ProxyExecutorException(e))
+            if (sourceURL.startsWith("http://")) {
+                val data = URL(sourceURL).readText()
+                Log.d(TAG, "downloaded")
+                try {
+                    runtime.executeScript(data)
+                } catch (e: Exception) {
+                    fut.completeExceptionally(JavaJSExecutor.ProxyExecutorException(e))
+                }
+                Log.d(TAG, "executed")
+                fut.complete("")
+            } else {
+                val data = loadData(sourceURL)
+                try {
+                    runtime.executeScript(data)
+                } catch (e: Exception) {
+                    fut.completeExceptionally(JavaJSExecutor.ProxyExecutorException(e))
+                }
+                Log.d(TAG, "executed")
+                fut.complete("")
             }
-            Log.d(TAG, "executed")
-            fut.complete("")
         }
         fut.get()
+    }
+
+    private fun loadData(inFile: String): String {
+        var tContents = ""
+
+        try {
+            val stream = this.context.assets.open(inFile)
+
+            val size = stream.available()
+            val buffer = ByteArray(size)
+            stream.read(buffer)
+            stream.close()
+            tContents = String(buffer)
+        } catch (e: IOException) {
+            throw e
+            // Handle exceptions here
+        }
+
+        return tContents
     }
 
     override fun close() {

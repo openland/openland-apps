@@ -57,7 +57,7 @@ public class MainApplication extends Application implements ReactApplication {
         @Nullable
         @Override
         protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
-            return  new ProxyJavaScriptExecutor.Factory(V8Executor.Companion);
+            return new ProxyJavaScriptExecutor.Factory(new V8Executor.Factory(MainApplication.this));
         }
 
         @Override
@@ -69,9 +69,9 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new WebRTCModulePackage(),
-            new AndroidOpenSettingsPackage(),
-            new A0Auth0Package(),
+                    new WebRTCModulePackage(),
+                    new AndroidOpenSettingsPackage(),
+                    new A0Auth0Package(),
                     new RNThreadPackage(mReactNativeHost),
                     new ReactNativeRestartPackage(),
                     new AppCenterReactNativeCrashesPackage(MainApplication.this, getResources().getString(R.string.appCenterCrashes_whenToSendCrashes)),

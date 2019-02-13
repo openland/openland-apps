@@ -41,23 +41,24 @@ export const messageBgColor = 'white';
 
 export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps> {
 
-    themeSub?: () => void;
+    // themeSub?: () => void;
 
-    constructor(props: AsyncMessageViewProps) {
-        super(props);
-        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
-    }
+    // constructor(props: AsyncMessageViewProps) {
+    //     super(props);
+    //     this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+    // }
 
-    componentWillMount() {
-        ConversationThemeResolver.subscribe(this.props.engine.conversationId, theme => this.setState({ theme: theme })).then(sub => this.themeSub = sub);
+    // componentWillMount() {
+    //     ConversationThemeResolver.subscribe(this.props.engine.conversationId, theme => this.setState({ theme: theme })).then(sub => this.themeSub = sub);
 
-    }
+    // }
 
-    componentWillUnmount() {
-        if (this.themeSub) {
-            this.themeSub();
-        }
-    }
+    // componentWillUnmount() {
+    //     if (this.themeSub) {
+    //         this.themeSub();
+    //     }
+    // }
+    
     private handleAvatarPress = () => {
         this.props.onAvatarPress(this.props.message.senderId);
     }
