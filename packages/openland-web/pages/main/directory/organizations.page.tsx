@@ -8,6 +8,7 @@ import { XOrganizationCard } from 'openland-x/cards/XOrganizationCard';
 import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface OrganizationCardsProps {
     onPageChange?: () => void;
@@ -87,7 +88,7 @@ const getId = (myPath: string, substring: string) => {
 
 const getOrganizationProfile = (path: string) => getId(path, '/directory/o/');
 
-const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) => (
+const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 

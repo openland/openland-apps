@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const MentionEntry = React.memo((props: any) => {
+export const MentionEntry = XMemo((props: any) => {
     const {
         mention,
         theme,

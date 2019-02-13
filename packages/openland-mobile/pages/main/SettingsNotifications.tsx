@@ -7,8 +7,9 @@ import { ZForm } from '../../components/ZForm';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const SettingsNotificationsContent = React.memo<PageProps>((props) => {
+const SettingsNotificationsContent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
     let handleSave = React.useCallback(() => {
         if (ref.current) {

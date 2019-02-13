@@ -8,6 +8,7 @@ import { SharedRoomKind, Room_room_SharedRoom } from 'openland-api/Types';
 import { TextProfiles } from 'openland-text/TextProfiles';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const RoomTitleInner = css`
     height: 22px;
@@ -40,7 +41,7 @@ interface XRoomCardProps {
     isMember?: boolean;
 }
 
-export const XRoomCard = React.memo<XRoomCardProps>(props => {
+export const XRoomCard = XMemo<XRoomCardProps>(props => {
     const { customButton, customMenu, CustomButtonComponent, ...noCustomizationProps } = props;
     const { room, path, extraMenu, isMember } = noCustomizationProps;
     let [isHovered, onHover] = React.useState(false);

@@ -4,6 +4,7 @@ import { SRouter } from 'react-native-s/SRouter';
 import { Room_room_SharedRoom, Room_room_PrivateRoom, RoomTiny_room } from 'openland-api/Types';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     let path: string | undefined = undefined;
@@ -25,7 +26,7 @@ export let resolveConversationProfilePath = (room: RoomTiny_room) => {
     return { path, pathArgs };
 };
 
-const ChatHeaderAvatarContent = React.memo<{ conversationId: string, router: SRouter }>((props) => {
+const ChatHeaderAvatarContent = XMemo<{ conversationId: string, router: SRouter }>((props) => {
     let room = getClient().useRoomTiny({ id: props.conversationId });
 
     let path = resolveConversationProfilePath(room.room!);

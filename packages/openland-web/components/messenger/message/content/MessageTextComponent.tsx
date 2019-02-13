@@ -9,6 +9,7 @@ import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRel
 import { emoji } from 'openland-y-utils/emoji';
 import { preprocessMentions } from './utils/preprocessMentions';
 import { MentionComponentInner } from 'openland-x/XRichTextInput';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export interface MessageTextComponentProps {
     mentions?: MessageFull_alphaMentions[] | null;
@@ -68,7 +69,7 @@ const styleInsane = css`
     color: transparent;
 `;
 
-export const MessageTextComponent = React.memo<MessageTextComponentProps>(props => {
+export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     // Preprocessing
 
     var messageText = props.message;

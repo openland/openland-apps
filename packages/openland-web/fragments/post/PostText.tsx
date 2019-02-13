@@ -9,6 +9,7 @@ import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { desktopInvalidClassName, emojiWrapperClassName } from './PostTitle';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { XTextArea } from 'openland-x/XTextArea';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const desktopWrapperClassName = css`
     display: flex;
@@ -131,7 +132,7 @@ const MobilePostText = (props: TextInputProps) => (
     </XView>
 );
 
-export const EmojiSelectButton = React.memo(() => {
+export const EmojiSelectButton = XMemo(() => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     if (!isMobile) {
         return (
@@ -145,7 +146,7 @@ export const EmojiSelectButton = React.memo(() => {
     return null;
 });
 
-export const PostText = React.memo<TextInputProps>(props => {
+export const PostText = XMemo<TextInputProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     return isMobile ? <MobilePostText {...props} /> : <DesktopPostText {...props} />;
 });

@@ -4,8 +4,9 @@ import { MenuItem } from 'openland-web/components/MainLayout';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { Navigation } from '../../../../components/Navigation';
 import { XScrollView2 } from 'openland-x/XScrollView2';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const SettingsNavigation = React.memo(
+export const SettingsNavigation = XMemo(
     ({ title, children }: { title: string; children: any }) => {
         return (
             <Navigation

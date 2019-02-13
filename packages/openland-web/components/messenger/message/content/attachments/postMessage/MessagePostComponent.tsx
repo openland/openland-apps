@@ -16,6 +16,7 @@ import { niceBytes } from '../../MessageFileComponent';
 import { withRespondPostMessage } from '../../../../../../api/withRespondPostMessage';
 import MoreIcon from 'openland-icons/ic-arrow-down-blue.svg';
 import { ReactionsRender } from './postReactionsRender';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const PostTitle = css`
     font-size: 18px;
@@ -106,7 +107,7 @@ interface MessagePostComponentProps {
     privateConversation: boolean;
 }
 
-export const MessagePostComponent = React.memo<MessagePostComponentProps>(props => {
+export const MessagePostComponent = XMemo<MessagePostComponentProps>(props => {
     let [showMore, trimText] = React.useState(true);
 
     const textTrimmer = () => {

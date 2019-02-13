@@ -3,6 +3,7 @@ import { XView, XImage } from 'react-mental';
 import { extractPlaceholder } from 'openland-y-utils/extractPlaceholder';
 import { doSimpleHash } from 'openland-y-utils/hash';
 import { emoji } from 'openland-y-utils/emoji';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 type XAvatarSize = 74 | 58 | 40 | 36 | 32 | 28 | 24;
 
@@ -244,7 +245,7 @@ const AvatarContainer40 = (props: AvatarContainerProps) => (
     </XView>
 );
 
-export const XAvatar2 = React.memo<XAvatar2Props>(props => {
+export const XAvatar2 = XMemo<XAvatar2Props>(props => {
     let content: any = undefined;
 
     if (props.src) {

@@ -9,8 +9,9 @@ import { Platform } from 'react-native';
 import { CenteredHeader } from './components/CenteredHeader';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { GlobalSearch } from './components/globalSearch/GlobalSearch';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const DialogsComponent = React.memo<PageProps>((props) => {
+const DialogsComponent = XMemo<PageProps>((props) => {
     return (
         <>
             {Platform.OS === 'ios' && (

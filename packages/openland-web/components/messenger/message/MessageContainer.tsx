@@ -6,6 +6,7 @@ import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { UserPopper } from 'openland-web/components/UserPopper';
 import { emoji } from 'openland-y-utils/emoji';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export interface DesktopMessageContainerProps {
     compact: boolean;
@@ -19,6 +20,8 @@ export interface DesktopMessageContainerProps {
     onSelected: () => void;
     selecting: boolean;
     selected: boolean;
+
+    children?: any;
 }
 
 const CompactPreambulaContainer = ({ children }: { children: any }) => {
@@ -108,7 +111,7 @@ const NotCompactMessageContainerWrapper = ({
     );
 };
 
-export const DesktopMessageContainer = React.memo<DesktopMessageContainerProps>(props => {
+export const DesktopMessageContainer = XMemo<DesktopMessageContainerProps>(props => {
     let [hover, onHover] = React.useState(false);
     let userPopperRef = React.useRef<UserPopper>(null);
 

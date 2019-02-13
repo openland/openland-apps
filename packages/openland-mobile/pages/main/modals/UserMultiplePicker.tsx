@@ -14,6 +14,7 @@ import { UserView } from '../components/UserView';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZLoader } from 'openland-mobile/components/ZLoader';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface UserMultiplePickerComponentState {
     query: string;
@@ -36,7 +37,7 @@ class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
     }
 }
 
-const UsersList = React.memo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
+const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users: any, onAdd: (user: UserShort) => void }>((props) => {
     let users = getClient().useExplorePeople({ query: props.query });
     return (
         <SScrollView marginTop={props.searchHeight}>

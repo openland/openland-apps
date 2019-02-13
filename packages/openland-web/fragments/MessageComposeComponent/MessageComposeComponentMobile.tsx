@@ -17,10 +17,11 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
     });
 
     const { handleSend } = useHandleSend({
-        getMessages: messageComposeProps.getMessages,
         conversationId: messageComposeProps.conversationId,
+        onSend: messageComposeProps.onSend,
         inputValue,
         setInputValue,
+        inputRef
     });
 
     // TODO maybe some other pattern here

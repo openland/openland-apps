@@ -23,6 +23,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export interface File {
     uuid: string;
@@ -122,7 +123,7 @@ interface ComposeHandlerProps extends MessageComposeComponentProps {
     };
 }
 
-const MessageComposeHandler = React.memo<ComposeHandlerProps>(props => {
+const MessageComposeHandler = XMemo<ComposeHandlerProps>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     if (isMobile) {
         return <MobileMessageCompose {...props} />;

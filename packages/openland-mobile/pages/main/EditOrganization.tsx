@@ -12,8 +12,9 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { ListItemEdit } from './SettingsProfile';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const EditOrganizationComponent = React.memo<PageProps>((props) => {
+const EditOrganizationComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
     let org = getClient().useOrganizationProfile({ organizationId: props.router.params.id });
     return (

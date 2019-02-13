@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const EmptyComponent = React.memo(() => (
+export const EmptyComponent = XMemo(() => (
     <XView
         position="relative"
         paddingVertical={30}

@@ -82,7 +82,7 @@ export const DumpSendMessage = ({
                             style="primary"
                             action={handleSend}
                             iconRight="send"
-                            enabled={enabled !== false}
+                            enabled={enabled}
                         />
                     </XHorizontal>
                     <FileUploader />

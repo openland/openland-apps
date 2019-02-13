@@ -8,8 +8,9 @@ import { PageProps } from '../../components/PageProps';
 import { AppBarBottom, AppBarBottomItem } from '../../components/AppBarBottom';
 import { Explore } from './Explore';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const Home = React.memo<PageProps>((props) => {
+export const Home = XMemo<PageProps>((props) => {
     let [tab, setTab] = React.useState(1);
     let counter = getClient().useWithoutLoaderGlobalCounter();
 

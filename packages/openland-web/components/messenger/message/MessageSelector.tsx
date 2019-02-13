@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import CheckIcon from 'openland-icons/ic-check-msg.svg';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const MessageSelector = React.memo<{
+export const MessageSelector = XMemo<{
     selected: boolean;
     onClick: () => void;
 }>(props => {

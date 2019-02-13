@@ -22,13 +22,14 @@ import { MessagesStateContextProps } from 'openland-web/components/messenger/Mes
 import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
     me: UserShort;
 }
 
-const ChatHeaderViewAbstract = React.memo(
+const ChatHeaderViewAbstract = XMemo(
     ({
         modals,
         headerPath,
@@ -117,7 +118,7 @@ const RowWithSeparators = ({
     );
 };
 
-export const ChatHeaderView = React.memo<ChatHeaderViewProps>(({ room, me }) => {
+export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     const state = React.useContext(MessagesStateContext);
 

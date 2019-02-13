@@ -8,8 +8,9 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { CallController } from 'openland-mobile/calls/CallController';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-let Content = React.memo<{ id: string }>((props) => {
+let Content = XMemo<{ id: string }>((props) => {
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
     let conference = getClient().useConference({ id: props.id }).conference!!
     useWatchCall(conference && conference.id);
@@ -33,7 +34,7 @@ let Content = React.memo<{ id: string }>((props) => {
     )
 });
 
-const CallComponent = React.memo<PageProps>((props) => {
+const CallComponent = XMemo<PageProps>((props) => {
 
     let conf = props.router.params.id as string
 

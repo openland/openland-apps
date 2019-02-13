@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { css, cx } from 'linaria';
 import { UserPopper } from 'openland-web/components/UserPopper';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 type MentionComponentInnerTextProps = {
     isYou: boolean;
@@ -31,7 +32,7 @@ let paddingsClassname = css`
     border-radius: 5px;
 `;
 
-export const MentionComponentInnerText = React.memo(
+export const MentionComponentInnerText = XMemo(
     ({ isYou, inCompose, children }: MentionComponentInnerTextProps) => {
         return (
             <span
@@ -64,7 +65,7 @@ export const positionSuggestions = ({ state, props }: any) => {
     };
 };
 
-export const MentionComponentInner = React.memo((props: MentionComponentInnerTextProps) => {
+export const MentionComponentInner = XMemo((props: MentionComponentInnerTextProps) => {
     if (props.hasPopper && props.user) {
         return (
             <UserPopper user={props.user} isMe={props.isYou} noCardOnMe startSelected={false}>

@@ -6,6 +6,7 @@ import { tabs } from '../pages/main/mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 type PageInnerProps = {
     swapFragmentsOnMobile?: boolean;
@@ -29,7 +30,7 @@ const hideClassName = css`
     display: none;
 `;
 
-const MobilePageInner = React.memo(
+const MobilePageInner = XMemo(
     ({
         tab,
         firstFragmentMenu,
@@ -104,15 +105,15 @@ const contentStyle = css`
     }
 `;
 
-const DesktopDialogContainer = React.memo(({ children }: { children: any }) => (
+const DesktopDialogContainer = XMemo(({ children }: { children: any }) => (
     <div className={containerStyle}>{children}</div>
 ));
 
-const DesktopContentContainer = React.memo(({ children }: { children: any }) => (
+const DesktopContentContainer = XMemo(({ children }: { children: any }) => (
     <div className={contentStyle}>{children}</div>
 ));
 
-const DesktopPageInner = React.memo(
+const DesktopPageInner = XMemo(
     ({
         firstFragmentMenu,
         firstFragment,
@@ -148,7 +149,7 @@ const PageInner = AdaptiveHOC({
     fullWidth: true,
 });
 
-export const Navigation = React.memo(
+export const Navigation = XMemo(
     ({
         tab,
         title,

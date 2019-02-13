@@ -12,6 +12,7 @@ import { XShortcuts } from 'openland-x/XShortcuts';
 import { XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const LoadingWrapper = Glamorous.div({
     height: 60,
@@ -21,7 +22,7 @@ export interface DialogListViewProps {
     onDialogClick?: (id: string) => void;
 }
 
-export const DialogListView = React.memo<DialogListViewProps>(props => {
+export const DialogListView = XMemo<DialogListViewProps>(props => {
     const ref = React.createRef<XInput>();
     let messenger = React.useContext(MessengerContext);
     let [query, setQuery] = React.useState('');

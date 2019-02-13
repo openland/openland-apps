@@ -18,6 +18,7 @@ import {
     MessageFull_fileMetadata,
     MessageFull_urlAugmentation,
 } from 'openland-api/Types';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const SetReactionButton = withSetReaction(props => (
     <XMutation mutation={props.setReaction}>{props.children}</XMutation>
@@ -61,7 +62,7 @@ interface MessageIntroComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
 }
 
-export const MessageIntroComponent = React.memo<MessageIntroComponentProps>(props => {
+export const MessageIntroComponent = XMemo<MessageIntroComponentProps>(props => {
     const {
         user,
         file,

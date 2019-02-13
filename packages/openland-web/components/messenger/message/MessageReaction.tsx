@@ -8,6 +8,7 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import ReactionIcon from 'openland-icons/ic-reactions.svg';
 import { emoji } from 'openland-y-utils/emoji';
 import { renderDevPortal } from 'openland-web/pages/dev/components/renderDevPortal';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const CustomPickerDiv = Glamorous(XPopper.Content)({
     padding: '4px 10px',
@@ -304,7 +305,7 @@ interface ReactionsInnerProps {
     reactions: MessageFull_reactions[];
 }
 
-const Label = React.memo(
+const Label = XMemo(
     ({ usersList, foundMyReaction }: { usersList: string[]; foundMyReaction: boolean }) => {
         let uniqueUsersList = usersList.filter(
             (item: string, pos: number) => usersList.indexOf(item) === pos,

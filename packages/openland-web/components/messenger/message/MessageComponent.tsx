@@ -37,6 +37,7 @@ import { ServiceMessageComponent } from './content/ServiceMessageComponent';
 import { MessageIntroComponent } from './content/attachments/introMessage/MessageIntroComponent';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { string } from 'prop-types';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -819,7 +820,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
     );
 };
 
-export const MessageComponent = React.memo<MessageComponentProps>(props => {
+export const MessageComponent = XMemo<MessageComponentProps>(props => {
     const messagesContextProps = React.useContext(MessagesStateContext);
     const { isMobile } = React.useContext(MobileSidebarContext);
 

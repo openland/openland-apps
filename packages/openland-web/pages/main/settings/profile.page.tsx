@@ -24,8 +24,9 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSid
 import { XCheckbox } from 'openland-x/XCheckbox';
 import { EmojiFlags } from 'openland-y-utils/emoji';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-const CardsWrapper = React.memo<{ children: any }>(props => {
+const CardsWrapper = XMemo<{ children: any }>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     return isMobile ? (

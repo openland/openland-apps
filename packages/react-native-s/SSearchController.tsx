@@ -65,29 +65,31 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                                 <View style={{ flexGrow: 1, flexBasis: 0, width: '100%', marginBottom: this.state.searchMounted ? -96 : 0 }}>
                                     {this.props.children}
                                 </View>
-                                <SAnimatedView
-                                    name={this.searchShadowView.name}
-                                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || '#fff' }}
-                                    pointerEvents="box-none"
-                                >
-                                    {this.state.searchMounted && (
-                                        // <ASSafeAreaContext.Provider value={{ top: SDevice.safeArea.top + 96, bottom: SDevice.safeArea.bottom, keyboardHeight: 0 }}>
-                                        //     <SContentContext>
-                                        <HeaderContextNone>
-                                            <ASSafeAreaProvider top={6}>
-                                                <View width="100%" height="100%">
-                                                    <React.Suspense fallback={SNativeConfig.loader}>
-                                                        <Render query={this.state.query} />
-                                                    </React.Suspense>
-                                                </View>
-                                            </ASSafeAreaProvider>
-                                        </HeaderContextNone>
-                                        //     </SContentContext>
-                                        // </ASSafeAreaContext.Provider>
-                                    )}
-                                </SAnimatedView>
+
                             </View>
                         </ASSafeAreaProvider>
+
+                    </SAnimatedView>
+                    <SAnimatedView
+                        name={this.searchShadowView.name}
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || '#fff' }}
+                        pointerEvents="box-none"
+                    >
+                        {this.state.searchMounted && (
+                            // <ASSafeAreaContext.Provider value={{ top: SDevice.safeArea.top + 96, bottom: SDevice.safeArea.bottom, keyboardHeight: 0 }}>
+                            //     <SContentContext>
+                            <HeaderContextNone>
+                                <ASSafeAreaProvider top={-SDevice.navigationBarHeight}>
+                                    <View width="100%" height="100%">
+                                        <React.Suspense fallback={SNativeConfig.loader}>
+                                            <Render query={this.state.query} />
+                                        </React.Suspense>
+                                    </View>
+                                </ASSafeAreaProvider>
+                            </HeaderContextNone>
+                            //     </SContentContext>
+                            // </ASSafeAreaContext.Provider>
+                        )}
                     </SAnimatedView>
                 </>
             )

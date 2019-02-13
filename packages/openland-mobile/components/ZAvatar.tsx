@@ -8,6 +8,7 @@ import { ZImage } from './ZImage';
 import { ZLinearGradient } from './visual/ZLinearGradient.native';
 import { ZStyles } from './ZStyles';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const styles = StyleSheet.create({
     placeholderText: {
@@ -89,7 +90,7 @@ class XPAvatarInner extends React.PureComponent<ZAvatarProps> {
     }
 }
 
-export const ZAvatar = React.memo<ZAvatarProps>((props) => {
+export const ZAvatar = XMemo<ZAvatarProps>((props) => {
     if (!props.userId) {
         return <XPAvatarInner {...props} />;
     }

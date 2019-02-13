@@ -11,6 +11,7 @@ import { XView, XViewSelectedContext } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export let iconClass = css`
     display: inline-block;
@@ -43,7 +44,7 @@ export interface DialogViewProps {
     onSelect?: (id: string) => void;
 }
 
-export const DialogView = React.memo<DialogViewProps>(props => {
+export const DialogView = XMemo<DialogViewProps>(props => {
     let dialog = props.item;
     let isMuted = dialog.isMuted;
     let isService = dialog.isService;

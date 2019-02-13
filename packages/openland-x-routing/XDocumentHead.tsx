@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { XRouterContext } from './XRouterContext';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 const DEFAULT_OG = {
     title: 'Openland',
@@ -9,7 +10,7 @@ const DEFAULT_OG = {
     image: 'https://cdn.openland.com/shared/og-messenger-6.png',
 };
 
-export const XDocumentHead = React.memo<{
+export const XDocumentHead = XMemo<{
     title?: string | string[];
     titleWithoutReverse?: boolean;
     titleSocial?: string | null;

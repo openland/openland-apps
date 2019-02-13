@@ -6,8 +6,9 @@ import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const AuthRouter = React.memo<{ children?: any }>(props => {
+export const AuthRouter = XMemo<{ children?: any }>(props => {
     let router = React.useContext(XRouterContext)!;
     let userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);

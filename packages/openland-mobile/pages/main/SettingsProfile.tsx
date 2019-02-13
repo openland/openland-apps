@@ -12,6 +12,7 @@ import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 export class ListItemEdit extends React.PureComponent<{
     autoFocus?: boolean;
@@ -54,7 +55,7 @@ export class ListItemEdit extends React.PureComponent<{
     }
 }
 
-const SettingsProfileContent = React.memo<PageProps>((props) => {
+const SettingsProfileContent = XMemo<PageProps>((props) => {
     let profile = getClient().useProfile().profile;
     let ref = React.useRef<ZForm | null>(null);
     let handleSave = React.useCallback(() => {

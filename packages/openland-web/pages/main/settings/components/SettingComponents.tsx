@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { XMemo } from 'openland-y-utils/XMemo';
 
-export const Content = React.memo<{ children: any }>(props => {
+export const Content = XMemo<{ children: any }>(props => {
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     return (

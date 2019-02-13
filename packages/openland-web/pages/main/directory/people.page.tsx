@@ -8,6 +8,7 @@ import { XUserCard } from 'openland-x/cards/XUserCard';
 import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNavigation';
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
+import { XMemo } from 'openland-y-utils/XMemo';
 interface PeopleCardsProps {
     variables: { query?: string; sort?: string };
     tagsCount: (n: number) => void;
@@ -54,7 +55,7 @@ const getId = (myPath: string, substring: string) => {
 
 const getPeopleProfile = (path: string) => getId(path, '/directory/u/');
 
-const SearchUserProfileComponent = React.memo(({ id }: { id: string }) => (
+const SearchUserProfileComponent = XMemo(({ id }: { id: string }) => (
     <UserProfile userId={id} onDirectory={true} />
 ));
 

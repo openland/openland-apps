@@ -9,6 +9,7 @@ import { DirectoryNavigation, ComponentWithSort } from './components/DirectoryNa
 import { XRouterContext } from 'openland-x-routing/XRouterContext';
 import { XRouter } from 'openland-x-routing/XRouter';
 import { withApp } from 'openland-web/components/withApp';
+import { XMemo } from 'openland-y-utils/XMemo';
 
 interface CommunitiesCardsProps {
     variables: { query?: string; sort?: string };
@@ -56,7 +57,7 @@ const getId = (myPath: string, substring: string) => {
 
 const getCommunityProfile = (path: string) => getId(path, '/directory/c/');
 
-const SearchOrganizationProfileComponent = React.memo(({ id }: { id: string }) => (
+const SearchOrganizationProfileComponent = XMemo(({ id }: { id: string }) => (
     <OrganizationProfile organizationId={id} onDirectory={true} />
 ));
 
