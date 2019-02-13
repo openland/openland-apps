@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { DropZone } from './DropZone';
 
 type FileT = UploadCare.File | null | undefined;
 type FileSrcT = string | null | undefined;
@@ -9,19 +10,15 @@ export interface ContextT {
     fileSrc: FileSrcT;
     fileName: FileNameT;
     fileRemover: () => void;
-    handleDrop?: (file: any) => void;
+    handleDrop: (file: any) => void;
 }
 
 export const UploadContext = React.createContext<ContextT>({
     file: undefined,
     fileSrc: undefined,
     fileName: undefined,
-    fileRemover: () => {
-        //
-    },
-    handleDrop: () => {
-        //
-    },
+    fileRemover: () => null,
+    handleDrop: () => null,
 });
 
 export const UploadContextProvider = ({ children }: any) => {
@@ -40,11 +37,11 @@ export const UploadContextProvider = ({ children }: any) => {
         reader.readAsDataURL(droppedFile);
         reader.onloadend = () => {
             if (droppedFile.type.match('image')) {
-                setFile(file);
+                setFile(droppedFile);
                 setFileSrc(reader.result as any);
                 setFileName(null);
             } else {
-                setFile(file);
+                setFile(droppedFile);
                 setFileSrc(null);
                 setFileName(droppedFile.name);
             }
@@ -61,6 +58,7 @@ export const UploadContextProvider = ({ children }: any) => {
                 handleDrop,
             }}
         >
+            <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             {children}
         </UploadContext.Provider>
     );
