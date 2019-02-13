@@ -1,5 +1,5 @@
 export async function throttle() {
-    return new Promise((r) => { setTimeout(r); });
+    return new Promise((r) => { setTimeout(r, 1); });
 }
 
 export async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise<V[]> {
@@ -10,7 +10,13 @@ export async function throttledMap<T, V>(src: T[], map: (item: T) => V): Promise
             await throttle();
             c = 0;
         }
-        res.push(map(s));
+        if (__DEV__) {
+            let start = Date.now();
+            res.push(map(s));
+            console.log('Mapped in ' + (Date.now() - start) + ' ms');
+        } else {
+            res.push(map(s));
+        }
     }
     return res;
 }

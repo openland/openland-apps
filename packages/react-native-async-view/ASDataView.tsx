@@ -57,7 +57,6 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
 
     onDataSourceInited = (data: T[], completed: boolean) => {
         this.queue.push(async () => {
-
             // Create initial items
             this.items = await throttledMap(data, (v) => new ItemRenderHolder(this, v, this.render));
             // Forward initial state to native
