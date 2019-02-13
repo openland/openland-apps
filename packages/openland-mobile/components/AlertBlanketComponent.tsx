@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Platform, View, Text, Alert as AlertReact, Image } from 'react-native';
+import { Platform, View, Text, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
-import { showBlanketModal } from './showBlanketModal';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZModalController } from './ZModal';
 import { delay } from 'openland-y-utils/timer';
@@ -10,8 +9,6 @@ import { randomKey } from 'openland-mobile/utils/randomKey';
 import { SAnimated } from 'react-native-s/SAnimated';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { AlertBlanketBuilder } from './AlertBlanket';
-
-type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
 
 export class AlertBlanketComponent extends React.PureComponent<{ builder: AlertBlanketBuilder, modalController: ZModalController }, { state?: 'initila' | 'done' | 'error' }> {
     state = { state: 'initial' as 'initila' | 'done' | 'error' }

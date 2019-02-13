@@ -101,7 +101,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
                         alignSelf="center"
                     >
                         <ASText
-                            maxWidth={bubbleMaxWidth}
+                            maxWidth={bubbleMaxWidth - 110}
                             color={this.props.message.isOut ? '#ffffff' : '#000000'}
                             height={18}
                             fontSize={15}

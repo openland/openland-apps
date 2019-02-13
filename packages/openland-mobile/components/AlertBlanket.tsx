@@ -1,14 +1,5 @@
 import * as React from 'react';
-import { Platform, View, Text, Alert as AlertReact, Image } from 'react-native';
-import { ZRoundedButton } from './ZRoundedButton';
 import { showBlanketModal } from './showBlanketModal';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZModalController } from './ZModal';
-import { delay } from 'openland-y-utils/timer';
-import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
-import { randomKey } from 'openland-mobile/utils/randomKey';
-import { SAnimated } from 'react-native-s/SAnimated';
-import { formatError } from 'openland-y-forms/errorHandling';
 import { AlertBlanketComponent } from './AlertBlanketComponent';
 
 type BlanketButtonsStyle = 'destructive' | 'cancel' | 'default';
