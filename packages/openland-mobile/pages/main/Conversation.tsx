@@ -81,15 +81,29 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
             });
         });
         builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), () => {
-            Picker.launchImageLibrary({ mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed' }, (response) => {
-                if (response.didCancel) {
-                    return;
-                }
+            Picker.launchImageLibrary(
+                {
+                    maxWidth: 1024,
+                    maxHeight: 1024,
+                    mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
+                },
+                (response) => {
+                    if (response.didCancel) {
+                        return;
+                    }
 
-                // only photos has this field: https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Reference.md
-                let isPhoto = !!response.type;
-                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
-            });
+                    let fileExtension = response.uri.split('.').pop();
+                    let isPhoto = false;
+
+                    if (fileExtension) {
+                        let ext = fileExtension.toLowerCase();
+
+                        isPhoto = ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'heic';
+                    }
+
+                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                }
+            );
         });
         if (Platform.OS === 'android') {
             builder.action('Video', () => {
