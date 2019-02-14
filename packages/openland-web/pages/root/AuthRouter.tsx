@@ -16,7 +16,7 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
 
     const { hostName, path } = router;
 
-    if (hostName === 'canary.openland.io') {
+    if (hostName === 'app.openland.com') {
         if (canUseDOM) {
             window.location.replace(`https://openland.com${path}`);
         }
