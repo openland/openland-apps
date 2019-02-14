@@ -140,7 +140,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
         >
             <XAvatar2
                 title={dialog.title}
-                id={dialog.key}
+                id={dialog.kind === 'PRIVATE' ? dialog.flexibleId : dialog.key}
                 src={dialog.photo}
                 online={dialog.online}
             />
