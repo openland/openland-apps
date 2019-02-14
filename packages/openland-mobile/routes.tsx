@@ -33,6 +33,7 @@ import { Worker } from './pages/dev/Worker';
 import { Benchmark } from './pages/dev/Benchmark';
 import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { Call } from './pages/main/Call';
+import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -73,6 +74,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevNavigation', Navigation)
   .addRoute('DevBenchmarks', Benchmark)
   .addRoute('DevBenchmarksAsync', BenchmarkAsync)
+  .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
 
   .build();
