@@ -1,5 +1,6 @@
 package com.openland.react.async
 
+import android.os.Process
 import android.util.Log
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -113,6 +114,8 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
 
     @ReactMethod
     fun dataViewInit(dataSourceKey: String, config: String, completed: Boolean) {
+        // Process.setThreadPriority(Process.THREAD_PRIORITY_FOREGROUND)
+        Thread.currentThread().priority = Thread.NORM_PRIORITY + 2
         Log.d("SView", "Current thread priority: " + Thread.currentThread().priority)
         val start = System.currentTimeMillis()
         val parsed = JSONArray(config)
