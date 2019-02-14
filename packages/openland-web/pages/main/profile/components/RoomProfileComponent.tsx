@@ -52,7 +52,7 @@ import {
     RoomSetHidden,
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
-import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
+// import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { tabs, tabsT } from '../tabs';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
@@ -359,7 +359,7 @@ const MembersProvider = ({
                 </SectionContent>
                 {meOwner && (
                     <>
-                        <RoomAddMemberModal roomId={chatId} />
+                        {/*<RoomAddMemberModal roomId={chatId} />*/}
                         <RemoveMemberModal
                             members={members}
                             roomId={chatId}
