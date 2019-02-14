@@ -144,9 +144,20 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
 
 export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationComponentProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
-    let { hostname, title, photo, imageInfo } = props;
+    let { hostname, title, photo, imageInfo, description, iconRef, isMe, messageId, extra } = props;
 
-    const preprocessed = props.description ? preprocessText(props.description) : [];
+    let organization;
+    if (extra !== null) {
+        if (extra.__typename === 'Organization') {
+            organization = extra.name;
+        } else if (extra.__typename === 'ChannelConversation') {
+            organization = extra.organization!!.name;
+        } else if (extra.__typename === 'User') {
+            organization = extra.primaryOrganization!!.name;
+        }
+    }
+
+    const preprocessed = description ? preprocessText(description) : [];
 
     let parts = preprocessed.map((v, i) => {
         if (v.type === 'new_line') {
@@ -196,15 +207,21 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
             <ContentWrapper>
                 {hostname && (
                     <Hostname>
-                        {props.iconRef && (
-                            <Favicon src={'https://ucarecdn.com/' + props.iconRef.uuid + '/'} />
-                        )}
-                        {!props.iconRef && <WebsiteIcon />}
+                        {iconRef && <Favicon src={'https://ucarecdn.com/' + iconRef.uuid + '/'} />}
+                        {!iconRef && <WebsiteIcon />}
                         <span>{hostname}</span>
                     </Hostname>
                 )}
-                {title && <Title>{title}</Title>}
+                {title && (
+                    <Title>
+                        {emoji({
+                            src: title,
+                            size: 18,
+                        })}
+                    </Title>
+                )}
                 {parts && <Description>{parts}</Description>}
+                {organization && <Description>{organization}</Description>}
             </ContentWrapper>
             {photo && dimensions && (
                 <ImageWrapper>
@@ -216,11 +233,11 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
                     />
                 </ImageWrapper>
             )}
-            {props.isMe && (
+            {isMe && (
                 <DeleteButton
                     query={{
                         field: 'deleteUrlAugmentation',
-                        value: props.messageId,
+                        value: messageId,
                     }}
                     className="delete-button"
                 >

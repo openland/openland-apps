@@ -1892,6 +1892,11 @@
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/@types/react-native-auth0/-/react-native-auth0-1.2.5.tgz#5dec8c5a600918ff9bd68e7c30e134cb251660f1"
 
+"@types/react-native-document-picker@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-document-picker/-/react-native-document-picker-2.0.1.tgz#135a7e9840748745ac352623338fbce63a5c309e"
+  integrity sha512-Xp2mIdGiRY2Fc66imRi1EWr7nwlAs6zhkcCQnmia24tG8BLWocfbM+BxjYZxmAr1g1cDkQzHNU+rxQIzC/SYBA==
+
 "@types/react-native-fs@^2.8.2":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@types/react-native-fs/-/react-native-fs-2.8.2.tgz#c5c466ea898d433aa9b3a8fc06ee56392ae49e06"
@@ -11979,6 +11984,11 @@ react-native-blur@^3.2.2:
 react-native-device-info@^0.22.0:
   version "0.22.6"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.6.tgz#32a674b0484d31214fdcfbbb0e677621e83ba69d"
+
+react-native-document-picker@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-2.2.0.tgz#78c8f9b732d36d65174ec9bfbeb2cea091ce7c27"
+  integrity sha512-Msi+/3gDHgbnGXAoCmcxchITUfYMugvM0wLjHWOFpV57sk4jvBMJiJz30eLMmVkgdT5tE6WcHXTK/TXa5FWelw==
 
 react-native-fast-image@^5.1.2:
   version "5.1.2"

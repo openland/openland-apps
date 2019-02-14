@@ -6426,25 +6426,36 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   crop: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_Organization {
+  __typename: "Organization";
+  name: string;
 }
 
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
+  __typename: "Organization";
+  name: string;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation {
+  __typename: "ChannelConversation";
+  organization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
+}
+
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User {
+export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User_primaryOrganization | null;
 }
 
-export type ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user = ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_Organization | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user_User;
+export type ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra = ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_Organization | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation | ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_User;
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -6460,7 +6471,7 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
   iconRef: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconRef | null;
   iconInfo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_iconInfo | null;
   photo: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_photo | null;
-  user: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_user | null;
+  extra: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage {
@@ -6958,25 +6969,36 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
   crop: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_Organization {
+  __typename: "Organization";
+  name: string;
 }
 
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
+  __typename: "Organization";
+  name: string;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation {
+  __typename: "ChannelConversation";
+  organization: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
+}
+
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User {
+export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User_primaryOrganization | null;
 }
 
-export type ConversationShort_GroupConversation_topMessage_urlAugmentation_user = ConversationShort_GroupConversation_topMessage_urlAugmentation_user_Organization | ConversationShort_GroupConversation_topMessage_urlAugmentation_user_User;
+export type ConversationShort_GroupConversation_topMessage_urlAugmentation_extra = ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_Organization | ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation | ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_User;
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -6992,7 +7014,7 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation 
   iconRef: ConversationShort_GroupConversation_topMessage_urlAugmentation_iconRef | null;
   iconInfo: ConversationShort_GroupConversation_topMessage_urlAugmentation_iconInfo | null;
   photo: ConversationShort_GroupConversation_topMessage_urlAugmentation_photo | null;
-  user: ConversationShort_GroupConversation_topMessage_urlAugmentation_user | null;
+  extra: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage {
@@ -7506,25 +7528,36 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   crop: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo_crop | null;
 }
 
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_Organization {
+  __typename: "Organization";
+  name: string;
 }
 
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization {
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
+  __typename: "Organization";
+  name: string;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation {
+  __typename: "ChannelConversation";
+  organization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
+}
+
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User {
+export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User_primaryOrganization | null;
 }
 
-export type ConversationShort_ChannelConversation_topMessage_urlAugmentation_user = ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_Organization | ConversationShort_ChannelConversation_topMessage_urlAugmentation_user_User;
+export type ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra = ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_Organization | ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation | ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_User;
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -7540,7 +7573,7 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
   iconRef: ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconRef | null;
   iconInfo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_iconInfo | null;
   photo: ConversationShort_ChannelConversation_topMessage_urlAugmentation_photo | null;
-  user: ConversationShort_ChannelConversation_topMessage_urlAugmentation_user | null;
+  extra: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage {
@@ -8066,25 +8099,36 @@ export interface MessageFull_urlAugmentation_photo {
   crop: MessageFull_urlAugmentation_photo_crop | null;
 }
 
-export interface MessageFull_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface MessageFull_urlAugmentation_extra_Organization {
+  __typename: "Organization";
+  name: string;
 }
 
-export interface MessageFull_urlAugmentation_user_User_primaryOrganization {
+export interface MessageFull_urlAugmentation_extra_ChannelConversation_organization {
+  __typename: "Organization";
+  name: string;
+}
+
+export interface MessageFull_urlAugmentation_extra_ChannelConversation {
+  __typename: "ChannelConversation";
+  organization: MessageFull_urlAugmentation_extra_ChannelConversation_organization | null;
+}
+
+export interface MessageFull_urlAugmentation_extra_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface MessageFull_urlAugmentation_user_User {
+export interface MessageFull_urlAugmentation_extra_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: MessageFull_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: MessageFull_urlAugmentation_extra_User_primaryOrganization | null;
 }
 
-export type MessageFull_urlAugmentation_user = MessageFull_urlAugmentation_user_Organization | MessageFull_urlAugmentation_user_User;
+export type MessageFull_urlAugmentation_extra = MessageFull_urlAugmentation_extra_Organization | MessageFull_urlAugmentation_extra_ChannelConversation | MessageFull_urlAugmentation_extra_User;
 
 export interface MessageFull_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -8100,7 +8144,7 @@ export interface MessageFull_urlAugmentation {
   iconRef: MessageFull_urlAugmentation_iconRef | null;
   iconInfo: MessageFull_urlAugmentation_iconInfo | null;
   photo: MessageFull_urlAugmentation_photo | null;
-  user: MessageFull_urlAugmentation_user | null;
+  extra: MessageFull_urlAugmentation_extra | null;
 }
 
 export interface MessageFull {

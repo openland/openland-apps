@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { Organization_organization_rooms } from 'openland-api/Types';
-import { ASView } from 'react-native-async-view/ASView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASAvatar } from '../../messenger/MobileMessenger';
-import { ASText } from 'react-native-async-view/ASText';
-import { View, Image, Platform, TouchableHighlight, Text } from 'react-native';
+import { View, Image, Platform, TouchableHighlight, Text, TextStyle } from 'react-native';
 import { withApp } from '../../components/withApp';
 import { PageProps } from '../../components/PageProps';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
@@ -15,6 +11,7 @@ import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
 export class ArrowWrapper extends React.PureComponent {
     render() {
@@ -59,11 +56,11 @@ export class ChannelViewAsync extends React.PureComponent<{ item: Organization_o
                                 numberOfLines={1}
                                 style={{
                                     fontSize: 16,
-                                    weight: 500,
                                     lineHeight: 19,
                                     height: 19,
                                     color: '#181818',
-                                }}
+                                    fontWeight: TextStyles.weight.medium
+                                } as TextStyle}
                             >{item.title}
                             </Text>
                             <Text

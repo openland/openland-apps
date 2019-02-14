@@ -181,7 +181,9 @@ const getForwardText = ({ forwardMessagesId }: MessagesStateContextProps) => {
 };
 
 const getReplyText = ({ replyMessagesId }: MessagesStateContextProps) => {
-    return `Reply ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages');
+    return (
+        `Reply to ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages')
+    );
 };
 
 const hasReply = ({ replyMessagesSender, replyMessages }: MessagesStateContextProps) => {
