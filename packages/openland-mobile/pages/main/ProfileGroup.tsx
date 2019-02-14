@@ -260,7 +260,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                         navigationIcon={false}
                     />}
 
-                {sortedMembers.map((v) => (
+                {/* {sortedMembers.map((v) => (
                     <UserView
                         isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}
                         key={v.user.id}
@@ -268,7 +268,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                         onLongPress={() => handleMemberLongPress(v.user)}
                         onPress={() => props.router.push('ProfileUser', { 'id': v.user.id })}
                     />
-                ))}
+                ))} */}
             </ZListItemGroup>
 
             {Platform.OS === 'ios' && <View backgroundColor="#eff0f2" height={0.5} alignSelf="stretch" margin={16} />}

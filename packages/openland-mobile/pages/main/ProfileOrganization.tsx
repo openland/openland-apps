@@ -9,7 +9,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { ActionSheetBuilder } from '../../components/ActionSheet';
-import { ChannelViewAsync, ArrowWrapper } from './ProfileOrganizationGroups';
+import { ChannelViewAsync as ChannelView, ArrowWrapper } from './ProfileOrganizationGroups';
 import { UserView } from './components/UserView';
 import { Modals } from './modals/Modals';
 import { formatError } from 'openland-y-forms/errorHandling';
@@ -19,7 +19,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-const ProfileOrganizationContent = XMemo<PageProps>((props) => {
+function ProfileOrganizationContent(props: PageProps) {
     let settings = getClient().useAccountSettings();
     let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
     let handleAddMember = React.useCallback(() => {
@@ -129,7 +129,7 @@ const ProfileOrganizationContent = XMemo<PageProps>((props) => {
                             .filter((c, i) => i <= 2)
                             .map(v => (
                                 <ArrowWrapper>
-                                    <ChannelViewAsync
+                                    <ChannelView
                                         key={v!!.id}
                                         item={v!}
                                         onPress={() =>
@@ -244,7 +244,7 @@ const ProfileOrganizationContent = XMemo<PageProps>((props) => {
             </ZListItemGroup>
         </>
     );
-});
+};
 
 class ProfileOrganizationComponent extends React.Component<PageProps> {
     render() {
