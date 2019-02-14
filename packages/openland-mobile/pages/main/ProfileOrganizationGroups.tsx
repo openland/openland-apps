@@ -56,24 +56,24 @@ export class ChannelViewAsync extends React.PureComponent<{ item: Organization_o
                         </View>
                         <View marginRight={10} marginTop={10} marginBottom={10} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                             <Text
+                                numberOfLines={1}
                                 style={{
                                     fontSize: 16,
                                     weight: 500,
                                     lineHeight: 19,
                                     height: 19,
-                                    numberOfLines: 1,
                                     color: '#181818',
                                 }}
                             >{item.title}
                             </Text>
                             <Text
+                                numberOfLines={1}
                                 style={{
                                     marginTop: 5,
                                     fontSize: 13,
                                     lineHeight: 15,
                                     height: 15,
                                     color: '#8a8a8f',
-                                    numberOfLines: 1,
                                     opacity: 0.8,
                                 }}
                             >{membersCount + (membersCount > 1 ? ' members' : ' member')}
