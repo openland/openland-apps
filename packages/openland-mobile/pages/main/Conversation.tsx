@@ -172,7 +172,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
 }
 
 const ConversationComponent = XMemo<PageProps>((props) => {
-
+    let messenger = React.useContext(MessengerContext);
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
@@ -186,7 +186,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                     <SHeaderView>
                         <ChatHeader conversationId={sharedRoom.id} router={props.router} />
                     </SHeaderView>
-                    <ASView
+                    {/* <ASView
                         style={{ position: 'absolute', zIndex: -1, left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
                     >
                         <ASFlex
@@ -199,7 +199,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
                                 height={Dimensions.get('window').height}
                             />
                         </ASFlex>
-                    </ASView>
+                    </ASView> */}
                     <ASSafeAreaView width="100%" height="100%" justifyContent="center" >
 
                         <View alignSelf="center" alignItems="center" justifyContent="center" flexDirection="column" flexGrow={1}>
@@ -261,8 +261,6 @@ const ConversationComponent = XMemo<PageProps>((props) => {
             return null;
         }
     }
-
-    let messenger = React.useContext(MessengerContext);
 
     return (
         <View flexDirection={'column'} height="100%" width="100%">
