@@ -29,6 +29,7 @@ import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string, theme: ConversationTheme }> {
     engine: ConversationEngine;
@@ -75,21 +76,29 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 if (response.didCancel) {
                     return;
                 }
-                // only photos has this field: https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Reference.md
-                let isPhoto = !!response.type;
+
+                let isPhoto = checkFileIsPhoto(response.uri);
+
                 UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
             });
         });
         builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), () => {
-            Picker.launchImageLibrary({ mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed' }, (response) => {
-                if (response.didCancel) {
-                    return;
-                }
+            Picker.launchImageLibrary(
+                {
+                    maxWidth: 1024,
+                    maxHeight: 1024,
+                    mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
+                },
+                (response) => {
+                    if (response.didCancel) {
+                        return;
+                    }
 
-                // only photos has this field: https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Reference.md
-                let isPhoto = !!response.type;
-                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
-            });
+                    let isPhoto = checkFileIsPhoto(response.uri);
+
+                    UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                }
+            );
         });
         if (Platform.OS === 'android') {
             builder.action('Video', () => {

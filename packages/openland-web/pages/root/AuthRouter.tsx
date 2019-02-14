@@ -6,12 +6,23 @@ import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 export const AuthRouter = XMemo<{ children?: any }>(props => {
     let router = React.useContext(XRouterContext)!;
     let userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);
+
+    const { hostName, path } = router;
+
+    if (hostName === 'app.openland.com') {
+        if (canUseDOM) {
+            window.location.replace(`https://openland.com${path}`);
+        }
+
+        return null;
+    }
 
     const defaultRoute = <>{props.children}</>;
 
