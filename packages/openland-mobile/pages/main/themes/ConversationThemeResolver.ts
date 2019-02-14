@@ -87,6 +87,7 @@ class ConversationThemeResolverInner {
         let theme = this.themes.get(id);
         if (!theme) {
             theme = getDefaultConversationTheme(id);
+            this.themes.set(id, theme);
             let savedThemeRawStr = await AsyncStorage.getItem('conversaton_theme_' + id);
             if (savedThemeRawStr) {
                 let savedThemeRaw = JSON.parse(savedThemeRawStr);
