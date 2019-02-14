@@ -13,6 +13,12 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
     let userInfo = React.useContext(UserInfoContext)!;
     let redirectPath: string = extractRedirect(router);
 
+    const { hostName, path } = router;
+
+    if (hostName === 'app.openland.com') {
+        return <XPageRedirect path={`https://openland.com/${path}`} />;
+    }
+
     const defaultRoute = <>{props.children}</>;
 
     function redirectIfNeeded(to: string, args?: { pages?: string[] }) {
