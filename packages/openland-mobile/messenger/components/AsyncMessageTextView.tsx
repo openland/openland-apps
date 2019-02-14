@@ -20,7 +20,7 @@ import { AsyncReplyMessageDocumentView } from './AsyncReplyMessageDocumentView';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
-import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { ConversationTheme, ConversationThemeResolver } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 
 const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
@@ -41,7 +41,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
 
     constructor(props: AsyncMessageTextViewProps) {
         super(props);
-        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+        this.state = { theme: ConversationThemeResolver.getCachedOrDefault(props.engine.conversationId) }
     }
 
     componentWillMount() {
@@ -78,7 +78,9 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
             return <ASText key={'text-' + i}>{v.text}</ASText>;
         }
     }
+    count = 0;
     render() {
+        console.warn('boom', 'render ' + this.props.message.id + " " + ++this.count);
         let preprocessed = preprocessText(this.props.message.text || '', this.props.message.mentions);
         let big = false;
         if (this.props.message.text) {

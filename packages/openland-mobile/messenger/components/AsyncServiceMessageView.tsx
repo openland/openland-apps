@@ -9,7 +9,7 @@ import { ServiceMessageKick } from './service/ServiceMessageKick';
 import { ServiceMessagePhotoChanged } from './service/ServiceMessagePhotoChanged';
 import { ServiceMessageTitleChanged } from './service/ServiceMessageTitleChanged';
 import { ServiceMessagePost } from './service/ServiceMessagePost';
-import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 interface AsyncServiceMessageViewProps {
     message: DataSourceMessageItem;
@@ -24,7 +24,7 @@ export class AsyncServiceMessageView extends React.PureComponent<AsyncServiceMes
     sub?: () => void;
     constructor(props: AsyncServiceMessageViewProps) {
         super(props);
-        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+        this.state = { theme: ConversationThemeResolver.getCachedOrDefault(props.engine.conversationId) }
 
     }
 

@@ -3,6 +3,7 @@ import { AppStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncStorage } from 'react-native';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { doSimpleHash } from 'openland-y-utils/hash';
+import { DefaultTheme } from 'openland-web/modules/theme/ThemeContext';
 
 export interface ConversationTheme {
     // conversation
@@ -69,9 +70,8 @@ export class DefaultConversationTheme implements ConversationTheme {
 
 }
 
-export let getDefaultConversationTheme = (id: string) => {
-    let res = new DefaultConversationTheme();
-    return res;
+let getDefaultConversationTheme = (id: string) => {
+    return new DefaultConversationTheme();
     // disable for now
     // let colors = ZStyles.avatars[doSimpleHash(id) % ZStyles.avatars.length];
     // return { ...res, senderNameColor: colors.nameColor, bubbleColorOut: [colors.placeholderColorEnd, colors.placeholderColorStart] };
@@ -82,11 +82,25 @@ type ConversationThemeListener = (theme: ConversationTheme) => void;
 class ConversationThemeResolverInner {
     listeners = new Map<string, Set<ConversationThemeListener>>();
     themes = new Map<string, ConversationTheme>();
+    defaulThemes = new Map<string, ConversationTheme>();
+
+    getCachedOrDefault = (id: string) => {
+        let theme = this.themes.get(id);
+        if (!theme) {
+            theme = this.defaulThemes.get(id);
+        }
+        if (!theme) {
+            theme = getDefaultConversationTheme(id);
+            this.defaulThemes.set(id, theme);
+        }
+
+        return theme;
+    }
 
     resolveTheme = async (id: string) => {
         let theme = this.themes.get(id);
         if (!theme) {
-            theme = getDefaultConversationTheme(id);
+            theme = this.getCachedOrDefault(id);
             this.themes.set(id, theme);
             let savedThemeRawStr = await AsyncStorage.getItem('conversaton_theme_' + id);
             if (savedThemeRawStr) {
@@ -131,6 +145,10 @@ class ConversationThemeResolverInner {
 
 let conversationThemeResolver = new ConversationThemeResolverInner();
 export class ConversationThemeResolver {
+
+    static getCachedOrDefault = (id: string) => {
+        return conversationThemeResolver.getCachedOrDefault(id);
+    }
 
     static get = async (id: string) => {
         return await conversationThemeResolver.resolveTheme(id);

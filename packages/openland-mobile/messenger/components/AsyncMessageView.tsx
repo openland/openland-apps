@@ -11,7 +11,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { Platform } from 'react-native';
 import { ASView } from 'react-native-async-view/ASView';
-import { ConversationTheme, ConversationThemeResolver, getDefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { ConversationTheme, ConversationThemeResolver } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -58,7 +58,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
     //         this.themeSub();
     //     }
     // }
-    
+
     private handleAvatarPress = () => {
         this.props.onAvatarPress(this.props.message.senderId);
     }

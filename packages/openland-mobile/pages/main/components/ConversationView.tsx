@@ -10,7 +10,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
-import { ConversationTheme, ConversationThemeResolver, getDefaultConversationTheme, DefaultConversationTheme } from '../themes/ConversationThemeResolver';
+import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from '../themes/ConversationThemeResolver';
 
 export interface MessagesListProps {
     engine: ConversationEngine;

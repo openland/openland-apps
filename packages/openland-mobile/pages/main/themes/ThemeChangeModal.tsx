@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConversationThemeResolver, ConversationTheme, getDefaultConversationTheme } from './ConversationThemeResolver';
+import { ConversationThemeResolver, ConversationTheme } from './ConversationThemeResolver';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { View, TouchableOpacity, Switch, Text } from 'react-native';
@@ -46,12 +46,12 @@ class ChangeThemeView extends React.PureComponent<{ theme: ConversationTheme, on
     render() {
         let colorPickerSze = 40;
 
-        const themes = ZStyles.avatars.map((a, i) => ({ ...getDefaultConversationTheme(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor, index: i }))
+        const themes = ZStyles.avatars.map((a, i) => ({ ...ConversationThemeResolver.getCachedOrDefault(this.props.conversationId), bubbleColorOut: [a.placeholderColorEnd, a.placeholderColorStart], senderNameColor: a.nameColor, linkColorIn: a.nameColor, mainColor: a.mainColor, index: i }))
 
         return (
             <View marginBottom={14}>
                 <ZListItemGroup divider={false}>
-                    <View marginLeft={-2} flexDirection="row">
+                    <View flexDirection="row" justifyContent="center">
                         {themes.map(theme => (
                             <TouchableOpacity onPress={() => this.onThemeSelect(theme)}>
                                 <View borderRadius={colorPickerSze} borderWidth={2} borderColor={theme.bubbleColorOut[0] === this.state.bubbleColorOut[0] ? AppStyles.primaryColor : '#fff'}>
