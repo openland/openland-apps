@@ -6,6 +6,7 @@ import { extractRedirect } from './router/extractRedirect';
 import { isRootPath } from './router/isRootPath';
 import { redirectSuffix } from './router/redirectSuffix';
 import { isPublicPath } from './router/isPublicPath';
+import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 export const AuthRouter = XMemo<{ children?: any }>(props => {
@@ -16,7 +17,11 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
     const { hostName, path } = router;
 
     if (hostName === 'canary.openland.io') {
-        return <XPageRedirect path={`https://openland.com${path}`} />;
+        if (canUseDOM) {
+            window.location.replace(`https://openland.com${path}`);
+        }
+
+        return null;
     }
 
     const defaultRoute = <>{props.children}</>;
