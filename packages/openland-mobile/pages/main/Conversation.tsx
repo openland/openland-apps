@@ -118,6 +118,10 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                     filetype: [DocumentPickerUtil.allFiles()],
                 },
                 (error, res) => {
+                    if (!res) {
+                        return;
+                    }
+
                     UploadManagerInstance.registerUpload(this.props.chat.id, res.fileName, res.uri, res.fileSize);
                 }
             );
