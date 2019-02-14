@@ -12,8 +12,10 @@
         "@babel/core": "7.0.0",
         "@babel/generator": "^7.2.0",
         "@babel/parser": "^7.2.0",
+        "@babel/plugin-transform-react-constant-elements": "^7.2.0",
         "@babel/plugin-transform-react-inline-elements": "^7.2.0",
         "@babel/traverse": "^7.1.6",
+        "@babel/types": "^7.2.0",
         "@mapbox/geo-viewport": "^0.2.2",
         "@mapbox/mapbox-gl-geocoder": "^2.2.0",
         "@sentry/browser": "^4.0.5",
@@ -39,6 +41,7 @@
         "@types/react-resize-detector": "^3.1.0",
         "@types/react-virtualized": "^9.18.7",
         "@types/recharts": "^1.0.28",
+        "@types/uuid": "^3.4.4",
         "@types/webpack": "^4.4.20",
         "@zeit/next-typescript": "^1.1.1",
         "add": "^2.0.6",
@@ -182,9 +185,7 @@
         "url-parse": "^1.4.1",
         "uuid": "^3.3.2",
         "webrtc-adapter": "^6.4.6",
-        "yarn": "^1.9.4",
-        "@babel/types": "^7.2.0",
-        "@types/uuid": "^3.4.4"
+        "yarn": "^1.9.4"
     },
     "devDependencies": {
         "@babel/cli": "7.0.0",
@@ -307,6 +308,7 @@
         "native:ngrok": "ngrok http 8081 -subdomain=openland --region=eu",
         "native:adb": "adb reverse tcp:8081 tcp:8081",
         "native:res": "node ./packages/openland-mobile/assets/sources/_extract.js",
+        "native:babel": "yarn tsc --project ./packages/react-native-async-view-babel",
         "schema": "yarn schema:download && yarn schema:generate",
         "schema:local": "yarn schema:download:local && yarn schema:generate",
         "schema:download": "yarn apollo schema:download --endpoint=https://api.openland.com/api",

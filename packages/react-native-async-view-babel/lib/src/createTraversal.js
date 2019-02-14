@@ -1,47 +1,41 @@
-import * as t from '@babel/types';
-import { VisitNodeObject, NodePath } from "@babel/traverse";
-
-export function createTraversal() {
-    const traverseOptions: {} = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const t = require("@babel/types");
+function createTraversal() {
+    const traverseOptions = {
         Program: {
-            enter(traversePath: NodePath<t.Program>) {
+            enter(traversePath) {
                 traversePath.traverse({
                     JSXElement: {
-                        enter(traversePath2: NodePath<t.Node>) {
+                        enter(traversePath2) {
                             // throw Error('!!!');
                             // throw traversePath2.buildCodeFrameError('!!!');
-                            let node = traversePath2.node as t.JSXElement;
-                            if ((node.openingElement.name as t.JSXIdentifier).name !== 'ASFlex') {
+                            let node = traversePath2.node;
+                            if (node.openingElement.name.name !== 'ASFlex') {
                                 return;
                             }
                             // throw traversePath2.buildCodeFrameError(JSON.stringify(node.openingElement.name));
-
                             let hasBlacklisted = !!node.openingElement.attributes
                                 .filter((v) => v.type === 'JSXAttribute')
-                                .find((v) => !!['onPress', 'onLongPress', 'backgroundColor'].find((v2) => ((v as t.JSXAttribute).name as t.JSXIdentifier).name === v2))
+                                .find((v) => !!['onPress', 'onLongPress', 'backgroundColor'].find((v2) => v.name.name === v2));
                             if (hasBlacklisted) {
                                 return;
                             }
-
-                            (node.openingElement.name as t.JSXIdentifier).name = 'asyncview';
-                            node.openingElement.attributes.push(t.jsxAttribute(
-                                t.jsxIdentifier('asyncViewName'),
-                                t.jsxExpressionContainer(t.stringLiteral('flex'))
-                            ))
-
+                            node.openingElement.name.name = 'asyncview';
+                            node.openingElement.attributes.push(t.jsxAttribute(t.jsxIdentifier('asyncViewName'), t.jsxExpressionContainer(t.stringLiteral('flex'))));
                             if (node.closingElement) {
-                                (node.closingElement.name as t.JSXIdentifier).name = 'asyncview'
+                                node.closingElement.name.name = 'asyncview';
                             }
                         }
                     }
-                })
+                });
                 // throw traversePath.buildCodeFrameError('???');
                 // isImported = false;
                 // pageHasStyles = false;
                 // body = traversePath.node.body;
                 // pending = [];
             },
-            exit(traversePath: NodePath<t.Program>) {
+            exit(traversePath) {
                 // if (!isImported && pageHasStyles) {
                 //     for (let p of pending) {
                 //         body.unshift(p);
@@ -50,6 +44,8 @@ export function createTraversal() {
                 // }
             }
         }
-    }
+    };
     return traverseOptions;
 }
+exports.createTraversal = createTraversal;
+//# sourceMappingURL=createTraversal.js.map

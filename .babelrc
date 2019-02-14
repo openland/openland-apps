@@ -48,8 +48,9 @@
                     }
                 }],
                 // "transform-remove-console",
-                "@babel/plugin-transform-react-inline-elements",
-                "./build/native/react-native-async-view"
+                // "@babel/plugin-transform-react-inline-elements",
+                // "@babel/plugin-transform-react-constant-elements",
+                "./packages/react-native-async-view-babel/lib"
             ]
         },
         "development": {
@@ -78,8 +79,9 @@
                         "assets-s": "./packages/react-native-s/assets"
                     }
                 }],
-                "./build/native/react-native-async-view",
-                "@babel/plugin-transform-react-inline-elements"
+                // "@babel/plugin-transform-react-constant-elements",
+                "./packages/react-native-async-view-babel/lib"
+                // "@babel/plugin-transform-react-inline-elements"
             ]
         }
     }
