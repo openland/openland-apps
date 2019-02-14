@@ -56,7 +56,8 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
                             photoRef: src.photoRef,
                             members: []
                         });
-                        this.props.router.pushAndReset('Conversation', { id: (channel as any).data.room.id });
+
+                        this.props.router.pushAndReset('Conversation', { id: channel.room.id });
                     }}
                 >
                     <View >
