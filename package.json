@@ -180,7 +180,9 @@
         "url-parse": "^1.4.1",
         "uuid": "^3.3.2",
         "webrtc-adapter": "^6.4.6",
-        "yarn": "^1.9.4"
+        "yarn": "^1.9.4",
+        "@babel/types": "^7.2.0",
+        "@types/uuid": "^3.4.4"
     },
     "devDependencies": {
         "@babel/cli": "7.0.0",

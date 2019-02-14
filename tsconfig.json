@@ -54,6 +54,7 @@
             "openland-xp": ["openland-xp"],
             "openland-shared": ["openland-shared"],
             "react-native-async-view": ["react-native-async-view"],
+            "react-native-async-view-babel": ["react-native-async-view-babel"],
             "react-native-fast-navigation": ["react-native-fast-navigation"],
             "react-native-s": ["react-native-s"],
             "openland-xs": ["openland-xs"],
@@ -113,6 +114,7 @@
         "./packages/openland-landing",
         "./packages/openland-graphql",
         "./packages/react-native-async-view",
+        "./packages/react-native-async-view-babel",
         "./packages/react-native-fast-navigation",
         "./packages/react-native-s",
         "./packages/react-native-auth0-s"
