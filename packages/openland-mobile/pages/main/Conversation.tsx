@@ -29,6 +29,7 @@ import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string, theme: ConversationTheme }> {
     engine: ConversationEngine;
@@ -75,8 +76,9 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 if (response.didCancel) {
                     return;
                 }
-                // only photos has this field: https://github.com/react-native-community/react-native-image-picker/blob/master/docs/Reference.md
-                let isPhoto = !!response.type;
+
+                let isPhoto = checkFileIsPhoto(response.uri);
+
                 UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
             });
         });
@@ -92,14 +94,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                         return;
                     }
 
-                    let fileExtension = response.uri.split('.').pop();
-                    let isPhoto = false;
-
-                    if (fileExtension) {
-                        let ext = fileExtension.toLowerCase();
-
-                        isPhoto = ext === 'jpg' || ext === 'jpeg' || ext === 'png' || ext === 'heic';
-                    }
+                    let isPhoto = checkFileIsPhoto(response.uri);
 
                     UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
                 }
