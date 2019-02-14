@@ -303,14 +303,13 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.text && (
-                                <IconButton
-                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton
+                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -517,7 +516,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
             // TODO: subscribe to dowload/upload
             if (message.progress !== undefined) {
                 let progress = Math.round(message.progress * 100);
-                let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+                let title = 'Uploading (' + progress + '%)';
                 content.push(
                     <MessageUploadComponent key={'file'} progress={progress} title={title} />,
                 );
@@ -717,26 +716,28 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         if (message.reply && message.reply!.length > 0) {
             content.push(
                 <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
-                        let isCompact =
-                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+                    {message
+                        .reply!.sort((a, b) => a.date - b.date)
+                        .map((item, index, array) => {
+                            let isCompact =
+                                index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
-                        return (
-                            <MessageReplyComponent
-                                mentions={message.mentions || []}
-                                sender={item.sender}
-                                date={item.date}
-                                message={item.message}
-                                id={item.id}
-                                key={'reply_message' + item.id + index}
-                                edited={item.edited}
-                                file={item.file}
-                                fileMetadata={item.fileMetadata}
-                                startSelected={hideMenu}
-                                compact={isCompact || undefined}
-                            />
-                        );
-                    })}
+                            return (
+                                <MessageReplyComponent
+                                    mentions={message.mentions || []}
+                                    sender={item.sender}
+                                    date={item.date}
+                                    message={item.message}
+                                    id={item.id}
+                                    key={'reply_message' + item.id + index}
+                                    edited={item.edited}
+                                    file={item.file}
+                                    fileMetadata={item.fileMetadata}
+                                    startSelected={hideMenu}
+                                    compact={isCompact || undefined}
+                                />
+                            );
+                        })}
                 </ReplyMessageWrapper>,
             );
         }
@@ -754,7 +755,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         }
         if (message.progress !== undefined) {
             let progress = Math.round(message.progress * 100);
-            let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+            let title = 'Uploading (' + progress + '%)';
             content.push(<MessageUploadComponent key={'file'} progress={progress} title={title} />);
         }
         // if (message.failed) {
