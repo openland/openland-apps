@@ -30,6 +30,7 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { ConversationTheme, ConversationThemeResolver } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
 class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string, theme: ConversationTheme }> {
     engine: ConversationEngine;
@@ -110,6 +111,17 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 });
             });
         }
+
+        builder.action('Document', () => {
+            DocumentPicker.show(
+                {
+                    filetype: [DocumentPickerUtil.allFiles()],
+                },
+                (error, res) => {
+                    UploadManagerInstance.registerUpload(this.props.chat.id, res.fileName, res.uri, res.fileSize);
+                }
+            );
+        });
 
         builder.show();
     }

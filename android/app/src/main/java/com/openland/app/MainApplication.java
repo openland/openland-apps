@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.bridge.ProxyJavaScriptExecutor;
 import com.oney.WebRTCModule.WebRTCModulePackage;
@@ -69,6 +70,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new ReactNativeDocumentPicker(),
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
                     new A0Auth0Package(),
