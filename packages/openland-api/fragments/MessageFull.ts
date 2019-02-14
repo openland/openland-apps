@@ -162,7 +162,15 @@ export const MessageFull = gql`
                     h
                 }
             }
-            user: extra {
+            extra {
+                ... on Organization {
+                    name
+                }
+                ... on ChannelConversation {
+                    organization {
+                        name
+                    }
+                }
                 ... on User {
                     id
                     name
@@ -341,7 +349,15 @@ export const RoomMessageFull = gql`
                     h
                 }
             }
-            user: extra {
+            extra {
+                ... on Organization {
+                    name
+                }
+                ... on ChannelConversation {
+                    organization {
+                        name
+                    }
+                }
                 ... on User {
                     id
                     name

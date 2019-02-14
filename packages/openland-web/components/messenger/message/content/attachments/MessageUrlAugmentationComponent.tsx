@@ -144,7 +144,18 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
 
 export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationComponentProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
-    let { hostname, title, photo, imageInfo, description, iconRef, isMe, messageId } = props;
+    let { hostname, title, photo, imageInfo, description, iconRef, isMe, messageId, extra } = props;
+
+    let organization;
+    if (extra !== null) {
+        if (extra.__typename === 'Organization') {
+            organization = extra.name;
+        } else if (extra.__typename === 'ChannelConversation') {
+            organization = extra.organization!!.name;
+        } else if (extra.__typename === 'User') {
+            organization = extra.primaryOrganization!!.name;
+        }
+    }
 
     const preprocessed = description ? preprocessText(description) : [];
 
@@ -210,6 +221,7 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
                     </Title>
                 )}
                 {parts && <Description>{parts}</Description>}
+                {organization && <Description>{organization}</Description>}
             </ContentWrapper>
             {photo && dimensions && (
                 <ImageWrapper>
