@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'linaria';
 import { XAvatar2 } from 'openland-x/XAvatar2';
 import { XView } from 'react-mental';
 import { XButton } from 'openland-x/XButton';
@@ -12,9 +13,9 @@ import { HeaderTitle } from './components/HeaderTitle';
 import { HeaderSubtitle } from './components/HeaderSubtitle';
 import { HeaderMuteButton } from './components/HeaderMuteButton';
 import { HeaderLastSeen } from './components/HeaderLastSeen';
-import { HeaderInviteButton } from './components/HeaderInviteButton';
 import { HeaderMenu } from './components/HeaderMenu';
 import CloseChatIcon from 'openland-icons/ic-chat-back.svg';
+import PlusIcon from 'openland-icons/ic-add-medium-2.svg';
 import { HideOnDesktop } from 'openland-web/components/Adaptive';
 import { withRoom } from 'openland-web/api/withRoom';
 import { withUserInfo } from 'openland-web/components/UserInfo';
@@ -23,6 +24,20 @@ import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
+
+const inviteButtonClass = css`
+    & svg > g > path {
+        transition: all 0.2s;
+    }
+    & svg > g > path:last-child {
+        fill: #000000;
+        opacity: 0.4;
+    }
+    &:active svg > g > path:last-child {
+        fill: #ffffff;
+        opacity: 0.4;
+    }
+`;
 
 export interface ChatHeaderViewProps {
     room: Room_room_SharedRoom | Room_room_PrivateRoom;
@@ -153,12 +168,23 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             threeDots = <HeaderMenu room={sharedRoom} />;
 
             if (sharedRoom.kind === 'PUBLIC') {
-                inviteButton = <HeaderInviteButton room={sharedRoom} />;
+                inviteButton = (
+                    <RoomAddMemberModal
+                        roomId={room.id}
+                        target={
+                            <XButton
+                                text="Invite"
+                                size="small"
+                                icon={<PlusIcon />}
+                                className={inviteButtonClass}
+                            />
+                        }
+                    />
+                );
             }
         }
         modals = (
             <>
-                {/*<RoomAddMemberModal roomId={room.id} target={<div>asdasdasdasd</div>} />*/}
                 <RoomEditModal
                     title={sharedRoom.title}
                     description={sharedRoom.description}
@@ -182,10 +208,7 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
 
     const avatar = <XAvatar2 size={36} src={photo} title={avatarTitle} id={id} />;
     const title = sharedRoom ? (
-        <HeaderTitle
-            key={sharedRoom.id}
-            value={sharedRoom.title}
-        />
+        <HeaderTitle key={sharedRoom.id} value={sharedRoom.title} />
     ) : (
         <HeaderTitle
             key={privateRoom!!.user.id}
