@@ -16,7 +16,7 @@ export const AuthRouter = XMemo<{ children?: any }>(props => {
     const { hostName, path } = router;
 
     if (hostName === 'canary.openland.io') {
-        return <XPageRedirect path={`https://openland.com/${path}`} />;
+        return <XPageRedirect path={`https://openland.com${path}`} />;
     }
 
     const defaultRoute = <>{props.children}</>;
