@@ -54,11 +54,11 @@ public class MainApplication extends Application implements ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-        @Nullable
-        @Override
-        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
-            return new ProxyJavaScriptExecutor.Factory(new V8Executor.Factory(MainApplication.this));
-        }
+//        @Nullable
+//        @Override
+//        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
+//            return new ProxyJavaScriptExecutor.Factory(new V8Executor.Factory(MainApplication.this));
+//        }
 
         @Override
         public boolean getUseDeveloperSupport() {

@@ -1,10 +1,9 @@
 package com.openland.react.async
 
-import com.beust.klaxon.JsonArray
-import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Parser
+import android.util.Log
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
+import org.json.JSONArray
 import java.util.concurrent.CopyOnWriteArrayList
 
 data class AsyncDataViewItem(val key: String, val spec: AsyncViewSpec)
@@ -114,9 +113,14 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
 
     @ReactMethod
     fun dataViewInit(dataSourceKey: String, config: String, completed: Boolean) {
-        val parser = Parser()
-        val parsed = parser.parse(StringBuilder(config)) as JsonArray<JsonObject>
-        val items = parsed.map { AsyncDataViewItem(it["key"] as String, parseSpec(it["config"] as String, reactApplicationContext)) }
+        val start = System.currentTimeMillis()
+        val parsed = JSONArray(config)
+        val items = mutableListOf<AsyncDataViewItem>()
+        for (i in 0 until parsed.length()) {
+            val itm = parsed.getJSONObject(i)
+            items.add(AsyncDataViewItem(itm.getString("key"), parseSpec(itm.getString("config"), reactApplicationContext)))
+        }
+        Log.d("SView-DataView", "Inited in " + (System.currentTimeMillis() - start) + " ms")
         getDataView(dataSourceKey, this.reactApplicationContext).handleInit(items, completed)
     }
 
@@ -142,9 +146,12 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
 
     @ReactMethod
     fun dataViewLoadedMore(dataSourceKey: String, config: String, completed: Boolean) {
-        val parser = Parser()
-        val parsed = parser.parse(StringBuilder(config)) as JsonArray<JsonObject>
-        val items = parsed.map { AsyncDataViewItem(it["key"] as String, parseSpec(it["config"] as String, reactApplicationContext)) }
+        val parsed = JSONArray(config)
+        val items = mutableListOf<AsyncDataViewItem>()
+        for (i in 0 until parsed.length()) {
+            val itm = parsed.getJSONObject(i)
+            items.add(AsyncDataViewItem(itm.getString("key"), parseSpec(itm.getString("config"), reactApplicationContext)))
+        }
         getDataView(dataSourceKey, this.reactApplicationContext).handleLoadedMore(items, completed)
     }
 
