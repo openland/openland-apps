@@ -223,7 +223,7 @@ private fun resolveStyle(src: JSONObject, res: AsyncViewStyle, context: ReactCon
     }
 }
 
-private fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
+fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
     val type = src["type"] as String
     val key = src["key"] as String
     if (type == "flex") {
@@ -295,12 +295,10 @@ private fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
 
 fun parseSpec(src: String, context: ReactContext): AsyncViewSpec {
     var start = System.currentTimeMillis()
-    Log.d("SView", "Parser inited in " + (System.currentTimeMillis() - start) + " ms")
-    start = System.currentTimeMillis()
     val parsed = JSONObject(src)
-    Log.d("SView", "Parsed in " + (System.currentTimeMillis() - start) + " ms, size: " + src.length)
+    Log.d("SView-Parsing", "Parsed in " + (System.currentTimeMillis() - start) + " ms, size: " + src.length)
     start = System.currentTimeMillis()
     val res = resolveSpec(parsed, context)
-    Log.d("SView", "Resolved in " + (System.currentTimeMillis() - start) + " ms")
+    Log.d("SView-Resolve", "Resolved in " + (System.currentTimeMillis() - start) + " ms")
     return res
 }

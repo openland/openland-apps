@@ -6,11 +6,10 @@ import UUID from 'uuid/v4';
 import { ASEventEmitter } from './platform/ASEventEmitter';
 import { SQueue } from 'react-native-s/SQueue';
 import { throttledMap } from 'react-native-s/SThrottler';
-import { ASFlex } from './ASFlex';
 
 class ItemRenderHolder<T extends DataSourceItem> {
     item: T;
-    currentState: string;
+    currentState: any;
     private container: AsyncRenderer;
     private render: (src: T) => React.ReactElement<{}>;
     private dataView: ASDataView<T>;
@@ -21,14 +20,14 @@ class ItemRenderHolder<T extends DataSourceItem> {
         this.render = render;
         this.container = new AsyncRenderer(
             () => {
-                let st = JSON.stringify(this.container.getState());
+                let st = JSON.parse(JSON.stringify(this.container.getState()));
                 if (this.currentState !== st) {
                     this.currentState = st;
                     dataView.onDataSourceItemRenderUpdated(this.item.key);
                 }
             },
             render(initial));
-        this.currentState = JSON.stringify(this.container.getState());
+        this.currentState = JSON.parse(JSON.stringify(this.container.getState()));
     }
 
     updateItem(item: T) {
@@ -58,12 +57,14 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
     onDataSourceInited = (data: T[], completed: boolean) => {
         this.queue.push(async () => {
             // Create initial items
+            let start = Date.now();
             this.items = await throttledMap(data, (v) => new ItemRenderHolder(this, v, this.render));
             // Forward initial state to native
             let config = JSON.stringify(await throttledMap(this.items, (v) => ({
                 key: v.item.key,
                 config: v.currentState
             })));
+            console.log('DataSource inited in ' + (Date.now() - start) + ' ms');
             NativeDataView.dataViewInit(this.key, config, completed);
         });
     }
@@ -77,7 +78,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
             this.items = itms;
 
             // Forward to native
-            NativeDataView.dataViewAddItem(this.key, item.key, holder.currentState, index);
+            NativeDataView.dataViewAddItem(this.key, item.key, JSON.stringify(holder.currentState), index);
         });
     }
     onDataSourceItemRemoved = (item: T, index: number) => {
@@ -133,7 +134,7 @@ export class ASDataView<T extends DataSourceItem> implements DataSourceWatcher<T
     onDataSourceItemRenderUpdated = (key: string) => {
         this.queue.push(async () => {
             let index = this.items.findIndex((v) => v.item.key === key);
-            NativeDataView.dataViewUpdateItem(this.key, key, this.items[index].currentState, index);
+            NativeDataView.dataViewUpdateItem(this.key, key, JSON.stringify(this.items[index].currentState), index);
         });
     }
 }

@@ -113,12 +113,13 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
 
     @ReactMethod
     fun dataViewInit(dataSourceKey: String, config: String, completed: Boolean) {
+        Log.d("SView", "Current thread priority: " + Thread.currentThread().priority)
         val start = System.currentTimeMillis()
         val parsed = JSONArray(config)
         val items = mutableListOf<AsyncDataViewItem>()
         for (i in 0 until parsed.length()) {
             val itm = parsed.getJSONObject(i)
-            items.add(AsyncDataViewItem(itm.getString("key"), parseSpec(itm.getString("config"), reactApplicationContext)))
+            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext)))
         }
         Log.d("SView-DataView", "Inited in " + (System.currentTimeMillis() - start) + " ms")
         getDataView(dataSourceKey, this.reactApplicationContext).handleInit(items, completed)
@@ -150,7 +151,7 @@ class AsyncDataViewManager(reactContext: ReactApplicationContext) : ReactContext
         val items = mutableListOf<AsyncDataViewItem>()
         for (i in 0 until parsed.length()) {
             val itm = parsed.getJSONObject(i)
-            items.add(AsyncDataViewItem(itm.getString("key"), parseSpec(itm.getString("config"), reactApplicationContext)))
+            items.add(AsyncDataViewItem(itm.getString("key"), resolveSpec(itm.getJSONObject("config"), reactApplicationContext)))
         }
         getDataView(dataSourceKey, this.reactApplicationContext).handleLoadedMore(items, completed)
     }

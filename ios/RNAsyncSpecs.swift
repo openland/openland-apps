@@ -228,7 +228,7 @@ private func resolveTextChildren(_ src: JSON) -> [Any] {
   return res;
 }
 
-private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
+func resolveSpec(_ src: JSON) -> AsyncViewSpec {
   if (src.array != nil) {
     fatalError("Spec can't be an array")
   }
