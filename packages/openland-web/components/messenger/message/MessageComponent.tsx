@@ -21,7 +21,7 @@ import {
     MessageFull,
     UserShort,
     SharedRoomKind,
-    MessageFull_urlAugmentation_user_User,
+    MessageFull_urlAugmentation_extra_User,
     MessageType,
 } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';

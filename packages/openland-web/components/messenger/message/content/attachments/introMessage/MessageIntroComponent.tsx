@@ -14,7 +14,7 @@ import IcFile from 'openland-icons/ic-file.svg';
 import {
     SharedRoomKind,
     MessageFull_reactions,
-    MessageFull_urlAugmentation_user_User,
+    MessageFull_urlAugmentation_extra_User,
     MessageFull_fileMetadata,
     MessageFull_urlAugmentation,
 } from 'openland-api/Types';
@@ -54,7 +54,7 @@ interface MessageIntroComponentProps {
     urlAugmentation: MessageFull_urlAugmentation;
     file: string | null;
     fileMetadata: MessageFull_fileMetadata | null;
-    user: MessageFull_urlAugmentation_user_User;
+    user: MessageFull_urlAugmentation_extra_User;
     reactions: MessageFull_reactions[];
     messageId: string;
     meId: string;
