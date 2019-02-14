@@ -253,7 +253,7 @@ const RenewInviteLinkButton = withChannelnviteLink(props => (
 }>;
 
 interface InviteMembersModalRawProps {
-    channelTitle: string;
+    channelTitle?: string;
     roomId: string;
     sendInviteMutation: any;
     target: any;
@@ -370,8 +370,10 @@ class InviteMembersModalRaw extends React.Component<
                         this.copyLink();
                     }
                 }}
-                title="Invite people to"
-                titleChildren={<ChannelName>{this.props.channelTitle}</ChannelName>}
+                title={this.props.channelTitle === undefined ? 'Invite people' : 'Invite people to'}
+                titleChildren={
+                    this.props.channelTitle && <ChannelName>{this.props.channelTitle}</ChannelName>
+                }
                 useTopCloser={true}
                 scrollableContent={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
@@ -461,7 +463,7 @@ export const InviteMembersModal = withChanneSendlnviteLink(props => (
         target={(props as any).target}
     />
 )) as React.ComponentType<{
-    channelTitle: string;
+    channelTitle?: string;
     roomId: string;
     target: any;
 }>;
