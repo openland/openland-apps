@@ -70,6 +70,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const [inputValue, setInputValue] = React.useState(draftState.getDefaultValue());
 
     const quoteState = useQuote({
+        inputMethodsState,
         conversationId: messageComposeProps.conversationId,
     });
 

@@ -8,6 +8,8 @@ import {
     getQuoteMessageSender,
 } from '../../components/messenger/MessagesStateContext';
 
+import { InputMethodsStateT } from './useInputMethods';
+
 export type QuoteStateT = {
     setQuoteMessageReply?: Function;
     setQuoteMessageSender?: Function;
@@ -18,7 +20,13 @@ export type QuoteStateT = {
     updateQuote: Function;
 };
 
-export function useQuote({ conversationId }: { conversationId?: string }) {
+export function useQuote({
+    conversationId,
+    inputMethodsState,
+}: {
+    conversationId?: string;
+    inputMethodsState: InputMethodsStateT;
+}) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
@@ -33,6 +41,9 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
 
     React.useEffect(() => {
         updateQuote();
+        if (!messagesContext.editMessage) {
+            inputMethodsState.focusIfNeeded();
+        }
     }, [messagesContext.replyMessages]);
 
     React.useEffect(() => {
