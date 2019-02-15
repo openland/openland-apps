@@ -71,7 +71,11 @@ class MainActivity : ReactActivity() {
                         ?.emit("async_keyboard_height", map)
             }
         })
-        window.decorView.post { provider!!.start() }
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        provider!!.start()
     }
 
     override fun onPause() {
