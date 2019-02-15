@@ -5,7 +5,6 @@ import { View, Image, Text, Dimensions, Platform, Animated, Easing } from 'react
 import { ZLoader } from '../../../components/ZLoader';
 import { ConversationMessagesView } from './ConversationMessagesView';
 import { ASView } from 'react-native-async-view/ASView';
-import { ASImage } from 'react-native-async-view/ASImage';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
@@ -80,22 +79,18 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>
                 {!this.state.conversation.loading && <LinearGradient position="absolute" left={0} top={0} right={0} height="100%" colors={this.props.theme.bubbleColorOut} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />}
 
-                {this.props.theme.spiral && !this.state.conversation.loading && <Animated.View style={{ left: (screenWidth - screenHeight) / 2, position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.2 }] }}>
-                    <ASView
+                {this.props.theme.spiral && !this.state.conversation.loading && <Animated.View style={{ left: (screenWidth - screenHeight), position: 'absolute', transform: [{ rotate: this.rotation, scale: 1.3 }] }}>
+                    <View
                         style={{ opacity: 0.1, left: 0, top: 0, width: screenHeight, height: screenHeight }}
                     >
-                        <ASFlex
-                            width={screenHeight}
-                            height={screenHeight}
-                            backgroundColor="green"
-                        >
-                            <ASImage
-                                source={require('assets/h_1.png')}
-                                width={screenHeight}
-                                height={screenHeight}
-                            />
-                        </ASFlex>
-                    </ASView>
+                        <Image
+                            source={require('assets/h_1.png')}
+                            style={{
+                                width: screenHeight,
+                                height: screenHeight,
+                            }}
+                        />
+                    </View>
                 </Animated.View>}
                 <ConversationMessagesView
                     ref={this.listRef}
