@@ -78,14 +78,19 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     }
 
     if (privateRoom) {
-        let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
-        if (online && online.user) {
-            if (!online.user.online && online.user.lastSeen) {
-                subtitle = formatLastSeen(online.user.lastSeen);
-                accent = false;
-            } else if (online.user.online) {
-                subtitle = 'online'
-                accent = true;
+        if (privateRoom.user.isBot) {
+            subtitle = 'bot'
+            accent = true;
+        } else {
+            let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
+            if (online && online.user) {
+                if (!online.user.online && online.user.lastSeen) {
+                    subtitle = formatLastSeen(online.user.lastSeen);
+                    accent = false;
+                } else if (online.user.online) {
+                    subtitle = 'online'
+                    accent = true;
+                }
             }
         }
     }

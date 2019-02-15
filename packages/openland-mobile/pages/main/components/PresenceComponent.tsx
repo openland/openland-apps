@@ -4,8 +4,10 @@ import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 
-export const PresenceComponent = XMemo<{ uid: string, style?: TextStyle, onlineStyle?: TextStyle }>((props) => {
-    // TODO: Implement non-suspense rendering
+export const PresenceComponent = XMemo<{ uid: string, isBot?: boolean, style?: TextStyle, onlineStyle?: TextStyle }>((props) => {
+    if (props.isBot) {
+        return (<Text style={[props.style, props.onlineStyle]}>bot</Text>);
+    }
     let online = getClient().useWithoutLoaderOnline({ userId: props.uid });
     let sub = undefined;
     let isOnline = false;
