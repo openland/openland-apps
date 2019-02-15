@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking, Image, Dimensions } from 'react-native';
+import { Platform, Linking, Image, Dimensions, PixelRatio } from 'react-native';
 import { DataSourceMessageItem, convertMessage, ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { preprocessText, Span } from '../../utils/TextProcessor';
 import { ASText } from 'react-native-async-view/ASText';
@@ -51,7 +51,12 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
             let height = this.props.message.urlAugmentation.imageInfo && this.props.message.urlAugmentation.imageInfo.imageHeight || maxSize;
             this.augLayout = layoutMedia(width!, height!, maxSize, maxSize);
 
-            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.urlAugmentation.imageURL, this.augLayout, (state) => {
+            let imageSize = {
+                width: this.augLayout.width * PixelRatio.get(),
+                height: this.augLayout.height * PixelRatio.get(),
+            };
+
+            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.urlAugmentation.imageURL, imageSize, (state) => {
                 this.setState({ downloadState: state });
             });
         }
