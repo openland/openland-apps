@@ -4,6 +4,7 @@ import { XAvatar } from 'openland-x/XAvatar';
 import {
     MessageFull_reply_sender,
     MessageFull_reply_fileMetadata,
+    MessageFull_mentions,
     MessageFull_alphaMentions,
 } from 'openland-api/Types';
 import { MessageTextComponent } from './MessageTextComponent';

@@ -7,11 +7,10 @@ import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
+import { MessageFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { XFormField2 } from 'openland-x-forms/XFormField2';
-import { XInput } from 'openland-x/XInput';
 
 const TextInputWrapper = Glamorous.div({
     flexGrow: 1,
@@ -40,12 +39,12 @@ const TextInputWrapper = Glamorous.div({
 
 export type XTextInputProps =
     | {
-          kind: 'from_store';
-          valueStoreKey: string;
-      }
+        kind: 'from_store';
+        valueStoreKey: string;
+    }
     | {
-          kind: 'controlled';
-      } & XRichTextInputProps;
+        kind: 'controlled';
+    } & XRichTextInputProps;
 
 class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
     onChangeHandler = (value: string) => {
@@ -122,35 +121,20 @@ const Footer = Glamorous(XHorizontal)({
 const EditMessageInline = withEditMessage(props => {
     let id = (props as any).id;
     let text = (props as any).text;
-
     return (
         <XForm
             defaultAction={async data => {
                 await props.editMessage({
-                    variables: { messageId: id, message: data.input.message },
+                    variables: { messageId: id, message: data.message },
                 });
                 (props as any).onClose();
             }}
             defaultData={{
-                input: {
-                    message: text,
-                },
+                message: text,
             }}
         >
             <TextInputWrapper>
-                <XFormField2 field="input.email">
-                    {() => (
-                        <>
-                            <XInput
-                                autofocus
-                                dataTestId="message"
-                                field="input.message"
-                                type="input"
-                                size="large"
-                            />
-                        </>
-                    )}
-                </XFormField2>
+                <XTextInput valueStoreKey="fields.message" kind="from_store" />
             </TextInputWrapper>
 
             <Footer separator={5}>
