@@ -1,4 +1,5 @@
 import * as React from 'react';
+import UploadCare from 'uploadcare-widget';
 import { useReply } from './useReply';
 import {
     MessagesStateContext,
@@ -10,6 +11,7 @@ import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { useReplyPropsT } from './useReply';
+import { UploadContext } from './FileUploading/UploadContext';
 
 export type useHandleSendT = {
     onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
@@ -36,7 +38,7 @@ export function useHandleSend({
     setInputValue,
     quoteState,
     mentionsState,
-    inputRef
+    inputRef,
 }: useHandleSendT) {
     const supportMentions = () => {
         return !!mentionsState && !!members;
@@ -51,6 +53,8 @@ export function useHandleSend({
 
     const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
+    const dropZoneContext = React.useContext(UploadContext);
+    const dropZoneFile = dropZoneContext.file;
 
     const { replyMessagesProc } = useReply({
         replyMessage,
@@ -78,6 +82,7 @@ export function useHandleSend({
         const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
             onSendFile(ucFile);
+            dropZoneContext.fileRemover();
         }
     };
 
@@ -125,6 +130,10 @@ export function useHandleSend({
                 if (file) {
                     onUploadCareSendFile(file);
                 }
+
+                if (dropZoneFile) {
+                    onUploadCareSendFile(dropZoneFile);
+                }
             }
             if (inputValue && hasQuoteInState()) {
                 replyMessagesProc();
@@ -133,6 +142,8 @@ export function useHandleSend({
             replyMessagesProc();
         } else if (file) {
             onUploadCareSendFile(file);
+        } else if (dropZoneFile) {
+            onUploadCareSendFile(dropZoneFile);
         }
         closeEditor();
         if (supportDraft()) {
