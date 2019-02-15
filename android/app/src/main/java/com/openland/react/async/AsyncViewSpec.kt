@@ -18,13 +18,23 @@ fun JSONObject.nullableString(key: String): String? = if (has(key)) {
 }
 
 fun JSONObject.nullableFloat(key: String): Float? = if (has(key)) {
-    getDouble(key).toFloat()
+    val k = get(key)
+    if (k is Number) {
+        k.toFloat()
+    } else {
+        null
+    }
 } else {
     null
 }
 
 fun JSONObject.nullableInt(key: String): Int? = if (has(key)) {
-    getInt(key)
+    val k = get(key)
+    if (k is Number) {
+        k.toInt()
+    } else {
+        null
+    }
 } else {
     null
 }
