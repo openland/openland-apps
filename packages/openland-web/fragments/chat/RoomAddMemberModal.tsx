@@ -103,6 +103,7 @@ const footerWrapperClassName = css`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    z-index: 1;
 `;
 
 class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteModalState> {
