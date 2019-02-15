@@ -148,7 +148,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                         alignItems: 'stretch',
                     }}
                 >
-                    <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom}>
+                    <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom} marginTop={this.props.safe.top + 48}>
                         <View
                             backgroundColor="#fff"
                             borderRadius={16}
