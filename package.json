@@ -118,7 +118,7 @@
         "prop-types": "^15.6.0",
         "query-string": "^5.0.1",
         "rc-slider": "^8.6.0",
-        "react": "16.8.1",
+        "react": "16.8.2",
         "react-apollo": "2.4.0",
         "react-apollo-hooks": "^0.2.1",
         "react-burger-menu": "^2.2.3",
