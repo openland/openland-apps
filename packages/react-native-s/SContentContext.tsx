@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ASKeyboardContext, ASKeyboardAcessoryViewContext } from 'react-native-async-view/ASKeyboardContext';
-import { NativeSyntheticEvent, Platform, View, Keyboard } from 'react-native';
+import { NativeSyntheticEvent, Platform, View, Keyboard, DeviceEventEmitter } from 'react-native';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { SDevice } from './SDevice';
 import { randomKey } from './utils/randomKey';
@@ -16,21 +16,23 @@ export class SContentContext extends React.PureComponent<{}, { keyboardHeight: n
     }
 
     onKeyboardChange = (e: any) => {
-        this.setState({ keyboardHeight: e ? e.endCoordinates.height : 0 });
-    }
-
-    componentDidMount() {
-        // if (Platform.OS !== 'ios') {
-        Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
-        Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
-        // }
+        this.setState({ keyboardHeight: e ? e.height : 0 });
     }
 
     componentWillMount() {
-        // if (Platform.OS !== 'ios') {
-        Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
-        Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
-        // }
+        if (Platform.OS !== 'ios') {
+            DeviceEventEmitter.addListener('async_keyboard_height', this.onKeyboardChange);
+            // Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
+            // Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS !== 'ios') {
+            DeviceEventEmitter.removeListener('async_keyboard_height', this.onKeyboardChange);
+            // Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
+            // Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
+        }
     }
 
     handleKeyboard = (event?: NativeSyntheticEvent<{ state: { height: number, duration: number, curve: number, name: string } }>) => {

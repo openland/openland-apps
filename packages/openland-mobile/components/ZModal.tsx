@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, Keyboard, NativeSyntheticEvent } from 'react-native';
+import { View, Platform, Keyboard, NativeSyntheticEvent, DeviceEventEmitter } from 'react-native';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SDevice } from 'react-native-s/SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
@@ -34,21 +34,20 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     }
 
     onKeyboardChange = (e: any) => {
-        this.setState({ keyboardHeight: e ? e.endCoordinates.height : 0 });
-    }
-
-    componentDidMount() {
-        if (Platform.OS !== 'ios') {
-            Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
-            Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
-        }
+        console.log(e);
+        this.setState({ keyboardHeight: e ? e.height : 0 });
     }
 
     componentWillMount() {
         provider = this;
         if (Platform.OS !== 'ios') {
-            Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
-            Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
+            DeviceEventEmitter.addListener('async_keyboard_height', this.onKeyboardChange);
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS !== 'ios') {
+            DeviceEventEmitter.removeListener('async_keyboard_height', this.onKeyboardChange);
         }
     }
 

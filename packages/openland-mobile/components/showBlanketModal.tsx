@@ -139,8 +139,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                 <SAnimated.View
                     name={this.key + '--ctns'}
                     style={{
-                        opacity: 0,
-                        marginBottom: this.props.safe.bottom + 8
+                        opacity: 0
                     }}
                 >
                     <View
@@ -148,6 +147,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                         borderRadius={16}
                         marginHorizontal={16}
                         onLayout={this.onLayout}
+                        marginBottom={this.props.safe.bottom}
                     >
                         {this.contents}
                     </View>
