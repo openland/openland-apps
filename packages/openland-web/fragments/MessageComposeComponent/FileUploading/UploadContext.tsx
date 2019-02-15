@@ -58,7 +58,6 @@ export const UploadContextProvider = ({ children }: any) => {
                 handleDrop,
             }}
         >
-            <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             {children}
         </UploadContext.Provider>
     );

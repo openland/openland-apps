@@ -9,9 +9,9 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
 } from '../../components/messenger/MessagesStateContext';
-import { withMessageState } from '../../api/withMessageState';
-import { withGetDraftMessage } from '../../api/withMessageState';
-import { withChannelMembers } from '../../api/withChannelMembers';
+import { withMessageState } from 'openland-web/api/withMessageState';
+import { withGetDraftMessage } from 'openland-web/api/withMessageState';
+import { withChannelMembers } from 'openland-web/api/withChannelMembers';
 import {
     ReplyMessageVariables,
     ReplyMessage,
@@ -55,7 +55,6 @@ export type MessageComposeComponentInnerProps = {
     saveDraft: MutationFunc<SaveDraftMessage, Partial<SaveDraftMessageVariables>>;
     editMessage: MutationFunc<RoomEditMessage, Partial<RoomEditMessageVariables>>;
     draft?: string | null;
-    handleDrop?: (file: any) => void;
 } & MessageComposeComponentProps &
     XWithRouter &
     UserInfo &
@@ -128,7 +127,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
             <DumpSendMessage
                 TextInputComponent={messageComposeProps.TextInputComponent || DesktopSendMessage}
                 quoteState={quoteState}
-                handleDrop={messageComposeProps.handleDrop}
                 handleChange={handleChange}
                 handleSend={handleSend}
                 handleHideChat={messageComposeProps.handleHideChat}

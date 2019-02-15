@@ -24,6 +24,7 @@ import { MessageFull_mentions } from 'openland-api/Types';
 import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
 
 export interface File {
     uuid: string;
@@ -308,23 +309,25 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                             editPostHandler={this.editPostHandler}
                         />
 
-                        {this.state.hideInput === false && (
-                            <MessageComposeHandler
-                                getMessages={this.getMessages}
-                                conversation={this.conversation}
-                                onChange={this.handleChange}
-                                onSend={this.handleSend}
-                                onSendFile={this.handleSendFile}
-                                enabled={true}
-                                conversationType={this.props.conversationType}
-                                conversationId={this.props.conversationId}
-                                handleHideChat={this.handleHideChat}
-                                variables={{
-                                    roomId: this.props.conversationId,
-                                    conversationId: this.props.conversationId,
-                                    organizationId: this.props.organizationId,
-                                }}
-                            />
+                        {!this.state.hideInput && (
+                            <UploadContextProvider>
+                                <MessageComposeHandler
+                                    getMessages={this.getMessages}
+                                    conversation={this.conversation}
+                                    onChange={this.handleChange}
+                                    onSend={this.handleSend}
+                                    onSendFile={this.handleSendFile}
+                                    enabled={true}
+                                    conversationType={this.props.conversationType}
+                                    conversationId={this.props.conversationId}
+                                    handleHideChat={this.handleHideChat}
+                                    variables={{
+                                        roomId: this.props.conversationId,
+                                        conversationId: this.props.conversationId,
+                                        organizationId: this.props.organizationId,
+                                    }}
+                                />
+                            </UploadContextProvider>
                         )}
                         <DeleteUrlAugmentationComponent />
                         <DeleteMessageComponent />

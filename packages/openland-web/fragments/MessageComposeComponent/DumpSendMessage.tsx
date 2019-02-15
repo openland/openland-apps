@@ -2,7 +2,6 @@ import * as React from 'react';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { XButton } from 'openland-x/XButton';
-import { UploadContextProvider } from './FileUploading/UploadContext';
 import { FileUploader } from './FileUploading/FileUploader';
 import { SendMessageWrapper, SendMessageContent } from './Components';
 import { AttachmentButtons } from './AttachmentButtons';
@@ -10,6 +9,8 @@ import { PostMessageType } from 'openland-api/Types';
 import { EditView } from './EditView';
 import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
+import { DropZone } from './FileUploading/DropZone';
+import { UploadContext } from './FileUploading/UploadContext';
 
 export type TextInputComponentT = {
     handleChange: (value: string) => void;
@@ -37,7 +38,6 @@ type DumpSendMessageT = {
 export const DumpSendMessage = ({
     TextInputComponent,
     mentionsState,
-    handleDrop,
     handleChange,
     handleSend,
     inputRef,
@@ -48,53 +48,49 @@ export const DumpSendMessage = ({
     quoteState,
     closeEditor,
 }: DumpSendMessageT) => {
+    const { handleDrop } = React.useContext(UploadContext);
     return (
         <SendMessageWrapper>
-            <UploadContextProvider>
-                <SendMessageContent separator={4} alignItems="center">
-                    <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                        {closeEditor &&
-                            quoteState &&
-                            quoteState.quoteMessageReply && (
-                                <EditView
-                                    message={quoteState.quoteMessageReply}
-                                    title={quoteState.quoteMessageSender || 'Edit message'}
-                                    onCancel={closeEditor}
-                                />
-                            )}
+            <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
+            <SendMessageContent separator={4} alignItems="center">
+                <XVertical separator={6} flexGrow={1} maxWidth="100%">
+                    {closeEditor &&
+                        quoteState &&
+                        quoteState.quoteMessageReply && (
+                            <EditView
+                                message={quoteState.quoteMessageReply}
+                                title={quoteState.quoteMessageSender || 'Edit message'}
+                                onCancel={closeEditor}
+                            />
+                        )}
 
-                        <TextInputComponent
-                            placeholder="Write a message..."
-                            mentionsState={mentionsState}
-                            handleChange={handleChange}
-                            handleSend={handleSend}
-                            inputRef={inputRef}
-                            inputValue={inputValue}
-                            handleDrop={handleDrop}
+                    <TextInputComponent
+                        placeholder="Write a message..."
+                        mentionsState={mentionsState}
+                        handleChange={handleChange}
+                        handleSend={handleSend}
+                        inputRef={inputRef}
+                        inputValue={inputValue}
+                        handleDrop={handleDrop}
+                    />
+                    <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
+                        <AttachmentButtons
+                            enabled={enabled}
+                            handleHideChat={handleHideChat}
+                            handleDialogDone={handleDialogDone}
                         />
-                        <XHorizontal
-                            alignItems="center"
-                            justifyContent="space-between"
-                            flexGrow={1}
-                        >
-                            <AttachmentButtons
-                                enabled={enabled}
-                                handleHideChat={handleHideChat}
-                                handleDialogDone={handleDialogDone}
-                            />
 
-                            <XButton
-                                text="Send"
-                                style="primary"
-                                action={handleSend}
-                                iconRight="send"
-                                enabled={enabled}
-                            />
-                        </XHorizontal>
-                        <FileUploader />
-                    </XVertical>
-                </SendMessageContent>
-            </UploadContextProvider>
+                        <XButton
+                            text="Send"
+                            style="primary"
+                            action={handleSend}
+                            iconRight="send"
+                            enabled={enabled}
+                        />
+                    </XHorizontal>
+                    <FileUploader />
+                </XVertical>
+            </SendMessageContent>
         </SendMessageWrapper>
     );
 };
