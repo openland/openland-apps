@@ -23,26 +23,12 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
 
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
     const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | null>(null);
-    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | null>(
-        null,
-    );
-
-    const shouldHaveQuote = () => {
-        const { replyMessagesId } = messagesContext;
-
-        return !!replyMessagesId.size;
-    };
+    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | null>(null);
 
     const updateQuote = () => {
-        if (shouldHaveQuote()) {
-            setQuoteMessageReply(getQuoteMessageReply(messagesContext));
-            setQuoteMessagesId(getQuoteMessageId(messagesContext));
-            setQuoteMessageSender(getQuoteMessageSender(messagesContext));
-        } else {
-            setQuoteMessageReply(null);
-            setQuoteMessagesId([]);
-            setQuoteMessageSender(null);
-        }
+        setQuoteMessageReply(getQuoteMessageReply(messagesContext));
+        setQuoteMessagesId(getQuoteMessageId(messagesContext));
+        setQuoteMessageSender(getQuoteMessageSender(messagesContext));
     };
 
     React.useEffect(() => {
@@ -60,6 +46,6 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
         setQuoteMessageReply,
         setQuoteMessageSender,
         setQuoteMessagesId,
-        updateQuote
+        updateQuote,
     };
 }
