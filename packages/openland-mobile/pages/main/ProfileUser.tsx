@@ -29,11 +29,16 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
 
     let sub = undefined;
     let subColor = undefined;
-    if (!online.online && online.lastSeen) {
-        sub = formatLastSeen(online.lastSeen);
+    if (user.isBot) {
+        sub = 'bot'
+        subColor = '#0084fe'
     } else {
-        sub = 'online';
-        subColor = '#0084fe';
+        if (!online.online && online.lastSeen) {
+            sub = formatLastSeen(online.lastSeen);
+        } else {
+            sub = 'online';
+            subColor = '#0084fe';
+        }
     }
 
     return (

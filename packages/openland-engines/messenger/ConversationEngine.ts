@@ -65,7 +65,7 @@ export interface ConversationStateHandler {
     onMessageSend(): void;
 }
 
-const CONVERSATION_PAGE_SIZE = 30;
+const CONVERSATION_PAGE_SIZE = 15;
 
 export interface DataSourceMessageItem {
     type: 'message';

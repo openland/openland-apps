@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { ASText } from 'react-native-async-view/ASText';
 import { Container } from './views/Container';
+import { ConversationTheme } from '../../../pages/main/themes/ConversationThemeResolver';
 
 export interface ServiceMessageDefaultProps {
     message?: string;
+    theme: ConversationTheme;
 }
 
 export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
@@ -12,7 +14,7 @@ export const ServiceMessageDefault = (props: ServiceMessageDefaultProps) => {
     }
 
     return (
-        <Container>
+        <Container theme={props.theme}>
             <ASText
                 color="#fff"
                 fontSize={12}

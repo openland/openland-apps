@@ -15,29 +15,74 @@ export interface Transformer {
     propTransformers: PropsTransformer[];
 }
 
-export const flexTransformer: Transformer = {
+function processWrapper(name: string, src: PropsValue) {
+    if (src === null) {
+        return null;
+    }
+
+    if (src.type === 'StringLiteral') {
+        return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src]))
+    } else if (src.type === 'JSXExpressionContainer') {
+        return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src.expression as t.Expression]))
+    }
+    // if (s2.type === 'JSXExpressionContainer') {
+    //     s2 = s2.expression;
+    // }
+    return undefined;
+}
+
+const backgroundColorProcessor: PropsTransformer = {
+    name: 'backgroundColor',
+    imports: [{ what: 'processColor', from: 'react-native' }],
+    tranform: (src) => {
+        return processWrapper('processColor', src);
+    }
+}
+
+const colorProcessor: PropsTransformer = {
+    name: 'color',
+    imports: [{ what: 'processColor', from: 'react-native' }],
+    tranform: (src) => {
+        return processWrapper('processColor', src);
+    }
+}
+
+const backgroundGradientProcessor: PropsTransformer = {
+    name: 'backgroundGradient',
+    imports: [{ what: 'processGradient', from: 'react-native-async-view/utils/processGradient' }],
+    tranform: (src) => {
+        return processWrapper('processGradient', src);
+    }
+}
+
+const backgroundPatchTintColorTransformer: PropsTransformer = {
+    name: 'backgroundPatchTintColor',
+    imports: [{ what: 'processColor', from: 'react-native' }],
+    tranform: (src) => {
+        return processWrapper('processColor', src);
+    }
+}
+
+const flexTransformer: Transformer = {
     name: 'ASFlex',
     asyncName: 'flex',
     blacklist: ['onPress', 'onLongPress'],
-    propTransformers: [{
-        name: 'backgroundColor',
-        imports: [{ what: 'processColor', from: 'react-native' }],
-        tranform: (src) => {
-            if (src === null) {
-                return null;
-            }
-
-            if (src.type === 'StringLiteral') {
-                return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src]))
-            } else if (src.type === 'JSXExpressionContainer') {
-                return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src.expression as t.Expression]))
-            }
-            // if (s2.type === 'JSXExpressionContainer') {
-            //     s2 = s2.expression;
-            // }
-            return undefined;
-        }
-    }]
+    propTransformers: [
+        backgroundColorProcessor,
+        backgroundGradientProcessor,
+        backgroundPatchTintColorTransformer
+    ]
 }
 
-export const allTransformers = [flexTransformer];
+const textTransformer: Transformer = {
+    name: 'ASText',
+    asyncName: 'text',
+    blacklist: ['onPress', 'onLongPress'],
+    propTransformers: [
+        backgroundColorProcessor,
+        backgroundGradientProcessor,
+        colorProcessor
+    ]
+}
+
+export const allTransformers = [flexTransformer, textTransformer];

@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture
 
 class V8Executor(val context: Context) : JavaJSExecutor {
 
-    class Factory(val context: Context): JavaJSExecutor.Factory {
+    class Factory(val context: Context) : JavaJSExecutor.Factory {
         override fun create(): JavaJSExecutor {
             return V8Executor(context)
         }
@@ -40,7 +40,12 @@ class V8Executor(val context: Context) : JavaJSExecutor {
             runtime = V8.createV8Runtime("global")
             global = runtime.getObject("global")
             json = runtime.getObject("JSON")
+            global.registerJavaMethod(this, "nativeLoggingHook", "nativeLoggingHook", arrayOf(String::class.java))
         }
+    }
+
+    fun nativeLoggingHook(text: String) {
+        Log.d(TAG, text)
     }
 
     override fun setGlobalVariable(propertyName: String, jsonEncodedValue: String) {

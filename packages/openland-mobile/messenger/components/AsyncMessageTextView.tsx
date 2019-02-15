@@ -85,7 +85,6 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
     }
     count = 0;
     render() {
-        console.warn('boom', 'render ' + this.props.message.id + " " + ++this.count);
         let preprocessed = preprocessText(this.props.message.text || '', this.props.message.mentions);
         let big = false;
         if (this.props.message.text) {

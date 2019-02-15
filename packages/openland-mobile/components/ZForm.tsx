@@ -5,6 +5,8 @@ import { startLoader, stopLoader } from './ZGlobalLoader';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { Alert } from './AlertBlanket';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
 export interface ZFormProps {
     action: (src: any) => any;
@@ -58,10 +60,12 @@ export class ZForm extends React.PureComponent<ZFormProps> {
     render() {
         return (
             <YForm defaultAction={this.handleAction} defaultData={this.props.defaultData} staticData={this.props.staticData} ref={this.ref}>
-                <SScrollView backgroundColor={AppStyles.backyardColor}>
-                    {this.props.children}
+                <SScrollView>
+                    <KeyboardAvoidingView behavior="position">
+                        {this.props.children}
+                    </KeyboardAvoidingView>
                 </SScrollView>
-            </YForm>
+            </YForm >
         );
     }
 }

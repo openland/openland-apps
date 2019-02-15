@@ -8,10 +8,13 @@ import { Dimensions, Platform } from 'react-native';
 import { bubbleMaxWidth } from './AsyncBubbleView';
 import { messageBgColor } from './AsyncMessageView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { Stopwatch } from 'openland-y-utils/stopwatch';
 const maxReactionsNames = 3;
 
 export class AsyncMessageReactionsView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {
+        let sw = new Stopwatch('reactions');
+        sw.next('reaction');
         if (!this.props.message.reactions || this.props.message.reactions!.length === 0) {
             return null;
         }
@@ -39,6 +42,7 @@ export class AsyncMessageReactionsView extends React.PureComponent<{ message: Da
         let usersString = (users.find(r => r.name === 'You') ? 'You' : users[0].name) + (users.length > 1 ? ' + ' + (users.length - 1) : '');
 
         let reactionSize = 20;
+        sw.next();
         return (
             <ASFlex alignItems="stretch" flexDirection="row" maxHeight={30} backgroundColor={messageBgColor} >
                 <ASFlex flexGrow={1} justifyContent={this.props.message.isOut ? 'flex-end' : 'flex-start'} flexDirection="row" marginRight={this.props.message.isOut ? 14 : 0} marginLeft={this.props.message.isOut ? 0 : 60} marginTop={5}>

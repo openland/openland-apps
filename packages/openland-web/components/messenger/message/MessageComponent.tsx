@@ -5,25 +5,17 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
-import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import {
     ConversationEngine,
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import {
-    MessageFull,
-    UserShort,
-    SharedRoomKind,
-    MessageFull_urlAugmentation_extra_User,
-    MessageType,
-} from 'openland-api/Types';
+import { UserShort, SharedRoomKind, MessageType } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
@@ -34,9 +26,7 @@ import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer, MobileMessageContainer } from './MessageContainer';
 import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
-import { MessageIntroComponent } from './content/attachments/introMessage/MessageIntroComponent';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { string } from 'prop-types';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
