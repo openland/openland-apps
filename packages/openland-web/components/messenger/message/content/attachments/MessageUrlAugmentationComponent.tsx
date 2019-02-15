@@ -203,7 +203,7 @@ const UserCard = ({
                         path={'/mail/u/' + id}
                     />
                 </XView>
-                <XView>
+                <XView flexShrink={1}>
                     <XView fontSize={14} fontWeight="600" color={'#000000'}>
                         {emoji({
                             src: name,
