@@ -21,6 +21,7 @@ import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPa
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 
 import cl.json.RNSharePackage;
+import cl.json.ShareApplication;
 
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.openland.app.BuildConfig;
@@ -51,7 +52,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ShareApplication, ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
@@ -120,5 +121,10 @@ public class MainApplication extends Application implements ReactApplication {
 //        Bundle bundle = new Bundle();
 //        service.putExtras(bundle);
 //        startService(service);
+    }
+
+    @Override
+    public String getFileProviderAuthority() {
+        return BuildConfig.APPLICATION_ID + ".provider";
     }
 }
