@@ -41,51 +41,53 @@ const HeaderLogo = Glamorous.div({
     backgroundSize: '100% 100%',
 });
 
+type InviteInfoInner = {
+    variables: { invite: string };
+    redirect: string;
+    instantRedirect?: string;
+};
+
 export const InviteInfoInner = (props: any) => {
+    const {
+        data,
+        variables,
+        instantRedirect,
+        redirect,
+        loading,
+    }: InviteInfoInner & { data: any; loading: any } = props;
     return (
         <>
             <XDocumentHead
                 title={InitTexts.join.pageTitle}
                 titleSocial={
-                    (props.data.invite &&
-                        props.data.invite.room &&
-                        props.data.invite.room.description) ||
+                    (data.invite && data.invite.room && data.invite.room.description) ||
                     InitTexts.socialPageTitle
                 }
-                imgUrl={
-                    props.data.invite && props.data.invite.room
-                        ? props.data.invite.room.photo
-                        : undefined
-                }
+                imgUrl={data.invite && data.invite.room ? data.invite.room.photo : undefined}
             />
-            {(props as any).instantRedirect && (
-                <XPageRedirect path={(props as any).instantRedirect} />
-            )}
-            {!(props as any).instantRedirect && (
+            {instantRedirect && <XPageRedirect path={instantRedirect} />}
+            {!instantRedirect && (
                 <XTrack event="Join Room">
                     <Root>
                         <HeaderWrapper>
                             <HeaderLogo />
                         </HeaderWrapper>
                         <Content>
-                            {props.data.invite && (
+                            {data.invite && (
                                 <RoomsInviteComponent
                                     noLogin={true}
-                                    room={props.data.invite.room as any}
-                                    invite={props.data.invite}
-                                    inviteLink={props.variables.invite}
-                                    signup={
-                                        '/signup?redirect=' +
-                                        encodeURIComponent((props as any).redirect)
-                                    }
+                                    room={data.invite.room as any}
+                                    invite={data.invite}
+                                    inviteLink={variables.invite}
+                                    signup={'/signup?redirect=' + encodeURIComponent(redirect)}
                                 />
                             )}
-                            {!props.data.invite && !props.loading && (
+                            {!data.invite && !loading && (
                                 <MessagePageContent title="Join">
                                     <InfoText>{InitTexts.join.unableToFindInvite}</InfoText>
                                 </MessagePageContent>
                             )}
-                            {!props.data.invite && props.loading && <XLoader loading={true} />}
+                            {!data.invite && loading && <XLoader loading={true} />}
                         </Content>
                     </Root>
                 </XTrack>
@@ -94,11 +96,9 @@ export const InviteInfoInner = (props: any) => {
     );
 };
 
-export const InviteInfo = withChannelInviteInfo(InviteInfoInner) as React.ComponentType<{
-    variables: { invite: string };
-    redirect: string;
-    instantRedirect?: string;
-}>;
+export const InviteInfo = withChannelInviteInfo(InviteInfoInner) as React.ComponentType<
+    InviteInfoInner
+>;
 
 export default withAppBase(
     'Join Room',

@@ -10,14 +10,16 @@ const DEFAULT_OG = {
     image: 'https://cdn.openland.com/shared/og-messenger-6.png',
 };
 
-export const XDocumentHead = XMemo<{
+export type XDocumentHeadT = {
     title?: string | string[];
     titleWithoutReverse?: boolean;
     titleSocial?: string | null;
     imgCloud?: string | null;
     imgUrl?: string | null;
     description?: string | null;
-}>(props => {
+};
+
+export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
     let router = React.useContext(XRouterContext)!;
 
     let parts = ['Openland'];

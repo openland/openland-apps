@@ -59,10 +59,11 @@ export const ConversationContainerWrapper = ({
     cid,
 }: PageInnerProps) => {
     let pageTitle = tab === tabs.compose ? 'New chat' : undefined;
-    if (!canUseDOM) {
+
+    if (!canUseDOM && tab !== tabs.invite) {
         return (
             <>
-                <XDocumentHead title={pageTitle} />
+                <XDocumentHead title={pageTitle} description={'description'} />
                 <Scaffold>{}</Scaffold>
             </>
         );
