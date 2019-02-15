@@ -120,7 +120,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                     {/* forward/reply */}
                     {this.props.message.reply && (
 
-                        this.props.message.reply.map(m => (
+                        this.props.message.reply.map((m, i) => (
                             <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? this.state.theme.linkColorOut : this.state.theme.linkColorIn}>
 
                                 <ASText
@@ -146,7 +146,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                                     fontWeight={TextStyles.weight.regular}
                                 >
                                     {preprocessText(m.message, this.props.message.mentions).map(this.prprocessedRender)}
-                                    {(!this.props.message.text && this.props.message.isOut) ? paddedTextOut : paddedText}
+                                    {(!this.props.message.text && (i + 1 === this.props.message.reply!!.length)) ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                                 </ASText>}
                                 {m.fileMetadata && m.fileMetadata.isImage ? <AsyncReplyMessageMediaView onPress={this.props.onMediaPress} message={convertMessage(m as any, getMessenger().engine)} /> : null}
                                 {m.fileMetadata && !m.fileMetadata.isImage ? <AsyncReplyMessageDocumentView onPress={this.props.onDocumentPress} parent={this.props.message} message={convertMessage(m as any, getMessenger().engine)} /> : null}
@@ -166,7 +166,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                         fontWeight={TextStyles.weight.regular}
                     >
                         {parts}
-                        {this.props.message.isOut ? paddedTextOut : paddedText}
+                        {!this.props.message.urlAugmentation ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                     </ASText>}
 
                     {/* url augmentation */}
