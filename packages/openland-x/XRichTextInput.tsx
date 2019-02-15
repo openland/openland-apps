@@ -369,6 +369,12 @@ export class XRichTextInput extends React.Component<XRichTextInputProps, XRichTe
         };
     }
 
+    componentDidMount() {
+        if (this.props.autofocus) {
+            this.focus();
+        }
+    }
+
     onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
         if (command === 'x-editor-submit') {
             if (this.props.onSubmit) {
