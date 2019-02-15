@@ -14,9 +14,9 @@ export type QuoteStateT = {
     setQuoteMessageReply?: Function;
     setQuoteMessageSender?: Function;
     setQuoteMessagesId?: Function;
-    quoteMessageReply?: any;
-    quoteMessageSender?: any;
-    quoteMessagesId?: string[];
+    quoteMessageReply: string | null;
+    quoteMessageSender: string | null;
+    quoteMessagesId: string[];
     updateQuote: Function;
 };
 
