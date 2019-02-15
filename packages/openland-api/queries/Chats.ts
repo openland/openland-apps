@@ -321,6 +321,16 @@ export const RoomAlterHiddenMutation = gql`
     }
 `;
 
+export const RoomMembersShortQuery = gql`
+    query RoomMembersShort($roomId: ID!) {
+        members: roomMembers(roomId: $roomId) {
+            user {
+               id
+            }
+        }
+    }
+`;
+
 export const RoomMembersQuery = gql`
     query RoomMembers($roomId: ID!) {
         members: roomMembers(roomId: $roomId) {

@@ -2797,6 +2797,31 @@ export interface RoomAlterHiddenVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: RoomMembersShort
+// ====================================================
+
+export interface RoomMembersShort_members_user {
+  __typename: "User";
+  id: string;
+}
+
+export interface RoomMembersShort_members {
+  __typename: "RoomMember";
+  user: RoomMembersShort_members_user;
+}
+
+export interface RoomMembersShort {
+  members: RoomMembersShort_members[];
+}
+
+export interface RoomMembersShortVariables {
+  roomId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: RoomMembers
 // ====================================================
 

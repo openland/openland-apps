@@ -2,9 +2,15 @@ import * as React from 'react';
 import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MutationFunc } from 'react-apollo';
-import { RoomMemberRole, RoomAddMembers, RoomAddMembersVariables } from 'openland-api/Types';
+import {
+    RoomMemberRole,
+    RoomAddMembers,
+    RoomAddMembersVariables,
+    RoomMembersShort_members,
+} from 'openland-api/Types';
 import { withRoomAddMembers } from 'openland-web/api/withRoomAddMembers';
 import { withExplorePeople } from 'openland-web/api/withExplorePeople';
+import { withRoomMembersId } from 'openland-web/api/withRoomMembers';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModal, XModalProps } from 'openland-x-modal/XModal';
@@ -43,6 +49,7 @@ interface ExplorePeopleProps {
     roomId: string;
     onPick: (label: string, value: string) => void;
     selectedUsers: Map<string, string> | null;
+    roomUsers: RoomMembersShort_members[];
 }
 
 const ExplorePeople = withExplorePeople(props => {
@@ -64,8 +71,12 @@ const ExplorePeople = withExplorePeople(props => {
                     />
                     {props.data.items.edges.map(i => {
                         if (
-                            (props as any).selectedUsers &&
-                            (props as any).selectedUsers.has(i.node.id)
+                            ((props as any).selectedUsers &&
+                                (props as any).selectedUsers.has(i.node.id)) ||
+                            ((props as any).roomUsers &&
+                                (props as any).roomUsers.find(
+                                    (j: RoomMembersShort_members) => j.user.id === i.node.id,
+                                ))
                         ) {
                             return null;
                         }
@@ -87,6 +98,7 @@ const ExplorePeople = withExplorePeople(props => {
 interface InviteModalProps extends XModalProps {
     roomId: string;
     addMember: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
+    members: RoomMembersShort_members[];
 }
 
 interface InviteModalState {
@@ -190,6 +202,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                             roomId={props.roomId}
                             onPick={this.selectMembers}
                             selectedUsers={selectedUsers}
+                            roomUsers={props.members}
                         />
                     </XView>
                 }
@@ -208,10 +221,26 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
     }
 }
 
-export const RoomAddMemberModal = withRoomAddMembers(props => (
+const RoomAddMemberModalUsers = withRoomMembersId(props => (
     <RoomAddMemberModalInner
+        {...props}
+        addMember={(props as any).addMembers}
+        roomId={(props as any).roomId}
+        members={props.data.members}
+    />
+)) as React.ComponentType<
+    {
+        variables: { roomId: string };
+        roomId: string;
+        addMember: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
+    } & XModalProps
+>;
+
+export const RoomAddMemberModal = withRoomAddMembers(props => (
+    <RoomAddMemberModalUsers
+        {...props}
         roomId={(props as any).roomId}
         addMember={props.addMembers}
-        {...props}
+        variables={{ roomId: (props as any).roomId }}
     />
 )) as React.ComponentType<{ roomId: string } & XModalProps>;

@@ -32,6 +32,7 @@
         { "name": "RoomSearchQuery", "type": "query", "hasVariables": true },
         { "name": "RoomAlterFeaturedMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomAlterHiddenMutation", "type": "mutation", "hasVariables": true },
+        { "name": "RoomMembersShortQuery", "type": "query", "hasVariables": true },
         { "name": "RoomMembersQuery", "type": "query", "hasVariables": true },
         { "name": "RoomSettingsUpdateMutation", "type": "mutation", "hasVariables": true },
         { "name": "RoomJoinMutation", "type": "mutation", "hasVariables": true },

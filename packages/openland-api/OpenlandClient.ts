@@ -234,6 +234,18 @@ export class OpenlandClient {
     useWithoutLoaderRoomSearch(variables: Types.RoomSearchVariables): Types.RoomSearch | null {
         return this.client.useWithoutLoaderQuery(Source.RoomSearchQuery, variables);
     }
+    async queryRoomMembersShort(variables: Types.RoomMembersShortVariables): Promise<Types.RoomMembersShort> {
+        return this.client.query(Source.RoomMembersShortQuery, variables);
+    }
+    async refetchRoomMembersShort(variables: Types.RoomMembersShortVariables): Promise<Types.RoomMembersShort> {
+        return this.client.refetch(Source.RoomMembersShortQuery, variables);
+    }
+    useRoomMembersShort(variables: Types.RoomMembersShortVariables): Types.RoomMembersShort {
+        return this.client.useQuery(Source.RoomMembersShortQuery, variables);
+    }
+    useWithoutLoaderRoomMembersShort(variables: Types.RoomMembersShortVariables): Types.RoomMembersShort | null {
+        return this.client.useWithoutLoaderQuery(Source.RoomMembersShortQuery, variables);
+    }
     async queryRoomMembers(variables: Types.RoomMembersVariables): Promise<Types.RoomMembers> {
         return this.client.query(Source.RoomMembersQuery, variables);
     }

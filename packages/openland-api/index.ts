@@ -68,6 +68,7 @@ export const RoomSearchTextQuery = typedQuery<Types.RoomSearchText, Types.RoomSe
 export const RoomSearchQuery = typedQuery<Types.RoomSearch, Types.RoomSearchVariables>(Chats.RoomSearchQuery);
 export const RoomAlterFeaturedMutation = typedMutation<Types.RoomAlterFeatured, Types.RoomAlterFeaturedVariables>(Chats.RoomAlterFeaturedMutation);
 export const RoomAlterHiddenMutation = typedMutation<Types.RoomAlterHidden, Types.RoomAlterHiddenVariables>(Chats.RoomAlterHiddenMutation);
+export const RoomMembersShortQuery = typedQuery<Types.RoomMembersShort, Types.RoomMembersShortVariables>(Chats.RoomMembersShortQuery);
 export const RoomMembersQuery = typedQuery<Types.RoomMembers, Types.RoomMembersVariables>(Chats.RoomMembersQuery);
 export const RoomSettingsUpdateMutation = typedMutation<Types.RoomSettingsUpdate, Types.RoomSettingsUpdateVariables>(Chats.RoomSettingsUpdateMutation);
 export const RoomJoinMutation = typedMutation<Types.RoomJoin, Types.RoomJoinVariables>(Chats.RoomJoinMutation);
