@@ -17,9 +17,6 @@ interface AsyncServiceMessageViewProps {
     onUserPress: (id: string) => void;
     onRoomPress: (id: string) => void;
 }
-
-export const ThemeContext = React.createContext({ theme: new DefaultConversationTheme() });
-
 export class AsyncServiceMessageView extends React.PureComponent<AsyncServiceMessageViewProps, { theme: ConversationTheme }> {
     sub?: () => void;
     constructor(props: AsyncServiceMessageViewProps) {
@@ -42,11 +39,12 @@ export class AsyncServiceMessageView extends React.PureComponent<AsyncServiceMes
         let meta = this.props.message.serviceMetaData!;
         let myUserId = this.props.engine.engine.user.id;
 
-        let res = <ServiceMessageDefault message={this.props.message.text} />;
+        let res = <ServiceMessageDefault theme={this.state.theme} message={this.props.message.text} />;
 
         if (meta) {
             if (meta.__typename === 'PostRespondServiceMetadata') {
                 res = <ServiceMessagePost
+                    theme={this.state.theme}
                     serviceMetadata={meta}
                     onUserPress={this.props.onUserPress}
                     onRoomPress={this.props.onRoomPress}
@@ -54,18 +52,21 @@ export class AsyncServiceMessageView extends React.PureComponent<AsyncServiceMes
                 />;
             } else if (meta.__typename === 'InviteServiceMetadata') {
                 res = <ServiceMessageJoin
+                    theme={this.state.theme}
                     serviceMetadata={meta}
                     onUserPress={this.props.onUserPress}
                     myUserId={myUserId}
                 />;
             } else if (meta.__typename === 'KickServiceMetadata') {
                 res = <ServiceMessageKick
+                    theme={this.state.theme}
                     serviceMetadata={meta}
                     onUserPress={this.props.onUserPress}
                     myUserId={myUserId}
                 />;
             } else if (meta.__typename === 'PhotoChangeServiceMetadata') {
                 res = <ServiceMessagePhotoChanged
+                    theme={this.state.theme}
                     user={{
                         id: this.props.message.senderId,
                         name: this.props.message.senderName,
@@ -75,11 +76,11 @@ export class AsyncServiceMessageView extends React.PureComponent<AsyncServiceMes
                 />;
             } else if (meta.__typename === 'TitleChangeServiceMetadata') {
                 if (this.props.message.text) {
-                    res = <ServiceMessageTitleChanged title={meta.title} />;
+                    res = <ServiceMessageTitleChanged theme={this.state.theme} title={meta.title} />;
                 }
             }
         }
 
-        return <ThemeContext.Provider value={{ theme: this.state.theme }}>{res}</ThemeContext.Provider>;
+        return res;
     }
 }
