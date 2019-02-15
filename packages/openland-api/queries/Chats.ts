@@ -140,7 +140,7 @@ export const GlobalCounterQuery = gql`
 
 export const RoomHistoryQuery = gql`
     query RoomHistory($roomId: ID!, $before: ID) {
-        messages: roomMessages(roomId: $roomId, first: 30, before: $before) {
+        messages: roomMessages(roomId: $roomId, first: 15, before: $before) {
             ...RoomMessageFull
         }
         state: conversationState(id: $roomId) {
