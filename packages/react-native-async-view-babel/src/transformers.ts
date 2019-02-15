@@ -4,7 +4,7 @@ type PropsValue = t.JSXElement | t.JSXFragment | t.StringLiteral | t.JSXExpressi
 
 export interface PropsTransformer {
     name: string;
-    tranform: (src: PropsValue) => PropsValue;
+    tranform: (src: PropsValue) => PropsValue | undefined;
     imports?: { what: string, from: string }[]
 }
 
@@ -16,14 +16,26 @@ export interface Transformer {
 }
 
 export const flexTransformer: Transformer = {
-    name: 'XView',
+    name: 'ASFlex',
     asyncName: 'flex',
-    blacklist: ['onPress', 'onLongPress', 'backgroundColor'],
+    blacklist: ['onPress', 'onLongPress'],
     propTransformers: [{
         name: 'backgroundColor',
         imports: [{ what: 'processColor', from: 'react-native' }],
         tranform: (src) => {
-            return src
+            if (src === null) {
+                return null;
+            }
+
+            if (src.type === 'StringLiteral') {
+                return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src]))
+            } else if (src.type === 'JSXExpressionContainer') {
+                return t.jsxExpressionContainer(t.callExpression(t.identifier('processColor'), [src.expression as t.Expression]))
+            }
+            // if (s2.type === 'JSXExpressionContainer') {
+            //     s2 = s2.expression;
+            // }
+            return undefined;
         }
     }]
 }
