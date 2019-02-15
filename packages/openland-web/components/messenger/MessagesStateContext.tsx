@@ -71,8 +71,8 @@ export class MessageStateProviderComponent extends React.PureComponent<
             forwardMessages: this.forwardMessages,
             setReplyMessages: this.setReplyMessages,
             changeForwardConverstion: this.changeForwardConverstion,
-            resetAll: this.resetAll,
             switchMessageSelect: this.switchMessageSelect,
+            resetAll: this.resetAll,
         };
     }
 
@@ -82,7 +82,22 @@ export class MessageStateProviderComponent extends React.PureComponent<
                 nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
-            this.state.resetAll();
+            let target = {
+                editMessageId: null,
+                editMessage: null,
+                forwardMessagesId: new Set(),
+                selectedMessages: new Set(),
+                replyMessagesId: new Set(),
+                replyMessages: new Set(),
+                replyMessagesSender: new Set(),
+                useForwardMessages: false,
+                useForwardPlaceholder: false,
+                useForwardHeader: false,
+            };
+
+            if (!includes(this.state, target)) {
+                this.setState(target);
+            }
         }
     }
 
@@ -154,9 +169,7 @@ export class MessageStateProviderComponent extends React.PureComponent<
             useForwardHeader: false,
         };
 
-        if (!includes(this.state, target)) {
-            this.setState(target);
-        }
+        this.setState(target);
     };
 
     render() {

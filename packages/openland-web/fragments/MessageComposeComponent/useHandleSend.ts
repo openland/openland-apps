@@ -51,10 +51,9 @@ export function useHandleSend({
         return !!quoteState;
     };
 
-    const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const dropZoneContext = React.useContext(UploadContext);
-    const dropZoneFile = dropZoneContext.file;
+    const { file } = dropZoneContext;
 
     const { replyMessagesProc } = useReply({
         replyMessage,
@@ -91,15 +90,14 @@ export function useHandleSend({
         setInputValue('');
         if (supportQuote()) {
             // TODO move to quote here
-            quoteState!!.setQuoteMessageReply!!(undefined);
-            quoteState!!.setQuoteMessageSender!!(undefined);
+            quoteState!!.setQuoteMessageReply!!(null);
+            quoteState!!.setQuoteMessageSender!!(null);
             quoteState!!.setQuoteMessagesId!!([]);
         }
         if (inputRef && inputRef.current) {
             inputRef.current.innerText = '';
         }
 
-        setFile(undefined);
         if (inputMethodsState) {
             inputMethodsState.resetAndFocus();
         }
@@ -130,10 +128,6 @@ export function useHandleSend({
                 if (file) {
                     onUploadCareSendFile(file);
                 }
-
-                if (dropZoneFile) {
-                    onUploadCareSendFile(dropZoneFile);
-                }
             }
             if (inputValue && hasQuoteInState()) {
                 replyMessagesProc();
@@ -142,8 +136,6 @@ export function useHandleSend({
             replyMessagesProc();
         } else if (file) {
             onUploadCareSendFile(file);
-        } else if (dropZoneFile) {
-            onUploadCareSendFile(dropZoneFile);
         }
         closeEditor();
         if (supportDraft()) {

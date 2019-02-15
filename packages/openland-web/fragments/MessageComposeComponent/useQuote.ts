@@ -15,15 +15,16 @@ export type QuoteStateT = {
     quoteMessageReply?: any;
     quoteMessageSender?: any;
     quoteMessagesId?: string[];
+    updateQuote: Function;
 };
 
 export function useQuote({ conversationId }: { conversationId?: string }) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
-    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
-    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
-        undefined,
+    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | null>(null);
+    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | null>(
+        null,
     );
 
     const shouldHaveQuote = () => {
@@ -37,6 +38,10 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
             setQuoteMessageReply(getQuoteMessageReply(messagesContext));
             setQuoteMessagesId(getQuoteMessageId(messagesContext));
             setQuoteMessageSender(getQuoteMessageSender(messagesContext));
+        } else {
+            setQuoteMessageReply(null);
+            setQuoteMessagesId([]);
+            setQuoteMessageSender(null);
         }
     };
 
@@ -50,10 +55,11 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
 
     return {
         quoteMessagesId,
-        setQuoteMessagesId,
         quoteMessageReply,
-        setQuoteMessageReply,
         quoteMessageSender,
+        setQuoteMessageReply,
         setQuoteMessageSender,
+        setQuoteMessagesId,
+        updateQuote
     };
 }
