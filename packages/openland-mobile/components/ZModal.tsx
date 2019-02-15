@@ -62,15 +62,17 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     }
 
     showModal(modal: ZModal) {
-        Keyboard.dismiss();
-        let key = randomKey();
-        let cont: ZModalController = {
-            hide: () => {
-                this.setState((state) => ({ modals: state.modals.filter((v) => v.key !== key) }));
+        setTimeout(() => {
+            Keyboard.dismiss();
+            let key = randomKey();
+            let cont: ZModalController = {
+                hide: () => {
+                    this.setState((state) => ({ modals: state.modals.filter((v) => v.key !== key) }));
+                }
             }
-        }
-        let element = modal(cont);
-        this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
+            let element = modal(cont);
+            this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
+        }, 1);
     }
 
     render() {
