@@ -2,7 +2,7 @@ import { Platform, Linking } from 'react-native';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
-export type permissionsType = 'gallery' | 'gallery-add' | 'microphone' | 'camera' | 'ext-storage';
+export type permissionsType = 'gallery' | 'gallery-add' | 'microphone' | 'camera' | 'android-storage';
 
 interface AlertOpenSettingsLabels {
     ios?: {
@@ -89,7 +89,7 @@ export const handlePermissionDismiss = (permission: permissionsType) => {
                 message: 'To upload a photo or video, allow Openland access to your camera. Tap Settings > Permissions, and turn on Camera.'
             }
         });
-    } else if (permission === 'ext-storage') {
+    } else if (permission === 'android-storage') {
         AlertOpenSettings ({
             android: {
                 title: 'Allow Openland to access your phone\'s storage?',

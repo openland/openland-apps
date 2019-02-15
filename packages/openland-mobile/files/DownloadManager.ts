@@ -145,7 +145,7 @@ export class DownloadManager implements DownloadManagerInterface {
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                     hasPermissions = true;
                 } else {
-                    handlePermissionDismiss('ext-storage');
+                    handlePermissionDismiss('android-storage');
                 }
             } catch (err) {
                 console.log(err);

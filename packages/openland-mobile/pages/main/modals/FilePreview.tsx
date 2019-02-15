@@ -12,7 +12,6 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { formatBytes } from '../../../utils/formatBytes';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { ZCircularLoader } from 'openland-mobile/components/ZCircularLoader';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const styles = StyleSheet.create({
     name: {
