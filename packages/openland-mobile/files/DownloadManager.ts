@@ -1,7 +1,8 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import RNFetchBlob from 'rn-fetch-blob';
 import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
-import { URL } from 'url';
+import { Platform, PermissionsAndroid } from 'react-native';
+import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
 
 export class DownloadManager implements DownloadManagerInterface {
 
@@ -121,6 +122,49 @@ export class DownloadManager implements DownloadManagerInterface {
             this._watchers.set(this.resolvePath(uuid, resize), { watcher, download: false, existing: checkExisting });
         }
         return this._watchers.get(this.resolvePath(uuid, resize))!;
+    }
+
+    getFilePathWithRealName = async (uuid: string, resize: { width: number, height: number } | null, fileName: string) => {
+        // Init
+        let suffix = '';
+        if (resize) {
+            suffix = '_' + resize.width + 'x' + resize.height;
+        }
+
+        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+
+        let fileById = this.rootDir + '/' + uuid + suffix;
+        let fileByName = targetPath + '/' + fileName;
+
+        let hasPermissions = false;
+
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    hasPermissions = true;
+                } else {
+                    handlePermissionDismiss('android-storage');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            hasPermissions = true;
+        }
+
+        if (hasPermissions) {
+            if (await (RNFetchBlob as any).fs.exists(fileByName)) {
+                await (RNFetchBlob as any).fs.unlink(fileByName);
+            }
+    
+            await (RNFetchBlob as any).fs.cp(fileById, fileByName);
+
+            return fileByName;
+        } else {
+            return undefined;
+        }
     }
 }
 

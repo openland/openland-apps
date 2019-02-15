@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const t = require("@babel/types");
+const transformers_1 = require("./transformers");
 function createTraversal() {
     const traverseOptions = {
         Program: {
@@ -8,21 +9,27 @@ function createTraversal() {
                 traversePath.traverse({
                     JSXElement: {
                         enter(traversePath2) {
-                            // throw Error('!!!');
-                            // throw traversePath2.buildCodeFrameError('!!!');
+                            // Resolve Transformer
                             let node = traversePath2.node;
-                            if (node.openingElement.name.name !== 'ASFlex') {
+                            let name = node.openingElement.name.name;
+                            let transformer = transformers_1.allTransformers.find((v) => v.name === name);
+                            if (!transformer) {
                                 return;
                             }
-                            // throw traversePath2.buildCodeFrameError(JSON.stringify(node.openingElement.name));
+                            // Ignore anything with spread attributes
+                            if (node.openingElement.attributes.find((v) => v.type === 'JSXSpreadAttribute')) {
+                                return;
+                            }
+                            // Search for blacklisted names
                             let hasBlacklisted = !!node.openingElement.attributes
                                 .filter((v) => v.type === 'JSXAttribute')
-                                .find((v) => !!['onPress', 'onLongPress', 'backgroundColor'].find((v2) => v.name.name === v2));
+                                .find((v) => !!transformer.blacklist.find((v2) => v.name.name === v2));
                             if (hasBlacklisted) {
                                 return;
                             }
+                            // Configure basics
                             node.openingElement.name.name = 'asyncview';
-                            node.openingElement.attributes.push(t.jsxAttribute(t.jsxIdentifier('asyncViewName'), t.jsxExpressionContainer(t.stringLiteral('flex'))));
+                            node.openingElement.attributes.push(t.jsxAttribute(t.jsxIdentifier('asyncViewName'), t.jsxExpressionContainer(t.stringLiteral(transformer.asyncName))));
                             if (node.closingElement) {
                                 node.closingElement.name.name = 'asyncview';
                             }

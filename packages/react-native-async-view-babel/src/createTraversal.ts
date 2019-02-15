@@ -1,6 +1,6 @@
 import * as t from '@babel/types';
 import { VisitNodeObject, NodePath } from "@babel/traverse";
-
+import { allTransformers } from './transformers';
 export function createTraversal() {
     const traverseOptions: {} = {
         Program: {
@@ -8,27 +8,34 @@ export function createTraversal() {
                 traversePath.traverse({
                     JSXElement: {
                         enter(traversePath2: NodePath<t.Node>) {
-                            // throw Error('!!!');
-                            // throw traversePath2.buildCodeFrameError('!!!');
+
+                            // Resolve Transformer
                             let node = traversePath2.node as t.JSXElement;
-                            if ((node.openingElement.name as t.JSXIdentifier).name !== 'ASFlex') {
+                            let name = (node.openingElement.name as t.JSXIdentifier).name;
+                            let transformer = allTransformers.find((v) => v.name === name);
+                            if (!transformer) {
                                 return;
                             }
-                            // throw traversePath2.buildCodeFrameError(JSON.stringify(node.openingElement.name));
 
+                            // Ignore anything with spread attributes
+                            if (node.openingElement.attributes.find((v) => v.type === 'JSXSpreadAttribute')) {
+                                return;
+                            }
+
+                            // Search for blacklisted names
                             let hasBlacklisted = !!node.openingElement.attributes
                                 .filter((v) => v.type === 'JSXAttribute')
-                                .find((v) => !!['onPress', 'onLongPress', 'backgroundColor'].find((v2) => ((v as t.JSXAttribute).name as t.JSXIdentifier).name === v2))
+                                .find((v) => !!transformer!.blacklist.find((v2) => (v as t.JSXAttribute).name.name === v2))
                             if (hasBlacklisted) {
                                 return;
                             }
 
+                            // Configure basics
                             (node.openingElement.name as t.JSXIdentifier).name = 'asyncview';
                             node.openingElement.attributes.push(t.jsxAttribute(
                                 t.jsxIdentifier('asyncViewName'),
-                                t.jsxExpressionContainer(t.stringLiteral('flex'))
+                                t.jsxExpressionContainer(t.stringLiteral(transformer.asyncName))
                             ))
-
                             if (node.closingElement) {
                                 (node.closingElement.name as t.JSXIdentifier).name = 'asyncview'
                             }
