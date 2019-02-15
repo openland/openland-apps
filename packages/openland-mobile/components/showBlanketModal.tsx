@@ -44,7 +44,8 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
         // Prepare
         SAnimated.beginTransaction();
         this.contentView.opacity = 0;
-        this.contentView.translateY = 200;
+        this.bgView.opacity = 0;
+        // this.contentView.translateY = 200;
 
         SAnimated.commitTransaction();
 
@@ -70,7 +71,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
         }
         this.contentView.opacity = 1;
         this.bgView.opacity = 1;
-        this.contentView.translateY = 0;
+        // this.contentView.translateY = 0;
 
         SAnimated.commitTransaction();
     }
@@ -102,14 +103,15 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
         }
         this.contentView.opacity = 0;
         this.bgView.opacity = 0;
-        this.contentView.translateY = 200;
+        // this.contentView.translateY = 200;
 
         SAnimated.commitTransaction(() => { this.props.ctx.hide(); });
     }
 
     render() {
+        console.log('')
         return (
-            <View width="100%" height="100%" flexDirection="column" alignItems="stretch" justifyContent="center">
+            <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
 
                 <TouchableWithoutFeedback onPress={this.props.cancalable !== false ? this.hide : undefined}>
                     <View
@@ -139,17 +141,22 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
                 <SAnimated.View
                     name={this.key + '--ctns'}
                     style={{
-                        opacity: 0
+                        opacity: 0,
+                        flexGrow: 1,
+                        flexBasis: 0,
+                        minHeight: 0,
+                        alignItems: 'stretch',
                     }}
                 >
-                    <View
-                        backgroundColor="#fff"
-                        borderRadius={16}
-                        marginHorizontal={16}
-                        onLayout={this.onLayout}
-                        marginBottom={this.props.safe.bottom}
-                    >
-                        {this.contents}
+                    <View flexGrow={1} flexBasis={0} minHeight={0} minWidth={0} alignItems="stretch" alignSelf="stretch" flexDirection="column" justifyContent="center" marginBottom={this.props.safe.bottom}>
+                        <View
+                            backgroundColor="#fff"
+                            borderRadius={16}
+                            marginHorizontal={16}
+                            onLayout={this.onLayout}
+                        >
+                            {this.contents}
+                        </View>
                     </View>
                 </SAnimated.View>
             </View>

@@ -56,6 +56,7 @@ class MainActivity : ReactActivity() {
         this.provider = KeyboardHeightProvider(this)
         provider!!.addKeyboardListener(object : KeyboardHeightProvider.KeyboardListener {
             override fun onHeightChanged(height: Int) {
+                Log.d("MainActivity", "Height: $height")
                 val map = WritableNativeMap()
                 if (height > 0) {
                     map.putDouble("height", (height / resources.displayMetrics.density).toDouble())
