@@ -1609,25 +1609,41 @@ export interface RoomHistory_messages_urlAugmentation_photo {
   crop: RoomHistory_messages_urlAugmentation_photo_crop | null;
 }
 
-export interface RoomHistory_messages_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface RoomHistory_messages_urlAugmentation_extra_Organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface RoomHistory_messages_urlAugmentation_user_User_primaryOrganization {
+export interface RoomHistory_messages_urlAugmentation_extra_ChannelConversation_organization {
+  __typename: "Organization";
+  name: string;
+}
+
+export interface RoomHistory_messages_urlAugmentation_extra_ChannelConversation {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  photo: string | null;
+  organization: RoomHistory_messages_urlAugmentation_extra_ChannelConversation_organization | null;
+}
+
+export interface RoomHistory_messages_urlAugmentation_extra_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface RoomHistory_messages_urlAugmentation_user_User {
+export interface RoomHistory_messages_urlAugmentation_extra_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: RoomHistory_messages_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: RoomHistory_messages_urlAugmentation_extra_User_primaryOrganization | null;
 }
 
-export type RoomHistory_messages_urlAugmentation_user = RoomHistory_messages_urlAugmentation_user_Organization | RoomHistory_messages_urlAugmentation_user_User;
+export type RoomHistory_messages_urlAugmentation_extra = RoomHistory_messages_urlAugmentation_extra_Organization | RoomHistory_messages_urlAugmentation_extra_ChannelConversation | RoomHistory_messages_urlAugmentation_extra_User;
 
 export interface RoomHistory_messages_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -1643,7 +1659,7 @@ export interface RoomHistory_messages_urlAugmentation {
   iconRef: RoomHistory_messages_urlAugmentation_iconRef | null;
   iconInfo: RoomHistory_messages_urlAugmentation_iconInfo | null;
   photo: RoomHistory_messages_urlAugmentation_photo | null;
-  user: RoomHistory_messages_urlAugmentation_user | null;
+  extra: RoomHistory_messages_urlAugmentation_extra | null;
 }
 
 export interface RoomHistory_messages {
@@ -6428,7 +6444,9 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_Organization {
   __typename: "Organization";
+  id: string;
   name: string;
+  photo: string | null;
 }
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
@@ -6438,6 +6456,9 @@ export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentat
 
 export interface ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation {
   __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  photo: string | null;
   organization: ConversationShort_AnonymousConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
 }
 
@@ -6971,7 +6992,9 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_Organization {
   __typename: "Organization";
+  id: string;
   name: string;
+  photo: string | null;
 }
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
@@ -6981,6 +7004,9 @@ export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_
 
 export interface ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation {
   __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  photo: string | null;
   organization: ConversationShort_GroupConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
 }
 
@@ -7530,7 +7556,9 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_Organization {
   __typename: "Organization";
+  id: string;
   name: string;
+  photo: string | null;
 }
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization {
@@ -7540,6 +7568,9 @@ export interface ConversationShort_ChannelConversation_topMessage_urlAugmentatio
 
 export interface ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation {
   __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  photo: string | null;
   organization: ConversationShort_ChannelConversation_topMessage_urlAugmentation_extra_ChannelConversation_organization | null;
 }
 
@@ -8101,7 +8132,9 @@ export interface MessageFull_urlAugmentation_photo {
 
 export interface MessageFull_urlAugmentation_extra_Organization {
   __typename: "Organization";
+  id: string;
   name: string;
+  photo: string | null;
 }
 
 export interface MessageFull_urlAugmentation_extra_ChannelConversation_organization {
@@ -8111,6 +8144,9 @@ export interface MessageFull_urlAugmentation_extra_ChannelConversation_organizat
 
 export interface MessageFull_urlAugmentation_extra_ChannelConversation {
   __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  photo: string | null;
   organization: MessageFull_urlAugmentation_extra_ChannelConversation_organization | null;
 }
 
@@ -8632,25 +8668,41 @@ export interface RoomMessageFull_urlAugmentation_photo {
   crop: RoomMessageFull_urlAugmentation_photo_crop | null;
 }
 
-export interface RoomMessageFull_urlAugmentation_user_Organization {
-  __typename: "Organization" | "ChannelConversation";
+export interface RoomMessageFull_urlAugmentation_extra_Organization {
+  __typename: "Organization";
+  id: string;
+  name: string;
+  photo: string | null;
 }
 
-export interface RoomMessageFull_urlAugmentation_user_User_primaryOrganization {
+export interface RoomMessageFull_urlAugmentation_extra_ChannelConversation_organization {
+  __typename: "Organization";
+  name: string;
+}
+
+export interface RoomMessageFull_urlAugmentation_extra_ChannelConversation {
+  __typename: "ChannelConversation";
+  id: string;
+  title: string;
+  photo: string | null;
+  organization: RoomMessageFull_urlAugmentation_extra_ChannelConversation_organization | null;
+}
+
+export interface RoomMessageFull_urlAugmentation_extra_User_primaryOrganization {
   __typename: "Organization";
   id: string;
   name: string;
 }
 
-export interface RoomMessageFull_urlAugmentation_user_User {
+export interface RoomMessageFull_urlAugmentation_extra_User {
   __typename: "User";
   id: string;
   name: string;
   photo: string | null;
-  primaryOrganization: RoomMessageFull_urlAugmentation_user_User_primaryOrganization | null;
+  primaryOrganization: RoomMessageFull_urlAugmentation_extra_User_primaryOrganization | null;
 }
 
-export type RoomMessageFull_urlAugmentation_user = RoomMessageFull_urlAugmentation_user_Organization | RoomMessageFull_urlAugmentation_user_User;
+export type RoomMessageFull_urlAugmentation_extra = RoomMessageFull_urlAugmentation_extra_Organization | RoomMessageFull_urlAugmentation_extra_ChannelConversation | RoomMessageFull_urlAugmentation_extra_User;
 
 export interface RoomMessageFull_urlAugmentation {
   __typename: "UrlAugmentation";
@@ -8666,7 +8718,7 @@ export interface RoomMessageFull_urlAugmentation {
   iconRef: RoomMessageFull_urlAugmentation_iconRef | null;
   iconInfo: RoomMessageFull_urlAugmentation_iconInfo | null;
   photo: RoomMessageFull_urlAugmentation_photo | null;
-  user: RoomMessageFull_urlAugmentation_user | null;
+  extra: RoomMessageFull_urlAugmentation_extra | null;
 }
 
 export interface RoomMessageFull {

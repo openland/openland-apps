@@ -164,9 +164,14 @@ export const MessageFull = gql`
             }
             extra {
                 ... on Organization {
+                    id
                     name
+                    photo
                 }
                 ... on ChannelConversation {
+                    id
+                    title
+                    photo
                     organization {
                         name
                     }
@@ -351,9 +356,14 @@ export const RoomMessageFull = gql`
             }
             extra {
                 ... on Organization {
+                    id
                     name
+                    photo
                 }
                 ... on ChannelConversation {
+                    id
+                    title
+                    photo
                     organization {
                         name
                     }
