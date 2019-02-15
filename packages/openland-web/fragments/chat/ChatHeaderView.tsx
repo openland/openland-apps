@@ -167,32 +167,28 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
 
             threeDots = <HeaderMenu room={sharedRoom} />;
 
-            if (sharedRoom.kind === 'PUBLIC') {
-                inviteButton = (
-                    <RoomAddMemberModal
-                        roomId={room.id}
-                        target={
-                            <XButton
-                                text="Invite"
-                                size="small"
-                                icon={<PlusIcon />}
-                                className={inviteButtonClass}
-                            />
-                        }
-                    />
-                );
-            }
+            inviteButton = (
+                <RoomAddMemberModal
+                    roomId={room.id}
+                    target={
+                        <XButton
+                            text="Invite"
+                            size="small"
+                            icon={<PlusIcon />}
+                            className={inviteButtonClass}
+                        />
+                    }
+                />
+            );
         }
         modals = (
-            <>
-                <RoomEditModal
-                    title={sharedRoom.title}
-                    description={sharedRoom.description}
-                    photo={sharedRoom.photo}
-                    socialImage={sharedRoom.socialImage}
-                    roomId={sharedRoom.id}
-                />
-            </>
+            <RoomEditModal
+                title={sharedRoom.title}
+                description={sharedRoom.description}
+                photo={sharedRoom.photo}
+                socialImage={sharedRoom.socialImage}
+                roomId={sharedRoom.id}
+            />
         );
     }
 
