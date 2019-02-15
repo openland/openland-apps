@@ -126,9 +126,8 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     <MobileMessengerContext.Provider value={getMessenger()}>
                         <MessengerContext.Provider value={getMessenger().engine}>
                             <View style={{ width: '100%', height: '100%' }}>
-                                <ZModalProvider>
-                                    <Root routing={getMessenger().history} />
-                                </ZModalProvider>
+                                <Root routing={getMessenger().history} />
+                                <ZModalProvider />
                             </View>
                         </MessengerContext.Provider>
                     </MobileMessengerContext.Provider>
@@ -137,17 +136,15 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         } else if (this.state.state === 'initial') {
             return (
                 <View style={{ width: '100%', height: '100%' }}>
-                    <ZModalProvider>
-                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
-                    </ZModalProvider>
+                    <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                    <ZModalProvider />
                 </View>
             );
         } else if (this.state.state === 'signup') {
             return (
                 <View style={{ width: '100%', height: '100%' }}>
-                    <ZModalProvider>
-                        <Root routing={this.history} />
-                    </ZModalProvider>
+                    <Root routing={this.history} />
+                    <ZModalProvider />
                 </View>
             );
         }

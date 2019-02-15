@@ -314,7 +314,7 @@ export class HeaderCoordinator {
             if (config.contentOffset) {
                 res = config.contentOffset.offsetValue <= 0 ? 0 : 1;
             } else {
-                res = 1;
+                res = 0;
             }
         }
         return res;

@@ -76,16 +76,13 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     render() {
         return (
             <>
-                <View width="100%" height="100%">
-                    {this.props.children}
-                    {this.state.modals.map((v) => (
-                        <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
-                            <ASSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
-                                {v.element}
-                            </ASSafeAreaProvider>
-                        </View>
-                    ))}
-                </View>
+                {this.state.modals.map((v) => (
+                    <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
+                        <ASSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
+                            {v.element}
+                        </ASSafeAreaProvider>
+                    </View>
+                ))}
             </>
         )
     }

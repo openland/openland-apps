@@ -30,18 +30,20 @@ const RoomsList = () => {
         .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
 
     let newRooms = src.filter(v => v.membership === 'NONE' || v.membership === 'REQUESTED');
+    let newRoomsLimited = newRooms.length > 3 ? [newRooms[0], newRooms[1], newRooms[2]] : newRooms;
     let existingRooms = src.filter(v => v.membership === 'MEMBER');
+    let existingRoomsLimited = existingRooms.length > 3 ? [existingRooms[0], existingRooms[1], existingRooms[2]] : existingRooms;
 
     let featured = featureds
-        .filter(v => newRooms.find(v2 => v.id !== v2.id))
-        .filter(v => existingRooms.find(v2 => v.id !== v2.id))
+        .filter(v => !newRooms.find(v2 => v.id !== v2.id))
+        .filter(v => !existingRooms.find(v2 => v.id !== v2.id))
         .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0));
 
     return (
         <>
             <ZListItem text="Organizations" path="ExploreOrganizations" />
             <ZListItemGroup header="Available Groups">
-                {newRooms.map(v => (
+                {newRoomsLimited.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -56,10 +58,22 @@ const RoomsList = () => {
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
+                {(newRoomsLimited.length < newRooms.length) && (
+                    <ZListItem
+                        leftIcon={require('assets/ic-more-24.png')}
+                        text="All groups"
+                        path="GroupList"
+                        pathParams={{
+                            groups: newRooms,
+                            title: 'Available groups',
+                        }}
+                        navigationIcon={false}
+                    />
+                )}
             </ZListItemGroup>
 
             <ZListItemGroup header="Your Groups" divider={false}>
-                {existingRooms.map(v => (
+                {existingRoomsLimited.map(v => (
                     <ZListItem
                         key={v.id}
                         text={v.title}
@@ -74,6 +88,18 @@ const RoomsList = () => {
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
+                 {(existingRoomsLimited.length < existingRooms.length) && (
+                    <ZListItem
+                        leftIcon={require('assets/ic-more-24.png')}
+                        text="All groups"
+                        path="GroupList"
+                        pathParams={{
+                            groups: newRooms,
+                            title: 'Your groups',
+                        }}
+                        navigationIcon={false}
+                    />
+                )}
             </ZListItemGroup>
 
             <ZListItemGroup header="Featured" divider={false}>
@@ -101,7 +127,7 @@ const ExplorePage = (props: PageProps) => {
     return (
         <>
             {Platform.OS === 'ios' && <SHeader title="Browse" />}
-            {Platform.OS === 'android' && <CenteredHeader title="Browse" padding={48} />}
+            {Platform.OS === 'android' && <CenteredHeader title="Browse" padding={98} />}
             <SHeaderButton
                 title="New"
                 icon={
