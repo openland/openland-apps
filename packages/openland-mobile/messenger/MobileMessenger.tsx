@@ -31,108 +31,102 @@ interface ASAvatarProps {
     placeholderTitle?: string | null;
 }
 
-export class ASAvatar extends React.PureComponent<ASAvatarProps> {
-    render() {
-        if (this.props.src && !this.props.src.startsWith('ph://')) {
-            let url = this.props.src;
-            url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
-            return (
-                <ASImage
-                    width={this.props.size}
-                    height={this.props.size}
-                    source={{ uri: url }}
-                    borderRadius={this.props.size / 2}
-                />
-            );
-        }
-
-        let placeholderIndex = 0;
-        if (this.props.placeholderKey) {
-            placeholderIndex = doSimpleHash(this.props.placeholderKey);
-        }
-        let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
-        let placeholderText = '?';
-        if (this.props.placeholderTitle) {
-            placeholderText = extractPlaceholder(this.props.placeholderTitle);
-        }
-        let textSize = 28;
-        if (this.props.size === 38 || this.props.size === 40) {
-            textSize = 16;
-        }
-        if (this.props.size === 32) {
-            textSize = 14;
-        }
-        if (this.props.size === 28) {
-            textSize = 12;
-        }
-        if (this.props.size === 30) {
-            textSize = 13;
-        }
-        if (this.props.size === 56) {
-            textSize = 26;
-        }
-        if (this.props.size === 96) {
-            textSize = 28;
-        }
-        if (this.props.size === 36) {
-            textSize = 14;
-        }
-
+export function ASAvatar(props: ASAvatarProps) {
+    if (props.src && !props.src.startsWith('ph://')) {
+        let url = props.src;
+        url += '-/scale_crop/' + 256 + 'x' + 256 + '/';
         return (
-            <ASFlex
-                width={this.props.size}
-                height={this.props.size}
-                alignItems="center"
-                justifyContent="center"
-                backgroundColor={placeholderStyle.placeholderColor}
-                backgroundGradient={{ start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd }}
-                borderRadius={this.props.size / 2}
-            >
-                <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
-            </ASFlex>
+            <ASImage
+                width={props.size}
+                height={props.size}
+                source={{ uri: url }}
+                borderRadius={props.size / 2}
+            />
         );
     }
+
+    let placeholderIndex = 0;
+    if (props.placeholderKey) {
+        placeholderIndex = doSimpleHash(props.placeholderKey);
+    }
+    let placeholderStyle = ZStyles.avatars[placeholderIndex % ZStyles.avatars.length];
+    let placeholderText = '?';
+    if (props.placeholderTitle) {
+        placeholderText = extractPlaceholder(props.placeholderTitle);
+    }
+    let textSize = 28;
+    if (props.size === 38 || props.size === 40) {
+        textSize = 16;
+    }
+    if (props.size === 32) {
+        textSize = 14;
+    }
+    if (props.size === 28) {
+        textSize = 12;
+    }
+    if (props.size === 30) {
+        textSize = 13;
+    }
+    if (props.size === 56) {
+        textSize = 26;
+    }
+    if (props.size === 96) {
+        textSize = 28;
+    }
+    if (props.size === 36) {
+        textSize = 14;
+    }
+
+    return (
+        <ASFlex
+            width={props.size}
+            height={props.size}
+            alignItems="center"
+            justifyContent="center"
+            backgroundColor={placeholderStyle.placeholderColor}
+            backgroundGradient={{ start: placeholderStyle.placeholderColorStart, end: placeholderStyle.placeholderColorEnd }}
+            borderRadius={props.size / 2}
+        >
+            <ASText fontSize={textSize} color="#fff">{placeholderText}</ASText>
+        </ASFlex>
+    );
 }
 
-export class UserAvatar extends React.PureComponent<ASAvatarProps & { online?: boolean }> {
-    render() {
-        return (
-            <ASFlex
-                width={this.props.size}
-                height={this.props.size}
-                alignItems="center"
-                justifyContent="center"
-            >
-                <ASAvatar {...this.props} />
+export function UserAvatar(props: ASAvatarProps & { online?: boolean }) {
+    return (
+        <ASFlex
+            width={props.size}
+            height={props.size}
+            alignItems="center"
+            justifyContent="center"
+        >
+            <ASAvatar {...props} />
 
-                <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
-                    {this.props.online && (this.props.size > 30) && (
-                        <ASFlex width={11} height={11} borderRadius={5} backgroundColor="#ffffff" justifyContent="center" marginRight={3} marginBottom={3}>
-                            <ASFlex width={7} height={7} borderRadius={3} backgroundColor="#0084fe" marginLeft={2} marginTop={2} marginRight={2} />
-                        </ASFlex>
-                    )}
-                    {this.props.online && (this.props.size <= 30) && (
-                        <ASFlex width={10} height={10} borderRadius={5} backgroundColor="#ffffff" justifyContent="center" marginRight={-1} marginBottom={-1}>
-                            <ASFlex width={6} height={6} borderRadius={3} backgroundColor="#0084fe" marginLeft={2} marginTop={2} marginRight={2} />
-                        </ASFlex>
-                    )}
-                </ASFlex>
+            <ASFlex overlay={true} alignItems="flex-end" justifyContent="flex-end">
+                {props.online && (props.size > 30) && (
+                    <ASFlex width={11} height={11} borderRadius={5} backgroundColor="#ffffff" justifyContent="center" marginRight={3} marginBottom={3}>
+                        <ASFlex width={7} height={7} borderRadius={3} backgroundColor="#0084fe" marginLeft={2} marginTop={2} marginRight={2} />
+                    </ASFlex>
+                )}
+                {props.online && (props.size <= 30) && (
+                    <ASFlex width={10} height={10} borderRadius={5} backgroundColor="#ffffff" justifyContent="center" marginRight={-1} marginBottom={-1}>
+                        <ASFlex width={6} height={6} borderRadius={3} backgroundColor="#0084fe" marginLeft={2} marginTop={2} marginRight={2} />
+                    </ASFlex>
+                )}
             </ASFlex>
+        </ASFlex>
 
-        );
-    }
+    );
 }
 
-class ASCounter extends React.PureComponent<{ value: number | string, muted?: boolean }> {
-    render() {
-        return (
-            <ASFlex borderRadius={9} backgroundColor={this.props.muted ? '#c8c7cc' : '#0084fe'} height={18} minWidth={18} justifyContent="center">
-                <ASFlex justifyContent="center" marginLeft={Platform.select({ default: 4, android: 6 })} marginRight={Platform.select({ default: 4, android: 6 })}>
-                    <ASText color="#fff" lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{this.props.value + ''}</ASText>
-                </ASFlex>
-            </ASFlex >
-        );
-    }
+function ASCounter(props: { value: number | string, muted?: boolean }) {
+    return (
+        <ASFlex borderRadius={9} backgroundColor={props.muted ? '#c8c7cc' : '#0084fe'} height={18} minWidth={18} justifyContent="center">
+            <ASFlex justifyContent="center" marginLeft={Platform.select({ default: 4, android: 6 })} marginRight={Platform.select({ default: 4, android: 6 })}>
+                <ASText color="#fff" lineHeight={Platform.select({ default: 16, android: 17 })} fontSize={12} minWidth={8} textAlign="center">{props.value + ''}</ASText>
+            </ASFlex>
+        </ASFlex >
+    );
 }
 
 export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string) => void }> {
@@ -142,6 +136,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
     }
 
     render() {
+        console.log('render: ' + this.props.item.key);
         let item = this.props.item;
         let isUser = item.kind === 'PRIVATE';
         let height = this.props.compact ? 48 : 80;
