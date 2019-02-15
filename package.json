@@ -142,6 +142,7 @@
         "react-native-blur": "^3.2.2",
         "react-native-device-info": "^0.22.0",
         "react-native-document-picker": "^2.2.0",
+        "react-native-extra-dimensions-android": "^1.0.0",
         "react-native-fast-image": "^5.1.2",
         "react-native-gesture-handler": "^1.0.15",
         "react-native-haptic-feedback": "^1.2.0",

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.bridge.ProxyJavaScriptExecutor;
@@ -71,6 +72,7 @@ public class MainApplication extends Application implements ShareApplication, Re
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new ExtraDimensionsPackage(),
             new ReactNativeDocumentPicker(),
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
