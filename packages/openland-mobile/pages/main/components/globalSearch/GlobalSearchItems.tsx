@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { ASAvatar, UserAvatar } from '../../../../messenger/MobileMessenger';
 import { Platform } from 'react-native';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { ASText } from 'react-native-async-view/ASText';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { GlobalSearch_items_User, GlobalSearch_items_Organization, GlobalSearch_items_SharedRoom } from 'openland-api/Types';
+import { ASAvatar } from 'openland-mobile/messenger/components/ASAvatar';
+import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 
 export class GlobalSearchItemSharedRoom extends React.PureComponent<{
     item: GlobalSearch_items_SharedRoom;

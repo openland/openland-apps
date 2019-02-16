@@ -7,9 +7,8 @@ import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
-import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
+import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
@@ -123,14 +122,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return (
                 <>
                     <PushManager client={getClient()} />
-                    <MobileMessengerContext.Provider value={getMessenger()}>
-                        <MessengerContext.Provider value={getMessenger().engine}>
-                            <View style={{ width: '100%', height: '100%' }}>
-                                <Root routing={getMessenger().history} />
-                                <ZModalProvider />
-                            </View>
-                        </MessengerContext.Provider>
-                    </MobileMessengerContext.Provider>
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <Root routing={getMessenger().history} />
+                        <ZModalProvider />
+                    </View>
                 </>
             );
         } else if (this.state.state === 'initial') {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
 import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { MessengerContext, MessengerEngine } from 'openland-engines/MessengerEngine';
+import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
 import { MessageInputBar } from './components/MessageInputBar';
@@ -16,9 +16,6 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ASView } from 'react-native-async-view/ASView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASImage } from 'react-native-async-view/ASImage';
 import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
@@ -188,7 +185,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
 }
 
 const ConversationComponent = XMemo<PageProps>((props) => {
-    let messenger = React.useContext(MessengerContext);
+    let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
@@ -280,7 +277,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
 
     return (
         <View flexDirection={'column'} height="100%" width="100%">
-            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger!!} chat={(sharedRoom || privateRoom)!} />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} />
             <ASSafeAreaContext.Consumer>
                 {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
             </ASSafeAreaContext.Consumer>
