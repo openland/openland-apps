@@ -25,6 +25,12 @@ export class AsyncDateSeparator extends React.PureComponent<{ year: number, mont
             if (now.getMonth() !== this.props.month || now.getDate() !== this.props.date) {
                 date = months[this.props.month] + ' ' + this.props.date;
             }
+        } else if (now.getFullYear() === this.props.year + 1) {
+            if (this.props.month < now.getMonth()) {
+                date = this.props.year + ', ' + months[this.props.month] + ' ' + this.props.date;
+            } else {
+                date = months[this.props.month] + ' ' + this.props.date;
+            }
         } else {
             date = this.props.year + ', ' + months[this.props.month] + ' ' + this.props.date;
         }
