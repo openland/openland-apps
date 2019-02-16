@@ -28,7 +28,7 @@ target 'openland' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
     
-  pod 'Texture'
+  pod 'Texture', '~> 2.8'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.0'
 

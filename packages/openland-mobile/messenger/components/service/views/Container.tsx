@@ -8,6 +8,7 @@ export const Container = (props: { children?: any, theme: ConversationTheme }) =
         <ASFlex alignItems="center" justifyContent="center" flexDirection="column" backgroundColor="white">
             <ASFlex
                 marginTop={16}
+                marginBottom={16}
                 // backgroundColor="rgba(153,162,176,0.6)"
                 // borderRadius={10}
                 marginLeft={10}

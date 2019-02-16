@@ -52,8 +52,8 @@ export class DefaultConversationTheme implements ConversationTheme {
 
     textColorIn = '#000000';
     textColorOut = '#ffffff';
-    textColorSecondaryIn = 'rgba(138,138,143, 0.7)';
-    textColorSecondaryOut = 'rgba(255,255,255, 0.7)';
+    textColorSecondaryIn = 'rgba(138,138,143, 1)';
+    textColorSecondaryOut = 'rgba(255,255,255, 1)';
 
     backgroundColor = '#fff';
 

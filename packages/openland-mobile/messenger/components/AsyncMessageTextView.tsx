@@ -248,9 +248,9 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                                 {formatTime(this.props.message.date)}
                             </ASText>
                             {this.props.message.isOut && (
-                                <ASFlex width={18} height={13} marginLeft={2} marginTop={1} justifyContent="flex-start" alignItems="center">
-                                    {this.props.message.isSending && <ASImage source={require('assets/ic-sending.png')} width={13} height={13} />}
-                                    {!this.props.message.isSending && <ASImage source={require('assets/ic-sent.png')} width={9} height={8} />}
+                                <ASFlex width={13} height={13} marginLeft={2} marginTop={1} marginRight={2} justifyContent="flex-start" alignItems="center">
+                                    {this.props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
+                                    {!this.props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
                                 </ASFlex>
                             )}
                         </ASFlex>

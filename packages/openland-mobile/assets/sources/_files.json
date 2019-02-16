@@ -1,5 +1,29 @@
 {
     "icons": [{
+        "name": "ic-status-read",
+        "src": "ic-status-read.svg",
+        "sizes": [13]
+    }, {
+        "name": "ic-status-sending",
+        "src": "ic-status-sending.svg",
+        "sizes": [13]
+    }, {
+        "name": "ic-status-sent",
+        "src": "ic-status-sent.svg",
+        "sizes": [13]
+    }, {
+        "name": "ic-status-read",
+        "src": "ic-status-read.svg",
+        "sizes": [10]
+    }, {
+        "name": "ic-status-sending",
+        "src": "ic-status-sending.svg",
+        "sizes": [10]
+    }, {
+        "name": "ic-status-sent",
+        "src": "ic-status-sent.svg",
+        "sizes": [10]
+    }, {
         "name": "ic-compose",
         "src": "ic-compose-ios.svg",
         "sizes": [26]
