@@ -24,7 +24,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { SDeferred } from 'react-native-s/SDeferred';
 import { CallBarComponent } from 'openland-mobile/calls/CallBar';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
-import { ConversationTheme, ConversationThemeResolver } from './themes/ConversationThemeResolver';
+import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from './themes/ConversationThemeResolver';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
@@ -38,7 +38,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
         super(props);
         this.engine = this.props.engine.getConversation(this.props.chat.id);
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
-        this.state = { text: '', theme: ConversationThemeResolver.getCachedOrDefault(this.props.chat.id) };
+        this.state = { text: '', theme: DefaultConversationTheme };
     }
 
     componentWillUnmount() {

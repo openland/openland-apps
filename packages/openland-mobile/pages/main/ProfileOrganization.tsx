@@ -146,11 +146,11 @@ function ProfileOrganizationContent(props: PageProps) {
                         {organization.rooms.length > 3 && (
                             <ZListItem
                                 leftIcon={require('assets/ic-more-24.png')}
-                                text="More rooms"
+                                text="More groups"
                                 path="ProfileOrganizationGroups"
                                 pathParams={{
                                     organizationId: organization.id,
-                                    title: organization.name + ' rooms',
+                                    title: organization.name + ' groups',
                                 }}
                                 navigationIcon={false}
                             />)}

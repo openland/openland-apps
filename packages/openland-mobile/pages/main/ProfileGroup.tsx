@@ -21,7 +21,7 @@ import { UploadStatus } from 'openland-engines/messenger/types';
 import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
-import { changeThemeModal } from './themes/ThemeChangeModal';
+// import { changeThemeModal } from './themes/ThemeChangeModal';
 
 function ProfileGroupComponent(props: PageProps & { id: string }) {
 
@@ -190,9 +190,9 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         );
     }, [room.members]);
 
-    const editTheme = React.useCallback(() => {
-        changeThemeModal(room.id);
-    }, [room.id])
+    // const editTheme = React.useCallback(() => {
+    //     changeThemeModal(room.id);
+    // }, [room.id])
 
     const sortedMembers = room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
     const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + 'member';
@@ -239,11 +239,11 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
 
             <ZListItemGroup header={Platform.OS === 'android' ? null : 'Settings'} divider={false}>
                 <NotificationSettings id={room.id} mute={!!room.settings.mute} />
-                <ZListItem
+                {/* <ZListItem
                     text="Change theme"
                     leftIcon={require('assets/ic-edit.png')}
                     onPress={editTheme}
-                />
+                /> */}
             </ZListItemGroup>
 
             <ZListItemGroup header="Members" divider={false}>

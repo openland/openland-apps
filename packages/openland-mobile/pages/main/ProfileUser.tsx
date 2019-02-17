@@ -12,7 +12,7 @@ import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { NotificationSettings } from './components/NotificationSetting';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { changeThemeModal } from './themes/ThemeChangeModal';
+// import { changeThemeModal } from './themes/ThemeChangeModal';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const ProfileUserContent = XMemo<PageProps>((props) => {
@@ -23,9 +23,9 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
     let myID = getMessenger().engine.user.id;
     let online = getClient().useOnline({ userId: props.router.params.id }).user;
 
-    const editTheme = React.useCallback(() => {
-        changeThemeModal((userQuery.conversation! as any).id);
-    }, [(userQuery.conversation! as any).id])
+    // const editTheme = React.useCallback(() => {
+    //     changeThemeModal((userQuery.conversation! as any).id);
+    // }, [(userQuery.conversation! as any).id])
 
     let sub = undefined;
     let subColor = undefined;
@@ -94,11 +94,11 @@ const ProfileUserContent = XMemo<PageProps>((props) => {
                         id={(conversation as User_conversation_PrivateRoom).id}
                         mute={!!(conversation as User_conversation_PrivateRoom).settings.mute}
                     />
-                    <ZListItem
+                    {/* <ZListItem
                         text="Change theme"
                         leftIcon={require('assets/ic-edit.png')}
                         onPress={editTheme}
-                    />
+                    /> */}
                 </ZListItemGroup>
             )}
         </>
