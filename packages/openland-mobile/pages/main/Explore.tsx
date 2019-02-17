@@ -41,7 +41,7 @@ const RoomsList = () => {
 
     return (
         <>
-            <ZListItem text="Organizations" path="ExploreOrganizations" />
+            {/* <ZListItem text="Organizations" path="ExploreOrganizations" /> */}
             <ZListItemGroup header="Available Groups">
                 {newRoomsLimited.map(v => (
                     <ZListItem

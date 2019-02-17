@@ -3,12 +3,11 @@ import { ASText } from 'react-native-async-view/ASText';
 import { UserShort } from 'openland-api/Types';
 import { TextStyles } from '../../../../styles/AppStyles';
 import { ActionSheetBuilder } from '../../../../components/ActionSheet';
-import { ConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 interface OthersUsersWrapperProps {
     users: UserShort[];
     onUserPress: (id: string) => void;
-    theme: ConversationTheme;
 }
 
 export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps> {
@@ -27,8 +26,9 @@ export class OthersUsersWrapper extends React.Component<OthersUsersWrapperProps>
     render() {
         return (
             <ASText
-                key={'service_text' + this.props.theme.linkColorIn}
-                color={this.props.theme.linkColorIn}
+                key={'service_text'}
+                // color={this.props.theme.linkColorIn}
+                color={DefaultConversationTheme.linkColorIn}
                 fontWeight={TextStyles.weight.medium}
                 fontSize={12}
                 lineHeight={17}

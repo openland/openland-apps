@@ -6,12 +6,10 @@ import { AsyncMessageMediaView } from './AsyndMessageMediaView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageTextView } from './AsyncMessageTextView';
 import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
-import { AsyncMessageIntroView, renderButtons } from './AsyncMessageIntroView';
+import { AsyncMessageIntroView } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { Platform } from 'react-native';
-import { ASView } from 'react-native-async-view/ASView';
-import { ConversationTheme, ConversationThemeResolver } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;

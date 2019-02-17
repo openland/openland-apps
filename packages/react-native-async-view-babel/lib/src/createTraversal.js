@@ -22,7 +22,7 @@ function createTraversal() {
                             if (node.openingElement.attributes.find((v) => v.type === 'JSXSpreadAttribute')) {
                                 return;
                             }
-                            // Process props
+                            // Check blacklisted
                             for (let attr of node.openingElement.attributes) {
                                 let jsxAttr = attr;
                                 let jsxName = jsxAttr.name.name;
@@ -30,6 +30,11 @@ function createTraversal() {
                                 if (transformer.blacklist.find((v2) => jsxName === v2)) {
                                     return;
                                 }
+                            }
+                            // Process props
+                            for (let attr of node.openingElement.attributes) {
+                                let jsxAttr = attr;
+                                let jsxName = jsxAttr.name.name;
                                 for (let pt of transformer.propTransformers) {
                                     if (pt.name === jsxName) {
                                         let tr = pt.tranform(jsxAttr.value);

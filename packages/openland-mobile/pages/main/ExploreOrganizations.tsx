@@ -12,7 +12,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SSearchControler } from 'react-native-s/SSearchController';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { Platform } from 'react-native';
-import { CenteredHeader } from './components/CenteredHeader';
 import { ZStyles } from 'openland-mobile/components/ZStyles';
 import { AppStyles } from 'openland-mobile/styles/AppStyles';
 

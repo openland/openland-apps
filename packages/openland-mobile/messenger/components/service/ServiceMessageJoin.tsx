@@ -3,7 +3,6 @@ import { Container } from './views/Container';
 import { MessageFull_serviceMetadata_InviteServiceMetadata, UserShort } from 'openland-api/Types';
 import { UserWrapper } from './views/UserWrapper';
 import { OthersUsersWrapper } from './views/OthersUsersWrapper';
-import { ConversationTheme } from '../../../pages/main/themes/ConversationThemeResolver';
 
 const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
 
@@ -14,7 +13,6 @@ interface JoinDefaultProps {
     onUserPress: (id: string) => void;
     myUserId: string;
     handEmoji: string;
-    theme: ConversationTheme;
 }
 
 const JoinOneServiceMessage = (props: JoinDefaultProps & { joinedByUser: UserShort }) => {
@@ -22,19 +20,19 @@ const JoinOneServiceMessage = (props: JoinDefaultProps & { joinedByUser: UserSho
 
     if (joinedByUser && joinedByUser.id !== firstUser.id) {
         return (
-            <Container theme={props.theme}>
+            <Container>
                 {handEmoji}{' '}
-                <UserWrapper theme={props.theme} user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> was
+                <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> was
                 invited by{' '}
-                <UserWrapper theme={props.theme} user={joinedByUser} onUserPress={onUserPress} myUserId={myUserId} />
+                <UserWrapper user={joinedByUser} onUserPress={onUserPress} myUserId={myUserId} />
             </Container>
         );
     }
 
     return (
-        <Container theme={props.theme}>
+        <Container>
             {handEmoji}{' '}
-            <UserWrapper theme={props.theme} user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
+            <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
             the room
         </Container>
     );
@@ -44,11 +42,11 @@ const JoinTwoServiceMessage = (props: JoinDefaultProps & { secondUser: UserShort
     let { secondUser, firstUser, onUserPress, myUserId, handEmoji } = props;
 
     return (
-        <Container theme={props.theme}>
+        <Container>
             {handEmoji}{' '}
-            <UserWrapper theme={props.theme} user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
+            <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
             the room along with{' '}
-            <UserWrapper theme={props.theme} user={secondUser} onUserPress={onUserPress} myUserId={myUserId} />
+            <UserWrapper user={secondUser} onUserPress={onUserPress} myUserId={myUserId} />
         </Container>
     );
 };
@@ -57,10 +55,10 @@ const JoinManyServiceMessage = (props: JoinDefaultProps & { otherUsers: UserShor
     let { otherUsers, firstUser, onUserPress, myUserId, handEmoji } = props;
 
     return (
-        <Container theme={props.theme}>
+        <Container>
             {handEmoji}{' '}
-            <UserWrapper theme={props.theme} user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
-            the room along with <OthersUsersWrapper theme={props.theme} users={otherUsers} onUserPress={onUserPress} />
+            <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
+            the room along with <OthersUsersWrapper users={otherUsers} onUserPress={onUserPress} />
         </Container>
     );
 };
@@ -69,7 +67,6 @@ interface ServiceMessageJoinProps {
     myUserId: string;
     serviceMetadata: MessageFull_serviceMetadata_InviteServiceMetadata;
     onUserPress: (id: string) => void;
-    theme: ConversationTheme;
 }
 
 interface ServiceMessageJoinState {
@@ -96,7 +93,6 @@ export class ServiceMessageJoin extends React.PureComponent<
             if (users.length === 1) {
                 return (
                     <JoinOneServiceMessage
-                        theme={this.props.theme}
                         myUserId={myUserId}
                         firstUser={users[0]}
                         joinedByUser={serviceMetadata.invitedBy}
@@ -107,7 +103,6 @@ export class ServiceMessageJoin extends React.PureComponent<
             } else if (users.length === 2) {
                 return (
                     <JoinTwoServiceMessage
-                        theme={this.props.theme}
                         myUserId={myUserId}
                         firstUser={users[0]}
                         secondUser={users[1]}
@@ -118,7 +113,6 @@ export class ServiceMessageJoin extends React.PureComponent<
             } else {
                 return (
                     <JoinManyServiceMessage
-                        theme={this.props.theme}
                         myUserId={myUserId}
                         firstUser={users[0]}
                         otherUsers={users.slice(1)}

@@ -3,18 +3,17 @@ import { ASText } from 'react-native-async-view/ASText';
 import { RoomShort } from 'openland-api/Types';
 import { TextStyles } from '../../../../styles/AppStyles';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
-import { ConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 interface RoomWrapperProps {
     room: RoomShort;
     onRoomPress: (id: string) => void;
-    theme: ConversationTheme;
 }
 
 export const RoomWrapper = (props: RoomWrapperProps) => (
     <ASText
-        key={'service_text' + props.theme.linkColorIn}
-        color={props.theme.linkColorIn}
+        // key={'service_text' + props.theme.linkColorIn}
+        color={DefaultConversationTheme.linkColorIn}
         fontWeight={TextStyles.weight.medium}
         fontSize={12}
         lineHeight={17}

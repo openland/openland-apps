@@ -4,12 +4,10 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { getMessenger } from '../../utils/messenger';
 import { ASText } from 'react-native-async-view/ASText';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { Dimensions, Platform } from 'react-native';
-import { bubbleMaxWidth } from './AsyncBubbleView';
+import { Platform } from 'react-native';
 import { messageBgColor } from './AsyncMessageView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Stopwatch } from 'openland-y-utils/stopwatch';
-const maxReactionsNames = 3;
 
 export class AsyncMessageReactionsView extends React.PureComponent<{ message: DataSourceMessageItem }> {
     render() {

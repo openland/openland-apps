@@ -30,11 +30,25 @@ const colorProcessor = {
         return processWrapper('processColor', src);
     }
 };
+const tintColorProcessor = {
+    name: 'tintColor',
+    imports: [{ what: 'processColor', from: 'react-native' }],
+    tranform: (src) => {
+        return processWrapper('processColor', src);
+    }
+};
 const backgroundGradientProcessor = {
     name: 'backgroundGradient',
     imports: [{ what: 'processGradient', from: 'react-native-async-view/utils/processGradient' }],
     tranform: (src) => {
         return processWrapper('processGradient', src);
+    }
+};
+const backgroundPatchTintColorTransformer = {
+    name: 'backgroundPatchTintColor',
+    imports: [{ what: 'processColor', from: 'react-native' }],
+    tranform: (src) => {
+        return processWrapper('processColor', src);
     }
 };
 const flexTransformer = {
@@ -43,7 +57,8 @@ const flexTransformer = {
     blacklist: ['onPress', 'onLongPress'],
     propTransformers: [
         backgroundColorProcessor,
-        backgroundGradientProcessor
+        backgroundGradientProcessor,
+        backgroundPatchTintColorTransformer
     ]
 };
 const textTransformer = {

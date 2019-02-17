@@ -51,6 +51,9 @@ class RNPatchNode: ASDisplayNode {
     }
     
     // Result image
+    self.node.placeholderEnabled = false
+    self.node.placeholderFadeDuration = 0.0
+    self.node.placeholderColor = UIColor.white
     self.node.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(spec.top), left: CGFloat(spec.left), bottom: CGFloat(spec.bottom), right: CGFloat(spec.right)), resizingMode: UIImageResizingMode.stretch)
     if(spec.tint != nil){
       self.node.imageModificationBlock = ASImageNodeTintColorModificationBlock(spec.tint!)

@@ -24,7 +24,7 @@ export function createTraversal() {
                                 return;
                             }
 
-                            // Process props
+                            // Check blacklisted
                             for (let attr of node.openingElement.attributes) {
                                 let jsxAttr = attr as t.JSXAttribute
                                 let jsxName = jsxAttr.name.name;
@@ -32,7 +32,12 @@ export function createTraversal() {
                                 if (transformer!.blacklist.find((v2) => jsxName === v2)) {
                                     return
                                 }
+                            }
 
+                            // Process props
+                            for (let attr of node.openingElement.attributes) {
+                                let jsxAttr = attr as t.JSXAttribute
+                                let jsxName = jsxAttr.name.name;
                                 for (let pt of transformer!.propTransformers) {
                                     if (pt.name === jsxName) {
                                         let tr = pt.tranform(jsxAttr.value);

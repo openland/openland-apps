@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
-import { ConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
-export const Container = (props: { children?: any, theme: ConversationTheme }) => {
+export const Container = (props: { children?: any }) => {
     return (
         <ASFlex alignItems="center" justifyContent="center" flexDirection="column" backgroundColor="white">
             <ASFlex
                 marginTop={16}
-                marginBottom={16}
+                marginBottom={8}
                 // backgroundColor="rgba(153,162,176,0.6)"
                 // borderRadius={10}
                 marginLeft={10}
@@ -16,8 +16,9 @@ export const Container = (props: { children?: any, theme: ConversationTheme }) =
                 flexDirection="column"
             >
                 <ASText
-                    key={'service_text' + props.theme.serviceTextColor + props.theme.linkColorIn}
-                    color={props.theme.serviceTextColor}
+                    key={'service_text'}
+                    // color={props.theme.serviceTextColor}
+                    color={DefaultConversationTheme.serviceTextColor}
                     fontSize={12}
                     lineHeight={17}
                     marginLeft={6}
