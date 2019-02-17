@@ -64,17 +64,6 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
                     borderRadius={10}
                     isGif={this.props.message.file!!.isGif}
                 />
-                {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
-                    overlay={true}
-                    width={layout.width}
-                    height={layout.height}
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <ASFlex backgroundColor="#0008" borderRadius={20}>
-                        <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
-                    </ASFlex>
-                </ASFlex>}
 
                 <ASFlex
                     overlay={true}
@@ -83,6 +72,17 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
                     marginRight={8}
                     marginBottom={8}
                 >
+                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                        overlay={true}
+                        width={layout.width}
+                        height={layout.height}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <ASFlex backgroundColor="#0008" borderRadius={20}>
+                            <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                        </ASFlex>
+                    </ASFlex>}
                     <ASFlex
                         backgroundColor="rgba(0,0,0,0.5)"
                         flexDirection="row"
