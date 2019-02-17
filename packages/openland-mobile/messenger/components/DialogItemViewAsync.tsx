@@ -29,6 +29,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
         console.log('render: ' + this.props.item.key);
         let item = this.props.item;
         let isUser = item.kind === 'PRIVATE';
+        let isGroup = item.kind === 'GROUP';
         let height = this.props.compact ? 48 : 80;
         let avatarSize = this.props.compact ? 30 : 60;
         return (
@@ -50,7 +51,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
                 </ASFlex>
                 <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                     <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
-                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={Platform.OS === 'android' ? '#000' : '#181818'} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={ isGroup ? 'green' : (Platform.OS === 'android' ? '#000' : '#181818')} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
                         {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
                     </ASFlex>
                     {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
