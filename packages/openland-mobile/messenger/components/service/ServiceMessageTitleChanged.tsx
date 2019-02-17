@@ -10,7 +10,7 @@ export interface ServiceMessageTitleChangedProps {
 export const ServiceMessageTitleChanged = (props: ServiceMessageTitleChangedProps) => {
     return (
         <Container>
-            New room name: <ASText fontWeight={TextStyles.weight.medium}>{props.title}</ASText>
+            New group name: <ASText fontWeight={TextStyles.weight.medium}>{props.title}</ASText>
         </Container>
     );
 };

@@ -41,13 +41,13 @@ class CreateChannelComponent extends React.PureComponent<PageProps, CreateChanne
     render() {
         return (
             <>
-                <SHeader title="New room" />
+                <SHeader title="New group" />
                 <SHeaderButton title="Create" onPress={() => { this.ref.current!.submitForm(); }} />
                 <ZForm
                     ref={this.ref}
                     action={async (src) => {
                         if (!src.title) {
-                            throw new UserError('Room name can\'t be empty');
+                            throw new UserError('Group name can\'t be empty');
                         }
                         let channel = await getClient().mutateRoomCreate({
                             kind: SharedRoomKind.PUBLIC,
