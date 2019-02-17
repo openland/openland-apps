@@ -199,12 +199,12 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                                 color={mainTextColor}
                                 lineHeight={big ? 60 : 20}
                                 letterSpacing={-0.3}
-                                fontSize={18}
+                                fontSize={16}
                                 marginTop={-3}
                                 fontWeight={TextStyles.weight.medium}
                             >
                                 {this.props.message.urlAugmentation.title}
-                                {this.props.message.isOut ? paddedTextOut : paddedText}
+                                {!this.props.message.urlAugmentation.description && (this.props.message.isOut ? paddedTextOut : paddedText)}
                             </ASText>
                             }
                             {!!this.props.message.urlAugmentation.description && <ASText
@@ -216,6 +216,7 @@ export class AsyncMessageTextView extends React.PureComponent<AsyncMessageTextVi
                                 fontWeight={TextStyles.weight.regular}
                             >
                                 {this.props.message.urlAugmentation.description}
+                                {this.props.message.isOut ? paddedTextOut : paddedText}
                             </ASText>}
 
                         </ASFlex>
