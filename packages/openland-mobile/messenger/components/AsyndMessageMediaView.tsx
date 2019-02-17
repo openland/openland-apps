@@ -10,6 +10,7 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
+import { formatTime } from 'openland-mobile/utils/formatTime';
 
 export interface AsyncMessageMediaViewProps {
     message: DataSourceMessageItem;
@@ -74,6 +75,38 @@ export class AsyncMessageMediaView extends React.PureComponent<AsyncMessageMedia
                         <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
                     </ASFlex>
                 </ASFlex>}
+
+                <ASFlex
+                    overlay={true}
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                    marginRight={8}
+                    marginBottom={8}
+                >
+                    <ASFlex
+                        backgroundColor="rgba(0,0,0,0.5)"
+                        flexDirection="row"
+                        alignItems="center"
+                        height={16}
+                        borderRadius={8}
+                    >
+                        <ASFlex flexDirection="row" marginLeft={4} marginRight={2}>
+                            <ASText
+                                fontSize={11}
+                                lineHeight={13}
+                                color="white"
+                            >
+                                {formatTime(this.props.message.date)}
+                            </ASText>
+                            {this.props.message.isOut && (
+                                <ASFlex width={10} height={13} marginLeft={2} marginTop={1} justifyContent="flex-start" alignItems="center">
+                                    {this.props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor="white" />}
+                                    {!this.props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor="white" />}
+                                </ASFlex>
+                            )}
+                        </ASFlex>
+                    </ASFlex>
+                </ASFlex>
 
             </AsyncBubbleView>
         );
