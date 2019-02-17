@@ -42,7 +42,7 @@
     }, {
         "name": "ic-lock",
         "src": "ic-lock.svg",
-        "sizes": [18, 24]
+        "sizes": [13, 18, 24]
     }, {
         "name": "ic-help",
         "src": "ic-notifications-copy.svg",
