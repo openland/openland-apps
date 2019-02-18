@@ -71,11 +71,19 @@ const getScrollElement = (src: any) => {
 };
 
 const getScrollView = () => {
-    return getScrollElement(
-        document
-            .getElementsByClassName('messages-wrapper')[0]
-            .getElementsByClassName('simplebar-scroll-content')[0],
-    );
+    const wrapperElement = document.getElementsByClassName('messages-wrapper')[0];
+
+    if (!wrapperElement) {
+        return null;
+    }
+
+    const simpleBarElement = wrapperElement.getElementsByClassName('simplebar-scroll-content')[0];
+
+    if (!simpleBarElement) {
+        return null;
+    }
+
+    return getScrollElement(simpleBarElement);
 };
 
 const LoadingWrapper = glamorous.div({
@@ -99,7 +107,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         });
 
         setTimeout(() => {
-            if (getScrollView().scrollTop < 50) {
+            const scrollViewElem = getScrollView();
+            if (scrollViewElem && scrollViewElem.scrollTop < 50) {
                 this.props.conversation.loadBefore();
             }
         }, 1000);
