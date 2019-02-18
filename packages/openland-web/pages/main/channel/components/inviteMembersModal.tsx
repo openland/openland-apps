@@ -370,7 +370,11 @@ class InviteMembersModalRaw extends React.Component<
                         this.copyLink();
                     }
                 }}
-                title={this.props.channelTitle === undefined ? 'Invite people' : 'Invite people to'}
+                title={
+                    this.props.channelTitle === undefined
+                        ? 'Invitation link'
+                        : `Invite people to ${this.props.channelTitle}`
+                }
                 titleChildren={
                     this.props.channelTitle && <ChannelName>{this.props.channelTitle}</ChannelName>
                 }
