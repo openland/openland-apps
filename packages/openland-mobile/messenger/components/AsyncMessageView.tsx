@@ -4,7 +4,7 @@ import { AsyncAvatar } from './AsyncAvatar';
 import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { AsyncMessageMediaView } from './AsyndMessageMediaView';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { AsyncMessageTextView } from './AsyncMessageTextView';
+import { AsyncMessageContentView } from './AsyncMessageContentView';
 import { AsyncMessageDocumentView } from './AsyncMessageDocumentView';
 import { AsyncMessageIntroView } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
@@ -66,10 +66,6 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
     }
 
     render() {
-        let specialMessage = renderSpecialMessage(this.props.message, this.props.navigationManager, this.props.onDocumentPress);
-
-        let ios = Platform.OS === 'ios';
-        let isMedia = !specialMessage && this.props.message.file && this.props.message.file.isImage;
         return (
             <ASFlex flexDirection="column" alignItems="stretch" onLongPress={this.handleLongPress} backgroundColor={!this.props.message.isOut ? messageBgColor : undefined}>
 
@@ -90,28 +86,25 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                                 />
                             </ASFlex>
                         }
-                        <ASFlex key="margin-left-2" backgroundColor={messageBgColor} width={(isMedia ? 5 : this.props.message.isOut ? 10 : 0)} />
+                        <ASFlex key="margin-left-2" backgroundColor={messageBgColor} width={(this.props.message.isOut ? 10 : 0)} />
 
                         {this.props.message.isOut && <ASFlex backgroundColor={messageBgColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
                         <ASFlex flexDirection="column" alignItems="stretch" marginLeft={this.props.message.isOut ? -4 : 0}>
-                            {!specialMessage && (this.props.message.text || this.props.message.reply) && !this.props.message.file && (
-                                <AsyncMessageTextView engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
+                            {((this.props.message.text || this.props.message.reply) || (this.props.message.file ? this.props.message.file.isImage : true)) && (
+                                <AsyncMessageContentView engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
                             )}
-                            {isMedia && (
-                                <AsyncMessageMediaView message={this.props.message} onPress={this.props.onMediaPress} />
-                            )}
-                            {!specialMessage && this.props.message.file && !this.props.message.file.isImage && (
+
+                            {this.props.message.file && !this.props.message.file.isImage && (
                                 <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
                             )}
 
                         </ASFlex>
-                        <ASFlex key="margin-right" backgroundColor={messageBgColor} width={(isMedia ? 5 : 0) + 4} />
+                        <ASFlex key="margin-right" backgroundColor={messageBgColor} width={4} />
 
                     </ASFlex>
 
-                    {!specialMessage && this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
+                    {this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
 
-                    {specialMessage}
                 </ASFlex>
                 <ASFlex key="margin-bottom" backgroundColor={messageBgColor} height={4} marginBottom={-2} />
 
