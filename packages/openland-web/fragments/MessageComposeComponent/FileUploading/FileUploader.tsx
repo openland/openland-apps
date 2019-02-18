@@ -48,7 +48,8 @@ const FileItem = Glamorous(XHorizontal)({
     lineHeight: 1.54,
     fontWeight: 500,
     color: '#000',
-    paddingLeft: 18,
+    paddingLeft: 14,
+    paddingRight: 14,
     '& .remove': {
         marginTop: 1,
         cursor: 'pointer',
