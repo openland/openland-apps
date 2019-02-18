@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css } from 'linaria';
 import { XView } from 'react-mental';
 import { MutationFunc } from 'react-apollo';
 import {
@@ -13,15 +12,13 @@ import { withExplorePeople } from 'openland-web/api/withExplorePeople';
 import { withRoomMembersId } from 'openland-web/api/withRoomMembers';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
-import { XModal, XModalProps } from 'openland-x-modal/XModal';
-import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
+import { XModalProps } from 'openland-x-modal/XModal';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
-import { XButton } from 'openland-x/XButton';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XCreateCard } from '../../../openland-x/cards/XCreateCard';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
-import { sanitizeImageRef } from '../../../openland-y-utils/sanitizeImageRef';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -111,18 +108,6 @@ interface InviteModalState {
     selectedUsers: Map<string, string> | null;
 }
 
-const footerWrapperClassName = css`
-    height: 56px;
-    background-color: #f9f9f9;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    padding: 24px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 1;
-`;
-
 class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteModalState> {
     constructor(props: InviteModalProps) {
         super(props);
@@ -146,28 +131,6 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
         this.setState({
             selectedUsers: newSelected,
         });
-    };
-
-    private addMembers = () => {
-        const { selectedUsers } = this.state;
-        if (selectedUsers) {
-            const invitesUsers: { userId: string; role: RoomMemberRole }[] = [];
-            selectedUsers.forEach((l, v) => {
-                invitesUsers.push({ userId: v, role: RoomMemberRole.MEMBER });
-            });
-
-            this.props.addMember({
-                variables: {
-                    roomId: this.props.roomId,
-                    invites: invitesUsers,
-                },
-            });
-
-            this.setState({
-                searchQuery: '',
-                selectedUsers: null,
-            });
-        }
     };
 
     private selectMembers = (label: string, value: string) => {
@@ -212,16 +175,6 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                         },
                     });
                 }}
-                // footer={
-                //     <div className={footerWrapperClassName}>
-                //         <XButton
-                //             style="primary"
-                //             text="Add"
-                //             autoClose={true}
-                //             onClick={this.addMembers}
-                //         />
-                //     </div>
-                // }
             >
                 <XView
                     height="60vh"
