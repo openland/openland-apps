@@ -5,15 +5,15 @@ import { ZListItem } from './ZListItem';
 
 export class ActionSheetBuilder {
     private _title?: string;
-    private _actions: { name: string, callback: () => void, distructive?: boolean }[] = [];
+    private _actions: { name: string, callback: () => void, distructive?: boolean, icon?: any }[] = [];
 
     title(title: string): ActionSheetBuilder {
         this._title = title;
         return this;
     }
 
-    action(name: string, callback: () => void, distructive?: boolean): ActionSheetBuilder {
-        this._actions.push({ name, callback, distructive });
+    action(name: string, callback: () => void, distructive?: boolean, icon?: any): ActionSheetBuilder {
+        this._actions.push({ name, callback, distructive, icon });
         return this;
     }
 
@@ -38,6 +38,7 @@ export class ActionSheetBuilder {
                         {this._actions.map((a, i) => (
                             <ZListItem
                                 key={i + '-ac'}
+                                leftIcon={a.icon}
                                 appearance={a.distructive ? 'danger' : 'default'}
                                 text={a.name}
                                 onPress={() => { ctx.hide(); a.callback(); }}

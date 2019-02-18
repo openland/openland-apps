@@ -108,6 +108,26 @@
         "src": "ic-photo.svg",
         "sizes": [24]
     }, {
+        "name": "ic-camera",
+        "src": "ic-camera.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-video",
+        "src": "ic-video.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-gallery",
+        "src": "ic-photos.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-gallery-video",
+        "src": "ic-videos.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-document",
+        "src": "ic-document.svg",
+        "sizes": [24]
+    }, {
         "name": "ic-photo-fill",
         "src": "ic-cell-photo-ios.svg",
         "sizes": [24]

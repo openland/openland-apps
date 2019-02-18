@@ -79,7 +79,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
 
                 UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
             });
-        });
+        }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
         if (Platform.OS === 'android') {
             builder.action('Record Video', () => {
                 Picker.launchCamera({
@@ -90,7 +90,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                     }
                     UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
                 });
-            });
+            }, false, Platform.OS === 'android' ? require('assets/ic-video-24.png') : undefined);
         }
         builder.action(Platform.select({ ios: 'Photo & Video Library', android: 'Photo Gallery' }), () => {
             Picker.launchImageLibrary(
@@ -111,7 +111,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                     UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
                 }
             );
-        });
+        }, false, Platform.OS === 'android' ? require('assets/ic-gallery-24.png') : undefined);
         if (Platform.OS === 'android') {
             builder.action('Video Gallery', () => {
                 Picker.launchImageLibrary({
@@ -122,7 +122,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                     }
                     UploadManagerInstance.registerUpload(this.props.chat.id, 'video.mp4', response.uri, response.fileSize);
                 });
-            });
+            }, false, Platform.OS === 'android' ? require('assets/ic-gallery-video-24.png') : undefined);
         }
 
         builder.action('Document', () => {
@@ -135,7 +135,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                     UploadManagerInstance.registerUpload(this.props.chat.id, res.fileName, res.uri, res.fileSize);
                 }
             );
-        });
+        }, false, Platform.OS === 'android' ? require('assets/ic-document-24.png') : undefined);
 
         builder.show();
     }
