@@ -203,7 +203,7 @@ export default withApp(
                                                         text="Save changes"
                                                         alignSelf="flex-start"
                                                         style="primary"
-                                                        succesText="Changes saved!"
+                                                        successText="Changes saved!"
                                                     />
                                                 </XVertical>
                                             </XVertical>
@@ -235,7 +235,7 @@ export default withApp(
                                                         text="Save changes"
                                                         alignSelf="flex-start"
                                                         style="primary"
-                                                        succesText="Changes saved!"
+                                                        successText="Changes saved!"
                                                     />
                                                 </XVertical>
                                             </XVertical>
@@ -297,7 +297,7 @@ export default withApp(
                                                         text="Save changes"
                                                         alignSelf="flex-start"
                                                         style="primary"
-                                                        succesText="Changes saved!"
+                                                        successText="Changes saved!"
                                                     />
                                                 </XVertical>
                                             </XVertical>

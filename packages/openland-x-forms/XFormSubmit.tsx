@@ -31,7 +31,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
     submit = async () => {
         this.setState({ loading: true });
         await this.props.form.submit(this.props.action);
-        if (this.props.succesText) {
+        if (this.props.successText) {
             this.setState({
                 loading: false,
                 success: !this.props.form.store.readValue('form.error')
@@ -53,7 +53,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
     render() {
         let { action, ...other } = this.props;
         let formEnabled = !!this.props.form.store.readValue('form.enabled');
-        other.text = this.state.success ? this.props.succesText : other.text;
+        other.text = this.state.success ? this.props.successText : other.text;
         return (
             <XButton
                 {...other}                
@@ -70,7 +70,7 @@ class FormSubmit extends React.PureComponent<XFormSubmitProps & { form: XFormCon
 export interface XFormSubmitProps extends XButtonStyleProps {
     action?: (data: any) => any;
     keyDownSubmit?: boolean;
-    succesText?: string;
+    successText?: string;
     dataTestId?: string; 
     onSuccessAnimationEnd?: () => any;
 }

@@ -72,7 +72,7 @@ const DeleteMessageComponent = withDeleteMessage(props => {
             defaultAction={data => {
                 props.deleteMessage({ variables: { messageId: id } });
             }}
-            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
+            submitProps={{ successText: 'Deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this message? This cannot be undone.</XText>
         </XModalForm>
@@ -89,7 +89,7 @@ const DeleteUrlAugmentationComponent = withDeleteUrlAugmentation(props => {
             defaultAction={data => {
                 props.deleteUrlAugmentation({ variables: { messageId: id } });
             }}
-            submitProps={{ succesText: 'Deleted!', style: 'danger' }}
+            submitProps={{ successText: 'Deleted!', style: 'danger' }}
         >
             <XText>Are you sure you want to delete this url preview? This cannot be undone.</XText>
         </XModalForm>
@@ -106,7 +106,7 @@ export const LeaveChatComponent = withChatLeave(props => {
             defaultAction={data => {
                 props.leaveFromChat({ variables: { roomId: id } });
             }}
-            submitProps={{ succesText: 'Done!', style: 'danger' }}
+            submitProps={{ successText: 'Done!', style: 'danger' }}
         >
             <XText>
                 Are you sure you want to leave? You will need to request access to join it again in
