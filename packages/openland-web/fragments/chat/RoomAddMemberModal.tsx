@@ -17,6 +17,7 @@ import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
+import LinkIcon from 'openland-icons/ic-link.svg';
 import { XCreateCard } from '../../../openland-x/cards/XCreateCard';
 
 interface SearchBoxProps {
@@ -70,6 +71,7 @@ const ExplorePeople = withExplorePeople(props => {
                             <XCreateCard
                                 text="Invite with a link"
                                 path={`/mail/${(props as any).roomId}?inviteByLink=true`}
+                                icon={<LinkIcon />}
                             />
                         )}
                     {props.data.items.edges.map(i => {

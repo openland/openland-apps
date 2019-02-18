@@ -86,10 +86,6 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     private scroller = React.createRef<XScrollViewReversed>();
     unshifted = false;
 
-    constructor(props: MessageListProps) {
-        super(props);
-    }
-
     scrollToBottom = () => {
         this.scroller.current!!.scrollToBottom();
     };
@@ -101,6 +97,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         getScrollView().addEventListener('scroll', this.handleScroll, {
             passive: true,
         });
+
+        setTimeout(() => {
+            if (getScrollView().scrollTop < 50) {
+                this.props.conversation.loadBefore();
+            }
+        }, 1000);
     }
 
     componentWillUnmount() {

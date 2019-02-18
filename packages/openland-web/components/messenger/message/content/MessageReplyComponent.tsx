@@ -102,7 +102,6 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
             position="relative"
             paddingLeft={15}
             width="100%"
-            marginTop={props.compact ? 6 : 12}
             borderRadius={6}
             overflow="hidden"
         >

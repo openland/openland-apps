@@ -89,8 +89,8 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                ? props.handleHideChat
-                : undefined;
+                    ? props.handleHideChat
+                    : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -224,33 +224,3 @@ export const AttachmentButtons = ({
         </XHorizontal>
     );
 };
-
-{
-    /* <XHorizontal separator="none">
-                                <AttachmentButton
-                                    onClick={
-                                        this.props.enabled === false ? undefined : this.handleAttach
-                                    }
-                                    enabled={this.props.enabled === false}
-                                    disable={this.props.enabled === false}
-                                >
-                                    <PhotoIcon />
-                                    <span>Photo</span>
-                                </AttachmentButton>
-                                <AttachmentButton
-                                    onClick={
-                                        this.props.enabled === false ? undefined : this.handleAttach
-                                    }
-                                    enabled={this.props.enabled === false}
-                                    disable={this.props.enabled === false}
-                                    className="document-button"
-                                >
-                                    <FileIcon />
-                                    <span>Document</span>
-                                </AttachmentButton>
-                                <PostButton
-                                    enabled={this.props.enabled}
-                                    handleHideChat={this.props.handleHideChat}
-                                />
-                            </XHorizontal> */
-}

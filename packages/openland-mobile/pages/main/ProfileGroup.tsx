@@ -195,7 +195,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
     // }, [room.id])
 
     const sortedMembers = room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
-    const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + 'member';
+    const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
 
     return (
         <>
