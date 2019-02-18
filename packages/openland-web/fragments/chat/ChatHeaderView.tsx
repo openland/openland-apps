@@ -169,6 +169,9 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
 
             inviteButton = (
                 <RoomAddMemberModal
+                    refetchVars={{
+                        roomId: room.id,
+                    }}
                     roomId={room.id}
                     target={
                         <XButton

@@ -338,6 +338,9 @@ const MembersProvider = ({
                         <>
                             <RoomAddMemberModal
                                 roomId={chatId}
+                                refetchVars={{
+                                    roomId: chatId,
+                                }}
                                 target={<XCreateCard text="Invite people" />}
                             />
                             {members.map((member, i) => (
