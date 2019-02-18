@@ -1,0 +1,3 @@
+{
+    "operations": [{ "name": "ResolveInviteQuery", "type": "query", "hasVariables": true }]
+}

@@ -19,14 +19,14 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
             <ZListItemGroup header={null} footer="Anyone who has Openland installed will be abble to join your room by following this link.">
                 <ZListItem
                     key="add"
-                    text={`https://openland.com/joinChannel/${link}`}
+                    text={`https://openland.com/join/${link}`}
                     appearance="action"
-                    onPress={() => Share.share({ message: `https://openland.com/joinChannel/${link}` })}
+                    onPress={() => Share.share({ message: `https://openland.com/join/${link}` })}
                     copy={true}
                 />
             </ZListItemGroup>
             <ZListItemGroup >
-                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/joinChannel/${link}`)} />
+                <ZListItem appearance="action" text="Copy link" onPress={() => Clipboard.setString(`https://openland.com/join/${link}`)} />
                 <ZListItem
                     appearance="action"
                     text="Revoke link"
@@ -43,7 +43,7 @@ const ProfileGroupLinkContent = XMemo<PageProps>((props) => {
                     }}
                 />
             </ZListItemGroup>
-            <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/joinChannel/${link}` })} />
+            <ZListItem appearance="action" text="Share link" onPress={() => Share.share({ message: `https://openland.com/join/${link}` })} />
         </>
     )
 });
