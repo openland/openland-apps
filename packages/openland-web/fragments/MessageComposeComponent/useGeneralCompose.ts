@@ -3,7 +3,6 @@ import { QuoteStateT } from './useQuote';
 
 export type GeneralComposeStateT = {
     handleChange: Function;
-    handleDialogDone: Function;
 };
 
 export function useGeneralCompose({
@@ -37,12 +36,5 @@ export function useGeneralCompose({
         }
     };
 
-    const handleDialogDone = (r: UploadCare.File) => {
-        setInputValue('');
-        if (onSendFile) {
-            onSendFile(r);
-        }
-    };
-
-    return { handleChange, handleDialogDone };
+    return { handleChange };
 }

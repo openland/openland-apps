@@ -24,7 +24,6 @@ export type TextInputComponentT = {
 export type TextInputComponentInnerT = TextInputComponentT & { placeholder: string };
 
 export type DumpSendMessagePropsT = TextInputComponentT & {
-    handleDialogDone: (result: UploadCare.File) => void;
     enabled?: boolean;
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
     quoteState?: QuoteStateT;
@@ -44,7 +43,6 @@ export const DumpSendMessage = ({
     inputValue,
     enabled,
     handleHideChat,
-    handleDialogDone,
     quoteState,
     closeEditor,
 }: DumpSendMessageT) => {
@@ -77,7 +75,6 @@ export const DumpSendMessage = ({
                         <AttachmentButtons
                             enabled={enabled}
                             handleHideChat={handleHideChat}
-                            handleDialogDone={handleDialogDone}
                         />
 
                         <XButton

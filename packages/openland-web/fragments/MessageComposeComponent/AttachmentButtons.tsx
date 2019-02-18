@@ -3,7 +3,6 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import PhotoIcon from 'openland-icons/ic-photo-2.svg';
 import Glamorous from 'glamorous';
 import FileIcon from 'openland-icons/ic-file-3.svg';
-import UploadCare from 'uploadcare-widget';
 import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
@@ -13,12 +12,16 @@ import { PostMessageType } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
 import { XMenuItem } from 'openland-x/XMenuItem';
-import { getConfig } from '../../config';
+import { UploadContext } from './FileUploading/UploadContext';
 
 interface PostButtonProps {
     enabled?: boolean;
     handleHideChat?: (show: boolean, postType: PostMessageType | null) => void;
 }
+
+const FileInput = Glamorous.input({
+    display: 'none',
+});
 
 export const AttachmentButton = Glamorous(XLink)<{ disable?: boolean }>(props => ({
     paddingLeft: 12,
@@ -165,23 +168,23 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
 export const AttachmentButtons = ({
     enabled,
     handleHideChat,
-    handleDialogDone,
 }: {
     enabled?: boolean;
     handleHideChat?: (show: boolean, postType: any) => void;
-    handleDialogDone: (result: UploadCare.File) => void;
 }) => {
-    const handleAttach = () => {
-        let dialog = UploadCare.openDialog(null, {
-            publicKey: getConfig().uploadcareKey!!,
-        });
-        dialog.done(handleDialogDone);
+    const fileInput: React.RefObject<HTMLInputElement> = React.createRef();
+    const { handleDrop } = React.useContext(UploadContext);
+    const fileSelector = () => {
+        if (fileInput.current) {
+            fileInput.current.click();
+        }
     };
 
     return (
         <XHorizontal separator="none">
+            <FileInput type="file" innerRef={fileInput} onChange={(e: any) => handleDrop(e.target.files[0])} />
             <AttachmentButton
-                onClick={!enabled ? undefined : handleAttach}
+                onClick={!enabled ? undefined : fileSelector}
                 enabled={!enabled}
                 disable={!enabled}
             >
@@ -189,7 +192,7 @@ export const AttachmentButtons = ({
                 <span>Photo</span>
             </AttachmentButton>
             <AttachmentButton
-                onClick={!enabled ? undefined : handleAttach}
+                onClick={!enabled ? undefined : fileSelector}
                 enabled={!enabled}
                 disable={!enabled}
                 className="document-button"
