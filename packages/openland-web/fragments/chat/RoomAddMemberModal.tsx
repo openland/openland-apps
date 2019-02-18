@@ -201,6 +201,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
             <XModalForm
                 title="Add members"
                 target={props.target}
+                submitBtnText="Add"
                 width={520}
                 useTopCloser={true}
                 defaultAction={async data => {
