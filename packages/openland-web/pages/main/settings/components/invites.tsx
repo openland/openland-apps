@@ -247,7 +247,7 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                                 (this.props.appInvite || this.props.invite!.key)
                             }
                         />
-                        <InviteText>Anyone with link can join Openland</InviteText>
+                        <InviteText>Anyone with link can join as organization member</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -308,7 +308,7 @@ class InvitesModalRaw extends React.Component<
     linkComponent?: any;
     constructor(props: any) {
         super(props);
-        this.state = { showLink: props.global };
+        this.state = { showLink: true };
     }
 
     handleRemove = (index: number, store?: XStoreState) => {
@@ -356,25 +356,23 @@ class InvitesModalRaw extends React.Component<
                             />
                         </XWithRole>
                     )}
-                    {this.state.showLink &&
-                        !this.props.global && (
-                            <InviteButton
-                                onClick={() => this.setState({ showLink: false })}
-                                icon={<EmailIcon />}
-                                marginLeft={4}
-                                marginRight={10}
-                                title={TextInvites.backToEmailInvites}
-                            />
-                        )}
+                    {/* {this.state.showLink && !this.props.global && (
+                        <InviteButton
+                            onClick={() => this.setState({ showLink: false })}
+                            icon={<EmailIcon />}
+                            marginLeft={4}
+                            marginRight={10}
+                            title={TextInvites.backToEmailInvites}
+                        />
+                    )} */}
                 </XHorizontal>
 
-                {this.state.showLink &&
-                    !this.props.global && (
-                        <RenewInviteLinkButton
-                            variables={{ organizationId: this.props.organizationId }}
-                            refetchVars={{ organizationId: this.props.organizationId }}
-                        />
-                    )}
+                {this.state.showLink && !this.props.global && (
+                    <RenewInviteLinkButton
+                        variables={{ organizationId: this.props.organizationId }}
+                        refetchVars={{ organizationId: this.props.organizationId }}
+                    />
+                )}
                 {this.state.showLink && (
                     <XFormSubmit
                         key="link"
@@ -498,20 +496,18 @@ class InvitesModalRaw extends React.Component<
                             )}
                         </XVertical>
                     )}
-                    {this.state.showLink &&
-                        !this.props.global && (
-                            <OwnerLink
-                                innerRef={this.handleLinkComponentRef}
-                                onBack={() => this.setState({ showLink: false })}
-                            />
-                        )}
-                    {this.state.showLink &&
-                        this.props.global && (
-                            <OwnerLinkOrganization
-                                innerRef={this.handleLinkComponentRef}
-                                onBack={() => this.setState({ showLink: false })}
-                            />
-                        )}
+                    {this.state.showLink && !this.props.global && (
+                        <OwnerLink
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
+                    {this.state.showLink && this.props.global && (
+                        <OwnerLinkOrganization
+                            innerRef={this.handleLinkComponentRef}
+                            onBack={() => this.setState({ showLink: false })}
+                        />
+                    )}
                 </ModalContentWrapper>
             </XModalForm>
         );
