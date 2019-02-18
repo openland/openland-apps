@@ -65,12 +65,14 @@ const ExplorePeople = withExplorePeople(props => {
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
                 <XView paddingHorizontal={16} flexDirection="column">
-                    {!(props as any).searchQuery && (
-                        <InviteMembersModal
-                            roomId={(props as any).roomId}
-                            target={<XCreateCard text="Invite with a link" />}
-                        />
-                    )}
+                    {!(props as any).searchQuery &&
+                        (!(props as any).selectedUsers ||
+                            (props as any).selectedUsers.size === 0) && (
+                            <InviteMembersModal
+                                roomId={(props as any).roomId}
+                                target={<XCreateCard text="Invite with a link" />}
+                            />
+                        )}
                     {props.data.items.edges.map(i => {
                         if (
                             ((props as any).selectedUsers &&
