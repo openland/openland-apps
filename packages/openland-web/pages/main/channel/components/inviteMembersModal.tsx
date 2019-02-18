@@ -256,7 +256,6 @@ interface InviteMembersModalRawProps {
     channelTitle?: string;
     roomId: string;
     sendInviteMutation: any;
-    target: any;
 }
 
 class InviteMembersModalRaw extends React.Component<
@@ -348,7 +347,7 @@ class InviteMembersModalRaw extends React.Component<
         return (
             <XModalForm
                 autoClose={1500}
-                target={this.props.target}
+                targetQuery="inviteByLink"
                 defaultAction={async data => {
                     if (!this.state.showLink) {
                         let invites = data.inviteRequests
@@ -464,10 +463,8 @@ export const InviteMembersModal = withChanneSendlnviteLink(props => (
         channelTitle={(props as any).channelTitle}
         roomId={(props as any).roomId}
         sendInviteMutation={props.send}
-        target={(props as any).target}
     />
 )) as React.ComponentType<{
     channelTitle?: string;
     roomId: string;
-    target: any;
 }>;

@@ -18,7 +18,6 @@ import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XCreateCard } from '../../../openland-x/cards/XCreateCard';
-import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -68,9 +67,9 @@ const ExplorePeople = withExplorePeople(props => {
                     {!(props as any).searchQuery &&
                         (!(props as any).selectedUsers ||
                             (props as any).selectedUsers.size === 0) && (
-                            <InviteMembersModal
-                                roomId={(props as any).roomId}
-                                target={<XCreateCard text="Invite with a link" />}
+                            <XCreateCard
+                                text="Invite with a link"
+                                path={`/mail/${(props as any).roomId}?inviteByLink=true`}
                             />
                         )}
                     {props.data.items.edges.map(i => {
@@ -169,6 +168,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                 submitBtnText="Add"
                 width={520}
                 useTopCloser={true}
+                targetQuery="inviteMembers"
                 defaultAction={async data => {
                     await props.addMember({
                         variables: {
@@ -177,6 +177,12 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                         },
                     });
                 }}
+                onClosed={() =>
+                    this.setState({
+                        selectedUsers: null,
+                        searchQuery: '',
+                    })
+                }
             >
                 <XView
                     height="60vh"

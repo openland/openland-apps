@@ -53,6 +53,7 @@ import {
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
 import { tabs, tabsT } from '../tabs';
 import { RoomAddMemberModal } from '../../../../fragments/chat/RoomAddMemberModal';
+import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -336,10 +337,12 @@ const MembersProvider = ({
                 <SectionContent>
                     {tab === tabs.members && (
                         <>
-                            <RoomAddMemberModal
-                                roomId={chatId}
-                                target={<XCreateCard text="Invite people" />}
+                            <RoomAddMemberModal roomId={chatId} />
+                            <XCreateCard
+                                text="Invite people"
+                                query={{ field: 'inviteMembers', value: 'true' }}
                             />
+                            <InviteMembersModal roomId={chatId} />
                             {members.map((member, i) => (
                                 <MemberCard
                                     key={i}
@@ -360,7 +363,6 @@ const MembersProvider = ({
                 </SectionContent>
                 {meOwner && (
                     <>
-                        {/*<RoomAddMemberModal roomId={chatId} />*/}
                         <RemoveMemberModal
                             members={members}
                             roomId={chatId}
