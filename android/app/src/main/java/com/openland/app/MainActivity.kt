@@ -83,12 +83,15 @@ class MainActivity : ReactActivity() {
     override fun onPause() {
         super.onPause()
 
-        provider!!.close()
-
         // Start keep alive service
         val service = Intent(applicationContext, MainService::class.java)
         val bundle = Bundle()
         service.putExtras(bundle)
         startService(service)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        provider!!.close()
     }
 }
