@@ -21,6 +21,7 @@ import { XButton } from 'openland-x/XButton';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XCreateCard } from '../../../openland-x/cards/XCreateCard';
 import { InviteMembersModal } from '../../pages/main/channel/components/inviteMembersModal';
+import { sanitizeImageRef } from '../../../openland-y-utils/sanitizeImageRef';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -183,6 +184,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
         const { props } = this;
         const { selectedUsers } = this.state;
         let options: { label: string; value: string }[] = [];
+        const invitesUsers: { userId: string; role: RoomMemberRole }[] = [];
         if (selectedUsers) {
             selectedUsers.forEach((l, v) => {
                 options.push({
@@ -190,43 +192,60 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                     value: v,
                 });
             });
+
+            selectedUsers.forEach((l, v) => {
+                invitesUsers.push({ userId: v, role: RoomMemberRole.MEMBER });
+            });
         }
         return (
-            <XModal
+            <XModalForm
                 title="Add members"
                 target={props.target}
                 width={520}
                 useTopCloser={true}
-                body={
-                    <XView height="60vh" flexGrow={1}>
-                        <XView paddingHorizontal={16}>
-                            <SearchBox
-                                onInputChange={this.onInputChange}
-                                value={options}
-                                onChange={this.onChange}
-                            />
-                        </XView>
-                        <ExplorePeople
-                            variables={{ query: this.state.searchQuery }}
-                            searchQuery={this.state.searchQuery}
-                            roomId={props.roomId}
-                            onPick={this.selectMembers}
-                            selectedUsers={selectedUsers}
-                            roomUsers={props.members}
+                defaultAction={async data => {
+                    await props.addMember({
+                        variables: {
+                            roomId: this.props.roomId,
+                            invites: invitesUsers,
+                        },
+                    });
+                }}
+                // footer={
+                //     <div className={footerWrapperClassName}>
+                //         <XButton
+                //             style="primary"
+                //             text="Add"
+                //             autoClose={true}
+                //             onClick={this.addMembers}
+                //         />
+                //     </div>
+                // }
+            >
+                <XView
+                    height="60vh"
+                    flexGrow={1}
+                    marginHorizontal={-24}
+                    marginTop={-6}
+                    marginBottom={-24}
+                >
+                    <XView paddingHorizontal={16}>
+                        <SearchBox
+                            onInputChange={this.onInputChange}
+                            value={options}
+                            onChange={this.onChange}
                         />
                     </XView>
-                }
-                footer={
-                    <div className={footerWrapperClassName}>
-                        <XButton
-                            style="primary"
-                            text="Add"
-                            autoClose={true}
-                            onClick={this.addMembers}
-                        />
-                    </div>
-                }
-            />
+                    <ExplorePeople
+                        variables={{ query: this.state.searchQuery }}
+                        searchQuery={this.state.searchQuery}
+                        roomId={props.roomId}
+                        onPick={this.selectMembers}
+                        selectedUsers={selectedUsers}
+                        roomUsers={props.members}
+                    />
+                </XView>
+            </XModalForm>
         );
     }
 }
