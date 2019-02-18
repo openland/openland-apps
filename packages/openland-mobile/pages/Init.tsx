@@ -17,6 +17,7 @@ import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { SDevice } from 'react-native-s/SDevice';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -117,7 +118,11 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
     render() {
         if (this.state.state === 'loading') {
-            return <ZLoader appearance="large" />;
+            return (
+                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top + SDevice.navigationBarHeight, marginBottom: SDevice.safeArea.bottom }}>
+                    <ZLoader appearance="large" />
+                </View>
+            );
         } else if (this.state.state === 'app') {
             return (
                 <>
@@ -145,6 +150,10 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         }
 
         // return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
-        return <ZLoader appearance="large" />;
+        return (
+            <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top + SDevice.navigationBarHeight, marginBottom: SDevice.safeArea.bottom }}>
+                <ZLoader appearance="large" />
+            </View>
+        )
     }
 }

@@ -93,7 +93,7 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
                     <KeyboardSafeAreaView >
                         <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
                             {Platform.OS === 'ios' && <FixedLottie source={require('assets/material_loading.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
-                            {Platform.OS !== 'ios' && <ActivityIndicator size="large" />}
+                            {Platform.OS !== 'ios' && <ActivityIndicator size="large" color="#0084fe" />}
                         </Animated.View>
                     </KeyboardSafeAreaView>
                 )}
