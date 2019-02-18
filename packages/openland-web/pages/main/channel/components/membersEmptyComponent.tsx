@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { InviteMembersModal } from './inviteMembersModal';
-import { XButton } from 'openland-x/XButton';
 
 const EmptyRoot = Glamorous.div({
     position: 'relative',
@@ -88,11 +87,7 @@ export const EmptyComponent = (props: {
             </ImageWrapper>
             {props.aloneMember && <Text>Grow this room</Text>}
             <InfoText>{props.text}</InfoText>
-            <InviteMembersModal
-                channelTitle={props.channelTitle}
-                roomId={props.chatId}
-                target={<XButton style="primary" text="Send invitations" />}
-            />
+            <InviteMembersModal channelTitle={props.channelTitle} roomId={props.chatId} />
         </EmptyContent>
     </EmptyRoot>
 );

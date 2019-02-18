@@ -24,6 +24,7 @@ import { XLoader } from 'openland-x/XLoader';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -168,20 +169,22 @@ export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
             threeDots = <HeaderMenu room={sharedRoom} />;
 
             inviteButton = (
-                <RoomAddMemberModal
-                    refetchVars={{
-                        roomId: room.id,
-                    }}
-                    roomId={room.id}
-                    target={
-                        <XButton
-                            text="Invite"
-                            size="small"
-                            icon={<PlusIcon />}
-                            className={inviteButtonClass}
-                        />
-                    }
-                />
+                <>
+                    <XButton
+                        text="Invite"
+                        size="small"
+                        icon={<PlusIcon />}
+                        className={inviteButtonClass}
+                        query={{ field: 'inviteMembers', value: 'true' }}
+                    />
+                    <RoomAddMemberModal
+                        roomId={room.id}
+                        refetchVars={{
+                            roomId: room.id,
+                        }}
+                    />
+                    <InviteMembersModal roomId={room.id} />
+                </>
             );
         }
         modals = (
