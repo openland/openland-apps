@@ -167,7 +167,7 @@ const UserCard = ({
     id: string;
     name: string;
     photo: string | null;
-    organization: string;
+    organization?: string | null;
     description?: string | null;
     isMe: boolean;
     messageId: string;
@@ -210,12 +210,16 @@ const UserCard = ({
                             size: 16,
                         })}
                     </XView>
-                    <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
-                        {organization}
-                    </XView>
-                    <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
-                        {description}
-                    </XView>
+                    {organization && (
+                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                            {organization}
+                        </XView>
+                    )}
+                    {description && (
+                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                            {description}
+                        </XView>
+                    )}
                 </XView>
                 {isMe && (
                     <DeleteButton
@@ -261,7 +265,7 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
                     id={extra.id}
                     name={extra.title}
                     photo={extra.photo}
-                    organization={extra.organization!!.name}
+                    organization={extra.organization ? extra.organization!!.name : null}
                 />
             );
         } else if (extra.__typename === 'User') {
@@ -275,7 +279,9 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
                     id={extra.id}
                     name={extra.name}
                     photo={extra.photo}
-                    organization={extra.primaryOrganization!!.name}
+                    organization={
+                        extra.primaryOrganization ? extra.primaryOrganization!!.name : null
+                    }
                 />
             );
         }
