@@ -31,12 +31,7 @@ export function useGeneralCompose({
         }
 
         if (supportDraft()) {
-            if (
-                draftState!!.changeDraft &&
-                quoteState &&
-                quoteState.quoteMessagesId!!.length &&
-                draftState!!.beDrafted!!
-            ) {
+            if (draftState!!.changeDraft && draftState!!.beDrafted!!) {
                 draftState!!.changeDraft(value);
             }
         }
