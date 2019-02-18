@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DropZone } from './DropZone';
 
 type FileT = UploadCare.File | null | undefined;
 type FileSrcT = string | null | undefined;

@@ -99,7 +99,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         inputMethodsState,
     });
 
-    const { handleChange, handleDialogDone } = useGeneralCompose({
+    const { handleChange } = useGeneralCompose({
         onChange: messageComposeProps.onChange,
         onSendFile: messageComposeProps.onSendFile,
         setInputValue,
@@ -131,7 +131,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
                 handleChange={handleChange}
                 handleSend={handleSend}
                 handleHideChat={messageComposeProps.handleHideChat}
-                handleDialogDone={handleDialogDone}
                 inputRef={inputRef}
                 inputValue={inputValue}
                 enabled={messageComposeProps.enabled}
