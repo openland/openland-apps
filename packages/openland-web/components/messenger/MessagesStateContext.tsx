@@ -176,13 +176,9 @@ export class MessageStateProviderComponent extends React.PureComponent<
     };
 
     render() {
-        let { children } = this.props;
-
-        console.log('changeForwardConverstion', this.state);
-
         return (
             <MessagesStateContext.Provider value={this.state}>
-                {children}
+                {this.props.children}
             </MessagesStateContext.Provider>
         );
     }

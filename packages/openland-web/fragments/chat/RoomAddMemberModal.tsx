@@ -14,6 +14,7 @@ import { withRoomMembersId } from 'openland-web/api/withRoomMembers';
 import { XSelect } from 'openland-x/XSelect';
 import { XSelectCustomUsersRender } from 'openland-x/basics/XSelectCustom';
 import { XModal, XModalProps } from 'openland-x-modal/XModal';
+import { XModalForm, XModalFormProps } from 'openland-x-modal/XModalForm2';
 import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XButton } from 'openland-x/XButton';
@@ -46,6 +47,7 @@ const SearchBox = (props: SearchBoxProps) => (
 
 interface ExplorePeopleProps {
     variables: { query?: string };
+    searchQuery: string;
     roomId: string;
     onPick: (label: string, value: string) => void;
     selectedUsers: Map<string, string> | null;
@@ -65,10 +67,12 @@ const ExplorePeople = withExplorePeople(props => {
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
                 <XView paddingHorizontal={16} flexDirection="column">
-                    <InviteMembersModal
-                        roomId={(props as any).roomId}
-                        target={<XCreateCard text="Invite with a link" />}
-                    />
+                    {!(props as any).searchQuery && (
+                        <InviteMembersModal
+                            roomId={(props as any).roomId}
+                            target={<XCreateCard text="Invite with a link" />}
+                        />
+                    )}
                     {props.data.items.edges.map(i => {
                         if (
                             ((props as any).selectedUsers &&
@@ -157,6 +161,11 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                     invites: invitesUsers,
                 },
             });
+
+            this.setState({
+                searchQuery: '',
+                selectedUsers: null,
+            });
         }
     };
 
@@ -199,6 +208,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                         </XView>
                         <ExplorePeople
                             variables={{ query: this.state.searchQuery }}
+                            searchQuery={this.state.searchQuery}
                             roomId={props.roomId}
                             onPick={this.selectMembers}
                             selectedUsers={selectedUsers}
