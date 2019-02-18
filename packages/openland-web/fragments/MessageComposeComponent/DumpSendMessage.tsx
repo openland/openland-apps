@@ -63,7 +63,7 @@ export const DumpSendMessage = ({
                                 onCancel={closeEditor}
                             />
                         )}
-
+                    <FileUploader />
                     <TextInputComponent
                         placeholder="Write a message..."
                         mentionsState={mentionsState}
@@ -88,7 +88,6 @@ export const DumpSendMessage = ({
                             enabled={enabled}
                         />
                     </XHorizontal>
-                    <FileUploader />
                 </XVertical>
             </SendMessageContent>
         </SendMessageWrapper>
