@@ -303,13 +303,14 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out && message.text && (
-                            <IconButton
-                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        )}
+                        {out &&
+                            message.text && (
+                                <IconButton
+                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -388,6 +389,36 @@ class DesktopMessageComponentInner extends React.PureComponent<
                     />,
                 );
             } else {
+                if (message.reply && message.reply!.length > 0) {
+                    content.push(
+                        <ReplyMessageWrapper key={'reply_message' + message.id}>
+                            {message
+                                .reply!.sort((a, b) => a.date - b.date)
+                                .map((item, index, array) => {
+                                    let isCompact =
+                                        index > 0
+                                            ? array[index - 1].sender.id === item.sender.id
+                                            : false;
+
+                                    return (
+                                        <MessageReplyComponent
+                                            mentions={message.mentions || []}
+                                            sender={item.sender}
+                                            date={item.date}
+                                            message={item.message}
+                                            id={item.id}
+                                            key={'reply_message' + item.id + index}
+                                            edited={item.edited}
+                                            file={item.file}
+                                            fileMetadata={item.fileMetadata}
+                                            startSelected={hideMenu}
+                                            compact={isCompact || undefined}
+                                        />
+                                    );
+                                })}
+                        </ReplyMessageWrapper>,
+                    );
+                }
                 if (message.text && message.text.length > 0 && !isPost) {
                     if (message.isService) {
                         content.push(
@@ -468,36 +499,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
                             messageId={message.id!}
                             isMe={message.senderId === (this.props.me && this.props.me.id)}
                         />,
-                    );
-                }
-                if (message.reply && message.reply!.length > 0) {
-                    content.push(
-                        <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {message
-                                .reply!.sort((a, b) => a.date - b.date)
-                                .map((item, index, array) => {
-                                    let isCompact =
-                                        index > 0
-                                            ? array[index - 1].sender.id === item.sender.id
-                                            : false;
-
-                                    return (
-                                        <MessageReplyComponent
-                                            mentions={message.mentions || []}
-                                            sender={item.sender}
-                                            date={item.date}
-                                            message={item.message}
-                                            id={item.id}
-                                            key={'reply_message' + item.id + index}
-                                            edited={item.edited}
-                                            file={item.file}
-                                            fileMetadata={item.fileMetadata}
-                                            startSelected={hideMenu}
-                                            compact={isCompact || undefined}
-                                        />
-                                    );
-                                })}
-                        </ReplyMessageWrapper>,
                     );
                 }
             }
@@ -630,6 +631,32 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                 />,
             );
         }
+        if (message.reply && message.reply!.length > 0) {
+            content.push(
+                <ReplyMessageWrapper key={'reply_message' + message.id}>
+                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
+                        let isCompact =
+                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+
+                        return (
+                            <MessageReplyComponent
+                                mentions={message.mentions || []}
+                                sender={item.sender}
+                                date={item.date}
+                                message={item.message}
+                                id={item.id}
+                                key={'reply_message' + item.id + index}
+                                edited={item.edited}
+                                file={item.file}
+                                fileMetadata={item.fileMetadata}
+                                startSelected={hideMenu}
+                                compact={isCompact || undefined}
+                            />
+                        );
+                    })}
+                </ReplyMessageWrapper>,
+            );
+        }
         if (message.text && message.text.length > 0 && !isPost) {
             if (message.isService) {
                 content.push(
@@ -711,34 +738,6 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                     messageId={message.id!}
                     isMe={message.senderId === (props.me && props.me.id)}
                 />,
-            );
-        }
-        if (message.reply && message.reply!.length > 0) {
-            content.push(
-                <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message
-                        .reply!.sort((a, b) => a.date - b.date)
-                        .map((item, index, array) => {
-                            let isCompact =
-                                index > 0 ? array[index - 1].sender.id === item.sender.id : false;
-
-                            return (
-                                <MessageReplyComponent
-                                    mentions={message.mentions || []}
-                                    sender={item.sender}
-                                    date={item.date}
-                                    message={item.message}
-                                    id={item.id}
-                                    key={'reply_message' + item.id + index}
-                                    edited={item.edited}
-                                    file={item.file}
-                                    fileMetadata={item.fileMetadata}
-                                    startSelected={hideMenu}
-                                    compact={isCompact || undefined}
-                                />
-                            );
-                        })}
-                </ReplyMessageWrapper>,
             );
         }
     } else {
