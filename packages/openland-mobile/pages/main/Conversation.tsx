@@ -85,6 +85,8 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                 {
                     maxWidth: 1024,
                     maxHeight: 1024,
+                    quality: 1,
+                    videoQuality: 'high',
                     mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
                 },
                 (response) => {
@@ -100,7 +102,10 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
         });
         if (Platform.OS === 'android') {
             builder.action('Video', () => {
-                Picker.launchImageLibrary({ mediaType: 'video' }, (response) => {
+                Picker.launchImageLibrary({
+                    mediaType: 'video',
+                    videoQuality: 'high',
+                }, (response) => {
                     if (response.didCancel) {
                         return;
                     }
