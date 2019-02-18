@@ -70,7 +70,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
     handleAttach = () => {
         let builder = new ActionSheetBuilder();
         builder.action('Take Photo', () => {
-            Picker.launchCamera({ title: 'Take Photo' }, (response) => {
+            Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
                 if (response.didCancel) {
                     return;
                 }
@@ -101,7 +101,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
             );
         });
         if (Platform.OS === 'android') {
-            builder.action('Video', () => {
+            builder.action('Video Gallery', () => {
                 Picker.launchImageLibrary({
                     mediaType: 'video',
                     videoQuality: 'high',
@@ -115,10 +115,7 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
         }
 
         builder.action('Document', () => {
-            DocumentPicker.show(
-                {
-                    filetype: [DocumentPickerUtil.allFiles()],
-                },
+            DocumentPicker.show({ filetype: [DocumentPickerUtil.allFiles()] },
                 (error, res) => {
                     if (!res) {
                         return;

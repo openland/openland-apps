@@ -73,9 +73,11 @@ class MainActivity : ReactActivity() {
         })
     }
 
-    override fun onPostResume() {
-        super.onPostResume()
-        provider!!.start()
+    override fun onResume() {
+        super.onResume()
+        window.decorView.post {
+            provider!!.start()
+        }
     }
 
     override fun onPause() {
