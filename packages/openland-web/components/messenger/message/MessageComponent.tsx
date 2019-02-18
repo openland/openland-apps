@@ -106,7 +106,7 @@ const ReplyMessageWrapper = Glamorous.div({
         content: ' ',
         position: 'absolute',
         left: 0,
-        top: 12,
+        top: 0,
         bottom: 4,
         width: 3,
         borderRadius: 3,
