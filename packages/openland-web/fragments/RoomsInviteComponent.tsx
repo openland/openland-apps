@@ -10,7 +10,6 @@ import ProfileIcon from 'openland-icons/ic-profile.svg';
 import { withChannelJoin } from '../api/withChannelJoin';
 import { withChannelJoinInviteLink } from '../api/withChannelJoinInviteLink';
 import { delayForewer } from 'openland-y-utils/timer';
-import { TextRoom } from 'openland-text/TextRoom';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { Room_room_SharedRoom } from 'openland-api/Types';
 import { css } from 'linaria';

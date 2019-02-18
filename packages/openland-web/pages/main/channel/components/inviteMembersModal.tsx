@@ -12,7 +12,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import PlusIcon from 'openland-icons/ic-add-small.svg';
 import LinkIcon from 'openland-icons/ic-link.svg';
-import EmailIcon from 'openland-icons/ic-email.svg';
 import { withChanneSendlnviteLink } from '../../../../api/withChanneSendlnviteLink';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';

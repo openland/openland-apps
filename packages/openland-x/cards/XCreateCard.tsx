@@ -17,10 +17,10 @@ const Wrapper = Glamorous(XHorizontal)({
     alignItems: 'center',
     '&:hover': {
         backgroundColor: '#F9F9F9',
-    }
+    },
 });
 
-const Icon = Glamorous.div({
+const Icon = Glamorous.div<{ colorus: boolean }>(props => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -30,21 +30,27 @@ const Icon = Glamorous.div({
     borderRadius: 20,
     background: '#ffffff',
 
+    '& svg': {
+        width: props.colorus ? undefined : 16,
+        height: props.colorus ? undefined : 16,
+    },
+
     '& svg *': {
-        fill: '#1790ff'
-    }
-});
+        fill: props.colorus ? '#1790ff' : undefined,
+    },
+}));
 
 const Text = Glamorous.div({
     fontSize: 14,
     fontWeight: 600,
     color: '#000000',
     lineHeight: '20px',
-    letterSpacing: 0
+    letterSpacing: 0,
 });
 
 interface XCreateCardProps extends XLinkProps {
     text: string;
+    icon?: any;
 }
 
 export const XCreateCard = (props: XCreateCardProps) => {
@@ -53,12 +59,8 @@ export const XCreateCard = (props: XCreateCardProps) => {
     return (
         <XLink {...other}>
             <Wrapper separator={8}>
-                <Icon>
-                    <AddIcon />
-                </Icon>
-                <Text>
-                    {text}
-                </Text>
+                <Icon colorus={!props.icon}>{props.icon ? props.icon : <AddIcon />}</Icon>
+                <Text>{text}</Text>
             </Wrapper>
         </XLink>
     );
