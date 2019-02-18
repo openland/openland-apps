@@ -100,7 +100,7 @@ const ExplorePeople = withExplorePeople(props => {
 
 interface InviteModalProps extends XModalProps {
     roomId: string;
-    addMember: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
+    addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
     members: RoomMembersShort_members[];
 }
 
@@ -170,11 +170,15 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                 useTopCloser={true}
                 targetQuery="inviteMembers"
                 defaultAction={async data => {
-                    await props.addMember({
+                    await props.addMembers({
                         variables: {
                             roomId: this.props.roomId,
                             invites: invitesUsers,
                         },
+                    });
+
+                    this.setState({
+                        selectedUsers: null,
                     });
                 }}
                 onClosed={() =>
@@ -212,26 +216,34 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
     }
 }
 
-const RoomAddMemberModalUsers = withRoomMembersId(props => (
-    <RoomAddMemberModalInner
-        {...props}
-        addMember={(props as any).addMembers}
-        roomId={(props as any).roomId}
-        members={props.data.members}
-    />
-)) as React.ComponentType<
-    {
-        variables: { roomId: string };
-        roomId: string;
-        addMember: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
-    } & XModalProps
->;
+type RoomAddMemberModalUsersT = {
+    variables: { roomId: string };
+    roomId: string;
+    addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
+};
 
-export const RoomAddMemberModal = withRoomAddMembers(props => (
-    <RoomAddMemberModalUsers
-        {...props}
-        roomId={(props as any).roomId}
-        addMember={props.addMembers}
-        variables={{ roomId: (props as any).roomId }}
-    />
-)) as React.ComponentType<{ roomId: string } & XModalProps>;
+const RoomAddMemberModalUsers = withRoomMembersId(props => {
+    const typedProps = props as typeof props & RoomAddMemberModalUsersT;
+    return (
+        <RoomAddMemberModalInner
+            {...typedProps}
+            addMembers={typedProps.addMembers}
+            roomId={typedProps.roomId}
+            members={typedProps.data.members}
+        />
+    );
+}) as React.ComponentType<RoomAddMemberModalUsersT & XModalProps>;
+
+type RoomAddMemberModalT = { roomId: string; refetchVars: { roomId: string } };
+
+export const RoomAddMemberModal = withRoomAddMembers(props => {
+    const typedProps = props as typeof props & RoomAddMemberModalT;
+    return (
+        <RoomAddMemberModalUsers
+            {...typedProps}
+            roomId={typedProps.roomId}
+            addMembers={typedProps.addMembers}
+            variables={{ roomId: typedProps.roomId }}
+        />
+    );
+}) as React.ComponentType<RoomAddMemberModalT & XModalProps>;
