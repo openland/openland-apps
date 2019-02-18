@@ -315,7 +315,7 @@ class InviteMembersModalRaw extends React.Component<
                             marginRight={10}
                         />
                     )}
-                    {this.state.showLink && (
+                    {/* {this.state.showLink && (
                         <InviteButton
                             onClick={() => this.setState({ showLink: false })}
                             title="Invite by email"
@@ -323,7 +323,7 @@ class InviteMembersModalRaw extends React.Component<
                             marginLeft={4}
                             marginRight={10}
                         />
-                    )}
+                    )} */}
                 </XHorizontal>
                 {this.state.showLink && (
                     <XHorizontal alignItems="center">
