@@ -137,6 +137,7 @@ class AsyncTextSpec(key: String, val children: List<Any>) : AsyncViewSpec(key) {
 class AsyncImageSpec(key: String, val url: String?) : AsyncViewSpec(key) {
     var style: AsyncViewStyle = AsyncViewStyle()
     var touchableKey: String? = null
+    var tintColor: Int? = null
 }
 
 private fun resolveChildren(src: JSONObject, context: ReactContext): Array<AsyncViewSpec> {
@@ -296,6 +297,7 @@ fun resolveSpec(src: JSONObject, context: ReactContext): AsyncViewSpec {
         val props = src["props"] as JSONObject
         val res = AsyncImageSpec(key, props.nullableString("source"))
         props.nullableString("touchableKey")?.let { res.touchableKey = it }
+        props.nullableInt("tintColor")?.let { res.tintColor = it }
         resolveStyle(src, res.style, context)
         return res
     }

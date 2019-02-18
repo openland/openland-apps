@@ -16,6 +16,11 @@ import com.facebook.drawee.generic.RoundingParams
 import com.facebook.litho.*
 import com.facebook.litho.fresco.FrescoImage
 import com.openland.react.statusBarHeight
+import android.graphics.PorterDuff
+import android.R.color
+import android.graphics.PorterDuffColorFilter
+
+
 
 
 @LayoutSpec
@@ -35,7 +40,11 @@ object LithoImageSpec {
                 .controller(controller)
                 .fadeDuration(0)
 
-        if (spec.touchableKey !== null) {
+        if (spec.tintColor != null){
+            res.colorFilter(PorterDuffColorFilter(spec.tintColor!!, PorterDuff.Mode.SRC_IN))
+        }
+
+        if (spec.touchableKey != null) {
             res = res.clickHandler(LithoImage.onClick(context))
         }
 //        res = res.longClickHandler(LithoImage.onLongClick(context))
