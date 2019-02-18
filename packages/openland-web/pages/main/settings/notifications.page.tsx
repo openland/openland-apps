@@ -376,7 +376,7 @@ class NotificationsSettingsPageInner extends React.Component<
 
                                 {this.state.isNotificationSelectChanged && (
                                     <XFormSubmit
-                                        succesText="Saved!"
+                                        successText="Saved!"
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"
@@ -444,7 +444,7 @@ class NotificationsSettingsPageInner extends React.Component<
 
                                 {this.state.isEmailSelectChanged && (
                                     <XFormSubmit
-                                        succesText="Saved!"
+                                        successText="Saved!"
                                         text="Save changes"
                                         style="primary"
                                         alignSelf="flex-start"

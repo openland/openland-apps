@@ -127,7 +127,7 @@ const AdminTools = withSuperAccountActions(props => {
                         text="Save changes"
                         alignSelf="flex-start"
                         style="primary"
-                        succesText="Changes saved!"
+                        successText="Changes saved!"
                     />
                 </XVertical>
             </XForm>
@@ -248,7 +248,7 @@ export const OrganizationSettings = ((props: any) => {
                                         text="Save changes"
                                         alignSelf="flex-start"
                                         style="primary"
-                                        succesText="Changes saved!"
+                                        successText="Changes saved!"
                                     />
                                 </XVertical>
                             </XForm>
@@ -279,7 +279,7 @@ export const OrganizationSettings = ((props: any) => {
                                             text="Save changes"
                                             alignSelf="flex-start"
                                             style="primary"
-                                            succesText="Changes saved!"
+                                            successText="Changes saved!"
                                         />
                                     </XVertical>
                                 </XVertical>

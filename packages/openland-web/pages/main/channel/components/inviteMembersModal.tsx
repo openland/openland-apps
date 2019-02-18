@@ -331,13 +331,13 @@ class InviteMembersModalRaw extends React.Component<
                             variables={{ roomId: this.props.roomId }}
                             refetchVars={{ roomId: this.props.roomId }}
                         />
-                        <XFormSubmit succesText="Copied!" key="link" style="primary" text="Copy" />
+                        <XFormSubmit successText="Copied!" key="link" style="primary" text="Copy" />
                     </XHorizontal>
                 )}
                 {!this.state.showLink && (
                     <XFormSubmit
                         key="invites"
-                        succesText="Invitations sent!"
+                        successText="Invitations sent!"
                         style="primary"
                         text="Send invitations"
                         keyDownSubmit={true}
