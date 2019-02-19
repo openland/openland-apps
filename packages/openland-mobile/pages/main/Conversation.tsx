@@ -16,7 +16,7 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members, RoomMembers_members_user } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members, RoomMembers_members_user, MessageFull_mentions } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -43,10 +43,7 @@ interface ConversationRootState {
     text: string;
     theme: ConversationTheme;
     mentionsRender: any;
-    mentionedUsers: {
-        id: string;
-        name: string;
-    }[];
+    mentionedUsers: MessageFull_mentions[];
     selection: {
         start: number,
         end: number
@@ -123,12 +120,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
     handleSubmit = () => {
         let tx = this.state.text.trim();
         if (tx.length > 0) {
-            let mentions: string[] = [];
+            let mentions: MessageFull_mentions[] = [];
 
             if (this.state.mentionedUsers.length > 0) {
-                this.state.mentionedUsers.map(mention => {
-                    if (tx.indexOf(mention.name) >= 0) {
-                        mentions.push(mention.id);
+                this.state.mentionedUsers.map(user => {
+                    if (tx.indexOf(user.name) >= 0) {
+                        mentions.push(user);
                     }
                 })
             }
@@ -227,10 +224,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let newText = text.substring(0, selection.start - word.length) + '@' + user.name + ' ' + text.substring(selection.start, text.length);
         let mentionedUsers = this.state.mentionedUsers;
 
-        mentionedUsers.push({
-            id: user.id,
-            name: user.name
-        });
+        mentionedUsers.push(user);
 
         this.setState({
             text: newText,
