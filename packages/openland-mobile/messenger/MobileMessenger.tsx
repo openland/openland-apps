@@ -63,7 +63,7 @@ export class MobileMessenger {
                 y: event.y,
                 width: event.w,
                 height: event.h,
-                borderRadius: 10
+                borderRadius: 16
             },
             ...Platform.OS === 'ios' ? {
                 onBegin: () => {

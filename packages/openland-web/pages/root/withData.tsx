@@ -70,6 +70,10 @@ export function withData(App: React.ComponentType<any>) {
                     if (error.networkError) {
                         console.log(JSON.stringify(error.networkError.result.errors, null, 2));
                     }
+
+                    if (error.graphQLErrors && error.graphQLErrors.length) {
+                        console.log(JSON.stringify(error.graphQLErrors, null, 2));
+                    }
                 }
 
                 // getDataFromTree Last names not call componentWillUnmount
