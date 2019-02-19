@@ -3,6 +3,8 @@ package com.openland.react.window
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import android.util.Log
 import android.view.View
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactApplicationContext
@@ -48,7 +50,7 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
             val res = ctx.getResources()
             val rid = res.getIdentifier("config_showNavigationBar", "bool", "android")
             if (rid > 0) {
-                val flag = res.getBoolean(rid)
+                val flag = res.getBoolean(rid) || Build.FINGERPRINT.contains("generic")
                 if (flag) {
                     val resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android")
                     if (resourceId > 0) {
