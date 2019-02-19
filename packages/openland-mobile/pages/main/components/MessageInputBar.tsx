@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, Text, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView, Animated } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
+import { SDevice } from 'react-native-s/SDevice';
+import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
+import { SScrollView } from 'react-native-s/SScrollView';
 
 let styles = StyleSheet.create({
     textInput: {
@@ -29,12 +32,15 @@ export interface MessageInputBarProps {
     onAttachPress?: () => void;
     onSubmitPress: () => void;
     onChangeText: (value: string) => void;
+    onSelectionChange?: (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => void;
     onBlur?: () => void;
     onFocus?: () => void;
     enabled?: boolean;
     attachesEnabled?: boolean;
     text: string;
     theme: ConversationTheme;
+
+    topContent?: any;
 }
 
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
@@ -42,8 +48,17 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         let hasText = this.props.text.trim().length > 0;
         return (
             <ZKeyboardAwareBar>
-                <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                {this.props.topContent && (
+                    <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
+                        <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                        <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
+                            {this.props.topContent}
+                        </ScrollView>
+                        <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                    </ZBlurredView>
+                )}
 
+                <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         {this.props.attachesEnabled !== false && (
                             <TouchableOpacity onPress={this.props.onAttachPress}>
@@ -63,6 +78,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             placeholder="Message"
                             placeholderTextColor="#aaaaaa"
                             onChangeText={this.props.onChangeText}
+                            onSelectionChange={this.props.onSelectionChange}
                             value={this.props.text}
                             style={styles.textInput}
                             editable={this.props.enabled !== false}

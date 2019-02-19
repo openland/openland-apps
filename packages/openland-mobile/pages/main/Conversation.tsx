@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextStyle } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -16,7 +16,7 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members, RoomMembers_members_user } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -28,17 +28,52 @@ import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme 
 import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import { SDevice } from 'react-native-s/SDevice';
+import { findActiveWord } from 'openland-y-utils/findActiveWord';
+import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
+import { TextStyles } from 'openland-mobile/styles/AppStyles';
 
-class ConversationRoot extends React.Component<PageProps & { engine: MessengerEngine, chat: Room_room }, { text: string, theme: ConversationTheme }> {
+interface ConversationRootProps extends PageProps {
+    engine: MessengerEngine;
+    chat: Room_room;
+    members?: RoomMembers_members[];
+}
+
+interface ConversationRootState {
+    text: string;
+    theme: ConversationTheme;
+    mentionsRender: any;
+    mentionedUsers: {
+        id: string;
+        name: string;
+    }[];
+    selection: {
+        start: number,
+        end: number
+    }
+}
+
+class ConversationRoot extends React.Component<ConversationRootProps, ConversationRootState> {
     engine: ConversationEngine;
     listRef = React.createRef<FlatList<any>>();
     private themeSub?: () => void;
 
-    constructor(props: { router: any, engine: MessengerEngine, chat: Room_room }) {
+    constructor(props: ConversationRootProps) {
         super(props);
         this.engine = this.props.engine.getConversation(this.props.chat.id);
+        this.state = {
+            text: '',
+            theme: DefaultConversationTheme,
+            mentionsRender: undefined,
+            selection: {
+                start: 0,
+                end: 0.
+            },
+            mentionedUsers: []
+        };
+
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
-        this.state = { text: '', theme: DefaultConversationTheme };
+        AsyncStorage.getItem('compose_draft_mentions_' + this.props.chat.id).then(s => this.setState({ mentionedUsers: JSON.parse(s) || [] }));
     }
 
     componentWillUnmount() {
@@ -53,18 +88,60 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
 
     handleTextChange = (src: string) => {
         getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
-        this.setState({ text: src });
-        AsyncStorage.setItem('compose_draft_' + this.props.chat.id, src);
+
+        this.setState({ text: src }, () => {
+            this.saveDraft();
+            this.detectMentions();
+        });
+    }
+
+    saveDraft = () => {
+        AsyncStorage.multiSet([
+            [ 'compose_draft_' + this.props.chat.id, this.state.text ],
+            [ 'compose_draft_mentions_' + this.props.chat.id, JSON.stringify(this.state.mentionedUsers) ],
+        ]);
+    }
+
+    removeDraft = () => {
+        AsyncStorage.multiRemove([
+            'compose_draft_' + this.props.chat.id,
+            'compose_draft_mentions_' + this.props.chat.id
+        ]);
+    }
+
+    handleSelectionChange = (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
+        this.setState({
+            selection: {
+                start: e.nativeEvent.selection.start,
+                end: e.nativeEvent.selection.end
+            }
+        }, () => {
+            this.detectMentions();
+        });
     }
 
     handleSubmit = () => {
         let tx = this.state.text.trim();
         if (tx.length > 0) {
-            this.setState({ text: '' });
-            this.engine.sendMessage(tx, null);
-        }
-        AsyncStorage.removeItem('compose_draft_' + this.props.chat.id);
+            let mentions: string[] = [];
 
+            if (this.state.mentionedUsers.length > 0) {
+                this.state.mentionedUsers.map(mention => {
+                    if (tx.indexOf(mention.name) >= 0) {
+                        mentions.push(mention.id);
+                    }
+                })
+            }
+
+            this.engine.sendMessage(tx, mentions);
+        }
+
+        this.setState({
+            text: '',
+            mentionedUsers: [],
+        });
+
+        this.removeDraft();
     }
 
     handleAttach = () => {
@@ -140,6 +217,82 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
         builder.show();
     }
 
+    handleMentionPress = (word: string | undefined, user: RoomMembers_members_user) => {
+        if (typeof word !== 'string') {
+            return;
+        }
+
+        let { text, selection } = this.state;
+
+        let newText = text.substring(0, selection.start - word.length) + '@' + user.name + ' ' + text.substring(selection.start, text.length);
+        let mentionedUsers = this.state.mentionedUsers;
+
+        mentionedUsers.push({
+            id: user.id,
+            name: user.name
+        });
+
+        this.setState({
+            text: newText,
+            mentionedUsers: mentionedUsers
+        }, () => {
+            this.saveDraft();
+        });
+    }
+
+    detectMentions = () => {
+        let { text, selection } = this.state;
+
+        let mentionsWrapper = undefined;
+        let currentWord = findActiveWord(text, selection);
+
+        if (this.props.members && currentWord && currentWord.startsWith('@')) {
+            let nameToSearch = currentWord.replace('@', '').toLowerCase();
+
+            let mentionedUsers = this.props.members.filter(member => member.user.name.toLowerCase().startsWith(nameToSearch));
+
+            if (mentionedUsers.length > 0) {
+                mentionsWrapper = (
+                    <>
+                        {mentionedUsers.map((member, index) => {
+                            let user = member.user;
+    
+                            return (
+                                <TouchableOpacity key={'mention-user-' + index} onPress={() => this.handleMentionPress(currentWord, user)}>
+                                    <View style={{ height: 40, flexDirection: 'row' }} alignItems="center">
+                                        <View style={{ width: 48, height: 40 }} alignItems="center" justifyContent="center">
+                                            <ZAvatar
+                                                userId={user.id}
+                                                src={user.photo}
+                                                size={26}
+                                                placeholderKey={user.id}
+                                                placeholderTitle={user.name}
+                                            />
+                                        </View>
+                                        <View flexGrow={1} width={0} marginRight={7}>
+                                            <Text style={{ fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
+                                                {user.name}{' '}
+                                                {user.primaryOrganization && (
+                                                    <Text style={{ opacity: 0.6, fontWeight: TextStyles.weight.regular } as TextStyle}>
+                                                        {user.primaryOrganization.name}
+                                                    </Text>
+                                                )}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </>
+                );
+            }
+        }
+
+        this.setState({
+            mentionsRender: mentionsWrapper
+        });
+    }
+
     render() {
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
@@ -186,8 +339,10 @@ class ConversationRoot extends React.Component<PageProps & { engine: MessengerEn
                                 onAttachPress={this.handleAttach}
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
+                                onSelectionChange={this.handleSelectionChange}
                                 text={this.state.text}
                                 theme={this.state.theme}
+                                topContent={this.state.mentionsRender}
                             />
                         </View>
                     </KeyboardSafeAreaView>
@@ -288,9 +443,15 @@ const ConversationComponent = XMemo<PageProps>((props) => {
         }
     }
 
+    let members: RoomMembers_members[] | undefined = undefined;
+
+    if (sharedRoom) {
+        members = getClient().useRoomMembers({ roomId: sharedRoom.id }).members;
+    }
+
     return (
         <View flexDirection={'column'} height="100%" width="100%">
-            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} members={members} />
             <ASSafeAreaContext.Consumer>
                 {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
             </ASSafeAreaContext.Consumer>
