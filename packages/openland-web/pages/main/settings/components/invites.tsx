@@ -247,7 +247,11 @@ class OwnerLinkComponent extends React.Component<OwnerLinkComponentProps & XWith
                                 (this.props.appInvite || this.props.invite!.key)
                             }
                         />
-                        <InviteText>Anyone with link can join as organization member</InviteText>
+                        <InviteText>
+                            {!this.props.organization
+                                ? 'Anyone with link can join as organization member'
+                                : 'Anyone with link can join Openland'}
+                        </InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
