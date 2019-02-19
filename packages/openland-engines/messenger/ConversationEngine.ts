@@ -627,6 +627,7 @@ export class ConversationEngine implements MessageSendHandler {
                 isSending: true,
                 text: src.message ? src.message : undefined,
                 attachBottom: false,
+                mentions: src.mentions ? src.mentions.map(m => ({ user: { ...m }, __typename: 'UserMention' as 'UserMention' })) : undefined,
                 file: p.uri ? {
                     uri: p.uri,
                     fileName: p.file || 'image.png',
