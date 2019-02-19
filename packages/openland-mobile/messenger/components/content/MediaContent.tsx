@@ -74,13 +74,13 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                     onPress={this.handlePress}
                     source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
                     isGif={this.props.message.file!!.isGif}
-                    borderRadius={15}
-                    marginLeft={4}
-                    marginRight={4}
-                    marginTop={4}
-                    marginBottom={4}
-                    width={this.props.layout.width - 8}
-                    height={this.props.layout.height - 8}
+                    borderRadius={16}
+                    marginLeft={2}
+                    marginRight={2}
+                    marginTop={2}
+                    marginBottom={2}
+                    width={this.props.layout.width - 4}
+                    height={this.props.layout.height - 4}
 
                 />
 
