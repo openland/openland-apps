@@ -131,9 +131,15 @@ export function useHandleSend({
             }
             if (inputValue && hasQuoteInState()) {
                 replyMessagesProc();
+                if (file) {
+                    onUploadCareSendFile(file);
+                }
             }
         } else if (hasQuoteInState()) {
             replyMessagesProc();
+            if (file) {
+                onUploadCareSendFile(file);
+            }
         } else if (file) {
             onUploadCareSendFile(file);
         }

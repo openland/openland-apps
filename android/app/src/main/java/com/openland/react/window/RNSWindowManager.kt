@@ -2,11 +2,14 @@ package com.openland.react.window
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.View
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.uimanager.UIManagerModule
 import com.facebook.react.uimanager.UIManagerModuleListener
+import com.openland.react.runOnUIThread
 import com.openland.react.runOnUIThreadDelayed
 
 /**
@@ -34,6 +37,23 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
             runOnUIThreadDelayed(100) {
                 reactApplicationContext.getNativeModule(UIManagerModule::class.java).addUIBlock {
                     currentActivity?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                }
+            }
+        }
+    }
+
+    @ReactMethod
+    fun setStatusBarColor(color: String) {
+        if (color == "light") {
+            runOnUIThread {
+                reactApplicationContext.currentActivity?.window?.decorView?.apply {
+                    systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
+            }
+        } else {
+            runOnUIThread {
+                reactApplicationContext.currentActivity?.window?.decorView?.apply {
+                    systemUiVisibility = systemUiVisibility and (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv())
                 }
             }
         }

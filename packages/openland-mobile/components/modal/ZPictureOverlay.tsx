@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, StatusBar, Dimensions, Platform, CameraRoll, Alert, BackHandler } from 'react-native';
+import { View, Animated, Dimensions, Platform, CameraRoll, Alert, BackHandler } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
@@ -11,6 +11,7 @@ import UUID from 'uuid/v4';
 import RNFetchBlob from 'rn-fetch-blob';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { ZImage } from '../ZImage';
+import { SStatusBar } from 'react-native-s/SStatusBar';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -36,6 +37,11 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     };
 
     handleStarting = () => {
+        if (Platform.OS === 'android') {
+            setTimeout(() => SStatusBar.setBarStyle('light-content'), 100);
+        } else {
+            SStatusBar.setBarStyle('light-content');
+        }
         Animated.parallel([
             Animated.spring(this.progress, {
                 toValue: 1,
@@ -58,9 +64,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     handleClosing = () => {
-        if (Platform.OS === 'ios') {
-            setTimeout(() => { StatusBar.setBarStyle('dark-content'); }, 50);
-        }
+        setTimeout(() => { SStatusBar.setBarStyle('dark-content'); }, 50);
         Animated.parallel([
             Animated.spring(this.progress, {
                 toValue: 0,
@@ -146,11 +150,9 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
 
     }
 
-    componentWillMount() {
-        if (Platform.OS === 'ios') {
-            StatusBar.setBarStyle('light-content');
-        }
-    }
+    // componentWillMount() {
+        
+    // }
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);

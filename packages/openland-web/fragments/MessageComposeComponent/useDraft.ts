@@ -29,7 +29,10 @@ export function useDraft({
             setBeDrafted(true);
         }
 
-        DraftStore.setDraftMessage(conversationId, message);
+        if (conversationId) {
+            DraftStore.setDraftMessage(conversationId, message);
+        }
+
         saveDraft({
             variables: {
                 conversationId,
