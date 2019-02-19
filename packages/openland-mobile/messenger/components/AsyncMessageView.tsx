@@ -89,7 +89,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                         <ASText marginLeft={20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                     </ASFlex>
                     <ASFlex flexDirection="column" marginLeft={40}>
-                        <TextContent padded={false} message={{ ...this.props.message, text: 'Message type not yet supported\nplease update to newest version' }} onUserPress={this.props.onAvatarPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />
+                        <TextContent padded={false} message={{ ...this.props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }} onUserPress={this.props.onAvatarPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />
                     </ASFlex>
                 </AsyncBubbleView >
             );
