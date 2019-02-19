@@ -2,11 +2,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform, Dimensions } from 'react-native';
-import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
@@ -74,6 +70,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 marginBottom={-contentInsetsBottom}
             >
                 <ASImage
+                    maxWidth={this.props.layout.width}
                     onPress={this.handlePress}
                     source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
                     isGif={this.props.message.file!!.isGif}

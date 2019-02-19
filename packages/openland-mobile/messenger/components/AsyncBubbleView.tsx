@@ -9,9 +9,8 @@ export const bubbleMaxWidthIncoming = Math.min(Dimensions.get('window').width - 
 export let contentInsetsHorizontal = 13;
 export let contentInsetsTop = 8;
 export let contentInsetsBottom = 9;
-export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text', colorIn: string, maxWidth?: number }> {
+export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compact: boolean, appearance?: 'media' | 'text', colorIn: string, width?: number }> {
     render() {
-        const isMedia = this.props.appearance === 'media';
         const compact = this.props.compact;
         const image = compact
             ? (this.props.isOut ? require('assets/bubble-outgoing.png') : require('assets/bubble-incoming.png'))
@@ -41,7 +40,7 @@ export class AsyncBubbleView extends React.PureComponent<{ isOut: boolean, compa
 
         let resolved = Image.resolveAssetSource(image);
         return (
-            <ASFlex flexDirection="column" alignItems="stretch" maxWidth={this.props.maxWidth || (this.props.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming)} backgroundColor={isMedia ? messageBgColor : undefined}>
+            <ASFlex flexDirection="column" alignItems="stretch" width={this.props.width ? this.props.width + (this.props.isOut ? 12 : 5) : undefined} maxWidth={(this.props.isOut ? bubbleMaxWidth : bubbleMaxWidthIncoming)} >
                 <ASFlex backgroundPatch={{ source: resolved.uri, scale: resolved.scale, ...capInsets }} flexDirection="column" alignItems="stretch" backgroundPatchTintColor={this.props.isOut ? undefined : this.props.colorIn}>
                     <ASFlex marginTop={contentInsets.top} marginBottom={contentInsets.bottom} marginLeft={contentInsets.left} marginRight={contentInsets.right} flexDirection="column" alignItems="stretch" >
                         {this.props.children}
