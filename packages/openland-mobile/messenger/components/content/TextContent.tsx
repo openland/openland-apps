@@ -12,6 +12,7 @@ interface TextContentProps {
     onUserPress: (id: string) => void;
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     onDocumentPress: (document: DataSourceMessageItem) => void;
+    padded?: boolean;
 }
 export class TextContent extends React.PureComponent<TextContentProps> {
     render() {
@@ -41,7 +42,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                     fontWeight={TextStyles.weight.regular}
                 >
                     {parts}
-                    {!this.props.message.urlAugmentation ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
+                    {this.props.padded !== false && !this.props.message.urlAugmentation ? (this.props.message.isOut ? paddedTextOut : paddedText) : undefined}
                 </ASText>}
             </>
         )
