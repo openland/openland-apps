@@ -92,7 +92,7 @@ export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTex
                         <ASFlex
                             flexDirection="row"
                             height={14}
-                            backgroundColor={hasImage ? DefaultConversationTheme.textColorSecondaryIn : undefined}
+                            backgroundColor={hasImage ? 'rgba(0,0,0,0.3)' : undefined}
                             borderRadius={4}
                         >
                             <ASText

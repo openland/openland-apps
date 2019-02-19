@@ -64,18 +64,48 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     render() {
 
         return (
-            <ASImage
+            <ASFlex
+                flexDirection="column"
+                width={this.props.layout.width}
+                height={this.props.layout.height}
                 marginTop={this.props.single ? -contentInsetsTop : 8}
                 marginLeft={-contentInsetsHorizontal}
                 marginRight={-contentInsetsHorizontal}
                 marginBottom={-contentInsetsBottom}
-                onPress={this.handlePress}
-                source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
-                width={this.props.layout.width}
-                height={this.props.layout.height}
-                borderRadius={10}
-                isGif={this.props.message.file!!.isGif}
-            />
+            >
+                <ASImage
+                    onPress={this.handlePress}
+                    source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
+                    isGif={this.props.message.file!!.isGif}
+                    borderRadius={10}
+
+                    width={this.props.layout.width}
+                    height={this.props.layout.height}
+
+                />
+
+                <ASFlex
+                    overlay={true}
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                    marginRight={8}
+                >
+                    {this.state.downloadState && this.state.downloadState.progress !== undefined && this.state.downloadState.progress < 1 && !this.state.downloadState.path && <ASFlex
+                        overlay={true}
+                        width={this.props.layout.width}
+                        height={this.props.layout.height}
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <ASFlex
+                            backgroundColor="#0008"
+                            borderRadius={20}
+                        >
+                            <ASText color="#fff" opacity={0.8} marginLeft={20} marginTop={20} marginRight={20} marginBottom={20} textAlign="center">{'Loading ' + Math.round(this.state.downloadState.progress * 100)}</ASText>
+                        </ASFlex>
+                    </ASFlex>}
+                </ASFlex>
+            </ASFlex>
         )
     }
 }
