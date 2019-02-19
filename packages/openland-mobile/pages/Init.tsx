@@ -119,7 +119,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     render() {
         if (this.state.state === 'loading') {
             return (
-                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top + SDevice.navigationBarHeight, marginBottom: SDevice.safeArea.bottom }}>
+                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
                     <ZLoader appearance="large" />
                 </View>
             );
@@ -130,6 +130,9 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     <View style={{ width: '100%', height: '100%' }}>
                         <Root routing={getMessenger().history} />
                         <ZModalProvider />
+                        {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top} backgroundColor="red" /> */}
+                        {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top + SDevice.statusBarHeight} backgroundColor="yellow" />
+                        <View position="absolute" bottom={0} left={0} right={0} height={SDevice.safeArea.bottom} backgroundColor="blue" /> */}
                     </View>
                 </>
             );
@@ -151,7 +154,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
         // return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
         return (
-            <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top + SDevice.navigationBarHeight, marginBottom: SDevice.safeArea.bottom }}>
+            <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
                 <ZLoader appearance="large" />
             </View>
         )

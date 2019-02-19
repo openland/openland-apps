@@ -18,10 +18,10 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     constructor(props: RootProps) {
         super(props);
         this.state = {
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
+            width: Dimensions.get('screen').width,
+            height: Dimensions.get('screen').height,
         };
-
+        
         isPad = isPad && this.props.padLayout !== false;
 
         if (isPad) {
@@ -36,8 +36,8 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     }
 
     private handleLayoutChange = (e: LayoutChangeEvent) => {
-        let w = Dimensions.get('window').width;
-        let h = Dimensions.get('window').height;
+        let w = Dimensions.get('screen').width;
+        let h = Dimensions.get('screen').height;
         if (Platform.OS === 'ios') {
             if (this.state.width !== w || this.state.height !== h) {
                 LayoutAnimation.configureNext({
