@@ -236,7 +236,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             throw Error('conversation should be defined here');
         }
 
-        this.conversation.sendMessage(text, mentions ? mentions.map(item => item.id) : null);
+        this.conversation.sendMessage(text, mentions);
     };
 
     handleSendFile = (file: UploadCare.File) => {

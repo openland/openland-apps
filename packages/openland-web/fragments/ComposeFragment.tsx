@@ -239,7 +239,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
             await this.props.messenger.sender.sendMessageAsync({
                 conversationId: id.id,
                 message: msg,
-                mentions: mentions ? mentions.map(item => item.id) : null,
+                mentions,
             });
             Router.replaceRoute('/mail/' + id.flexibleId);
         } else if (this.state.values.length > 1) {
@@ -250,7 +250,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                 await this.props.messenger.sender.sendMessageAsync({
                     conversationId: id.id,
                     message: msg,
-                    mentions: mentions ? mentions.map(item => item.id) : null,
+                    mentions,
                 });
                 Router.replaceRoute('/mail/' + id.flexibleId);
             } else {
