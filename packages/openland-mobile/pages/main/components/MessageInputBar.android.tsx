@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio, ScrollView, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import LinearGradient from 'react-native-linear-gradient';
@@ -49,6 +49,7 @@ export interface MessageInputBarProps {
     onAttachPress?: () => void;
     onSubmitPress: () => void;
     onChangeText: (value: string) => void;
+    onSelectionChange?: (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => void;
     onBlur?: () => void;
     onFocus?: () => void;
     enabled?: boolean;
@@ -125,6 +126,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                                 placeholder="Message"
                                 placeholderTextColor="#aaaaaa"
                                 onChangeText={this.props.onChangeText}
+                                onSelectionChange={this.props.onSelectionChange}
                                 value={this.props.text}
                                 editable={this.props.enabled !== false}
                                 multiline={true}
