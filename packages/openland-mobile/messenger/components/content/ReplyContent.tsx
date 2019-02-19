@@ -11,6 +11,7 @@ import { AsyncReplyMessageMediaView } from '../AsyndReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
 import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 interface ReplyContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -18,6 +19,7 @@ interface ReplyContentProps {
     onDocumentPress: (document: DataSourceMessageItem) => void;
 }
 export class ReplyContent extends React.PureComponent<ReplyContentProps> {
+
     render() {
         let mainTextColor = this.props.message.isOut ? DefaultConversationTheme.textColorOut : DefaultConversationTheme.textColorIn;
 
@@ -39,6 +41,7 @@ export class ReplyContent extends React.PureComponent<ReplyContentProps> {
                         <ASFlex key={'repl-' + m.id} flexDirection="column" marginTop={5} marginLeft={1} marginBottom={6} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? DefaultConversationTheme.linkColorOut : DefaultConversationTheme.linkColorIn}>
 
                             <ASText
+                                key={'asd' + m.id}
                                 marginTop={-2}
                                 height={15}
                                 textAlign="center"

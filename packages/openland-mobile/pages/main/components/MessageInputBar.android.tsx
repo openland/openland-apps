@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio, ScrollView } from 'react-native';
 import { AppStyles } from '../../../styles/AppStyles';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,6 +8,7 @@ import { androidMessageInputListOverlap } from './ConversationView';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
+import { SDevice } from 'react-native-s/SDevice';
 
 let styles = StyleSheet.create({
     textInputContainer: {
@@ -54,6 +55,8 @@ export interface MessageInputBarProps {
     attachesEnabled?: boolean;
     text: string;
     theme: ConversationTheme;
+
+    topContent?: any;
 }
 
 export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
@@ -64,6 +67,15 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         return (
             <ZKeyboardAwareBar>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                    {this.props.topContent && (
+                        <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
+                            <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                            <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
+                                {this.props.topContent}
+                            </ScrollView>
+                            <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                        </View>
+                    )}
 
                     <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={['#fff', '#fff', 'transparent', 'transparent']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
                     <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor="#fff" />
