@@ -422,6 +422,7 @@ export const RoomInviteInfoQuery = gql`
     }
     ${UserShort}
     ${OrganizationShort}
+    ${RoomFull}
 `;
 
 export const RoomUpdateMutation = gql`
