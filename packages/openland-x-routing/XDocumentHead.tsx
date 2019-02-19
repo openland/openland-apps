@@ -49,7 +49,7 @@ export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
                 property="og:title"
                 content={props.titleSocial ? props.titleSocial : title}
             />
-            <meta key="og_url" property="og:url" content={router.href} />
+            {/* <meta key="og_url" property="og:url" content={router.href} /> */}
             <meta key="og_description" property="og:description" content={description} />
             <meta key="og_img" property="og:image" content={img} />
         </Head>
