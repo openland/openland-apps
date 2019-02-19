@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
+import { XViewRouterContext, XViewRouteContext } from 'react-mental';
+import Glamorous from 'glamorous';
+import { css } from 'linaria';
 import { DialogSearchInput } from './DialogSearchInput';
 import { XListView } from 'openland-web/components/XListView';
-import Glamorous from 'glamorous';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { XButton } from 'openland-x/XButton';
 import { DialogView } from './DialogView';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { DialogSearchResults } from './DialogSearchResults';
 import { XShortcuts } from 'openland-x/XShortcuts';
-import { XViewRouterContext, XViewRouteContext } from 'react-mental';
 import { XInput } from 'openland-x/XInput';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -17,6 +18,10 @@ import { XMemo } from 'openland-y-utils/XMemo';
 const LoadingWrapper = Glamorous.div({
     height: 60,
 });
+
+const dialogSearchWrapperClassName = css`
+    overflow: scroll;
+`;
 
 export interface DialogListViewProps {
     onDialogClick?: (id: string) => void;
@@ -39,12 +44,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             );
         };
     }, []);
-    const renderDialog = React.useMemo(
-        () => {
-            return (item: DialogDataSourceItem) => <DialogView item={item} />;
-        },
-        [props.onDialogClick],
-    );
+    const renderDialog = React.useMemo(() => {
+        return (item: DialogDataSourceItem) => <DialogView item={item} />;
+    }, [props.onDialogClick]);
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
@@ -109,7 +111,9 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             <XView flexGrow={1} flexBasis={0} minHeight={0}>
                 <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
                 <XView flexGrow={1} flexBasis={0} minHeight={0}>
-                    {isSearching && <DialogSearchResults variables={{ query: query }} />}
+                    <div className={dialogSearchWrapperClassName}>
+                        {isSearching && <DialogSearchResults variables={{ query: query }} />}
+                    </div>
                     {canUseDOM && !isSearching && (
                         <XListView
                             dataSource={messenger.dialogList.dataSource}
