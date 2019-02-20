@@ -4193,48 +4193,6 @@ export interface FeedPostVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ResolveInvite
-// ====================================================
-
-export interface ResolveInvite_resolveInvite_InviteInfo {
-  __typename: "InviteInfo";
-  id: string;
-}
-
-export interface ResolveInvite_resolveInvite_AppInvite_inviter {
-  __typename: "User";
-  id: string;
-}
-
-export interface ResolveInvite_resolveInvite_AppInvite {
-  __typename: "AppInvite";
-  inviter: ResolveInvite_resolveInvite_AppInvite_inviter;
-}
-
-export interface ResolveInvite_resolveInvite_RoomInvite_invitedByUser {
-  __typename: "User";
-  id: string;
-}
-
-export interface ResolveInvite_resolveInvite_RoomInvite {
-  __typename: "RoomInvite";
-  invitedByUser: ResolveInvite_resolveInvite_RoomInvite_invitedByUser;
-}
-
-export type ResolveInvite_resolveInvite = ResolveInvite_resolveInvite_InviteInfo | ResolveInvite_resolveInvite_AppInvite | ResolveInvite_resolveInvite_RoomInvite;
-
-export interface ResolveInvite {
-  resolveInvite: ResolveInvite_resolveInvite | null;
-}
-
-export interface ResolveInviteVariables {
-  key: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: MyOrganizations
 // ====================================================
 

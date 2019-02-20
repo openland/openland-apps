@@ -56,12 +56,12 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                             src.title);
                     }}
                 >
-                    <View>
-                        <View alignSelf="center" marginTop={30} marginBottom={10}>
-                            <ZAvatarPicker field="photoRef" />
+                    <View flexDirection="row" marginLeft={16} marginVertical={16}>
+                        <ZAvatarPicker field="photoRef" size={70} />
+                        <View flexDirection="column" marginLeft={16} flexGrow={1} flexBasis={0} minWidth={0} height={70} justifyContent="center">
+                            <ZTextInput placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} placeholderTextColor="#a0a0a0" autoFocus={true} />
+                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
                         </View>
-                        <ZTextInput marginLeft={16} marginTop={21} placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} />
-                        <View marginLeft={16} height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
                     </View>
                 </ZForm>
             </>
@@ -69,4 +69,4 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
     }
 }
 
-export const CreateGroupAttrs = withApp(CreateGroupComponent);
+export const CreateGroupAttrs = withApp(CreateGroupComponent, { navigationAppearance: 'small' });

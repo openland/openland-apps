@@ -130,25 +130,12 @@ PODS:
     - SDWebImage/Core
   - SimpleKeychain (0.8.1)
   - SwiftyJSON (4.2.0)
-  - Texture (2.8):
-    - Texture/AssetsLibrary (= 2.8)
-    - Texture/Core (= 2.8)
-    - Texture/MapKit (= 2.8)
-    - Texture/Photos (= 2.8)
-    - Texture/PINRemoteImage (= 2.8)
-    - Texture/Video (= 2.8)
-  - Texture/AssetsLibrary (2.8):
-    - Texture/Core
-  - Texture/Core (2.8)
-  - Texture/MapKit (2.8):
-    - Texture/Core
-  - Texture/Photos (2.8):
-    - Texture/Core
-  - Texture/PINRemoteImage (2.8):
+  - Texture (2.7):
+    - Texture/PINRemoteImage (= 2.7)
+  - Texture/Core (2.7)
+  - Texture/PINRemoteImage (2.7):
     - PINRemoteImage/iOS (= 3.0.0-beta.13)
     - PINRemoteImage/PINCache
-    - Texture/Core
-  - Texture/Video (2.8):
     - Texture/Core
   - yoga (0.57.8.React)
 
@@ -193,7 +180,7 @@ DEPENDENCIES:
   - RNRate (from `../node_modules/react-native-rate/ios`)
   - RNShare (from `../node_modules/react-native-share`)
   - SwiftyJSON (~> 4.0)
-  - Texture (~> 2.8)
+  - Texture (= 2.7)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -293,9 +280,9 @@ SPEC CHECKSUMS:
   SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   SimpleKeychain: e2485c28d82fcece35e9e41faeac42ebfe614815
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
-  Texture: fc6e0157201f3a6e503d364c147b1872e365cef4
+  Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 75b1983e2094ef67848fa40364b25e6c0a1346f5
+PODFILE CHECKSUM: bb0876a65b3ccb9ed46ed61858ace832b53a1578
 
 COCOAPODS: 1.5.3

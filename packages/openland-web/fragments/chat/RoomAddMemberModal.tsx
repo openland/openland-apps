@@ -50,6 +50,7 @@ interface ExplorePeopleProps {
     onPick: (label: string, value: string) => void;
     selectedUsers: Map<string, string> | null;
     roomUsers: RoomMembersShort_members[];
+    linkInvitePath?: string;
 }
 
 const ExplorePeople = withExplorePeople(props => {
@@ -61,6 +62,12 @@ const ExplorePeople = withExplorePeople(props => {
         );
     }
 
+    let linkInvitePath = `/mail/${(props as any).roomId}?inviteByLink=true`;
+
+    if ((props as any).linkInvitePath !== undefined) {
+        linkInvitePath = (props as any).linkInvitePath;
+    }
+
     return (
         <XView flexGrow={1} flexShrink={0}>
             <XScrollView2 flexGrow={1} flexShrink={0}>
@@ -70,7 +77,7 @@ const ExplorePeople = withExplorePeople(props => {
                             (props as any).selectedUsers.size === 0) && (
                             <XCreateCard
                                 text="Invite with a link"
-                                path={`/mail/${(props as any).roomId}?inviteByLink=true`}
+                                path={linkInvitePath}
                                 icon={<LinkIcon />}
                             />
                         )}
@@ -104,6 +111,7 @@ interface InviteModalProps extends XModalProps {
     roomId: string;
     addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
     members: RoomMembersShort_members[];
+    linkInvitePath?: string;
 }
 
 interface InviteModalState {
@@ -211,6 +219,7 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                         onPick={this.selectMembers}
                         selectedUsers={selectedUsers}
                         roomUsers={props.members}
+                        linkInvitePath={props.linkInvitePath}
                     />
                 </XView>
             </XModalForm>
@@ -222,6 +231,7 @@ type RoomAddMemberModalUsersT = {
     variables: { roomId: string };
     roomId: string;
     addMembers: MutationFunc<RoomAddMembers, Partial<RoomAddMembersVariables>>;
+    linkInvitePath?: string;
 };
 
 const RoomAddMemberModalUsers = withRoomMembersId(props => {
@@ -232,11 +242,16 @@ const RoomAddMemberModalUsers = withRoomMembersId(props => {
             addMembers={typedProps.addMembers}
             roomId={typedProps.roomId}
             members={typedProps.data.members}
+            linkInvitePath={typedProps.linkInvitePath}
         />
     );
 }) as React.ComponentType<RoomAddMemberModalUsersT & XModalProps>;
 
-type RoomAddMemberModalT = { roomId: string; refetchVars: { roomId: string } };
+type RoomAddMemberModalT = {
+    roomId: string;
+    refetchVars: { roomId: string };
+    linkInvitePath?: string;
+};
 
 export const RoomAddMemberModal = withRoomAddMembers(props => {
     const typedProps = props as typeof props & RoomAddMemberModalT;
@@ -246,6 +261,7 @@ export const RoomAddMemberModal = withRoomAddMembers(props => {
             roomId={typedProps.roomId}
             addMembers={typedProps.addMembers}
             variables={{ roomId: typedProps.roomId }}
+            linkInvitePath={typedProps.linkInvitePath}
         />
     );
 }) as React.ComponentType<RoomAddMemberModalT & XModalProps>;

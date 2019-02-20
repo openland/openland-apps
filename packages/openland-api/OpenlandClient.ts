@@ -342,18 +342,6 @@ export class OpenlandClient {
     useWithoutLoaderFeedHome(): Types.FeedHome | null {
         return this.client.useWithoutLoaderQuery(Source.FeedHomeQuery);
     }
-    async queryResolveInvite(variables: Types.ResolveInviteVariables): Promise<Types.ResolveInvite> {
-        return this.client.query(Source.ResolveInviteQuery, variables);
-    }
-    async refetchResolveInvite(variables: Types.ResolveInviteVariables): Promise<Types.ResolveInvite> {
-        return this.client.refetch(Source.ResolveInviteQuery, variables);
-    }
-    useResolveInvite(variables: Types.ResolveInviteVariables): Types.ResolveInvite {
-        return this.client.useQuery(Source.ResolveInviteQuery, variables);
-    }
-    useWithoutLoaderResolveInvite(variables: Types.ResolveInviteVariables): Types.ResolveInvite | null {
-        return this.client.useWithoutLoaderQuery(Source.ResolveInviteQuery, variables);
-    }
     async queryMyOrganizations(): Promise<Types.MyOrganizations> {
         return this.client.query(Source.MyOrganizationsQuery);
     }

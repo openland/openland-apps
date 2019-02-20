@@ -180,9 +180,16 @@ export const AttachmentButtons = ({
         }
     };
 
+    const handleInputChange = (e: any) => {
+        handleDrop(e.target.files[0]);
+        if (fileInput.current) {
+            fileInput.current.value = '';
+        }
+    };
+
     return (
         <XHorizontal separator="none">
-            <FileInput type="file" innerRef={fileInput} onChange={(e: any) => handleDrop(e.target.files[0])} />
+            <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
             <AttachmentButton
                 onClick={!enabled ? undefined : fileSelector}
                 enabled={!enabled}

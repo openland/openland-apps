@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, Text, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView, Animated } from 'react-native';
-import { AppStyles } from '../../../styles/AppStyles';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { SDevice } from 'react-native-s/SDevice';
-import { ZBlurredView } from 'openland-mobile/components/ZBlurredView';
-import { SScrollView } from 'react-native-s/SScrollView';
+import { AppStyles } from 'openland-mobile/styles/AppStyles';
 
 let styles = StyleSheet.create({
     textInput: {
@@ -49,13 +47,13 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         return (
             <ZKeyboardAwareBar>
                 {this.props.topContent && (
-                    <ZBlurredView intensity="normal" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
-                        <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                    <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
+                        <View height={0.5} backgroundColor={AppStyles.separatorColor} />
                         <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
                             {this.props.topContent}
                         </ScrollView>
-                        <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
-                    </ZBlurredView>
+                        <View height={0.5} backgroundColor={AppStyles.separatorColor} />
+                    </View>
                 )}
 
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
