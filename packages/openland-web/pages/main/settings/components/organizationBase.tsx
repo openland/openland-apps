@@ -144,7 +144,7 @@ const AdminTools = withSuperAccountActions(props => {
     );
 }) as React.ComponentType<AdminToolsT>;
 
-const GeneralForm = ({ data: { organizationProfile } }: OrganizationSettingsT) => {
+const GeneralForm = ({ data: { organizationProfile }, updateOrganizaton }: OrganizationSettingsT) => {
     return (
         <XForm
             defaultData={{
@@ -162,19 +162,16 @@ const GeneralForm = ({ data: { organizationProfile } }: OrganizationSettingsT) =
                 },
             }}
             defaultAction={async ({
-                updateOrganizaton,
-                data: {
-                    input: {
-                        name,
-                        about,
-                        photoRef,
-                        published,
-                        editorial,
-                        website,
-                        twitter,
-                        facebook,
-                        linkedin,
-                    },
+                input: {
+                    name,
+                    about,
+                    photoRef,
+                    published,
+                    editorial,
+                    website,
+                    twitter,
+                    facebook,
+                    linkedin,
                 },
             }) => {
                 await updateOrganizaton({
