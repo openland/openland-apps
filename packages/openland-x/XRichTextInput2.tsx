@@ -15,7 +15,7 @@ import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { extractFlexProps, XFlexStyles, applyFlex } from './basics/Flex';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { emoji } from 'openland-y-utils/emoji';
 
@@ -206,60 +206,19 @@ const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element
     return getRelativeParent(element.parentElement!!);
 };
 
-const positionSuggestions = (args: any) => {
-    let { state, filteredEmojis, popover, decoratorRect } = args;
-    const relativeParent = getRelativeParent(popover.parentElement);
+const mentionSuggestionsWrapperShow = css`
+    transform: scale(1);
+`;
 
-    let scrollLeft: any;
-    let scrollTop: any;
-    let relativeTop: any;
-    let relativeLeft: any;
-
-    if (relativeParent) {
-        scrollLeft = relativeParent.scrollLeft;
-        scrollTop = relativeParent.scrollTop;
-
-        const relativeParentRect = relativeParent.getBoundingClientRect();
-        relativeLeft = decoratorRect.left - relativeParentRect.left;
-        relativeTop = decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
-        console.warn(relativeParentRect);
-    } else {
-        scrollTop =
-            window.pageYOffset ||
-            (document.documentElement ? document.documentElement.scrollTop : undefined);
-        scrollLeft =
-            window.pageXOffset ||
-            (document.documentElement ? document.documentElement.scrollLeft : undefined);
-
-        relativeTop = decoratorRect.top;
-        relativeLeft = decoratorRect.left;
-    }
-
-    const left = relativeLeft + scrollLeft;
-    const top = relativeTop - scrollTop!! + 8;
-
-    let transform;
-    let transition;
-    if (state.isActive) {
-        if (filteredEmojis.size > 0) {
-            transform = 'scale(1)';
-            transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
-        } else {
-            transform = 'scale(0)';
-            transition = 'all 0.35s cubic-bezier(.3,1,.2,1)';
-        }
-    }
-
-    return {
-        left: `${left}px`,
-        bottom: `${top}px`,
-        transform,
-        transformOrigin: '1em 0%',
-        transition,
-    };
-};
+const mentionSuggestionsWrapperHide = css`
+    transform: scale(0);
+`;
 
 const mentionSuggestionsWrapperClassName = css`
+    left: 0px;
+    bottom: 0px;
+    transform-origin: 1em 0%;
+    transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
     position: absolute;
     border: 1px solid #eee;
     border-radius: 10px;
@@ -292,7 +251,10 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             props.mentionsData || [],
         );
 
-        const [widthOfContainer, setWidthOfContainer] = React.useState(0);
+        const [sizeOfContainer, setSizeOfContainer] = React.useState<{
+            width: number;
+            height: number;
+        }>({ width: 0, height: 0 });
 
         const getEditorStateFromText = (text: string) => {
             return EditorState.moveFocusToEnd(
@@ -414,10 +376,20 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                 containerRef &&
                 containerRef.current &&
                 (ReactDOM.findDOMNode(containerRef.current) as Element);
-            const newWidthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
 
-            if (widthOfContainer !== newWidthOfContainer) {
-                setWidthOfContainer(newWidthOfContainer);
+            const newWidthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
+            const newHeightOfContainer = containerEl
+                ? containerEl.getBoundingClientRect().height
+                : 0;
+
+            if (
+                sizeOfContainer.width !== newWidthOfContainer ||
+                sizeOfContainer.height !== newHeightOfContainer
+            ) {
+                setSizeOfContainer({
+                    width: newWidthOfContainer,
+                    height: newHeightOfContainer,
+                });
             }
         }, []);
 
@@ -428,18 +400,23 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
 
         return (
             <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-                {filteredSuggestions.length !== 0 && (
-                    <div
-                        className={mentionSuggestionsWrapperClassName}
-                        style={{
-                            width: widthOfContainer,
-                        }}
-                    >
-                        {filteredSuggestions.map((mention, key) => {
-                            return <MentionEntry {...mention} key={key} />;
-                        })}
-                    </div>
-                )}
+                <div
+                    className={cx(
+                        mentionSuggestionsWrapperClassName,
+                        filteredSuggestions.length !== 0
+                            ? mentionSuggestionsWrapperShow
+                            : mentionSuggestionsWrapperHide,
+                    )}
+                    style={{
+                        width: sizeOfContainer.width,
+                        left: filteredSuggestions.length !== 0 ? 0 : sizeOfContainer.width / 2,
+                        bottom: filteredSuggestions.length !== 0 ? 50 : sizeOfContainer.height / 2,
+                    }}
+                >
+                    {filteredSuggestions.map((mention, key) => {
+                        return <MentionEntry {...mention} key={key} />;
+                    })}
+                </div>
 
                 <Editor
                     ref={editorRef}
