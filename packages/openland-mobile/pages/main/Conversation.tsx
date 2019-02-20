@@ -437,11 +437,7 @@ const ConversationComponent = XMemo<PageProps>((props) => {
         }
     }
 
-    let members: RoomMembers_members[] | undefined = undefined;
-
-    if (sharedRoom) {
-        members = getClient().useRoomMembers({ roomId: sharedRoom.id }).members;
-    }
+    let members = getClient().useRoomMembers({ roomId: (sharedRoom || privateRoom)!.id }).members;
 
     return (
         <View flexDirection={'column'} height="100%" width="100%">

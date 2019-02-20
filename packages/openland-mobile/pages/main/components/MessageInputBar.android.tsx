@@ -66,20 +66,28 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         let resolved = Image.resolveAssetSource(inputShadow);
 
         return (
-            <ZKeyboardAwareBar>
+            <View marginBottom={SDevice.safeArea.bottom}>
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
-                    {/* this.props.topContent && (
-                        <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
-                            <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
-                            <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
-                                {this.props.topContent}
-                            </ScrollView>
-                            <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
-                        </View>
-                    ) */}
+                    {!this.props.topContent && (
+                        <>
+                            <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={['#fff', '#fff', 'transparent', 'transparent']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
+                            <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor="#fff" />
+                        </>
+                    )}
 
-                    <LinearGradient position="absolute" left={0} top={0} right={0} height={androidMessageInputListOverlap} colors={['#fff', '#fff', 'transparent', 'transparent']} start={{ x: 0.5, y: 1 }} end={{ x: 0.5, y: 0 }} />
-                    <View position="absolute" left={0} top={androidMessageInputListOverlap} bottom={0} right={0} backgroundColor="#fff" />
+                    {this.props.topContent && (
+                        <>
+                            <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor="#fff" />
+                            <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
+                                <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                                <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
+                                    {this.props.topContent}
+                                </ScrollView>
+                                <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                            </View>
+                        </>
+                    )}
+
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                         {this.props.attachesEnabled !== false && (
@@ -165,7 +173,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
 
                     </View>
                 </View>
-            </ZKeyboardAwareBar >
+            </View>
         );
     }
 }
