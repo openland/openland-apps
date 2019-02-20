@@ -29,6 +29,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { MentionsRender } from './components/MentionsRender';
+import { findActiveWord } from 'openland-y-utils/findActiveWord';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -39,6 +40,7 @@ interface ConversationRootState {
     text: string;
     theme: ConversationTheme;
     mentionedUsers: MessageFull_mentions[];
+    inputFocused: boolean;
     selection: {
         start: number,
         end: number
@@ -60,7 +62,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 start: 0,
                 end: 0.
             },
-            mentionedUsers: []
+            mentionedUsers: [],
+            inputFocused: false
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -77,14 +80,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         ConversationThemeResolver.subscribe(this.props.chat.id, t => this.setState({ theme: t })).then(s => this.themeSub = s);
     }
 
-    handleTextChange = (src: string) => {
-        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
-
-        this.setState({ text: src }, () => {
-            this.saveDraft();
-        });
-    }
-
     saveDraft = () => {
         AsyncStorage.multiSet([
             [ 'compose_draft_' + this.props.chat.id, this.state.text ],
@@ -99,12 +94,32 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         ]);
     }
 
+    handleTextChange = (src: string) => {
+        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
+
+        this.setState({ text: src }, () => {
+            this.saveDraft();
+        });
+    }
+
     handleSelectionChange = (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
         this.setState({
             selection: {
                 start: e.nativeEvent.selection.start,
                 end: e.nativeEvent.selection.end
             }
+        });
+    }
+
+    handleFocus = () => {
+        this.setState({
+            inputFocused: true
+        });
+    }
+
+    handleBlur = () => {
+        this.setState({
+            inputFocused: false
         });
     }
 
@@ -246,6 +261,19 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 </SHeaderButton>
             );
         }
+
+        let mentions = null;
+        let activeWord = findActiveWord(this.state.text, this.state.selection);
+        if (this.props.chat.__typename === 'SharedRoom' && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
+            mentions = (
+                <MentionsRender
+                    activeWord={activeWord}
+                    onMentionPress={this.handleMentionPress}
+                    groupId={this.props.chat.id}
+                />
+            );
+        }
+
         return (
             <>
                 <SHeaderView accentColor={this.state.theme.mainColor}>
@@ -272,18 +300,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
                                 onSelectionChange={this.handleSelectionChange}
+                                onFocus={this.handleFocus}
+                                onBlur={this.handleBlur}
                                 text={this.state.text}
                                 theme={this.state.theme}
-                                topContent={
-                                    this.props.chat.__typename === 'SharedRoom' ? (
-                                        <MentionsRender
-                                            text={this.state.text}
-                                            selection={this.state.selection}
-                                            onMentionPress={this.handleMentionPress}
-                                            groupId={this.props.chat.id}
-                                        />
-                                    ) : undefined
-                                }
+                                topContent={mentions}
                             />
                         </View>
                     </KeyboardSafeAreaView>

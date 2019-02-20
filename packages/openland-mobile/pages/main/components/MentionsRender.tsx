@@ -9,26 +9,18 @@ import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ScrollView } from 'react-native-gesture-handler';
 
 interface RenderMentionsProps {
-    text: string;
-    selection: {
-        start: number;
-        end: number;
-    };
+    activeWord: string;
     groupId: string;
     onMentionPress: (word: string | undefined, user: RoomMembers_members_user) => void;
 }
 
 export const MentionsRender = (props: RenderMentionsProps) => {
     let membersQuery = getClient().useWithoutLoaderRoomMembers({ roomId: props.groupId });
-
-    let { text, selection } = props;
-
     let mentionsWrapper = null;
-    let currentWord = findActiveWord(text, selection);
 
-    if (membersQuery && currentWord && currentWord.startsWith('@')) {
+    if (membersQuery) {
         let members = membersQuery.members;
-        let nameToSearch = currentWord.replace('@', '').toLowerCase();
+        let nameToSearch = props.activeWord.replace('@', '').toLowerCase();
 
         let mentionedUsers = members.filter(member => member.user.name.toLowerCase().startsWith(nameToSearch));
 
@@ -43,7 +35,7 @@ export const MentionsRender = (props: RenderMentionsProps) => {
                             return (
                                 <ZListItemBase
                                     key={'mention-user-' + index}
-                                    onPress={() => props.onMentionPress(currentWord, user)}
+                                    onPress={() => props.onMentionPress(props.activeWord, user)}
                                     separator={false}
                                     height={40}
                                     underlayColor="rgba(0, 0, 0, 0.03)"

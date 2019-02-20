@@ -73,6 +73,8 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             placeholderTextColor="#aaaaaa"
                             onChangeText={this.props.onChangeText}
                             onSelectionChange={this.props.onSelectionChange}
+                            onFocus={this.props.onFocus}
+                            onBlur={this.props.onBlur}
                             value={this.props.text}
                             style={styles.textInput}
                             editable={this.props.enabled !== false}

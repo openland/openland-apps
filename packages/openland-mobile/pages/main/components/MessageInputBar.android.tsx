@@ -116,12 +116,13 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
 
                             </ASView>
                             <TextInput
-                                style={styles.textInput
-                                }
+                                style={styles.textInput}
                                 placeholder="Message"
                                 placeholderTextColor="#aaaaaa"
                                 onChangeText={this.props.onChangeText}
                                 onSelectionChange={this.props.onSelectionChange}
+                                onFocus={this.props.onFocus}
+                                onBlur={this.props.onBlur}
                                 value={this.props.text}
                                 editable={this.props.enabled !== false}
                                 multiline={true}
