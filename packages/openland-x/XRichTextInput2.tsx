@@ -115,16 +115,18 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const [plainText, setPlainText] = React.useState('');
 
         const getEditorStateFromText = (text: string) => {
-            return EditorState.createWithContent(
-                ContentState.createFromText(text),
-                new CompositeDecorator([
-                    {
-                        strategy: findLinkMention,
-                        component: (p: any) => (
-                            <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
-                        ),
-                    },
-                ]),
+            return EditorState.moveFocusToEnd(
+                EditorState.createWithContent(
+                    ContentState.createFromText(text),
+                    new CompositeDecorator([
+                        {
+                            strategy: findLinkMention,
+                            component: (p: any) => (
+                                <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
+                            ),
+                        },
+                    ]),
+                ),
             );
         };
         const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
@@ -156,18 +158,28 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             });
         };
 
-        const getHasFocus = () => {
-            return editorState.getSelection().getHasFocus();
-        };
-
         // hack to fix useImperativeHandle typings
         const useImperativeHandle = (React as any)
             .useImperativeHandle as typeof React.useImperativeMethods;
 
         useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
             focus,
-            resetAndFocus,
-            getHasFocus,
+            resetAndFocus: () => {
+                window.requestAnimationFrame(() => {
+                    setEditorState(
+                        EditorState.push(
+                            editorState,
+                            ContentState.createFromText(''),
+                            'remove-range',
+                        ),
+                    );
+
+                    focus();
+                });
+            },
+            getHasFocus: () => {
+                return editorState.getSelection().getHasFocus();
+            },
         }));
 
         const onPasteFiles = (files: Blob[]): DraftHandleValue => {
