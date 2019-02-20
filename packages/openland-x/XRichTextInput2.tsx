@@ -109,6 +109,13 @@ export const MentionEntry = ({ avatar, name, id, online, title }: MentionDataT) 
     const onMouseLeave = () => setIsFocused(false);
     const onMouseEnter = () => setIsFocused(true);
 
+    const emojifiedName = React.useMemo(() => {
+        return emoji({
+            src: name,
+            size: 15,
+        });
+    }, [name]);
+
     return (
         <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <XView
@@ -143,10 +150,7 @@ export const MentionEntry = ({ avatar, name, id, online, title }: MentionDataT) 
                     lineHeight={1.54}
                     color={'#000000'}
                 >
-                    {emoji({
-                        src: name,
-                        size: 15,
-                    })}
+                    {emojifiedName}
                 </XView>
 
                 <XView
@@ -282,6 +286,8 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const containerRef = React.useRef<ContainerWrapper>(null);
 
         const [plainText, setPlainText] = React.useState('');
+        const [activeWord, setActiveWord] = React.useState<string>('');
+
         const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
             props.mentionsData || [],
         );
@@ -371,11 +377,15 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         };
 
         const handleEditorChange = (newEditorState: EditorState) => {
-            const activeWord = findActiveWord(newEditorState);
+            const newActiveWord = findActiveWord(newEditorState);
 
-            if (props.onCurrentWordChanged) {
-                props.onCurrentWordChanged(activeWord);
+            // if (props.onCurrentWordChanged) {
+            //     props.onCurrentWordChanged(activeWord);
+            // }
+            if (activeWord !== newActiveWord) {
+                setActiveWord(newActiveWord || '');
             }
+
             const newPlainText = editorState.getCurrentContent().getPlainText();
 
             setEditorState(newEditorState);
@@ -411,20 +421,26 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         }, []);
 
+        const filteredSuggestions = (suggestions ? suggestions : []).filter(
+            ({ name }) =>
+                name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
+        );
+
         return (
             <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-                <div
-                    className={mentionSuggestionsWrapperClassName}
-                    style={{
-                        width: widthOfContainer,
-                    }}
-                >
-                    {suggestions &&
-                        suggestions.length &&
-                        suggestions.map((mention, key) => {
+                {filteredSuggestions.length !== 0 && (
+                    <div
+                        className={mentionSuggestionsWrapperClassName}
+                        style={{
+                            width: widthOfContainer,
+                        }}
+                    >
+                        {filteredSuggestions.map((mention, key) => {
                             return <MentionEntry {...mention} key={key} />;
                         })}
-                </div>
+                    </div>
+                )}
+
                 <Editor
                     ref={editorRef}
                     placeholder={props.placeholder}
