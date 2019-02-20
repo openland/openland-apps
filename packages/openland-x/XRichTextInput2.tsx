@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {
     Editor,
     EditorState,
@@ -10,7 +11,8 @@ import {
     getDefaultKeyBinding,
     DraftHandleValue,
 } from 'draft-js';
-
+import { XView } from 'react-mental';
+import { XAvatar } from 'openland-x/XAvatar';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { extractFlexProps, XFlexStyles, applyFlex } from './basics/Flex';
 import Glamorous from 'glamorous';
@@ -51,6 +53,7 @@ function findActiveWord(state: EditorState): string | undefined {
 }
 
 export type MentionDataT = {
+    id: string;
     name: string;
     title: string;
     avatar: string;
@@ -98,11 +101,105 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
+export const MentionEntry = ({
+    mention,
+    isFocused,
+}: {
+    mention: MentionDataT;
+    isFocused: boolean;
+}) => {
+    return (
+        <XView
+            position="relative"
+            width="100%"
+            flexDirection="row"
+            flexGrow={1}
+            flexShrink={1}
+            paddingTop={6}
+            paddingBottom={6}
+            paddingRight={15}
+            paddingLeft={15}
+            minWidth={0}
+            backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
+            hoverBackgroundColor={'#f9f9f9'}
+        >
+            <XAvatar
+                size={'m-small'}
+                style={'user'}
+                src={mention.avatar}
+                objectName={mention.name}
+                objectId={mention.id}
+                online={mention.online}
+            />
+
+            <XView
+                flexDirection="column"
+                alignSelf="center"
+                marginLeft={12}
+                fontSize={13}
+                fontWeight={'600'}
+                lineHeight={1.54}
+                color={'#000000'}
+            >
+                {mention.name}
+            </XView>
+
+            <XView
+                flexDirection="column"
+                alignSelf={'center'}
+                marginLeft={7}
+                opacity={0.4}
+                fontSize={12}
+                fontWeight={'600'}
+                lineHeight={1.5}
+                color={'#000000'}
+            >
+                {mention.title}
+            </XView>
+
+            <XView flexGrow={1} />
+
+            <XView
+                flexDirection="column"
+                alignSelf={'center'}
+                opacity={0.4}
+                fontSize={12}
+                fontWeight={'400'}
+                lineHeight={1.5}
+                color={isFocused ? '#000000' : 'transparent'}
+            >
+                <div style={{ position: 'relative' }}>
+                    <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
+                    <span>to select</span>
+                </div>
+            </XView>
+        </XView>
+    );
+};
+
 export type XRichTextInput2RefMethods = {
     focus: () => void;
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
 };
+
+const MentionSuggestionsWrapper = Glamorous.div(({ width }: any) => ({
+    '& ': {
+        '&.draftJsMentionPlugin__mentionSuggestions__2DWjA': {
+            position: 'absolute',
+            borderTop: '1px solid #eee',
+            background: '#fff',
+            boxShadow: 'none',
+            width,
+            maxWidth: width,
+            zIndex: 100,
+            bottom: 50,
+            left: 0,
+            borderRadius: '10px',
+            cursor: 'pointer',
+        },
+    },
+}));
 
 export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRichTextInput2Props>(
     (props: XRichTextInput2Props, ref) => {
@@ -111,8 +208,14 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         }
 
         const editorRef = React.useRef<Editor>(null);
+        const containerRef = React.useRef<ContainerWrapper>(null);
 
         const [plainText, setPlainText] = React.useState('');
+        const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
+            props.mentionsData || [],
+        );
+
+        const [widthOfContainer, setWidthOfContainer] = React.useState(0);
 
         const getEditorStateFromText = (text: string) => {
             return EditorState.moveFocusToEnd(
@@ -197,8 +300,10 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         };
 
         const handleEditorChange = (newEditorState: EditorState) => {
+            const activeWord = findActiveWord(newEditorState);
+
             if (props.onCurrentWordChanged) {
-                props.onCurrentWordChanged(findActiveWord(newEditorState));
+                props.onCurrentWordChanged(activeWord);
             }
             const newPlainText = editorState.getCurrentContent().getPlainText();
 
@@ -219,8 +324,29 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         }, [props.value]);
 
+        React.useLayoutEffect(() => {
+            setSuggestions(props.mentionsData);
+        }, [props.mentionsData]);
+
+        React.useLayoutEffect(() => {
+            const containerEl =
+                containerRef &&
+                containerRef.current &&
+                (ReactDOM.findDOMNode(containerRef.current) as Element);
+            const newWidthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
+
+            if (widthOfContainer !== newWidthOfContainer) {
+                setWidthOfContainer(newWidthOfContainer);
+            }
+        }, []);
+
         return (
-            <ContainerWrapper {...extractFlexProps(props)}>
+            <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
+                <MentionSuggestionsWrapper width={widthOfContainer}>
+                    {suggestions && suggestions.length && (
+                        <MentionEntry mention={suggestions[0]} isFocused={true} />
+                    )}
+                </MentionSuggestionsWrapper>
                 <Editor
                     ref={editorRef}
                     placeholder={props.placeholder}
