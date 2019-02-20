@@ -127,7 +127,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     isEmpty = () => {
         return (
             this.props.conversation.historyFullyLoaded &&
-            this.props.conversation.getState().messages.length === 1
+            this.props.conversation.getState().messages.length === 0
         );
     };
 

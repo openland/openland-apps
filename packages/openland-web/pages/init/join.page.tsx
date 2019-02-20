@@ -6,6 +6,7 @@ import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XTrack } from 'openland-x-analytics/XTrack';
 import { AuthRouter } from '../root/AuthRouter';
 import { withInviteInfo } from '../../api/withInviteInfo';
+import { withResolveInvite } from '../../api/withResolveInvite';
 import { XButton } from 'openland-x/XButton';
 import { switchOrganization } from '../../utils/switchOrganization';
 import { InitTexts } from './_text';
@@ -17,7 +18,7 @@ const InfoText = css`
 
 export default withAppBase(
     'Join',
-    withInviteInfo(props => {
+    withInviteInfo(withResolveInvite((props: any) => {
         return (
             <AuthRouter>
                 <XDocumentHead
@@ -57,5 +58,5 @@ export default withAppBase(
                 </MessagePage>
             </AuthRouter>
         );
-    }),
+    }) as any),
 );

@@ -6,7 +6,7 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
     // 
     // JOIN ROOMS
     //
-    if (link.includes('openland.com/joinChannel/') || link.includes('openland://deep/joinroom/')) {
+    if (link.includes('openland.com/join/') || link.includes('openland.com/joinChannel/') || link.includes('openland://deep/joinroom/')) {
         return async () => {
             startLoader();
             try {
