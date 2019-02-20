@@ -269,10 +269,10 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                             />
                                         </View>
                                         <View flexGrow={1}>
-                                            <Text style={{ width: Dimensions.get('window').width - 55, fontWeight: TextStyles.weight.medium, fontColor: Platform.OS === 'android' ? '#000' : '#181818' } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
+                                            <Text style={{ width: Dimensions.get('window').width - 55, fontWeight: TextStyles.weight.medium, color: Platform.OS === 'android' ? '#000' : '#181818' } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
                                                 {user.name}{' '}
                                                 {user.primaryOrganization && (
-                                                    <Text style={{ opacity: 0.6, fontWeight: TextStyles.weight.regular } as TextStyle}>
+                                                    <Text style={{ color: 'rgba(0, 0, 0, 0.6)', fontWeight: TextStyles.weight.regular } as TextStyle}>
                                                         {user.primaryOrganization.name}
                                                     </Text>
                                                 )}
