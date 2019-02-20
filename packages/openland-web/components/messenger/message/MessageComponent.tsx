@@ -766,7 +766,9 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
     if (content.length === 0) {
         content.push(
             <MessageTextComponent
-                message={''}
+                message={
+                    'Message is not supported on your version of Openland. Please refresh the page to view it.'
+                }
                 mentions={null}
                 key={'text'}
                 isService={false}
