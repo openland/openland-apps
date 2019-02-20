@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextStyle } from 'react-native';
+import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextStyle, TouchableHighlight } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -28,10 +28,9 @@ import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme 
 import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
-import { SDevice } from 'react-native-s/SDevice';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { UserAvatar } from 'openland-mobile/messenger/components/UserAvatar';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
+import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -252,8 +251,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             let user = member.user;
     
                             return (
-                                <TouchableOpacity key={'mention-user-' + index} onPress={() => this.handleMentionPress(currentWord, user)}>
-                                    <View style={{ height: 40, flexDirection: 'row' }} alignItems="center">
+                                <ZListItemBase key={'mention-user-' + index} onPress={() => this.handleMentionPress(currentWord, user)} separator={false} height={40}>
+                                    <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
                                         <View style={{ width: 48, height: 40 }} alignItems="center" justifyContent="center">
                                             <ZAvatar
                                                 userId={user.id}
@@ -263,8 +262,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                                 placeholderTitle={user.name}
                                             />
                                         </View>
-                                        <View flexGrow={1} width={0} marginRight={7}>
-                                            <Text style={{ fontWeight: TextStyles.weight.medium } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
+                                        <View flexGrow={1}>
+                                            <Text style={{ width: Dimensions.get('window').width - 55, fontWeight: TextStyles.weight.medium, fontColor: Platform.OS === 'android' ? '#000' : '#181818' } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
                                                 {user.name}{' '}
                                                 {user.primaryOrganization && (
                                                     <Text style={{ opacity: 0.6, fontWeight: TextStyles.weight.regular } as TextStyle}>
@@ -274,7 +273,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                             </Text>
                                         </View>
                                     </View>
-                                </TouchableOpacity>
+                                </ZListItemBase>
                             )
                         })}
                     </>
