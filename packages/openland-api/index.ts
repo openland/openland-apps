@@ -10,6 +10,7 @@ import * as Conferences from './queries/Conferences';
 import * as Explore from './queries/Explore';
 import * as FeatureFlag from './queries/FeatureFlag';
 import * as Feed from './queries/Feed';
+import * as Invite from './queries/Invite';
 import * as Organization from './queries/Organization';
 import * as Permissions from './queries/Permissions';
 import * as Settings from './queries/Settings';
@@ -98,6 +99,7 @@ export const FeatureFlagEnableMutation = typedMutation<Types.FeatureFlagEnable, 
 export const FeatureFlagDisableMutation = typedMutation<Types.FeatureFlagDisable, Types.FeatureFlagDisableVariables>(FeatureFlag.FeatureFlagDisableMutation);
 export const FeedHomeQuery = typedQuery<Types.FeedHome, {}>(Feed.FeedHomeQuery);
 export const FeedPostMutation = typedMutation<Types.FeedPost, Types.FeedPostVariables>(Feed.FeedPostMutation);
+export const ResolveInviteQuery = typedQuery<Types.ResolveInvite, Types.ResolveInviteVariables>(Invite.ResolveInviteQuery);
 export const MyOrganizationsQuery = typedQuery<Types.MyOrganizations, {}>(Organization.MyOrganizationsQuery);
 export const UpdateOrganizationMutation = typedMutation<Types.UpdateOrganization, Types.UpdateOrganizationVariables>(Organization.UpdateOrganizationMutation);
 export const SetOrgShortnameMutation = typedMutation<Types.SetOrgShortname, Types.SetOrgShortnameVariables>(Organization.SetOrgShortnameMutation);

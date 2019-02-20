@@ -5,25 +5,17 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
-import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import {
     ConversationEngine,
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import {
-    MessageFull,
-    UserShort,
-    SharedRoomKind,
-    MessageFull_urlAugmentation_extra_User,
-    MessageType,
-} from 'openland-api/Types';
+import { UserShort, SharedRoomKind, MessageType } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
@@ -34,9 +26,7 @@ import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer, MobileMessageContainer } from './MessageContainer';
 import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
-import { MessageIntroComponent } from './content/attachments/introMessage/MessageIntroComponent';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { string } from 'prop-types';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
@@ -303,14 +293,13 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.text && (
-                                <IconButton
-                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton
+                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -634,26 +623,28 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         if (message.reply && message.reply!.length > 0) {
             content.push(
                 <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
-                        let isCompact =
-                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+                    {message
+                        .reply!.sort((a, b) => a.date - b.date)
+                        .map((item, index, array) => {
+                            let isCompact =
+                                index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
-                        return (
-                            <MessageReplyComponent
-                                mentions={message.mentions || []}
-                                sender={item.sender}
-                                date={item.date}
-                                message={item.message}
-                                id={item.id}
-                                key={'reply_message' + item.id + index}
-                                edited={item.edited}
-                                file={item.file}
-                                fileMetadata={item.fileMetadata}
-                                startSelected={hideMenu}
-                                compact={isCompact || undefined}
-                            />
-                        );
-                    })}
+                            return (
+                                <MessageReplyComponent
+                                    mentions={message.mentions || []}
+                                    sender={item.sender}
+                                    date={item.date}
+                                    message={item.message}
+                                    id={item.id}
+                                    key={'reply_message' + item.id + index}
+                                    edited={item.edited}
+                                    file={item.file}
+                                    fileMetadata={item.fileMetadata}
+                                    startSelected={hideMenu}
+                                    compact={isCompact || undefined}
+                                />
+                            );
+                        })}
                 </ReplyMessageWrapper>,
             );
         }
