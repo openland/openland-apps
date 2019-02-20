@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
-import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { MutationFunc } from 'react-apollo';
@@ -61,7 +61,7 @@ export type MessageComposeComponentInnerProps = {
     MessageComposeComponentT;
 
 const MessageComposeComponentInner = (messageComposeProps: MessageComposeComponentInnerProps) => {
-    const inputRef = React.useRef<XRichTextInput2>(null);
+    const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 

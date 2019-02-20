@@ -98,99 +98,128 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export const XRichTextInput2 = (props: XRichTextInput2Props) => {
-    if (!canUseDOM) {
-        return null;
-    }
+export type XRichTextInput2RefMethods = {
+    focus: () => void;
+    resetAndFocus: () => void;
+    getHasFocus: () => boolean;
+};
 
-    const ref = React.createRef<Editor>();
+export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRichTextInput2Props>(
+    (props: XRichTextInput2Props, ref) => {
+        if (!canUseDOM) {
+            return null;
+        }
 
-    const [plainText, setPlainText] = React.useState('');
+        const editorRef = React.useRef<Editor>(null);
 
-    const getEditorStateFromText = (text: string) => {
-        return EditorState.createWithContent(
-            ContentState.createFromText(text),
-            new CompositeDecorator([
-                {
-                    strategy: findLinkMention,
-                    component: (p: any) => (
-                        <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
-                    ),
-                },
-            ]),
-        );
-    };
-    const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
+        const [plainText, setPlainText] = React.useState('');
 
-    const onHandleKey = (command: string) => {
-        if (command === 'x-editor-submit') {
-            if (props.onSubmit) {
-                props.onSubmit();
+        const getEditorStateFromText = (text: string) => {
+            return EditorState.createWithContent(
+                ContentState.createFromText(text),
+                new CompositeDecorator([
+                    {
+                        strategy: findLinkMention,
+                        component: (p: any) => (
+                            <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
+                        ),
+                    },
+                ]),
+            );
+        };
+        const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
+
+        const onHandleKey = (command: string) => {
+            if (command === 'x-editor-submit') {
+                if (props.onSubmit) {
+                    props.onSubmit();
+                    return 'handled';
+                }
+            }
+            return 'not-handled';
+        };
+        const focus = () => {
+            window.requestAnimationFrame(() => {
+                if (editorRef && editorRef.current) {
+                    editorRef.current.focus();
+                }
+            });
+        };
+
+        const resetAndFocus = () => {
+            window.requestAnimationFrame(() => {
+                setEditorState(
+                    EditorState.push(editorState, ContentState.createFromText(''), 'remove-range'),
+                );
+
+                focus();
+            });
+        };
+
+        const getHasFocus = () => {
+            return editorState.getSelection().getHasFocus();
+        };
+
+        // hack to fix useImperativeHandle typings
+        const useImperativeHandle = (React as any)
+            .useImperativeHandle as typeof React.useImperativeMethods;
+
+        useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
+            focus,
+            resetAndFocus,
+            getHasFocus,
+        }));
+
+        const onPasteFiles = (files: Blob[]): DraftHandleValue => {
+            let file = files[0];
+            if (!file) {
                 return 'handled';
             }
-        }
-        return 'not-handled';
-    };
 
-    const resetAndFocus = () => {
-        window.requestAnimationFrame(() => {
-            setEditorState(
-                EditorState.push(editorState, ContentState.createFromText(''), 'remove-range'),
-            );
+            if (props.onPasteFile) {
+                props.onPasteFile(file);
+            }
 
-            focus();
-        });
-    };
-
-    const onPasteFiles = (files: Blob[]): DraftHandleValue => {
-        let file = files[0];
-        if (!file) {
+            resetAndFocus();
             return 'handled';
-        }
+        };
 
-        if (props.onPasteFile) {
-            props.onPasteFile(file);
-        }
+        const handleEditorChange = (newEditorState: EditorState) => {
+            if (props.onCurrentWordChanged) {
+                props.onCurrentWordChanged(findActiveWord(newEditorState));
+            }
+            const newPlainText = editorState.getCurrentContent().getPlainText();
 
-        resetAndFocus();
-        return 'handled';
-    };
+            setEditorState(newEditorState);
+            setPlainText(newPlainText);
+        };
 
-    const handleEditorChange = (newEditorState: EditorState) => {
-        if (props.onCurrentWordChanged) {
-            props.onCurrentWordChanged(findActiveWord(newEditorState));
-        }
-        const newPlainText = editorState.getCurrentContent().getPlainText();
+        React.useLayoutEffect(() => {
+            if (props.onChange) {
+                props.onChange(plainText);
+            }
+        }, [plainText]);
 
-        setEditorState(newEditorState);
-        setPlainText(newPlainText);
-    };
+        React.useLayoutEffect(() => {
+            if (props.value !== plainText) {
+                setEditorState(getEditorStateFromText(props.value));
+                setPlainText(props.value);
+            }
+        }, [props.value]);
 
-    React.useLayoutEffect(() => {
-        if (props.onChange) {
-            props.onChange(plainText);
-        }
-    }, [plainText]);
-
-    React.useLayoutEffect(() => {
-        if (props.value !== plainText) {
-            setEditorState(getEditorStateFromText(props.value));
-            setPlainText(props.value);
-        }
-    }, [props.value]);
-
-    return (
-        <ContainerWrapper {...extractFlexProps(props)}>
-            <Editor
-                ref={ref}
-                placeholder={props.placeholder}
-                keyBindingFn={keyBinding}
-                handleKeyCommand={onHandleKey}
-                handlePastedFiles={onPasteFiles}
-                stripPastedStyles={true}
-                editorState={editorState}
-                onChange={handleEditorChange}
-            />
-        </ContainerWrapper>
-    );
-};
+        return (
+            <ContainerWrapper {...extractFlexProps(props)}>
+                <Editor
+                    ref={editorRef}
+                    placeholder={props.placeholder}
+                    keyBindingFn={keyBinding}
+                    handleKeyCommand={onHandleKey}
+                    handlePastedFiles={onPasteFiles}
+                    stripPastedStyles={true}
+                    editorState={editorState}
+                    onChange={handleEditorChange}
+                />
+            </ContainerWrapper>
+        );
+    },
+);

@@ -1,4 +1,5 @@
-import { XRichTextInput } from 'openland-x/XRichTextInput';
+import * as React from 'react';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2';
 
 export type InputMethodsStateT = {
     focus: Function;
@@ -12,7 +13,7 @@ export function useInputMethods({
     enabled,
 }: {
     enabled?: boolean;
-    inputRef: XRichTextInput | any;
+    inputRef: React.RefObject<XRichTextInput2RefMethods>;
 }) {
     const focus = () => {
         if (inputRef.current) {
@@ -33,11 +34,7 @@ export function useInputMethods({
     };
 
     const hasFocus = () => {
-        return !!(
-            inputRef &&
-            inputRef.current &&
-            inputRef.current.state.editorState.getSelection().getHasFocus()
-        );
+        return !!(inputRef && inputRef.current && inputRef.current.getHasFocus());
     };
 
     return {
