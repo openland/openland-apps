@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { XView } from 'react-mental';
 import Glamorous from 'glamorous';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessagesStateContextProps } from '../../components/messenger/MessagesStateContext';
-import CloseIcon from 'openland-icons/ic-close.svg';
+import CloseIcon from 'openland-icons/ic-close-post.svg';
 
 const ForwardRoot = Glamorous.div({
     position: 'absolute',
@@ -10,22 +11,14 @@ const ForwardRoot = Glamorous.div({
     flexDirection: 'column',
     justifyContent: 'center',
     minWidth: '100%',
-    height: '100%',
+    height: 'calc(100% + 55px)',
     padding: 28,
     paddingTop: 0,
     flexShrink: 0,
     left: 0,
-    top: 0,
+    top: -55,
     zIndex: 2,
     backgroundColor: '#fff',
-    '& > svg': {
-        position: 'absolute',
-        right: 20,
-        top: 20,
-        width: 14,
-        height: 14,
-        cursor: 'pointer',
-    },
 });
 
 const ImageWrapper = Glamorous.div({
@@ -77,11 +70,26 @@ export const ForwardPlaceholder = (props: { state: MessagesStateContextProps }) 
 
     return (
         <ForwardRoot>
-            <CloseIcon
+            <XView
                 onClick={() => {
                     state.resetAll();
                 }}
-            />
+                width={32}
+                height={32}
+                borderRadius={50}
+                paddingHorizontal={8}
+                paddingVertical={8}
+                position="absolute"
+                right={20}
+                top={20}
+                cursor="pointer"
+                hoverBackgroundColor="rgba(0, 0, 0, 0.05)"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <CloseIcon />
+            </XView>
             <ImageWrapper>
                 <Image />
                 <XVertical separator={6} alignItems="center">
