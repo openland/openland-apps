@@ -79,11 +79,11 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         <>
                             <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor="#fff" />
                             <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
-                                <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                                <View height={0.5} backgroundColor={AppStyles.separatorColor} />
                                 <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
                                     {this.props.topContent}
                                 </ScrollView>
-                                <View height={1} backgroundColor="rgba(0, 0, 0, 0.05)" />
+                                <View height={0.5} backgroundColor={AppStyles.separatorColor} />
                             </View>
                         </>
                     )}

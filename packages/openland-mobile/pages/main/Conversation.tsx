@@ -251,7 +251,13 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                             let user = member.user;
     
                             return (
-                                <ZListItemBase key={'mention-user-' + index} onPress={() => this.handleMentionPress(currentWord, user)} separator={false} height={40}>
+                                <ZListItemBase
+                                    key={'mention-user-' + index}
+                                    onPress={() => this.handleMentionPress(currentWord, user)}
+                                    separator={false}
+                                    height={40}
+                                    underlayColor="rgba(0, 0, 0, 0.03)"
+                                >
                                     <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
                                         <View style={{ width: 48, height: 40 }} alignItems="center" justifyContent="center">
                                             <ZAvatar
