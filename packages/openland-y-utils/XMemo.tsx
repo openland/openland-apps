@@ -1,5 +1,3 @@
-import { FunctionComponent, NamedExoticComponent } from 'react';
+import * as React from 'react';
 
-export function XMemo<P = {}>(Component: FunctionComponent<P>): NamedExoticComponent<P> {
-    return Component as any;
-}
+export const XMemo = React.memo;

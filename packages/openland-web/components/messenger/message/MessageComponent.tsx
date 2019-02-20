@@ -5,25 +5,17 @@ import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XVertical } from 'openland-x-layout/XVertical';
 import { MessageTextComponent } from './content/MessageTextComponent';
 import { MessageAnimationComponent } from './content/MessageAnimationComponent';
-import { XButton } from 'openland-x/XButton';
 import { MessageImageComponent } from './content/MessageImageComponent';
 import { MessageFileComponent } from './content/MessageFileComponent';
 import { MessageVideoComponent } from './content/MessageVideoComponent';
 import { MessageUploadComponent } from './content/MessageUploadComponent';
 import { MessageReplyComponent } from './content/MessageReplyComponent';
-import { isServerMessage, PendingMessage } from 'openland-engines/messenger/types';
 import {
     ConversationEngine,
     DataSourceMessageItem,
 } from 'openland-engines/messenger/ConversationEngine';
 import { MessageUrlAugmentationComponent } from './content/attachments/MessageUrlAugmentationComponent';
-import {
-    MessageFull,
-    UserShort,
-    SharedRoomKind,
-    MessageFull_urlAugmentation_user_User,
-    MessageType,
-} from 'openland-api/Types';
+import { UserShort, SharedRoomKind, MessageType } from 'openland-api/Types';
 import { ReactionComponent } from './MessageReaction';
 import { Reactions } from './MessageReaction';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
@@ -34,9 +26,7 @@ import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer, MobileMessageContainer } from './MessageContainer';
 import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
-import { MessageIntroComponent } from './content/attachments/introMessage/MessageIntroComponent';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
-import { string } from 'prop-types';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
@@ -106,7 +96,7 @@ const ReplyMessageWrapper = Glamorous.div({
         content: ' ',
         position: 'absolute',
         left: 0,
-        top: 12,
+        top: 0,
         bottom: 4,
         width: 3,
         borderRadius: 3,
@@ -303,14 +293,13 @@ class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.text && (
-                                <IconButton
-                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton
+                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -389,6 +378,36 @@ class DesktopMessageComponentInner extends React.PureComponent<
                     />,
                 );
             } else {
+                if (message.reply && message.reply!.length > 0) {
+                    content.push(
+                        <ReplyMessageWrapper key={'reply_message' + message.id}>
+                            {message
+                                .reply!.sort((a, b) => a.date - b.date)
+                                .map((item, index, array) => {
+                                    let isCompact =
+                                        index > 0
+                                            ? array[index - 1].sender.id === item.sender.id
+                                            : false;
+
+                                    return (
+                                        <MessageReplyComponent
+                                            mentions={message.mentions || []}
+                                            sender={item.sender}
+                                            date={item.date}
+                                            message={item.message}
+                                            id={item.id}
+                                            key={'reply_message' + item.id + index}
+                                            edited={item.edited}
+                                            file={item.file}
+                                            fileMetadata={item.fileMetadata}
+                                            startSelected={hideMenu}
+                                            compact={isCompact || undefined}
+                                        />
+                                    );
+                                })}
+                        </ReplyMessageWrapper>,
+                    );
+                }
                 if (message.text && message.text.length > 0 && !isPost) {
                     if (message.isService) {
                         content.push(
@@ -471,36 +490,6 @@ class DesktopMessageComponentInner extends React.PureComponent<
                         />,
                     );
                 }
-                if (message.reply && message.reply!.length > 0) {
-                    content.push(
-                        <ReplyMessageWrapper key={'reply_message' + message.id}>
-                            {message
-                                .reply!.sort((a, b) => a.date - b.date)
-                                .map((item, index, array) => {
-                                    let isCompact =
-                                        index > 0
-                                            ? array[index - 1].sender.id === item.sender.id
-                                            : false;
-
-                                    return (
-                                        <MessageReplyComponent
-                                            mentions={message.mentions || []}
-                                            sender={item.sender}
-                                            date={item.date}
-                                            message={item.message}
-                                            id={item.id}
-                                            key={'reply_message' + item.id + index}
-                                            edited={item.edited}
-                                            file={item.file}
-                                            fileMetadata={item.fileMetadata}
-                                            startSelected={hideMenu}
-                                            compact={isCompact || undefined}
-                                        />
-                                    );
-                                })}
-                        </ReplyMessageWrapper>,
-                    );
-                }
             }
         } else {
             if (message.text && message.text.length > 0) {
@@ -517,7 +506,7 @@ class DesktopMessageComponentInner extends React.PureComponent<
             // TODO: subscribe to dowload/upload
             if (message.progress !== undefined) {
                 let progress = Math.round(message.progress * 100);
-                let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+                let title = 'Uploading (' + progress + '%)';
                 content.push(
                     <MessageUploadComponent key={'file'} progress={progress} title={title} />,
                 );
@@ -631,6 +620,34 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                 />,
             );
         }
+        if (message.reply && message.reply!.length > 0) {
+            content.push(
+                <ReplyMessageWrapper key={'reply_message' + message.id}>
+                    {message
+                        .reply!.sort((a, b) => a.date - b.date)
+                        .map((item, index, array) => {
+                            let isCompact =
+                                index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+
+                            return (
+                                <MessageReplyComponent
+                                    mentions={message.mentions || []}
+                                    sender={item.sender}
+                                    date={item.date}
+                                    message={item.message}
+                                    id={item.id}
+                                    key={'reply_message' + item.id + index}
+                                    edited={item.edited}
+                                    file={item.file}
+                                    fileMetadata={item.fileMetadata}
+                                    startSelected={hideMenu}
+                                    compact={isCompact || undefined}
+                                />
+                            );
+                        })}
+                </ReplyMessageWrapper>,
+            );
+        }
         if (message.text && message.text.length > 0 && !isPost) {
             if (message.isService) {
                 content.push(
@@ -714,32 +731,6 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
                 />,
             );
         }
-        if (message.reply && message.reply!.length > 0) {
-            content.push(
-                <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
-                        let isCompact =
-                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
-
-                        return (
-                            <MessageReplyComponent
-                                mentions={message.mentions || []}
-                                sender={item.sender}
-                                date={item.date}
-                                message={item.message}
-                                id={item.id}
-                                key={'reply_message' + item.id + index}
-                                edited={item.edited}
-                                file={item.file}
-                                fileMetadata={item.fileMetadata}
-                                startSelected={hideMenu}
-                                compact={isCompact || undefined}
-                            />
-                        );
-                    })}
-                </ReplyMessageWrapper>,
-            );
-        }
     } else {
         if (message.text && message.text.length > 0) {
             content.push(
@@ -754,7 +745,7 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
         }
         if (message.progress !== undefined) {
             let progress = Math.round(message.progress * 100);
-            let title = 'Uploading ' + message.file + ' (' + progress + '%)';
+            let title = 'Uploading (' + progress + '%)';
             content.push(<MessageUploadComponent key={'file'} progress={progress} title={title} />);
         }
         // if (message.failed) {
@@ -775,7 +766,9 @@ const MobileMessageComponentInner = (props: MessageComponentProps) => {
     if (content.length === 0) {
         content.push(
             <MessageTextComponent
-                message={''}
+                message={
+                    'Message is not supported on your version of Openland. Please refresh the page to view it.'
+                }
                 mentions={null}
                 key={'text'}
                 isService={false}

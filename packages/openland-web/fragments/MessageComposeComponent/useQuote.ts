@@ -8,40 +8,42 @@ import {
     getQuoteMessageSender,
 } from '../../components/messenger/MessagesStateContext';
 
+import { InputMethodsStateT } from './useInputMethods';
+
 export type QuoteStateT = {
     setQuoteMessageReply?: Function;
     setQuoteMessageSender?: Function;
     setQuoteMessagesId?: Function;
-    quoteMessageReply?: any;
-    quoteMessageSender?: any;
-    quoteMessagesId?: string[];
+    quoteMessageReply: string | null;
+    quoteMessageSender: string | null;
+    quoteMessagesId: string[];
+    updateQuote: Function;
 };
 
-export function useQuote({ conversationId }: { conversationId?: string }) {
+export function useQuote({
+    conversationId,
+    inputMethodsState,
+}: {
+    conversationId?: string;
+    inputMethodsState: InputMethodsStateT;
+}) {
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
     const [quoteMessagesId, setQuoteMessagesId] = React.useState<string[]>([]);
-    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | undefined>(undefined);
-    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | undefined>(
-        undefined,
-    );
-
-    const shouldHaveQuote = () => {
-        const { replyMessagesId } = messagesContext;
-
-        return !!replyMessagesId.size;
-    };
+    const [quoteMessageReply, setQuoteMessageReply] = React.useState<string | null>(null);
+    const [quoteMessageSender, setQuoteMessageSender] = React.useState<string | null>(null);
 
     const updateQuote = () => {
-        if (shouldHaveQuote()) {
-            setQuoteMessageReply(getQuoteMessageReply(messagesContext));
-            setQuoteMessagesId(getQuoteMessageId(messagesContext));
-            setQuoteMessageSender(getQuoteMessageSender(messagesContext));
-        }
+        setQuoteMessageReply(getQuoteMessageReply(messagesContext));
+        setQuoteMessagesId(getQuoteMessageId(messagesContext));
+        setQuoteMessageSender(getQuoteMessageSender(messagesContext));
     };
 
     React.useEffect(() => {
         updateQuote();
+        if (!messagesContext.editMessage) {
+            inputMethodsState.focusIfNeeded();
+        }
     }, [messagesContext.replyMessages]);
 
     React.useEffect(() => {
@@ -50,10 +52,11 @@ export function useQuote({ conversationId }: { conversationId?: string }) {
 
     return {
         quoteMessagesId,
-        setQuoteMessagesId,
         quoteMessageReply,
-        setQuoteMessageReply,
         quoteMessageSender,
+        setQuoteMessageReply,
         setQuoteMessageSender,
+        setQuoteMessagesId,
+        updateQuote,
     };
 }

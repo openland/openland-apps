@@ -11,7 +11,7 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
     const { handleDrop } = React.useContext(UploadContext);
     const inputRef = React.useRef<HTMLDivElement>(null);
 
-    const { handleChange, handleDialogDone } = useGeneralCompose({
+    const { handleChange } = useGeneralCompose({
         setInputValue,
         onChange: messageComposeProps.onChange,
     });
@@ -35,7 +35,6 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
             inputValue={inputValue}
             enabled={messageComposeProps.enabled}
             handleHideChat={messageComposeProps.handleHideChat}
-            handleDialogDone={handleDialogDone}
         />
     );
 };

@@ -47,7 +47,12 @@ class RNImageNode: ASDisplayNode {
         let targetRequest = ImageRequest(url: targetUrl, targetSize: targetSize, contentMode: targetContentMode)
         self.task = ImagePipeline.shared.loadImage(with: targetRequest, progress: nil) { (response, error) in
           if response != nil {
-            let img = UIImage(cgImage: response!.image.cgImage!)
+            var img = UIImage(cgImage: response!.image.cgImage!)
+              // .withRenderingMode(UIImageRenderingMode.automatic)
+            if spec.tintColor != nil {
+              img = img.fillAlpha(fillColor: spec.tintColor!)
+            }
+            // img.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             self.node.image = img
           } else {
             print(error.debugDescription)
@@ -72,6 +77,12 @@ class RNImageNode: ASDisplayNode {
       self.isUserInteractionEnabled = false
       self.node.isUserInteractionEnabled = false
     }
+    
+    if let v = spec.style.opacity {
+      self.node.alpha = CGFloat(v)
+    }
+    
+    // self.node.tintColor = spec.tintColor
   }
   
   override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {

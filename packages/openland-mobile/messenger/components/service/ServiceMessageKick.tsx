@@ -15,7 +15,7 @@ const KickServiceMessage = (props: KickDefaultProps) => {
     return (
         <Container>
             <UserWrapper user={user} onUserPress={onUserPress} myUserId={myUserId} />
-            {user.id === myUserId ? ' have' : ' has'} left the room
+            {user.id === myUserId ? ' have' : ' has'} left the group
         </Container>
     );
 };

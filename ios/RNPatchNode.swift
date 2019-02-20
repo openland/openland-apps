@@ -40,10 +40,6 @@ class RNPatchNode: ASDisplayNode {
         _baseImage = val
       } else {
         _baseImage = try! UIImage(data: Data(contentsOf: URL(string: spec.source)!), scale: UIScreen.main.scale)
-        if(spec.tint != nil){
-          _baseImage?.withRenderingMode(.alwaysTemplate)
-          node.tintColor = spec.tint
-        }
         if _baseImage != nil {
           patchBaseCache[spec.source] = _baseImage
         }
@@ -51,6 +47,9 @@ class RNPatchNode: ASDisplayNode {
     }
     
     // Result image
+    self.node.placeholderEnabled = false
+    self.node.placeholderFadeDuration = 0.0
+    self.node.placeholderColor = UIColor.white
     self.node.image = _baseImage?.resizableImage(withCapInsets: UIEdgeInsets(top: CGFloat(spec.top), left: CGFloat(spec.left), bottom: CGFloat(spec.bottom), right: CGFloat(spec.right)), resizingMode: UIImageResizingMode.stretch)
     if(spec.tint != nil){
       self.node.imageModificationBlock = ASImageNodeTintColorModificationBlock(spec.tint!)

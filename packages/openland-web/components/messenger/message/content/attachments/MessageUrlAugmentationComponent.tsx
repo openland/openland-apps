@@ -13,6 +13,8 @@ import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { emoji } from 'openland-y-utils/emoji';
+import { XView } from 'react-mental';
+import { XAvatar } from 'openland-x/XAvatar';
 
 const Container = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
     display: 'flex',
@@ -142,11 +144,150 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
     isMe: boolean;
 }
 
+const UserCardContainer = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
+    '& .delete-button': {
+        opacity: props.isMobile ? 1 : 0,
+    },
+    '&:hover .delete-button': {
+        opacity: 1,
+    },
+}));
+
+const UserCard = ({
+    id,
+    name,
+    photo,
+    organization,
+    description,
+    isMe,
+    messageId,
+    href,
+    path,
+}: {
+    id: string;
+    name: string;
+    photo: string | null;
+    organization?: string | null;
+    description?: string | null;
+    isMe: boolean;
+    messageId: string;
+    href?: string;
+    path?: string;
+}) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return (
+        <UserCardContainer
+            isMobile={isMobile}
+            href={href}
+            path={path}
+            onClick={(e: any) => e.stopPropagation()}
+        >
+            <XView
+                borderRadius={10}
+                backgroundColor={'#fcfcfc'}
+                flexDirection="row"
+                paddingTop={12}
+                paddingBottom={12}
+                paddingLeft={16}
+                paddingRight={20}
+                borderWidth={1}
+                borderColor={'#ececec'}
+            >
+                <XView marginRight={14} justifyContent={'center'}>
+                    <XAvatar
+                        size="small"
+                        style="colorus"
+                        objectName={name}
+                        objectId={id}
+                        cloudImageUuid={photo}
+                        path={'/mail/u/' + id}
+                    />
+                </XView>
+                <XView flexShrink={1}>
+                    <XView fontSize={14} fontWeight="600" color={'#000000'}>
+                        {emoji({
+                            src: name,
+                            size: 16,
+                        })}
+                    </XView>
+                    {organization && (
+                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                            {organization}
+                        </XView>
+                    )}
+                    {description && (
+                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                            {description}
+                        </XView>
+                    )}
+                </XView>
+                {isMe && (
+                    <DeleteButton
+                        query={{
+                            field: 'deleteUrlAugmentation',
+                            value: messageId,
+                        }}
+                        className="delete-button"
+                    >
+                        <DeleteIcon />
+                    </DeleteButton>
+                )}
+            </XView>
+        </UserCardContainer>
+    );
+};
+
 export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationComponentProps) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
-    let { hostname, title, photo, imageInfo } = props;
 
-    const preprocessed = props.description ? preprocessText(props.description) : [];
+    let { hostname, title, photo, imageInfo, description, iconRef, isMe, messageId, extra } = props;
+
+    let href: string | undefined = props.url;
+    let path: string | undefined = undefined;
+
+    if (isInternalLink(href)) {
+        path = makeInternalLinkRelative(href);
+        href = undefined;
+    }
+
+    let organization;
+    if (extra !== null) {
+        if (extra.__typename === 'Organization') {
+            organization = extra.name;
+        } else if (extra.__typename === 'ChannelConversation') {
+            return (
+                <UserCard
+                    href={href}
+                    path={path}
+                    isMe={isMe}
+                    messageId={messageId}
+                    description={description}
+                    id={extra.id}
+                    name={extra.title}
+                    photo={extra.photo}
+                    organization={extra.organization ? extra.organization!!.name : null}
+                />
+            );
+        } else if (extra.__typename === 'User') {
+            return (
+                <UserCard
+                    href={href}
+                    path={path}
+                    isMe={isMe}
+                    messageId={messageId}
+                    description={description}
+                    id={extra.id}
+                    name={extra.name}
+                    photo={extra.photo}
+                    organization={
+                        extra.primaryOrganization ? extra.primaryOrganization!!.name : null
+                    }
+                />
+            );
+        }
+    }
+
+    const preprocessed = description ? preprocessText(description) : [];
 
     let parts = preprocessed.map((v, i) => {
         if (v.type === 'new_line') {
@@ -178,14 +319,6 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
         dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
     }
 
-    let href: string | undefined = props.url;
-    let path: string | undefined = undefined;
-
-    if (isInternalLink(href)) {
-        path = makeInternalLinkRelative(href);
-        href = undefined;
-    }
-
     return (
         <Container
             isMobile={isMobile}
@@ -196,15 +329,21 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
             <ContentWrapper>
                 {hostname && (
                     <Hostname>
-                        {props.iconRef && (
-                            <Favicon src={'https://ucarecdn.com/' + props.iconRef.uuid + '/'} />
-                        )}
-                        {!props.iconRef && <WebsiteIcon />}
+                        {iconRef && <Favicon src={'https://ucarecdn.com/' + iconRef.uuid + '/'} />}
+                        {!iconRef && <WebsiteIcon />}
                         <span>{hostname}</span>
                     </Hostname>
                 )}
-                {title && <Title>{title}</Title>}
+                {title && (
+                    <Title>
+                        {emoji({
+                            src: title,
+                            size: 18,
+                        })}
+                    </Title>
+                )}
                 {parts && <Description>{parts}</Description>}
+                {organization && <Description>{organization}</Description>}
             </ContentWrapper>
             {photo && dimensions && (
                 <ImageWrapper>
@@ -216,11 +355,11 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
                     />
                 </ImageWrapper>
             )}
-            {props.isMe && (
+            {isMe && (
                 <DeleteButton
                     query={{
                         field: 'deleteUrlAugmentation',
-                        value: props.messageId,
+                        value: messageId,
                     }}
                     className="delete-button"
                 >

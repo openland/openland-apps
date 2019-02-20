@@ -59,12 +59,18 @@ class FilePreviewComponent extends React.PureComponent<PageProps, { completed: b
         }
     }
 
-    private handleOpen = () => {
+    private handleOpen = async () => {
         if (this.state.path) {
-            Share.open({
-                // type: 'application/pdf',
-                url: this.state.path
-            } as any);
+            const config = this.props.router.params.config;
+
+            let realFilePath = await DownloadManagerInstance.getFilePathWithRealName(config.uuid, null, config.name);
+
+            if (realFilePath) {
+                Share.open({
+                    // type: 'application/pdf',
+                    url: 'file://' + realFilePath
+                });
+            }
         }
     }
 

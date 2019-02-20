@@ -85,6 +85,7 @@ class AsyncImageSpec: AsyncViewSpec {
   var url: String = ""
   var touchableKey: String?
   var isGif: Bool = false
+  var tintColor: UIColor?
 }
 
 class AsyncStyleSpec {
@@ -228,7 +229,7 @@ private func resolveTextChildren(_ src: JSON) -> [Any] {
   return res;
 }
 
-private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
+func resolveSpec(_ src: JSON) -> AsyncViewSpec {
   if (src.array != nil) {
     fatalError("Spec can't be an array")
   }
@@ -328,6 +329,9 @@ private func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.style = resolveStyle(src)
     res.key = src["key"].stringValue
     res.url = src["props"]["source"].stringValue
+    if let v = src["props"]["tintColor"].uInt64 {
+      res.tintColor = resolveColorR(v)
+    }
     if let v = src["props"]["touchableKey"].string {
       res.touchableKey = v
     }

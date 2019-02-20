@@ -33,7 +33,7 @@ const JoinOneServiceMessage = (props: JoinDefaultProps & { joinedByUser: UserSho
         <Container>
             {handEmoji}{' '}
             <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
-            the room
+            the group
         </Container>
     );
 };
@@ -45,7 +45,7 @@ const JoinTwoServiceMessage = (props: JoinDefaultProps & { secondUser: UserShort
         <Container>
             {handEmoji}{' '}
             <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
-            the room along with{' '}
+            the group along with{' '}
             <UserWrapper user={secondUser} onUserPress={onUserPress} myUserId={myUserId} />
         </Container>
     );
@@ -58,7 +58,7 @@ const JoinManyServiceMessage = (props: JoinDefaultProps & { otherUsers: UserShor
         <Container>
             {handEmoji}{' '}
             <UserWrapper user={firstUser} onUserPress={onUserPress} myUserId={myUserId} /> joined
-            the room along with <OthersUsersWrapper users={otherUsers} onUserPress={onUserPress} />
+            the group along with <OthersUsersWrapper users={otherUsers} onUserPress={onUserPress} />
         </Container>
     );
 };
@@ -73,10 +73,10 @@ interface ServiceMessageJoinState {
     handEmoji: string;
 }
 
-export class ServiceMessageJoin extends React.Component<
+export class ServiceMessageJoin extends React.PureComponent<
     ServiceMessageJoinProps,
     ServiceMessageJoinState
-> {
+    > {
     constructor(props: ServiceMessageJoinProps) {
         super(props);
 

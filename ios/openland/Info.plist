@@ -75,9 +75,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To upload a photo or video, allow Openland access to your camera.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>To save photos, allow Openland access to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -112,6 +112,7 @@
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
+		<string>voip</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

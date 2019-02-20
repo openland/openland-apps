@@ -95,7 +95,7 @@ export let renderButtons = (message: DataSourceMessageItem, navigationManager: N
                         startLoader();
                         try {
                             await getMessenger().engine.client.client.mutate(MessageSetReactionMutation, { messageId: message.key, reaction: 'accept' });
-                            navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
+                            navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.extra! as any).id });
                         } catch (e) {
                             Alert.alert(e.message);
                         }
@@ -113,7 +113,7 @@ export let renderButtons = (message: DataSourceMessageItem, navigationManager: N
                     text={str}
                     style="positive_disabled"
                     onPress={iAccepted ? () => {
-                        navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.user! as any).id });
+                        navigationManager.push('Conversation', { flexibleId: (message.urlAugmentation!.extra! as any).id });
 
                     } : undefined}
                 />);

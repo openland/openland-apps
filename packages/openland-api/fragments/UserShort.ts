@@ -12,6 +12,7 @@ export const UserShort = gql`
         online
         lastSeen
         isYou
+        isBot
         shortname
         primaryOrganization {
             ...OrganizationShort

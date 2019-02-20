@@ -4,7 +4,7 @@ import { css } from 'linaria';
 import { Menu } from 'openland-web/components/MainLayout';
 import { tabs } from '../pages/main/mail/tabs';
 import { AdaptiveHOC } from 'openland-web/components/Adaptive';
-import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
+import { XDocumentHead, XDocumentHeadT } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
 import { XMemo } from 'openland-y-utils/XMemo';
 
@@ -151,8 +151,9 @@ const PageInner = AdaptiveHOC({
 
 export const Navigation = XMemo(
     ({
-        tab,
         title,
+        documentHead,
+        tab,
         menuRightContent,
         menuChildrenContent,
         swapFragmentsOnMobile,
@@ -160,8 +161,9 @@ export const Navigation = XMemo(
         firstFragment,
         secondFragment,
     }: {
-        tab?: any;
         title: string;
+        documentHead?: XDocumentHeadT;
+        tab?: any;
         menuRightContent?: React.ReactElement<any> | null | boolean;
         menuChildrenContent?: React.ReactElement<any> | null | boolean;
         swapFragmentsOnMobile?: boolean;
@@ -171,7 +173,7 @@ export const Navigation = XMemo(
     }) => {
         return (
             <>
-                <XDocumentHead title={title} />
+                <XDocumentHead {...{ title, ...documentHead }} />
                 <Scaffold>
                     <Scaffold.Content padding={false} bottomOffset={false}>
                         <XView

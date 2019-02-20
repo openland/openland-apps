@@ -55,8 +55,9 @@ const ComposeComponent = XMemo<PageProps>((props) => {
                 <React.Suspense fallback={<ZLoader />}>
                     <SScrollView keyboardDismissMode="interactive">
                         <ZListItemGroup divider={false}>
-                            <ZListItem leftIcon={require('assets/ic-group-24.png')} text="Create room" path="CreateChannel" pathRemove={true} />
-                            <ZListItem leftIcon={require('assets/ic-lock-24.png')} text="Create secret group" path="CreateGroupAttrs" pathRemove={true} />
+                            <ZListItem leftIcon={require('assets/ic-group-24.png')} text="Create group" path="CreateGroupAttrs" pathRemove={true} />
+                            {/* <ZListItem leftIcon={require('assets/ic-group-24.png')} text="Create community" path="CreateCommunity" /> */}
+                            {/* <ZListItem leftIcon={require('assets/ic-lock-24.png')} text="Create secret group" path="CreateGroupAttrs" pathRemove={true} /> */}
                         </ZListItemGroup>
                         <UserSearchComponent query="" router={props.router} />
                     </SScrollView>

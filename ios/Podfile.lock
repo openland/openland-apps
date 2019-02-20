@@ -11,7 +11,7 @@ PODS:
     - AppCenter/Core
   - AppCenterReactNativeShared (1.12.0):
     - AppCenter/Core (= 1.13.0)
-  - Auth0 (1.13.0):
+  - Auth0 (1.14.1):
     - SimpleKeychain
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.4.0):
@@ -48,6 +48,8 @@ PODS:
   - React (0.57.8):
     - React/Core (= 0.57.8)
   - react-native-blur (0.8.0):
+    - React
+  - react-native-document-picker (2.2.0):
     - React
   - react-native-fast-image (5.1.2):
     - FLAnimatedImage
@@ -86,6 +88,9 @@ PODS:
     - React/Core
   - React/RCTBlob (0.57.8):
     - React/Core
+  - React/RCTCameraRoll (0.57.8):
+    - React/Core
+    - React/RCTImage
   - React/RCTGeolocation (0.57.8):
     - React/Core
   - React/RCTImage (0.57.8):
@@ -122,12 +127,12 @@ PODS:
   - RNShare (1.1.3):
     - React
   - RSKImageCropper (2.2.1)
-  - SDWebImage/Core (4.4.3)
-  - SDWebImage/GIF (4.4.3):
+  - SDWebImage/Core (4.4.5)
+  - SDWebImage/GIF (4.4.5):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
   - SimpleKeychain (0.8.1)
-  - SwiftyJSON (4.1.0)
+  - SwiftyJSON (4.2.0)
   - Texture (2.7):
     - Texture/PINRemoteImage (= 2.7)
   - Texture/Core (2.7)
@@ -151,6 +156,7 @@ DEPENDENCIES:
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
   - react-native-blur (from `../node_modules/react-native-blur`)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-fast-image (from `../node_modules/react-native-fast-image`)
   - react-native-haptic-feedback (from `../node_modules/react-native-haptic-feedback`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -161,6 +167,7 @@ DEPENDENCIES:
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
   - React/RCTBlob (from `../node_modules/react-native`)
+  - React/RCTCameraRoll (from `../node_modules/react-native`)
   - React/RCTGeolocation (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
@@ -177,7 +184,7 @@ DEPENDENCIES:
   - RNRate (from `../node_modules/react-native-rate/ios`)
   - RNShare (from `../node_modules/react-native-share`)
   - SwiftyJSON (~> 4.0)
-  - Texture
+  - Texture (= 2.7)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -217,6 +224,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   react-native-blur:
     :path: "../node_modules/react-native-blur"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
   react-native-fast-image:
     :path: "../node_modules/react-native-fast-image"
   react-native-haptic-feedback:
@@ -244,7 +253,7 @@ SPEC CHECKSUMS:
   A0Auth0: 5cc6d8281f6315742b25d0c2475cc33df6066a22
   AppCenter: a70408f15de23f925001bfc7b7473094a009a4eb
   AppCenterReactNativeShared: 542de3c68bcec89fba964213048287592a443976
-  Auth0: 7e99e1ca69543bc243d9687fd612057072f3eaaf
+  Auth0: 064dc115cd99eec7334d1cab565f4d974eecac4d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: 4b3f3bdf1ac1a52a5ef5e65c9585d793a7c3f825
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
@@ -260,6 +269,7 @@ SPEC CHECKSUMS:
   RCTRestart: 2f9ddcfd9abb887f123b6580cec64d72fb6cccaa
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-blur: c35c1f6c2c76db7108bde7ed343bd2b01d64e0c0
+  react-native-document-picker: e7934f6a3c898a1b62fa68b1f09371beef6ac51a
   react-native-fast-image: cba3d9bf9c2cf8ddb643d887a686c53a5dd90a2c
   react-native-haptic-feedback: f675486e3889e3229272158943c1e9e075247e5a
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
@@ -271,12 +281,12 @@ SPEC CHECKSUMS:
   RNRate: 72b5c9c2e62de9a01710918eb83d75fb99b44c7b
   RNShare: d875e8e37f3e5e8eb7a103ae01e06490af1796f6
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
-  SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
+  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   SimpleKeychain: e2485c28d82fcece35e9e41faeac42ebfe614815
-  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 1bbfda83443f7f4f8548f3300787ed75290106e0
+PODFILE CHECKSUM: 3ea965d400738e44d81e357e8edc4d06ea307703
 
 COCOAPODS: 1.5.3

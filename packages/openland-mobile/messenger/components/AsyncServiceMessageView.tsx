@@ -9,7 +9,6 @@ import { ServiceMessageKick } from './service/ServiceMessageKick';
 import { ServiceMessagePhotoChanged } from './service/ServiceMessagePhotoChanged';
 import { ServiceMessageTitleChanged } from './service/ServiceMessageTitleChanged';
 import { ServiceMessagePost } from './service/ServiceMessagePost';
-import { ConversationTheme, getDefaultConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 interface AsyncServiceMessageViewProps {
     message: DataSourceMessageItem;
@@ -18,68 +17,47 @@ interface AsyncServiceMessageViewProps {
     onRoomPress: (id: string) => void;
 }
 
-export const ThemeContext = React.createContext({ theme: new DefaultConversationTheme() });
+export function AsyncServiceMessageView(props: AsyncServiceMessageViewProps) {
+    let meta = props.message.serviceMetaData!;
+    let myUserId = props.engine.engine.user.id;
 
-export class AsyncServiceMessageView extends React.PureComponent<AsyncServiceMessageViewProps, { theme: ConversationTheme }> {
-    sub?: () => void;
-    constructor(props: AsyncServiceMessageViewProps) {
-        super(props);
-        this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
+    let res = <ServiceMessageDefault message={props.message.text} />;
 
-    }
-
-    componentWillMount() {
-        ConversationThemeResolver.subscribe(this.props.engine.conversationId, t => this.setState({ theme: t })).then(sub => this.sub = sub);
-    }
-
-    componentWillUnmount() {
-        if (this.sub) {
-            this.sub();
-        }
-    }
-
-    render() {
-        let meta = this.props.message.serviceMetaData!;
-        let myUserId = this.props.engine.engine.user.id;
-
-        let res = <ServiceMessageDefault message={this.props.message.text} />;
-
-        if (meta) {
-            if (meta.__typename === 'PostRespondServiceMetadata') {
-                res = <ServiceMessagePost
-                    serviceMetadata={meta}
-                    onUserPress={this.props.onUserPress}
-                    onRoomPress={this.props.onRoomPress}
-                    myUserId={myUserId}
-                />;
-            } else if (meta.__typename === 'InviteServiceMetadata') {
-                res = <ServiceMessageJoin
-                    serviceMetadata={meta}
-                    onUserPress={this.props.onUserPress}
-                    myUserId={myUserId}
-                />;
-            } else if (meta.__typename === 'KickServiceMetadata') {
-                res = <ServiceMessageKick
-                    serviceMetadata={meta}
-                    onUserPress={this.props.onUserPress}
-                    myUserId={myUserId}
-                />;
-            } else if (meta.__typename === 'PhotoChangeServiceMetadata') {
-                res = <ServiceMessagePhotoChanged
-                    user={{
-                        id: this.props.message.senderId,
-                        name: this.props.message.senderName,
-                    }}
-                    onUserPress={this.props.onUserPress}
-                    myUserId={myUserId}
-                />;
-            } else if (meta.__typename === 'TitleChangeServiceMetadata') {
-                if (this.props.message.text) {
-                    res = <ServiceMessageTitleChanged title={meta.title} />;
-                }
+    if (meta) {
+        if (meta.__typename === 'PostRespondServiceMetadata') {
+            res = <ServiceMessagePost
+                serviceMetadata={meta}
+                onUserPress={props.onUserPress}
+                onRoomPress={props.onRoomPress}
+                myUserId={myUserId}
+            />;
+        } else if (meta.__typename === 'InviteServiceMetadata') {
+            res = <ServiceMessageJoin
+                serviceMetadata={meta}
+                onUserPress={props.onUserPress}
+                myUserId={myUserId}
+            />;
+        } else if (meta.__typename === 'KickServiceMetadata') {
+            res = <ServiceMessageKick
+                serviceMetadata={meta}
+                onUserPress={props.onUserPress}
+                myUserId={myUserId}
+            />;
+        } else if (meta.__typename === 'PhotoChangeServiceMetadata') {
+            res = <ServiceMessagePhotoChanged
+                user={{
+                    id: props.message.senderId,
+                    name: props.message.senderName,
+                }}
+                onUserPress={props.onUserPress}
+                myUserId={myUserId}
+            />;
+        } else if (meta.__typename === 'TitleChangeServiceMetadata') {
+            if (props.message.text) {
+                res = <ServiceMessageTitleChanged title={meta.title} />;
             }
         }
-
-        return <ThemeContext.Provider value={{ theme: this.state.theme }}>{res}</ThemeContext.Provider>;
     }
+
+    return res;
 }

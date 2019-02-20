@@ -17,6 +17,7 @@ import { DateFormater } from 'openland-x/XDate';
 import { XFormError } from 'openland-x-forms/XFormError';
 import { SettingsNavigation } from './SettingsNavigation';
 import { Content, HeadTitle } from './SettingComponents';
+import { XView } from 'react-mental';
 
 const SACreatedBlock = Glamorous.div({
     padding: 16,
@@ -37,6 +38,14 @@ const SACreatedText = Glamorous.div({
         color: '#1790ff',
     },
 });
+
+type AdminToolsT = {
+    updateOrganizatonMutations: any;
+    published: boolean;
+    editorial: boolean;
+    featured: boolean;
+    variables: { accountId: string; viaOrgId: true };
+};
 
 const AdminTools = withSuperAccountActions(props => {
     if (!(props.data && props.data.superAccount)) {
@@ -127,165 +136,147 @@ const AdminTools = withSuperAccountActions(props => {
                         text="Save changes"
                         alignSelf="flex-start"
                         style="primary"
-                        succesText="Changes saved!"
+                        successText="Changes saved!"
                     />
                 </XVertical>
             </XForm>
         </XVertical>
     );
-}) as React.ComponentType<{
-    updateOrganizatonMutations: any;
-    published: boolean;
-    editorial: boolean;
-    featured: boolean;
-    variables: { accountId: string; viaOrgId: true };
-}>;
+}) as React.ComponentType<AdminToolsT>;
 
-const Separator = Glamorous.div({
-    width: '100%',
-    height: 1,
-    backgroundColor: 'rgba(220, 222, 228, 0.45)',
-    marginTop: '24px !important',
-    marginBottom: '24px !important',
-});
+const GeneralForm = ({ data: { organizationProfile }, updateOrganizaton }: OrganizationSettingsT) => {
+    return (
+        <XForm
+            defaultData={{
+                input: {
+                    name: organizationProfile.name,
+                    about: organizationProfile.about,
+                    photo: organizationProfile.photoRef,
+                    website: organizationProfile.website,
+                    twitter: organizationProfile.twitter,
+                    facebook: organizationProfile.facebook,
+                    linkedin: organizationProfile.linkedin,
+                    photoRef: sanitizeImageRef(organizationProfile.photoRef),
+                    published: organizationProfile.published ? 'published' : 'unpublished',
+                    editorial: organizationProfile.editorial ? 'editorial' : 'noneditorial',
+                },
+            }}
+            defaultAction={async ({
+                input: {
+                    name,
+                    about,
+                    photoRef,
+                    published,
+                    editorial,
+                    website,
+                    twitter,
+                    facebook,
+                    linkedin,
+                },
+            }) => {
+                await updateOrganizaton({
+                    variables: {
+                        input: {
+                            name,
+                            about,
+                            photoRef,
+                            website,
+                            twitter,
+                            facebook,
+                            linkedin,
+                            alphaPublished: published === 'published',
+                            alphaEditorial: editorial === 'editorial',
+                        },
+                    },
+                });
+            }}
+            defaultLayout={false}
+        >
+            <XVertical separator={12} maxWidth={660}>
+                <HeadTitle>General</HeadTitle>
+                <XFormLoadingContent>
+                    <XHorizontal separator={12}>
+                        <XVertical flexGrow={1} maxWidth={480}>
+                            <XInput field="input.name" size="large" title="Organization name" />
+                            <XInput field="input.about" size="large" title="About" />
+                            <XInput
+                                flexGrow={1}
+                                title={TextOrganizationProfile.placeholderSocialInputPlaceholder}
+                                field="input.website"
+                                size="large"
+                            />
+                            <XInput field="input.twitter" title="Twitter" size="large" />
+                            <XInput field="input.facebook" title="Facebook" size="large" />
+                            <XInput field="input.linkedin" title="LinkedIn" size="large" />
+                        </XVertical>
+                        <XAvatarUpload cropParams="1:1, free" field="input.photoRef" />
+                    </XHorizontal>
+                </XFormLoadingContent>
+                <XFormSubmit
+                    text="Save changes"
+                    alignSelf="flex-start"
+                    style="primary"
+                    successText="Changes saved!"
+                />
+            </XVertical>
+        </XForm>
+    );
+};
 
-export const OrganizationSettings = ((props: any) => {
+const ShortNameForm = ({ data, setShortname }: OrganizationSettingsT) => {
+    return (
+        <XForm
+            defaultData={{
+                shortname: data.organizationProfile.shortname,
+            }}
+            defaultAction={async ({ shortname }) => {
+                await setShortname({
+                    variables: { shortname },
+                });
+            }}
+            defaultLayout={false}
+        >
+            <XVertical separator={12}>
+                <HeadTitle>Organization shortname</HeadTitle>
+                <XFormError onlyGeneralErrors={true} />
+                <XVertical width={480} separator={12}>
+                    <XFormLoadingContent>
+                        <XVertical separator={10}>
+                            <XInput field="shortname" size="large" title="Shortname" />
+                        </XVertical>
+                    </XFormLoadingContent>
+                    <XFormSubmit
+                        text="Save changes"
+                        alignSelf="flex-start"
+                        style="primary"
+                        successText="Changes saved!"
+                    />
+                </XVertical>
+            </XVertical>
+        </XForm>
+    );
+};
+
+type OrganizationSettingsT = {
+    updateOrganizaton: any;
+    setShortname: any;
+    data: { organizationProfile: any };
+    orgId?: string;
+    hideMembers?: boolean;
+};
+
+export const OrganizationSettings = ((props: OrganizationSettingsT) => {
     return (
         <SettingsNavigation title="Organization">
             <Content>
                 <XVertical alignSelf="stretch" separator={30}>
-                    <XVertical separator={12}>
-                        <HeadTitle>General</HeadTitle>
-                        <XVertical separator={25}>
-                            <XForm
-                                defaultData={{
-                                    input: {
-                                        name: props.data.organizationProfile.name,
-                                        about: props.data.organizationProfile.about,
-                                        photo: props.data.organizationProfile.photoRef,
-                                        photoRef: sanitizeImageRef(
-                                            props.data.organizationProfile.photoRef,
-                                        ),
-                                        published: props.data.organizationProfile.published
-                                            ? 'published'
-                                            : 'unpublished',
-                                        editorial: props.data.organizationProfile.editorial
-                                            ? 'editorial'
-                                            : 'noneditorial',
+                    <XView>
+                        <GeneralForm {...props} />
+                    </XView>
 
-                                        website: props.data.organizationProfile.website,
-                                        twitter: props.data.organizationProfile.twitter,
-                                        facebook: props.data.organizationProfile.facebook,
-                                        linkedin: props.data.organizationProfile.linkedin,
-                                    },
-                                }}
-                                defaultAction={async data => {
-                                    await props.updateOrganizaton({
-                                        variables: {
-                                            input: {
-                                                name: data.input.name,
-                                                about: data.input.about,
-                                                photoRef: data.input.photoRef,
-                                                alphaPublished:
-                                                    data.input.published === 'published',
-                                                alphaEditorial:
-                                                    data.input.editorial === 'editorial',
-                                                website: data.input.website,
-                                                twitter: data.input.twitter,
-                                                facebook: data.input.facebook,
-                                                linkedin: data.input.linkedin,
-                                            },
-                                        },
-                                    });
-                                }}
-                                defaultLayout={false}
-                            >
-                                <XVertical separator={12} maxWidth={660}>
-                                    <XFormLoadingContent>
-                                        <XHorizontal separator={12}>
-                                            <XVertical flexGrow={1} maxWidth={480}>
-                                                <XInput
-                                                    field="input.name"
-                                                    size="large"
-                                                    title="Organization name"
-                                                />
-                                                <XInput
-                                                    field="input.about"
-                                                    size="large"
-                                                    title="About"
-                                                />
-                                                <XInput
-                                                    flexGrow={1}
-                                                    title={
-                                                        TextOrganizationProfile.placeholderSocialInputPlaceholder
-                                                    }
-                                                    field="input.website"
-                                                    size="large"
-                                                />
-                                                <XInput
-                                                    field="input.twitter"
-                                                    title="Twitter"
-                                                    size="large"
-                                                />
-                                                <XInput
-                                                    field="input.facebook"
-                                                    title="Facebook"
-                                                    size="large"
-                                                />
-                                                <XInput
-                                                    field="input.linkedin"
-                                                    title="LinkedIn"
-                                                    size="large"
-                                                />
-                                            </XVertical>
-                                            <XAvatarUpload
-                                                cropParams="1:1, free"
-                                                field="input.photoRef"
-                                            />
-                                        </XHorizontal>
-                                    </XFormLoadingContent>
-                                    <XFormSubmit
-                                        text="Save changes"
-                                        alignSelf="flex-start"
-                                        style="primary"
-                                        succesText="Changes saved!"
-                                    />
-                                </XVertical>
-                            </XForm>
-                            <XForm
-                                defaultData={{
-                                    shortname: props.data.organizationProfile.shortname,
-                                }}
-                                defaultAction={async data => {
-                                    await props.setShortname({
-                                        variables: { shortname: data.shortname },
-                                    });
-                                }}
-                            >
-                                <XVertical separator={12}>
-                                    <HeadTitle>Organization shortname</HeadTitle>
-                                    <XFormError onlyGeneralErrors={true} />
-                                    <XVertical width={480} separator={12}>
-                                        <XFormLoadingContent>
-                                            <XVertical separator={10}>
-                                                <XInput
-                                                    field="shortname"
-                                                    size="large"
-                                                    title="Shortname"
-                                                />
-                                            </XVertical>
-                                        </XFormLoadingContent>
-                                        <XFormSubmit
-                                            text="Save changes"
-                                            alignSelf="flex-start"
-                                            style="primary"
-                                            succesText="Changes saved!"
-                                        />
-                                    </XVertical>
-                                </XVertical>
-                            </XForm>
-                        </XVertical>
-                    </XVertical>
+                    <XView marginTop={20}>
+                        <ShortNameForm {...props} />
+                    </XView>
 
                     {/* SUPER ADMIN */}
                     <XWithRole role={['super-admin', 'editor']}>
@@ -309,12 +300,4 @@ export const OrganizationSettings = ((props: any) => {
             </Content>
         </SettingsNavigation>
     );
-}) as React.ComponentType<
-    XWithRouter & {
-        updateOrganizaton: any;
-        setShortname: any;
-        data: { organizationProfile: any };
-        orgId?: string;
-        hideMembers?: boolean;
-    }
->;
+}) as React.ComponentType<XWithRouter & OrganizationSettingsT>;

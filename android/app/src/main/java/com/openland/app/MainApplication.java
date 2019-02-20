@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.react.ReactApplication;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
+import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.bridge.ProxyJavaScriptExecutor;
 import com.oney.WebRTCModule.WebRTCModulePackage;
@@ -20,6 +22,7 @@ import com.microsoft.appcenter.reactnative.crashes.AppCenterReactNativeCrashesPa
 import com.microsoft.appcenter.reactnative.analytics.AppCenterReactNativeAnalyticsPackage;
 
 import cl.json.RNSharePackage;
+import cl.json.ShareApplication;
 
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.openland.app.BuildConfig;
@@ -50,15 +53,15 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ShareApplication, ReactApplication {
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-        @Nullable
-        @Override
-        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
-            return new ProxyJavaScriptExecutor.Factory(new V8Executor.Factory(MainApplication.this));
-        }
+//        @Nullable
+//        @Override
+//        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
+//            return new ProxyJavaScriptExecutor.Factory(new V8Executor.Factory(MainApplication.this));
+//        }
 
         @Override
         public boolean getUseDeveloperSupport() {
@@ -69,6 +72,8 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
+            new ExtraDimensionsPackage(),
+            new ReactNativeDocumentPicker(),
                     new WebRTCModulePackage(),
                     new AndroidOpenSettingsPackage(),
                     new A0Auth0Package(),
@@ -118,5 +123,10 @@ public class MainApplication extends Application implements ReactApplication {
 //        Bundle bundle = new Bundle();
 //        service.putExtras(bundle);
 //        startService(service);
+    }
+
+    @Override
+    public String getFileProviderAuthority() {
+        return BuildConfig.APPLICATION_ID + ".provider";
     }
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ViewStyle, Animated } from 'react-native';
+import { View, StyleSheet, ViewStyle, Animated, Platform, ActivityIndicator } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 
@@ -92,7 +92,8 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
                 {this.state.visible && (
                     <KeyboardSafeAreaView >
                         <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
-                            <FixedLottie source={require('assets/material_loading.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />
+                            {Platform.OS === 'ios' && <FixedLottie source={require('assets/material_loading.json')} autoPlay={true} loop={true} style={{ width: size, height: size }} />}
+                            {Platform.OS !== 'ios' && <ActivityIndicator size="large" color="#0084fe" />}
                         </Animated.View>
                     </KeyboardSafeAreaView>
                 )}

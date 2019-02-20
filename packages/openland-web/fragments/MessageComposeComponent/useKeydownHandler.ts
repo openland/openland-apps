@@ -34,7 +34,7 @@ export function useKeydownHandler({
             conversation &&
             ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.hasFocus()) ||
                 (e.code === 'KeyE' && e.ctrlKey)) &&
-            !quoteState.quoteMessagesId
+            !quoteState.quoteMessagesId.length
         ) {
             let messages = conversation
                 .getState()

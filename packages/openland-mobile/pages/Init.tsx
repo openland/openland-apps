@@ -7,9 +7,8 @@ import { ZLoader } from '../components/ZLoader';
 import { AppBadge } from 'openland-y-runtime/AppBadge';
 import { backoff } from 'openland-y-utils/timer';
 import { Routes } from '../routes';
-import { MessengerContext } from 'openland-engines/MessengerEngine';
 import { PushManager } from '../components/PushManager';
-import { MobileMessengerContext, MobileMessenger } from '../messenger/MobileMessenger';
+import { MobileMessenger } from '../messenger/MobileMessenger';
 import { SRouting } from 'react-native-s/SRouting';
 import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
@@ -18,6 +17,7 @@ import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { SDevice } from 'react-native-s/SDevice';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -118,41 +118,45 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
     render() {
         if (this.state.state === 'loading') {
-            return <ZLoader appearance="large" />;
+            return (
+                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                    <ZLoader appearance="large" />
+                </View>
+            );
         } else if (this.state.state === 'app') {
             return (
                 <>
                     <PushManager client={getClient()} />
-                    <MobileMessengerContext.Provider value={getMessenger()}>
-                        <MessengerContext.Provider value={getMessenger().engine}>
-                            <View style={{ width: '100%', height: '100%' }}>
-                                <ZModalProvider>
-                                    <Root routing={getMessenger().history} />
-                                </ZModalProvider>
-                            </View>
-                        </MessengerContext.Provider>
-                    </MobileMessengerContext.Provider>
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <Root routing={getMessenger().history} />
+                        <ZModalProvider />
+                        {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top} backgroundColor="red" /> */}
+                        {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top + SDevice.statusBarHeight} backgroundColor="yellow" />
+                        <View position="absolute" bottom={0} left={0} right={0} height={SDevice.safeArea.bottom} backgroundColor="blue" /> */}
+                    </View>
                 </>
             );
         } else if (this.state.state === 'initial') {
             return (
                 <View style={{ width: '100%', height: '100%' }}>
-                    <ZModalProvider>
-                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
-                    </ZModalProvider>
+                    <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                    <ZModalProvider />
                 </View>
             );
         } else if (this.state.state === 'signup') {
             return (
                 <View style={{ width: '100%', height: '100%' }}>
-                    <ZModalProvider>
-                        <Root routing={this.history} />
-                    </ZModalProvider>
+                    <Root routing={this.history} />
+                    <ZModalProvider />
                 </View>
             );
         }
 
         // return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
-        return <ZLoader appearance="large" />;
+        return (
+            <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                <ZLoader appearance="large" />
+            </View>
+        )
     }
 }

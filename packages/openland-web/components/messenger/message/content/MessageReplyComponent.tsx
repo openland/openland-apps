@@ -31,6 +31,7 @@ interface ReplyMessageProps {
 export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
     let date = <XDate value={props.date} format="time" />;
     let content = [];
+
     if (props.message) {
         content.push(
             <MessageTextComponent
@@ -101,7 +102,6 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
             position="relative"
             paddingLeft={15}
             width="100%"
-            marginTop={props.compact ? 6 : 12}
             borderRadius={6}
             overflow="hidden"
         >
@@ -134,7 +134,7 @@ export const MessageReplyComponent = XMemo<ReplyMessageProps>(props => {
                             {props.sender!!.primaryOrganization && (
                                 <XView
                                     as="a"
-                                    path={orgPath}
+                                    path={orgPath ? orgPath : '/'}
                                     marginLeft={5}
                                     fontSize={12}
                                     fontWeight="600"

@@ -11,8 +11,9 @@ const CoverWrapper = Glamorous.div({
     position: 'relative',
     alignSelf: 'flex-start',
     display: 'flex',
-    width: 100,
-    height: 80,
+    width: 60,
+    height: 60,
+    marginLeft: 14,
     '& > img': {
         display: 'block',
         minWidth: '100%',
@@ -47,7 +48,8 @@ const FileItem = Glamorous(XHorizontal)({
     lineHeight: 1.54,
     fontWeight: 500,
     color: '#000',
-    paddingLeft: 18,
+    paddingLeft: 14,
+    paddingRight: 14,
     '& .remove': {
         marginTop: 1,
         cursor: 'pointer',

@@ -18,6 +18,7 @@ export interface ZListItemBaseProps {
     navigationIcon?: boolean;
     backgroundColor?: string;
     enabled?: boolean;
+    underlayColor?: string;
 }
 
 class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { router: SRouter }> {
@@ -65,7 +66,7 @@ class ZListItemBaseImpl extends React.PureComponent<ZListItemBaseProps & { route
                 );
             } else {
                 return (
-                    <TouchableHighlight underlayColor="#eee" onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
+                    <TouchableHighlight underlayColor={this.props.underlayColor || '#eee'} onLongPress={this.handleLongPress} onPress={this.handlePress} style={{ backgroundColor: this.props.backgroundColor }}>
                         {content}
                     </TouchableHighlight>
                 )

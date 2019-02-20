@@ -1,5 +1,29 @@
 {
     "icons": [{
+        "name": "ic-status-read",
+        "src": "ic-status-read.svg",
+        "sizes": [13]
+    }, {
+        "name": "ic-status-sending",
+        "src": "ic-status-sending.svg",
+        "sizes": [13]
+    }, {
+        "name": "ic-status-sent",
+        "src": "ic-status-sent.svg",
+        "sizes": [13]
+    }, {
+        "name": "ic-status-read",
+        "src": "ic-status-read.svg",
+        "sizes": [10]
+    }, {
+        "name": "ic-status-sending",
+        "src": "ic-status-sending.svg",
+        "sizes": [10]
+    }, {
+        "name": "ic-status-sent",
+        "src": "ic-status-sent.svg",
+        "sizes": [10]
+    }, {
         "name": "ic-compose",
         "src": "ic-compose-ios.svg",
         "sizes": [26]
@@ -18,7 +42,7 @@
     }, {
         "name": "ic-lock",
         "src": "ic-lock.svg",
-        "sizes": [18, 24]
+        "sizes": [13, 18, 24]
     }, {
         "name": "ic-help",
         "src": "ic-notifications-copy.svg",
@@ -82,6 +106,26 @@
     }, {
         "name": "ic-photo",
         "src": "ic-photo.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-camera",
+        "src": "ic-camera.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-video",
+        "src": "ic-video.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-gallery",
+        "src": "ic-photos.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-gallery-video",
+        "src": "ic-videos.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-document",
+        "src": "ic-document.svg",
         "sizes": [24]
     }, {
         "name": "ic-photo-fill",

@@ -12,7 +12,6 @@ import { XTextArea } from 'openland-x/XTextArea';
 import { XLink, XLinkProps } from 'openland-x/XLink';
 import PlusIcon from 'openland-icons/ic-add-small.svg';
 import LinkIcon from 'openland-icons/ic-link.svg';
-import EmailIcon from 'openland-icons/ic-email.svg';
 import { withChanneSendlnviteLink } from '../../../../api/withChanneSendlnviteLink';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { withChannelnviteLink } from '../../../../api/withChannelnviteLink';
@@ -77,7 +76,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
                             ref={this.handleRef}
                             value={'https://openland.com' + '/joinChannel/' + this.props.invite}
                         />
-                        <InviteText>Anyone with link can join Openland</InviteText>
+                        <InviteText>Anyone with link can join as group member</InviteText>
                     </LinkHolder>
                 )}
             </XVertical>
@@ -253,10 +252,9 @@ const RenewInviteLinkButton = withChannelnviteLink(props => (
 }>;
 
 interface InviteMembersModalRawProps {
-    channelTitle: string;
+    channelTitle?: string;
     roomId: string;
     sendInviteMutation: any;
-    target: any;
 }
 
 class InviteMembersModalRaw extends React.Component<
@@ -315,7 +313,7 @@ class InviteMembersModalRaw extends React.Component<
                             marginRight={10}
                         />
                     )}
-                    {this.state.showLink && (
+                    {/* {this.state.showLink && (
                         <InviteButton
                             onClick={() => this.setState({ showLink: false })}
                             title="Invite by email"
@@ -323,7 +321,7 @@ class InviteMembersModalRaw extends React.Component<
                             marginLeft={4}
                             marginRight={10}
                         />
-                    )}
+                    )} */}
                 </XHorizontal>
                 {this.state.showLink && (
                     <XHorizontal alignItems="center">
@@ -331,13 +329,13 @@ class InviteMembersModalRaw extends React.Component<
                             variables={{ roomId: this.props.roomId }}
                             refetchVars={{ roomId: this.props.roomId }}
                         />
-                        <XFormSubmit succesText="Copied!" key="link" style="primary" text="Copy" />
+                        <XFormSubmit successText="Copied!" key="link" style="primary" text="Copy" />
                     </XHorizontal>
                 )}
                 {!this.state.showLink && (
                     <XFormSubmit
                         key="invites"
-                        succesText="Invitations sent!"
+                        successText="Invitations sent!"
                         style="primary"
                         text="Send invitations"
                         keyDownSubmit={true}
@@ -348,7 +346,7 @@ class InviteMembersModalRaw extends React.Component<
         return (
             <XModalForm
                 autoClose={1500}
-                target={this.props.target}
+                targetQuery="inviteByLink"
                 defaultAction={async data => {
                     if (!this.state.showLink) {
                         let invites = data.inviteRequests
@@ -370,8 +368,14 @@ class InviteMembersModalRaw extends React.Component<
                         this.copyLink();
                     }
                 }}
-                title="Invite people to"
-                titleChildren={<ChannelName>{this.props.channelTitle}</ChannelName>}
+                title={
+                    this.props.channelTitle === undefined
+                        ? 'Invitation link'
+                        : `Invite people to ${this.props.channelTitle}`
+                }
+                titleChildren={
+                    this.props.channelTitle && <ChannelName>{this.props.channelTitle}</ChannelName>
+                }
                 useTopCloser={true}
                 scrollableContent={true}
                 size={this.state.showLink !== true ? 'large' : 'default'}
@@ -458,10 +462,8 @@ export const InviteMembersModal = withChanneSendlnviteLink(props => (
         channelTitle={(props as any).channelTitle}
         roomId={(props as any).roomId}
         sendInviteMutation={props.send}
-        target={(props as any).target}
     />
 )) as React.ComponentType<{
-    channelTitle: string;
+    channelTitle?: string;
     roomId: string;
-    target: any;
 }>;

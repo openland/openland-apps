@@ -79,6 +79,7 @@ const Tooltip = ({ isOwner }: { isOwner?: boolean }) => (
 interface XUserCardProps {
     user: Partial<User_user>;
     path?: string;
+    noPath?: boolean;
     customButton?: any;
     customMenu?: any;
     extraMenu?: any;
@@ -97,6 +98,7 @@ const userNameClassname = css`
 export const XUserCard = ({
     user,
     path,
+    noPath,
     customButton,
     customMenu,
     extraMenu,
@@ -153,6 +155,12 @@ export const XUserCard = ({
         </XView>
     );
 
+    let cardPath: string | undefined = path || '/directory/u/' + user.id;
+
+    if (noPath === true) {
+        cardPath = undefined;
+    }
+
     return (
         <XView
             cursor="pointer"
@@ -163,7 +171,7 @@ export const XUserCard = ({
             borderRadius={8}
             height={64}
             hoverBackgroundColor="#f9f9f9"
-            path={path || '/directory/u/' + user.id}
+            path={cardPath}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >

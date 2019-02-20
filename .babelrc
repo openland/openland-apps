@@ -47,7 +47,10 @@
                         "assets-s": "./packages/react-native-s/assets"
                     }
                 }],
-                // "transform-remove-console"
+                // "transform-remove-console",
+                // "@babel/plugin-transform-react-inline-elements",
+                // "@babel/plugin-transform-react-constant-elements",
+                "./packages/react-native-async-view-babel/lib"
             ]
         },
         "development": {
@@ -75,7 +78,10 @@
                         "assets": "./packages/openland-mobile/assets",
                         "assets-s": "./packages/react-native-s/assets"
                     }
-                }]
+                }],
+                // "@babel/plugin-transform-react-constant-elements",
+                "./packages/react-native-async-view-babel/lib"
+                // "@babel/plugin-transform-react-inline-elements"
             ]
         }
     }

@@ -46,13 +46,17 @@ const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) =
     });
 };
 
+const getMembers = (members?: RoomMembers_members[]) => {
+    return members
+        ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
+        : [];
+};
+
 export function useMentions({ members }: { members?: RoomMembers_members[] }) {
-    let listOfMembersNames: string[] = [];
+    const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
 
     React.useEffect(() => {
-        listOfMembersNames = members
-            ? members.map(({ user: { name } }: { user: { name: string } }) => `@${name}`)
-            : [];
+        setListOfMembersNames(getMembers(members));
     }, [members]);
 
     const mentionsData = convertChannelMembersDataToMentionsData(members);

@@ -15,7 +15,7 @@ const ModalBody = css`
     align-items: center;
     position: relative;
     margin-bottom: 40px;
-    &:hover > a {
+    &:hover a {
         opacity: 1 !important;
     }
 `;
@@ -77,29 +77,33 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
             >
                 <ModalCloseIcon />
             </XView>
-            <XCloudImage
-                srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                resize={'fill'}
-                width={width}
-                height={height}
-                className={ModalImage}
-            />
-            <XView
-                as="a"
-                justifyContent="center"
-                alignItems="center"
-                width={36}
-                height={36}
-                borderRadius={5}
-                backgroundColor="rgba(0, 0, 0, 0.6)"
-                opacity={0}
-                position="absolute"
-                top={20}
-                right={20}
-                href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
-                hoverTextDecoration="none"
-            >
-                <DownloadButtonIcon />
+            <XView flexDirection="row" alignItems="center" justifyContent="center">
+                <XView backgroundColor="#000" borderRadius={8}>
+                    <XCloudImage
+                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+                        resize={'fill'}
+                        width={width}
+                        height={height}
+                        className={ModalImage}
+                    />
+                    <XView
+                        as="a"
+                        justifyContent="center"
+                        alignItems="center"
+                        width={36}
+                        height={36}
+                        borderRadius={5}
+                        backgroundColor="rgba(0, 0, 0, 0.6)"
+                        opacity={0}
+                        position="absolute"
+                        top={20}
+                        right={20}
+                        href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
+                        hoverTextDecoration="none"
+                    >
+                        <DownloadButtonIcon />
+                    </XView>
+                </XView>
             </XView>
         </div>
     );

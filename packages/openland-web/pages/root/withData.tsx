@@ -66,6 +66,14 @@ export function withData(App: React.ComponentType<any>) {
                     // Handle them in components via the data.error prop:
                     // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
                     console.error('Error while running `getDataFromTree`', error);
+
+                    if (error.networkError) {
+                        console.log(JSON.stringify(error.networkError.result.errors, null, 2));
+                    }
+
+                    if (error.graphQLErrors && error.graphQLErrors.length) {
+                        console.log(JSON.stringify(error.graphQLErrors, null, 2));
+                    }
                 }
 
                 // getDataFromTree Last names not call componentWillUnmount

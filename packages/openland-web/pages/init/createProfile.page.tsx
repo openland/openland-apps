@@ -11,13 +11,14 @@ import {
     RoomSignupContainer,
     CreateProfileFormInner,
 } from './components/SignComponents';
+import { useIsMobile } from 'openland-web/hooks';
 
-export const CreateProfileForm = withProfileCreate((props: any) => {
+const CreateProfileFormRoot = withProfileCreate((props: any) => {
     if (canUseDOM) {
         localStorage.setItem('isnewuser', 'newuser');
     }
     let usePhotoPrefill = Cookie.get('auth-type') !== 'email';
-    const roomView = props.roomView || Cookie.get('x-openland-invite');
+    const roomView = props.roomView;
 
     const router = props.router;
     const prefill = usePhotoPrefill ? props.data.prefill : null;
@@ -46,6 +47,17 @@ export const CreateProfileForm = withProfileCreate((props: any) => {
     );
 });
 
+const CreateProfileForm = (props: any) => {
+    let roomView = props.roomView;
+    const [isMobile] = useIsMobile();
+
+    if (isMobile) {
+        roomView = false;
+    }
+
+    return <CreateProfileFormRoot roomView={roomView} />;
+};
+
 export default withApp('CreateProfile', 'viewer', props => {
     const fromRoom = Cookie.get('x-openland-invite');
     return (
@@ -54,7 +66,7 @@ export default withApp('CreateProfile', 'viewer', props => {
                 title={InitTexts.create_profile.pageTitle}
                 titleSocial={InitTexts.socialPageTitle}
             />
-            <CreateProfileForm />
+            <CreateProfileForm roomView={fromRoom} />
         </>
     );
 });

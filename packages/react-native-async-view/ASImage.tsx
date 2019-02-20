@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image } from 'react-native';
+import { Image, processColor } from 'react-native';
 import { ASViewStyle } from './ASViewStyle';
 import { ASPressEvent } from './ASPressEvent';
 import { ASEventEmitter } from './platform/ASEventEmitter';
@@ -8,6 +8,7 @@ import { randomTag } from './internals/randomTag';
 
 export interface ASImageProps extends ASViewStyle {
     source: any;
+    tintColor?: string;
     isGif?: boolean;
     onPress?: (event: ASPressEvent) => void;
 }
@@ -44,10 +45,11 @@ export class ASImage extends React.PureComponent<ASImageProps> {
     }
 
     render() {
-        let { children, onPress, source, ...other } = this.props;
+        let { children, onPress, source, tintColor, ...other } = this.props;
         let realProps = other;
         realProps = {
             ...baseStyleProcessor(other),
+            tintColor: tintColor ? processColor(tintColor) : undefined,
             touchableKey: this.props.onPress && this.tag,
             source: Image.resolveAssetSource(source).uri,
         } as any;

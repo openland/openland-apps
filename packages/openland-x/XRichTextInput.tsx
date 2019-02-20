@@ -364,9 +364,15 @@ export class XRichTextInput extends React.Component<XRichTextInputProps, XRichTe
         this.state = {
             widthOfContainer: 200,
             suggestions: this.props.mentionsData || [],
-            editorState: EditorState.createEmpty(),
+            editorState: EditorState.createWithContent(ContentState.createFromText(props.value)),
             plainText: props.value,
         };
+    }
+
+    componentDidMount() {
+        if (this.props.autofocus) {
+            this.focus();
+        }
     }
 
     onHandleKey: (command: string) => DraftHandleValue = (command: string) => {

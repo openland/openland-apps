@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextStyle } from 'react-native';
+import { View, Text, StyleSheet, TextStyle, Image } from 'react-native';
 import { isAndroid } from '../../../utils/isAndroid';
 import { SRouter } from 'react-native-s/SRouter';
 import { getMessenger } from '../../../utils/messenger';
@@ -78,21 +78,29 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     }
 
     if (privateRoom) {
-        let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
-        if (online && online.user) {
-            if (!online.user.online && online.user.lastSeen) {
-                subtitle = formatLastSeen(online.user.lastSeen);
-                accent = false;
-            } else if (online.user.online) {
-                subtitle = 'online'
-                accent = true;
+        if (privateRoom.user.isBot) {
+            subtitle = 'bot'
+            accent = true;
+        } else {
+            let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
+            if (online && online.user) {
+                if (!online.user.online && online.user.lastSeen) {
+                    subtitle = formatLastSeen(online.user.lastSeen);
+                    accent = false;
+                } else if (online.user.online) {
+                    subtitle = 'online'
+                    accent = true;
+                }
             }
         }
     }
 
     return (
         <View flexDirection="column" alignItems={isAndroid ? 'flex-start' : 'center'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
-            <Text style={isAndroid ? styles.androidTitle : styles.iosTitle} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+            <View flexDirection="row">
+                {(sharedRoom && sharedRoom.kind === 'GROUP') && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: 'green' }} /></View>)}
+                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, sharedRoom && sharedRoom.kind === 'GROUP' && { color: 'green' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+            </View>
             <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{subtitle}</Text>
         </View>
     );

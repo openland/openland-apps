@@ -140,7 +140,7 @@ export const GlobalCounterQuery = gql`
 
 export const RoomHistoryQuery = gql`
     query RoomHistory($roomId: ID!, $before: ID) {
-        messages: roomMessages(roomId: $roomId, first: 30, before: $before) {
+        messages: roomMessages(roomId: $roomId, first: 15, before: $before) {
             ...RoomMessageFull
         }
         state: conversationState(id: $roomId) {
@@ -321,6 +321,16 @@ export const RoomAlterHiddenMutation = gql`
     }
 `;
 
+export const RoomMembersShortQuery = gql`
+    query RoomMembersShort($roomId: ID!) {
+        members: roomMembers(roomId: $roomId) {
+            user {
+               id
+            }
+        }
+    }
+`;
+
 export const RoomMembersQuery = gql`
     query RoomMembers($roomId: ID!) {
         members: roomMembers(roomId: $roomId) {
@@ -412,7 +422,6 @@ export const RoomInviteInfoQuery = gql`
     }
     ${UserShort}
     ${OrganizationShort}
-    ${RoomFull}
 `;
 
 export const RoomUpdateMutation = gql`

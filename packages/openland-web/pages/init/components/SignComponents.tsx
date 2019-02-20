@@ -731,7 +731,7 @@ export const InviteInfoInner = ({
                         objectId={inviter.id}
                     />
                     <XText fontSize={16} color="#000000">
-                        {inviter.name + ' invites you to join'}
+                        {inviter.name + ' invites you to join group'}
                     </XText>
                 </XHorizontal>
             </XVertical>
@@ -955,7 +955,7 @@ export const WebSignUpActivationCode = ({
                     {({ showError }: { showError: boolean }) => (
                         <>
                             <XInput
-                                invalid={showError}
+                                invalid={codeError !== ''}
                                 field="input.code"
                                 pattern="[0-9]*"
                                 type="number"
@@ -965,7 +965,6 @@ export const WebSignUpActivationCode = ({
                                 flexGrow={1}
                                 flexShrink={0}
                             />
-                            {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
@@ -1064,7 +1063,7 @@ export const RoomActivationCode = ({
                     {({ showError }: { showError: boolean }) => (
                         <>
                             <XInput
-                                invalid={showError}
+                                invalid={codeError !== ''}
                                 field="input.code"
                                 pattern="[0-9]*"
                                 type="number"
@@ -1072,7 +1071,6 @@ export const RoomActivationCode = ({
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
                             />
-                            {showError && <XFormError field="input.code" />}
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
@@ -1324,12 +1322,6 @@ export const CreateProfileFormInner = (props: {
                                     errorMessage: InitTexts.auth.firstNameIsEmptyError,
                                 },
                             ],
-                            lastName: [
-                                {
-                                    rule: (value: string) => value !== '',
-                                    errorMessage: InitTexts.auth.lastNameIsEmptyError,
-                                },
-                            ],
                         },
                     }}
                     defaultAction={defaultAction}
@@ -1365,21 +1357,13 @@ export const CreateProfileFormInner = (props: {
                             </XView>
 
                             <XView>
-                                <XFormField2 field="input.lastName">
-                                    {({ showError }: { showError: boolean }) => (
-                                        <>
-                                            <XInput
-                                                invalid={showError}
-                                                field="input.lastName"
-                                                size="large"
-                                                title="Last name"
-                                                dataTestId="last-name"
-                                                flexGrow={1}
-                                            />
-                                            {showError && <XFormError field="input.lastName" />}
-                                        </>
-                                    )}
-                                </XFormField2>
+                                <XInput
+                                    field="input.lastName"
+                                    size="large"
+                                    title="Last name"
+                                    dataTestId="last-name"
+                                    flexGrow={1}
+                                />
                             </XView>
 
                             <ButtonsWrapper marginBottom={84}>

@@ -71,8 +71,8 @@ export class MessageStateProviderComponent extends React.PureComponent<
             forwardMessages: this.forwardMessages,
             setReplyMessages: this.setReplyMessages,
             changeForwardConverstion: this.changeForwardConverstion,
-            resetAll: this.resetAll,
             switchMessageSelect: this.switchMessageSelect,
+            resetAll: this.resetAll,
         };
     }
 
@@ -82,7 +82,22 @@ export class MessageStateProviderComponent extends React.PureComponent<
                 nextProps.router.routeQuery.conversationId &&
             !this.state.useForwardMessages
         ) {
-            this.state.resetAll();
+            let target = {
+                editMessageId: null,
+                editMessage: null,
+                forwardMessagesId: new Set(),
+                selectedMessages: new Set(),
+                replyMessagesId: new Set(),
+                replyMessages: new Set(),
+                replyMessagesSender: new Set(),
+                useForwardMessages: false,
+                useForwardPlaceholder: false,
+                useForwardHeader: false,
+            };
+
+            if (!includes(this.state, target)) {
+                this.setState(target);
+            }
         }
     }
 
@@ -137,6 +152,9 @@ export class MessageStateProviderComponent extends React.PureComponent<
         this.setState({
             useForwardPlaceholder: false,
             useForwardHeader: false,
+            replyMessagesId: new Set(),
+            replyMessages: new Set(),
+            replyMessagesSender: new Set(),
         });
     };
 
@@ -154,17 +172,13 @@ export class MessageStateProviderComponent extends React.PureComponent<
             useForwardHeader: false,
         };
 
-        if (!includes(this.state, target)) {
-            this.setState(target);
-        }
+        this.setState(target);
     };
 
     render() {
-        let { children } = this.props;
-
         return (
             <MessagesStateContext.Provider value={this.state}>
-                {children}
+                {this.props.children}
             </MessagesStateContext.Provider>
         );
     }
@@ -174,14 +188,17 @@ const getFirstInSet = (set: Set<string>) => {
 };
 
 const getForwardText = ({ forwardMessagesId }: MessagesStateContextProps) => {
-    return (
-        `Forward ${forwardMessagesId.size} ` +
-        (forwardMessagesId.size === 1 ? 'message' : 'messages')
-    );
+    return forwardMessagesId.size === 0
+        ? null
+        : `Forward ${forwardMessagesId.size} ` +
+              (forwardMessagesId.size === 1 ? 'message' : 'messages');
 };
 
 const getReplyText = ({ replyMessagesId }: MessagesStateContextProps) => {
-    return `Reply ${replyMessagesId.size} ` + (replyMessagesId.size === 1 ? 'message' : 'messages');
+    return replyMessagesId.size === 0
+        ? null
+        : `Reply to ${replyMessagesId.size} ` +
+              (replyMessagesId.size === 1 ? 'message' : 'messages');
 };
 
 const hasReply = ({ replyMessagesSender, replyMessages }: MessagesStateContextProps) => {

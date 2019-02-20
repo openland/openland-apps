@@ -40,7 +40,6 @@ import { withRoom } from '../../../../api/withRoom';
 import { XSwitcher } from 'openland-x/XSwitcher';
 import { withRoomMembersMgmt } from 'openland-web/api/withRoomRequestsMgmt';
 import { XMutation } from 'openland-x/XMutation';
-import { InviteMembersModal } from '../../channel/components/inviteMembersModal';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { withRoomAdminTools } from 'openland-web/api/withRoomAdminTools';
 import { withQueryLoader } from 'openland-web/components/withQueryLoader';
@@ -52,8 +51,9 @@ import {
     RoomSetHidden,
 } from 'openland-web/pages/main/profile/components/RoomControls';
 import { RoomEditModal } from 'openland-web/fragments/chat/RoomEditModal';
-import { RoomAddMemberModal } from 'openland-web/fragments/chat/RoomAddMemberModal';
 import { tabs, tabsT } from '../tabs';
+import { RoomAddMemberModal } from '../../../../fragments/chat/RoomAddMemberModal';
+import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
 
 const HeaderMembers = (props: { online?: boolean; children?: any }) => (
     <XView fontSize={13} lineHeight={1.23} color={props.online ? '#1790ff' : '#7F7F7F'}>
@@ -64,18 +64,20 @@ const HeaderMembers = (props: { online?: boolean; children?: any }) => (
 export const AdminTools = withRoomAdminTools(
     withQueryLoader(props => (
         <>
-            {props.data && props.data.roomSuper && (
-                <RoomSetFeatured
-                    val={props.data.roomSuper!.featured}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
-            {props.data && props.data.roomSuper && (
-                <RoomSetHidden
-                    val={props.data.roomSuper!.listed}
-                    roomId={props.data.roomSuper.id}
-                />
-            )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetFeatured
+                        val={props.data.roomSuper!.featured}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
+            {props.data &&
+                props.data.roomSuper && (
+                    <RoomSetHidden
+                        val={props.data.roomSuper!.listed}
+                        roomId={props.data.roomSuper.id}
+                    />
+                )}
         </>
     )),
 ) as React.ComponentType<{ id: string; variables: { id: string } }>;
@@ -215,18 +217,19 @@ const About = (props: { chat: Room_room_SharedRoom }) => {
                     <SectionContent>{chat.description}</SectionContent>
                 </Section>
             )}
-            {!chat.description && meAdmin && (
-                <Section separator={0}>
-                    <XSubHeader title="About" paddingBottom={0} />
-                    <SectionContent>
-                        <AboutPlaceholder
-                            roomId={chat.id}
-                            description={chat.description}
-                            target={<EditButton text="Add a short description" />}
-                        />
-                    </SectionContent>
-                </Section>
-            )}
+            {!chat.description &&
+                meAdmin && (
+                    <Section separator={0}>
+                        <XSubHeader title="About" paddingBottom={0} />
+                        <SectionContent>
+                            <AboutPlaceholder
+                                roomId={chat.id}
+                                description={chat.description}
+                                target={<EditButton text="Add a short description" />}
+                            />
+                        </SectionContent>
+                    </Section>
+                )}
         </>
     );
 };
@@ -295,6 +298,7 @@ interface MembersProviderProps {
     meOwner: boolean;
     chatTitle: string;
     kind: SharedRoomKind;
+    onDirectory?: boolean;
 }
 
 const MembersProvider = ({
@@ -305,6 +309,7 @@ const MembersProvider = ({
     chatTitle,
     chatId,
     kind,
+    onDirectory,
 }: MembersProviderProps & XWithRouter) => {
     if (members && members.length > 0) {
         let tab: tabsT =
@@ -313,19 +318,20 @@ const MembersProvider = ({
                 : tabs.members;
         return (
             <Section separator={0}>
-                {meOwner && (requests || []).length > 0 && (
-                    <XSwitcher style="button">
-                        <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
-                            Members
-                        </XSwitcher.Item>
-                        <XSwitcher.Item
-                            query={{ field: 'requests', value: '1' }}
-                            counter={requests!.length}
-                        >
-                            Requests
-                        </XSwitcher.Item>
-                    </XSwitcher>
-                )}
+                {meOwner &&
+                    (requests || []).length > 0 && (
+                        <XSwitcher style="button">
+                            <XSwitcher.Item query={{ field: 'requests' }} counter={members.length}>
+                                Members
+                            </XSwitcher.Item>
+                            <XSwitcher.Item
+                                query={{ field: 'requests', value: '1' }}
+                                counter={requests!.length}
+                            >
+                                Requests
+                            </XSwitcher.Item>
+                        </XSwitcher>
+                    )}
                 {((requests || []).length === 0 || !meOwner) && (
                     <XSubHeader title={'Members'} counter={members.length} paddingBottom={0} />
                 )}
@@ -333,12 +339,22 @@ const MembersProvider = ({
                 <SectionContent>
                     {tab === tabs.members && (
                         <>
-                            <InviteMembersModal
-                                channelTitle={chatTitle}
+                            <RoomAddMemberModal
                                 roomId={chatId}
-                                target={<XCreateCard text="Invite people" />}
+                                refetchVars={{
+                                    roomId: chatId,
+                                }}
+                                linkInvitePath={
+                                    onDirectory
+                                        ? `/directory/p/${chatId}?inviteByLink=true`
+                                        : `/mail/p/${chatId}?inviteByLink=true`
+                                }
                             />
-
+                            <XCreateCard
+                                text="Invite people"
+                                query={{ field: 'inviteMembers', value: 'true' }}
+                            />
+                            <InviteMembersModal roomId={chatId} />
                             {members.map((member, i) => (
                                 <MemberCard
                                     key={i}
@@ -359,7 +375,6 @@ const MembersProvider = ({
                 </SectionContent>
                 {meOwner && (
                     <>
-                        <RoomAddMemberModal roomId={chatId} />
                         <RemoveMemberModal
                             members={members}
                             roomId={chatId}
@@ -398,6 +413,7 @@ const RoomGroupProfileInner = (props: RoomGroupProfileInnerProps) => {
                         chatId={props.conversationId}
                         meOwner={chat.membership === 'MEMBER'}
                         chatTitle={chat.title}
+                        onDirectory={props.onDirectory}
                     />
                 </XScrollView2>
             </XView>

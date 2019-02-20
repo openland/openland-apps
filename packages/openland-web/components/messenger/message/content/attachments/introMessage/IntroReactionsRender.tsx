@@ -9,7 +9,7 @@ import PassedIcon from 'openland-icons/ic-passed.svg';
 import {
     SharedRoomKind,
     MessageFull_reactions,
-    MessageFull_urlAugmentation_user_User,
+    MessageFull_urlAugmentation_extra_User,
 } from 'openland-api/Types';
 import { XMemo } from 'openland-y-utils/XMemo';
 
@@ -62,7 +62,7 @@ const Counter = (props: CounterProps) => (
 );
 
 interface ReactionsRenderProps {
-    user: MessageFull_urlAugmentation_user_User;
+    user: MessageFull_urlAugmentation_extra_User;
     reactions: MessageFull_reactions[];
     messageId: string;
     meId: string;

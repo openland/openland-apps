@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Platform, Keyboard, NativeSyntheticEvent } from 'react-native';
+import { View, Platform, Keyboard, NativeSyntheticEvent, DeviceEventEmitter } from 'react-native';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SDevice } from 'react-native-s/SDevice';
 import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
@@ -34,21 +34,20 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     }
 
     onKeyboardChange = (e: any) => {
-        this.setState({ keyboardHeight: e ? e.endCoordinates.height : 0 });
-    }
-
-    componentDidMount() {
-        if (Platform.OS !== 'ios') {
-            Keyboard.addListener('keyboardDidShow', this.onKeyboardChange);
-            Keyboard.addListener('keyboardDidHide', this.onKeyboardChange);
-        }
+        console.log(e);
+        this.setState({ keyboardHeight: e ? e.height : 0 });
     }
 
     componentWillMount() {
         provider = this;
         if (Platform.OS !== 'ios') {
-            Keyboard.removeListener('keyboardDidShow', this.onKeyboardChange);
-            Keyboard.removeListener('keyboardDidHide', this.onKeyboardChange);
+            DeviceEventEmitter.addListener('async_keyboard_height', this.onKeyboardChange);
+        }
+    }
+
+    componentWillUnmount() {
+        if (Platform.OS !== 'ios') {
+            DeviceEventEmitter.removeListener('async_keyboard_height', this.onKeyboardChange);
         }
     }
 
@@ -63,30 +62,29 @@ export class ZModalProvider extends React.Component<{ children?: any }, { modals
     }
 
     showModal(modal: ZModal) {
-        Keyboard.dismiss();
-        let key = randomKey();
-        let cont: ZModalController = {
-            hide: () => {
-                this.setState((state) => ({ modals: state.modals.filter((v) => v.key !== key) }));
+        setTimeout(() => {
+            Keyboard.dismiss();
+            let key = randomKey();
+            let cont: ZModalController = {
+                hide: () => {
+                    this.setState((state) => ({ modals: state.modals.filter((v) => v.key !== key) }));
+                }
             }
-        }
-        let element = modal(cont);
-        this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
+            let element = modal(cont);
+            this.setState((state) => ({ modals: [...state.modals, { key, element }] }));
+        }, 1);
     }
 
     render() {
         return (
             <>
-                <View width="100%" height="100%">
-                    {this.props.children}
-                    {this.state.modals.map((v) => (
-                        <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
-                            <ASSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
-                                {v.element}
-                            </ASSafeAreaProvider>
-                        </View>
-                    ))}
-                </View>
+                {this.state.modals.map((v) => (
+                    <View key={v.key} position="absolute" top={0} left={0} right={0} bottom={0}>
+                        <ASSafeAreaProvider bottom={SDevice.safeArea.bottom + this.state.keyboardHeight} top={SDevice.safeArea.top}>
+                            {v.element}
+                        </ASSafeAreaProvider>
+                    </View>
+                ))}
             </>
         )
     }

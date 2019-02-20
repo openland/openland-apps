@@ -8,7 +8,6 @@ import { TextDirectory } from 'openland-text/TextDirectory';
 import { ConversationContainerWrapper } from 'openland-web/pages/main/mail/components/Components';
 import { ChatHeaderViewLoader } from 'openland-web/fragments/chat/ChatHeaderView';
 import { Navigation } from '../../../../components/Navigation';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const getId = (myPath: string, substring: string) => {

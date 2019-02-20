@@ -18,7 +18,8 @@ target 'openland' do
     'RCTSettings',
     'RCTVibration',
     'RCTPushNotification',
-    'RCTActionSheet'
+    'RCTActionSheet',
+    'RCTCameraRoll'
   ]
   # Explicitly include Yoga if you are using RN >= 0.42.0
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
@@ -28,7 +29,7 @@ target 'openland' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
     
-  pod 'Texture'
+  pod 'Texture', '2.7'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'Auth0', '~> 1.0'
 
@@ -68,6 +69,8 @@ target 'openland' do
   pod 'RCTRestart', :path => '../node_modules/react-native-restart/ios'
   
   pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+
 end
 
 post_install do |installer|

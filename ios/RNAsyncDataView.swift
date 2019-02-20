@@ -438,7 +438,7 @@ class RNAsyncDataViewManager: NSObject {
     var items: [RNAsyncDataViewItem] = []
     for i in parsed.arrayValue {
       let key = i["key"].stringValue
-      let config = parseSpec(i["config"].stringValue)
+      let config = resolveSpec(i["config"])
       items.append(RNAsyncDataViewItem(key: key, config: config))
     }
     RNAsyncDataView.getDataView(key: dataSourceKey).handleInitial(items: items, completed: completed)
@@ -474,7 +474,7 @@ class RNAsyncDataViewManager: NSObject {
     var items: [RNAsyncDataViewItem] = []
     for i in parsed.arrayValue {
       let key = i["key"].stringValue
-      let config = parseSpec(i["config"].stringValue)
+      let config = resolveSpec(i["config"])
       items.append(RNAsyncDataViewItem(key: key, config: config))
     }
     RNAsyncDataView.getDataView(key: dataSourceKey).handleLoadedMore(items: items, completed: completed)

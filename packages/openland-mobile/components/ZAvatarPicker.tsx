@@ -17,6 +17,7 @@ interface AvatarImageRef {
 }
 
 export interface ZAvatarPickerProps {
+    size?: number;
     initialUrl?: string
     field?: string;
     valueStoreKey?: string;
@@ -151,7 +152,7 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
             valueUrl = this.state.localPath;
         }
 
-        let size = 88;
+        let size = this.props.size || 88;
         return this.props.render ? <this.props.render url={valueUrl} file={this.state.file} loading={this.state.loading} showPicker={this.handlePicker} /> : (
             <TouchableOpacity onPress={this.handlePicker}>
                 <View width={size} height={size} borderRadius={size / 2}>

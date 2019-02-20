@@ -1,4 +1,5 @@
 import * as React from 'react';
+import UploadCare from 'uploadcare-widget';
 import { useReply } from './useReply';
 import {
     MessagesStateContext,
@@ -10,6 +11,7 @@ import { InputMethodsStateT } from './useInputMethods';
 import { MentionsStateT } from './useMentions';
 import { MessageFull_mentions } from 'openland-api/Types';
 import { useReplyPropsT } from './useReply';
+import { UploadContext } from './FileUploading/UploadContext';
 
 export type useHandleSendT = {
     onSend?: (text: string, mentions: MessageFull_mentions[] | null) => void;
@@ -36,7 +38,7 @@ export function useHandleSend({
     setInputValue,
     quoteState,
     mentionsState,
-    inputRef
+    inputRef,
 }: useHandleSendT) {
     const supportMentions = () => {
         return !!mentionsState && !!members;
@@ -49,8 +51,9 @@ export function useHandleSend({
         return !!quoteState;
     };
 
-    const [file, setFile] = React.useState<UploadCare.File | undefined>(undefined);
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
+    const dropZoneContext = React.useContext(UploadContext);
+    const { file } = dropZoneContext;
 
     const { replyMessagesProc } = useReply({
         replyMessage,
@@ -78,6 +81,7 @@ export function useHandleSend({
         const ucFile = UploadCare.fileFrom('object', fileForUc);
         if (onSendFile) {
             onSendFile(ucFile);
+            dropZoneContext.fileRemover();
         }
     };
 
@@ -86,15 +90,14 @@ export function useHandleSend({
         setInputValue('');
         if (supportQuote()) {
             // TODO move to quote here
-            quoteState!!.setQuoteMessageReply!!(undefined);
-            quoteState!!.setQuoteMessageSender!!(undefined);
+            quoteState!!.setQuoteMessageReply!!(null);
+            quoteState!!.setQuoteMessageSender!!(null);
             quoteState!!.setQuoteMessagesId!!([]);
         }
         if (inputRef && inputRef.current) {
             inputRef.current.innerText = '';
         }
 
-        setFile(undefined);
         if (inputMethodsState) {
             inputMethodsState.resetAndFocus();
         }
@@ -128,9 +131,15 @@ export function useHandleSend({
             }
             if (inputValue && hasQuoteInState()) {
                 replyMessagesProc();
+                if (file) {
+                    onUploadCareSendFile(file);
+                }
             }
         } else if (hasQuoteInState()) {
             replyMessagesProc();
+            if (file) {
+                onUploadCareSendFile(file);
+            }
         } else if (file) {
             onUploadCareSendFile(file);
         }

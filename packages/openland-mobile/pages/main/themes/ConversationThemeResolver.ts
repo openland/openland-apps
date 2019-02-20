@@ -1,8 +1,4 @@
-import { string } from 'prop-types';
-import { AppStyles } from 'openland-mobile/styles/AppStyles';
 import { AsyncStorage } from 'react-native';
-import { ZStyles } from 'openland-mobile/components/ZStyles';
-import { doSimpleHash } from 'openland-y-utils/hash';
 
 export interface ConversationTheme {
     // conversation
@@ -38,55 +34,62 @@ export interface ConversationTheme {
 
 }
 
-export class DefaultConversationTheme implements ConversationTheme {
-    mainColor = '#0084fe';
-    chatBackgroundColor = 'white';
-    spiral = false;
+export const DefaultConversationTheme: ConversationTheme = {
+    mainColor: '#0084fe',
+    chatBackgroundColor: 'white',
+    spiral: false,
 
-    bubbleColorIn = '#f3f5f7';
-    bubbleColorOut = ['#1970ff', '#11b2ff'];
+    bubbleColorIn: '#f3f5f7',
+    bubbleColorOut: ['#1970ff', '#11b2ff'],
 
-    senderNameColor = '#0084fe';
-    senderNameColorOut = '#fff';
+    senderNameColor: '#0084fe',
+    senderNameColorOut: '#fff',
 
-    textColorIn = '#000000';
-    textColorOut = '#ffffff';
-    textColorSecondaryIn = 'rgba(138,138,143, 0.7)';
-    textColorSecondaryOut = 'rgba(255,255,255, 0.7)';
+    textColorIn: '#000000',
+    textColorOut: '#ffffff',
+    textColorSecondaryIn: 'rgba(138,138,143, 1)',
+    textColorSecondaryOut: 'rgba(255,255,255, 1)',
 
-    backgroundColor = '#fff';
+    backgroundColor: '#fff',
 
-    linkColorIn = '#0084fe';
-    linkColorOut = '#fff';
+    linkColorIn: '#0084fe',
+    linkColorOut: '#fff',
 
-    timeColorIn = 'rgba(138,138,143, 0.6)';
-    timeColorOut = 'rgba(255,255,255, 0.7)';
+    timeColorIn: 'rgba(138,138,143, 0.6)',
+    timeColorOut: 'rgba(255,255,255, 0.7)',
 
-    reactionTextColorIn = '#99a2b0';
-    reactionTextColorOut = '#99a2b0';
+    reactionTextColorIn: '#99a2b0',
+    reactionTextColorOut: '#99a2b0',
 
-    serviceTextColor = '#8a8a8f';
+    serviceTextColor: '#8a8a8f'
 
-}
-
-export let getDefaultConversationTheme = (id: string) => {
-    let res = new DefaultConversationTheme();
-    return res;
-    // disable for now
-    // let colors = ZStyles.avatars[doSimpleHash(id) % ZStyles.avatars.length];
-    // return { ...res, senderNameColor: colors.nameColor, bubbleColorOut: [colors.placeholderColorEnd, colors.placeholderColorStart] };
-}
+};
 
 type ConversationThemeListener = (theme: ConversationTheme) => void;
 
 class ConversationThemeResolverInner {
     listeners = new Map<string, Set<ConversationThemeListener>>();
     themes = new Map<string, ConversationTheme>();
+    defaulThemes = new Map<string, ConversationTheme>();
+
+    getCachedOrDefault = (id: string) => {
+        let theme = this.themes.get(id);
+        if (!theme) {
+            theme = this.defaulThemes.get(id);
+        }
+        if (!theme) {
+            theme = DefaultConversationTheme;
+            this.defaulThemes.set(id, theme);
+        }
+
+        return theme;
+    }
 
     resolveTheme = async (id: string) => {
         let theme = this.themes.get(id);
         if (!theme) {
-            theme = getDefaultConversationTheme(id);
+            theme = this.getCachedOrDefault(id);
+            this.themes.set(id, theme);
             let savedThemeRawStr = await AsyncStorage.getItem('conversaton_theme_' + id);
             if (savedThemeRawStr) {
                 let savedThemeRaw = JSON.parse(savedThemeRawStr);
@@ -130,6 +133,10 @@ class ConversationThemeResolverInner {
 
 let conversationThemeResolver = new ConversationThemeResolverInner();
 export class ConversationThemeResolver {
+
+    static getCachedOrDefault = (id: string) => {
+        return conversationThemeResolver.getCachedOrDefault(id);
+    }
 
     static get = async (id: string) => {
         return await conversationThemeResolver.resolveTheme(id);
