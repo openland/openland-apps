@@ -157,7 +157,7 @@ export default () => (
                     {...{
                         alphaMentions: [],
                         mentions: [],
-                        message: 'https://app.openland.com/join/1dVnQiH',
+                        message: 'https://app.openland.com/joinChannel/1dVnQiH',
                         isService: false,
                         isEdited: false,
                     }}
