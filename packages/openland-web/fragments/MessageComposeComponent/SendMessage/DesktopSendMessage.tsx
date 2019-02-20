@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { XRichTextInput } from 'openland-x/XRichTextInput';
+import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
 import { TextInputComponentInnerT } from '../DumpSendMessage';
 
 export const TextInputWrapper = Glamorous.div({
@@ -35,7 +35,7 @@ export const DesktopSendMessage = ({
 }: TextInputComponentInnerT) => {
     return (
         <TextInputWrapper>
-            <XRichTextInput
+            <XRichTextInput2
                 flexGrow={1}
                 mentionsData={mentionsState!!.mentionsData}
                 placeholder="Write a message..."

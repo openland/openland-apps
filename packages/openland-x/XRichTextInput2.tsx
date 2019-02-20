@@ -98,159 +98,99 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export class XRichTextInput2 extends React.PureComponent<
-    XRichTextInput2Props,
-    { editorState: EditorState }
-> {
-    private ref = React.createRef<Editor>();
-
-    constructor(props: XRichTextInput2Props) {
-        super(props);
-        this.state = {
-            editorState: EditorState.createWithContent(
-                ContentState.createFromText(''),
-                new CompositeDecorator([
-                    {
-                        strategy: findLinkMention,
-                        component: (p: any) => (
-                            <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
-                        ),
-                    },
-                ]),
-            ),
-        };
+export const XRichTextInput2 = (props: XRichTextInput2Props) => {
+    if (!canUseDOM) {
+        return null;
     }
 
-    focus = () => {
-        window.requestAnimationFrame(() => {
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(this.state.editorState),
-            });
+    const ref = React.createRef<Editor>();
 
-            if (this.ref.current) {
-                this.ref.current.focus();
-            }
-        });
+    const [plainText, setPlainText] = React.useState('');
+
+    const getEditorStateFromText = (text: string) => {
+        return EditorState.createWithContent(
+            ContentState.createFromText(text),
+            new CompositeDecorator([
+                {
+                    strategy: findLinkMention,
+                    component: (p: any) => (
+                        <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
+                    ),
+                },
+            ]),
+        );
     };
+    const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
 
-    onHandleKey: (command: string) => DraftHandleValue = (command: string) => {
+    const onHandleKey = (command: string) => {
         if (command === 'x-editor-submit') {
-            if (this.props.onSubmit) {
-                this.props.onSubmit();
+            if (props.onSubmit) {
+                props.onSubmit();
                 return 'handled';
             }
         }
         return 'not-handled';
     };
 
-    onPasteFiles = (files: Blob[]): DraftHandleValue => {
+    const resetAndFocus = () => {
+        window.requestAnimationFrame(() => {
+            setEditorState(
+                EditorState.push(editorState, ContentState.createFromText(''), 'remove-range'),
+            );
+
+            focus();
+        });
+    };
+
+    const onPasteFiles = (files: Blob[]): DraftHandleValue => {
         let file = files[0];
         if (!file) {
             return 'handled';
         }
 
-        if (this.props.onPasteFile) {
-            this.props.onPasteFile(file);
+        if (props.onPasteFile) {
+            props.onPasteFile(file);
         }
 
-        this.resetAndFocus();
+        resetAndFocus();
         return 'handled';
     };
 
-    resetAndFocus = () => {
-        window.requestAnimationFrame(() => {
-            this.setState(
-                src => ({
-                    editorState: EditorState.push(
-                        src.editorState,
-                        ContentState.createFromText(''),
-                        'remove-range',
-                    ),
-                }),
-                () => {
-                    this.focus();
-                },
-            );
-        });
-    };
-
-    applyMention = (src: { name: string; id: string }) => {
-        this.setState(
-            s => {
-                let selection = s.editorState.getSelection();
-                let start = findActiveWordStart(s.editorState);
-                if (start < 0) {
-                    return s;
-                }
-                let content = s.editorState.getCurrentContent();
-                let text = content.getBlockForKey(selection.getStartKey()).getText();
-
-                let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
-                    anchorOffset: start,
-                    focusOffset: selection.getEndOffset(),
-                }) as any;
-
-                let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: src.id });
-
-                let replace = Modifier.replaceText(
-                    entity,
-                    s2,
-                    src.name,
-                    undefined,
-                    entity.getLastCreatedEntityKey(),
-                );
-
-                // let stext = src.name;
-                if (
-                    selection.getEndOffset() === text.length ||
-                    text.charAt(selection.getEndOffset()) !== ' '
-                ) {
-                    // stext = src.name + ' ';
-                    replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
-                }
-
-                let s3 = EditorState.push(s.editorState, replace, 'insert-mention' as any);
-                return { editorState: s3 };
-            },
-            () => this.ref.current!.focus(),
-        );
-    };
-
-    private handleEditorChange = (editorState: EditorState) => {
-        if (this.props.onCurrentWordChanged) {
-            this.props.onCurrentWordChanged(findActiveWord(editorState));
+    const handleEditorChange = (newEditorState: EditorState) => {
+        if (props.onCurrentWordChanged) {
+            props.onCurrentWordChanged(findActiveWord(newEditorState));
         }
-        const plainText = editorState.getCurrentContent().getPlainText();
-        this.setState(
-            {
-                editorState,
-            },
-            () => {
-                if (this.props.onChange) {
-                    this.props.onChange(plainText);
-                }
-            },
-        );
+        const newPlainText = editorState.getCurrentContent().getPlainText();
+
+        setEditorState(newEditorState);
+        setPlainText(newPlainText);
     };
 
-    render() {
-        if (!canUseDOM) {
-            return null;
+    React.useEffect(() => {
+        if (props.onChange) {
+            props.onChange(plainText);
         }
+    }, [plainText]);
 
-        return (
-            <ContainerWrapper {...extractFlexProps(this.props)}>
-                <Editor
-                    ref={this.ref}
-                    placeholder={this.props.placeholder}
-                    keyBindingFn={keyBinding}
-                    handleKeyCommand={this.onHandleKey}
-                    handlePastedFiles={this.onPasteFiles}
-                    stripPastedStyles={true}
-                    editorState={this.state.editorState}
-                    onChange={this.handleEditorChange}
-                />
-            </ContainerWrapper>
-        );
-    }
-}
+    React.useEffect(() => {
+        if (props.value !== plainText) {
+            setEditorState(getEditorStateFromText(props.value));
+            setPlainText(props.value);
+        }
+    }, [props.value]);
+
+    return (
+        <ContainerWrapper {...extractFlexProps(props)}>
+            <Editor
+                ref={ref}
+                placeholder={props.placeholder}
+                keyBindingFn={keyBinding}
+                handleKeyCommand={onHandleKey}
+                handlePastedFiles={onPasteFiles}
+                stripPastedStyles={true}
+                editorState={editorState}
+                onChange={handleEditorChange}
+            />
+        </ContainerWrapper>
+    );
+};

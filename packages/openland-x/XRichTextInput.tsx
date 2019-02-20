@@ -279,8 +279,6 @@ type XRichTextInputState = {
 };
 
 /// End Mentions
-import { convertToRaw } from 'draft-js';
-
 export class XRichTextInput extends React.Component<XRichTextInputProps, XRichTextInputState> {
     mentionPlugin: any;
     emojiPlugin: any;
