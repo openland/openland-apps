@@ -36,7 +36,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
                 {this.props.message.text && <ASText
                     key={'text-' + DefaultConversationTheme.senderNameColor}
                     color={mainTextColor}
-                    lineHeight={big ? 60 : 20}
+                    lineHeight={big ? undefined : 20}
                     letterSpacing={-0.3}
                     fontSize={big ? 52 : 16}
                     fontWeight={TextStyles.weight.regular}
