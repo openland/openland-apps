@@ -52,6 +52,11 @@ export const XDocumentHead = XMemo<XDocumentHeadT>(props => {
             <meta key="og_url" property="og:url" content={router.href} />
             <meta key="og_description" property="og:description" content={description} />
             <meta key="og_img" property="og:image" content={img} />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:site" content="@openland" />
+            <meta name="twitter:title" content={props.titleSocial ? props.titleSocial : title} />
+            <meta name="twitter:description" content={description} />
+            <meta name="twitter:image" content={img} />
         </Head>
     );
 });

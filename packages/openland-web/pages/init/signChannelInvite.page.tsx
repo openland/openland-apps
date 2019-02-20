@@ -59,8 +59,9 @@ export const InviteInfoInner = (props: any) => {
         <>
             <XDocumentHead
                 title={InitTexts.join.pageTitle}
+                description={data.invite.room.description}
                 titleSocial={
-                    (data.invite && data.invite.room && data.invite.room.description) ||
+                    (data.invite && data.invite.room && data.invite.room.title) ||
                     InitTexts.socialPageTitle
                 }
                 imgUrl={data.invite && data.invite.room ? data.invite.room.photo : undefined}

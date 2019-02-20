@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import com.openland.app.R
+import kotlin.reflect.full.functions
 
 /**
  * Created by Cristian Holdunu on 12/01/2019.
@@ -83,21 +84,21 @@ class KeyboardHeightProvider(val activity: Activity) : PopupWindow(activity) {
         get() {
             val decorView = activity.window.decorView ?: return 0
             var cutOffHeight = 0
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//                val windowInsets = decorView.rootWindowInsets
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-//                    val displayCutout = windowInsets.displayCutout
-//                    if (displayCutout != null) {
-//                        val list = displayCutout.boundingRects
-//                        for (rect in list) {
-//                            if (rect.top == 0) {
-//                                cutOffHeight += rect.bottom - rect.top
-//                            }
-//                        }
-//                    }
-//                }
-//
-//            }
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                val windowInsets = decorView.rootWindowInsets
+                if (android.os.Build.VERSION.SDK_INT >= 28) {
+                    val displayCutout = windowInsets.displayCutout
+                    if (displayCutout != null) {
+                        val list = displayCutout.boundingRects
+                        for (rect in list) {
+                            if (rect.top == 0) {
+                                cutOffHeight += rect.bottom - rect.top
+                            }
+                        }
+                    }
+                }
+
+            }
             return cutOffHeight
         }
 

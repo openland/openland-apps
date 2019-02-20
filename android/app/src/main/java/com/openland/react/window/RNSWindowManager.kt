@@ -1,7 +1,10 @@
 package com.openland.react.window
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import android.util.Log
 import android.view.View
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.ReactApplicationContext
@@ -42,6 +45,37 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
         }
     }
 
+    protected fun getNormalNavigationBarHeight(ctx: Context): Float {
+        try {
+            val res = ctx.getResources()
+            val rid = res.getIdentifier("config_showNavigationBar", "bool", "android")
+            if (rid > 0) {
+                val flag = res.getBoolean(rid) || Build.FINGERPRINT.contains("generic")
+                if (flag) {
+                    val resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android")
+                    if (resourceId > 0) {
+                        return res.getDimensionPixelSize(resourceId).toFloat()
+                    }
+                }
+            }
+        } catch (e: Throwable) {
+            return 0f
+        }
+
+        return 0f
+    }
+
+    override fun getConstants(): MutableMap<String, Any> {
+        val res = mutableMapOf<String, Any>()
+        val usableMetrics = reactApplicationContext.resources.getDisplayMetrics()
+        res["NAVIGATION_BAR"] = getNormalNavigationBarHeight(reactApplicationContext) / usableMetrics.density
+        return res
+    }
+
+    override fun hasConstants(): Boolean {
+        return true;
+    }
+
     @ReactMethod
     fun setStatusBarColor(color: String) {
         if (color == "light") {
@@ -58,6 +92,7 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
             }
         }
     }
+
 
     override fun onHostResume() {
         this.isActive = false

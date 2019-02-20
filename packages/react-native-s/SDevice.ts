@@ -1,5 +1,4 @@
-import { Platform, Dimensions, PixelRatio, StatusBar } from 'react-native';
-import { NativeModules } from 'react-native';
+import { Platform, Dimensions, PixelRatio, StatusBar, NativeModules } from 'react-native';
 
 // Detect iPhoneX
 const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get('window');
@@ -15,7 +14,8 @@ const isIphoneXSMAX = Platform.OS === 'ios' && D_WIDTH === XSMAX_WIDTH && D_HEIG
 // Eventually we will add support for safe area api for androids.
 //
 const safeAreaTop = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 22 : 0) : 0;
-let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : 0) : 0;
+let safeAreaBottom = Platform.OS === 'ios' ? ((isIphoneX || isIphoneXSMAX) ? 34 : 0) : NativeModules.RNSWindowManager.NAVIGATION_BAR; // DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'); // - (Platform.Version < 28 ? 0 : DimensionsAndroid.get('STATUS_BAR_HEIGHT'));
+// console.log('SOFT: ' + DimensionsAndroid.get('SOFT_MENU_BAR_HEIGHT'));
 
 //
 // Sizes of UINavigationController/AppBar

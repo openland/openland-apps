@@ -192,8 +192,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
         const w = this.props.config.width;
         const h = this.props.config.height;
         const animate = this.props.config.animate!!;
-        const containerW = Dimensions.get('window').width;
-        const containerH = Dimensions.get('window').height;
+        const containerW = Dimensions.get('screen').width;
+        const containerH = Dimensions.get('screen').height;
         const size = layoutMedia(w, h, 1024, 1024);
         console.log(this.props.config.isGif);
 
