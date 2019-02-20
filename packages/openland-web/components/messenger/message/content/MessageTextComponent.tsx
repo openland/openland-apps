@@ -69,24 +69,41 @@ const styleInsane = css`
     color: transparent;
 `;
 
+const styleRotating = css`
+    animation: rotate 1s linear infinite;
+    display: inline-block;
+
+    @keyframes rotate {
+        from { 
+            transform: rotate(0deg);
+        }
+        to { 
+            transform: rotate(360deg);
+        }
+    }
+`;
+
 export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     // Preprocessing
 
     var messageText = props.message;
+    const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
     const isSingleEmoji = React.useMemo(() => isEmoji(messageText), [props.message]);
     const isBig =
         isSingleEmoji ||
         isInsane ||
+        isRotating ||
         isMouthpiece ||
         (messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':'));
     const isTextSticker = !isSingleEmoji && isBig;
-    if (isInsane || isMouthpiece) {
-        messageText = messageText.replace(/🌈/g, '').replace(/📣/g, '');
+    if (isInsane || isMouthpiece || isRotating) {
+        messageText = messageText.replace(/🌈/g, '').replace(/📣/g, '').replace(/🔄/g, '');
     } else if (isTextSticker) {
         messageText = messageText.slice(1, messageText.length - 1);
     }
+
     const preprocessed = React.useMemo(() => preprocessText(messageText), [messageText]);
 
     // Rendering
@@ -134,7 +151,7 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
                 if (m.type === 'text') {
                     res.push(
                         <span
-                            className={isInsane ? styleInsane : undefined}
+                            className={isRotating ? styleRotating : isInsane ? styleInsane : undefined}
                             key={'text-' + i + '-' + i2}
                         >
                             {emoji({
