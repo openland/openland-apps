@@ -166,13 +166,13 @@ export const XRichTextInput2 = (props: XRichTextInput2Props) => {
         setPlainText(newPlainText);
     };
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (props.onChange) {
             props.onChange(plainText);
         }
     }, [plainText]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (props.value !== plainText) {
             setEditorState(getEditorStateFromText(props.value));
             setPlainText(props.value);
