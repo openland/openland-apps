@@ -3,7 +3,6 @@ import { View, Text, Platform, Dimensions, TextStyle } from 'react-native';
 import { RoomMembers_members_user } from 'openland-api/Types';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
-import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ScrollView } from 'react-native-gesture-handler';

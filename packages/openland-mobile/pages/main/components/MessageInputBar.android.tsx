@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio, ScrollView, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
-import { AppStyles } from '../../../styles/AppStyles';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ASView } from 'react-native-async-view/ASView';

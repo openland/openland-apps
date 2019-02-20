@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { SDevice } from 'react-native-s/SDevice';
-import { AppStyles } from 'openland-mobile/styles/AppStyles';
 
 let styles = StyleSheet.create({
     textInput: {
