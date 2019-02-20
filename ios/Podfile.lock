@@ -88,6 +88,9 @@ PODS:
     - React/Core
   - React/RCTBlob (0.57.8):
     - React/Core
+  - React/RCTCameraRoll (0.57.8):
+    - React/Core
+    - React/RCTImage
   - React/RCTGeolocation (0.57.8):
     - React/Core
   - React/RCTImage (0.57.8):
@@ -164,6 +167,7 @@ DEPENDENCIES:
   - React/RCTActionSheet (from `../node_modules/react-native`)
   - React/RCTAnimation (from `../node_modules/react-native`)
   - React/RCTBlob (from `../node_modules/react-native`)
+  - React/RCTCameraRoll (from `../node_modules/react-native`)
   - React/RCTGeolocation (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
@@ -283,6 +287,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: bb0876a65b3ccb9ed46ed61858ace832b53a1578
+PODFILE CHECKSUM: 3ea965d400738e44d81e357e8edc4d06ea307703
 
 COCOAPODS: 1.5.3
