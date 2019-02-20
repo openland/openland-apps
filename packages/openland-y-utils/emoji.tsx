@@ -10,7 +10,7 @@ export class EmojiFlags {
     static ignoreEmojione = canUseDOM && localStorage.getItem('meke_web_great_again') === 'true';
 }
 
-type SizeT = 10 | 12 | 13 | 14 | 16 | 18 | 20 | 25 | 38;
+type SizeT = 10 | 12 | 13 | 14 | 15 | 16 | 18 | 20 | 25 | 38;
 
 export function emoji({
     src,
@@ -45,6 +45,11 @@ export function emoji({
     let res = emojione.toShort(src) as string;
 
     let style: any = null;
+    if (size === 15) {
+        style = {
+            marginTop: -4,
+        };
+    }
     if (size === 14) {
         style = {
             marginTop: -1,

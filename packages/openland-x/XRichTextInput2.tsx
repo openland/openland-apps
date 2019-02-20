@@ -15,7 +15,9 @@ import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { extractFlexProps, XFlexStyles, applyFlex } from './basics/Flex';
+import { css } from 'linaria';
 import Glamorous from 'glamorous';
+import { emoji } from 'openland-y-utils/emoji';
 
 function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -101,79 +103,83 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export const MentionEntry = ({
-    mention,
-    isFocused,
-}: {
-    mention: MentionDataT;
-    isFocused: boolean;
-}) => {
+export const MentionEntry = ({ avatar, name, id, online, title }: MentionDataT) => {
+    const [isFocused, setIsFocused] = React.useState(false);
+
+    const onMouseLeave = () => setIsFocused(false);
+    const onMouseEnter = () => setIsFocused(true);
+
     return (
-        <XView
-            position="relative"
-            width="100%"
-            flexDirection="row"
-            flexGrow={1}
-            flexShrink={1}
-            paddingTop={6}
-            paddingBottom={6}
-            paddingRight={15}
-            paddingLeft={15}
-            minWidth={0}
-            backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
-            hoverBackgroundColor={'#f9f9f9'}
-        >
-            <XAvatar
-                size={'m-small'}
-                style={'user'}
-                src={mention.avatar}
-                objectName={mention.name}
-                objectId={mention.id}
-                online={mention.online}
-            />
-
+        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <XView
-                flexDirection="column"
-                alignSelf="center"
-                marginLeft={12}
-                fontSize={13}
-                fontWeight={'600'}
-                lineHeight={1.54}
-                color={'#000000'}
+                position="relative"
+                width="100%"
+                flexDirection="row"
+                flexGrow={1}
+                flexShrink={1}
+                paddingTop={6}
+                paddingBottom={6}
+                paddingRight={15}
+                paddingLeft={15}
+                minWidth={0}
+                backgroundColor={isFocused ? '#f9f9f9' : '#ffffff'}
+                hoverBackgroundColor={'#f9f9f9'}
             >
-                {mention.name}
-            </XView>
+                <XAvatar
+                    size={'m-small'}
+                    style={'user'}
+                    src={avatar}
+                    objectName={name}
+                    objectId={id}
+                    online={online}
+                />
 
-            <XView
-                flexDirection="column"
-                alignSelf={'center'}
-                marginLeft={7}
-                opacity={0.4}
-                fontSize={12}
-                fontWeight={'600'}
-                lineHeight={1.5}
-                color={'#000000'}
-            >
-                {mention.title}
-            </XView>
+                <XView
+                    flexDirection="column"
+                    alignSelf="center"
+                    marginLeft={12}
+                    fontSize={13}
+                    fontWeight={'600'}
+                    lineHeight={1.54}
+                    color={'#000000'}
+                >
+                    {emoji({
+                        src: name,
+                        size: 15,
+                    })}
+                </XView>
 
-            <XView flexGrow={1} />
+                <XView
+                    flexDirection="column"
+                    alignSelf={'center'}
+                    marginLeft={7}
+                    opacity={0.4}
+                    fontSize={12}
+                    fontWeight={'600'}
+                    lineHeight={1.5}
+                    color={'#000000'}
+                >
+                    {title}
+                </XView>
 
-            <XView
-                flexDirection="column"
-                alignSelf={'center'}
-                opacity={0.4}
-                fontSize={12}
-                fontWeight={'400'}
-                lineHeight={1.5}
-                color={isFocused ? '#000000' : 'transparent'}
-            >
-                <div style={{ position: 'relative' }}>
-                    <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
-                    <span>to select</span>
-                </div>
+                <XView flexGrow={1} />
+
+                <XView
+                    flexDirection="column"
+                    alignSelf={'center'}
+                    opacity={0.4}
+                    fontSize={12}
+                    fontWeight={'400'}
+                    lineHeight={1.5}
+                    color={isFocused ? '#000000' : 'transparent'}
+                >
+                    <div style={{ position: 'relative' }}>
+                        <span style={{ top: 2, position: 'absolute', left: -16 }}>↵</span>{' '}
+                        <span>to select</span>
+                    </div>
+                </XView>
             </XView>
-        </XView>
+        </div>
     );
 };
 
@@ -183,23 +189,88 @@ export type XRichTextInput2RefMethods = {
     getHasFocus: () => boolean;
 };
 
-const MentionSuggestionsWrapper = Glamorous.div(({ width }: any) => ({
-    '& ': {
-        '&.draftJsMentionPlugin__mentionSuggestions__2DWjA': {
-            position: 'absolute',
-            borderTop: '1px solid #eee',
-            background: '#fff',
-            boxShadow: 'none',
-            width,
-            maxWidth: width,
-            zIndex: 100,
-            bottom: 50,
-            left: 0,
-            borderRadius: '10px',
-            cursor: 'pointer',
-        },
-    },
-}));
+const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element: HTMLElement) => {
+    if (!element) {
+        return null;
+    }
+
+    const position = window.getComputedStyle(element).getPropertyValue('position');
+    if (position !== 'static') {
+        return element;
+    }
+
+    return getRelativeParent(element.parentElement!!);
+};
+
+const positionSuggestions = (args: any) => {
+    let { state, filteredEmojis, popover, decoratorRect } = args;
+    const relativeParent = getRelativeParent(popover.parentElement);
+
+    let scrollLeft: any;
+    let scrollTop: any;
+    let relativeTop: any;
+    let relativeLeft: any;
+
+    if (relativeParent) {
+        scrollLeft = relativeParent.scrollLeft;
+        scrollTop = relativeParent.scrollTop;
+
+        const relativeParentRect = relativeParent.getBoundingClientRect();
+        relativeLeft = decoratorRect.left - relativeParentRect.left;
+        relativeTop = decoratorRect.top - relativeParentRect.top + relativeParentRect.height;
+        console.warn(relativeParentRect);
+    } else {
+        scrollTop =
+            window.pageYOffset ||
+            (document.documentElement ? document.documentElement.scrollTop : undefined);
+        scrollLeft =
+            window.pageXOffset ||
+            (document.documentElement ? document.documentElement.scrollLeft : undefined);
+
+        relativeTop = decoratorRect.top;
+        relativeLeft = decoratorRect.left;
+    }
+
+    const left = relativeLeft + scrollLeft;
+    const top = relativeTop - scrollTop!! + 8;
+
+    let transform;
+    let transition;
+    if (state.isActive) {
+        if (filteredEmojis.size > 0) {
+            transform = 'scale(1)';
+            transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
+        } else {
+            transform = 'scale(0)';
+            transition = 'all 0.35s cubic-bezier(.3,1,.2,1)';
+        }
+    }
+
+    return {
+        left: `${left}px`,
+        bottom: `${top}px`,
+        transform,
+        transformOrigin: '1em 0%',
+        transition,
+    };
+};
+
+const mentionSuggestionsWrapperClassName = css`
+    position: absolute;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: none;
+    z-index: 100;
+    bottom: 50px;
+    left: 0;
+    cursor: pointer;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+`;
 
 export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRichTextInput2Props>(
     (props: XRichTextInput2Props, ref) => {
@@ -342,11 +413,18 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
 
         return (
             <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-                <MentionSuggestionsWrapper width={widthOfContainer}>
-                    {suggestions && suggestions.length && (
-                        <MentionEntry mention={suggestions[0]} isFocused={true} />
-                    )}
-                </MentionSuggestionsWrapper>
+                <div
+                    className={mentionSuggestionsWrapperClassName}
+                    style={{
+                        width: widthOfContainer,
+                    }}
+                >
+                    {suggestions &&
+                        suggestions.length &&
+                        suggestions.map((mention, key) => {
+                            return <MentionEntry {...mention} key={key} />;
+                        })}
+                </div>
                 <Editor
                     ref={editorRef}
                     placeholder={props.placeholder}
