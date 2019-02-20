@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { SDevice } from 'react-native-s/SDevice';
@@ -48,11 +48,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
             <ZKeyboardAwareBar>
                 {this.props.topContent && (
                     <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
-                        <View height={0.5} backgroundColor={AppStyles.separatorColor} />
-                        <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
-                            {this.props.topContent}
-                        </ScrollView>
-                        <View height={0.5} backgroundColor={AppStyles.separatorColor} />
+                        {this.props.topContent}
                     </View>
                 )}
 
