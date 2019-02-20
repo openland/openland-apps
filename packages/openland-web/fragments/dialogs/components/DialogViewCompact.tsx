@@ -4,6 +4,7 @@ import { DialogViewProps } from './DialogView';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { emoji } from 'openland-y-utils/emoji';
 
 export const DialogViewCompact = (props: DialogViewProps) => {
     let dialog = props.item;
@@ -59,7 +60,10 @@ export const DialogViewCompact = (props: DialogViewProps) => {
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {dialog.title}
+                        {emoji({
+                            src: dialog.title,
+                            size: 16,
+                        })}
                     </XView>
                     {dialog.date && (
                         <XView
