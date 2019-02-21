@@ -74,12 +74,12 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
         let res = [];
         if ((this.props.message.text || this.props.message.reply || this.props.message.file)) {
             res.push(
-                <AsyncMessageContentView engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
+                <AsyncMessageContentView key={'message-content'} engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
             );
         }
         if (res.length === 0) {
             res.push(
-                <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom} colorIn={DefaultConversationTheme.bubbleColorIn}>
+                <AsyncBubbleView key={'message-unsupported'} isOut={this.props.message.isOut} compact={this.props.message.attachBottom} colorIn={DefaultConversationTheme.bubbleColorIn}>
                     <ASFlex overlay={true} flexGrow={1} alignItems="center">
                         <ASText marginLeft={20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                     </ASFlex>

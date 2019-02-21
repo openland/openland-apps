@@ -45,7 +45,6 @@ export let renderPrprocessedText = (v: Span, i: number, message: DataSourceMessa
 export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTextViewProps, { downloadState?: DownloadState }> {
 
     private downloadManagerWatch?: WatchSubscription;
-    private augLayout?: { width: number, height: number };
 
     constructor(props: AsyncMessageTextViewProps) {
         super(props);

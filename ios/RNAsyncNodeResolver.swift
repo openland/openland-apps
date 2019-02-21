@@ -134,7 +134,7 @@ func resolveStyle(_ spec: AsyncViewSpec, _ source: ASLayoutElement, _ context: R
   }
   
   if let v = spec.style.backgroundPatch {
-    let g = context.fetchCached(key: spec.key+"-bg-patch" + (v.tint !== nil ? String(v.tint!.cgColor.hashValue) : "")) { () -> RNPatchNode in
+    let g = context.fetchCached(key: spec.key+"-bg-patch" + String(v.source.hashValue) + (v.tint !== nil ? String(v.tint!.cgColor.hashValue) : "")) { () -> RNPatchNode in
       return RNPatchNode()
     }
     g.setSpec(spec: v)
