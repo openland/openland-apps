@@ -229,7 +229,7 @@ export const getQuoteMessageReply = (messagesContext: MessagesStateContextProps)
         : getReplyText(messagesContext);
 };
 
-export const getQuoteMessageId = (messagesContext: MessagesStateContextProps) => {
+export const getQuoteMessagesId = (messagesContext: MessagesStateContextProps) => {
     const mode = getForwardOrReply(messagesContext);
 
     if (mode === 'forward') {
