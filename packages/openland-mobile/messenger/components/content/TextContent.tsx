@@ -39,7 +39,7 @@ export class TextContent extends React.PureComponent<TextContentProps> {
 
         return (
             <>
-                {message.text && <ASText
+                {!!message.text && <ASText
                     key={'text-' + DefaultConversationTheme.senderNameColor}
                     color={mainTextColor}
                     lineHeight={big ? undefined : 20}
