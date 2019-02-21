@@ -225,7 +225,9 @@ export class DialogListEngine {
 
     handleDialogDeleted = async (event: any) => {
         const cid = event.cid as string;
-        this.dataSource.removeItem(cid);
+        if (this.dataSource.hasItem(cid)) {
+            this.dataSource.removeItem(cid);
+        }
     };
 
     handleMessageUpdated = async (event: any) => {
