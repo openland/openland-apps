@@ -4,6 +4,8 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { AsyncStorage } from 'react-native';
+import RNRestart from 'react-native-restart';
 // import { NativeModules } from 'react-native';
 
 // function doBenchmark(name: string, count: number, src: Function) {
@@ -20,6 +22,12 @@ export const Developer = withApp(() => {
     // doBenchmark('BENCHMARK: Simple', 40000, function () {
     //     NativeModules.BenchmarkModule.setConfig()
     // });
+    const handleLogout = () => {
+        (async () => {
+            AsyncStorage.clear();
+            RNRestart.Restart();
+        })();
+    }
     return (
         <>
             <SHeader title="Developer" />
@@ -30,6 +38,12 @@ export const Developer = withApp(() => {
                     <ZListItem text="Benchmarks" path="DevBenchmarks" />
                     <ZListItem text="Benchmarks Async" path="DevBenchmarksAsync" />
                     <ZListItem text="Benchmarks Async Direct" path="DevBenchmarksAsyncDirect" />
+                    <ZListItem text="Typography" path="DevTypography" />
+                    <ZListItem text="Components" path="DevComponents" />
+                    <ZListItem text="Navigation" path="DevNavigation" />
+                    <ZListItem text="Loader" path="DevLoader" />
+                    <ZListItem text="Log out" onPress={handleLogout} />
+                    )}
                 </ZListItemGroup>
             </SScrollView>
         </>

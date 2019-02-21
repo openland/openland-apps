@@ -7,18 +7,12 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import RNRestart from 'react-native-restart';
 import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
 let SettingsContent = ((props: PageProps) => {
-    const handleLogout = () => {
-        (async () => {
-            AsyncStorage.clear();
-            RNRestart.Restart();
-        })();
-    }
+
     let resp = getClient().useAccountSettings();
     let primary = resp.me!.primaryOrganization;
     let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
@@ -74,15 +68,6 @@ let SettingsContent = ((props: PageProps) => {
                 />
             </ZListItemGroup>
 
-            {__DEV__ && (
-                <ZListItemGroup header="Dev Tools">
-                    <ZListItem text="Typography" path="DevTypography" />
-                    <ZListItem text="Components" path="DevComponents" />
-                    <ZListItem text="Navigation" path="DevNavigation" />
-                    <ZListItem text="Loader" path="DevLoader" />
-                    <ZListItem text="Log out" onPress={handleLogout} />
-                </ZListItemGroup>
-            )}
             <ZListItemGroup header="Organizations" divider={false} actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
@@ -111,13 +96,6 @@ let SettingsContent = ((props: PageProps) => {
 });
 
 class SettingsComponent extends React.Component<PageProps> {
-
-    handleLogout = () => {
-        (async () => {
-            AsyncStorage.clear();
-            RNRestart.Restart();
-        })();
-    }
 
     render() {
         return (
