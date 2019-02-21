@@ -8,6 +8,7 @@ import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
 import { XMutation } from 'openland-x/XMutation';
+import { XModal } from 'openland-x-modal/XModal';
 import { css } from 'linaria';
 
 const ClearIconClass = css`
@@ -41,6 +42,39 @@ const DeleteMessagesButton = withDeleteMessages(props => (
     onSuccess: () => void;
 }>;
 
+const DeleteModalConfirm = (props: { roomId: string }) => {
+    const [showModal, showHandler] = React.useState(false);
+    const state = React.useContext(MessagesStateContext);
+
+    const modalHandler = () => {
+        showHandler(!showModal);
+    };
+
+    return (
+        <XModal
+            isOpen={showModal}
+            useTopCloser={true}
+            title="Are you sure?"
+            width={200}
+            body={
+                <XView padding={20}>
+                    <DeleteMessagesButton
+                        roomId={props.roomId}
+                        messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                        onSuccess={() => {
+                            state.resetAll();
+                            modalHandler();
+                        }}
+                    >
+                        <XButton text="Delete" style="danger" />
+                    </DeleteMessagesButton>
+                </XView>
+            }
+            target={<XButton text="Delete" style="default" />}
+        />
+    );
+};
+
 export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) => {
     const state = React.useContext(MessagesStateContext);
     const { forwardMessagesId } = state;
@@ -69,13 +103,7 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                 </XView>
                 <XHorizontal alignItems="center" separator={5}>
                     <XWithRole role="super-admin">
-                        <DeleteMessagesButton
-                            roomId={props.roomId}
-                            messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                            onSuccess={state.resetAll}
-                        >
-                            <XButton text="Delete" style="default" />
-                        </DeleteMessagesButton>
+                        <DeleteModalConfirm roomId={props.roomId} />
                     </XWithRole>
                     <XWithRole role="super-admin" negate={true}>
                         {!Array.from(state.selectedMessages).find(
