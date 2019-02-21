@@ -160,7 +160,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                                     <View style={{ width: 56, height: 56, justifyContent: 'center', alignItems: 'center' }}>
                                         {!this.state.loading && <Image source={require('assets/ic-google-signup.png')} />}
                                     </View>
-                                    <Text style={styles.buttonTitle}>{!this.state.loading && 'Sign in with Google'}</Text>
+                                    <Text style={styles.buttonTitle} allowFontScaling={false}>{!this.state.loading && 'Sign in with Google'}</Text>
                                     <View style={{ width: 56, height: 56 }}>
                                         {}
                                     </View>
@@ -171,7 +171,7 @@ class LoginComponent extends React.Component<PageProps, { initing: boolean, load
                         <View flexDirection="row" style={{ marginTop: 15, marginBottom: 46 + SDevice.safeArea.bottom }}>
                             <TouchableOpacity onPress={this.handleEmailPress} disabled={this.state.loading} style={styles.buttonWrapper}>
                                 <View style={[styles.button, styles.buttonEmail]}>
-                                    <Text style={[styles.buttonTitle, styles.buttonTitleEmail]}>{'Continue with Email'}</Text>
+                                    <Text style={[styles.buttonTitle, styles.buttonTitleEmail]} allowFontScaling={false}>Continue with Email</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
