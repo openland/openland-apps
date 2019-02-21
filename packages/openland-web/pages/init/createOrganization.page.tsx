@@ -15,6 +15,7 @@ import {
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { withExploreOrganizations } from '../../api/withExploreOrganizations';
 import * as Cookie from 'js-cookie';
+import { useIsMobile } from 'openland-web/hooks';
 
 const OrganizationsSelectorOptionsFetcher = withExploreOrganizations(props => {
     const children = props.children as Function;
@@ -85,7 +86,7 @@ class OrganizationsSelectorOptionsFetcherInner extends React.Component<
     }
 }
 
-class CreateOrganizationPrefixHolder extends React.Component<
+class CreateOrganizationPrefixHolderRoot extends React.Component<
     any,
     { organizationPrefix: string; lastLoadedOrganizations: any[] }
 > {
@@ -120,7 +121,7 @@ class CreateOrganizationPrefixHolder extends React.Component<
 
     render() {
         const props = this.props;
-        const roomView = props.roomView || Cookie.get('x-openland-invite');
+        const roomView = props.roomView;
 
         const Container = roomView ? RoomSignupContainer : WebSignUpContainer;
 
@@ -142,6 +143,17 @@ class CreateOrganizationPrefixHolder extends React.Component<
         );
     }
 }
+
+const CreateOrganizationPrefixHolder = (props: any) => {
+    let roomView = Cookie.get('x-openland-invite') || false;
+    const [isMobile] = useIsMobile();
+
+    if (isMobile) {
+        roomView = false;
+    }
+
+    return <CreateOrganizationPrefixHolderRoot {...props} roomView={roomView} />;
+};
 
 export const CreateOrganizationForm = withCreateOrganization(
     withRouter(withUserInfo(CreateOrganizationPrefixHolder)),
