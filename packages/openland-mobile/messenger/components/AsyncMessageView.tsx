@@ -118,6 +118,7 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
                     </ASFlex>
 
                     {this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
+                    <ASFlex backgroundColor="white" height={50} marginBottom={-50} />
 
                 </ASFlex>
                 <ASFlex key="margin-bottom" backgroundColor={messageBgColor} height={4} marginBottom={-2} />
