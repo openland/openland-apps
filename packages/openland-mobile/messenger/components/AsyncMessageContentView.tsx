@@ -19,6 +19,7 @@ import { Span } from 'openland-mobile/utils/TextProcessor';
 import { UrlAugmentationContent } from './content/UrlAugmentationContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DefaultTheme } from 'openland-web/modules/theme/ThemeContext';
+import { DocumentContent } from './content/DocumentContent';
 
 export const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 export const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
@@ -62,6 +63,7 @@ export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTex
         let hasReply = this.props.message.reply;
         let hasText = this.props.message.text;
         let hasUrlAug = this.props.message.urlAugmentation;
+        let hasDocument = this.props.message.file && !hasImage;
 
         let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
@@ -71,16 +73,17 @@ export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTex
         }
 
         return (
-            <AsyncBubbleView width={layout ? layout.width : undefined} isOut={this.props.message.isOut} compact={this.props.message.attachBottom || hasImage} appearance={hasImage ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn}>
+            <AsyncBubbleView width={layout ? layout.width : undefined} isOut={this.props.message.isOut} compact={this.props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn}>
                 <ASFlex
                     flexDirection="column"
                 >
 
-                    {!this.props.message.isOut && !this.props.message.attachTop && !hasImage && <ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={this.props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{this.props.message.senderName}</ASText>}
+                    {!this.props.message.isOut && !this.props.message.attachTop && !hasImage && !hasDocument && <ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={this.props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{this.props.message.senderName}</ASText>}
                     {hasReply && <ReplyContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
                     {hasText && <TextContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
                     {hasUrlAug && <UrlAugmentationContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
                     {hasImage && layout && <MediaContent layout={layout} message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} single={imageOnly} />}
+                    {hasDocument && <DocumentContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
 
                     <ASFlex
                         overlay={true}
@@ -94,13 +97,14 @@ export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTex
                             height={14}
                             backgroundColor={hasImage ? 'rgba(0,0,0,0.3)' : undefined}
                             borderRadius={4}
+                            alignItems="center"
+                            justifyContent="center"
                         >
                             <ASText
                                 marginLeft={3}
+                                marginTop={Platform.OS === 'android' ? -2 : undefined}
                                 marginRight={!this.props.message.isOut ? 3 : 0}
-
                                 fontSize={11}
-                                lineHeight={13}
                                 color={hasImage ? '#fff' : this.props.message.isOut ? DefaultConversationTheme.textColorSecondaryOut : DefaultConversationTheme.textColorSecondaryIn}
                                 opacity={(this.props.message.isOut || hasImage) ? 0.7 : 0.6}
                             >

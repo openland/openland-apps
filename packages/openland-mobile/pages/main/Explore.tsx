@@ -94,7 +94,7 @@ const RoomsList = () => {
                         text="All groups"
                         path="GroupList"
                         pathParams={{
-                            groups: newRooms,
+                            groups: existingRooms,
                             title: 'Your groups',
                         }}
                         navigationIcon={false}

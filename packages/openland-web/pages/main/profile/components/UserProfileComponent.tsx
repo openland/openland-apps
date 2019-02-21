@@ -162,7 +162,7 @@ const Header = (props: { user: User_user }) => {
                     <UserStatus variables={{ userId: user.id }} />
                 </XView>
                 <XView paddingTop={13}>
-                    <XHorizontal separator={8}>
+                    <XHorizontal separator={8} alignItems="center">
                         {user.website && (
                             <XSocialButton
                                 value={user.website}

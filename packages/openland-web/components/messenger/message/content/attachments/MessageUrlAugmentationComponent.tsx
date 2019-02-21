@@ -144,7 +144,8 @@ interface MessageUrlAugmentationComponentProps extends MessageFull_urlAugmentati
     isMe: boolean;
 }
 
-const UserCardContainer = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
+const InternalUrlCardContainer = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
+    marginTop: '10px !important',
     '& .delete-button': {
         opacity: props.isMobile ? 1 : 0,
     },
@@ -153,7 +154,7 @@ const UserCardContainer = Glamorous(XLink)<{ isMobile: boolean }>(props => ({
     },
 }));
 
-const UserCard = ({
+const InternalUrlCard = ({
     id,
     name,
     photo,
@@ -176,7 +177,7 @@ const UserCard = ({
 }) => {
     const { isMobile } = React.useContext(MobileSidebarContext);
     return (
-        <UserCardContainer
+        <InternalUrlCardContainer
             isMobile={isMobile}
             href={href}
             path={path}
@@ -233,7 +234,7 @@ const UserCard = ({
                     </DeleteButton>
                 )}
             </XView>
-        </UserCardContainer>
+        </InternalUrlCardContainer>
     );
 };
 
@@ -256,7 +257,7 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
             organization = extra.name;
         } else if (extra.__typename === 'ChannelConversation') {
             return (
-                <UserCard
+                <InternalUrlCard
                     href={href}
                     path={path}
                     isMe={isMe}
@@ -270,7 +271,7 @@ export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationCom
             );
         } else if (extra.__typename === 'User') {
             return (
-                <UserCard
+                <InternalUrlCard
                     href={href}
                     path={path}
                     isMe={isMe}

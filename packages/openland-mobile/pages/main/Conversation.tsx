@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Dimensions, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData, TextStyle, TouchableHighlight } from 'react-native';
+import { View, FlatList, Text, AsyncStorage, Platform, TouchableOpacity, Image, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import Picker from 'react-native-image-picker';
@@ -16,7 +16,7 @@ import { stopLoader, startLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { KeyboardSafeAreaView, ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members, RoomMembers_members_user, MessageFull_mentions } from 'openland-api/Types';
+import { Room_room, Room_room_SharedRoom, Room_room_PrivateRoom, RoomMembers_members_user, MessageFull_mentions } from 'openland-api/Types';
 import { ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { getClient } from 'openland-mobile/utils/apolloClient';
@@ -28,21 +28,19 @@ import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme 
 import { XMemo } from 'openland-y-utils/XMemo';
 import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
-import { TextStyles } from 'openland-mobile/styles/AppStyles';
-import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
     chat: Room_room;
-    members?: RoomMembers_members[];
 }
 
 interface ConversationRootState {
     text: string;
     theme: ConversationTheme;
-    mentionsRender: any;
     mentionedUsers: MessageFull_mentions[];
+    inputFocused: boolean;
     selection: {
         start: number,
         end: number
@@ -60,12 +58,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         this.state = {
             text: '',
             theme: DefaultConversationTheme,
-            mentionsRender: undefined,
             selection: {
                 start: 0,
                 end: 0.
             },
-            mentionedUsers: []
+            mentionedUsers: [],
+            inputFocused: false
         };
 
         AsyncStorage.getItem('compose_draft_' + this.props.chat.id).then(s => this.setState({ text: s || '' }));
@@ -82,15 +80,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         ConversationThemeResolver.subscribe(this.props.chat.id, t => this.setState({ theme: t })).then(s => this.themeSub = s);
     }
 
-    handleTextChange = (src: string) => {
-        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
-
-        this.setState({ text: src }, () => {
-            this.saveDraft();
-            this.detectMentions();
-        });
-    }
-
     saveDraft = () => {
         AsyncStorage.multiSet([
             [ 'compose_draft_' + this.props.chat.id, this.state.text ],
@@ -105,14 +94,32 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         ]);
     }
 
+    handleTextChange = (src: string) => {
+        getMessenger().engine.client.mutateSetTyping({ conversationId: this.props.chat.id });
+
+        this.setState({ text: src }, () => {
+            this.saveDraft();
+        });
+    }
+
     handleSelectionChange = (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
         this.setState({
             selection: {
                 start: e.nativeEvent.selection.start,
                 end: e.nativeEvent.selection.end
             }
-        }, () => {
-            this.detectMentions();
+        });
+    }
+
+    handleFocus = () => {
+        this.setState({
+            inputFocused: true
+        });
+    }
+
+    handleBlur = () => {
+        this.setState({
+            inputFocused: false
         });
     }
 
@@ -233,65 +240,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         });
     }
 
-    detectMentions = () => {
-        let { text, selection } = this.state;
-
-        let mentionsWrapper = undefined;
-        let currentWord = findActiveWord(text, selection);
-
-        if (this.props.members && currentWord && currentWord.startsWith('@')) {
-            let nameToSearch = currentWord.replace('@', '').toLowerCase();
-
-            let mentionedUsers = this.props.members.filter(member => member.user.name.toLowerCase().startsWith(nameToSearch));
-
-            if (mentionedUsers.length > 0) {
-                mentionsWrapper = (
-                    <>
-                        {mentionedUsers.map((member, index) => {
-                            let user = member.user;
-    
-                            return (
-                                <ZListItemBase
-                                    key={'mention-user-' + index}
-                                    onPress={() => this.handleMentionPress(currentWord, user)}
-                                    separator={false}
-                                    height={40}
-                                    underlayColor="rgba(0, 0, 0, 0.03)"
-                                >
-                                    <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                                        <View style={{ width: 48, height: 40 }} alignItems="center" justifyContent="center">
-                                            <ZAvatar
-                                                userId={user.id}
-                                                src={user.photo}
-                                                size={26}
-                                                placeholderKey={user.id}
-                                                placeholderTitle={user.name}
-                                            />
-                                        </View>
-                                        <View flexGrow={1}>
-                                            <Text style={{ width: Dimensions.get('window').width - 55, fontWeight: TextStyles.weight.medium, color: Platform.OS === 'android' ? '#000' : '#181818' } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
-                                                {user.name}{' '}
-                                                {user.primaryOrganization && (
-                                                    <Text style={{ color: 'rgba(0, 0, 0, 0.6)', fontWeight: TextStyles.weight.regular } as TextStyle}>
-                                                        {user.primaryOrganization.name}
-                                                    </Text>
-                                                )}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </ZListItemBase>
-                            )
-                        })}
-                    </>
-                );
-            }
-        }
-
-        this.setState({
-            mentionsRender: mentionsWrapper
-        });
-    }
-
     render() {
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
@@ -313,6 +261,19 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 </SHeaderButton>
             );
         }
+
+        let mentions = null;
+        let activeWord = findActiveWord(this.state.text, this.state.selection);
+        if (this.props.chat.__typename === 'SharedRoom' && this.state.inputFocused && activeWord && activeWord.startsWith('@')) {
+            mentions = (
+                <MentionsRender
+                    activeWord={activeWord}
+                    onMentionPress={this.handleMentionPress}
+                    groupId={this.props.chat.id}
+                />
+            );
+        }
+
         return (
             <>
                 <SHeaderView accentColor={this.state.theme.mainColor}>
@@ -339,9 +300,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 onSubmitPress={this.handleSubmit}
                                 onChangeText={this.handleTextChange}
                                 onSelectionChange={this.handleSelectionChange}
+                                onFocus={this.handleFocus}
+                                onBlur={this.handleBlur}
                                 text={this.state.text}
                                 theme={this.state.theme}
-                                topContent={this.state.mentionsRender}
+                                topContent={mentions}
                             />
                         </View>
                     </KeyboardSafeAreaView>
@@ -442,11 +405,9 @@ const ConversationComponent = XMemo<PageProps>((props) => {
         }
     }
 
-    let members = getClient().useRoomMembers({ roomId: (sharedRoom || privateRoom)!.id }).members;
-
     return (
         <View flexDirection={'column'} height="100%" width="100%">
-            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} members={members} />
+            <ConversationRoot key={(sharedRoom || privateRoom)!.id} router={props.router} engine={messenger.engine} chat={(sharedRoom || privateRoom)!} />
             <ASSafeAreaContext.Consumer>
                 {safe => <View position="absolute" top={safe.top} right={0} left={0}><CallBarComponent id={(sharedRoom || privateRoom)!.id} /></View>}
             </ASSafeAreaContext.Consumer>

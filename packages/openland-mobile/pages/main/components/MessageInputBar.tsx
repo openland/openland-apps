@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData, ScrollView } from 'react-native';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
 import { ConversationTheme } from '../themes/ConversationThemeResolver';
 import { SDevice } from 'react-native-s/SDevice';
-import { AppStyles } from 'openland-mobile/styles/AppStyles';
 
 let styles = StyleSheet.create({
     textInput: {
@@ -48,11 +47,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
             <ZKeyboardAwareBar>
                 {this.props.topContent && (
                     <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
-                        <View height={0.5} backgroundColor={AppStyles.separatorColor} />
-                        <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
-                            {this.props.topContent}
-                        </ScrollView>
-                        <View height={0.5} backgroundColor={AppStyles.separatorColor} />
+                        {this.props.topContent}
                     </View>
                 )}
 
@@ -77,6 +72,8 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                             placeholderTextColor="#aaaaaa"
                             onChangeText={this.props.onChangeText}
                             onSelectionChange={this.props.onSelectionChange}
+                            onFocus={this.props.onFocus}
+                            onBlur={this.props.onBlur}
                             value={this.props.text}
                             style={styles.textInput}
                             editable={this.props.enabled !== false}

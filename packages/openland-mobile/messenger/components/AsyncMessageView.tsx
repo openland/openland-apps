@@ -72,14 +72,9 @@ export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps>
 
     render() {
         let res = [];
-        if ((this.props.message.text || this.props.message.reply) || (this.props.message.file && this.props.message.file.isImage)) {
+        if ((this.props.message.text || this.props.message.reply || this.props.message.file)) {
             res.push(
                 <AsyncMessageContentView engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
-            );
-        }
-        if (this.props.message.file && !this.props.message.file.isImage) {
-            res.push(
-                <AsyncMessageDocumentView message={this.props.message} onPress={this.props.onDocumentPress} />
             );
         }
         if (res.length === 0) {

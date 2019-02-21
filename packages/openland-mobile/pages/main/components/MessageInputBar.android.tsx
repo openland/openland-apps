@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, PixelRatio, ScrollView, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
-import { AppStyles } from '../../../styles/AppStyles';
-import { ZKeyboardAwareBar } from '../../../components/layout/ZKeyboardAwareBar';
+import { View, TouchableOpacity, Image, TextInput, ViewStyle, StyleSheet, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import ImageViewCapInsets from 'react-native-image-capinsets';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { ASView } from 'react-native-async-view/ASView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
@@ -12,13 +9,6 @@ import { SDevice } from 'react-native-s/SDevice';
 
 let styles = StyleSheet.create({
     textInputContainer: {
-
-        // borderColor: '#ebebeb',
-        // borderWidth: 1,
-        // backgroundColor: '#fff',
-        // borderRadius: 21,
-        // elevation: 1,
-
         marginTop: 15,
         marginBottom: 9,
 
@@ -79,11 +69,7 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                         <>
                             <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor="#fff" />
                             <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
-                                <View height={0.5} backgroundColor={AppStyles.separatorColor} />
-                                <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
-                                    {this.props.topContent}
-                                </ScrollView>
-                                <View height={0.5} backgroundColor={AppStyles.separatorColor} />
+                                {this.props.topContent}
                             </View>
                         </>
                     )}
@@ -129,12 +115,13 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
 
                             </ASView>
                             <TextInput
-                                style={styles.textInput
-                                }
+                                style={styles.textInput}
                                 placeholder="Message"
                                 placeholderTextColor="#aaaaaa"
                                 onChangeText={this.props.onChangeText}
                                 onSelectionChange={this.props.onSelectionChange}
+                                onFocus={this.props.onFocus}
+                                onBlur={this.props.onBlur}
                                 value={this.props.text}
                                 editable={this.props.enabled !== false}
                                 multiline={true}
