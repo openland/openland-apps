@@ -229,13 +229,11 @@ export const getQuoteMessageReply = (messagesContext: MessagesStateContextProps)
         : getReplyText(messagesContext);
 };
 
-export const getQuoteMessageId = (messagesContext: MessagesStateContextProps) => {
+export const getQuoteMessagesId = (messagesContext: MessagesStateContextProps) => {
     const mode = getForwardOrReply(messagesContext);
 
     if (mode === 'forward') {
-        return hasForward(messagesContext)
-            ? [getFirstInSet(messagesContext.forwardMessagesId)]
-            : [];
+        return hasForward(messagesContext) ? [...messagesContext.forwardMessagesId] : [];
     }
     return hasReply(messagesContext)
         ? [getFirstInSet(messagesContext.replyMessagesId)]

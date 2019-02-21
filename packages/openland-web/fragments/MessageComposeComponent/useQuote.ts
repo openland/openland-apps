@@ -4,7 +4,7 @@ import {
     MessagesStateContext,
     MessagesStateContextProps,
     getQuoteMessageReply,
-    getQuoteMessageId,
+    getQuoteMessagesId,
     getQuoteMessageSender,
 } from '../../components/messenger/MessagesStateContext';
 
@@ -35,7 +35,7 @@ export function useQuote({
 
     const updateQuote = () => {
         setQuoteMessageReply(getQuoteMessageReply(messagesContext));
-        setQuoteMessagesId(getQuoteMessageId(messagesContext));
+        setQuoteMessagesId(getQuoteMessagesId(messagesContext));
         setQuoteMessageSender(getQuoteMessageSender(messagesContext));
     };
 
