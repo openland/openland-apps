@@ -17,7 +17,15 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { XMemo } from 'openland-y-utils/XMemo';
+import { Organization_organization_members } from 'openland-api/Types';
+
+let isMember = (a: Organization_organization_members) => {
+    return a.role === 'MEMBER';
+}
+
+let isAdmin = (a: Organization_organization_members) => {
+    return a.role === 'ADMIN' || a.role === 'OWNER';
+}
 
 function ProfileOrganizationContent(props: PageProps) {
     let settings = getClient().useAccountSettings();
@@ -40,6 +48,11 @@ function ProfileOrganizationContent(props: PageProps) {
             organization.members.map(u => u.user.id),
             { path: 'OrganizationInviteLinkModal', pathParams: { id: organization.id } });
     }, [organization.id]);
+
+    // Sort members by name (admins should go first)
+    let sortedMembers = organization.members
+        .sort((a, b) => (a.user.name.localeCompare(b.user.name)))
+        .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
 
     return (
         <>
@@ -167,7 +180,7 @@ function ProfileOrganizationContent(props: PageProps) {
                     />
                 )}
 
-                {organization.members.map((v) => (
+                {sortedMembers.map((v) => (
                     <UserView
                         user={v.user}
                         isAdmin={v.role === 'ADMIN' || v.role === 'OWNER'}

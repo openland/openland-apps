@@ -8,7 +8,7 @@ import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -22,6 +22,14 @@ import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/Acti
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
 // import { changeThemeModal } from './themes/ThemeChangeModal';
+
+let isMember = (a: RoomMembers_members) => {
+    return a.role === 'MEMBER';
+}
+
+let isAdmin = (a: RoomMembers_members) => {
+    return a.role === 'ADMIN' || a.role === 'OWNER';
+}
 
 function ProfileGroupComponent(props: PageProps & { id: string }) {
 
@@ -194,7 +202,11 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
     //     changeThemeModal(room.id);
     // }, [room.id])
 
-    const sortedMembers = room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
+    // Sort members by name (admins should go first)
+    const sortedMembers = room.members
+        .sort((a, b) => a.user.name.localeCompare(b.user.name))
+        .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
+
     const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
 
     return (
