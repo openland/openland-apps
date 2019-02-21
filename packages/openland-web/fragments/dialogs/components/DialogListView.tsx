@@ -44,9 +44,14 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
             );
         };
     }, []);
-    const renderDialog = React.useMemo(() => {
-        return (item: DialogDataSourceItem) => <DialogView item={item} />;
-    }, [props.onDialogClick]);
+    const renderDialog = React.useMemo(
+        () => {
+            return (item: DialogDataSourceItem) => (
+                <DialogView item={item} />
+            );
+        },
+        [props.onDialogClick],
+    );
 
     const getCurrentConversationId = () => {
         return route && (route as any).routeQuery ? (route as any).routeQuery.conversationId : null;
@@ -112,17 +117,18 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
                 <XView flexGrow={1} flexBasis={0} minHeight={0}>
                     <div className={dialogSearchWrapperClassName}>
-                        {isSearching && <DialogSearchResults variables={{ query: query }} />}
+                        {isSearching && <DialogSearchResults variables={{ query: query }} onClick={() => setQuery('')} />}
                     </div>
-                    {canUseDOM && !isSearching && (
-                        <XListView
-                            dataSource={messenger.dialogList.dataSource}
-                            itemHeight={72}
-                            loadingHeight={60}
-                            renderItem={renderDialog}
-                            renderLoading={renderLoading}
-                        />
-                    )}
+                    {canUseDOM &&
+                        !isSearching && (
+                            <XListView
+                                dataSource={messenger.dialogList.dataSource}
+                                itemHeight={72}
+                                loadingHeight={60}
+                                renderItem={renderDialog}
+                                renderLoading={renderLoading}
+                            />
+                        )}
                 </XView>
             </XView>
         </XShortcuts>

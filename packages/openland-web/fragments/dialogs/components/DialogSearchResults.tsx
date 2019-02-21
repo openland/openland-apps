@@ -58,6 +58,7 @@ export const DialogSearchResults = withChatSearchText(props => {
                 <DialogViewCompact
                     key={i.id}
                     onSelect={(props as any).onSelect}
+                    onClick={(props as any).onClick}
                     item={{
                         key: i.id,
                         flexibleId: i.flexibleId,
@@ -70,4 +71,4 @@ export const DialogSearchResults = withChatSearchText(props => {
             ))}
         </>
     );
-});
+}) as React.ComponentType<{ onClick: () => void; variables: { query: string } }>;

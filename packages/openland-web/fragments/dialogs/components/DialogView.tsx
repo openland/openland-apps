@@ -48,6 +48,7 @@ export interface DialogViewProps {
     item: DialogDataSourceItem;
     handleRef?: any;
     onSelect?: (id: string) => void;
+    onClick?: () => void;
 }
 
 export const DialogView = XMemo<DialogViewProps>(props => {
