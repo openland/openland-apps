@@ -3,13 +3,13 @@ import { preprocessText } from '../../../../utils/TextProcessor';
 import { MessageFull_alphaMentions } from 'openland-api/Types';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
-import { isEmoji } from '../../../../utils/isEmoji';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
 import { emoji } from 'openland-y-utils/emoji';
 import { preprocessMentions } from './utils/preprocessMentions';
 import { MentionComponentInner } from 'openland-x/XRichTextInput';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { isEmoji } from 'openland-y-utils/isEmoji';
 
 export interface MessageTextComponentProps {
     mentions?: MessageFull_alphaMentions[] | null;
