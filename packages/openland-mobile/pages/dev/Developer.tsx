@@ -43,7 +43,6 @@ export const Developer = withApp(() => {
                     <ZListItem text="Navigation" path="DevNavigation" />
                     <ZListItem text="Loader" path="DevLoader" />
                     <ZListItem text="Log out" onPress={handleLogout} />
-                    )}
                 </ZListItemGroup>
             </SScrollView>
         </>
