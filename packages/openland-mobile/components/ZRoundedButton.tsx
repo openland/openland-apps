@@ -112,6 +112,7 @@ class ZRoundedButtonComponent extends React.PureComponent<ZRoundedButtonProps & 
                                         ...this.state.actionInProgress ? { color: 'transparent' } : {}
                                     }
                                 ]}
+                                allowFontScaling={false}
                             >
                                 {this.props.uppercase !== false ? this.props.title.toUpperCase() : this.props.title}
                             </Text>
