@@ -136,6 +136,7 @@ function ProfileOrganizationContent(props: PageProps) {
                     <ZListItemGroup
                         header="Rooms"
                         divider={false}
+                        actionRight={organization.isMine ? { title: '+ New', onPress: () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }) } : undefined}
                     >
                         {organization.rooms
                             .sort((a, b) => (b.membersCount || 0) - (a.membersCount || 0))
