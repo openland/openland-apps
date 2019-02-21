@@ -7,11 +7,11 @@ import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/Conv
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Image } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
-import { AsyncReplyMessageMediaView } from '../AsyndReplyMessageMediaView';
+import { AsyncReplyMessageMediaView } from '../AsyncReplyMessageMediaView';
 import { AsyncReplyMessageDocumentView } from '../AsyncReplyMessageDocumentView';
 import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+
 interface ReplyContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
