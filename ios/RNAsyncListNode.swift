@@ -410,10 +410,14 @@ class RNASyncListNode: ASDisplayNode, ASCollectionDataSource, ASCollectionDelega
   
   func onUpdated(index: Int, state: RNAsyncDataViewState) {
     self.queue.async {
-      let c = self.activeCellsStrong[state.items[index].key]!
-      c.setSpec(spec: state.items[index].config)
       DispatchQueue.main.async {
-        self.state = state
+        self.node.performBatch(animated: false, updates: {
+          let c = self.activeCellsStrong[state.items[index].key]!
+          c.setSpec(spec: state.items[index].config)
+          self.state = state
+           // hack for disabling animations
+           self.node.moveItem(at: IndexPath(item: index, section: 1), to: IndexPath(item: index, section: 1))
+        }, completion: nil)
       }
     }
   }
