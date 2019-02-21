@@ -2,7 +2,7 @@ import * as React from 'react';
 import { HeaderPage } from './HeaderPage';
 import { SAnimated } from '../../SAnimated';
 import { SDevice } from '../../SDevice';
-import { View, Text, TouchableWithoutFeedback, Image, TextInput, Button, StyleSheet, TextStyle, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, TextInput, StyleSheet, TextStyle, Dimensions, TouchableOpacity } from 'react-native';
 import { SBackButton } from '../../SBackButton';
 import { NavigationManager } from '../NavigationManager';
 import { SNavigationViewStyle } from '../../SNavigationView';
@@ -123,7 +123,14 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                     {v.config.searchActive && (
                                         <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1, marginRight: 70 }}>
                                             <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 8, marginRight: 7 }} />
-                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 20 }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" />
+                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 4 }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" />
+                                            {this.state.searchText.length > 0 && (
+                                                <TouchableOpacity onPress={() => this.handleTextChange('')}>
+                                                    <View style={{ height: 36, width: 22, justifyContent: 'center', alignItems: 'center' }}>
+                                                        <Image source={require('assets/ic-cancel.png')} style={{ tintColor: 'rgba(138, 138, 143, 0.7)', width: 10, height: 10 }} />
+                                                    </View>
+                                                </TouchableOpacity>
+                                            )}
                                         </View>
                                     )}
 
