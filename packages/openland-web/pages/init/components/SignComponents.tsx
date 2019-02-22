@@ -47,9 +47,11 @@ interface ButtonProps extends XLinkProps {
 }
 
 const ErrorText = Glamorous.div({
-    fontSize: '12px',
+    fontSize: 12,
     color: '#d75454',
-    marginLeft: '17px',
+    paddingLeft: 17,
+    paddingRight: 17,
+    whiteSpace: 'pre-line',
 });
 
 const StyledButton = Glamorous(XLink)<{ primary?: boolean; rounded?: boolean }>([
@@ -964,6 +966,7 @@ export const WebSignUpActivationCode = ({
                                 placeholder={InitTexts.auth.codePlaceholder}
                                 flexGrow={1}
                                 flexShrink={0}
+                                onChange={value => codeChanged(value, () => null)}
                             />
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
@@ -1070,6 +1073,7 @@ export const RoomActivationCode = ({
                                 autofocus={true}
                                 size="large"
                                 placeholder={InitTexts.auth.codePlaceholder}
+                                onChange={value => codeChanged(value, () => null)}
                             />
                             {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
@@ -1155,7 +1159,9 @@ export const RoomCreateWithEmail = ({
                     email: [
                         {
                             rule: (value: string) => value !== '' && validateEmail(value),
-                            errorMessage: InitTexts.auth.emailInvalid,
+                            errorMessage: emailValue
+                                ? InitTexts.auth.emailInvalid
+                                : InitTexts.auth.noEmail,
                         },
                     ],
                 },
@@ -1185,6 +1191,7 @@ export const RoomCreateWithEmail = ({
                                 type="email"
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
+                                onChange={value => emailChanged(value, () => null)}
                             />
                             {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
@@ -1228,7 +1235,9 @@ export const WebSignUpCreateWithEmail = ({
                     email: [
                         {
                             rule: (value: string) => value !== '' && validateEmail(value),
-                            errorMessage: InitTexts.auth.emailInvalid,
+                            errorMessage: emailValue
+                                ? InitTexts.auth.emailInvalid
+                                : InitTexts.auth.noEmail,
                         },
                     ],
                 },
@@ -1257,6 +1266,7 @@ export const WebSignUpCreateWithEmail = ({
                                 type="email"
                                 size="large"
                                 placeholder={InitTexts.auth.emailPlaceholder}
+                                onChange={value => emailChanged(value, () => null)}
                             />
                             {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}

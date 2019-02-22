@@ -23,6 +23,7 @@ interface XCommunityCardProps {
         photo: string | null;
         isMine: boolean;
         channels: any[];
+        members: any[];
     };
     path?: string;
     customButton?: any;
@@ -41,7 +42,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
 
     render() {
         let { community, path, customButton, customMenu, extraMenu } = this.props;
-        let roomsCount = community.channels.length;
+        let membersCount = community.members.length;
 
         let button = this.state.isHovered ? (
             typeof customButton === 'undefined' ? (
@@ -126,7 +127,7 @@ export class XCommunityCard extends React.Component<XCommunityCardProps, XCommun
                             <div className={CommunityTitleInner}>{community.name}</div>
                         </XView>
                         <XView fontSize={13} lineHeight="18px" color="rgba(0, 0, 0, 0.5)">
-                            {TextProfiles.Organization.roomsLabel(roomsCount)}
+                            {TextProfiles.Organization.membersLabel(membersCount)}
                         </XView>
                     </XView>
                     <XView flexDirection="row" paddingTop={4}>
