@@ -72,8 +72,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     render() {
-        let screenHeight = Dimensions.get('window').height;
-        let screenWidth = Dimensions.get('window').width;
+        let screenHeight = Dimensions.get('screen').height;
+        let screenWidth = Dimensions.get('screen').width;
 
         return (
             <View flexBasis={0} flexGrow={1} marginBottom={Platform.select({ ios: 0, android: -androidMessageInputListOverlap })}>

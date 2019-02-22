@@ -44,6 +44,10 @@
         "src": "ic-lock.svg",
         "sizes": [13, 18, 24]
     }, {
+        "name": "ic-call-end",
+        "src": "ic-end.svg",
+        "sizes": [36]
+    }, {
         "name": "ic-help",
         "src": "ic-notifications-copy.svg",
         "sizes": [24]
