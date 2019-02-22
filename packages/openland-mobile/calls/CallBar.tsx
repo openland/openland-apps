@@ -19,7 +19,7 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
                 marginHorizontal={10}
                 marginTop={10}
                 borderRadius={20}
-                backgroundColor="#32bb78"
+                backgroundColor="#0084fe"
                 flexDirection="row"
                 shadowOpacity={0.2}
                 shadowColor="black"
@@ -37,7 +37,7 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
                             style={{ height: 28, paddingHorizontal: 12, marginHorizontal: 7, backgroundColor: 'white', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}
                             delayPressIn={0}
                         >
-                            <Text style={{ fontSize: 14, height: 16, fontWeight: '600', color: '#32bb78' }} >JOIN</Text>
+                            <Text style={{ fontSize: 14, height: 16, fontWeight: '600', color: '#0084fe' }} >JOIN</Text>
                         </TouchableOpacity>
                     )}
                 </SRouterContext.Consumer>
