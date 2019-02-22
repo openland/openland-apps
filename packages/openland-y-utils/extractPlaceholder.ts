@@ -22,10 +22,10 @@ export function extractPlaceholder(src: string) {
     }
 
     if (letter1 && letter2) {
-        return letter1.toUpperCase() + letter2.toUpperCase();
+        return letter1 + letter2;
     }
 
-    return letter1.toUpperCase();
+    return letter1;
 }
 
 function extractEmojiOrFirstSymbol(s: string) {
