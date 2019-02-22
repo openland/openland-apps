@@ -10,7 +10,7 @@ export function extractPlaceholder(src: string) {
         return extractEmojiOrFirsSymbol(s2[0]).toUpperCase();
     }
 
-    return extractEmojiOrFirsSymbol(s2[0]) + extractEmojiOrFirsSymbol(s2[1]);
+    return extractEmojiOrFirsSymbol(s2[0]).toUpperCase() + extractEmojiOrFirsSymbol(s2[1]).toUpperCase();
 }
 
 function extractEmojiOrFirsSymbol(s: string) {
