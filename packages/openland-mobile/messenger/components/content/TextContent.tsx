@@ -7,9 +7,7 @@ import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
 import { preprocessText } from 'openland-mobile/utils/TextProcessor';
 import { renderPrprocessedText, paddedTextOut, paddedText } from '../AsyncMessageContentView';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { isEmoji } from 'openland-y-utils/isEmoji';
-import { Stopwatch } from 'openland-y-utils/stopwatch';
 interface TextContentProps {
     message: DataSourceMessageItem;
     onUserPress: (id: string) => void;
@@ -24,12 +22,8 @@ export class TextContent extends React.PureComponent<TextContentProps> {
         let singleEmoji = false;
         let textSticker = false;
         if (this.props.message.text) {
-            let sw = new Stopwatch();
-            sw.next('emoji');
             singleEmoji = isEmoji(this.props.message.text);
-            sw.next('emoji');
             textSticker = (this.props.message.text.length <= 302 && this.props.message.text.startsWith(':') && this.props.message.text.endsWith(':'));
-
         }
         let big = singleEmoji || textSticker;
 
