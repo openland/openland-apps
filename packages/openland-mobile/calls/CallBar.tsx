@@ -12,7 +12,20 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
 
     if (conference && conference.conference && conference.conference.peers.length > 0) {
         return (
-            <View alignSelf="stretch" alignItems="center" height={40} marginHorizontal={10} marginTop={5} borderRadius={20} backgroundColor="#32bb78" flexDirection="row">
+            <View
+                alignSelf="stretch"
+                alignItems="center"
+                height={40}
+                marginHorizontal={10}
+                marginTop={10}
+                borderRadius={20}
+                backgroundColor="#32bb78"
+                flexDirection="row"
+                shadowOpacity={0.2}
+                shadowColor="black"
+                shadowRadius={6}
+                shadowOffset={{ width: 0, height: 4 }}
+            >
                 <View flexGrow={1} marginLeft={16}>
                     <Text style={{ fontSize: 16, height: 20, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} >Call in progress</Text>
                 </View>
