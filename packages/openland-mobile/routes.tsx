@@ -35,6 +35,8 @@ import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { Call } from './pages/main/Call';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { GroupList } from './pages/main/GroupList';
+import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
+import { SetUserShortname } from './pages/main/SetUserShortname';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -60,6 +62,9 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('ExploreOrganizations', ExploreOrganizations)
   .addRoute('GroupList', GroupList)
+
+  .addRoute('SetUserShortname', SetUserShortname)
+  .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)

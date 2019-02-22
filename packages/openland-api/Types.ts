@@ -4202,6 +4202,7 @@ export interface MyOrganizations_myOrganizations {
   name: string;
   photo: string | null;
   isCommunity: boolean;
+  isPrimary: boolean;
 }
 
 export interface MyOrganizations {
