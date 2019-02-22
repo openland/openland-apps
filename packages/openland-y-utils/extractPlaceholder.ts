@@ -10,7 +10,22 @@ export function extractPlaceholder(src: string) {
         return extractEmojiOrFirstSymbol(s2[0]).toUpperCase();
     }
 
-    return extractEmojiOrFirstSymbol(s2[0]).toUpperCase() + extractEmojiOrFirstSymbol(s2[1]).toUpperCase();
+    let letter1 = extractEmojiOrFirstSymbol(s2[0]);
+    let letter2 = extractEmojiOrFirstSymbol(s2[1]);
+
+    if (letter1) {
+        letter1 = letter1.toUpperCase();
+    }
+
+    if (letter2) {
+        letter2 = letter2.toUpperCase();
+    }
+
+    if (letter1 && letter2) {
+        return letter1.toUpperCase() + letter2.toUpperCase();
+    }
+
+    return letter1.toUpperCase();
 }
 
 function extractEmojiOrFirstSymbol(s: string) {
