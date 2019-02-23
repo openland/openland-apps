@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle, Animated, Platform, ActivityIndicator } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { AppTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -14,9 +15,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     } as ViewStyle,
-    containerFilled: {
-        backgroundColor: '#fff'
-    } as ViewStyle
+    // containerFilled: {
+    //     backgroundColor: '#fff'
+    // } as ViewStyle
 });
 
 export interface ZLoaderProps {
@@ -40,7 +41,7 @@ class FixedLottie extends React.PureComponent<any> {
     }
 }
 
-export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolean }> {
+class ZLoaderComponent extends React.PureComponent<ZLoaderProps & { theme: AppTheme }, { visible: boolean }> {
 
     opacity = new Animated.Value(0);
     wasStarted = false;
@@ -48,7 +49,7 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
 
     // });
 
-    constructor(props: ZLoaderProps) {
+    constructor(props: ZLoaderProps & { theme: AppTheme }) {
         super(props);
         this.state = {
             visible: props.enabled !== false
@@ -88,7 +89,7 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
     render() {
         let size = this.props.appearance === 'large' ? 100 : this.props.appearance === 'small' ? 48 : 100;
         return (
-            <View style={[styles.container, (this.props.transparent !== true) && styles.containerFilled]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
+            <View style={[styles.container, (this.props.transparent !== true) && { backgroundColor: this.props.theme.backgroundColor }]} pointerEvents={this.props.transparent ? 'auto' : undefined}>
                 {this.state.visible && (
                     <KeyboardSafeAreaView >
                         <Animated.View style={{ width: size, height: size, opacity: this.opacity }}>
@@ -101,3 +102,8 @@ export class ZLoader extends React.PureComponent<ZLoaderProps, { visible: boolea
         );
     }
 }
+
+export const ZLoader = React.memo<ZLoaderProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return (<ZLoaderComponent {...props} theme={theme} />)
+});

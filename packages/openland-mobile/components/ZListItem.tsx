@@ -106,7 +106,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
-                    {this.props.title && Platform.OS !== 'android' && <Text style={{ color: '#5c6a81', fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
+                    {this.props.title && Platform.OS !== 'android' && <Text style={{ color: this.props.theme.textLabelColor, fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         <ZText
                             linkify={this.props.linkify === true || !this.props.onPress}
@@ -135,7 +135,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             <Image source={require('assets/ic-checkmark-cell.png')} style={{ tintColor: '#0084fe', opacity: checkmarkEnabled ? 1 : 0 }} />
                         )}
                     </View>
-                    {this.props.title && Platform.OS === 'android' && <Text style={{ color: '#000', opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
+                    {this.props.title && Platform.OS === 'android' && <Text style={{ color: this.props.theme.textLabelColor, opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
                 </View>
                 {this.props.rightAvatar && <View paddingRight={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.rightAvatar.key} placeholderTitle={this.props.rightAvatar.title} src={this.props.rightAvatar.photo} /></View>}
             </ZListItemBase>

@@ -13,65 +13,64 @@ export interface AppBarBottomItemProps {
     onPress?: () => void;
 }
 
-export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps> {
-    render() {
-        let size = Platform.OS === 'android' ? 22 : 28;
-        return (
-            <TouchableWithoutFeedback onPressIn={this.props.onPress} delayPressIn={0}>
+export const AppBarBottomItem = React.memo<AppBarBottomItemProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    let size = Platform.OS === 'android' ? 22 : 28;
+    return (
+        <TouchableWithoutFeedback onPressIn={props.onPress} delayPressIn={0}>
+            <View
+                style={{
+                    flexBasis: 0,
+                    flexGrow: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
                 <View
                     style={{
-                        flexBasis: 0,
-                        flexGrow: 1,
+                        width: 28,
+                        height: Platform.OS === 'android' ? 22 : 28,
+                        marginBottom: Platform.OS === 'android' ? -1 : 0,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
                 >
+                    <Image
+                        source={props.icon}
+                        resizeMode="contain"
+                        style={{
+                            width: size,
+                            height: size,
+                            opacity: 1,
+                            tintColor: props.selected ? theme.tabColorActive : theme.tabColor
+                        }}
+                    />
                     <View
                         style={{
-                            width: 28,
-                            height: Platform.OS === 'android' ? 22 : 28,
-                            marginBottom: Platform.OS === 'android' ? -1 : 0,
-                            alignItems: 'center',
-                            justifyContent: 'center'
+                            position: 'absolute',
+                            top: Platform.OS === 'android' ? -6 : -2,
+                            right: -5
                         }}
                     >
-                        <Image
-                            source={this.props.icon}
-                            resizeMode="contain"
-                            style={{
-                                width: size,
-                                height: size,
-                                opacity: 1,
-                                tintColor: Platform.OS === 'android' ? (this.props.selected ? '#0084fe' : '#737373') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0')
-                            }}
-                        />
-                        <View
-                            style={{
-                                position: 'absolute',
-                                top: Platform.OS === 'android' ? -6 : -2,
-                                right: -5
-                            }}
-                        >
-                            {this.props.counter !== undefined && (<ZCounter value={this.props.counter} appearance="contrast" />)}
-                        </View>
+                        {props.counter !== undefined && (<ZCounter value={props.counter} appearance="contrast" />)}
                     </View>
-                    <Text
-                        style={{
-                            color: Platform.OS === 'android' ? (this.props.selected ? '#0084fe' : '#000000') : (this.props.selected ? AppStyles.primaryColor : '#99a2b0'),
-                            fontSize: 12,
-                            fontWeight: Platform.OS === 'android' ? '500' : '400',
-                            height: Platform.OS === 'android' ? 16 : 14,
-                            overflow: 'visible',
-                            opacity: Platform.OS === 'android' ? (this.props.selected ? 1 : 0.5) : 1
-                        }}
-                    >
-                        {this.props.title}
-                    </Text>
                 </View>
-            </TouchableWithoutFeedback>
-        );
-    }
-}
+                <Text
+                    style={{
+                        color: props.selected ? theme.tabColorActive : theme.tabColor,
+                        fontSize: 12,
+                        fontWeight: Platform.OS === 'android' ? '500' : '400',
+                        height: Platform.OS === 'android' ? 16 : 14,
+                        overflow: 'visible',
+                        opacity: Platform.OS === 'android' ? (props.selected ? 1 : 0.5) : 1
+                    }}
+                >
+                    {props.title}
+                </Text>
+            </View>
+        </TouchableWithoutFeedback>
+    );
+});
 
 export const AppBarBottom = React.memo<{ children?: any }>((props) => {
     let theme = React.useContext(ThemeContext);

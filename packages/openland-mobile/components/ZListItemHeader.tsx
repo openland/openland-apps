@@ -74,7 +74,7 @@ export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
                         {props.titleIcon && <Image source={props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: props.titleColor || '#000' }} />}
                         <Text style={[styles.title, props.titleColor ? { color: props.titleColor } : { color: theme.textColor }]} numberOfLines={1}>{props.title}</Text>
                     </View>
-                    <Text style={[styles.subtitle, props.subtitleColor ? { color: props.subtitleColor } : undefined]} numberOfLines={1}>{props.subtitle}</Text>
+                    <Text style={[styles.subtitle, props.subtitleColor ? { color: props.subtitleColor } : { color: theme.textLabelColor }]} numberOfLines={1}>{props.subtitle}</Text>
                     {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
                 </View>
                 {props.action && (

@@ -6,7 +6,7 @@ import { SStatusBar } from 'react-native-s/SStatusBar';
 export interface AppTheme {
     backgroundColor: string;
     textColor: string;
-    textSecondaryColor: string;
+    textLabelColor: string;
     separatorColor: string;
     selectorColor: string;
     arrowColor: string;
@@ -15,6 +15,9 @@ export interface AppTheme {
     accentColor: string;
     hairlineColor: string;
     groupHeaderColor: string;
+
+    tabColorActive: string;
+    tabColor: string;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -22,13 +25,16 @@ export const DefaultTheme: AppTheme = {
     statusBar: 'dark-content',
     blurType: 'light',
     textColor: '#181818',
-    textSecondaryColor: '#8F8F91',
+    textLabelColor: Platform.OS === 'android' ? '#000' : '#8F8F91',
     separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
     arrowColor: '#D1D1D6',
     accentColor: '#0084fe',
     hairlineColor: '#e0e3e7',
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
-    selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .24)' : '#eee'
+    selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .24)' : '#eee',
+
+    tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',
+    tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe'
 }
 
 export const DarkTheme: AppTheme = {
@@ -36,13 +42,16 @@ export const DarkTheme: AppTheme = {
     statusBar: 'light-content',
     blurType: 'dark',
     textColor: 'white',
-    textSecondaryColor: '#8F8F91',
+    textLabelColor: '#7D7D80',
     separatorColor: '#262629',
     arrowColor: '#565658',
     accentColor: 'white',
     hairlineColor: '#1C1C1E',
     groupHeaderColor: 'white',
-    selectorColor: Platform.OS === 'android' ? 'rgba(1, 1, 1, .24)' : '#1C1C1E'
+    selectorColor: Platform.OS === 'android' ? 'rgba(1, 1, 1, .24)' : '#1C1C1E',
+
+    tabColor: '#929292',
+    tabColorActive: '#FDFDFD'
 }
 
 export const ThemeContext = React.createContext<AppTheme>(DefaultTheme);
