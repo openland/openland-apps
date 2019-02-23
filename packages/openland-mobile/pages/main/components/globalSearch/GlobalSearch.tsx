@@ -21,11 +21,11 @@ interface GlobalSearchProps {
 
 export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
     let theme = React.useContext(ThemeContext);
+    let items = getClient().useGlobalSearch({ query: props.query }).items;
+
     if (props.query.trim().length === 0) {
         return null;
     }
-
-    let items = getClient().useGlobalSearch({ query: props.query }).items;
 
     if (items.length === 0) {
         return (
