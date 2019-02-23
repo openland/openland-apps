@@ -35,6 +35,7 @@ import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { Call } from './pages/main/Call';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { GroupList } from './pages/main/GroupList';
+import { SettingsAppearance } from './pages/main/SettingsAppearance';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -46,6 +47,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsOrganizations', SettingsOrganizations)
+  .addRoute('SettingsAppearance', SettingsAppearance)
   .addRoute('NewOrganization', NewOrganization)
   .addRoute('EditOrganization', EditOrganization)
   .addRoute('FilePreview', FilePreview)

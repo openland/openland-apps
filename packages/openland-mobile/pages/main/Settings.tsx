@@ -21,6 +21,7 @@ let SettingsContent = ((props: PageProps) => {
     for (let i = 0; i < secondary.length && i < 2; i++) {
         secondaryFiltered.push(secondary[i]);
     }
+    let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
     return (
         <SScrollView>
             <ZListItemHeader
@@ -33,6 +34,14 @@ let SettingsContent = ((props: PageProps) => {
                 action="Edit profile"
             />
             <ZListItemGroup header="Settings" divider={false}>
+                {isSuper && (
+                    <ZListItem
+                        leftIconColor="#fe9400"
+                        leftIcon={require('assets/ic-notifications-24.png')}
+                        text="Appearance"
+                        path="SettingsAppearance"
+                    />
+                )}
                 <ZListItem
                     leftIcon={require('assets/ic-notifications-24.png')}
                     text="Notifications"
@@ -86,7 +95,7 @@ let SettingsContent = ((props: PageProps) => {
                     />
                 ))}
             </ZListItemGroup>
-            {(resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ')) && (
+            {isSuper && (
                 <ZListItemGroup header={null} divider={false}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListItemGroup>
