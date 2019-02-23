@@ -3,6 +3,7 @@ import { View, TouchableWithoutFeedback, Image, Text, Platform } from 'react-nat
 import { SDevice } from 'react-native-s/SDevice';
 import { AppStyles } from '../styles/AppStyles';
 import { ZCounter } from './ZCounter';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface AppBarBottomItemProps {
     title: string;
@@ -72,26 +73,26 @@ export class AppBarBottomItem extends React.PureComponent<AppBarBottomItemProps>
     }
 }
 
-export class AppBarBottom extends React.PureComponent {
-    render() {
-        return (
-            <View
-                style={{
-                    backgroundColor: '#fff',
-                    paddingBottom: SDevice.safeArea.bottom,
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
-                    // shadowColor: '#000',
-                    // shadowOpacity: 0.2,
-                    // shadowOffset: { width: 0, height: 1 }
-                }}
-            >
-                {Platform.OS === 'ios' && (<View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />)}
-                {Platform.OS !== 'ios' && (<View style={{ height: 1, backgroundColor: '#f5f5f5' }} />)}
-                <View style={{ flexDirection: 'row', height: 48 }}>
-                    {this.props.children}
-                </View>
+export const AppBarBottom = React.memo<{ children?: any }>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return (
+        <View
+            style={{
+                backgroundColor: theme.backgroundColor,
+                paddingBottom: SDevice.safeArea.bottom,
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                // shadowColor: '#000',
+                // shadowOpacity: 0.2,
+                // shadowOffset: { width: 0, height: 1 }
+            }}
+        >
+            {/* {Platform.OS === 'ios' && (<View style={{ height: 1, backgroundColor: AppStyles.separatorColor, opacity: 0.5 }} />)}
+            {Platform.OS !== 'ios' && (<View style={{ height: 1, backgroundColor: '#f5f5f5' }} />)} */}
+            <View style={{ height: 1, backgroundColor: theme.separatorColor }} />
+            <View style={{ flexDirection: 'row', height: 48 }}>
+                {props.children}
             </View>
-        );
-    }
-}
+        </View>
+    );
+});

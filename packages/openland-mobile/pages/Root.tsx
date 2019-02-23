@@ -5,6 +5,7 @@ import { SNavigationView } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
+import { AppTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface RootProps {
     routing: SRouting;
@@ -13,18 +14,20 @@ export interface RootProps {
 
 let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
 
-export class Root extends React.PureComponent<RootProps, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
+class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme }, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
 
-    constructor(props: RootProps) {
+    private isIPad = false;
+
+    constructor(props: RootProps & { theme: AppTheme }) {
         super(props);
         this.state = {
             width: Dimensions.get('screen').width,
             height: Dimensions.get('screen').height,
         };
-        
-        isPad = isPad && this.props.padLayout !== false;
 
-        if (isPad) {
+        this.isIPad = isPad && this.props.padLayout !== false;
+
+        if (this.isIPad) {
             this.props.routing.navigationManager.setPushHandler(this.handlePush);
         }
     }
@@ -52,7 +55,12 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     }
 
     render() {
-        if (isPad) {
+
+        let bgColor = this.props.theme.backgroundColor;
+        let textColor = this.props.theme.textColor;
+        console.log(bgColor);
+
+        if (this.isIPad) {
             return (
                 <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
                     <SNavigationView
@@ -61,7 +69,8 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                         routing={this.props.routing}
                         navigationBarStyle={{
                             accentColor: AppStyles.primaryColor,
-                            backgroundColor: '#fff',
+                            backgroundColor: bgColor,
+                            textColor,
                             isOpaque: Platform.OS === 'ios' ? false : true
                         }}
                     />
@@ -75,7 +84,8 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                                 routing={this.state.masterRouting}
                                 navigationBarStyle={{
                                     accentColor: AppStyles.primaryColor,
-                                    backgroundColor: '#fff',
+                                    backgroundColor: bgColor,
+                                    textColor,
                                     isOpaque: Platform.OS === 'ios' ? false : true
                                 }}
                             />
@@ -93,7 +103,8 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                     routing={this.props.routing}
                     navigationBarStyle={{
                         accentColor: AppStyles.primaryColor,
-                        backgroundColor: '#fff',
+                        backgroundColor: bgColor,
+                        textColor,
                         isOpaque: Platform.OS === 'ios' ? false : true
                     }}
                 />
@@ -101,3 +112,8 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
         );
     }
 }
+
+export const Root = React.memo<RootProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return <RootContainer {...props} theme={theme} />;
+});

@@ -10,6 +10,9 @@ class ThemeControllerImpl {
 
     set theme(theme: ThemeKind) {
         this._theme = theme;
+        for (let w of this._watchers) {
+            w(theme);
+        }
     }
 
     watch(handler: (theme: ThemeKind) => void) {

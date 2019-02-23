@@ -7,6 +7,7 @@ import { XStoreState } from 'openland-y-store/XStoreState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { ActionSheet } from './ActionSheet';
 import { ZAvatar } from './ZAvatar';
+import { ThemeContext, AppTheme } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZListItemProps {
     leftAvatar?: { photo?: string | null, key: string, title: string };
@@ -48,7 +49,7 @@ function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger
     );
 }
 
-class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: XStoreState }> {
+class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: XStoreState, theme: AppTheme }> {
 
     handleOnPress = () => {
         if (this.props.onPress) {
@@ -94,7 +95,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 onPress={this.handleOnPress}
                 onLongPress={this.handleOnLongPress}
                 enabled={enabled}
-                backgroundColor="#fff"
+                backgroundColor={this.props.theme.backgroundColor}
                 separator={this.props.separator === true}
                 path={this.props.path}
                 pathParams={this.props.pathParams}
@@ -114,7 +115,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                                 fontWeight: Platform.OS === 'android' ? '400' : '500',
                                 color: this.props.appearance === 'action' ? AppStyles.primaryColor
                                     : this.props.appearance === 'danger' ? '#f6564e'
-                                        : '#181818',
+                                        : this.props.theme.textColor,
                                 lineHeight: 24,
                                 textAlignVertical: 'center',
                                 flexGrow: 1,
@@ -142,23 +143,22 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
     }
 }
 
-export class ZListItem extends React.PureComponent<ZListItemProps> {
-    render() {
-        let needStore = !!this.props.checkmarkField || !!this.props.toggleField;
-        if (needStore) {
-            return (
-                <XStoreContext.Consumer>
-                    {store => {
+export const ZListItem = React.memo<ZListItemProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    let needStore = !!props.checkmarkField || !!props.toggleField;
+    if (needStore) {
+        return (
+            <XStoreContext.Consumer>
+                {store => {
+                    if (!store) {
                         if (!store) {
-                            if (!store) {
-                                throw Error('No store!');
-                            }
+                            throw Error('No store!');
                         }
-                        return (<ZListItemComponent {...this.props} store={store} />);
-                    }}
-                </XStoreContext.Consumer>
-            );
-        }
-        return <ZListItemComponent {...this.props} />;
+                    }
+                    return (<ZListItemComponent {...props} store={store} theme={theme} />);
+                }}
+            </XStoreContext.Consumer>
+        );
     }
-}
+    return <ZListItemComponent {...props} theme={theme} />;
+});

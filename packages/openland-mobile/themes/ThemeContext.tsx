@@ -1,16 +1,23 @@
 import * as React from 'react'
 import { ThemeKind, ThemeController } from './ThemeControler';
+import { Platform } from 'react-native';
 
 export interface AppTheme {
-    backgroundColor: string
+    backgroundColor: string;
+    textColor: string;
+    separatorColor: string;
 }
 
 export const DefaultTheme: AppTheme = {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    textColor: '#181818',
+    separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea'
 }
 
 export const DarkTheme: AppTheme = {
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    textColor: 'white',
+    separatorColor: '#1C1C1E'
 }
 
 export const ThemeContext = React.createContext<AppTheme>(DefaultTheme);
@@ -30,6 +37,7 @@ export const ThemeProvider = (props: { children?: any }) => {
             setTheme(resolveTheme(t));
         })
     }, [])
+    console.log('render theme: ' + theme.backgroundColor);
 
     return (
         <ThemeContext.Provider value={theme}>
