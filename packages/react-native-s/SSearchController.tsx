@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HeaderConfigRegistrator } from './navigation/HeaderConfigRegistrator';
-import { ASSafeAreaProvider, ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
+import { ASSafeAreaProvider } from 'react-native-async-view/ASSafeAreaContext';
 import { View, Platform } from 'react-native';
 import { SAnimatedView } from './SAnimatedView';
 import UUID from 'uuid/v4';
@@ -8,21 +8,21 @@ import { SAnimatedShadowView } from './SAnimatedShadowView';
 import { HeaderContextNone } from './navigation/HeaderContextNone';
 import { SearchContext } from './navigation/SearchContext';
 import { SNativeConfig } from './SNativeConfig';
-import { SContentContext } from './SContentContext';
 import { SDevice } from './SDevice';
+import { AppTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;
     searchRender: React.ComponentType<{ query: string }>;
 }
 
-export class SSearchControler extends React.PureComponent<SSearchControlerProps, { search: boolean, searchMounted: boolean, query: string }> {
+class SSearchControlerComponent extends React.PureComponent<SSearchControlerProps & { theme: AppTheme }, { search: boolean, searchMounted: boolean, query: string }> {
 
     private containerShadowView = new SAnimatedShadowView(UUID());
     private searchShadowView = new SAnimatedShadowView(UUID());
     private searchContext: SearchContext;
 
-    constructor(props: SSearchControlerProps) {
+    constructor(props: SSearchControlerProps & { theme: AppTheme }) {
         super(props);
         this.searchContext = new SearchContext(this.handleSearchChanged);
         this.state = {
@@ -72,7 +72,7 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
                     </SAnimatedView>
                     <SAnimatedView
                         name={this.searchShadowView.name}
-                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || '#fff' }}
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: this.props.backgroundColor || this.props.theme.backgroundColor }}
                         pointerEvents="box-none"
                     >
                         {this.state.searchMounted && (
@@ -134,3 +134,8 @@ export class SSearchControler extends React.PureComponent<SSearchControlerProps,
         );
     }
 }
+
+export const SSearchControler = React.memo<SSearchControlerProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return (<SSearchControlerComponent {...props} theme={theme} />);
+});

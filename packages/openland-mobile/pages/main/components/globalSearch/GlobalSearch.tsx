@@ -8,6 +8,7 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { GlobalSearchItemOrganization, GlobalSearchItemUser, GlobalSearchItemSharedRoom } from './GlobalSearchItems';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 interface GlobalSearchProps {
     query: string;
@@ -19,6 +20,7 @@ interface GlobalSearchProps {
 }
 
 export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
+    let theme = React.useContext(ThemeContext);
     if (props.query.trim().length === 0) {
         return null;
     }
@@ -29,7 +31,7 @@ export const GlobalSearch = XMemo<GlobalSearchProps>((props) => {
         return (
             <KeyboardSafeAreaView>
                 <View style={{ flexDirection: 'column', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: '#000' }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
+                    <Text style={{ fontSize: 22, textAlignVertical: 'center', color: theme.textColor }}>{'Nothing found' + randomEmptyPlaceholderEmoji()}</Text>
                 </View>
             </KeyboardSafeAreaView>
         );

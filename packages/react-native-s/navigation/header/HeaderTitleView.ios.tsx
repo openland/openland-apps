@@ -123,7 +123,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                     {v.config.searchActive && (
                                         <View style={{ flexDirection: 'row', height: 36, alignItems: 'center', flexGrow: 1, marginRight: 70 }}>
                                             <Image source={require('assets/ic-search.png')} style={{ width: 14, height: 14, marginLeft: 8, marginRight: 7 }} />
-                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 4 }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" />
+                                            <TextInput value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} style={{ fontSize: 17, height: 22, flexGrow: 1, flexBasis: 0, marginRight: 4, color: this.props.style.textColor }} placeholder="Search" placeholderTextColor="rgba(138, 138, 143, 0.75)" keyboardAppearance={this.props.style.keyboardAppearance} />
                                             {this.state.searchText.length > 0 && (
                                                 <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                                     <View style={{ height: 36, width: 22, justifyContent: 'center', alignItems: 'center' }}>

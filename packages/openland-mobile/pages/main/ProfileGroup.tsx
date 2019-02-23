@@ -21,6 +21,7 @@ import { UploadStatus } from 'openland-engines/messenger/types';
 import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 // import { changeThemeModal } from './themes/ThemeChangeModal';
 
 let isMember = (a: RoomMembers_members) => {
@@ -33,6 +34,7 @@ let isAdmin = (a: RoomMembers_members) => {
 
 function ProfileGroupComponent(props: PageProps & { id: string }) {
 
+    const theme = React.useContext(ThemeContext);
     const client = useClient();
 
     const room = client.useRoom({ id: props.id }).room as Room_room_SharedRoom;
@@ -283,7 +285,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                 ))}
             </ZListItemGroup>
 
-            {Platform.OS === 'ios' && <View backgroundColor="#eff0f2" height={0.5} alignSelf="stretch" margin={16} />}
+            {Platform.OS === 'ios' && <View backgroundColor={theme.separatorColor} height={0.5} alignSelf="stretch" marginLeft={16} />}
 
             <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
                 <ZListItem

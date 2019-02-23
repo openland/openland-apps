@@ -11,6 +11,7 @@ export interface AppTheme {
     selectorColor: string;
     arrowColor: string;
     blurType: 'dark' | 'light';
+    keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
     accentColor: string;
     hairlineColor: string;
@@ -24,6 +25,7 @@ export const DefaultTheme: AppTheme = {
     backgroundColor: 'white',
     statusBar: 'dark-content',
     blurType: 'light',
+    keyboardAppearance: 'light',
     textColor: '#181818',
     textLabelColor: Platform.OS === 'android' ? '#000' : '#8F8F91',
     separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
@@ -41,6 +43,7 @@ export const DarkTheme: AppTheme = {
     backgroundColor: 'black',
     statusBar: 'light-content',
     blurType: 'dark',
+    keyboardAppearance: 'dark',
     textColor: 'white',
     textLabelColor: '#7D7D80',
     separatorColor: '#262629',
