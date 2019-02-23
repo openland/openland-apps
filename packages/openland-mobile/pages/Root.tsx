@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SRouting } from 'react-native-s/SRouting';
 import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
-import { SNavigationView } from 'react-native-s/SNavigationView';
+import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
@@ -58,7 +58,16 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
 
         let bgColor = this.props.theme.backgroundColor;
         let textColor = this.props.theme.textColor;
-        console.log(bgColor);
+        let blurType = this.props.theme.blurType;
+        let accentColor = this.props.theme.accentColor;
+        let style: Partial<SNavigationViewStyle> = {
+            accentColor,
+            backgroundColor: bgColor,
+            textColor,
+            blurType,
+            isOpaque: Platform.OS === 'ios' && blurType !== 'dark' ? false : true,
+            hairlineColor: this.props.theme.hairlineColor
+        };
 
         if (this.isIPad) {
             return (
@@ -67,12 +76,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
                         width={300}
                         height={this.state.height}
                         routing={this.props.routing}
-                        navigationBarStyle={{
-                            accentColor: AppStyles.primaryColor,
-                            backgroundColor: bgColor,
-                            textColor,
-                            isOpaque: Platform.OS === 'ios' ? false : true
-                        }}
+                        navigationBarStyle={style}
                     />
                     <View height={'100%'} width={0.5} backgroundColor={AppStyles.separatorColor} />
                     <View width={this.state.width - 300} height={'100%'}>
@@ -82,12 +86,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
                                 width={this.state.width - 300}
                                 height={this.state.height}
                                 routing={this.state.masterRouting}
-                                navigationBarStyle={{
-                                    accentColor: AppStyles.primaryColor,
-                                    backgroundColor: bgColor,
-                                    textColor,
-                                    isOpaque: Platform.OS === 'ios' ? false : true
-                                }}
+                                navigationBarStyle={style}
                             />
                         )}
                     </View>
@@ -101,12 +100,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
                     width={this.state.width}
                     height={this.state.height}
                     routing={this.props.routing}
-                    navigationBarStyle={{
-                        accentColor: AppStyles.primaryColor,
-                        backgroundColor: bgColor,
-                        textColor,
-                        isOpaque: Platform.OS === 'ios' ? false : true
-                    }}
+                    navigationBarStyle={style}
                 />
             </View>
         );
