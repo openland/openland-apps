@@ -134,7 +134,7 @@ function ProfileOrganizationContent(props: PageProps) {
             {
                 organization.rooms.length > 0 && (
                     <ZListItemGroup
-                        header="Rooms"
+                        header="Groups"
                         divider={false}
                         actionRight={organization.isMine ? { title: '+ New', onPress: () => props.router.push('CreateGroupAttrs', { organizationId: organization.id }) } : undefined}
                     >
