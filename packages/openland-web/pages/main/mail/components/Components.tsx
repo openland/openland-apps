@@ -92,7 +92,6 @@ const CacheComponent = ({ activeChat, componentProps }: any) => {
         });
     }, [activeChat]);
 
-    //
     return (
         <>
             {/* TODO we don't have guaranteed order here, fix that */}
@@ -242,7 +241,11 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
             height="100%"
             width="100%"
         >
-            {tab === tabs.empty ? (
+            <div
+                style={{
+                    display: tab === tabs.empty ? 'none' : 'flex',
+                }}
+            >
                 <XView width="100%">
                     <Menu
                         title={'Messages'}
@@ -258,9 +261,14 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
                     />
                     <DialogListFragment />
                 </XView>
-            ) : (
+            </div>
+            <div
+                style={{
+                    display: tab !== tabs.empty ? 'none' : 'flex',
+                }}
+            >
                 <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-            )}
+            </div>
         </XView>
     );
 };
