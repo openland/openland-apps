@@ -77,7 +77,7 @@ const DisplayNone = ({
                     : commonStyle
             }
         >
-            <Component {...componentProps} />
+            <Component {...componentProps} isActive={isActive} />
         </div>
     );
 };

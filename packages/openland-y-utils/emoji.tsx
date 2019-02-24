@@ -35,6 +35,7 @@ export function emoji({
     if (EmojiFlags.ignoreEmojione) {
         return src;
     }
+
     let height = size || 32;
     let assetSize = 32;
     let assetRetinaSize = 64;

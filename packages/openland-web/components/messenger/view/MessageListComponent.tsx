@@ -215,19 +215,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     </XScrollViewReversed>
                 )}
                 {!this.isEmpty() && (
-                    <XResizeDetector
-                        handleWidth={false}
-                        handleHeight={true}
-                        onResize={this.resizeHandler}
-                    >
-                        <DataSourceRender
-                            dataSource={this.props.conversation.dataSource}
-                            reverce={true}
-                            wrapWith={this.dataSourceWrapper}
-                            renderItem={this.renderMessage}
-                            renderLoading={this.renderLoading}
-                        />
-                    </XResizeDetector>
+                    <DataSourceRender
+                        dataSource={this.props.conversation.dataSource}
+                        reverce={true}
+                        wrapWith={this.dataSourceWrapper}
+                        renderItem={this.renderMessage}
+                        renderLoading={this.renderLoading}
+                    />
                 )}
             </>
         );
