@@ -41,7 +41,7 @@ export const DefaultTheme: AppTheme = {
     accentColor: '#0084fe',
     hairlineColor: '#e0e3e7',
     groupHeaderColor: Platform.OS === 'android' ? '#000' : '#99a2b0',
-    selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .24)' : '#eee',
+    selectorColor: Platform.OS === 'android' ? 'rgba(0, 0, 0, .1)' : '#eee',
 
     tabColor: Platform.OS === 'android' ? '#737373' : '#99a2b0',
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
@@ -67,7 +67,7 @@ export const DarkTheme: AppTheme = {
     accentColor: 'white',
     hairlineColor: '#1C1C1E',
     groupHeaderColor: 'white',
-    selectorColor: Platform.OS === 'android' ? 'rgba(1, 1, 1, .24)' : '#1C1C1E',
+    selectorColor: Platform.OS === 'android' ? '#1C1C1E' : '#1C1C1E',
 
     tabColor: '#929292',
     tabColorActive: '#FDFDFD',
