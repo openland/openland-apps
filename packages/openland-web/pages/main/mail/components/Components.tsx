@@ -86,10 +86,12 @@ const CacheComponent = ({ activeChat, componentProps }: any) => {
     const [cachedProps, setCachedProps] = React.useState({});
 
     React.useLayoutEffect(() => {
-        setCachedProps({
-            ...cachedProps,
-            [activeChat]: componentProps,
-        });
+        if (activeChat) {
+            setCachedProps({
+                ...cachedProps,
+                [activeChat]: componentProps,
+            });
+        }
     }, [activeChat]);
 
     return (
@@ -99,7 +101,7 @@ const CacheComponent = ({ activeChat, componentProps }: any) => {
                 const cachedComponentProps = cachedProps[id];
                 return (
                     <DisplayNone
-                        isActive={activeChat === id}
+                        isActive={activeChat !== null && activeChat === id}
                         key={key1}
                         Component={MessengerFragment}
                         componentProps={cachedComponentProps}
@@ -110,6 +112,15 @@ const CacheComponent = ({ activeChat, componentProps }: any) => {
     );
 };
 
+class UnmountDetector extends React.Component {
+    componentWillUnmount() {
+        console.log('UnmountDetector: componentWillUnmount');
+    }
+    render() {
+        return null;
+    }
+}
+
 export const ConversationContainerWrapper = ({
     tab,
     conversationId,
@@ -119,14 +130,16 @@ export const ConversationContainerWrapper = ({
 }: PageInnerProps) => {
     let pageTitle = tab === tabs.compose ? 'New chat' : undefined;
 
-    if (!canUseDOM && tab !== tabs.invite) {
+    if (!canUseDOM) {
         return (
             <>
-                <XDocumentHead title={pageTitle} description={'description'} />
+                <XDocumentHead title={pageTitle} />
                 <Scaffold>{}</Scaffold>
             </>
         );
     }
+
+    console.log('render: ConversationContainerWrapper');
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
@@ -134,36 +147,38 @@ export const ConversationContainerWrapper = ({
         : DesktopConversationContainer;
 
     return (
-        <ConversationContainerInner>
-            {tab === tabs.chat && conversationId && (
+        <>
+            <UnmountDetector />
+            <ConversationContainerInner>
                 <CacheComponent
-                    activeChat={conversationId}
+                    activeChat={tab === tabs.chat && conversationId ? conversationId : null}
                     Component={MessengerFragment}
                     componentProps={{
                         id: conversationId,
                     }}
                 />
-            )}
-            {tab === tabs.compose && <ComposeFragment />}
-            {tab === tabs.empty && <MessengerEmptyFragment />}
-            {tab === tabs.rooms && <RoomsExploreComponent />}
-            {tab === tabs.invite && <RoomInviteFromLink />}
-            {tab === tabs.organization && oid && (
-                <OrganizationProfileContainer>
-                    <OrganizationProfile organizationId={oid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === tabs.user && uid && (
-                <OrganizationProfileContainer>
-                    <UserProfile userId={uid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === tabs.roomProfile && cid && (
-                <OrganizationProfileContainer>
-                    <RoomProfile conversationId={cid} />
-                </OrganizationProfileContainer>
-            )}
-        </ConversationContainerInner>
+
+                {tab === tabs.compose && <ComposeFragment />}
+                {tab === tabs.empty && <MessengerEmptyFragment />}
+                {tab === tabs.rooms && <RoomsExploreComponent />}
+                {tab === tabs.invite && <RoomInviteFromLink />}
+                {tab === tabs.organization && oid && (
+                    <OrganizationProfileContainer>
+                        <OrganizationProfile organizationId={oid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.user && uid && (
+                    <OrganizationProfileContainer>
+                        <UserProfile userId={uid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.roomProfile && cid && (
+                    <OrganizationProfileContainer>
+                        <RoomProfile conversationId={cid} />
+                    </OrganizationProfileContainer>
+                )}
+            </ConversationContainerInner>
+        </>
     );
 };
 

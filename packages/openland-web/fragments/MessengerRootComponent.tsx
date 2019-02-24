@@ -192,6 +192,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     };
 
     componentWillUnmount() {
+        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }
@@ -201,6 +202,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     componentWillMount() {
+        console.log('componentWillMount');
         this.updateConversation(this.props);
     }
 
