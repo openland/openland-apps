@@ -10,6 +10,7 @@ export interface AppTheme {
     separatorColor: string;
     selectorColor: string;
     arrowColor: string;
+    androidIconColor: string;
     blurType: 'dark' | 'light';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
@@ -26,6 +27,7 @@ export const DefaultTheme: AppTheme = {
     statusBar: 'dark-content',
     blurType: 'light',
     keyboardAppearance: 'light',
+    androidIconColor: 'black',
     textColor: '#181818',
     textLabelColor: Platform.OS === 'android' ? '#000' : '#8F8F91',
     separatorColor: Platform.OS === 'android' ? '#ebebeb' : '#eaeaea',
@@ -44,6 +46,7 @@ export const DarkTheme: AppTheme = {
     statusBar: 'light-content',
     blurType: 'dark',
     keyboardAppearance: 'dark',
+    androidIconColor: 'white',
     textColor: 'white',
     textLabelColor: '#7D7D80',
     separatorColor: '#262629',

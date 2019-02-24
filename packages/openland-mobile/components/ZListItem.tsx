@@ -36,7 +36,7 @@ export interface ZListItemProps {
     copy?: boolean;
 }
 
-function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) {
+function LeftIcon(props: { theme: AppTheme, src: any, appearance?: 'default' | 'action' | 'danger', leftIconColor?: string }) {
     if (Platform.OS === 'ios') {
         return (
             <View style={{ width: 42, height: 42, borderRadius: 21, alignContent: 'center', justifyContent: 'center', backgroundColor: props.leftIconColor || (props.appearance === 'danger' ? '#f6564e' : '#0184fe'), marginLeft: 16, alignSelf: 'center' }}>
@@ -45,7 +45,7 @@ function LeftIcon(props: { src: any, appearance?: 'default' | 'action' | 'danger
         );
     }
     return (
-        <Image source={props.src} style={{ tintColor: props.appearance === 'danger' ? '#f6564e' : undefined, width: 24, height: 24, marginRight: 7, marginLeft: 23, alignSelf: 'center' }} />
+        <Image source={props.src} style={{ tintColor: props.appearance === 'danger' ? '#f6564e' : props.theme.androidIconColor, width: 24, height: 24, marginRight: 7, marginLeft: 23, alignSelf: 'center' }} />
     );
 }
 
@@ -103,7 +103,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                 height={this.props.multiline ? null : ((this.props.title || this.props.leftAvatar) ? 60 : (this.props.leftIcon ? 60 : (Platform.OS === 'android' ? 48 : 44)))}
                 navigationIcon={this.props.navigationIcon}
             >
-                {this.props.leftIcon && <LeftIcon src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
+                {this.props.leftIcon && <LeftIcon theme={this.props.theme} src={this.props.leftIcon} leftIconColor={this.props.leftIconColor} appearance={this.props.appearance} />}
                 {this.props.leftAvatar && <View paddingLeft={16} alignSelf="center"><ZAvatar size={40} placeholderKey={this.props.leftAvatar.key} placeholderTitle={this.props.leftAvatar.title} src={this.props.leftAvatar.photo} /></View>}
                 <View paddingLeft={16} paddingRight={16} flexGrow={1} paddingVertical={this.props.title ? 6 : undefined} justifyContent={!this.props.title ? 'center' : undefined}>
                     {this.props.title && Platform.OS !== 'android' && <Text style={{ color: this.props.theme.textLabelColor, fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
