@@ -8,9 +8,11 @@ export interface AppTheme {
     selectorColor: string;
     arrowColor: string;
     androidIconColor: string;
+    
     blurType: 'dark' | 'light';
     keyboardAppearance: 'dark' | 'light';
     statusBar: 'dark-content' | 'light-content';
+
     accentColor: string;
     hairlineColor: string;
     groupHeaderColor: string;
@@ -19,9 +21,11 @@ export interface AppTheme {
     tabColor: string;
 
     dialogTitleColor: string;
+    dialogTitleSecureColor: string;
     dialogDateColor: string;
     dialogSenderColor: string;
     dialogMessageColor: string;
+    dialogTypingColor: string;
 }
 
 export const DefaultTheme: AppTheme = {
@@ -43,9 +47,11 @@ export const DefaultTheme: AppTheme = {
     tabColorActive: Platform.OS === 'android' ? '#0084fe' : '#0084fe',
 
     dialogTitleColor: '#181818',
+    dialogTitleSecureColor: 'green',
     dialogDateColor: '#aaaaaa',
     dialogSenderColor: '#181818',
-    dialogMessageColor: Platform.OS === 'android' ? '#676767' : '#7b7b7b'
+    dialogMessageColor: Platform.OS === 'android' ? '#676767' : '#7b7b7b',
+    dialogTypingColor: '#0084fe'
 }
 
 export const DarkTheme: AppTheme = {
@@ -67,7 +73,9 @@ export const DarkTheme: AppTheme = {
     tabColorActive: '#FDFDFD',
 
     dialogTitleColor: 'white',
+    dialogTitleSecureColor: 'green',
     dialogDateColor: 'white',
     dialogSenderColor: 'white',
-    dialogMessageColor: 'white'
+    dialogMessageColor: 'white',
+    dialogTypingColor: 'white'
 }
