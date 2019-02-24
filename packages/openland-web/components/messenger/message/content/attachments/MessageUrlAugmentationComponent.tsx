@@ -238,11 +238,10 @@ const InternalUrlCard = ({
     );
 };
 
-export const MessageUrlAugmentationComponent = React.memo(
-    (props: MessageUrlAugmentationComponentProps) => {
-        const { isMobile } = React.useContext(MobileSidebarContext);
-
+const MessageUrlAugmentationComponentInner = React.memo(
+    (props: MessageUrlAugmentationComponentProps & { isMobile: boolean }) => {
         let {
+            isMobile,
             hostname,
             title,
             photo,
@@ -382,5 +381,15 @@ export const MessageUrlAugmentationComponent = React.memo(
                 )}
             </Container>
         );
+    },
+);
+
+export const MessageUrlAugmentationComponent = React.memo(
+    (props: MessageUrlAugmentationComponentProps) => {
+        const sidebarContext = React.useContext(MobileSidebarContext);
+
+        const { isMobile } = sidebarContext;
+
+        return <MessageUrlAugmentationComponentInner {...props} isMobile={isMobile} />;
     },
 );
