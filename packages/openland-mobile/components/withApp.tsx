@@ -2,11 +2,11 @@ import * as React from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import { PageProps } from './PageProps';
 import { withRouter } from 'react-native-s/withRouter';
-import { SHeaderAppearance } from 'react-native-s/SHeader';
+import { SHeaderAppearance, SHeader } from 'react-native-s/SHeader';
 import { SHeaderSafeArea } from 'react-native-s/SHeaderSafeArea';
 import { ZLoader } from './ZLoader';
 
-export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: SHeaderAppearance }) => {
+export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { navigationAppearance?: SHeaderAppearance, hideBackText?: boolean, hideHairline?: boolean }) => {
 
     let res = class WrappedPage extends React.Component<PageProps> {
         shouldComponentUpdate() {
@@ -15,6 +15,8 @@ export const withApp = (Wrapped: React.ComponentType<PageProps>, args?: { naviga
         render() {
             return (
                 <SHeaderSafeArea appearance={args && args.navigationAppearance || 'large'}>
+                    {args && args.hideBackText && <SHeader hideBackText={true} />}
+                    {args && args.hideHairline && <SHeader hairline="hidden" />}
                     <React.Suspense fallback={<ZLoader />}>
                         <Wrapped {...this.props} />
                     </React.Suspense>
