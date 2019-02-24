@@ -164,7 +164,6 @@ type InternalUrlCardInnerProps = {
     messageId: string;
     href?: string;
     path?: string;
-    isMobile: boolean;
 };
 
 const InternalUrlCardInner = React.memo(
@@ -179,7 +178,7 @@ const InternalUrlCardInner = React.memo(
         messageId,
         href,
         path,
-    }: InternalUrlCardInnerProps) => {
+    }: InternalUrlCardInnerProps & { isMobile: boolean }) => {
         return (
             <InternalUrlCardContainer
                 isMobile={isMobile}
