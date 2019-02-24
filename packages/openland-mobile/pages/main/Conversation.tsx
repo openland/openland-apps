@@ -277,7 +277,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         return (
             <>
-                <SHeaderView accentColor={this.state.theme.mainColor}>
+                <SHeaderView>
                     {header}
                 </SHeaderView>
                 {button}

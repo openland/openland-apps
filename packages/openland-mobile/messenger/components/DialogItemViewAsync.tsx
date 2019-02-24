@@ -27,7 +27,7 @@ export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataS
     }
 
     render() {
-        console.log('render: ' + this.props.item.key);
+        // console.log('render: ' + this.props.item.key);
         let item = this.props.item;
         let isUser = item.kind === 'PRIVATE';
         let isGroup = item.kind === 'GROUP';
