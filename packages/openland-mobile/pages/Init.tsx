@@ -19,6 +19,7 @@ import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
 import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -52,6 +53,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
 
         (async () => {
+            await ThemePersister.prepare();
             try {
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
