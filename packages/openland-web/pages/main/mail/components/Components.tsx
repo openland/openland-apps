@@ -51,6 +51,65 @@ type PageInnerProps = {
 
 const MobileConversationContainer = ({ children }: any) => <XView flexGrow={1}>{children}</XView>;
 
+const DisplayNone = ({
+    isActive,
+    Component,
+    componentProps,
+}: {
+    isActive: boolean;
+    Component: any;
+    componentProps: any;
+}) => {
+    const commonStyle = {
+        height: '100%',
+        display: 'flex',
+        flexGrow: 1,
+    };
+
+    return (
+        <div
+            style={
+                !isActive
+                    ? {
+                          ...commonStyle,
+                          display: 'none',
+                      }
+                    : commonStyle
+            }
+        >
+            <Component {...componentProps} />
+        </div>
+    );
+};
+
+const CacheComponent = ({ activeChat, componentProps }: any) => {
+    const [cachedProps, setCachedProps] = React.useState({});
+
+    React.useLayoutEffect(() => {
+        setCachedProps({
+            ...cachedProps,
+            [activeChat]: componentProps,
+        });
+    }, [activeChat]);
+
+    return (
+        <>
+            {/* TODO we don't have guaranteed order here, fix that */}
+            {Object.keys(cachedProps).map((id, key1) => {
+                const cachedComponentProps = cachedProps[id];
+                return (
+                    <DisplayNone
+                        isActive={activeChat === id}
+                        key={key1}
+                        Component={MessengerFragment}
+                        componentProps={cachedComponentProps}
+                    />
+                );
+            })}
+        </>
+    );
+};
+
 export const ConversationContainerWrapper = ({
     tab,
     conversationId,
@@ -76,7 +135,15 @@ export const ConversationContainerWrapper = ({
 
     return (
         <ConversationContainerInner>
-            {tab === tabs.chat && conversationId && <MessengerFragment id={conversationId} />}
+            {tab === tabs.chat && conversationId && (
+                <CacheComponent
+                    activeChat={conversationId}
+                    Component={MessengerFragment}
+                    componentProps={{
+                        id: conversationId,
+                    }}
+                />
+            )}
             {tab === tabs.compose && <ComposeFragment />}
             {tab === tabs.empty && <MessengerEmptyFragment />}
             {tab === tabs.rooms && <RoomsExploreComponent />}
