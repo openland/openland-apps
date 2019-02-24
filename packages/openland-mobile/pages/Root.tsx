@@ -5,7 +5,8 @@ import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigatio
 import { AppStyles } from '../styles/AppStyles';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
-import { AppTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface RootProps {
     routing: SRouting;

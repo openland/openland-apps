@@ -8,7 +8,6 @@ import { AsyncMessageIntroView } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { AsyncBubbleView } from './AsyncBubbleView';
-import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { TextContent } from './content/TextContent';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ASText } from 'react-native-async-view/ASText';
@@ -37,8 +36,6 @@ let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: N
 
     return null;
 };
-
-export const messageBgColor = 'white';
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 

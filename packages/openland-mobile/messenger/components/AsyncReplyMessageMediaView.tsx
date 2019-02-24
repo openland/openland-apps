@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { Platform, Dimensions } from 'react-native';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { AsyncBubbleView } from './AsyncBubbleView';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadManagerInstance } from '../../files/DownloadManager';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASFlex } from 'react-native-async-view/ASFlex';
-import { ASText } from 'react-native-async-view/ASText';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { DownloadState } from '../../files/DownloadManagerInterface';
 

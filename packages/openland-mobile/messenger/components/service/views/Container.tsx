@@ -2,10 +2,12 @@ import * as React from 'react';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASText } from 'react-native-async-view/ASText';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const Container = (props: { children?: any }) => {
+    let theme = React.useContext(ThemeContext);
     return (
-        <ASFlex alignItems="center" justifyContent="center" flexDirection="column" backgroundColor="white">
+        <ASFlex alignItems="center" justifyContent="center" flexDirection="column" backgroundColor={theme.backgroundColor}>
             <ASFlex
                 marginTop={16}
                 marginBottom={8}

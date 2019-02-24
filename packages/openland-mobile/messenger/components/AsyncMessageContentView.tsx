@@ -9,8 +9,6 @@ import { ASImage } from 'react-native-async-view/ASImage';
 import { resolveInternalLink } from '../../utils/internalLnksResolver';
 import { TextStyles } from '../../styles/AppStyles';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
-import { WatchSubscription } from 'openland-y-utils/Watcher';
-import { DownloadState } from 'openland-mobile/files/DownloadManagerInterface';
 import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 import { useNonBreakingSpaces } from 'openland-y-utils/TextProcessor';
 import { ReplyContent } from './content/ReplyContent';
@@ -18,8 +16,8 @@ import { TextContent } from './content/TextContent';
 import { Span } from 'openland-mobile/utils/TextProcessor';
 import { UrlAugmentationContent } from './content/UrlAugmentationContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
-import { DefaultTheme } from 'openland-web/modules/theme/ThemeContext';
 import { DocumentContent } from './content/DocumentContent';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 export const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
@@ -42,84 +40,70 @@ export let renderPrprocessedText = (v: Span, i: number, message: DataSourceMessa
         return <ASText key={'text-' + i}>{v.text}</ASText>;
     }
 }
-export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTextViewProps, { downloadState?: DownloadState }> {
 
-    private downloadManagerWatch?: WatchSubscription;
+export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    let hasImage = !!(props.message.file && props.message.file.isImage);
+    let hasReply = props.message.reply;
+    let hasText = props.message.text;
+    let hasUrlAug = props.message.urlAugmentation;
+    let hasDocument = props.message.file && !hasImage;
 
-    constructor(props: AsyncMessageTextViewProps) {
-        super(props);
+    let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
+
+    let layout;
+    if (hasImage) {
+        layout = layoutImage(props.message);
     }
 
-    componentWillUnmount() {
-        if (this.downloadManagerWatch) {
-            this.downloadManagerWatch();
-        }
-    }
+    return (
+        <AsyncBubbleView width={layout ? layout.width : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
+            <ASFlex
+                flexDirection="column"
+            >
 
-    render() {
+                {!props.message.isOut && !props.message.attachTop && !hasImage && !hasDocument && <ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{props.message.senderName}</ASText>}
+                {hasReply && <ReplyContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
+                {hasText && <TextContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
+                {hasUrlAug && <UrlAugmentationContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
+                {hasImage && layout && <MediaContent layout={layout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />}
+                {hasDocument && <DocumentContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
 
-        let hasImage = !!(this.props.message.file && this.props.message.file.isImage);
-        let hasReply = this.props.message.reply;
-        let hasText = this.props.message.text;
-        let hasUrlAug = this.props.message.urlAugmentation;
-        let hasDocument = this.props.message.file && !hasImage;
-
-        let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
-
-        let layout;
-        if (hasImage) {
-            layout = layoutImage(this.props.message);
-        }
-
-        return (
-            <AsyncBubbleView width={layout ? layout.width : undefined} isOut={this.props.message.isOut} compact={this.props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={'white'}>
                 <ASFlex
-                    flexDirection="column"
+                    overlay={true}
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                    marginRight={-6}
+                    marginBottom={-2}
                 >
-
-                    {!this.props.message.isOut && !this.props.message.attachTop && !hasImage && !hasDocument && <ASText fontSize={13} key={'name-' + DefaultConversationTheme.senderNameColor} fontWeight={TextStyles.weight.medium} marginBottom={2} color={this.props.message.isOut ? DefaultConversationTheme.senderNameColorOut : DefaultConversationTheme.senderNameColor}>{this.props.message.senderName}</ASText>}
-                    {hasReply && <ReplyContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
-                    {hasText && <TextContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
-                    {hasUrlAug && <UrlAugmentationContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
-                    {hasImage && layout && <MediaContent layout={layout} message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} single={imageOnly} />}
-                    {hasDocument && <DocumentContent message={this.props.message} onUserPress={this.props.onUserPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />}
-
                     <ASFlex
-                        overlay={true}
-                        alignItems="flex-end"
-                        justifyContent="flex-end"
-                        marginRight={-6}
-                        marginBottom={-2}
+                        flexDirection="row"
+                        height={14}
+                        backgroundColor={hasImage ? 'rgba(0,0,0,0.3)' : undefined}
+                        borderRadius={4}
+                        alignItems="center"
+                        justifyContent="center"
                     >
-                        <ASFlex
-                            flexDirection="row"
-                            height={14}
-                            backgroundColor={hasImage ? 'rgba(0,0,0,0.3)' : undefined}
-                            borderRadius={4}
-                            alignItems="center"
-                            justifyContent="center"
+                        <ASText
+                            marginLeft={3}
+                            marginTop={Platform.OS === 'android' ? -2 : undefined}
+                            marginRight={!props.message.isOut ? 3 : 0}
+                            fontSize={11}
+                            color={hasImage ? '#fff' : props.message.isOut ? DefaultConversationTheme.textColorSecondaryOut : DefaultConversationTheme.textColorSecondaryIn}
+                            opacity={(props.message.isOut || hasImage) ? 0.7 : 0.6}
                         >
-                            <ASText
-                                marginLeft={3}
-                                marginTop={Platform.OS === 'android' ? -2 : undefined}
-                                marginRight={!this.props.message.isOut ? 3 : 0}
-                                fontSize={11}
-                                color={hasImage ? '#fff' : this.props.message.isOut ? DefaultConversationTheme.textColorSecondaryOut : DefaultConversationTheme.textColorSecondaryIn}
-                                opacity={(this.props.message.isOut || hasImage) ? 0.7 : 0.6}
-                            >
-                                {formatTime(this.props.message.date)}
-                            </ASText>
-                            {this.props.message.isOut && (
-                                <ASFlex width={13} height={13} marginLeft={2} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
-                                    {this.props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
-                                    {!this.props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
-                                </ASFlex>
-                            )}
-                        </ASFlex>
+                            {formatTime(props.message.date)}
+                        </ASText>
+                        {props.message.isOut && (
+                            <ASFlex width={13} height={13} marginLeft={2} marginTop={1} marginRight={0} justifyContent="flex-start" alignItems="center">
+                                {props.message.isSending && <ASImage source={require('assets/ic-status-sending-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
+                                {!props.message.isSending && <ASImage source={require('assets/ic-status-sent-10.png')} width={10} height={10} tintColor="white" opacity={0.7} />}
+                            </ASFlex>
+                        )}
                     </ASFlex>
                 </ASFlex>
+            </ASFlex>
 
-            </AsyncBubbleView >
-        );
-    }
-}
+        </AsyncBubbleView >
+    );
+});
