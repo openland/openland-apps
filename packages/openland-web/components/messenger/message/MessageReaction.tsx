@@ -344,7 +344,7 @@ const Label = XMemo(
     },
 );
 
-const ReactionsInner = ({ reactions, meId, messageId }: ReactionsInnerProps) => {
+const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInnerProps) => {
     let reactionsMap = {};
     let components = [];
     let foundMyReaction = false;
@@ -448,7 +448,7 @@ const ReactionsInner = ({ reactions, meId, messageId }: ReactionsInnerProps) => 
             />
         </>
     );
-};
+});
 
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
