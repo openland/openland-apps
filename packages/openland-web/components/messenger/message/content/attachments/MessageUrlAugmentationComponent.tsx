@@ -154,17 +154,7 @@ const InternalUrlCardContainer = Glamorous(XLink)<{ isMobile: boolean }>(props =
     },
 }));
 
-const InternalUrlCard = ({
-    id,
-    name,
-    photo,
-    organization,
-    description,
-    isMe,
-    messageId,
-    href,
-    path,
-}: {
+type InternalUrlCardInnerProps = {
     id: string;
     name: string;
     photo: string | null;
@@ -174,68 +164,88 @@ const InternalUrlCard = ({
     messageId: string;
     href?: string;
     path?: string;
-}) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
-    return (
-        <InternalUrlCardContainer
-            isMobile={isMobile}
-            href={href}
-            path={path}
-            onClick={(e: any) => e.stopPropagation()}
-        >
-            <XView
-                borderRadius={10}
-                backgroundColor={'#fcfcfc'}
-                flexDirection="row"
-                paddingTop={12}
-                paddingBottom={12}
-                paddingLeft={16}
-                paddingRight={20}
-                borderWidth={1}
-                borderColor={'#ececec'}
+    isMobile: boolean;
+};
+
+const InternalUrlCardInner = React.memo(
+    ({
+        isMobile,
+        id,
+        name,
+        photo,
+        organization,
+        description,
+        isMe,
+        messageId,
+        href,
+        path,
+    }: InternalUrlCardInnerProps) => {
+        return (
+            <InternalUrlCardContainer
+                isMobile={isMobile}
+                href={href}
+                path={path}
+                onClick={(e: any) => e.stopPropagation()}
             >
-                <XView marginRight={14} justifyContent={'center'}>
-                    <XAvatar
-                        size="small"
-                        style="colorus"
-                        objectName={name}
-                        objectId={id}
-                        cloudImageUuid={photo}
-                        path={'/mail/u/' + id}
-                    />
-                </XView>
-                <XView flexShrink={1}>
-                    <XView fontSize={14} fontWeight="600" color={'#000000'}>
-                        {emoji({
-                            src: name,
-                            size: 16,
-                        })}
+                <XView
+                    borderRadius={10}
+                    backgroundColor={'#fcfcfc'}
+                    flexDirection="row"
+                    paddingTop={12}
+                    paddingBottom={12}
+                    paddingLeft={16}
+                    paddingRight={20}
+                    borderWidth={1}
+                    borderColor={'#ececec'}
+                >
+                    <XView marginRight={14} justifyContent={'center'}>
+                        <XAvatar
+                            size="small"
+                            style="colorus"
+                            objectName={name}
+                            objectId={id}
+                            cloudImageUuid={photo}
+                            path={'/mail/u/' + id}
+                        />
                     </XView>
-                    {organization && (
-                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
-                            {organization}
+                    <XView flexShrink={1}>
+                        <XView fontSize={14} fontWeight="600" color={'#000000'}>
+                            {emoji({
+                                src: name,
+                                size: 16,
+                            })}
                         </XView>
-                    )}
-                    {description && (
-                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
-                            {description}
-                        </XView>
+                        {organization && (
+                            <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                                {organization}
+                            </XView>
+                        )}
+                        {description && (
+                            <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                                {description}
+                            </XView>
+                        )}
+                    </XView>
+                    {isMe && (
+                        <DeleteButton
+                            query={{
+                                field: 'deleteUrlAugmentation',
+                                value: messageId,
+                            }}
+                            className="delete-button"
+                        >
+                            <DeleteIcon />
+                        </DeleteButton>
                     )}
                 </XView>
-                {isMe && (
-                    <DeleteButton
-                        query={{
-                            field: 'deleteUrlAugmentation',
-                            value: messageId,
-                        }}
-                        className="delete-button"
-                    >
-                        <DeleteIcon />
-                    </DeleteButton>
-                )}
-            </XView>
-        </InternalUrlCardContainer>
-    );
+            </InternalUrlCardContainer>
+        );
+    },
+);
+
+const InternalUrlCard = (props: InternalUrlCardInnerProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return <InternalUrlCardInner {...props} isMobile={isMobile} />;
 };
 
 const MessageUrlAugmentationComponentInner = React.memo(
