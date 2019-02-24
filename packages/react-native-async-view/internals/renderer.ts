@@ -32,9 +32,10 @@ const createReconciler = (onChanged: () => void) => {
         },
         resetAfterCommit() {
             onChanged();
-            if (scheduledPassiveCallback) {
-                scheduledPassiveCallback();
-            }
+            // if (scheduledPassiveCallback) {
+            //     scheduledPassiveCallback();
+            //     scheduledPassiveCallback = null;
+            // }
         },
 
         // Declare text contents
@@ -49,14 +50,14 @@ const createReconciler = (onChanged: () => void) => {
                     'whether the callback has already been scheduled.',
                 )
             }
-            scheduledPassiveCallback = callback
+            scheduledPassiveCallback = setTimeout(callback, 1);
         },
 
         cancelPassiveEffects() {
             if (scheduledPassiveCallback === null) {
                 throw new Error('No passive effects callback is scheduled.')
             }
-            scheduledPassiveCallback = null
+            clearTimeout(scheduledPassiveCallback)
         },
 
         //

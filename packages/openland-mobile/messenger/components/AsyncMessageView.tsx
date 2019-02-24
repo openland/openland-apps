@@ -12,6 +12,7 @@ import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/Conv
 import { TextContent } from './content/TextContent';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ASText } from 'react-native-async-view/ASText';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -39,91 +40,71 @@ let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: N
 
 export const messageBgColor = 'white';
 
-export class AsyncMessageView extends React.PureComponent<AsyncMessageViewProps> {
+export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
-    // themeSub?: () => void;
-
-    // constructor(props: AsyncMessageViewProps) {
-    //     super(props);
-    //     this.state = { theme: getDefaultConversationTheme(props.engine.conversationId) }
-    // }
-
-    // componentWillMount() {
-    //     ConversationThemeResolver.subscribe(this.props.engine.conversationId, theme => this.setState({ theme: theme })).then(sub => this.themeSub = sub);
-
-    // }
-
-    // componentWillUnmount() {
-    //     if (this.themeSub) {
-    //         this.themeSub();
-    //     }
-    // }
-
-    private handleAvatarPress = () => {
-        this.props.onAvatarPress(this.props.message.senderId);
+    let handleAvatarPress = () => {
+        props.onAvatarPress(props.message.senderId);
     }
-
-    private handleLongPress = () => {
-        this.props.onMessageLongPress(this.props.message);
+    let handleLongPress = () => {
+        props.onMessageLongPress(props.message);
     }
+    let theme = React.useContext(ThemeContext);
 
-    render() {
-        let res = [];
-        if ((this.props.message.text || this.props.message.reply || this.props.message.file)) {
-            res.push(
-                <AsyncMessageContentView key={'message-content'} engine={this.props.engine} message={this.props.message} onMediaPress={this.props.onMediaPress} onDocumentPress={this.props.onDocumentPress} onUserPress={this.props.onAvatarPress} />
-            );
-        }
-        if (res.length === 0) {
-            res.push(
-                <AsyncBubbleView key={'message-unsupported'} isOut={this.props.message.isOut} compact={this.props.message.attachBottom} colorIn={DefaultConversationTheme.bubbleColorIn}>
-                    <ASFlex overlay={true} flexGrow={1} alignItems="center">
-                        <ASText marginLeft={20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
-                    </ASFlex>
-                    <ASFlex flexDirection="column" marginLeft={40}>
-                        <TextContent padded={false} message={{ ...this.props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }} onUserPress={this.props.onAvatarPress} onDocumentPress={this.props.onDocumentPress} onMediaPress={this.props.onMediaPress} />
-                    </ASFlex>
-                </AsyncBubbleView >
-            );
-
-        }
-        return (
-            <ASFlex flexDirection="column" alignItems="stretch" onLongPress={this.handleLongPress} backgroundColor={!this.props.message.isOut ? messageBgColor : undefined}>
-
-                <ASFlex key="margin-top" backgroundColor={messageBgColor} height={(this.props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
-
-                <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
-
-                    <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
-                        <ASFlex key="margin-left-1" backgroundColor={messageBgColor} width={(this.props.message.attachBottom ? 36 : 0) + 10} />
-
-                        {!this.props.message.isOut && !this.props.message.attachBottom &&
-                            <ASFlex marginRight={3} onPress={this.handleAvatarPress} alignItems="flex-end">
-                                <AsyncAvatar
-                                    size={32}
-                                    src={this.props.message.senderPhoto}
-                                    placeholderKey={this.props.message.senderId}
-                                    placeholderTitle={this.props.message.senderName}
-                                />
-                            </ASFlex>
-                        }
-                        <ASFlex key="margin-left-2" backgroundColor={messageBgColor} width={(this.props.message.isOut ? 10 : 0)} />
-
-                        {this.props.message.isOut && <ASFlex backgroundColor={messageBgColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
-                        <ASFlex flexDirection="column" alignItems="stretch" marginLeft={this.props.message.isOut ? -4 : 0}>
-                            {res}
-                        </ASFlex>
-                        <ASFlex key="margin-right" backgroundColor={messageBgColor} width={4} />
-
-                    </ASFlex>
-
-                    {this.props.message.reactions && <AsyncMessageReactionsView message={this.props.message} />}
-                    <ASFlex backgroundColor="white" height={50} marginBottom={-50} />
-
-                </ASFlex>
-                <ASFlex key="margin-bottom" backgroundColor={messageBgColor} height={4} marginBottom={-2} />
-
-            </ASFlex>
+    let res = [];
+    if ((props.message.text || props.message.reply || props.message.file)) {
+        res.push(
+            <AsyncMessageContentView key={'message-content'} engine={props.engine} message={props.message} onMediaPress={props.onMediaPress} onDocumentPress={props.onDocumentPress} onUserPress={props.onAvatarPress} />
         );
     }
-}
+    if (res.length === 0) {
+        res.push(
+            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} colorIn={theme.backgroundColor} backgroundColor={theme.backgroundColor}>
+                <ASFlex overlay={true} flexGrow={1} alignItems="center">
+                    <ASText marginLeft={20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
+                </ASFlex>
+                <ASFlex flexDirection="column" marginLeft={40}>
+                    <TextContent padded={false} message={{ ...props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }} onUserPress={props.onAvatarPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />
+                </ASFlex>
+            </AsyncBubbleView >
+        );
+
+    }
+    return (
+        <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
+
+            <ASFlex key="margin-top" backgroundColor={theme.backgroundColor} height={(props.message.attachTop ? 2 : 14) + 2} marginTop={-2} />
+
+            <ASFlex flexDirection="column" flexGrow={1} alignItems="stretch">
+
+                <ASFlex flexDirection="row" flexGrow={1} alignItems="stretch">
+                    <ASFlex key="margin-left-1" backgroundColor={theme.backgroundColor} width={(props.message.attachBottom ? 36 : 0) + 10} />
+
+                    {!props.message.isOut && !props.message.attachBottom &&
+                        <ASFlex marginRight={3} onPress={handleAvatarPress} alignItems="flex-end">
+                            <AsyncAvatar
+                                size={32}
+                                src={props.message.senderPhoto}
+                                placeholderKey={props.message.senderId}
+                                placeholderTitle={props.message.senderName}
+                            />
+                        </ASFlex>
+                    }
+                    <ASFlex key="margin-left-2" backgroundColor={theme.backgroundColor} width={(props.message.isOut ? 10 : 0)} />
+
+                    {props.message.isOut && <ASFlex backgroundColor={theme.backgroundColor} flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignSelf="stretch" />}
+                    <ASFlex flexDirection="column" alignItems="stretch" marginLeft={props.message.isOut ? -4 : 0}>
+                        {res}
+                    </ASFlex>
+                    <ASFlex key="margin-right" backgroundColor={theme.backgroundColor} width={4} />
+
+                </ASFlex>
+
+                {props.message.reactions && <AsyncMessageReactionsView message={props.message} />}
+                <ASFlex backgroundColor={theme.backgroundColor}  height={50} marginBottom={-50} />
+
+            </ASFlex>
+            <ASFlex key="margin-bottom" backgroundColor={theme.backgroundColor} height={4} marginBottom={-2} />
+
+        </ASFlex>
+    );
+});

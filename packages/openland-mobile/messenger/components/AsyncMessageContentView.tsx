@@ -72,7 +72,7 @@ export class AsyncMessageContentView extends React.PureComponent<AsyncMessageTex
         }
 
         return (
-            <AsyncBubbleView width={layout ? layout.width : undefined} isOut={this.props.message.isOut} compact={this.props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn}>
+            <AsyncBubbleView width={layout ? layout.width : undefined} isOut={this.props.message.isOut} compact={this.props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={'white'}>
                 <ASFlex
                     flexDirection="column"
                 >

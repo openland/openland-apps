@@ -53,7 +53,7 @@ export class AsyncMessageDocumentView extends React.PureComponent<{ message: Dat
     render() {
         let downloaded = !!(this.state.downloadState && this.state.downloadState.path);
         return (
-            <AsyncBubbleView colorIn={"#f3f5f7"} isOut={this.props.message.isOut} compact={this.props.message.attachBottom}>
+            <AsyncBubbleView colorIn={"#f3f5f7"} isOut={this.props.message.isOut} compact={this.props.message.attachBottom} backgroundColor={'white'}>
 
                 <ASFlex
                     height={40}

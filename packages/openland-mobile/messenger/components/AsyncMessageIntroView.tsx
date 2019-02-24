@@ -153,7 +153,7 @@ export class AsyncMessageIntroView extends React.PureComponent<{ message: DataSo
         let buttons = renderButtons(this.props.message, this.props.navigationManager);
         return (
             <>
-                <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom} colorIn="#f3f5f7">
+                <AsyncBubbleView isOut={this.props.message.isOut} compact={this.props.message.attachBottom} colorIn="#f3f5f7" backgroundColor="white">
                     <ASFlex
                         marginLeft={marginHorizontal}
                         marginRight={marginHorizontal}
