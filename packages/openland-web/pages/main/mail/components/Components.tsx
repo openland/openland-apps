@@ -26,7 +26,6 @@ export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
-
     flexShrink: 0,
 });
 
@@ -82,7 +81,7 @@ const DisplayNone = ({
     );
 };
 
-const CacheComponent = ({ activeChat, componentProps }: any) => {
+const CacheComponent = ({ isMobile, activeChat, componentProps }: any) => {
     const [cachedProps, setCachedProps] = React.useState({});
 
     React.useLayoutEffect(() => {
@@ -94,9 +93,12 @@ const CacheComponent = ({ activeChat, componentProps }: any) => {
         }
     }, [activeChat]);
 
+    if ((window as any).safari !== undefined && !isMobile) {
+        return <>{activeChat && <MessengerFragment {...componentProps} isActive={true} />}}</>;
+    }
+
     return (
         <>
-            {/* TODO we don't have guaranteed order here, fix that */}
             {Object.keys(cachedProps).map((id, key1) => {
                 const cachedComponentProps = cachedProps[id];
                 return (
@@ -111,15 +113,6 @@ const CacheComponent = ({ activeChat, componentProps }: any) => {
         </>
     );
 };
-
-class UnmountDetector extends React.Component {
-    componentWillUnmount() {
-        console.log('UnmountDetector: componentWillUnmount');
-    }
-    render() {
-        return null;
-    }
-}
 
 export const ConversationContainerWrapper = ({
     tab,
@@ -139,7 +132,6 @@ export const ConversationContainerWrapper = ({
         );
     }
 
-    console.log('render: ConversationContainerWrapper');
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
@@ -148,9 +140,9 @@ export const ConversationContainerWrapper = ({
 
     return (
         <>
-            <UnmountDetector />
             <ConversationContainerInner>
                 <CacheComponent
+                    isMobile={isMobile}
                     activeChat={tab === tabs.chat && conversationId ? conversationId : null}
                     Component={MessengerFragment}
                     componentProps={{
