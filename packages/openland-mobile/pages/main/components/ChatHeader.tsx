@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
         height: 26,
         color: '#000',
         letterSpacing: 0.3,
-        marginBottom: 1
+        marginBottom: 1,
+        marginRight: 16
     } as TextStyle,
     androidSubTitle: {
         fontSize: 14,
@@ -99,7 +100,7 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     }
 
     return (
-        <View flexDirection="column" alignItems={'flex-start'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
+        <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
                 {(sharedRoom && sharedRoom.kind === 'GROUP') && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: 'green' }} /></View>)}
                 <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }, sharedRoom && sharedRoom.kind === 'GROUP' && { color: 'green' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>

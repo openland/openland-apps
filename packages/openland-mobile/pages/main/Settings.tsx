@@ -36,35 +36,35 @@ let SettingsContent = ((props: PageProps) => {
             <ZListItemGroup header="Settings" divider={false}>
                 {isSuper && (
                     <ZListItem
-                        leftIconColor="#fe9400"
-                        leftIcon={require('assets/ic-notifications-24.png')}
+                        leftIconColor="#eb7272"
+                        leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
                         text="Appearance"
                         path="SettingsAppearance"
                     />
                 )}
                 <ZListItem
-                    leftIcon={require('assets/ic-notifications-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                     text="Notifications"
                     path="SettingsNotifications"
                 />
             </ZListItemGroup>
             <ZListItemGroup header="Support" divider={false}>
                 <ZListItem
-                    leftIcon={require('assets/ic-link-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-invite-fill-24.png')}
                     leftIconColor="#fe9400"
                     appearance="default"
                     text="Invite friends"
                     onPress={() => Share.share({ message: 'https://openland.com' })}
                 />
                 <ZListItem
-                    leftIcon={require('assets/ic-help-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
                     leftIconColor="#00bfff"
                     appearance="default"
                     text="Ask for help"
                     onPress={() => props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
                 />
                 <ZListItem
-                    leftIcon={require('assets/ic-rate-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-rate-24.png') : require('assets/ic-rate-fill-24.png')}
                     leftIconColor="#8a54ff"
                     appearance="default"
                     text="Rate the App"

@@ -95,7 +95,7 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
     render() {
         let v = this.props.page;
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
-        title = (v.config.titleView && v.config.titleView()) || title;
+        title = (v.config.titleView && <View flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignItems="stretch">{v.config.titleView()}</View>) || title;
         return (
             <SAnimated.View name={'header--' + this.props.page.page.key} style={styles.root} pointerEvents={this.props.current ? 'box-none' : 'none'}>
                 <View style={[styles.titleContainer, { backgroundColor: this.props.style.backgroundColor }]} pointerEvents="box-none">

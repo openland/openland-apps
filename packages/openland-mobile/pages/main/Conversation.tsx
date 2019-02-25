@@ -245,7 +245,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
-                <View flexDirection="row" flexShrink={1}>
+                <View flexDirection="row" flexShrink={1} marginLeft={Platform.OS === 'android' ? -12 : 0}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
                 </View>
@@ -280,7 +280,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                <SHeaderButton title="Call" />
+                <SHeaderButton title="Call" icon={require('assets/ic-call-20.png')} />
                 {/* {button} */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
