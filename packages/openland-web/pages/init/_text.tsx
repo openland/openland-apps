@@ -38,7 +38,7 @@ export const InitTexts = {
         complete: 'Continue',
         organizationIsEmptyError: `Organization field is required. To register as
         an individual, simply enter your name.`,
-        firstNameIsEmptyError: "First name can't be empty",
+        firstNameIsEmptyError: "What's your name?",
         lastNameIsEmptyError: "Last name can't be empty",
     },
 
