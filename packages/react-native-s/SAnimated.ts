@@ -240,8 +240,8 @@ class SAnimatedImpl {
 
     setDefaultPropertyAnimator = () => {
         if (Platform.OS === 'android') {
-            SAnimated.setPropertyAnimator((name, prop, from, to) => {
-                SAnimated.timing(name, {
+            this.setPropertyAnimator((name, prop, from, to) => {
+                this.timing(name, {
                     property: prop,
                     from: from,
                     to: to,
@@ -249,8 +249,8 @@ class SAnimatedImpl {
                 });
             });
         } else {
-            SAnimated.setPropertyAnimator((name, prop, from, to) => {
-                SAnimated.spring(name, {
+            this.setPropertyAnimator((name, prop, from, to) => {
+                this.spring(name, {
                     property: prop,
                     from: from,
                     to: to
