@@ -238,6 +238,27 @@ class SAnimatedImpl {
         this._propertyAnimator = animator;
     }
 
+    setDefaultPropertyAnimator = () => {
+        if (Platform.OS === 'android') {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.timing(name, {
+                    property: prop,
+                    from: from,
+                    to: to,
+                    easing: 'material'
+                });
+            });
+        } else {
+            SAnimated.setPropertyAnimator((name, prop, from, to) => {
+                SAnimated.spring(name, {
+                    property: prop,
+                    from: from,
+                    to: to
+                });
+            });
+        }
+    }
+
     addTransactionCallback = (callback: () => void) => {
         if (!this._inTransaction) {
             callback();

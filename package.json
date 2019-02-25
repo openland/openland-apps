@@ -151,6 +151,7 @@
         "react-native-image-pan-zoom": "^2.1.7",
         "react-native-image-picker": "^0.26.10",
         "react-native-image-zoom-viewer": "^2.2.13",
+        "react-native-incall-manager": "^3.2.2",
         "react-native-lightbox": "^0.7.0",
         "react-native-linear-gradient": "2.4.0",
         "react-native-modal": "^6.5.0",

@@ -9,6 +9,16 @@ declare module 'rn-fetch-blob' {
     export default instance;
 }
 
+declare module 'react-native-incall-manager' {
+    const InCallManager: {
+        start: (args?: { media?: 'audio' | 'video' }) => void;
+        setForceSpeakerphoneOn: (on: boolean) => void;
+        stop: () => void;
+    }
+
+    export default InCallManager;
+}
+
 declare module 'react-native-threads' {
     export const self: {
         onmessage: (message: string) => void;
