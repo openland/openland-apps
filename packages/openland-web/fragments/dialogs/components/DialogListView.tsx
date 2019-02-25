@@ -21,6 +21,9 @@ const LoadingWrapper = Glamorous.div({
 
 const dialogSearchWrapperClassName = css`
     overflow: scroll;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 `;
 
 export interface DialogListViewProps {
