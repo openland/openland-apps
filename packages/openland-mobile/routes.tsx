@@ -35,6 +35,7 @@ import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { GroupList } from './pages/main/GroupList';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
+import { HomeDialogs } from './pages/main/HomeDialogs';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -78,5 +79,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevBenchmarksAsync', BenchmarkAsync)
   .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
+
+  .addRoute('HomeDialogs', HomeDialogs)
 
   .build();
