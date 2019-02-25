@@ -104,6 +104,18 @@
         "src": "ic-cell-link-ios.svg",
         "sizes": [24]
     }, {
+        "name": "ic-speaker",
+        "src": "ic-speaker.svg",
+        "sizes": [30]
+    }, {
+        "name": "ic-mic-on",
+        "src": "ic-micro-on.svg",
+        "sizes": [30]
+    }, {
+        "name": "ic-mic-off",
+        "src": "ic-micro-off.svg",
+        "sizes": [30]
+    }, {
         "name": "ic-add",
         "src": "ic-add.svg",
         "sizes": [24]
