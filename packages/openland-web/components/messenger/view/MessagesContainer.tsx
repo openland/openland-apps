@@ -30,7 +30,15 @@ const styleInner = css`
     }
 `;
 
-export const MessagesContainer = (props: { children?: any }) => {
+export const getMessagesWrapperClassName = (conversationId: string) =>
+    `messages-wrapper-${conversationId}`;
+
+type MessagesContainerProps = {
+    conversationId: string;
+    children?: any;
+};
+
+export const MessagesContainer = ({ children, conversationId }: MessagesContainerProps) => {
     return (
         <XView
             flexDirection="column"
@@ -40,7 +48,9 @@ export const MessagesContainer = (props: { children?: any }) => {
             paddingRight={16}
             overflow="hidden"
         >
-            <div className={'messages-wrapper ' + styleInner}>{props.children}</div>
+            <div className={`${getMessagesWrapperClassName(conversationId)} ` + styleInner}>
+                {children}
+            </div>
         </XView>
     );
 };

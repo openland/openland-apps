@@ -25,7 +25,6 @@ import { withChatLeave } from '../api/withChatLeave';
 import { CreatePostComponent } from './post/CreatePostComponent';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { UploadContextProvider } from './MessageComposeComponent/FileUploading/UploadContext';
-import { isAbsolute } from 'path';
 
 export interface File {
     uuid: string;
@@ -194,7 +193,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     };
 
     componentWillUnmount() {
-        console.log('componentWillUnmount');
         if (this.unmounter) {
             this.unmounter();
         }
@@ -204,7 +202,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     componentWillMount() {
-        console.log('componentWillMount');
         this.updateConversation(this.props);
     }
 

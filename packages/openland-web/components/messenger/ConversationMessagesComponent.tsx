@@ -61,7 +61,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
 
     render() {
         return (
-            <MessagesContainer>
+            <MessagesContainer conversationId={this.props.conversationId}>
                 <MessageListComponent
                     me={this.props.me}
                     conversation={this.props.conversation}
