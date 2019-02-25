@@ -49,10 +49,6 @@ export class ConversationMessagesComponent extends React.PureComponent<
 > {
     messagesList = React.createRef<MessageListComponent>();
 
-    shouldComponentUpdate(props: ConversationMessagesComponentProps) {
-        return props.isActive;
-    }
-
     scrollToBottom = () => {
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();

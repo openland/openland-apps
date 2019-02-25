@@ -31,10 +31,6 @@ interface MessengerComponentLoaderProps {
 }
 
 class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoaderProps> {
-    shouldComponentUpdate(props: MessengerComponentLoaderProps) {
-        return props.isActive;
-    }
-
     render() {
         const { state, data, loading, isActive } = this.props;
         if (!data || !data.room || loading) {
@@ -43,8 +39,6 @@ class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoa
             }
             return <div />;
         }
-
-        console.log('MessengerComponentLoader: ', data);
 
         let sharedRoom: Room_room_SharedRoom | null =
             data.room.__typename === 'SharedRoom' ? data.room : null;

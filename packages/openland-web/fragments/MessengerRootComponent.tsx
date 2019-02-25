@@ -118,6 +118,7 @@ export const LeaveChatComponent = withChatLeave(props => {
 });
 
 interface ComposeHandlerProps extends MessageComposeComponentProps {
+    isActive: boolean;
     variables?: {
         roomId?: string;
         conversationId?: string;
@@ -203,10 +204,6 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     componentWillMount() {
         this.updateConversation(this.props);
-    }
-
-    shouldComponentUpdate(props: MessagesComponentProps) {
-        return props.isActive;
     }
 
     componentWillReceiveProps(props: MessagesComponentProps) {
@@ -318,6 +315,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         {!this.state.hideInput && (
                             <UploadContextProvider>
                                 <MessageComposeHandler
+                                    isActive={this.props.isActive}
                                     getMessages={this.getMessages}
                                     conversation={this.conversation}
                                     onChange={this.handleChange}
