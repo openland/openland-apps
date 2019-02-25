@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View, StyleSheet, ViewStyle, Animated, Platform, ActivityIndicator } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { KeyboardSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { AppTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {

@@ -9,7 +9,8 @@ import { HeaderContextNone } from './navigation/HeaderContextNone';
 import { SearchContext } from './navigation/SearchContext';
 import { SNativeConfig } from './SNativeConfig';
 import { SDevice } from './SDevice';
-import { AppTheme, ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface SSearchControlerProps {
     backgroundColor?: string;

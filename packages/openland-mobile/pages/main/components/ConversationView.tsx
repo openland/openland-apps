@@ -20,7 +20,7 @@ export const androidMessageInputListOverlap = 50;
 class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
-    private listRef = React.createRef<ConversationMessagesView>();
+    // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
     constructor(props: MessagesListProps & { bottomInset: number, topInset: number, }) {
@@ -51,9 +51,9 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     onMessageSend() {
-        if (this.listRef.current) {
-            this.listRef.current.scrollToStart();
-        }
+        // if (this.listRef.current) {
+        //     this.listRef.current.scrollToStart();
+        // }
     }
 
     componentWillUnmount() {
@@ -93,7 +93,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     </View>
                 </Animated.View>}
                 <ConversationMessagesView
-                    ref={this.listRef}
+                    // ref={this.listRef}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
                 />

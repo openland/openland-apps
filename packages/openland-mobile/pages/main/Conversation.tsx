@@ -83,8 +83,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     saveDraft = () => {
         AsyncStorage.multiSet([
-            [ 'compose_draft_' + this.props.chat.id, this.state.text ],
-            [ 'compose_draft_mentions_' + this.props.chat.id, JSON.stringify(this.state.mentionedUsers) ],
+            ['compose_draft_' + this.props.chat.id, this.state.text],
+            ['compose_draft_mentions_' + this.props.chat.id, JSON.stringify(this.state.mentionedUsers)],
         ]);
     }
 
@@ -245,23 +245,23 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
-                <View flexDirection="row">
+                <View flexDirection="row" flexShrink={1}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
                 </View>
             </TouchableOpacity>
         );
-        if (Platform.OS === 'ios') {
-            header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
-        }
-        let button = null;
-        if (Platform.OS === 'ios') {
-            button = (
-                <SHeaderButton>
-                    <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
-                </SHeaderButton>
-            );
-        }
+        // if (Platform.OS === 'ios') {
+        //     header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
+        // }
+        // let button = null;
+        // if (Platform.OS === 'ios') {
+        //     button = (
+        //         <SHeaderButton>
+        //             <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
+        //         </SHeaderButton>
+        //     );
+        // }
 
         let mentions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
@@ -280,7 +280,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                {button}
+                <SHeaderButton title="Call" />
+                {/* {button} */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
@@ -417,4 +418,4 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     );
 });
 
-export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small' });
+export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });

@@ -35,11 +35,11 @@ const ChatHeaderAvatarContent = XMemo<{ conversationId: string, router: SRouter 
     let privateRoom = room.room!.__typename === 'PrivateRoom' ? room.room! as Room_room_PrivateRoom : null;
 
     return (
-        <TouchableOpacity disabled={!path.path} onPress={() => props.router.push(path.path!!, path.pathArgs)} style={{ marginRight: Platform.OS === 'ios' ? -5 : 10, marginLeft: Platform.OS === 'ios' ? 10 : 0 }}>
+        <TouchableOpacity disabled={!path.path} onPress={() => props.router.push(path.path!!, path.pathArgs)} style={{ marginRight: 10, marginLeft: 10 }}>
             <View height={Platform.OS === 'android' ? 56 : 44} alignItems="center" justifyContent="center">
                 <ZAvatar
                     src={privateRoom ? privateRoom.user.photo : sharedRoom!.photo}
-                    size={Platform.OS === 'android' ? 40 : 36}
+                    size={Platform.OS === 'android' ? 40 : 38}
                     placeholderKey={privateRoom ? privateRoom.user.id : sharedRoom!.id}
                     placeholderTitle={privateRoom ? privateRoom.user.name : sharedRoom!.title}
                     userId={privateRoom ? privateRoom.user.id : undefined}

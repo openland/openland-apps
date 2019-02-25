@@ -5,7 +5,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';

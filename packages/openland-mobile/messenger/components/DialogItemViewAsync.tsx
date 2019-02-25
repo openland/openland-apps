@@ -55,19 +55,19 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
             </ASFlex>
             <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
                 <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
-                    {isGroup && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor="green" width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
-                    <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? 'green' : theme.textColor} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
-                    {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
+                    {isGroup && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor={theme.dialogTitleSecureColor} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
+                    <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? theme.dialogTitleSecureColor : theme.dialogTitleColor} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                    {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color={theme.dialogDateColor}>{formatDate(item.date)}</ASText>}
                 </ASFlex>
                 {!props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
                     {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                        <ASText fontSize={14} lineHeight={18} height={36} color="#181818" numberOfLines={2}>
+                        <ASText fontSize={14} lineHeight={18} height={36} color={theme.dialogSenderColor} numberOfLines={2}>
                             {item.showSenderName && `${item.sender}: `}
-                            <ASText fontSize={14} height={36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={2}>{item.message}</ASText>
+                            <ASText fontSize={14} height={36} lineHeight={18} color={theme.dialogMessageColor} numberOfLines={2}>{item.message}</ASText>
                         </ASText>
                     </ASFlex>}
                     {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                        <ASText fontSize={14} height={36} lineHeight={18} color="##4747EC" numberOfLines={2}>{item.typing}</ASText>
+                        <ASText fontSize={14} height={36} lineHeight={18} color={theme.dialogTypingColor} numberOfLines={2}>{item.typing}</ASText>
                     </ASFlex>}
                     {item.unread > 0 && (
                         <ASFlex marginTop={18} flexShrink={0}>
@@ -76,9 +76,9 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
                     )}
                 </ASFlex>}
             </ASFlex>
-            <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+            {/* <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
                 <ASFlex height={1} flexGrow={1} marginLeft={props.compact ? 62 : 80} backgroundColor={theme.selectorColor} />
-            </ASFlex>
+            </ASFlex> */}
         </ASFlex>
     );
 });

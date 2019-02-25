@@ -27,14 +27,15 @@ const styles = StyleSheet.create({
     } as TextStyle,
 
     iosTitle: {
-        fontSize: 15,
-        height: 18,
+        fontSize: 17,
+        height: 21,
         color: '#000',
-        fontWeight: '500'
+        fontWeight: '600',
+        flexShrink: 1
     } as TextStyle,
     iosSubTitle: {
-        fontSize: 12,
-        height: 14,
+        fontSize: 14,
+        height: 16,
         color: '#000',
         // opacity: 0.6
     } as TextStyle,
@@ -98,7 +99,7 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     }
 
     return (
-        <View flexDirection="column" alignItems={isAndroid ? 'flex-start' : 'center'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
+        <View flexDirection="column" alignItems={'flex-start'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" pointerEvents="box-none" height={44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
                 {(sharedRoom && sharedRoom.kind === 'GROUP') && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: 'green' }} /></View>)}
                 <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }, sharedRoom && sharedRoom.kind === 'GROUP' && { color: 'green' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
