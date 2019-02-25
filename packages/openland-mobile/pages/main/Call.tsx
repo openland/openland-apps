@@ -34,6 +34,10 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
         }
     }, []);
 
+    React.useLayoutEffect(() => {
+        InCallManager.setForceSpeakerphoneOn(speaker);
+    }, [speaker]);
+
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View alignItems="center" justifyContent="center" paddingTop={82} paddingHorizontal={16} flexDirection="row">
@@ -89,7 +93,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     </View>
                 </TouchableOpacity>
             </View>
-            <CallController id={conference.id} conference={conference} />
+            <CallController id={conference.id} conference={conference} mute={mute} />
             {/* <View flexDirection="row" paddingHorizontal={16} paddingVertical={16}>
                 {conference.peers.map((v) => (<View><Text>{v.user.name}</Text></View>))}
             </View> */}

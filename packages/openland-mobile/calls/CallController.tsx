@@ -208,9 +208,14 @@ class CallMediaStreamComponent extends React.PureComponent<CallMediaStreamProps>
     }
 }
 
-export const CallController = XMemo<{ id: string, conference: Conference_conference }>((props) => {
+export const CallController = XMemo<{ id: string, conference: Conference_conference, mute: boolean }>((props) => {
     let conference = props.conference;
     let [stream, setStream] = React.useState<any>(null);
+    if (stream) {
+        for (let t of stream.getTracks()) {
+            t.enabled = !props.mute;
+        }
+    }
 
     React.useEffect(() => {
         var mounted = true;
@@ -226,6 +231,9 @@ export const CallController = XMemo<{ id: string, conference: Conference_confere
             } else {
                 console.log('Calls: media requested');
                 _lstream = _stream;
+                for (let t of _lstream.getTracks()) {
+                    t.enabled = false;
+                }
                 setStream(_stream);
             }
         })();
