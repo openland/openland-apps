@@ -18,6 +18,7 @@ import { XSubHeader } from 'openland-x/XSubHeader';
 import { Navigation } from '../../../../components/Navigation';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { useIsMobile } from 'openland-web/hooks';
 
 export const SearchCardsOrShowProfile = XMemo(
     ({
@@ -77,19 +78,20 @@ export const SearchCardsOrShowProfile = XMemo(
                                 }
                             />
                         )}
-                        {query.length > 0 && itemCount > 0 && (
-                            <XSubHeader
-                                title={hasQueryText}
-                                counter={itemCount}
-                                right={
-                                    <SortPicker
-                                        sort={sort}
-                                        onPick={setSort}
-                                        withoutFeatured={withoutFeatured}
-                                    />
-                                }
-                            />
-                        )}
+                        {query.length > 0 &&
+                            itemCount > 0 && (
+                                <XSubHeader
+                                    title={hasQueryText}
+                                    counter={itemCount}
+                                    right={
+                                        <SortPicker
+                                            sort={sort}
+                                            onPick={setSort}
+                                            withoutFeatured={withoutFeatured}
+                                        />
+                                    }
+                                />
+                            )}
                         <CardsComponent
                             featuredFirst={sort.featured}
                             orderBy={sort.orderBy}
@@ -128,6 +130,7 @@ export const DirectoryNavigation = XMemo(
         children?: any;
         withoutFeatured?: boolean;
     }) => {
+        const [isMobile] = useIsMobile();
         return (
             <Navigation
                 title={title}
@@ -196,7 +199,7 @@ export const DirectoryNavigation = XMemo(
                 secondFragment={
                     <XView flexGrow={1} height="100%" position="relative">
                         <XScrollView2 height="100%">
-                            <XView flexGrow={1} marginBottom={50}>
+                            <XView flexGrow={1} marginBottom={isMobile ? 56 : undefined}>
                                 {children ? (
                                     children
                                 ) : (
