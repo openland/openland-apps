@@ -32,7 +32,6 @@ import { Developer } from './pages/dev/Developer';
 import { Worker } from './pages/dev/Worker';
 import { Benchmark } from './pages/dev/Benchmark';
 import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
-import { Call } from './pages/main/Call';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { GroupList } from './pages/main/GroupList';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
@@ -40,7 +39,6 @@ import { SettingsAppearance } from './pages/main/SettingsAppearance';
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
   .addRoute('Conversation', Conversation)
-  .addRoute('Call', Call)
   .addRoute('ProfileUser', ProfileUser)
   .addRoute('ProfileOrganization', ProfileOrganization)
   .addRoute('ProfileGroup', ProfileGroup)

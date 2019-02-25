@@ -4,12 +4,10 @@ import { ConversationState } from 'openland-engines/messenger/ConversationState'
 import { View, Image, Text, Dimensions, Platform, Animated, Easing } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ConversationMessagesView } from './ConversationMessagesView';
-import { ASView } from 'react-native-async-view/ASView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
-import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from '../themes/ConversationThemeResolver';
+import { ConversationTheme } from '../themes/ConversationThemeResolver';
 
 export interface MessagesListProps {
     engine: ConversationEngine;

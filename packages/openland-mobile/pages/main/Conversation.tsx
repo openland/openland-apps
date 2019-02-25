@@ -31,6 +31,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { showCallModal } from './Call';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -280,7 +281,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SHeaderView>
                     {header}
                 </SHeaderView>
-                <SHeaderButton title="Call" icon={require('assets/ic-call-20.png')} />
+                <SHeaderButton
+                    title="Call"
+                    icon={require('assets/ic-call-20.png')}
+                    onPress={async () => { showCallModal(this.props.chat.id); }}
+                />
                 {/* {button} */}
                 <SDeferred>
                     <KeyboardSafeAreaView>

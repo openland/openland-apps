@@ -8,10 +8,11 @@ import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { SRouter } from 'react-native-s/SRouter';
 import { SStatusBar } from 'react-native-s/SStatusBar';
+import { ZModalController, showModal } from 'openland-mobile/components/ZModal';
+import { ZLoader } from 'openland-mobile/components/ZLoader';
 
-let Content = XMemo<{ id: string, router: SRouter }>((props) => {
+let Content = XMemo<{ id: string, modal: ZModalController }>((props) => {
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
     let conference = getClient().useConference({ id: props.id }).conference!!
     useWatchCall(conference && conference.id);
@@ -40,7 +41,7 @@ let Content = XMemo<{ id: string, router: SRouter }>((props) => {
                 <TouchableOpacity
                     onPress={() => {
                         SStatusBar.setBarStyle('dark-content');
-                        props.router.dismiss();
+                        props.modal.hide();
                     }}
                     style={{ width: 70, height: 70 }}
                 >
@@ -57,16 +58,14 @@ let Content = XMemo<{ id: string, router: SRouter }>((props) => {
     )
 });
 
-const CallComponent = XMemo<PageProps>((props) => {
-
-    let conf = props.router.params.id as string
-
-    return (
-        <View backgroundColor="#2a4763" flexGrow={1} flexDirection="column">
-            <SHeader hidden={true} />
-            <Content id={conf} router={props.router} />
-        </View>
-    )
-});
-
-export const Call = withApp(CallComponent);
+export function showCallModal(id: string) {
+    showModal((ctx) => {
+        return (
+            <View backgroundColor="#2a4763" flexGrow={1} flexDirection="column">
+                <React.Suspense fallback={<ZLoader />}>
+                    <Content id={id} modal={ctx} />
+                </React.Suspense>
+            </View>
+        )
+    })
+}
