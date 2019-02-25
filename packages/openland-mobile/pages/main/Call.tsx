@@ -14,6 +14,7 @@ import { SAnimated } from 'react-native-s/SAnimated';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
+import { RNSDevice } from 'react-native-s/RNSDevice';
 
 let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
@@ -28,8 +29,10 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     React.useLayoutEffect(() => {
         SStatusBar.setBarStyle('light-content');
         InCallManager.start({ media: 'audio' });
+        RNSDevice.proximityEnable();
         return () => {
             InCallManager.stop();
+            RNSDevice.proximityDisable();
             SStatusBar.setBarStyle('dark-content');
         }
     }, []);
