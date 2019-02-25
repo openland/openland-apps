@@ -21,11 +21,11 @@ export class ZLinearGradient extends React.Component<ZLinearGradientProps> {
     render() {
         let { fallbackColor, colors, start, end, ...other } = this.props;
         return (
-            <View {...other} overflow="hidden">
-                <LinearGradient colors={colors} start={start} end={end} {...other} >
-                    {this.props.children}
-                </LinearGradient>
-            </View>
+            // <View {...other} overflow="hidden">
+            <LinearGradient colors={colors} start={start} end={end} {...other} style={{ borderRadius: other.borderRadius }} >
+                {this.props.children}
+            </LinearGradient>
+            // </View>
         );
     }
 }

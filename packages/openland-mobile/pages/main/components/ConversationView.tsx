@@ -4,12 +4,10 @@ import { ConversationState } from 'openland-engines/messenger/ConversationState'
 import { View, Image, Text, Dimensions, Platform, Animated, Easing } from 'react-native';
 import { ZLoader } from '../../../components/ZLoader';
 import { ConversationMessagesView } from './ConversationMessagesView';
-import { ASView } from 'react-native-async-view/ASView';
-import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import LinearGradient from 'react-native-linear-gradient';
-import { ConversationTheme, ConversationThemeResolver, DefaultConversationTheme } from '../themes/ConversationThemeResolver';
+import { ConversationTheme } from '../themes/ConversationThemeResolver';
 
 export interface MessagesListProps {
     engine: ConversationEngine;
@@ -20,7 +18,7 @@ export const androidMessageInputListOverlap = 50;
 class ConversationViewComponent extends React.PureComponent<MessagesListProps & { bottomInset: number, topInset: number }, { conversation: ConversationState }> implements ConversationStateHandler {
     private unmount: (() => void) | null = null;
     private unmount2: (() => void) | null = null;
-    private listRef = React.createRef<ConversationMessagesView>();
+    // private listRef = React.createRef<ConversationMessagesView>();
     private rotation = new Animated.Value(0);
 
     constructor(props: MessagesListProps & { bottomInset: number, topInset: number, }) {
@@ -51,9 +49,9 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
     }
 
     onMessageSend() {
-        if (this.listRef.current) {
-            this.listRef.current.scrollToStart();
-        }
+        // if (this.listRef.current) {
+        //     this.listRef.current.scrollToStart();
+        // }
     }
 
     componentWillUnmount() {
@@ -93,7 +91,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
                     </View>
                 </Animated.View>}
                 <ConversationMessagesView
-                    ref={this.listRef}
+                    // ref={this.listRef}
                     loaded={this.state.conversation.historyFullyLoaded}
                     engine={this.props.engine}
                 />

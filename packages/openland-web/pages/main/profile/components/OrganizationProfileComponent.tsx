@@ -159,17 +159,22 @@ interface MemberJoinedProps {
 
 const MemberJoinedCard = (props: MemberJoinedProps) => {
     const { user, role } = props.member;
-    const { isMine } = props.organization;
+    const { isMine, isAdmin, isOwner } = props.organization;
 
-    let isOwner = isMine ? role === 'OWNER' : undefined;
-    let isAdmin = isMine ? role === 'ADMIN' : undefined;
+    let owner = false;
+    let admin = false;
+
+    if (isMine) {
+        owner = role === 'OWNER';
+        admin = role === 'ADMIN';
+    }
 
     return (
         <XUserCard
             user={user}
             hideOrganization={true}
-            isAdmin={isAdmin}
-            isOwner={isOwner}
+            isAdmin={admin}
+            isOwner={owner}
             customMenu={
                 <>
                     <XOverflow
@@ -177,28 +182,30 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                         flat={true}
                         content={
                             <>
-                                {isAdmin && (
-                                    <XMenuItem
-                                        style="danger"
-                                        query={{
-                                            field: 'changeRole',
-                                            value: user.id,
-                                        }}
-                                    >
-                                        {TextProfiles.Organization.members.revokeAdminStatus}
-                                    </XMenuItem>
-                                )}
-                                {!isAdmin && !isOwner && (
-                                    <XMenuItem
-                                        query={{
-                                            field: 'changeRole',
-                                            value: user.id,
-                                        }}
-                                    >
-                                        {TextProfiles.Organization.members.makeAdmin}
-                                    </XMenuItem>
-                                )}
-                                {!isOwner && (
+                                {(admin || owner) &&
+                                    (isAdmin || isOwner) && (
+                                        <XMenuItem
+                                            style="danger"
+                                            query={{
+                                                field: 'changeRole',
+                                                value: user.id,
+                                            }}
+                                        >
+                                            {TextProfiles.Organization.members.revokeAdminStatus}
+                                        </XMenuItem>
+                                    )}
+                                {!(admin || owner) &&
+                                    (isAdmin || isOwner) && (
+                                        <XMenuItem
+                                            query={{
+                                                field: 'changeRole',
+                                                value: user.id,
+                                            }}
+                                        >
+                                            {TextProfiles.Organization.members.makeAdmin}
+                                        </XMenuItem>
+                                    )}
+                                {(isAdmin || isOwner) && (
                                     <XMenuItem
                                         style="danger"
                                         query={{
@@ -209,7 +216,6 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
                                         {TextProfiles.Organization.members.removeFromOrganization}
                                     </XMenuItem>
                                 )}
-
                                 <XWithRole role={['super-admin']}>
                                     <XMenuItem
                                         query={{
@@ -589,33 +595,40 @@ const About = (props: { organization: Organization_organization }) => {
 
     return (
         <>
+            {organization.shortname && (
+                <Section separator={0}>
+                    <XSubHeader title="Shortname" paddingBottom={0} />
+                    <SectionContent>@{organization.shortname}</SectionContent>
+                </Section>
+            )}
             {organization.about && (
                 <Section separator={0}>
                     <XSubHeader title={TextProfiles.Organization.aboutTitle} paddingBottom={0} />
                     <SectionContent>{organization.about}</SectionContent>
                 </Section>
             )}
-            {!organization.about && organization.isMine && (
-                <XWithRole role="admin" orgPermission={organization.id}>
-                    <Section separator={0}>
-                        <XSubHeader
-                            title={TextProfiles.Organization.aboutTitle}
-                            paddingBottom={0}
-                            marginBottom={-5}
-                        />
-                        <SectionContent style={{ paddingBottom: 16 }}>
-                            <AboutPlaceholder
-                                target={
-                                    <EditButton
-                                        text={TextProfiles.Organization.addAbout}
-                                        big={true}
-                                    />
-                                }
+            {!organization.about &&
+                organization.isMine && (
+                    <XWithRole role="admin" orgPermission={organization.id}>
+                        <Section separator={0}>
+                            <XSubHeader
+                                title={TextProfiles.Organization.aboutTitle}
+                                paddingBottom={0}
+                                marginBottom={-5}
                             />
-                        </SectionContent>
-                    </Section>
-                </XWithRole>
-            )}
+                            <SectionContent style={{ paddingBottom: 16 }}>
+                                <AboutPlaceholder
+                                    target={
+                                        <EditButton
+                                            text={TextProfiles.Organization.addAbout}
+                                            big={true}
+                                        />
+                                    }
+                                />
+                            </SectionContent>
+                        </Section>
+                    </XWithRole>
+                )}
         </>
     );
 };
@@ -655,13 +668,9 @@ const Members = ({ organization, router }: MembersProps) => {
                 )}
                 <SectionContent>
                     {organization.isMine && (
-                        <XWithRole role="admin" orgPermission={organization.id}>
-                            <InvitesToOrganizationModal
-                                target={
-                                    <XCreateCard text={TextProfiles.Organization.addMembers} />
-                                }
-                            />
-                        </XWithRole>
+                        <InvitesToOrganizationModal
+                            target={<XCreateCard text={TextProfiles.Organization.addMembers} />}
+                        />
                     )}
                     <XMoreCards>
                         {joinedMembers.map((member, i) => (
@@ -674,35 +683,39 @@ const Members = ({ organization, router }: MembersProps) => {
 
         return (
             <Section separator={0}>
-                {organization.isMine && requestMembers.length > 0 && (
-                    <>
-                        <XSwitcher style="button">
-                            <XSwitcher.Item query={{ field: 'tab' }} counter={joinedMembers.length}>
-                                {TextProfiles.Organization.membersTitle}
-                            </XSwitcher.Item>
-                            <XSwitcher.Item
-                                query={{ field: 'tab', value: 'requests' }}
-                                counter={requestMembers.length}
-                                highlight={true}
-                            >
-                                {TextProfiles.Organization.requestsTitle}
-                            </XSwitcher.Item>
-                        </XSwitcher>
+                {organization.isMine &&
+                    requestMembers.length > 0 && (
+                        <>
+                            <XSwitcher style="button">
+                                <XSwitcher.Item
+                                    query={{ field: 'tab' }}
+                                    counter={joinedMembers.length}
+                                >
+                                    {TextProfiles.Organization.membersTitle}
+                                </XSwitcher.Item>
+                                <XSwitcher.Item
+                                    query={{ field: 'tab', value: 'requests' }}
+                                    counter={requestMembers.length}
+                                    highlight={true}
+                                >
+                                    {TextProfiles.Organization.requestsTitle}
+                                </XSwitcher.Item>
+                            </XSwitcher>
 
-                        {tab === tabs.members && joinedMembersBox(false)}
-                        {tab === tabs.requests && (
-                            <SectionContent>
-                                {requestMembers.map((member, i) => (
-                                    <MemberRequestCard
-                                        key={i}
-                                        member={member}
-                                        organization={organization}
-                                    />
-                                ))}
-                            </SectionContent>
-                        )}
-                    </>
-                )}
+                            {tab === tabs.members && joinedMembersBox(false)}
+                            {tab === tabs.requests && (
+                                <SectionContent>
+                                    {requestMembers.map((member, i) => (
+                                        <MemberRequestCard
+                                            key={i}
+                                            member={member}
+                                            organization={organization}
+                                        />
+                                    ))}
+                                </SectionContent>
+                            )}
+                        </>
+                    )}
 
                 {(!organization.isMine || (organization.isMine && requestMembers.length <= 0)) &&
                     joinedMembersBox(true)}
@@ -790,16 +803,17 @@ export const OrganizationProfileInner = (props: OrganizationProfileInnerProps) =
 };
 
 const OrganizationProvider = withOrganization(
-    withRouter(props =>
-        props.data.organization ? (
-            <OrganizationProfileInner
-                organization={props.data.organization}
-                router={props.router}
-                onDirectory={(props as any).onDirectory}
-            />
-        ) : (
-            <XLoader loading={true} />
-        ),
+    withRouter(
+        props =>
+            props.data.organization ? (
+                <OrganizationProfileInner
+                    organization={props.data.organization}
+                    router={props.router}
+                    onDirectory={(props as any).onDirectory}
+                />
+            ) : (
+                <XLoader loading={true} />
+            ),
     ),
 ) as React.ComponentType<{
     variables: { organizationId: string };

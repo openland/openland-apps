@@ -38,6 +38,7 @@ import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
+    isActive: boolean;
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
@@ -116,27 +117,33 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     };
 
     React.useEffect(() => {
-        messagesContext.changeForwardConverstion();
-        setInputValue(hasReply() ? draftState.getNextDraft() : '');
-        draftState.setBeDrafted(hasReply());
-        inputMethodsState.focusIfNeeded();
-    }, [messageComposeProps.conversationId]);
+        if (messageComposeProps.isActive) {
+            messagesContext.changeForwardConverstion();
+            setInputValue(hasReply() ? draftState.getNextDraft() : '');
+            draftState.setBeDrafted(hasReply());
+            inputMethodsState.focusIfNeeded();
+        }
+    }, [messageComposeProps.isActive]);
 
     return (
         <>
             {/* TODO maybe some other pattern here */}
-            <DumpSendMessage
-                TextInputComponent={messageComposeProps.TextInputComponent || DesktopSendMessage}
-                quoteState={quoteState}
-                handleChange={handleChange}
-                handleSend={handleSend}
-                handleHideChat={messageComposeProps.handleHideChat}
-                inputRef={inputRef}
-                inputValue={inputValue}
-                enabled={messageComposeProps.enabled}
-                closeEditor={closeEditor}
-                mentionsState={mentionsState}
-            />
+            {messageComposeProps.isActive && (
+                <DumpSendMessage
+                    TextInputComponent={
+                        messageComposeProps.TextInputComponent || DesktopSendMessage
+                    }
+                    quoteState={quoteState}
+                    handleChange={handleChange}
+                    handleSend={handleSend}
+                    handleHideChat={messageComposeProps.handleHideChat}
+                    inputRef={inputRef}
+                    inputValue={inputValue}
+                    enabled={messageComposeProps.enabled}
+                    closeEditor={closeEditor}
+                    mentionsState={mentionsState}
+                />
+            )}
             <PostIntroModal
                 targetQuery="addItro"
                 conversationId={messageComposeProps.conversationId || ''}

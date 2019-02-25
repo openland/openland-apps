@@ -17,6 +17,7 @@ import { Prompt } from '../components/Prompt';
 import { AsyncServiceMessageView } from './components/AsyncServiceMessageView';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { DialogItemViewAsync } from './components/DialogItemViewAsync';
+import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
 
 export class MobileMessenger {
     readonly engine: MessengerEngine;
@@ -29,7 +30,9 @@ export class MobileMessenger {
         this.history = history;
         this.dialogs = new ASDataView(engine.dialogList.dataSource, (item) => {
             return (
-                <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
+                <ThemeProvider>
+                    <DialogItemViewAsync item={item} onPress={this.handleDialogClick} />
+                </ThemeProvider>
             );
         });
     }
@@ -40,12 +43,12 @@ export class MobileMessenger {
             this.conversations.set(id, new ASDataView(eng.dataSource, (item) => {
                 if (item.type === 'message') {
                     if (item.serviceMetaData || item.isService) {
-                        return (<AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} />);
+                        return (<ThemeProvider><AsyncServiceMessageView message={item} engine={eng} onUserPress={this.handleAvatarClick} onRoomPress={this.handleDialogClick} /></ThemeProvider>);
                     } else {
-                        return (<AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} />);
+                        return (<ThemeProvider><AsyncMessageView navigationManager={this.history.navigationManager} message={item} engine={eng} onAvatarPress={this.handleAvatarClick} onDocumentPress={this.handleDocumentClick} onMediaPress={this.handleMediaClick} onMessageLongPress={this.handleMessageLongPress} /></ThemeProvider>);
                     }
                 } else {
-                    return (<AsyncDateSeparator year={item.year} month={item.month} date={item.date} />);
+                    return (<ThemeProvider><AsyncDateSeparator year={item.year} month={item.month} date={item.date} /></ThemeProvider>);
                 }
             }));
         }

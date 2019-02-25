@@ -71,6 +71,8 @@ target 'openland' do
   pod 'RNRate', :path => '../node_modules/react-native-rate/ios'
   pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
 
+  pod 'ReactNativeIncallManager', :path => '../node_modules/react-native-incall-manager'
+
 end
 
 post_install do |installer|

@@ -12,10 +12,13 @@ export class EmojiFlags {
 
 type SizeT = 10 | 12 | 13 | 14 | 16 | 18 | 20 | 25 | 38;
 
+const cacheMap = {};
+
 export function emoji({
     src,
     size,
     crop,
+    cache,
 }: {
     src: string;
     size?: SizeT;
@@ -31,10 +34,12 @@ export function emoji({
             marginRight?: number;
         };
     };
+    cache?: boolean;
 }) {
     if (EmojiFlags.ignoreEmojione) {
         return src;
     }
+
     let height = size || 32;
     let assetSize = 32;
     let assetRetinaSize = 64;
@@ -42,7 +47,16 @@ export function emoji({
         assetSize = 64;
         assetRetinaSize = 128;
     }
-    let res = emojione.toShort(src) as string;
+    let res;
+    if (cache && cacheMap[src]) {
+        res = cacheMap[src];
+    } else {
+        res = emojione.toShort(src) as string;
+    }
+
+    if (cache) {
+        cacheMap[src] = res;
+    }
 
     let style: any = null;
     if (size === 14) {
@@ -75,7 +89,7 @@ export function emoji({
             {res
                 .split(shortnamesRegexp)
                 .filter(Boolean)
-                .map((v, i) => {
+                .map((v: any, i: any) => {
                     if (emojiList[v]) {
                         let fname = emojiList[v].uc_base;
                         let url = baseUrl + assetSize + '/' + fname + '.png';

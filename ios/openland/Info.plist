@@ -77,7 +77,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>For voice calls, allow Openland access to your microphone.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>To save photos, allow Openland access to your library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

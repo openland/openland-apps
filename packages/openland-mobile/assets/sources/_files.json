@@ -44,6 +44,18 @@
         "src": "ic-lock.svg",
         "sizes": [13, 18, 24]
     }, {
+        "name": "ic-call",
+        "src": "ic-call.svg",
+        "sizes": [24, 20]
+    }, {
+        "name": "ic-appearance-fill",
+        "src": "ic-appearance.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-appearance",
+        "src": "ic-appearance-outline.svg",
+        "sizes": [24]
+    }, {
         "name": "ic-call-end",
         "src": "ic-end.svg",
         "sizes": [36]
@@ -52,12 +64,20 @@
         "src": "ic-notifications-copy.svg",
         "sizes": [24]
     }, {
+        "name": "ic-help-fill",
+        "src": "ic-ask.svg",
+        "sizes": [24]
+    }, {
         "name": "ic-browse-fill",
         "src": "ic-rooms-ios.svg",
         "sizes": [30]
     }, {
         "name": "ic-rate",
         "src": "ic-rate.svg",
+        "sizes": [24]
+    }, {
+        "name": "ic-rate-fill",
+        "src": "ic-rate-fill.svg",
         "sizes": [24]
     }, {
         "name": "ic-star",
@@ -76,9 +96,25 @@
         "src": "ic-info.svg",
         "sizes": [24]
     }, {
+        "name": "ic-invite-fill",
+        "src": "ic-invite.svg",
+        "sizes": [24]
+    }, {
         "name": "ic-link-fill",
         "src": "ic-cell-link-ios.svg",
         "sizes": [24]
+    }, {
+        "name": "ic-speaker",
+        "src": "ic-speaker.svg",
+        "sizes": [30]
+    }, {
+        "name": "ic-mic-on",
+        "src": "ic-micro-on.svg",
+        "sizes": [30]
+    }, {
+        "name": "ic-mic-off",
+        "src": "ic-micro-off.svg",
+        "sizes": [30]
     }, {
         "name": "ic-add",
         "src": "ic-add.svg",

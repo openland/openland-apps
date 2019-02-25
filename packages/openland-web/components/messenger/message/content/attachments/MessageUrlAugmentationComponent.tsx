@@ -154,17 +154,7 @@ const InternalUrlCardContainer = Glamorous(XLink)<{ isMobile: boolean }>(props =
     },
 }));
 
-const InternalUrlCard = ({
-    id,
-    name,
-    photo,
-    organization,
-    description,
-    isMe,
-    messageId,
-    href,
-    path,
-}: {
+type InternalUrlCardInnerProps = {
     id: string;
     name: string;
     photo: string | null;
@@ -174,54 +164,219 @@ const InternalUrlCard = ({
     messageId: string;
     href?: string;
     path?: string;
-}) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
-    return (
-        <InternalUrlCardContainer
-            isMobile={isMobile}
-            href={href}
-            path={path}
-            onClick={(e: any) => e.stopPropagation()}
-        >
-            <XView
-                borderRadius={10}
-                backgroundColor={'#fcfcfc'}
-                flexDirection="row"
-                paddingTop={12}
-                paddingBottom={12}
-                paddingLeft={16}
-                paddingRight={20}
-                borderWidth={1}
-                borderColor={'#ececec'}
+};
+
+const InternalUrlCardInner = React.memo(
+    ({
+        isMobile,
+        id,
+        name,
+        photo,
+        organization,
+        description,
+        isMe,
+        messageId,
+        href,
+        path,
+    }: InternalUrlCardInnerProps & { isMobile: boolean }) => {
+        return (
+            <InternalUrlCardContainer
+                isMobile={isMobile}
+                href={href}
+                path={path}
+                onClick={(e: any) => e.stopPropagation()}
             >
-                <XView marginRight={14} justifyContent={'center'}>
-                    <XAvatar
-                        size="small"
-                        style="colorus"
-                        objectName={name}
-                        objectId={id}
-                        cloudImageUuid={photo}
-                        path={'/mail/u/' + id}
-                    />
-                </XView>
-                <XView flexShrink={1}>
-                    <XView fontSize={14} fontWeight="600" color={'#000000'}>
-                        {emoji({
-                            src: name,
-                            size: 16,
-                        })}
+                <XView
+                    borderRadius={10}
+                    backgroundColor={'#fcfcfc'}
+                    flexDirection="row"
+                    paddingTop={12}
+                    paddingBottom={12}
+                    paddingLeft={16}
+                    paddingRight={20}
+                    borderWidth={1}
+                    borderColor={'#ececec'}
+                >
+                    <XView marginRight={14} justifyContent={'center'}>
+                        <XAvatar
+                            size="small"
+                            style="colorus"
+                            objectName={name}
+                            objectId={id}
+                            cloudImageUuid={photo}
+                            path={'/mail/u/' + id}
+                        />
                     </XView>
-                    {organization && (
-                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
-                            {organization}
+                    <XView flexShrink={1}>
+                        <XView fontSize={14} fontWeight="600" color={'#000000'}>
+                            {emoji({
+                                src: name,
+                                size: 16,
+                            })}
                         </XView>
-                    )}
-                    {description && (
-                        <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
-                            {description}
-                        </XView>
+                        {organization && (
+                            <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                                {organization}
+                            </XView>
+                        )}
+                        {description && (
+                            <XView fontSize={12} opacity={0.4} fontWeight="600" color={'#000000'}>
+                                {description}
+                            </XView>
+                        )}
+                    </XView>
+                    {isMe && (
+                        <DeleteButton
+                            query={{
+                                field: 'deleteUrlAugmentation',
+                                value: messageId,
+                            }}
+                            className="delete-button"
+                        >
+                            <DeleteIcon />
+                        </DeleteButton>
                     )}
                 </XView>
+            </InternalUrlCardContainer>
+        );
+    },
+);
+
+const InternalUrlCard = (props: InternalUrlCardInnerProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return <InternalUrlCardInner {...props} isMobile={isMobile} />;
+};
+
+const MessageUrlAugmentationComponentInner = React.memo(
+    (props: MessageUrlAugmentationComponentProps & { isMobile: boolean }) => {
+        let {
+            isMobile,
+            hostname,
+            title,
+            photo,
+            imageInfo,
+            description,
+            iconRef,
+            isMe,
+            messageId,
+            extra,
+        } = props;
+
+        let href: string | undefined = props.url;
+        let path: string | undefined = undefined;
+
+        if (isInternalLink(href)) {
+            path = makeInternalLinkRelative(href);
+            href = undefined;
+        }
+
+        let organization;
+        if (extra !== null) {
+            if (extra.__typename === 'Organization') {
+                organization = extra.name;
+            } else if (extra.__typename === 'ChannelConversation') {
+                return (
+                    <InternalUrlCard
+                        href={href}
+                        path={path}
+                        isMe={isMe}
+                        messageId={messageId}
+                        description={description}
+                        id={extra.id}
+                        name={extra.title}
+                        photo={extra.photo}
+                        organization={extra.organization ? extra.organization!!.name : null}
+                    />
+                );
+            } else if (extra.__typename === 'User') {
+                return (
+                    <InternalUrlCard
+                        href={href}
+                        path={path}
+                        isMe={isMe}
+                        messageId={messageId}
+                        description={description}
+                        id={extra.id}
+                        name={extra.name}
+                        photo={extra.photo}
+                        organization={
+                            extra.primaryOrganization ? extra.primaryOrganization!!.name : null
+                        }
+                    />
+                );
+            }
+        }
+
+        const preprocessed = description ? preprocessText(description) : [];
+
+        let parts = preprocessed.map((v, i) => {
+            if (v.type === 'new_line') {
+                return <br key={'br-' + i} />;
+            } else if (v.type === 'link') {
+                return (
+                    <XLinkExternal
+                        className="link"
+                        key={'link-' + i}
+                        href={v.link!!}
+                        content={v.text!!}
+                        showIcon={false}
+                    />
+                );
+            } else {
+                return (
+                    <span key={'text-' + i}>
+                        {emoji({
+                            src: v.text!!,
+                            size: 18,
+                        })}
+                    </span>
+                );
+            }
+        });
+
+        let dimensions = undefined;
+        if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
+            dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
+        }
+
+        return (
+            <Container
+                isMobile={isMobile}
+                href={href}
+                path={path}
+                onClick={(e: any) => e.stopPropagation()}
+            >
+                <ContentWrapper>
+                    {hostname && (
+                        <Hostname>
+                            {iconRef && (
+                                <Favicon src={'https://ucarecdn.com/' + iconRef.uuid + '/'} />
+                            )}
+                            {!iconRef && <WebsiteIcon />}
+                            <span>{hostname}</span>
+                        </Hostname>
+                    )}
+                    {title && (
+                        <Title>
+                            {emoji({
+                                src: title,
+                                size: 18,
+                            })}
+                        </Title>
+                    )}
+                    {parts && <Description>{parts}</Description>}
+                    {organization && <Description>{organization}</Description>}
+                </ContentWrapper>
+                {photo && dimensions && (
+                    <ImageWrapper>
+                        <XCloudImage
+                            srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
+                            resize="fill"
+                            width={dimensions.width}
+                            height={dimensions.height}
+                        />
+                    </ImageWrapper>
+                )}
                 {isMe && (
                     <DeleteButton
                         query={{
@@ -233,140 +388,17 @@ const InternalUrlCard = ({
                         <DeleteIcon />
                     </DeleteButton>
                 )}
-            </XView>
-        </InternalUrlCardContainer>
-    );
-};
+            </Container>
+        );
+    },
+);
 
-export const MessageUrlAugmentationComponent = (props: MessageUrlAugmentationComponentProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+export const MessageUrlAugmentationComponent = React.memo(
+    (props: MessageUrlAugmentationComponentProps) => {
+        const sidebarContext = React.useContext(MobileSidebarContext);
 
-    let { hostname, title, photo, imageInfo, description, iconRef, isMe, messageId, extra } = props;
+        const { isMobile } = sidebarContext;
 
-    let href: string | undefined = props.url;
-    let path: string | undefined = undefined;
-
-    if (isInternalLink(href)) {
-        path = makeInternalLinkRelative(href);
-        href = undefined;
-    }
-
-    let organization;
-    if (extra !== null) {
-        if (extra.__typename === 'Organization') {
-            organization = extra.name;
-        } else if (extra.__typename === 'ChannelConversation') {
-            return (
-                <InternalUrlCard
-                    href={href}
-                    path={path}
-                    isMe={isMe}
-                    messageId={messageId}
-                    description={description}
-                    id={extra.id}
-                    name={extra.title}
-                    photo={extra.photo}
-                    organization={extra.organization ? extra.organization!!.name : null}
-                />
-            );
-        } else if (extra.__typename === 'User') {
-            return (
-                <InternalUrlCard
-                    href={href}
-                    path={path}
-                    isMe={isMe}
-                    messageId={messageId}
-                    description={description}
-                    id={extra.id}
-                    name={extra.name}
-                    photo={extra.photo}
-                    organization={
-                        extra.primaryOrganization ? extra.primaryOrganization!!.name : null
-                    }
-                />
-            );
-        }
-    }
-
-    const preprocessed = description ? preprocessText(description) : [];
-
-    let parts = preprocessed.map((v, i) => {
-        if (v.type === 'new_line') {
-            return <br key={'br-' + i} />;
-        } else if (v.type === 'link') {
-            return (
-                <XLinkExternal
-                    className="link"
-                    key={'link-' + i}
-                    href={v.link!!}
-                    content={v.text!!}
-                    showIcon={false}
-                />
-            );
-        } else {
-            return (
-                <span key={'text-' + i}>
-                    {emoji({
-                        src: v.text!!,
-                        size: 18,
-                    })}
-                </span>
-            );
-        }
-    });
-
-    let dimensions = undefined;
-    if (photo && imageInfo && imageInfo.imageWidth && imageInfo.imageHeight) {
-        dimensions = layoutMediaReverse(imageInfo.imageWidth, imageInfo.imageHeight, 94, 94);
-    }
-
-    return (
-        <Container
-            isMobile={isMobile}
-            href={href}
-            path={path}
-            onClick={(e: any) => e.stopPropagation()}
-        >
-            <ContentWrapper>
-                {hostname && (
-                    <Hostname>
-                        {iconRef && <Favicon src={'https://ucarecdn.com/' + iconRef.uuid + '/'} />}
-                        {!iconRef && <WebsiteIcon />}
-                        <span>{hostname}</span>
-                    </Hostname>
-                )}
-                {title && (
-                    <Title>
-                        {emoji({
-                            src: title,
-                            size: 18,
-                        })}
-                    </Title>
-                )}
-                {parts && <Description>{parts}</Description>}
-                {organization && <Description>{organization}</Description>}
-            </ContentWrapper>
-            {photo && dimensions && (
-                <ImageWrapper>
-                    <XCloudImage
-                        srcCloud={'https://ucarecdn.com/' + photo.uuid + '/'}
-                        resize="fill"
-                        width={dimensions.width}
-                        height={dimensions.height}
-                    />
-                </ImageWrapper>
-            )}
-            {isMe && (
-                <DeleteButton
-                    query={{
-                        field: 'deleteUrlAugmentation',
-                        value: messageId,
-                    }}
-                    className="delete-button"
-                >
-                    <DeleteIcon />
-                </DeleteButton>
-            )}
-        </Container>
-    );
-};
+        return <MessageUrlAugmentationComponentInner {...props} isMobile={isMobile} />;
+    },
+);

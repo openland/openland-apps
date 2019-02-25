@@ -30,13 +30,15 @@ export const InitTexts = {
         emailInvalid: 'It looks like this email is incorrect.\nPlease check your email address and try again.',
         emailPlaceholder: 'Your email',
         codeInvalid: 'Invalid activation code',
+        noCode: 'Please enter the 6-digit code we\'ve just sent to your email',
+        wrongCodeLength: 'The code you entered is incorrect.\nPlease check the code in the email and try again.',
         codePlaceholder: 'Code from email',
         continue: 'Continue',
         back: 'Back',
         complete: 'Continue',
         organizationIsEmptyError: `Organization field is required. To register as
         an individual, simply enter your name.`,
-        firstNameIsEmptyError: "First name can't be empty",
+        firstNameIsEmptyError: "What's your name?",
         lastNameIsEmptyError: "Last name can't be empty",
     },
 

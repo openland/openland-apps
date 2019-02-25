@@ -81,7 +81,7 @@ class RNAsyncTextNode: ASTextNode, ASTextNodeDelegate {
     if (self.attributedText == nil) {
       self.attributedText = spec.attributedText
     } else {
-      if spec.attributedText.string != self.attributedText!.string {
+      if !spec.attributedText.isEqual(to: self.attributedText!) {
         self.attributedText = spec.attributedText
       }
     }

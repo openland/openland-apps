@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextStyle, ViewStyle, Platform, Image } from 'react-native';
 import { ZRoundedButton } from './ZRoundedButton';
 import { XPAvatarWithPreview } from './XPAvatarWithPreview';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
     subtitle: {
         color: Platform.OS === 'android' ? '#99a2b0' : '#5c6a81',
-        fontSize: Platform.OS === 'android' ?  14 : 15,
+        fontSize: Platform.OS === 'android' ? 14 : 15,
         fontWeight: Platform.OS === 'android' ? '400' : '400',
         height: Platform.OS === 'android' ? 20 : 20,
         textAlignVertical: 'center',
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     } as TextStyle
 });
 
-export class ZListItemHeader extends React.PureComponent<{
+export interface ZListItemHeaderProps {
     photo?: string | null,
     id?: string,
     userId?: string,
@@ -60,28 +61,28 @@ export class ZListItemHeader extends React.PureComponent<{
     path?: string,
     onPress?: () => void;
     action?: string
-}> {
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <XPAvatarWithPreview size={86} src={this.props.photo} placeholderKey={this.props.id} placeholderTitle={this.props.title} userId={this.props.userId} />
-                <View style={styles.body}>
-                    <View style={styles.header}>
-                        <View flexDirection="row">
-                            {this.props.titleIcon && <Image source={this.props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: this.props.titleColor || '#000' }} />}
-                            <Text style={[styles.title, this.props.titleColor ? { color: this.props.titleColor } : undefined]} numberOfLines={1}>{this.props.title}</Text>
-                        </View>
-                        <Text style={[styles.subtitle, this.props.subtitleColor ? { color: this.props.subtitleColor } : undefined]} numberOfLines={1}>{this.props.subtitle}</Text>
-                        {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
-                    </View>
-                    {this.props.action && (
-                        <View style={styles.footer}>
-                            <ZRoundedButton title={this.props.action} path={this.props.path} onPress={this.props.onPress} />
-                        </View>
-                    )}
-                </View>
-            </View>
-        );
-    }
 }
+
+export const ZListItemHeader = React.memo<ZListItemHeaderProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return (
+        <View style={styles.container}>
+            <XPAvatarWithPreview size={86} src={props.photo} placeholderKey={props.id} placeholderTitle={props.title} userId={props.userId} />
+            <View style={styles.body}>
+                <View style={styles.header}>
+                    <View flexDirection="row">
+                        {props.titleIcon && <Image source={props.titleIcon} style={{ width: 18, height: 18, marginRight: 2, alignSelf: 'center', marginBottom: Platform.OS === 'ios' ? 5 : -3, tintColor: props.titleColor || '#000' }} />}
+                        <Text style={[styles.title, props.titleColor ? { color: props.titleColor } : { color: theme.textColor }]} numberOfLines={1}>{props.title}</Text>
+                    </View>
+                    <Text style={[styles.subtitle, props.subtitleColor ? { color: props.subtitleColor } : { color: theme.textLabelColor }]} numberOfLines={1}>{props.subtitle}</Text>
+                    {/* {this.props.subsubtitle && <Text style={styles.subtitle} numberOfLines={1}>{this.props.subsubtitle}</Text>} */}
+                </View>
+                {props.action && (
+                    <View style={styles.footer}>
+                        <ZRoundedButton title={props.action} path={props.path} onPress={props.onPress} />
+                    </View>
+                )}
+            </View>
+        </View>
+    );
+})

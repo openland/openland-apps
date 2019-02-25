@@ -7,16 +7,15 @@ import {
     DataSourceMessageItem,
     DataSourceDateItem,
 } from 'openland-engines/messenger/ConversationEngine';
-
 import { XButton } from 'openland-x/XButton';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from '../../../fragments/ChatEmptyComponent';
-import { XResizeDetector } from 'openland-x/XResizeDetector';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
+import { getMessagesWrapperClassName } from './MessagesContainer';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -34,8 +33,8 @@ const messagesWrapperClassName = css`
     }
 `;
 
-const MessagesWrapper = (props: { children?: any }) => (
-    <div className={messagesWrapperClassName}>{props.children}</div>
+const MessagesWrapper = ({ children }: { children?: any }) => (
+    <div className={messagesWrapperClassName}>{children}</div>
 );
 
 const messagesWrapperEmptyClassName = css`
@@ -70,8 +69,10 @@ const getScrollElement = (src: any) => {
     return src;
 };
 
-const getScrollView = () => {
-    const wrapperElement = document.getElementsByClassName('messages-wrapper')[0];
+const getScrollView = (conversationId: string) => {
+    const wrapperElement = document.getElementsByClassName(
+        getMessagesWrapperClassName(conversationId),
+    )[0];
 
     if (!wrapperElement) {
         return null;
@@ -102,12 +103,12 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         if (!canUseDOM) {
             return;
         }
-        getScrollView().addEventListener('scroll', this.handleScroll, {
+        getScrollView(this.props.conversationId).addEventListener('scroll', this.handleScroll, {
             passive: true,
         });
 
         setTimeout(() => {
-            const scrollViewElem = getScrollView();
+            const scrollViewElem = getScrollView(this.props.conversationId);
             if (scrollViewElem && scrollViewElem.scrollTop < 50) {
                 this.props.conversation.loadBefore();
             }
@@ -115,7 +116,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     }
 
     componentWillUnmount() {
-        getScrollView().removeEventListener('scroll', this.handleScroll);
+        getScrollView(this.props.conversationId).removeEventListener('scroll', this.handleScroll);
     }
 
     handleScroll = (e: any) => {
@@ -215,19 +216,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                     </XScrollViewReversed>
                 )}
                 {!this.isEmpty() && (
-                    <XResizeDetector
-                        handleWidth={false}
-                        handleHeight={true}
-                        onResize={this.resizeHandler}
-                    >
-                        <DataSourceRender
-                            dataSource={this.props.conversation.dataSource}
-                            reverce={true}
-                            wrapWith={this.dataSourceWrapper}
-                            renderItem={this.renderMessage}
-                            renderLoading={this.renderLoading}
-                        />
-                    </XResizeDetector>
+                    <DataSourceRender
+                        dataSource={this.props.conversation.dataSource}
+                        reverce={true}
+                        wrapWith={this.dataSourceWrapper}
+                        renderItem={this.renderMessage}
+                        renderLoading={this.renderLoading}
+                    />
                 )}
             </>
         );

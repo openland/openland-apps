@@ -4,6 +4,7 @@ import { View, TouchableOpacity, Text, Platform } from 'react-native';
 import { SRouterContext } from 'react-native-s/SRouterContext';
 import { useWatchCall } from './useWatchCall';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { showCallModal } from 'openland-mobile/pages/main/Call';
 
 export const CallBarComponent = XMemo<{ id: string }>((props) => {
     let conference = getClient().useWithoutLoaderConference({ id: props.id })
@@ -25,19 +26,20 @@ export const CallBarComponent = XMemo<{ id: string }>((props) => {
                 shadowColor="black"
                 shadowRadius={6}
                 shadowOffset={{ width: 0, height: 4 }}
+                elevation={4}
             >
-                <View flexGrow={1} marginLeft={16}>
-                    <Text style={{ fontSize: 16, height: 20, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} >Call in progress</Text>
+                <View flexGrow={1} marginLeft={16} height={20}>
+                    <Text style={{ fontSize: 16, fontWeight: Platform.OS === 'android' ? '500' : '600', color: '#fff' }} >Call in progress</Text>
                 </View>
                 <SRouterContext.Consumer>
                     {r => (
                         <TouchableOpacity
                             activeOpacity={0.3}
-                            onPress={() => r!!.present('Call', { id: props.id })}
+                            onPress={() => showCallModal(props.id)}
                             style={{ height: 28, paddingHorizontal: 12, marginHorizontal: 7, backgroundColor: 'white', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}
                             delayPressIn={0}
                         >
-                            <Text style={{ fontSize: 14, height: 16, fontWeight: '600', color: '#0084fe' }} >JOIN</Text>
+                            <Text style={{ fontSize: 14, fontWeight: '600', color: '#0084fe' }} >JOIN</Text>
                         </TouchableOpacity>
                     )}
                 </SRouterContext.Consumer>

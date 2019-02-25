@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { SRouting } from 'react-native-s/SRouting';
 import { Platform, Dimensions, View, LayoutChangeEvent, LayoutAnimation } from 'react-native';
-import { SNavigationView } from 'react-native-s/SNavigationView';
+import { SNavigationView, SNavigationViewStyle } from 'react-native-s/SNavigationView';
 import { AppStyles } from '../styles/AppStyles';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
+import { AppTheme } from 'openland-mobile/themes/themes';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface RootProps {
     routing: SRouting;
@@ -13,18 +15,20 @@ export interface RootProps {
 
 let isPad = !!(Platform.OS === 'ios' && (Platform as any).isPad);
 
-export class Root extends React.PureComponent<RootProps, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
+class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme }, { width: number, height: number, masterRouting?: SRouting, masterKey?: string }> {
 
-    constructor(props: RootProps) {
+    private isIPad = false;
+
+    constructor(props: RootProps & { theme: AppTheme }) {
         super(props);
         this.state = {
             width: Dimensions.get('screen').width,
             height: Dimensions.get('screen').height,
         };
-        
-        isPad = isPad && this.props.padLayout !== false;
 
-        if (isPad) {
+        this.isIPad = isPad && this.props.padLayout !== false;
+
+        if (this.isIPad) {
             this.props.routing.navigationManager.setPushHandler(this.handlePush);
         }
     }
@@ -52,18 +56,29 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
     }
 
     render() {
-        if (isPad) {
+
+        let bgColor = this.props.theme.backgroundColor;
+        let textColor = this.props.theme.textColor;
+        let blurType = this.props.theme.blurType;
+        let accentColor = this.props.theme.accentColor;
+        let style: Partial<SNavigationViewStyle> = {
+            accentColor,
+            backgroundColor: bgColor,
+            textColor,
+            blurType,
+            isOpaque: Platform.OS === 'ios' && blurType !== 'dark' ? false : true,
+            hairlineColor: this.props.theme.hairlineColor,
+            keyboardAppearance: this.props.theme.keyboardAppearance
+        };
+
+        if (this.isIPad) {
             return (
                 <View width="100%" height="100%" flexDirection="row" onLayout={this.handleLayoutChange}>
                     <SNavigationView
                         width={300}
                         height={this.state.height}
                         routing={this.props.routing}
-                        navigationBarStyle={{
-                            accentColor: AppStyles.primaryColor,
-                            backgroundColor: '#fff',
-                            isOpaque: Platform.OS === 'ios' ? false : true
-                        }}
+                        navigationBarStyle={style}
                     />
                     <View height={'100%'} width={0.5} backgroundColor={AppStyles.separatorColor} />
                     <View width={this.state.width - 300} height={'100%'}>
@@ -73,11 +88,7 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                                 width={this.state.width - 300}
                                 height={this.state.height}
                                 routing={this.state.masterRouting}
-                                navigationBarStyle={{
-                                    accentColor: AppStyles.primaryColor,
-                                    backgroundColor: '#fff',
-                                    isOpaque: Platform.OS === 'ios' ? false : true
-                                }}
+                                navigationBarStyle={style}
                             />
                         )}
                     </View>
@@ -91,13 +102,14 @@ export class Root extends React.PureComponent<RootProps, { width: number, height
                     width={this.state.width}
                     height={this.state.height}
                     routing={this.props.routing}
-                    navigationBarStyle={{
-                        accentColor: AppStyles.primaryColor,
-                        backgroundColor: '#fff',
-                        isOpaque: Platform.OS === 'ios' ? false : true
-                    }}
+                    navigationBarStyle={style}
                 />
             </View>
         );
     }
 }
+
+export const Root = React.memo<RootProps>((props) => {
+    let theme = React.useContext(ThemeContext);
+    return <RootContainer {...props} theme={theme} />;
+});

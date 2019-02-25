@@ -26,7 +26,6 @@ export const OrganizationProfileContainer = Glamorous.div({
     display: 'flex',
     flexGrow: 1,
     flexDirection: 'column',
-
     flexShrink: 0,
 });
 
@@ -51,6 +50,70 @@ type PageInnerProps = {
 
 const MobileConversationContainer = ({ children }: any) => <XView flexGrow={1}>{children}</XView>;
 
+const DisplayNone = ({
+    isActive,
+    Component,
+    componentProps,
+}: {
+    isActive: boolean;
+    Component: any;
+    componentProps: any;
+}) => {
+    const commonStyle = {
+        height: '100%',
+        display: 'flex',
+        flexGrow: 1,
+    };
+
+    return (
+        <div
+            style={
+                !isActive
+                    ? {
+                          ...commonStyle,
+                          display: 'none',
+                      }
+                    : commonStyle
+            }
+        >
+            <Component {...componentProps} isActive={isActive} />
+        </div>
+    );
+};
+
+const CacheComponent = ({ isMobile, activeChat, componentProps }: any) => {
+    const [cachedProps, setCachedProps] = React.useState({});
+
+    React.useLayoutEffect(() => {
+        if (activeChat) {
+            setCachedProps({
+                ...cachedProps,
+                [activeChat]: componentProps,
+            });
+        }
+    }, [activeChat]);
+
+    if ((window as any).safari !== undefined && !isMobile) {
+        return <>{activeChat && <MessengerFragment {...componentProps} isActive={true} />}}</>;
+    }
+
+    return (
+        <>
+            {Object.keys(cachedProps).map((id, key1) => {
+                const cachedComponentProps = cachedProps[id];
+                return (
+                    <DisplayNone
+                        isActive={activeChat !== null && activeChat === id}
+                        key={key1}
+                        Component={MessengerFragment}
+                        componentProps={cachedComponentProps}
+                    />
+                );
+            })}
+        </>
+    );
+};
+
 export const ConversationContainerWrapper = ({
     tab,
     conversationId,
@@ -60,14 +123,15 @@ export const ConversationContainerWrapper = ({
 }: PageInnerProps) => {
     let pageTitle = tab === tabs.compose ? 'New chat' : undefined;
 
-    if (!canUseDOM && tab !== tabs.invite) {
+    if (!canUseDOM) {
         return (
             <>
-                <XDocumentHead title={pageTitle} description={'description'} />
+                <XDocumentHead title={pageTitle} />
                 <Scaffold>{}</Scaffold>
             </>
         );
     }
+
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
@@ -75,28 +139,38 @@ export const ConversationContainerWrapper = ({
         : DesktopConversationContainer;
 
     return (
-        <ConversationContainerInner>
-            {tab === tabs.chat && conversationId && <MessengerFragment id={conversationId} />}
-            {tab === tabs.compose && <ComposeFragment />}
-            {tab === tabs.empty && <MessengerEmptyFragment />}
-            {tab === tabs.rooms && <RoomsExploreComponent />}
-            {tab === tabs.invite && <RoomInviteFromLink />}
-            {tab === tabs.organization && oid && (
-                <OrganizationProfileContainer>
-                    <OrganizationProfile organizationId={oid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === tabs.user && uid && (
-                <OrganizationProfileContainer>
-                    <UserProfile userId={uid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === tabs.roomProfile && cid && (
-                <OrganizationProfileContainer>
-                    <RoomProfile conversationId={cid} />
-                </OrganizationProfileContainer>
-            )}
-        </ConversationContainerInner>
+        <>
+            <ConversationContainerInner>
+                <CacheComponent
+                    isMobile={isMobile}
+                    activeChat={tab === tabs.chat && conversationId ? conversationId : null}
+                    Component={MessengerFragment}
+                    componentProps={{
+                        id: conversationId,
+                    }}
+                />
+
+                {tab === tabs.compose && <ComposeFragment />}
+                {tab === tabs.empty && <MessengerEmptyFragment />}
+                {tab === tabs.rooms && <RoomsExploreComponent />}
+                {tab === tabs.invite && <RoomInviteFromLink />}
+                {tab === tabs.organization && oid && (
+                    <OrganizationProfileContainer>
+                        <OrganizationProfile organizationId={oid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.user && uid && (
+                    <OrganizationProfileContainer>
+                        <UserProfile userId={uid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.roomProfile && cid && (
+                    <OrganizationProfileContainer>
+                        <RoomProfile conversationId={cid} />
+                    </OrganizationProfileContainer>
+                )}
+            </ConversationContainerInner>
+        </>
     );
 };
 
@@ -174,7 +248,11 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
             height="100%"
             width="100%"
         >
-            {tab === tabs.empty ? (
+            <div
+                style={{
+                    display: tab === tabs.empty ? 'none' : 'flex',
+                }}
+            >
                 <XView width="100%">
                     <Menu
                         title={'Messages'}
@@ -190,9 +268,14 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
                     />
                     <DialogListFragment />
                 </XView>
-            ) : (
+            </div>
+            <div
+                style={{
+                    display: tab !== tabs.empty ? 'none' : 'flex',
+                }}
+            >
                 <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-            )}
+            </div>
         </XView>
     );
 };

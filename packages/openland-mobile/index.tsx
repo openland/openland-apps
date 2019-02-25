@@ -1,11 +1,11 @@
-import Reactotron from 'reactotron-react-native'
+// import Reactotron from 'reactotron-react-native'
 
-if (__DEV__) {
-    Reactotron
-        .configure()
-        .useReactNative()
-        .connect()
-}
+// if (__DEV__) {
+//     Reactotron
+//         .configure()
+//         .useReactNative()
+//         .connect()
+// }
 
 import * as React from 'react';
 import { ZLoader } from './components/ZLoader';

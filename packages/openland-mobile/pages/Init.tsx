@@ -18,6 +18,8 @@ import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
+import { ThemeProvider } from 'openland-mobile/themes/ThemeContext';
+import { ThemePersister } from 'openland-mobile/themes/ThemePersister';
 
 export class Init extends React.Component<PageProps, { state: 'start' | 'loading' | 'initial' | 'signup' | 'app', sessionState?: SessionStateFull }> {
 
@@ -51,6 +53,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
         Linking.getInitialURL().then(async url => await this.handleOpenURL({ url: url }));
 
         (async () => {
+            await ThemePersister.prepare();
             try {
                 if (hasClient()) {
                     let res = (await backoff(async () => await getClient().queryAccount()));
@@ -119,13 +122,15 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
     render() {
         if (this.state.state === 'loading') {
             return (
-                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                    <ZLoader appearance="large" />
-                </View>
+                <ThemeProvider>
+                    <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                        <ZLoader appearance="large" />
+                    </View>
+                </ThemeProvider>
             );
         } else if (this.state.state === 'app') {
             return (
-                <>
+                <ThemeProvider>
                     <PushManager client={getClient()} />
                     <View style={{ width: '100%', height: '100%' }}>
                         <Root routing={getMessenger().history} />
@@ -134,29 +139,34 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         {/* <View position="absolute" top={0} left={0} right={0} height={SDevice.safeArea.top + SDevice.statusBarHeight} backgroundColor="yellow" />
                         <View position="absolute" bottom={0} left={0} right={0} height={SDevice.safeArea.bottom} backgroundColor="blue" /> */}
                     </View>
-                </>
+                </ThemeProvider>
             );
         } else if (this.state.state === 'initial') {
             return (
-                <View style={{ width: '100%', height: '100%' }}>
-                    <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
-                    <ZModalProvider />
-                </View>
+                <ThemeProvider>
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
+                        <ZModalProvider />
+                    </View>
+                </ThemeProvider>
             );
         } else if (this.state.state === 'signup') {
             return (
-                <View style={{ width: '100%', height: '100%' }}>
-                    <Root routing={this.history} />
-                    <ZModalProvider />
-                </View>
+                <ThemeProvider>
+                    <View style={{ width: '100%', height: '100%' }}>
+                        <Root routing={this.history} />
+                        <ZModalProvider />
+                    </View>
+                </ThemeProvider>
             );
         }
 
-        // return (<View style={{ backgroundColor: '#fff', width: '100%', height: '100%' }} />);
         return (
-            <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
-                <ZLoader appearance="large" />
-            </View>
+            <ThemeProvider>
+                <View style={{ width: '100%', height: '100%', marginTop: SDevice.safeArea.top, marginBottom: SDevice.safeArea.bottom }}>
+                    <ZLoader appearance="large" />
+                </View>
+            </ThemeProvider>
         )
     }
 }

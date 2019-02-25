@@ -5642,9 +5642,10 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-draft-js-emoji-plugin@^2.0.6:
+draft-js-emoji-plugin@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/draft-js-emoji-plugin/-/draft-js-emoji-plugin-2.1.1.tgz#34ee28ad07ff4ec75a4182bf75d3d48d8b5d767e"
+  integrity sha512-qVSZ+V/AD2KBLuIM91iu6cC5Tl31T8/tHlwYm1oZpnPOkIlnnK5dX3InxCL4zn5cVtelKBCJbC1xteeDYXYlqA==
   dependencies:
     decorate-component-with-props "^1.1.0"
     emojione "^2.2.7"
@@ -5775,10 +5776,10 @@ emojione@^2.2.7:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/emojione/-/emojione-2.2.7.tgz#46457cf6b9b2f8da13ae8a2e4e547de06ee15e96"
 
-emojione@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/emojione/-/emojione-4.0.0.tgz#bbe117a1d24d18d3a62b18ef6d42725a59ded258"
-  integrity sha512-ATFSRHrK838NoTUE96j9rpmS1R4a/qpK1maQURGdFtarpWloEttjjIBBWbSFqsUxC0Vot6P2WXmSlotvZoegxw==
+emojione@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/emojione/-/emojione-4.5.0.tgz#cf1f5d417394988296aef72bd3ac3d480890838a"
+  integrity sha512-Tq55Y3UgPOnayFDN+Qd6QMP0rpoH10a1nhSFN27s8gXW3qymgFIHiXys2ECYYAI134BafmI3qP9ni2rZOe9BjA==
 
 emojis-list@^2.0.0:
   version "2.1.0"
@@ -12044,6 +12045,11 @@ react-native-image-zoom-viewer@^2.2.13:
   dependencies:
     react-native-image-pan-zoom "^2.1.9"
 
+react-native-incall-manager@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-incall-manager/-/react-native-incall-manager-3.2.2.tgz#5cc032f0538953707063cc1d574c2fe5f6d200d4"
+  integrity sha512-uhXQyGybOUIa1UA3Cmbks6dC1fNvtv3U00biPZKJrimuKqkJvQcv8ENkY52fc2tzGbJ12Eiu2WtM0LkVd6sF8A==
+
 react-native-lightbox@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-lightbox/-/react-native-lightbox-0.7.0.tgz#e52b4d7fcc141f59d7b23f0180de535e35b20ec9"
@@ -12194,15 +12200,15 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-reconciler@0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.20.0.tgz#2f69dc8cdc4b760c46f1045cc9cedef74d5bae5a"
-  integrity sha512-nJrqy2xUhAbX5XTmqPf2ZUlG65OZu/yXxi3X62oI9J/nQ971mDv7Dk0ywV8TUc/INiS+S5aGrtfbPqRLrxYSOQ==
+react-reconciler@0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.20.1.tgz#56a1b275ca5a541e5e664f91a233678457b899ec"
+  integrity sha512-18fmQqTxNPptcc7e+iU+mDpMEJzvDwJ3Qa1dc37eDtFEAgRQp7cMxP90hzaA/LkYxeEUhWj9jA54HzWGaYGYqw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.13.2"
+    scheduler "^0.13.3"
 
 react-redux@^5.0.6:
   version "5.1.1"
@@ -13110,6 +13116,14 @@ scheduler@^0.13.2:
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.2.tgz#969eaee2764a51d2e97b20a60963b2546beff8fa"
   integrity sha512-qK5P8tHS7vdEMCW5IPyt8v9MJOHqTrOUgPXib7tqm9vh834ibBX5BNhwkplX/0iOzHW5sXyluehYfS9yrkz9+w==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+
+scheduler@^0.13.3:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.13.3.tgz#bed3c5850f62ea9c716a4d781f9daeb9b2a58896"
+  integrity sha512-UxN5QRYWtpR1egNWzJcVLk8jlegxAugswQc984lD3kU7NuobsO37/sRfbpTdBjtnD5TBNFA2Q2oLV5+UmPSmEQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

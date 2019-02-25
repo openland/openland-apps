@@ -54,6 +54,7 @@ const AvatarPlaceholder = (props: XAvatar2Props) => {
             {emoji({
                 src: ph,
                 size: 20,
+                cache: true,
             })}
         </XView>
     );

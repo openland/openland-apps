@@ -575,7 +575,7 @@ export class FastImageViewer extends React.PureComponent<FastImageViewerProps> {
                                 left: 0,
                                 width: this.props.srcWidth,
                                 height: this.props.srcHeight,
-                                opacity: this._transitionOpacityPreview
+                                // opacity: this._transitionOpacityPreview
                             }}
                         >
                             <View

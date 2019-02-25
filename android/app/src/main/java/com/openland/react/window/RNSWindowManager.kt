@@ -81,13 +81,13 @@ class RNSWindowManager(reactContext: ReactApplicationContext) : ReactContextBase
         if (color == "light") {
             runOnUIThread {
                 reactApplicationContext.currentActivity?.window?.decorView?.apply {
-                    systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 }
             }
         } else {
             runOnUIThread {
                 reactApplicationContext.currentActivity?.window?.decorView?.apply {
-                    systemUiVisibility = systemUiVisibility and (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv())
+                    systemUiVisibility = systemUiVisibility and (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR).inv()
                 }
             }
         }

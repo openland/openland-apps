@@ -19,6 +19,9 @@ export interface SNavigationViewStyle {
     isOpaque: boolean;
     accentColor: string;
     textColor: string;
+    blurType: 'dark' | 'light';
+    hairlineColor: string;
+    keyboardAppearance: 'dark' | 'light';
 }
 
 export class SNavigationView extends React.PureComponent<SNavigationViewProps, { presented?: NavigationManager }> {
@@ -41,14 +44,15 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
         if (Platform.OS === 'ios') {
             SAnimated.spring('presented-' + this.key, {
                 property: 'translateY',
-                from: Dimensions.get('window').height,
+                from: Dimensions.get('screen').height,
                 to: 0
             });
         } else {
             SAnimated.timing('presented-' + this.key, {
                 property: 'translateY',
-                from: Dimensions.get('window').height,
-                to: 0
+                from: Dimensions.get('screen').height,
+                to: 0,
+                easing: 'material'
             });
         }
         SAnimated.commitTransaction(() => {
@@ -61,11 +65,20 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
     private handleDismissed = () => {
         let unlock1 = this.props.routing.navigationManager.beginLock();
         SAnimated.beginTransaction();
-        SAnimated.spring('presented-' + this.key, {
-            property: 'translateY',
-            from: 0,
-            to: Dimensions.get('window').height
-        });
+        if (Platform.OS === 'ios') {
+            SAnimated.spring('presented-' + this.key, {
+                property: 'translateY',
+                from: 0,
+                to: Dimensions.get('screen').height
+            });
+        } else {
+            SAnimated.timing('presented-' + this.key, {
+                property: 'translateY',
+                from: 0,
+                to: Dimensions.get('screen').height,
+                easing: 'material'
+            });
+        }
         SAnimated.commitTransaction(() => {
             unlock1();
             this.setState({ presented: undefined });
@@ -95,6 +108,9 @@ export class SNavigationView extends React.PureComponent<SNavigationViewProps, {
             isOpaque: true,
             accentColor: '#4747ec',
             textColor: '#000',
+            blurType: 'light',
+            hairlineColor: '#e0e3e7',
+            keyboardAppearance: 'light',
             ...this.props.navigationBarStyle
         };
 

@@ -24,7 +24,7 @@ export class SScrollView extends React.Component<SScrollViewProps> {
                                 keyboardDismissMode="interactive"
                                 {...other}
                                 style={[other.style, {
-                                    backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
+                                    // backgroundColor: Platform.OS === 'ios' ? '#fff' : undefined,
                                     // Work-around for freezing navive animation driver
                                     opacity: Animated.add(1, Animated.multiply(0, this.contentOffset.offset))
                                 }]}

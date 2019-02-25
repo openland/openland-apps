@@ -9,6 +9,7 @@ import { formatDate } from 'openland-mobile/utils/formatDate';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { UserAvatar } from './UserAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 function ASCounter(props: { value: number | string, muted?: boolean }) {
     return (
@@ -20,63 +21,64 @@ function ASCounter(props: { value: number | string, muted?: boolean }) {
     );
 }
 
-export class DialogItemViewAsync extends React.PureComponent<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string) => void }> {
-
-    handlePress = () => {
-        this.props.onPress(this.props.item.key);
-    }
-
-    render() {
-        console.log('render: ' + this.props.item.key);
-        let item = this.props.item;
-        let isUser = item.kind === 'PRIVATE';
-        let isGroup = item.kind === 'GROUP';
-        let height = this.props.compact ? 48 : 80;
-        let avatarSize = this.props.compact ? 30 : 60;
-        return (
-            <ASFlex height={height} flexDirection="row" highlightColor={ZStyles.selectedListItem} onPress={this.handlePress} alignItems={this.props.compact ? 'center' : undefined}>
-                <ASFlex marginLeft={this.props.compact ? 12 : undefined} width={height} height={height} alignItems="center" justifyContent="center">
-                    {!isUser && <ASAvatar
-                        src={item.photo}
-                        size={avatarSize}
-                        placeholderKey={item.key}
-                        placeholderTitle={item.title}
-                    />}
-                    {isUser && <UserAvatar
-                        src={item.photo}
-                        size={avatarSize}
-                        placeholderKey={item.flexibleId}
-                        placeholderTitle={item.title}
-                        online={item.online}
-                    />}
-                </ASFlex>
-                <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
-                    <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
-                        {isGroup && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor="green" width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
-                        <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? 'green' : (Platform.OS === 'android' ? '#000' : '#181818')} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
-                        {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color="#aaaaaa">{formatDate(item.date)}</ASText>}
-                    </ASFlex>
-                    {!this.props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
-                        {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={14} lineHeight={18} height={36} color="#181818" numberOfLines={2}>
-                                {item.showSenderName && `${item.sender}: `}
-                                <ASText fontSize={14} height={36} lineHeight={18} color={Platform.OS === 'android' ? '#676767' : '#7b7b7b'} numberOfLines={2}>{item.message}</ASText>
-                            </ASText>
-                        </ASFlex>}
-                        {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
-                            <ASText fontSize={14} height={36} lineHeight={18} color="##4747EC" numberOfLines={2}>{item.typing}</ASText>
-                        </ASFlex>}
-                        {item.unread > 0 && (
-                            <ASFlex marginTop={18} flexShrink={0}>
-                                <ASCounter value={item.unread} muted={item.isMuted} />
-                            </ASFlex>
-                        )}
-                    </ASFlex>}
-                </ASFlex>
-                <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
-                    <ASFlex height={0.5} flexGrow={1} marginLeft={this.props.compact ? 62 : 80} backgroundColor={AppStyles.separatorColor} />
-                </ASFlex>
+export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string) => void }>((props) => {
+    let item = props.item;
+    let isUser = item.kind === 'PRIVATE';
+    let isGroup = item.kind === 'GROUP';
+    let height = props.compact ? 48 : 80;
+    let avatarSize = props.compact ? 30 : 60;
+    let theme = React.useContext(ThemeContext);
+    return (
+        <ASFlex
+            height={height}
+            flexDirection="row"
+            highlightColor={theme.selectorColor}
+            onPress={() => {
+                props.onPress(props.item.key);
+            }}
+            alignItems={props.compact ? 'center' : undefined}
+        >
+            <ASFlex marginLeft={props.compact ? 12 : undefined} width={height} height={height} alignItems="center" justifyContent="center">
+                {!isUser && <ASAvatar
+                    src={item.photo}
+                    size={avatarSize}
+                    placeholderKey={item.key}
+                    placeholderTitle={item.title}
+                />}
+                {isUser && <UserAvatar
+                    src={item.photo}
+                    size={avatarSize}
+                    placeholderKey={item.flexibleId}
+                    placeholderTitle={item.title}
+                    online={item.online}
+                />}
             </ASFlex>
-        );
-    }
-}
+            <ASFlex marginRight={10} marginTop={12} marginBottom={12} flexDirection="column" flexGrow={1} flexBasis={0} alignItems="stretch">
+                <ASFlex height={Platform.OS === 'android' ? 22 : 18} marginTop={Platform.OS === 'android' ? -4 : 0}>
+                    {isGroup && <ASFlex height={22} alignItems="flex-end" marginRight={1}><ASImage tintColor={theme.dialogTitleSecureColor} width={13} height={13} source={require('assets/ic-lock-13.png')} marginBottom={Platform.OS === 'android' ? 4 : 3} /></ASFlex>}
+                    <ASText fontSize={15} height={22} fontWeight={TextStyles.weight.medium} color={isGroup ? theme.dialogTitleSecureColor : theme.dialogTitleColor} flexGrow={1} flexBasis={0} marginRight={10}>{item.title}</ASText>
+                    {item.date !== undefined && <ASText fontSize={13} height={16} marginTop={2} color={theme.dialogDateColor}>{formatDate(item.date)}</ASText>}
+                </ASFlex>
+                {!props.compact && <ASFlex flexDirection="row" alignItems="stretch" marginTop={2} marginBottom={2} height={38}>
+                    {!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                        <ASText fontSize={14} lineHeight={18} height={36} color={theme.dialogSenderColor} numberOfLines={2}>
+                            {item.showSenderName && `${item.sender}: `}
+                            <ASText fontSize={14} height={36} lineHeight={18} color={theme.dialogMessageColor} numberOfLines={2}>{item.message}</ASText>
+                        </ASText>
+                    </ASFlex>}
+                    {!!item.typing && <ASFlex flexDirection="column" alignItems="stretch" flexGrow={1} flexBasis={0}>
+                        <ASText fontSize={14} height={36} lineHeight={18} color={theme.dialogTypingColor} numberOfLines={2}>{item.typing}</ASText>
+                    </ASFlex>}
+                    {item.unread > 0 && (
+                        <ASFlex marginTop={18} flexShrink={0}>
+                            <ASCounter value={item.unread} muted={item.isMuted} />
+                        </ASFlex>
+                    )}
+                </ASFlex>}
+            </ASFlex>
+            {/* <ASFlex overlay={true} flexDirection="row" justifyContent="flex-end" alignItems="flex-end">
+                <ASFlex height={1} flexGrow={1} marginLeft={props.compact ? 62 : 80} backgroundColor={theme.selectorColor} />
+            </ASFlex> */}
+        </ASFlex>
+    );
+});
