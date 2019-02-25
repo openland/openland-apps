@@ -115,6 +115,7 @@ const UserPopperContent = XMemo(
                         {emoji({
                             src: user.name,
                             size: 16,
+                            cache: true,
                         })}
                     </XView>
                     <OrgTitle>{organizationName}</OrgTitle>

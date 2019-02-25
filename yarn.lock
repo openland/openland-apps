@@ -5642,9 +5642,10 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-draft-js-emoji-plugin@^2.0.6:
+draft-js-emoji-plugin@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/draft-js-emoji-plugin/-/draft-js-emoji-plugin-2.1.1.tgz#34ee28ad07ff4ec75a4182bf75d3d48d8b5d767e"
+  integrity sha512-qVSZ+V/AD2KBLuIM91iu6cC5Tl31T8/tHlwYm1oZpnPOkIlnnK5dX3InxCL4zn5cVtelKBCJbC1xteeDYXYlqA==
   dependencies:
     decorate-component-with-props "^1.1.0"
     emojione "^2.2.7"
@@ -5775,10 +5776,10 @@ emojione@^2.2.7:
   version "2.2.7"
   resolved "https://registry.yarnpkg.com/emojione/-/emojione-2.2.7.tgz#46457cf6b9b2f8da13ae8a2e4e547de06ee15e96"
 
-emojione@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/emojione/-/emojione-4.0.0.tgz#bbe117a1d24d18d3a62b18ef6d42725a59ded258"
-  integrity sha512-ATFSRHrK838NoTUE96j9rpmS1R4a/qpK1maQURGdFtarpWloEttjjIBBWbSFqsUxC0Vot6P2WXmSlotvZoegxw==
+emojione@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/emojione/-/emojione-4.5.0.tgz#cf1f5d417394988296aef72bd3ac3d480890838a"
+  integrity sha512-Tq55Y3UgPOnayFDN+Qd6QMP0rpoH10a1nhSFN27s8gXW3qymgFIHiXys2ECYYAI134BafmI3qP9ni2rZOe9BjA==
 
 emojis-list@^2.0.0:
   version "2.1.0"

@@ -42,6 +42,7 @@ export interface EditPostProps {
 }
 
 interface MessagesComponentProps {
+    isActive: boolean;
     organizationId: string | null;
     conversationId: string;
     loading: boolean;
@@ -204,6 +205,10 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.updateConversation(this.props);
     }
 
+    shouldComponentUpdate(props: MessagesComponentProps) {
+        return props.isActive;
+    }
+
     componentWillReceiveProps(props: MessagesComponentProps) {
         this.updateConversation(props);
 
@@ -297,6 +302,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 {!this.state.hideChat && (
                     <>
                         <ConversationMessagesComponent
+                            isActive={this.props.isActive}
                             ref={this.messagesList}
                             key={this.props.conversationId}
                             me={this.props.me}
@@ -340,6 +346,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 }
 
 interface MessengerRootComponentProps {
+    isActive: boolean;
     organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
@@ -352,6 +359,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     return (
         <MessagesComponent
+            isActive={props.isActive}
             me={messenger.user}
             loading={false}
             organizationId={props.organizationId}

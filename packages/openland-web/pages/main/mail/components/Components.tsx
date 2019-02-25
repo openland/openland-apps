@@ -51,6 +51,76 @@ type PageInnerProps = {
 
 const MobileConversationContainer = ({ children }: any) => <XView flexGrow={1}>{children}</XView>;
 
+const DisplayNone = ({
+    isActive,
+    Component,
+    componentProps,
+}: {
+    isActive: boolean;
+    Component: any;
+    componentProps: any;
+}) => {
+    const commonStyle = {
+        height: '100%',
+        display: 'flex',
+        flexGrow: 1,
+    };
+
+    return (
+        <div
+            style={
+                !isActive
+                    ? {
+                          ...commonStyle,
+                          display: 'none',
+                      }
+                    : commonStyle
+            }
+        >
+            <Component {...componentProps} isActive={isActive} />
+        </div>
+    );
+};
+
+const CacheComponent = ({ activeChat, componentProps }: any) => {
+    const [cachedProps, setCachedProps] = React.useState({});
+
+    React.useLayoutEffect(() => {
+        if (activeChat) {
+            setCachedProps({
+                ...cachedProps,
+                [activeChat]: componentProps,
+            });
+        }
+    }, [activeChat]);
+
+    return (
+        <>
+            {/* TODO we don't have guaranteed order here, fix that */}
+            {Object.keys(cachedProps).map((id, key1) => {
+                const cachedComponentProps = cachedProps[id];
+                return (
+                    <DisplayNone
+                        isActive={activeChat !== null && activeChat === id}
+                        key={key1}
+                        Component={MessengerFragment}
+                        componentProps={cachedComponentProps}
+                    />
+                );
+            })}
+        </>
+    );
+};
+
+class UnmountDetector extends React.Component {
+    componentWillUnmount() {
+        console.log('UnmountDetector: componentWillUnmount');
+    }
+    render() {
+        return null;
+    }
+}
+
 export const ConversationContainerWrapper = ({
     tab,
     conversationId,
@@ -60,14 +130,16 @@ export const ConversationContainerWrapper = ({
 }: PageInnerProps) => {
     let pageTitle = tab === tabs.compose ? 'New chat' : undefined;
 
-    if (!canUseDOM && tab !== tabs.invite) {
+    if (!canUseDOM) {
         return (
             <>
-                <XDocumentHead title={pageTitle} description={'description'} />
+                <XDocumentHead title={pageTitle} />
                 <Scaffold>{}</Scaffold>
             </>
         );
     }
+
+    console.log('render: ConversationContainerWrapper');
     const { isMobile } = React.useContext(MobileSidebarContext);
 
     const ConversationContainerInner = isMobile
@@ -75,28 +147,38 @@ export const ConversationContainerWrapper = ({
         : DesktopConversationContainer;
 
     return (
-        <ConversationContainerInner>
-            {tab === tabs.chat && conversationId && <MessengerFragment id={conversationId} />}
-            {tab === tabs.compose && <ComposeFragment />}
-            {tab === tabs.empty && <MessengerEmptyFragment />}
-            {tab === tabs.rooms && <RoomsExploreComponent />}
-            {tab === tabs.invite && <RoomInviteFromLink />}
-            {tab === tabs.organization && oid && (
-                <OrganizationProfileContainer>
-                    <OrganizationProfile organizationId={oid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === tabs.user && uid && (
-                <OrganizationProfileContainer>
-                    <UserProfile userId={uid} />
-                </OrganizationProfileContainer>
-            )}
-            {tab === tabs.roomProfile && cid && (
-                <OrganizationProfileContainer>
-                    <RoomProfile conversationId={cid} />
-                </OrganizationProfileContainer>
-            )}
-        </ConversationContainerInner>
+        <>
+            <UnmountDetector />
+            <ConversationContainerInner>
+                <CacheComponent
+                    activeChat={tab === tabs.chat && conversationId ? conversationId : null}
+                    Component={MessengerFragment}
+                    componentProps={{
+                        id: conversationId,
+                    }}
+                />
+
+                {tab === tabs.compose && <ComposeFragment />}
+                {tab === tabs.empty && <MessengerEmptyFragment />}
+                {tab === tabs.rooms && <RoomsExploreComponent />}
+                {tab === tabs.invite && <RoomInviteFromLink />}
+                {tab === tabs.organization && oid && (
+                    <OrganizationProfileContainer>
+                        <OrganizationProfile organizationId={oid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.user && uid && (
+                    <OrganizationProfileContainer>
+                        <UserProfile userId={uid} />
+                    </OrganizationProfileContainer>
+                )}
+                {tab === tabs.roomProfile && cid && (
+                    <OrganizationProfileContainer>
+                        <RoomProfile conversationId={cid} />
+                    </OrganizationProfileContainer>
+                )}
+            </ConversationContainerInner>
+        </>
     );
 };
 
@@ -174,7 +256,11 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
             height="100%"
             width="100%"
         >
-            {tab === tabs.empty ? (
+            <div
+                style={{
+                    display: tab === tabs.empty ? 'none' : 'flex',
+                }}
+            >
                 <XView width="100%">
                     <Menu
                         title={'Messages'}
@@ -190,9 +276,14 @@ const MobilePageInner = ({ tab, conversationId, oid, uid, cid }: PageInnerProps)
                     />
                     <DialogListFragment />
                 </XView>
-            ) : (
+            </div>
+            <div
+                style={{
+                    display: tab !== tabs.empty ? 'none' : 'flex',
+                }}
+            >
                 <ConversationContainerWrapper {...{ tab, conversationId, oid, uid, cid }} />
-            )}
+            </div>
         </XView>
     );
 };

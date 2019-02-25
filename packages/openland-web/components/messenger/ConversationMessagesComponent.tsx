@@ -33,6 +33,7 @@ const TypingComponent = (props: { chatId: string }) => (
 );
 
 interface ConversationMessagesComponentProps {
+    isActive: boolean;
     conversation: ConversationEngine;
     conversationId: string;
     conversationType?: SharedRoomKind | 'PRIVATE';
@@ -45,8 +46,12 @@ interface ConversationMessagesComponentProps {
 
 export class ConversationMessagesComponent extends React.PureComponent<
     ConversationMessagesComponentProps
-    > {
+> {
     messagesList = React.createRef<MessageListComponent>();
+
+    shouldComponentUpdate(props: ConversationMessagesComponentProps) {
+        return props.isActive;
+    }
 
     scrollToBottom = () => {
         if (this.messagesList.current) {
@@ -56,7 +61,7 @@ export class ConversationMessagesComponent extends React.PureComponent<
 
     render() {
         return (
-            <MessagesContainer>
+            <MessagesContainer conversationId={this.props.conversationId}>
                 <MessageListComponent
                     me={this.props.me}
                     conversation={this.props.conversation}

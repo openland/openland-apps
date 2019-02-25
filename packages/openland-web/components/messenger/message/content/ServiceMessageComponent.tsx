@@ -8,7 +8,7 @@ import { ServiceMessageReplyDefault } from './service/ServiceMessageReplyDefault
 import { ServiceMessageReplyJobApply } from './service/ServiceMessageReplyJobApply';
 import { ServiceMessageReplyJobRecommend } from './service/ServiceMessageReplyJobRecommend';
 import { ServiceMessageReplyStartupRecommend } from './service/ServiceMessageReplyStartupRecommend';
-import { UserShort, MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
+import { MessageFull_serviceMetadata, MessageFull_alphaMentions } from 'openland-api/Types';
 
 type ServiceMessageType = 'JOIN' | 'POST' | 'KICK' | 'PHOTO_CHANGE' | 'TITLE_CHANGE';
 
@@ -122,20 +122,22 @@ const resolveServiceMessageType = ({ serviceMetadata }: { serviceMetadata: any }
     return null;
 };
 
-export const ServiceMessageComponent = (params: {
-    senderUser: { id: string, name: string };
-    serviceMetadata: MessageFull_serviceMetadata;
-    message: string;
-    alphaMentions: MessageFull_alphaMentions[];
-    myUserId: string;
-}) => {
-    const typesObject = resolveServiceMessageType({
-        serviceMetadata: params.serviceMetadata,
-    }) as any;
+export const ServiceMessageComponent = React.memo(
+    (params: {
+        senderUser: { id: string; name: string };
+        serviceMetadata: MessageFull_serviceMetadata;
+        message: string;
+        alphaMentions: MessageFull_alphaMentions[];
+        myUserId: string;
+    }) => {
+        const typesObject = resolveServiceMessageType({
+            serviceMetadata: params.serviceMetadata,
+        }) as any;
 
-    if (typesObject === null) {
-        return <ServiceMessageDefault message={params.message} />;
-    }
+        if (typesObject === null) {
+            return <ServiceMessageDefault message={params.message} />;
+        }
 
-    return <ServiceMessageComponentByTypes typesObject={typesObject} otherParams={params} />;
-};
+        return <ServiceMessageComponentByTypes typesObject={typesObject} otherParams={params} />;
+    },
+);

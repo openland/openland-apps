@@ -95,6 +95,7 @@ const SearchPeopleModule = withExplorePeople(props => {
 }>;
 
 type ComposeComponentProps = {
+    isActive: boolean;
     messenger: MessengerEngine;
     me?: UserShort;
 };
@@ -356,6 +357,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                         )}
                         {this.state.conversationId && (
                             <ConversationMessagesComponent
+                                isActive={this.props.isActive}
                                 messages={this.state.messages}
                                 loading={this.state.loading}
                                 me={this.props.me}
@@ -380,7 +382,9 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
 export const ComposeFragment = withUserInfo(props => {
     return (
         <MessengerContext.Consumer>
-            {messenger => <ComposeComponentRender messenger={messenger!!} me={props.user!} />}
+            {messenger => (
+                <ComposeComponentRender messenger={messenger!!} me={props.user!} isActive={true} />
+            )}
         </MessengerContext.Consumer>
     );
 });
