@@ -34,12 +34,9 @@ import { Benchmark } from './pages/dev/Benchmark';
 import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { GroupList } from './pages/main/GroupList';
-<<<<<<< HEAD
 import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
-=======
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
->>>>>>> master
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
