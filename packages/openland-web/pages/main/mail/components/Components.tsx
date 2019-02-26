@@ -101,7 +101,7 @@ const CacheComponent = ({
     }, [activeChat]);
 
     if ((window as any).safari !== undefined && !isMobile) {
-        return <>{activeChat && <Component {...componentProps} isActive={true} />}}</>;
+        return <>{activeChat && <Component {...componentProps} isActive={true} />}</>;
     }
 
     return (
