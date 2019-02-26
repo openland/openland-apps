@@ -12,7 +12,7 @@ const ActiveButton = Glamorous(XButton)({
 });
 
 export const PromoBanner = () => {
-    const [bunner, bannerHandler] = React.useState(true);
+    const [banner, bannerHandler] = React.useState(true);
     if (!canUseDOM) {
         return null;
     }
@@ -21,9 +21,9 @@ export const PromoBanner = () => {
     }
     const handleHide = () => {
         bannerHandler(false);
-        localStorage.setItem('promo-banner-be-show', 'hiden');
+        localStorage.setItem('promo-banner-be-show', 'hidden');
     };
-    if (!bunner) {
+    if (!banner) {
         return null;
     }
     return (
