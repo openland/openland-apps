@@ -33,23 +33,25 @@ const DeleteMessagesFrom = withDeleteMessages(props => (
         }}
         title="Delete message"
         target={<XButton text="Delete" style="default" />}
-        defaultAction={async data => {
+        defaultAction={async () => {
             await props.deleteMessages({
                 variables: {
                     mids: (props as any).messagesIds,
                 },
             });
+            await (props as any).onDelete();
         }}
     >
         <XText>Delete selected messages for everyone? This cannot be undone.</XText>
     </XModalForm>
 )) as React.ComponentType<{
     messagesIds: string[];
+    onDelete: () => void;
 }>;
 
 export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) => {
     const state = React.useContext(MessagesStateContext);
-    const { forwardMessagesId } = state;
+    const { forwardMessagesId, resetAll } = state;
     if (forwardMessagesId && forwardMessagesId.size) {
         let size = forwardMessagesId.size;
         return (
@@ -77,6 +79,7 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                     <XWithRole role="super-admin">
                         <DeleteMessagesFrom
                             messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                            onDelete={resetAll}
                         />
                     </XWithRole>
                     <XWithRole role="super-admin" negate={true}>
@@ -85,6 +88,7 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                         ) && (
                             <DeleteMessagesFrom
                                 messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
+                                onDelete={resetAll}
                             />
                         )}
                     </XWithRole>
