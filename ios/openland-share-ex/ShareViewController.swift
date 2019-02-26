@@ -11,7 +11,7 @@ class ShareViewController: UIViewController {
     
     let containerURL = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.com.openland")!
     docPath = "\(containerURL.path)/share"
-
+    
     //  Create directory if not exists
     do {
       try FileManager.default.createDirectory(atPath: docPath, withIntermediateDirectories: true, attributes: nil)
@@ -20,7 +20,7 @@ class ShareViewController: UIViewController {
     } catch {
       fatalError()
     }
-
+    
     //  removing previous stored files
     let files = try! FileManager.default.contentsOfDirectory(atPath: docPath)
     for file in files {
@@ -30,7 +30,14 @@ class ShareViewController: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     
-    let alertView = UIAlertController(title: "Export", message: "Export", preferredStyle: .alert)
+    let alertView = UIAlertController(title: nil, message: "Sharing...", preferredStyle: .alert)
+    
+    let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+    loadingIndicator.hidesWhenStopped = true
+    loadingIndicator.style = UIActivityIndicatorView.Style.gray
+    loadingIndicator.startAnimating();
+    
+    alertView.view.addSubview(loadingIndicator)
     
     self.present(alertView, animated: true, completion: {
       
@@ -39,11 +46,12 @@ class ShareViewController: UIViewController {
       NSLog("inputItems: \(self.extensionContext!.inputItems.count)")
       
       var fileUrls = [String]()
+      var strings = [String]()
       for item: Any in self.extensionContext!.inputItems {
         
         let inputItem = item as! NSExtensionItem
         
-      
+        
         for provider: Any in inputItem.attachments! {
           
           let itemProvider = provider as! NSItemProvider
@@ -51,16 +59,26 @@ class ShareViewController: UIViewController {
           
           itemProvider.loadItem(forTypeIdentifier: kUTTypeData as String, options: nil) { data, error in
             if error == nil {
-              //  Note: "data" may be another type (e.g. Data or UIImage). Casting to URL may fail. Better use switch-statement for other types.
-              //  "screenshot-tool" from iOS11 will give you an UIImage here
+              switch data{
+              case is URL:
+                let url = data as! URL
+                let path = "\(self.docPath)/\(url.pathComponents.last ?? "")"
+                try? FileManager.default.copyItem(at: url, to: URL(fileURLWithPath: path))
+                fileUrls.append(path)
+              case is String:
+                fileUrls.append(data as! String)
+              default:
+                print("ok swift, here is your default executable statement")
+              }
+            }
+            group.leave()
+          }
+          
+          group.enter()
+          itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { data, error in
+            if error == nil {
               let url = data as! URL
-             
-              let path = "\(self.docPath)/\(url.pathComponents.last ?? "")"
-              print(">>> sharepath: \(String(describing: url.path))")
-              
-              try? FileManager.default.copyItem(at: url, to: URL(fileURLWithPath: path))
-              fileUrls.append(path)
-              
+              strings.append(url.absoluteString)
             } else {
               NSLog("\(error)")
             }
@@ -70,21 +88,14 @@ class ShareViewController: UIViewController {
       }
       
       group.notify(queue: DispatchQueue.main) {
-        NSLog("done")
-        
-//        let files = try! FileManager.default.contentsOfDirectory(atPath: self.docPath)
-        
-//        NSLog("directory: \(files)")
-        
-        //  Serialize filenames, call openURL:
         do {
           let jsonData : Data = try JSONSerialization.data(
             withJSONObject: [
-              "files" : fileUrls
-            ],
+              "files" : fileUrls.count > 0 ? fileUrls : nil,
+              "strings" : strings.count > 0 ? strings : nil,
+              ],
             options: JSONSerialization.WritingOptions.init(rawValue: 0))
           let jsonString = (NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-//          let result = self.openURL(URL(string: "openlandeep://com.myapp.share?\(jsonString!)")!)
           let result = self.openURL(URL(string: "openland://deep/share?data=\(jsonString!)")!)
         } catch {
           alertView.message = "Error: \(error.localizedDescription)"

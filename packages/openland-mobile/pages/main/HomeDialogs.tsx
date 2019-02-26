@@ -15,18 +15,28 @@ import { ThemeProvider } from '../../themes/ThemeContext';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
+import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
+import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
-    let handleShareDialogClick = React.useCallback((id: string) => {
+    let handleShareDialogClick = React.useCallback((id: string, dialog: DialogDataSourceItem) => {
+        Alert.builder().title('Openland').message('Share with ' + dialog.title + '?').button('Cancel', 'cancel').button('Ok', 'default', () => {
+            if (props.router.params.share.files) {
+                for (let attach of props.router.params.share.files) {
+                    let path = attach.split('/');
+                    UploadManagerInstance.registerUpload(id, path[path.length - 1], attach);
+                }
+            }
 
-        for (let attach of (props.router.params.share.files || [])) {
-            // todo: resolve attah type
-            // todo: resolve size
-            // TODO: get real size native?
-            UploadManagerInstance.registerUpload(id, 'file', attach, 100);
-        }
+            if (props.router.params.share.strings) {
+                for (let s of props.router.params.share.strings) {
+                    getMessenger().engine.getConversation(id).sendMessage(s, []);
+                }
+            }
 
-        getMessenger().history.navigationManager.push('Conversation', { id });
+            getMessenger().history.navigationManager.pushAndRemove('Conversation', { id });
+        }).show();
+
     }, [props.router.params.share]);
 
     let dialogs = props.router.params.share ? new ASDataView(getMessenger().engine.dialogList.dataSource, (item) => {
@@ -39,7 +49,7 @@ const DialogsComponent = XMemo<PageProps>((props) => {
     return (
         <>
             {Platform.OS === 'ios' && (
-                <SHeader title={props.router.params.share ? 'Share to' : 'Messages'} />
+                <SHeader title={props.router.params.share ? 'Share with' : 'Messages'} />
             )}
             {Platform.OS === 'android' && (
                 <CenteredHeader title="Messages" padding={98} />
