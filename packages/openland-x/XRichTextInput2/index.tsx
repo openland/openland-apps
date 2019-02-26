@@ -248,6 +248,56 @@ const mentionSuggestionsWrapperClassName = css`
     box-sizing: border-box;
 `;
 
+const MentionSuggectionsContainer = (props: any) => {
+    const containerRef = React.useRef<ContainerWrapper>(null);
+
+    const [sizeOfContainer, setSizeOfContainer] = React.useState<{
+        width: number;
+        height: number;
+    }>({ width: 0, height: 0 });
+
+    React.useLayoutEffect(() => {
+        const containerEl =
+            containerRef &&
+            containerRef.current &&
+            (ReactDOM.findDOMNode(containerRef.current) as Element);
+
+        const newWidthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
+        const newHeightOfContainer = containerEl ? containerEl.getBoundingClientRect().height : 0;
+
+        if (
+            sizeOfContainer.width !== newWidthOfContainer ||
+            sizeOfContainer.height !== newHeightOfContainer
+        ) {
+            setSizeOfContainer({
+                width: newWidthOfContainer,
+                height: newHeightOfContainer,
+            });
+        }
+    }, []);
+
+    const { children, suggestions, showSuggestions } = props;
+
+    return (
+        <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
+            <div
+                className={cx(
+                    mentionSuggestionsWrapperClassName,
+                    showSuggestions ? mentionSuggestionsWrapperShow : mentionSuggestionsWrapperHide,
+                )}
+                style={{
+                    width: sizeOfContainer.width,
+                    left: showSuggestions ? 0 : sizeOfContainer.width / 2,
+                    bottom: showSuggestions ? 50 : sizeOfContainer.height / 2,
+                }}
+            >
+                {suggestions}
+            </div>
+            {children}
+        </ContainerWrapper>
+    );
+};
+
 export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRichTextInput2Props>(
     (props: XRichTextInput2Props, ref) => {
         if (!canUseDOM) {
@@ -255,15 +305,9 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         }
 
         const editorRef = React.useRef<Editor>(null);
-        const containerRef = React.useRef<ContainerWrapper>(null);
 
         const [plainText, setPlainText] = React.useState('');
         const [activeWord, setActiveWord] = React.useState<string>('');
-
-        const [sizeOfContainer, setSizeOfContainer] = React.useState<{
-            width: number;
-            height: number;
-        }>({ width: 0, height: 0 });
 
         const getEditorStateFromText = (text: string) => {
             return EditorState.moveFocusToEnd(
@@ -283,7 +327,6 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
 
         const onHandleKey = (command: string) => {
-            console.log(command);
             if (command === 'x-editor-submit') {
                 if (props.onSubmit) {
                     props.onSubmit();
@@ -351,9 +394,6 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const handleEditorChange = (newEditorState: EditorState) => {
             const newActiveWord = findActiveWord(newEditorState);
 
-            // if (props.onCurrentWordChanged) {
-            //     props.onCurrentWordChanged(activeWord);
-            // }
             if (activeWord !== newActiveWord) {
                 setActiveWord(newActiveWord || '');
             }
@@ -387,54 +427,20 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         }, [props.value]);
 
-        React.useLayoutEffect(() => {
-            const containerEl =
-                containerRef &&
-                containerRef.current &&
-                (ReactDOM.findDOMNode(containerRef.current) as Element);
-
-            const newWidthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
-            const newHeightOfContainer = containerEl
-                ? containerEl.getBoundingClientRect().height
-                : 0;
-
-            if (
-                sizeOfContainer.width !== newWidthOfContainer ||
-                sizeOfContainer.height !== newHeightOfContainer
-            ) {
-                setSizeOfContainer({
-                    width: newWidthOfContainer,
-                    height: newHeightOfContainer,
-                });
-            }
-        }, []);
-
         return (
-            <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-                <div
-                    className={cx(
-                        mentionSuggestionsWrapperClassName,
-                        filteredSuggestions.length !== 0
-                            ? mentionSuggestionsWrapperShow
-                            : mentionSuggestionsWrapperHide,
-                    )}
-                    style={{
-                        width: sizeOfContainer.width,
-                        left: filteredSuggestions.length !== 0 ? 0 : sizeOfContainer.width / 2,
-                        bottom: filteredSuggestions.length !== 0 ? 50 : sizeOfContainer.height / 2,
-                    }}
-                >
-                    {filteredSuggestions.map((mention, key) => {
-                        return (
-                            <MentionEntry
-                                {...mention}
-                                key={key}
-                                isSelected={key === selectedMentionEntry}
-                            />
-                        );
-                    })}
-                </div>
-
+            <MentionSuggectionsContainer
+                {...props}
+                showSuggestions={filteredSuggestions.length !== 0}
+                suggestions={filteredSuggestions.map((mention, key) => {
+                    return (
+                        <MentionEntry
+                            {...mention}
+                            key={key}
+                            isSelected={key === selectedMentionEntry}
+                        />
+                    );
+                })}
+            >
                 <Editor
                     ref={editorRef}
                     placeholder={props.placeholder}
@@ -447,7 +453,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                     editorState={editorState}
                     onChange={handleEditorChange}
                 />
-            </ContainerWrapper>
+            </MentionSuggectionsContainer>
         );
     },
 );
