@@ -21,6 +21,7 @@ platform :ios do
     get_certificates
     get_provisioning_profile(app_identifier: "com.openland.app")
     get_provisioning_profile(app_identifier: "com.openland.app.openland-share-ex")
+    get_provisioning_profile(app_identifier: "com.openland.app.debug.openland-share-ex")
     build_app(workspace: "openland.xcworkspace", scheme: "Production", output_directory: "build", output_name: "Openland.ipa")
   end
   lane :deploy do
