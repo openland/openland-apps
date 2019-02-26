@@ -19,8 +19,8 @@ platform :ios do
   desc "Build Production App"
   lane :build do
     get_certificates
-    get_provisioning_profile(app_identifier: "com.openland.app")
-    get_provisioning_profile(app_identifier: "com.openland.app.openland-share-ex")
+    get_provisioning_profile(app_identifier: "com.openland.app AppStore")
+    get_provisioning_profile(app_identifier: "com.openland.app.openland-share-ex AppStore")
     build_app(workspace: "openland.xcworkspace", scheme: "Production", output_directory: "build", output_name: "Openland.ipa")
   end
   lane :deploy do
