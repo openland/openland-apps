@@ -7,7 +7,6 @@ import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
-import { MessageFull } from 'openland-api/Types';
 import { XButton } from 'openland-x/XButton';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
@@ -39,12 +38,12 @@ const TextInputWrapper = Glamorous.div({
 
 export type XTextInputProps =
     | {
-        kind: 'from_store';
-        valueStoreKey: string;
-    }
+          kind: 'from_store';
+          valueStoreKey: string;
+      }
     | {
-        kind: 'controlled';
-    } & XRichTextInputProps;
+          kind: 'controlled';
+      } & XRichTextInputProps;
 
 class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
     onChangeHandler = (value: string) => {

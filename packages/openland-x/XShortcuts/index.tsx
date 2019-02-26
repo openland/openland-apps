@@ -81,6 +81,7 @@ export class XShortcuts extends React.Component<{
             filteredIdKeymapsPairs.length &&
             filteredIdKeymapsPairs[filteredIdKeymapsPairs.length - 1].id === this.componentId
         ) {
+            console.log(this.props.handlerMap);
             this.props.handlerMap[action](event);
         }
     };

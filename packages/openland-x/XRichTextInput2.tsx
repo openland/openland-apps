@@ -11,6 +11,7 @@ import {
     getDefaultKeyBinding,
     DraftHandleValue,
 } from 'draft-js';
+import { XShortcuts } from 'openland-x/XShortcuts';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
@@ -393,42 +394,72 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         }, []);
 
+        const handleUp = (event: React.KeyboardEvent<any>) => {
+            event.stopPropagation();
+            console.log(event);
+            console.log('handleUp');
+        };
+
+        const handleDown = (event: React.KeyboardEvent<any>) => {
+            event.stopPropagation();
+            console.log(event);
+            console.log('handleDown');
+        };
+
         const filteredSuggestions = (suggestions ? suggestions : []).filter(
             ({ name }) =>
                 name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
         );
 
         return (
-            <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-                <div
-                    className={cx(
-                        mentionSuggestionsWrapperClassName,
-                        filteredSuggestions.length !== 0
-                            ? mentionSuggestionsWrapperShow
-                            : mentionSuggestionsWrapperHide,
-                    )}
-                    style={{
-                        width: sizeOfContainer.width,
-                        left: filteredSuggestions.length !== 0 ? 0 : sizeOfContainer.width / 2,
-                        bottom: filteredSuggestions.length !== 0 ? 50 : sizeOfContainer.height / 2,
-                    }}
-                >
-                    {filteredSuggestions.map((mention, key) => {
-                        return <MentionEntry {...mention} key={key} />;
-                    })}
-                </div>
+            <XShortcuts
+                handlerMap={{
+                    UP: handleUp,
+                    DOWN: handleDown,
+                }}
+                keymap={{
+                    UP: {
+                        osx: ['up'],
+                        windows: ['up'],
+                    },
+                    DOWN: {
+                        osx: ['down'],
+                        windows: ['down'],
+                    },
+                }}
+            >
+                <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
+                    <div
+                        className={cx(
+                            mentionSuggestionsWrapperClassName,
+                            filteredSuggestions.length !== 0
+                                ? mentionSuggestionsWrapperShow
+                                : mentionSuggestionsWrapperHide,
+                        )}
+                        style={{
+                            width: sizeOfContainer.width,
+                            left: filteredSuggestions.length !== 0 ? 0 : sizeOfContainer.width / 2,
+                            bottom:
+                                filteredSuggestions.length !== 0 ? 50 : sizeOfContainer.height / 2,
+                        }}
+                    >
+                        {filteredSuggestions.map((mention, key) => {
+                            return <MentionEntry {...mention} key={key} />;
+                        })}
+                    </div>
 
-                <Editor
-                    ref={editorRef}
-                    placeholder={props.placeholder}
-                    keyBindingFn={keyBinding}
-                    handleKeyCommand={onHandleKey}
-                    handlePastedFiles={onPasteFiles}
-                    stripPastedStyles={true}
-                    editorState={editorState}
-                    onChange={handleEditorChange}
-                />
-            </ContainerWrapper>
+                    <Editor
+                        ref={editorRef}
+                        placeholder={props.placeholder}
+                        keyBindingFn={keyBinding}
+                        handleKeyCommand={onHandleKey}
+                        handlePastedFiles={onPasteFiles}
+                        stripPastedStyles={true}
+                        editorState={editorState}
+                        onChange={handleEditorChange}
+                    />
+                </ContainerWrapper>
+            </XShortcuts>
         );
     },
 );
