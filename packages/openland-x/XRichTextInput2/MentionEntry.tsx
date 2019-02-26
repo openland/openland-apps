@@ -19,7 +19,11 @@ export const MentionEntry = ({
     online,
     title,
     isSelected,
-}: MentionDataT & { isSelected: boolean }) => {
+    onClick,
+}: MentionDataT & {
+    isSelected: boolean;
+    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+}) => {
     const [isFocused, setIsFocused] = React.useState(false);
 
     React.useEffect(() => {
@@ -37,7 +41,7 @@ export const MentionEntry = ({
     }, [name]);
 
     return (
-        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
             <XView
                 position="relative"
                 width="100%"

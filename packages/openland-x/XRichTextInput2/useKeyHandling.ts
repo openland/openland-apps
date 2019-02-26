@@ -8,19 +8,23 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     return getDefaultKeyBinding(e);
 };
 
+type useKeyHandlingT = {
+    onSubmit?: () => void;
+    editorState: any;
+    setEditorState: any;
+    filteredSuggestions: any;
+    applyMentionById: any;
+    selectedMentionEntryIndex: any;
+};
+
 export function useKeyHandling({
     onSubmit,
     editorState,
     setEditorState,
     filteredSuggestions,
-    getSelectedMentionEntry,
-}: {
-    onSubmit?: () => void;
-    editorState: any;
-    setEditorState: any;
-    filteredSuggestions: any;
-    getSelectedMentionEntry: any;
-}) {
+    applyMentionById,
+    selectedMentionEntryIndex,
+}: useKeyHandlingT) {
     const applyMention = (src: { name: string; id: string }) => {
         let selection = editorState.getSelection();
         let start = findActiveWordStart(editorState);
@@ -40,7 +44,7 @@ export function useKeyHandling({
         let replace = Modifier.replaceText(
             entity,
             s2,
-            src.name,
+            `@${src.name}`,
             undefined,
             entity.getLastCreatedEntityKey(),
         );
@@ -51,6 +55,7 @@ export function useKeyHandling({
             text.charAt(selection.getEndOffset()) !== ' '
         ) {
             // stext = src.name + ' ';
+
             replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
         }
 
@@ -61,10 +66,9 @@ export function useKeyHandling({
         setEditorState(s3);
     };
 
-    // applyMention
     const onHandleKey = (command: string) => {
         if (!!filteredSuggestions.length) {
-            applyMention(getSelectedMentionEntry());
+            applyMentionById(selectedMentionEntryIndex);
 
             return 'handled';
         }
@@ -77,5 +81,5 @@ export function useKeyHandling({
         return 'not-handled';
     };
 
-    return { keyBinding, onHandleKey };
+    return { keyBinding, onHandleKey, applyMention };
 }

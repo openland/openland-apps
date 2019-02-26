@@ -10,15 +10,15 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
     const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
         mentionsData || [],
     );
-    const [selectedMentionEntry, setSelectedMentionEntry] = React.useState(0);
+    const [selectedMentionEntryIndex, setSelectedMentionEntryIndex] = React.useState(0);
 
     const filteredSuggestions = (suggestions ? suggestions : []).filter(
         ({ name }: { name: string }) =>
             name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
     );
 
-    const getSelectedMentionEntry = () => {
-        return filteredSuggestions.length ? filteredSuggestions[selectedMentionEntry] : null;
+    const getSelectedMentionId = (id: number) => {
+        return filteredSuggestions[id];
     };
 
     const boundMentionSelection = (index: number) => {
@@ -36,7 +36,7 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
         event.preventDefault();
         event.stopPropagation();
 
-        setSelectedMentionEntry(boundMentionSelection(selectedMentionEntry - 1));
+        setSelectedMentionEntryIndex(boundMentionSelection(selectedMentionEntryIndex - 1));
     };
 
     const handleDown = (event: React.KeyboardEvent<any>) => {
@@ -45,7 +45,7 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
         }
         event.preventDefault();
         event.stopPropagation();
-        setSelectedMentionEntry(boundMentionSelection(selectedMentionEntry + 1));
+        setSelectedMentionEntryIndex(boundMentionSelection(selectedMentionEntryIndex + 1));
     };
 
     React.useLayoutEffect(() => {
@@ -56,7 +56,8 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
         handleUp,
         handleDown,
         filteredSuggestions,
-        selectedMentionEntry,
-        getSelectedMentionEntry,
+        setSelectedMentionEntryIndex,
+        selectedMentionEntryIndex,
+        getSelectedMentionId,
     };
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { emoji } from 'openland-y-utils/emoji';
+import { css } from 'linaria';
 import { EditorState, ContentState, CompositeDecorator, ContentBlock } from 'draft-js';
-import Glamorous from 'glamorous';
-import { MessageFull_mentions } from 'openland-api/Types';
 
 export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -47,10 +47,8 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
 
 type useHandleEditorChangeT = { onChange?: (value: string) => void; value: string };
 
-import { emoji } from 'openland-y-utils/emoji';
-import { css } from 'linaria';
-
 const mentionComponentInnerTextClassName = css`
+    background: #e6f3ff;
     color: #1790ff;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -95,10 +93,12 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
     const [editorState, setEditorState] = React.useState(getEditorStateFromText(value));
 
     const handleEditorChange = (newEditorState: EditorState) => {
-        const newActiveWord = findActiveWord(newEditorState);
+        if (newEditorState.getSelection().getHasFocus()) {
+            const newActiveWord = findActiveWord(newEditorState);
 
-        if (activeWord !== newActiveWord) {
-            setActiveWord(newActiveWord || '');
+            if (activeWord !== newActiveWord) {
+                setActiveWord(newActiveWord || '');
+            }
         }
 
         const newPlainText = editorState.getCurrentContent().getPlainText();
@@ -120,5 +120,5 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         }
     }, [value]);
 
-    return { activeWord, handleEditorChange, editorState, setEditorState };
+    return { activeWord, setActiveWord, handleEditorChange, editorState, setEditorState };
 }

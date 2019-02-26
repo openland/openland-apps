@@ -35,6 +35,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             editorState,
             setEditorState,
             activeWord,
+            setActiveWord,
             handleEditorChange,
         } = useHandleEditorChange({
             onChange,
@@ -57,19 +58,27 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             handleDown,
             handleUp,
             filteredSuggestions,
-            selectedMentionEntry,
-            getSelectedMentionEntry,
+            selectedMentionEntryIndex,
         } = useMentionSuggestions({
             mentionsData,
             activeWord,
         });
 
-        const { keyBinding, onHandleKey } = useKeyHandling({
+        const applyMentionById = (id: number) => {
+            const mentionEntry = filteredSuggestions[id];
+            if (mentionEntry) {
+                applyMention(mentionEntry);
+                setActiveWord('');
+            }
+        };
+
+        const { keyBinding, onHandleKey, applyMention } = useKeyHandling({
             onSubmit,
             editorState,
             setEditorState,
             filteredSuggestions,
-            getSelectedMentionEntry,
+            applyMentionById,
+            selectedMentionEntryIndex,
         });
 
         return (
@@ -81,7 +90,10 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                         <MentionEntry
                             {...mention}
                             key={key}
-                            isSelected={key === selectedMentionEntry}
+                            isSelected={key === selectedMentionEntryIndex}
+                            onClick={() => {
+                                applyMentionById(key);
+                            }}
                         />
                     );
                 })}
