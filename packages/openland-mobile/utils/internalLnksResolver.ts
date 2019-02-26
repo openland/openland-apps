@@ -4,8 +4,8 @@ import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { randomEmptyPlaceholderEmoji } from './tolerance';
 // import * as UrlParse from 'url-parse'
 let urlParse = require('url-parse');
-export let resolveInternalLink = (link: string, fallback?: () => void) => {
-    link = link.toLowerCase();
+export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
+    let link = srcLink.toLowerCase();
     // 
     // JOIN ROOMS
     //
@@ -110,11 +110,10 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
     //
     if (link.includes('openland://deep/share')) {
         try {
-            let url = urlParse(link, true);
+            let url = urlParse(srcLink, true);
             let dataStr = url.query.data;
             if (dataStr) {
                 let data = JSON.parse(dataStr);
-                // getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: 'rAOV7EVRLzSOMqmmaQBRUo7rdq' });
 
                 getMessenger().history.navigationManager.pushAndReset('HomeDialogs', { share: data });
             } else {

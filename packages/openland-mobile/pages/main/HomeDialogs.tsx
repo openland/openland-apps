@@ -23,9 +23,6 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             // todo: resolve attah type
             // todo: resolve size
             // TODO: get real size native?
-            Alert.alert(JSON.stringify({ id, attach }));
-            // wtf, hardcoded works (looks like path is case sensitive, but path comes lowercase from native side, wtf, wtf, wtf)
-            // attach = 'file:///Users/kor_ka/Library/Developer/CoreSimulator/Devices/76F31094-CD99-4A03-89C2-FC876C6056A3/data/Containers/Shared/AppGroup/501B8433-1F33-4D92-AAE5-BBC2A6F963BD/share/IMG_0003.JPG';
             UploadManagerInstance.registerUpload(id, 'file', attach, 100);
         }
 
