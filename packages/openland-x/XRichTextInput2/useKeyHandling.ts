@@ -25,7 +25,7 @@ export function useKeyHandling({
     applyMentionById,
     selectedMentionEntryIndex,
 }: useKeyHandlingT) {
-    const applyMention = (src: { name: string; id: string }) => {
+    const applyMention = ({ id, name }: { name: string; id: string }) => {
         let selection = editorState.getSelection();
         let start = findActiveWordStart(editorState);
         if (start < 0) {
@@ -39,23 +39,20 @@ export function useKeyHandling({
             focusOffset: selection.getEndOffset(),
         }) as any;
 
-        let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: src.id });
+        let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: id });
 
         let replace = Modifier.replaceText(
             entity,
             s2,
-            `@${src.name}`,
+            `@${name}`,
             undefined,
             entity.getLastCreatedEntityKey(),
         );
 
-        // let stext = src.name;
         if (
             selection.getEndOffset() === text.length ||
             text.charAt(selection.getEndOffset()) !== ' '
         ) {
-            // stext = src.name + ' ';
-
             replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
         }
 
