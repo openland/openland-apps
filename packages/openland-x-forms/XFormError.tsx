@@ -5,10 +5,12 @@ import { XServiceMessage } from 'openland-x/XServiceMessage';
 import Glamorous from 'glamorous';
 
 const ErrorText = Glamorous.div({
-    fontSize: '12px',
+    fontSize: 12,
     color: '#d75454',
-    marginLeft: '17px',
-    marginTop: '5px',
+    paddingLeft: 17,
+    paddingRight: 17,
+    marginTop: 5,
+    whiteSpace: 'pre-line',
 });
 
 export function XFormError(

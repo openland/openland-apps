@@ -90,7 +90,7 @@ export const extractDialog = (
     let sender = topMessage
         ? topMessage!!.sender.id === uid
             ? 'You'
-            : topMessage!!.sender.name
+            : topMessage!!.sender.firstName
         : undefined;
     let isService = (betaTopMessage && betaTopMessage.isService) || undefined;
     return {
@@ -225,7 +225,9 @@ export class DialogListEngine {
 
     handleDialogDeleted = async (event: any) => {
         const cid = event.cid as string;
-        this.dataSource.removeItem(cid);
+        if (this.dataSource.hasItem(cid)) {
+            this.dataSource.removeItem(cid);
+        }
     };
 
     handleMessageUpdated = async (event: any) => {
@@ -301,7 +303,7 @@ export class DialogListEngine {
         // Write message to datasource
         let res = this.dataSource.getItem(conversationId);
         let isOut = event.message.sender.id === this.engine.user.id;
-        let sender = isOut ? 'You' : event.message.sender.name;
+        let sender = isOut ? 'You' : event.message.sender.firstName;
         if (res) {
             let msg = formatMessage(event.message);
             this.dataSource.updateItem({

@@ -123,7 +123,13 @@ self.onmessage = (message: string) => {
                 postMessage({ id: msg.id, type: 'error', data: v.message });
             });
     } else if (msg.type === 'read') {
-        let q = client.client.readQuery({ query: msg.body, variables: msg.variables });
+        let q = null;
+        try {
+            // https://github.com/apollographql/apollo-feature-requests/issues/1
+            q = client.client.readQuery({ query: msg.body, variables: msg.variables });
+        } catch (e) {
+            //
+        }
         postMessage({ id: msg.id, type: 'result', data: q });
     } else if (msg.type === 'write') {
         client.client.writeQuery({ query: msg.body, variables: msg.variables, data: msg.data });

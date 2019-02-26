@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         opacity: 1,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         overflow: 'hidden'
     } as ViewStyle,
     rootUnmounted: {
@@ -27,18 +27,16 @@ export interface PageContainerProps {
     style: SNavigationViewStyle;
 }
 
-export class PageContainer extends React.PureComponent<PageContainerProps> {
-    render() {
-        return (
-            <View style={[styles.root, !this.props.mounted && styles.rootUnmounted]} collapsable={false}>
-                <SRouterContext.Provider value={this.props.router}>
-                    <HeaderContextDirect router={this.props.router}>
-                        <PageKeyboard contextKey={this.props.router.key}>
-                            <PageImmutableContainer component={this.props.component} />
-                        </PageKeyboard>
-                    </HeaderContextDirect>
-                </SRouterContext.Provider>
-            </View>
-        );
-    }
-}
+export const PageContainer = React.memo<PageContainerProps>((props) => {
+    return (
+        <View style={[styles.root, !props.mounted && styles.rootUnmounted, { backgroundColor: props.style.backgroundColor }]} collapsable={false}>
+            <SRouterContext.Provider value={props.router}>
+                <HeaderContextDirect router={props.router}>
+                    <PageKeyboard contextKey={props.router.key}>
+                        <PageImmutableContainer component={props.component} />
+                    </PageKeyboard>
+                </HeaderContextDirect>
+            </SRouterContext.Provider>
+        </View>
+    );
+});

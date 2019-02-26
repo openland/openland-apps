@@ -42,7 +42,7 @@ export default class OpenlandDocument extends Document {
                         content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"
                     />
                     <meta name="format-detection" content="telephone=no" />
-                    <meta name="theme-color" content="#6400FF" />
+                    <meta name="theme-color" content="#1790ff" />
                     <meta name="application-name" content="Openland" />
                     <meta name="apple-mobile-web-app-title" content="Openland" />
                     <meta name="apple-itunes-app" content="app-id=1435537685" />

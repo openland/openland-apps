@@ -1,111 +1,112 @@
 import * as React from 'react';
 import { View, Text, Platform, TouchableOpacity } from 'react-native';
 import { AppStyles } from '../styles/AppStyles';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
-export class ZListItemGroup extends React.PureComponent<{ header?: string | null, counter?: number | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void } }> {
-    render() {
-        let components: any[] = [];
-        React.Children.forEach(this.props.children, (c) => {
-            if (c !== null && c !== undefined) {
-                components.push(c);
-                if (components.length > 0 && this.props.divider !== false && !(c as any).props.divider) {
-                    components.push(<View key={'div-' + components.length} style={{ paddingLeft: (c as any).props.leftIcon ? 64 : (c as any).props.leftAvatar ? 69 : 15 }} width="100%"><View backgroundColor={AppStyles.separatorColor} height={1} /></View>);
-                }
+export const ZListItemGroup = React.memo<{ header?: string | null, counter?: number | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void }, children?: any }>((props) => {
+    let theme = React.useContext(ThemeContext);
+
+    let components: any[] = [];
+    React.Children.forEach(props.children, (c) => {
+        if (c !== null && c !== undefined) {
+            components.push(c);
+            if (components.length > 0 && props.divider !== false && !(c as any).props.divider) {
+                components.push(<View key={'div-' + components.length} style={{ paddingLeft: (c as any).props.leftIcon ? 64 : (c as any).props.leftAvatar ? 69 : 15 }} width="100%"><View backgroundColor={theme.separatorColor} height={1} /></View>);
             }
-        });
-
-        if (components.length === 0) {
-            return null;
         }
+    });
 
-        // if (isAndroid) {
-        //     return (
-        //         <View backgroundColor={AppStyles.backyardColor}>
-        //             {this.props.header !== null && this.props.header !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.header}</Text>}
-        //             {this.props.header === null && <View height={30} />}
-        //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-        //             <View backgroundColor="#fff">
-        //                 {components}
-        //             </View>
-        //             {this.props.footer !== null && this.props.footer !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.footer}</Text>}
-        //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
-        //         </View>
-        //     );
-        // }
+    if (components.length === 0) {
+        return null;
+    }
 
-        return (
-            <View>
-                {this.props.header !== null && this.props.header !== undefined &&
-                    <View
+    // if (isAndroid) {
+    //     return (
+    //         <View backgroundColor={AppStyles.backyardColor}>
+    //             {this.props.header !== null && this.props.header !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.header}</Text>}
+    //             {this.props.header === null && <View height={30} />}
+    //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
+    //             <View backgroundColor="#fff">
+    //                 {components}
+    //             </View>
+    //             {this.props.footer !== null && this.props.footer !== undefined && <Text style={{ color: '#8e8e93', fontSize: 13, textTransform: 'uppercase', height: 45, lineHeight: 30, textAlignVertical: 'center', paddingLeft: 15, paddingRight: 15, paddingTop: 15 }} numberOfLines={1} ellipsizeMode="tail">{this.props.footer}</Text>}
+    //             <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" />
+    //         </View>
+    //     );
+    // }
+
+    return (
+        <View>
+            {props.header !== null && props.header !== undefined &&
+                <View
+                    style={{
+                        paddingTop: 30,
+                        paddingBottom: 8,
+                        flexDirection: 'row'
+                    }}
+                >
+                    <Text
                         style={{
-                            paddingTop: 30,
-                            paddingBottom: 8,
-                            flexDirection: 'row'
+                            color: theme.groupHeaderColor,
+                            fontSize: 16,
+                            fontWeight: Platform.OS === 'android' ? '500' : '600',
+                            height: Platform.OS === 'android' ? 21 : 20,
+                            paddingLeft: 16,
+                            flexShrink: 1,
+                            opacity: Platform.OS === 'android' ? 0.7 : 1.0
                         }}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
                     >
+                        {Platform.OS === 'android' ? props.header : props.header.toUpperCase()}
+                    </Text>
+
+                    {props.counter !== undefined && props.counter !== null && (
                         <Text
                             style={{
-                                color: Platform.OS === 'android' ? '#000' : '#99a2b0',
-                                fontSize: 16,
+                                color: '#b9c1cd',
+                                fontSize: 18,
                                 fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                height: Platform.OS === 'android' ? 21 : 20,
-                                paddingLeft: 16,
-                                flexShrink: 1,
-                                opacity: Platform.OS === 'android' ? 0.7 : 1.0
+                                height: 20,
+                                paddingLeft: 8,
                             }}
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
                         >
-                            {Platform.OS === 'android' ? this.props.header : this.props.header.toUpperCase()}
+                            {props.counter.toString()}
                         </Text>
+                    )}
 
-                        {this.props.counter !== undefined && this.props.counter !== null && (
+                    <View flexGrow={1} paddingRight={16} />
+
+                    {props.actionRight && (
+                        <TouchableOpacity onPress={props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
                             <Text
                                 style={{
-                                    color: '#b9c1cd',
-                                    fontSize: 18,
+                                    color: theme.accentColor,
+                                    fontSize: 15,
                                     fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                    height: 20,
-                                    paddingLeft: 8,
+                                    height: 18,
+                                    lineHeight: 18,
+                                    paddingLeft: 16,
+                                    paddingRight: 16,
                                 }}
+                                numberOfLines={1}
+                                ellipsizeMode="tail"
                             >
-                                {this.props.counter.toString()}
+                                {props.actionRight.title}
                             </Text>
-                        )}
-
-                        <View flexGrow={1} paddingRight={16} />
-
-                        {this.props.actionRight && (
-                            <TouchableOpacity onPress={this.props.actionRight.onPress} hitSlop={{ top: 16, bottom: 16 }}>
-                                <Text
-                                    style={{
-                                        color: '#0084fe',
-                                        fontSize: 15,
-                                        fontWeight: Platform.OS === 'android' ? '500' : '600',
-                                        height: 18,
-                                        lineHeight: 18,
-                                        paddingLeft: 16,
-                                        paddingRight: 16,
-                                    }}
-                                    numberOfLines={1}
-                                    ellipsizeMode="tail"
-                                >
-                                    {this.props.actionRight.title}
-                                </Text>
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                }
-                {this.props.header === null && <View height={22} />}
-                {/* <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" /> */}
-                <View>
-                    {components}
+                        </TouchableOpacity>
+                    )}
                 </View>
-                {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
-                {this.props.footer !== null && this.props.footer !== undefined && (
-                    <Text style={{ color: Platform.OS === 'android' ? '#939393' : '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, paddingTop: 6 }} >{this.props.footer}</Text>
-                )}
+            }
+            {props.header === null && <View height={22} />}
+            {/* <View backgroundColor={AppStyles.separatorColor} height={1} width="100%" /> */}
+            <View>
+                {components}
             </View>
-        );
-    }
-}
+            {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
+            {props.footer !== null && props.footer !== undefined && (
+                <Text style={{ color: Platform.OS === 'android' ? '#939393' : '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, paddingTop: 6 }} >{props.footer}</Text>
+            )}
+        </View>
+    );
+});

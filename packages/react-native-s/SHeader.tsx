@@ -8,11 +8,12 @@ interface SHeaderComponentProps {
     title?: string;
     hairline?: SHeaderHairline;
     hidden?: boolean;
-    accentColor?: string
+    accentColor?: string;
+    hideBackText?: boolean;
 }
 
 export class SHeader extends React.PureComponent<SHeaderComponentProps> {
     render() {
-        return <HeaderConfigRegistrator config={{ title: this.props.title, accentColor: this.props.accentColor, hairline: this.props.hairline, headerHidden: this.props.hidden }} />;
+        return <HeaderConfigRegistrator config={{ title: this.props.title, accentColor: this.props.accentColor, hairline: this.props.hairline, headerHidden: this.props.hidden, hideBackText: this.props.hideBackText }} />;
     }
 }

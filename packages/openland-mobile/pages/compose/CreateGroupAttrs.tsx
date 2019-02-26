@@ -29,6 +29,9 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
     }
 
     render() {
+        let orgId = this.props.router.params.organizationId;
+        let kind = orgId ? SharedRoomKind.PUBLIC : SharedRoomKind.GROUP;
+
         return (
             <>
                 <SHeader title="New group" />
@@ -45,11 +48,17 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                                 title: 'Create',
                                 action: async (users: UserShort[]) => {
                                     let res = await getClient().mutateRoomCreate({
-                                        kind: SharedRoomKind.GROUP,
+                                        kind: kind,
                                         title: src.title,
                                         photoRef: src.photoRef,
-                                        members: users.map(u => u.id)
+                                        members: users.map(u => u.id),
+                                        organizationId: orgId,
                                     });
+                                    
+                                    if (orgId) {
+                                        await getClient().refetchOrganization({ organizationId: orgId });
+                                    }
+
                                     this.props.router.pushAndReset('Conversation', { id: res.room.id });
                                 }
                             },

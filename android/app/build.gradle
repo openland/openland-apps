@@ -186,6 +186,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-incall-manager')
     compile project(':react-native-extra-dimensions-android')
     compile project(':react-native-document-picker')
     compile project(':react-native-webrtc')

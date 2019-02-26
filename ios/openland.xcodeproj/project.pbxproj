@@ -21,6 +21,8 @@
 		77C26823F63D9A6C64F8159B /* Pods_openland.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11517B79440836F86B074F22 /* Pods_openland.framework */; };
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
 		AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AA260848220074F100A69D84 /* index.thread.jsbundle */; };
+		AA2FBA2922247CA4000915F7 /* RNSDevice-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */; };
+		AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */; };
 		AA300DC7220186A400C54930 /* RNBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300DC6220186A400C54930 /* RNBackgroundTask.swift */; };
 		AA627FEF214C56EB007C8200 /* RNSAnimatedEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */; };
 		AA6281AB2151C8BD007C8200 /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = AA6281AA2151C8BC007C8200 /* VERSION */; };
@@ -220,6 +222,9 @@
 		A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-openland.release.xcconfig"; path = "Pods/Target Support Files/Pods-openland/Pods-openland.release.xcconfig"; sourceTree = "<group>"; };
 		A938EF8C563947299EE77727 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		AA260848220074F100A69D84 /* index.thread.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = index.thread.jsbundle; sourceTree = "<group>"; };
+		AA2FBA2722247C8F000915F7 /* RNSDevice-Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNSDevice-Bridge.h"; sourceTree = "<group>"; };
+		AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RNSDevice-Bridge.m"; sourceTree = "<group>"; };
+		AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSDevice.swift; sourceTree = "<group>"; };
 		AA300DC6220186A400C54930 /* RNBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBackgroundTask.swift; sourceTree = "<group>"; };
 		AA627FEE214C56EB007C8200 /* RNSAnimatedEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNSAnimatedEventEmitter.swift; sourceTree = "<group>"; };
 		AA6281AA2151C8BC007C8200 /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
@@ -370,6 +375,7 @@
 		13B07FAE1A68108700A75B9A /* openland */ = {
 			isa = PBXGroup;
 			children = (
+				AA2FBA1E22247C61000915F7 /* RNSDevice */,
 				AAA4DA46221457BB00BB1781 /* appcenter */,
 				AAC60B06215AE3F0005E09BA /* RNSAuth0 */,
 				AAE501832146078400BEAA04 /* RNSAnimation */,
@@ -465,6 +471,16 @@
 				A0E0F59823876344F91D6134 /* Pods-openland.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		AA2FBA1E22247C61000915F7 /* RNSDevice */ = {
+			isa = PBXGroup;
+			children = (
+				AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */,
+				AA2FBA2722247C8F000915F7 /* RNSDevice-Bridge.h */,
+				AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */,
+			);
+			name = RNSDevice;
 			sourceTree = "<group>";
 		};
 		AA805F162106686600149D4D /* Recovered References */ = {
@@ -970,6 +986,7 @@
 				"${BUILT_PRODUCTS_DIR}/RNShare/RNShare.framework",
 				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactNativeIncallManager/ReactNativeIncallManager.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SimpleKeychain/SimpleKeychain.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -1009,6 +1026,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeIncallManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimpleKeychain.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -1069,11 +1087,13 @@
 				AAE50186214607B600BEAA04 /* RNSAnimationSpec.swift in Sources */,
 				AAE104D1212C311B0034DA0F /* RNAsyncSpecs.swift in Sources */,
 				AAA4DA6322145CF800BB1781 /* ThreadManager.m in Sources */,
+				AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */,
 				AAC60B52215AE40C005E09BA /* RNSAuth0.swift in Sources */,
 				AA67E2582149318200AE9CAC /* RNSAnimated-Bridge.m in Sources */,
 				AAE501802145801600BEAA04 /* RNAsyncKeyboardContext.swift in Sources */,
 				AA67E25521492DBE00AE9CAC /* RNSUtils.swift in Sources */,
 				AA6D99872171A2E100E04A29 /* RNLoadingCell.swift in Sources */,
+				AA2FBA2922247CA4000915F7 /* RNSDevice-Bridge.m in Sources */,
 				AAA47DC5212CC70000E71A74 /* RNAsyncListNode.swift in Sources */,
 				AAB0EF87213719B300FBCB75 /* RNAsyncViewContext.swift in Sources */,
 				AAB0EF91213D8CF500FBCB75 /* Utils.swift in Sources */,

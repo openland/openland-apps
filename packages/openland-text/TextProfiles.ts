@@ -58,7 +58,7 @@ export const TextProfiles = {
         youOrganization: 'Your organization',
         view: 'View',
         membersMore: (count: number) => (count > 1 ? ' +' + (count - 1) + ' more' : ''),
-        roomsLabel: (count: number) => count + (count === 1 ? ' room' : ' rooms'),
+        membersLabel: (count: number) => count + (count === 1 ? ' member' : ' members'),
 
         members: {
             removeFromOrganization: 'Remove from organization',

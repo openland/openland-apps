@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ViewProps, View, Platform } from 'react-native';
 import { BlurView } from 'react-native-blur';
 
-export class SBlurView extends React.PureComponent<ViewProps & { intensity?: 'normal' | 'high' }> {
+export class SBlurView extends React.PureComponent<ViewProps & { intensity?: 'normal' | 'high', color: string, blurType: 'dark' | 'light' }> {
     render() {
         let { intensity, ...other } = this.props;
         if (Platform.OS === 'ios') {
@@ -15,12 +15,12 @@ export class SBlurView extends React.PureComponent<ViewProps & { intensity?: 'no
                             right: 0,
                             top: 0,
                             bottom: 0,
-                            backgroundColor: '#fff',
+                            backgroundColor: this.props.color,
                             opacity: intensity === 'high' ? 0.9 : 0.8
                         }}
                     />
                     <BlurView
-                        blurType="light"
+                        blurType={this.props.blurType}
                         blurAmount={intensity === 'high' ? 15 : 10}
                         style={{
                             position: 'absolute',
@@ -35,7 +35,7 @@ export class SBlurView extends React.PureComponent<ViewProps & { intensity?: 'no
             );
         } else {
             return (
-                <View {...this.props} backgroundColor="#fff">
+                <View {...this.props} backgroundColor={this.props.color}>
                     {this.props.children}
                 </View>
             );

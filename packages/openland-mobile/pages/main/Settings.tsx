@@ -7,18 +7,12 @@ import { ZListItemHeader } from '../../components/ZListItemHeader';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import RNRestart from 'react-native-restart';
 import Rate from 'react-native-rate';
 import { CenteredHeader } from './components/CenteredHeader';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 
 let SettingsContent = ((props: PageProps) => {
-    const handleLogout = () => {
-        (async () => {
-            AsyncStorage.clear();
-            RNRestart.Restart();
-        })();
-    }
+
     let resp = getClient().useAccountSettings();
     let primary = resp.me!.primaryOrganization;
     let secondary = resp.organizations.filter((v) => v.id !== (primary && primary.id));
@@ -27,6 +21,7 @@ let SettingsContent = ((props: PageProps) => {
     for (let i = 0; i < secondary.length && i < 2; i++) {
         secondaryFiltered.push(secondary[i]);
     }
+    let isSuper = (resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ'));
     return (
         <SScrollView>
             <ZListItemHeader
@@ -39,29 +34,37 @@ let SettingsContent = ((props: PageProps) => {
                 action="Edit profile"
             />
             <ZListItemGroup header="Settings" divider={false}>
+                {isSuper && (
+                    <ZListItem
+                        leftIconColor="#eb7272"
+                        leftIcon={Platform.OS === 'android' ? require('assets/ic-appearance-24.png') : require('assets/ic-appearance-fill-24.png')}
+                        text="Appearance"
+                        path="SettingsAppearance"
+                    />
+                )}
                 <ZListItem
-                    leftIcon={require('assets/ic-notifications-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-fill-24.png')}
                     text="Notifications"
                     path="SettingsNotifications"
                 />
             </ZListItemGroup>
             <ZListItemGroup header="Support" divider={false}>
                 <ZListItem
-                    leftIcon={require('assets/ic-link-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-invite-fill-24.png')}
                     leftIconColor="#fe9400"
                     appearance="default"
                     text="Invite friends"
                     onPress={() => Share.share({ message: 'https://openland.com' })}
                 />
                 <ZListItem
-                    leftIcon={require('assets/ic-help-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-help-24.png') : require('assets/ic-help-fill-24.png')}
                     leftIconColor="#00bfff"
                     appearance="default"
                     text="Ask for help"
                     onPress={() => props.router.pushAndReset('Conversation', { 'flexibleId': 'mJMk3EkbzBs7dyPBPp9Bck0pxn' })}
                 />
                 <ZListItem
-                    leftIcon={require('assets/ic-rate-24.png')}
+                    leftIcon={Platform.OS === 'android' ? require('assets/ic-rate-24.png') : require('assets/ic-rate-fill-24.png')}
                     leftIconColor="#8a54ff"
                     appearance="default"
                     text="Rate the App"
@@ -74,15 +77,6 @@ let SettingsContent = ((props: PageProps) => {
                 />
             </ZListItemGroup>
 
-            {__DEV__ && (
-                <ZListItemGroup header="Dev Tools">
-                    <ZListItem text="Typography" path="DevTypography" />
-                    <ZListItem text="Components" path="DevComponents" />
-                    <ZListItem text="Navigation" path="DevNavigation" />
-                    <ZListItem text="Loader" path="DevLoader" />
-                    <ZListItem text="Log out" onPress={handleLogout} />
-                </ZListItemGroup>
-            )}
             <ZListItemGroup header="Organizations" divider={false} actionRight={{ title: '+ New', onPress: () => props.router.push('NewOrganization') }}>
                 {primary && <ZListItem
                     text={primary.name}
@@ -101,7 +95,7 @@ let SettingsContent = ((props: PageProps) => {
                     />
                 ))}
             </ZListItemGroup>
-            {(resp.me!.primaryOrganization && (resp.me!.primaryOrganization!.id === '61gk9KRrl9ComJkvYnvdcddr4o' || resp.me!.primaryOrganization!.id === 'Y9n1D03kB0umoQ0xK4nQcwjLyQ')) && (
+            {isSuper && (
                 <ZListItemGroup header={null} divider={false}>
                     <ZListItem text="Developer Menu" path="Dev" />
                 </ZListItemGroup>
@@ -111,13 +105,6 @@ let SettingsContent = ((props: PageProps) => {
 });
 
 class SettingsComponent extends React.Component<PageProps> {
-
-    handleLogout = () => {
-        (async () => {
-            AsyncStorage.clear();
-            RNRestart.Restart();
-        })();
-    }
 
     render() {
         return (

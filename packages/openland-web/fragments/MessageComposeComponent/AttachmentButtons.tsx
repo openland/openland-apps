@@ -7,7 +7,8 @@ import IntroIc from 'openland-icons/ic-attach-intro-3.svg';
 import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
 import PostIcon from 'openland-icons/ic-add-post.svg';
-import { ShortcutsModal } from '../../components/messenger/view/ShortcutsModal';
+import { ShortcutsModal } from 'openland-web/components/messenger/view/ShortcutsModal';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 import { PostMessageType } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
@@ -187,6 +188,8 @@ export const AttachmentButtons = ({
         }
     };
 
+    const { isMobile } = React.useContext(MobileSidebarContext);
+
     return (
         <XHorizontal separator="none">
             <FileInput type="file" innerRef={fileInput} onChange={handleInputChange} />
@@ -208,21 +211,23 @@ export const AttachmentButtons = ({
                 <span>Document</span>
             </AttachmentButton>
             <PostButton enabled={enabled} handleHideChat={handleHideChat} />
-            <AttachmentButton
-                query={
-                    !enabled
-                        ? undefined
-                        : {
-                              field: 'addItro',
-                              value: 'true',
-                          }
-                }
-                className="intro-button"
-                disable={!enabled}
-            >
-                <IntroIc />
-                <span>Intro</span>
-            </AttachmentButton>
+            {!isMobile && (
+                <AttachmentButton
+                    query={
+                        !enabled
+                            ? undefined
+                            : {
+                                  field: 'addItro',
+                                  value: 'true',
+                              }
+                    }
+                    className="intro-button"
+                    disable={!enabled}
+                >
+                    <IntroIc />
+                    <span>Intro</span>
+                </AttachmentButton>
+            )}
             <ShortcutsModal
                 target={
                     <AttachmentButton className="shortcuts-button">

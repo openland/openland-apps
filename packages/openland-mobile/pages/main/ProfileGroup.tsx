@@ -8,7 +8,7 @@ import { Modals } from './modals/Modals';
 import { PageProps } from '../../components/PageProps';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { SHeader } from 'react-native-s/SHeader';
-import { Room_room_SharedRoom, RoomMemberRole, UserShort } from 'openland-api/Types';
+import { Room_room_SharedRoom, RoomMemberRole, UserShort, RoomMembers_members } from 'openland-api/Types';
 import { startLoader, stopLoader } from '../../components/ZGlobalLoader';
 import { getMessenger } from '../../utils/messenger';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
@@ -21,10 +21,20 @@ import { UploadStatus } from 'openland-engines/messenger/types';
 import { ActionSheet, ActionSheetBuilder } from 'openland-mobile/components/ActionSheet';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { NotificationSettings } from './components/NotificationSetting';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 // import { changeThemeModal } from './themes/ThemeChangeModal';
+
+let isMember = (a: RoomMembers_members) => {
+    return a.role === 'MEMBER';
+}
+
+let isAdmin = (a: RoomMembers_members) => {
+    return a.role === 'ADMIN' || a.role === 'OWNER';
+}
 
 function ProfileGroupComponent(props: PageProps & { id: string }) {
 
+    const theme = React.useContext(ThemeContext);
     const client = useClient();
 
     const room = client.useRoom({ id: props.id }).room as Room_room_SharedRoom;
@@ -194,7 +204,11 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
     //     changeThemeModal(room.id);
     // }, [room.id])
 
-    const sortedMembers = room.members.sort((a, b) => a.user.name.localeCompare(b.user.name));
+    // Sort members by name (admins should go first)
+    const sortedMembers = room.members
+        .sort((a, b) => a.user.name.localeCompare(b.user.name))
+        .sort((a, b) => (isAdmin(a) && isMember(b) ? -1 : 1));
+
     const subtitle = (room.membersCount || 0) > 1 ? room.membersCount + ' members' : (room.membersCount || 0) + ' member';
 
     return (
@@ -271,7 +285,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
                 ))}
             </ZListItemGroup>
 
-            {Platform.OS === 'ios' && <View backgroundColor="#eff0f2" height={0.5} alignSelf="stretch" margin={16} />}
+            {Platform.OS === 'ios' && <View backgroundColor={theme.separatorColor} height={0.5} alignSelf="stretch" marginLeft={16} />}
 
             <ZListItemGroup header={Platform.OS === 'ios' ? undefined : null} divider={false}>
                 <ZListItem

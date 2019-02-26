@@ -33,8 +33,8 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
             this.augLayout = layoutMedia(width!, height!, maxSize, maxSize);
 
             let imageSize = {
-                width: this.augLayout.width * PixelRatio.get(),
-                height: this.augLayout.height * PixelRatio.get(),
+                width: Math.round(this.augLayout.width * PixelRatio.get()),
+                height: Math.round(this.augLayout.height * PixelRatio.get()),
             };
 
             this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.urlAugmentation.imageURL, imageSize, (state) => {

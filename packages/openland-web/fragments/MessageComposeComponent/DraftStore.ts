@@ -5,27 +5,28 @@ const getDraftKey = (conversationId?: string): string => {
     return 'conversation_draft_1_' + conversationId;
 };
 
-export const getDraftMessage = (conversationId?: string): string => {
+export const getDraftMessage = (conversationId?: string): string | null => {
+    let result;
     if (!conversationId) {
-        return '';
+        result = null;
     }
 
-    const message = window.localStorage.getItem(getDraftKey(conversationId)) || '';
+    result = window.localStorage.getItem(getDraftKey(conversationId)) || '';
     let draftKey = getDraftKey(conversationId);
 
-    if (message === draftKey) {
-        return '';
+    if (result === draftKey) {
+        result = null;
     }
 
-    return message;
+    return result;
 };
 
 export const setDraftMessage = (conversationId?: string, src?: string): void => {
     if (!conversationId) {
-        throw Error('no conversationId');
+        return;
     }
     if (src === undefined) {
-        throw Error('no src');
+        return;
     }
 
     window.localStorage.setItem(getDraftKey(conversationId), src);
@@ -33,7 +34,7 @@ export const setDraftMessage = (conversationId?: string, src?: string): void => 
 
 export const cleanDraftMessage = (conversationId?: string): void => {
     if (!conversationId) {
-        throw Error('no conversationId');
+        return;
     }
 
     let draftKey = getDraftKey(conversationId);

@@ -42,6 +42,7 @@ export interface EditPostProps {
 }
 
 interface MessagesComponentProps {
+    isActive: boolean;
     organizationId: string | null;
     conversationId: string;
     loading: boolean;
@@ -117,6 +118,7 @@ export const LeaveChatComponent = withChatLeave(props => {
 });
 
 interface ComposeHandlerProps extends MessageComposeComponentProps {
+    isActive: boolean;
     variables?: {
         roomId?: string;
         conversationId?: string;
@@ -297,6 +299,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                 {!this.state.hideChat && (
                     <>
                         <ConversationMessagesComponent
+                            isActive={this.props.isActive}
                             ref={this.messagesList}
                             key={this.props.conversationId}
                             me={this.props.me}
@@ -312,6 +315,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                         {!this.state.hideInput && (
                             <UploadContextProvider>
                                 <MessageComposeHandler
+                                    isActive={this.props.isActive}
                                     getMessages={this.getMessages}
                                     conversation={this.conversation}
                                     onChange={this.handleChange}
@@ -340,6 +344,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 }
 
 interface MessengerRootComponentProps {
+    isActive: boolean;
     organizationId: string | null;
     conversationId: string;
     conversationType: SharedRoomKind | 'PRIVATE';
@@ -352,6 +357,7 @@ export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
     return (
         <MessagesComponent
+            isActive={props.isActive}
             me={messenger.user}
             loading={false}
             organizationId={props.organizationId}

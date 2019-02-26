@@ -3,7 +3,7 @@ import { NavigationManager } from '../NavigationManager';
 import { HeaderPage } from './HeaderPage';
 import { SNavigationViewStyle } from '../../SNavigationView';
 import { SDevice } from '../../SDevice';
-import { StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, Platform } from 'react-native';
+import { Image, StyleSheet, ViewStyle, TextStyle, View, Text, TextInput, BackHandler, Platform, TouchableOpacity, Dimensions } from 'react-native';
 import { SAnimated } from '../../SAnimated';
 import { SCloseButton } from 'react-native-s/SCloseButton';
 import { SBackButton } from 'react-native-s/SBackButton';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         flexBasis: 0,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
+        // backgroundColor: Platform.OS === 'android' ? '#fff' : undefined // Needed for ripple effect to work
     } as ViewStyle,
     title: {
         textAlign: 'left',
@@ -95,10 +95,13 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
     render() {
         let v = this.props.page;
         let title = <Text style={[styles.title, { color: this.props.style.textColor }, this.props.page.page.startIndex === 0 ? styles.rootFirst : {}]}>{this.props.page.config.title}</Text>;
-        title = (v.config.titleView && v.config.titleView()) || title;
+        title = (v.config.titleView && <View flexGrow={1} flexShrink={1} minWidth={0} flexBasis={0} alignItems="stretch">{v.config.titleView()}</View>) || title;
+
+        let showCloseButton = !v.config.searchActive && (!!this.props.manager.parent && this.props.page.page.startIndex === 0);
+        let showBackButton = !showCloseButton && (this.props.page.page.startIndex !== 0 || v.config.searchActive);
         return (
             <SAnimated.View name={'header--' + this.props.page.page.key} style={styles.root} pointerEvents={this.props.current ? 'box-none' : 'none'}>
-                <View style={styles.titleContainer} pointerEvents="box-none">
+                <View style={[styles.titleContainer, { backgroundColor: this.props.style.backgroundColor }]} pointerEvents="box-none">
                     <View
                         style={{
                             position: 'absolute',
@@ -114,9 +117,20 @@ export class HeaderTitleView extends React.PureComponent<{ manager: NavigationMa
                             alignItems="center"
                             flexGrow={1}
                         >
-                            {!v.config.searchActive && (!!this.props.manager.parent && this.props.page.page.startIndex === 0) && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.accentColor} />}
-                            {(this.props.manager.parent || this.props.page.page.startIndex !== 0 || v.config.searchActive) && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.textColor} />}
-                            {v.config.searchActive && <TextInput style={{ flexGrow: 1, fontSize: 18 }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" />}
+                            {showCloseButton && <SCloseButton onPress={this.props.manager.pop} tintColor={this.props.style.textColor} />}
+                            {showBackButton && <SBackButton onPress={v.config.searchActive ? v.config.searchClosed!! : this.props.manager.pop} tintColor={this.props.style.textColor} />}
+                            {v.config.searchActive && (
+                                <>
+                                    <TextInput style={{ flexGrow: 1, fontSize: 18, width: Dimensions.get('window').width - 56 - 56 }} value={this.state.searchText} onChangeText={this.handleTextChange} autoFocus={true} placeholder="Search" />
+                                    {this.state.searchText.length > 0 && (
+                                        <TouchableOpacity onPress={() => this.handleTextChange('')}>
+                                            <View style={{ height: 44, width: 56, justifyContent: 'center', alignItems: 'center' }}>
+                                                <Image source={require('assets/ic-cancel.png')} style={{ tintColor: this.props.style.textColor, width: 14, height: 14 }} />
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+                                </>
+                            )}
                             {!v.config.searchActive && title}
                         </View>
                         <View flexDirection="row" alignItems="center" alignSelf="flex-end" paddingRight={2}>

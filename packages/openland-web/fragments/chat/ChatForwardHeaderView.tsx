@@ -7,8 +7,9 @@ import { UserShort } from 'openland-api/Types';
 import CloseIcon from 'openland-icons/ic-close.svg';
 import { MessagesStateContext } from 'openland-web/components/messenger/MessagesStateContext';
 import { withDeleteMessages } from 'openland-web/api/withDeleteMessage';
-import { XMutation } from 'openland-x/XMutation';
+import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { css } from 'linaria';
+import { XText } from 'openland-x/XText';
 
 const ClearIconClass = css`
     margin-top: 4px;
@@ -24,21 +25,26 @@ const ClearIconClass = css`
     }
 `;
 
-const DeleteMessagesButton = withDeleteMessages(props => (
-    <XMutation
-        mutation={props.deleteMessages}
-        onSuccess={(props as any).onSuccess}
-        variables={{
-            roomId: (props as any).roomId,
-            mids: (props as any).messagesIds,
+const DeleteMessagesFrom = withDeleteMessages(props => (
+    <XModalForm
+        submitProps={{
+            text: 'Delete',
+            style: 'danger',
+        }}
+        title="Delete message"
+        target={<XButton text="Delete" style="default" />}
+        defaultAction={async data => {
+            await props.deleteMessages({
+                variables: {
+                    mids: (props as any).messagesIds,
+                },
+            });
         }}
     >
-        {props.children}
-    </XMutation>
+        <XText>Delete selected messages for everyone? This cannot be undone.</XText>
+    </XModalForm>
 )) as React.ComponentType<{
-    roomId: string;
     messagesIds: string[];
-    onSuccess: () => void;
 }>;
 
 export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) => {
@@ -69,25 +75,17 @@ export const ChatForwardHeaderView = (props: { me: UserShort; roomId: string }) 
                 </XView>
                 <XHorizontal alignItems="center" separator={5}>
                     <XWithRole role="super-admin">
-                        <DeleteMessagesButton
-                            roomId={props.roomId}
+                        <DeleteMessagesFrom
                             messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                            onSuccess={state.resetAll}
-                        >
-                            <XButton text="Delete" style="default" />
-                        </DeleteMessagesButton>
+                        />
                     </XWithRole>
                     <XWithRole role="super-admin" negate={true}>
                         {!Array.from(state.selectedMessages).find(
                             msg => msg.sender.id !== props.me.id,
                         ) && (
-                            <DeleteMessagesButton
-                                roomId={props.roomId}
+                            <DeleteMessagesFrom
                                 messagesIds={Array.from(state.selectedMessages).map(m => m.id!!)}
-                                onSuccess={state.resetAll}
-                            >
-                                <XButton text="Delete" style="default" />
-                            </DeleteMessagesButton>
+                            />
                         )}
                     </XWithRole>
                     <XButton

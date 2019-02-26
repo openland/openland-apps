@@ -5,35 +5,28 @@ import { ASSafeAreaContext } from 'react-native-async-view/ASSafeAreaContext';
 import { Platform, View } from 'react-native';
 import { androidMessageInputListOverlap } from './ConversationView';
 import { getMessenger } from 'openland-mobile/utils/messenger';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ConversationMessagesViewProps {
     loaded: boolean;
     engine: ConversationEngine;
 }
 
-export class ConversationMessagesView extends React.PureComponent<ConversationMessagesViewProps> {
+export const ConversationMessagesView = React.memo<ConversationMessagesViewProps>((props) => {
 
-    scrollToStart = () => {
-        // TODO: Implement
-    }
-
-    render() {
-        return (
-            <ASSafeAreaContext.Consumer>
-                {area => (
-                    <View marginTop={Platform.OS === 'ios' ? -500 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
-                        <ASListView
-                            dataView={getMessenger().getConversation(this.props.engine.conversationId)}
-                            inverted={true}
-                            contentPaddingTop={area.top + (Platform.OS === 'ios' ? 500 : 0)}
-                            contentPaddingBottom={0}
-                            style={{ flexGrow: 1 }}
-                            headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
-                            overflowColor="#ffffff"
-                        />
-                    </View>
-                )}
-            </ASSafeAreaContext.Consumer>
-        );
-    }
-}
+    let safeArea = React.useContext(ASSafeAreaContext);
+    let theme = React.useContext(ThemeContext);
+    return (
+        <View marginTop={Platform.OS === 'ios' ? -500 : 0} justifyContent="flex-start" alignItems="stretch" flexGrow={1}>
+            <ASListView
+                dataView={getMessenger().getConversation(props.engine.conversationId)}
+                inverted={true}
+                contentPaddingTop={safeArea.top + (Platform.OS === 'ios' ? 500 : 0)}
+                contentPaddingBottom={0}
+                style={{ flexGrow: 1 }}
+                headerPadding={Platform.select({ ios: 6, android: androidMessageInputListOverlap })}
+                overflowColor={theme.backgroundColor}
+            />
+        </View>
+    );
+});

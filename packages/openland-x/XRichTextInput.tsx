@@ -409,12 +409,16 @@ export class XRichTextInput extends React.Component<XRichTextInputProps, XRichTe
 
     focus = () => {
         window.requestAnimationFrame(() => {
-            this.setState({
-                editorState: EditorState.moveFocusToEnd(this.state.editorState),
-            });
-            if (this.editorRef.current) {
-                this.editorRef.current.focus();
-            }
+            this.setState(
+                {
+                    editorState: EditorState.moveFocusToEnd(this.state.editorState),
+                },
+                () => {
+                    if (this.editorRef.current) {
+                        this.editorRef.current.focus();
+                    }
+                },
+            );
         });
     };
 

@@ -286,7 +286,9 @@ export class HeaderCoordinator {
 
     private resolveHairlineOpacity(config: HeaderConfig) {
         let res: number = 1;
-        if (config.appearance === 'large' || config.appearance === undefined) {
+        if (config.hairline === 'hidden') {
+            res = 0;
+        } else if (config.appearance === 'large' || config.appearance === undefined) {
             if (config.search && config.searchActive) {
                 res = 1;
             } else if (!config.search) {
@@ -305,12 +307,15 @@ export class HeaderCoordinator {
                 res = 0;
             }
         }
+
         return res;
     }
 
     private resolveHairlineOpacityAndroid(config: HeaderConfig) {
         let res: number = 1;
-        if (config.appearance === 'large' || config.appearance === undefined || config.appearance === 'small-hidden') {
+        if (config.hairline === 'hidden') {
+            res = 0;
+        } else if (config.appearance === 'large' || config.appearance === undefined || config.appearance === 'small-hidden') {
             if (config.contentOffset) {
                 res = config.contentOffset.offsetValue <= 0 ? 0 : 1;
             } else {

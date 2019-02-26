@@ -240,7 +240,13 @@ export class WorkerApolloClient implements GraphqlClient {
     }
 
     async updateQuery<TQuery, TVars>(updater: (data: TQuery) => TQuery | null, query: GraphqlQuery<TQuery, TVars>, vars?: TVars): Promise<boolean> {
-        let r = await this.readQuery(query, vars);
+        let r = undefined;
+        try {
+            // https://github.com/apollographql/apollo-feature-requests/issues/1
+            r = await this.readQuery(query, vars);
+        } catch (e) {
+            //
+        }
         if (r) {
             let udpated = updater(r);
             if (udpated) {

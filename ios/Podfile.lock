@@ -112,6 +112,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - ReactNativeIncallManager (3.2.2):
+    - React
   - rn-fetch-blob (0.10.6):
     - React/Core
   - RNDeviceInfo (0.21.5):
@@ -177,6 +179,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - ReactNativeIncallManager (from `../node_modules/react-native-incall-manager`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -234,6 +237,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-webrtc:
     :path: "../node_modules/react-native-webrtc"
+  ReactNativeIncallManager:
+    :path: "../node_modules/react-native-incall-manager"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
   RNDeviceInfo:
@@ -274,6 +279,7 @@ SPEC CHECKSUMS:
   react-native-haptic-feedback: f675486e3889e3229272158943c1e9e075247e5a
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
   react-native-webrtc: 31b6d3f1e3e2ce373aa43fd682b04367250f807d
+  ReactNativeIncallManager: c79b48e706ba3e495c747ea9ff5962378a65c04a
   rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
   RNDeviceInfo: 568c5641057313b4912d08a7742ff0b2f753ed5c
   RNGestureHandler: afde2addc517e85cc97a25bfe119acbee779a7ce
@@ -287,6 +293,6 @@ SPEC CHECKSUMS:
   Texture: 9d7e38965cf22ccd7cd9c249dd78b3f14e70ab6c
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 3ea965d400738e44d81e357e8edc4d06ea307703
+PODFILE CHECKSUM: fdae36f3bb9b8fbebe9b12d7071f329f57646e94
 
 COCOAPODS: 1.5.3

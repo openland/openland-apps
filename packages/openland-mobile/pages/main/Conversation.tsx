@@ -30,6 +30,8 @@ import { checkFileIsPhoto } from 'openland-y-utils/checkFileIsPhoto';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { showCallModal } from './Call';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -82,8 +84,8 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
     saveDraft = () => {
         AsyncStorage.multiSet([
-            [ 'compose_draft_' + this.props.chat.id, this.state.text ],
-            [ 'compose_draft_mentions_' + this.props.chat.id, JSON.stringify(this.state.mentionedUsers) ],
+            ['compose_draft_' + this.props.chat.id, this.state.text],
+            ['compose_draft_mentions_' + this.props.chat.id, JSON.stringify(this.state.mentionedUsers)],
         ]);
     }
 
@@ -244,23 +246,23 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let path = resolveConversationProfilePath(this.props.chat);
         let header = (
             <TouchableOpacity disabled={!path.path} onPress={() => this.props.router.push(path.path!, path.pathArgs)}>
-                <View flexDirection="row">
+                <View flexDirection="row" flexShrink={1} marginLeft={Platform.OS === 'android' ? -12 : 0}>
                     <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
                     <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />
                 </View>
             </TouchableOpacity>
         );
-        if (Platform.OS === 'ios') {
-            header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
-        }
-        let button = null;
-        if (Platform.OS === 'ios') {
-            button = (
-                <SHeaderButton>
-                    <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
-                </SHeaderButton>
-            );
-        }
+        // if (Platform.OS === 'ios') {
+        //     header = <ChatHeader conversationId={this.engine.conversationId} router={this.props.router} />;
+        // }
+        // let button = null;
+        // if (Platform.OS === 'ios') {
+        //     button = (
+        //         <SHeaderButton>
+        //             <ChatHeaderAvatar conversationId={this.engine.conversationId} router={this.props.router} />
+        //         </SHeaderButton>
+        //     );
+        // }
 
         let mentions = null;
         let activeWord = findActiveWord(this.state.text, this.state.selection);
@@ -276,10 +278,15 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
         return (
             <>
-                <SHeaderView accentColor={this.state.theme.mainColor}>
+                <SHeaderView>
                     {header}
                 </SHeaderView>
-                {button}
+                <SHeaderButton
+                    title="Call"
+                    icon={require('assets/ic-call-20.png')}
+                    onPress={async () => { showCallModal(this.props.chat.id); }}
+                />
+                {/* {button} */}
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
@@ -315,6 +322,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 }
 
 const ConversationComponent = XMemo<PageProps>((props) => {
+    let theme = React.useContext(ThemeContext);
     let messenger = getMessenger();
     let room = getClient().useRoomTiny({ id: props.router.params.flexibleId || props.router.params.id });
     let sharedRoom = room.room!.__typename === 'SharedRoom' ? room.room! as Room_room_SharedRoom : null;
@@ -354,10 +362,10 @@ const ConversationComponent = XMemo<PageProps>((props) => {
 
                             />
                             <View flexDirection="column" zIndex={- 1}>
-                                <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} />
-                                <Text style={{ fontSize: 20, fontWeight: '500', color: '#000', textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
-                                <Text style={{ fontSize: 15, color: '#8a8a8f', textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
-                                <Text style={{ fontSize: 14, color: '#8a8a8f', textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
+                                {/* <Image source={require('assets/back.png')} resizeMode="stretch" style={{ position: 'absolute', width: '250%', height: '300%', top: '-75%', left: '-75%' }} /> */}
+                                <Text style={{ fontSize: 20, fontWeight: '500', color: theme.textColor, textAlign: 'center', marginTop: 22, marginLeft: 32, marginRight: 32 }} >{sharedRoom.title}</Text>
+                                <Text style={{ fontSize: 15, color: theme.textLabelColor, textAlign: 'center', marginTop: 7, marginLeft: 32, marginRight: 32, lineHeight: 22 }} >{sharedRoom.description}</Text>
+                                <Text style={{ fontSize: 14, color: theme.textLabelColor, textAlign: 'center', marginTop: 10, marginLeft: 32, marginRight: 32, lineHeight: 18 }} >{sharedRoom.membersCount + ' members'}</Text>
                             </View>
                         </View>
                         <View alignSelf="center" marginBottom={46}>
@@ -415,4 +423,4 @@ const ConversationComponent = XMemo<PageProps>((props) => {
     );
 });
 
-export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small' });
+export const Conversation = withApp(ConversationComponent, { navigationAppearance: 'small', hideBackText: true, hideHairline: true });

@@ -7,6 +7,7 @@ import { Room_room_SharedRoom, Room_room_PrivateRoom } from 'openland-api/Types'
 import { formatLastSeen } from 'openland-mobile/utils/formatTime';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 const styles = StyleSheet.create({
     androidTitle: {
@@ -15,27 +16,29 @@ const styles = StyleSheet.create({
         height: 26,
         color: '#000',
         letterSpacing: 0.3,
-        marginBottom: 1
+        marginBottom: 1,
+        marginRight: 16
     } as TextStyle,
     androidSubTitle: {
         fontSize: 14,
         height: 18,
         color: '#000',
-        opacity: 0.6,
+        // opacity: 0.6,
         marginTop: -4
     } as TextStyle,
 
     iosTitle: {
-        fontSize: 15,
-        height: 18,
+        fontSize: 17,
+        height: 21,
         color: '#000',
-        fontWeight: '500'
+        fontWeight: '600',
+        flexShrink: 1
     } as TextStyle,
     iosSubTitle: {
-        fontSize: 12,
-        height: 14,
+        fontSize: 14,
+        height: 16,
         color: '#000',
-        opacity: 0.6
+        // opacity: 0.6
     } as TextStyle,
 
     subTitleAccent: {
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
 });
 
 const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typing?: string }>((props) => {
+    let theme = React.useContext(ThemeContext);
     let room = getClient().useRoomTiny({ id: props.conversationId });
 
     let accent = false;
@@ -96,12 +100,12 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     }
 
     return (
-        <View flexDirection="column" alignItems={isAndroid ? 'flex-start' : 'center'} marginTop={isAndroid ? -6 : undefined} justifyContent="center" alignSelf="center" pointerEvents="box-none" height={44}>
+        <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
                 {(sharedRoom && sharedRoom.kind === 'GROUP') && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: 'green' }} /></View>)}
-                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, sharedRoom && sharedRoom.kind === 'GROUP' && { color: 'green' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }, sharedRoom && sharedRoom.kind === 'GROUP' && { color: 'green' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
-            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? styles.subTitleAccent : {}]}>{subtitle}</Text>
+            <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentColor } : { color: theme.textLabelColor }]}>{subtitle}</Text>
         </View>
     );
 });

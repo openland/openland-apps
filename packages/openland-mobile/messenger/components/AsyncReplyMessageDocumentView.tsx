@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
-import { AsyncBubbleView } from './AsyncBubbleView';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ASText } from 'react-native-async-view/ASText';
@@ -10,7 +9,7 @@ import { DownloadManagerInstance } from '../../../openland-mobile/files/Download
 import { WatchSubscription } from '../../../openland-y-utils/Watcher';
 import { UploadManagerInstance } from '../../files/UploadManager';
 import { DownloadState } from '../../files/DownloadManagerInterface';
-import { ASView } from 'react-native-async-view/ASView';
+
 const paddedText = '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }));
 const paddedTextOut = '\u00A0'.repeat(Platform.select({ default: 16, ios: 13 }));
 

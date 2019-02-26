@@ -18,7 +18,8 @@ import { XLoader } from 'openland-x/XLoader';
 import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import LinkIcon from 'openland-icons/ic-link.svg';
-import { XCreateCard } from '../../../openland-x/cards/XCreateCard';
+import { XCreateCard } from 'openland-x/cards/XCreateCard';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -119,8 +120,11 @@ interface InviteModalState {
     selectedUsers: Map<string, string> | null;
 }
 
-class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteModalState> {
-    constructor(props: InviteModalProps) {
+class RoomAddMemberModalInner extends React.Component<
+    InviteModalProps & { isMobile: boolean },
+    InviteModalState
+> {
+    constructor(props: InviteModalProps & { isMobile: boolean }) {
         super(props);
 
         this.state = { searchQuery: '', selectedUsers: null };
@@ -176,7 +180,8 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
                 title="Add members"
                 target={props.target}
                 submitBtnText="Add"
-                width={520}
+                width={props.isMobile ? undefined : 520}
+                flexGrow={props.isMobile ? 1 : undefined}
                 useTopCloser={true}
                 targetQuery="inviteMembers"
                 defaultAction={async data => {
@@ -227,6 +232,11 @@ class RoomAddMemberModalInner extends React.Component<InviteModalProps, InviteMo
     }
 }
 
+const RoomAddMemberModalRoot = (props: InviteModalProps) => {
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    return <RoomAddMemberModalInner {...props} isMobile={isMobile} />;
+};
+
 type RoomAddMemberModalUsersT = {
     variables: { roomId: string };
     roomId: string;
@@ -237,7 +247,7 @@ type RoomAddMemberModalUsersT = {
 const RoomAddMemberModalUsers = withRoomMembersId(props => {
     const typedProps = props as typeof props & RoomAddMemberModalUsersT;
     return (
-        <RoomAddMemberModalInner
+        <RoomAddMemberModalRoot
             {...typedProps}
             addMembers={typedProps.addMembers}
             roomId={typedProps.roomId}
