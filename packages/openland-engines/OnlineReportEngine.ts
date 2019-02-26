@@ -7,13 +7,16 @@ export class OnlineReportEngine {
     private visible = true;
     private breakable?: () => void;
 
-    constructor(engine: MessengerEngine) {
+    constructor(engine: MessengerEngine, platform: string) {
         this.engine = engine;
 
         (async () => {
             while (this.alive) {
                 let active = this.visible;
-                await backoff(async () => engine.client.mutateReportOnline({ active: active }));
+                await backoff(async () => engine.client.mutateReportOnline({
+                    active: active,
+                    platform: platform
+                }));
                 if (this.visible !== active) {
                     continue;
                 }
