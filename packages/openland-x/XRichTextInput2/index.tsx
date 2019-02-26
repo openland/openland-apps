@@ -1,59 +1,14 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {
-    Editor,
-    EditorState,
-    Modifier,
-    SelectionState,
-    ContentState,
-    CompositeDecorator,
-    ContentBlock,
-    getDefaultKeyBinding,
-    DraftHandleValue,
-} from 'draft-js';
+import { Editor, getDefaultKeyBinding, DraftHandleValue } from 'draft-js';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { extractFlexProps, XFlexStyles, applyFlex } from '../basics/Flex';
-import { css, cx } from 'linaria';
-import Glamorous from 'glamorous';
+import { XFlexStyles } from '../basics/Flex';
+import { MentionSuggestionsContainer } from './MentionSuggestionsContainer';
 import { emoji } from 'openland-y-utils/emoji';
 import { useMentionSuggestions } from './useMentionSuggestions';
-
-function findActiveWordStart(state: EditorState): number {
-    let content = state.getCurrentContent();
-    let selection = state.getSelection();
-    if (selection.getStartKey() !== selection.getEndKey()) {
-        return -1;
-    }
-    let text = content.getBlockForKey(selection.getStartKey()).getText();
-
-    let startIndex = selection.getStartOffset() - 1;
-    while (startIndex >= 0) {
-        if (text.charAt(startIndex) !== ' ') {
-            startIndex--;
-        } else {
-            break;
-        }
-    }
-    return startIndex + 1;
-}
-
-function findActiveWord(state: EditorState): string | undefined {
-    let content = state.getCurrentContent();
-    let selection = state.getSelection();
-    if (!selection.getHasFocus()) {
-        return undefined;
-    }
-    let text = content.getBlockForKey(selection.getStartKey()).getText();
-    let startIndex = findActiveWordStart(state);
-    let res = text.substring(startIndex, selection.getEndOffset());
-    if (res.length === 0) {
-        return undefined;
-    } else {
-        return res;
-    }
-}
+import { useInputMethods } from './useInputMethods';
+import { useHandleEditorChange } from './useHandleEditorChange';
 
 export type MentionDataT = {
     id: string;
@@ -75,28 +30,6 @@ export interface XRichTextInput2Props extends XFlexStyles {
     onCurrentWordChanged?: (word: string | undefined) => void;
 }
 
-function findLinkMention(contentBlock: ContentBlock, callback: any, contentState: ContentState) {
-    contentBlock.findEntityRanges(character => {
-        const entityKey = character.getEntity();
-        return entityKey !== null && contentState.getEntity(entityKey).getType() === 'MENTION';
-    }, callback);
-}
-
-const Container = Glamorous.div<XFlexStyles>([
-    {
-        position: 'relative',
-        '& .public-DraftEditorPlaceholder-root:not(.public-DraftEditorPlaceholder-hasFocus)': {
-            color: 'rgba(0, 0, 0, 0.5)',
-        },
-    },
-    applyFlex,
-]);
-
-class ContainerWrapper extends React.PureComponent {
-    render() {
-        return <Container {...this.props} />;
-    }
-}
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
     console.log(e);
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
@@ -219,85 +152,6 @@ const getRelativeParent: (element: HTMLElement) => HTMLElement | null = (element
     return getRelativeParent(element.parentElement!!);
 };
 
-const mentionSuggestionsWrapperShow = css`
-    transform: scale(1);
-`;
-
-const mentionSuggestionsWrapperHide = css`
-    transform: scale(0);
-`;
-
-const mentionSuggestionsWrapperClassName = css`
-    left: 0px;
-    bottom: 0px;
-    transform-origin: 1em 0%;
-    transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
-    position: absolute;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: none;
-    z-index: 100;
-    bottom: 50px;
-    left: 0;
-    cursor: pointer;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-`;
-
-const MentionSuggectionsContainer = (props: any) => {
-    const containerRef = React.useRef<ContainerWrapper>(null);
-
-    const [sizeOfContainer, setSizeOfContainer] = React.useState<{
-        width: number;
-        height: number;
-    }>({ width: 0, height: 0 });
-
-    React.useLayoutEffect(() => {
-        const containerEl =
-            containerRef &&
-            containerRef.current &&
-            (ReactDOM.findDOMNode(containerRef.current) as Element);
-
-        const newWidthOfContainer = containerEl ? containerEl.getBoundingClientRect().width : 0;
-        const newHeightOfContainer = containerEl ? containerEl.getBoundingClientRect().height : 0;
-
-        if (
-            sizeOfContainer.width !== newWidthOfContainer ||
-            sizeOfContainer.height !== newHeightOfContainer
-        ) {
-            setSizeOfContainer({
-                width: newWidthOfContainer,
-                height: newHeightOfContainer,
-            });
-        }
-    }, []);
-
-    const { children, suggestions, showSuggestions } = props;
-
-    return (
-        <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-            <div
-                className={cx(
-                    mentionSuggestionsWrapperClassName,
-                    showSuggestions ? mentionSuggestionsWrapperShow : mentionSuggestionsWrapperHide,
-                )}
-                style={{
-                    width: sizeOfContainer.width,
-                    left: showSuggestions ? 0 : sizeOfContainer.width / 2,
-                    bottom: showSuggestions ? 50 : sizeOfContainer.height / 2,
-                }}
-            >
-                {suggestions}
-            </div>
-            {children}
-        </ContainerWrapper>
-    );
-};
-
 export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRichTextInput2Props>(
     (props: XRichTextInput2Props, ref) => {
         if (!canUseDOM) {
@@ -305,26 +159,6 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         }
 
         const editorRef = React.useRef<Editor>(null);
-
-        const [plainText, setPlainText] = React.useState('');
-        const [activeWord, setActiveWord] = React.useState<string>('');
-
-        const getEditorStateFromText = (text: string) => {
-            return EditorState.moveFocusToEnd(
-                EditorState.createWithContent(
-                    ContentState.createFromText(text),
-                    new CompositeDecorator([
-                        {
-                            strategy: findLinkMention,
-                            component: (p: any) => (
-                                <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
-                            ),
-                        },
-                    ]),
-                ),
-            );
-        };
-        const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
 
         const onHandleKey = (command: string) => {
             if (command === 'x-editor-submit') {
@@ -335,47 +169,23 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
             return 'not-handled';
         };
-        const focus = () => {
-            window.requestAnimationFrame(() => {
-                if (editorRef && editorRef.current) {
-                    editorRef.current.focus();
-                }
-            });
-        };
 
-        const resetAndFocus = () => {
-            window.requestAnimationFrame(() => {
-                setEditorState(
-                    EditorState.push(editorState, ContentState.createFromText(''), 'remove-range'),
-                );
+        const {
+            editorState,
+            setEditorState,
+            activeWord,
+            handleEditorChange,
+        } = useHandleEditorChange({
+            onChange: props.onChange,
+            value: props.value,
+        });
 
-                focus();
-            });
-        };
-
-        // hack to fix useImperativeHandle typings
-        const useImperativeHandle = (React as any)
-            .useImperativeHandle as typeof React.useImperativeMethods;
-
-        useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
-            focus,
-            resetAndFocus: () => {
-                window.requestAnimationFrame(() => {
-                    setEditorState(
-                        EditorState.push(
-                            editorState,
-                            ContentState.createFromText(''),
-                            'remove-range',
-                        ),
-                    );
-
-                    focus();
-                });
-            },
-            getHasFocus: () => {
-                return editorState.getSelection().getHasFocus();
-            },
-        }));
+        const { resetAndFocus } = useInputMethods({
+            ref,
+            editorRef,
+            editorState,
+            setEditorState,
+        });
 
         const onPasteFiles = (files: Blob[]): DraftHandleValue => {
             let file = files[0];
@@ -391,19 +201,6 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             return 'handled';
         };
 
-        const handleEditorChange = (newEditorState: EditorState) => {
-            const newActiveWord = findActiveWord(newEditorState);
-
-            if (activeWord !== newActiveWord) {
-                setActiveWord(newActiveWord || '');
-            }
-
-            const newPlainText = editorState.getCurrentContent().getPlainText();
-
-            setEditorState(newEditorState);
-            setPlainText(newPlainText);
-        };
-
         const {
             handleDown,
             handleUp,
@@ -414,21 +211,8 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             activeWord,
         });
 
-        React.useLayoutEffect(() => {
-            if (props.onChange) {
-                props.onChange(plainText);
-            }
-        }, [plainText]);
-
-        React.useLayoutEffect(() => {
-            if (props.value !== plainText) {
-                setEditorState(getEditorStateFromText(props.value));
-                setPlainText(props.value);
-            }
-        }, [props.value]);
-
         return (
-            <MentionSuggectionsContainer
+            <MentionSuggestionsContainer
                 {...props}
                 showSuggestions={filteredSuggestions.length !== 0}
                 suggestions={filteredSuggestions.map((mention, key) => {
@@ -453,7 +237,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                     editorState={editorState}
                     onChange={handleEditorChange}
                 />
-            </MentionSuggectionsContainer>
+            </MentionSuggestionsContainer>
         );
     },
 );
