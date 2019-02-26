@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../basics/Flex';
-import createEmojiPlugin from 'draft-js-emoji-plugin';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 
 const Container = Glamorous.div<XFlexStyles>([
@@ -16,40 +15,32 @@ const Container = Glamorous.div<XFlexStyles>([
     applyFlex,
 ]);
 
-const EmojiWrapper = Glamorous.div({
-    position: 'absolute',
-    top: 11,
-    right: 12,
-    '& > div': {
-        display: 'block',
-    },
-    '& > div > button': {
-        width: 18,
-        height: 18,
-        opacity: 1,
-        borderRadius: 50,
-        border: 'none',
-        display: 'block',
-        paddingBottom: 0,
-        background: 'none!important',
-        '& svg': {
-            display: 'block',
-            '& *': {
-                fill: 'rgba(0, 0, 0, 0.25)',
-            },
-        },
-        '&:hover svg *': {
-            fill: '#1790ff',
-        },
-        '&.draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu svg *': {
-            fill: '#1790ff',
-        },
-    },
-    '& > div > div': {
-        bottom: 50,
-        right: 0,
-    },
-});
+const emojiWrapperClassName = css`
+    position: absolute;
+    top: 11px;
+    right: 12px;
+
+    & * {
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+        fill: rgba(0, 0, 0, 0.25);
+    }
+    &:hover * {
+        fill: #1790ff;
+    }
+`;
+
+const EmojiButton = () => (
+    <div
+        className={emojiWrapperClassName}
+        onClick={() => {
+            console.log('open emoji picker');
+        }}
+    >
+        <EmojiIcon />
+    </div>
+);
 
 class ContainerWrapper extends React.PureComponent {
     render() {
@@ -86,12 +77,7 @@ const mentionSuggestionsWrapperClassName = css`
     box-sizing: border-box;
 `;
 
-const emojiPlugin = createEmojiPlugin({
-    selectButtonContent: <EmojiIcon />,
-});
-
 export const MentionSuggestionsContainer = (props: any) => {
-    const { EmojiSelect } = emojiPlugin;
     const containerRef = React.useRef<ContainerWrapper>(null);
 
     const [sizeOfContainer, setSizeOfContainer] = React.useState<{
@@ -137,9 +123,7 @@ export const MentionSuggestionsContainer = (props: any) => {
                 {suggestions}
             </div>
             {children}
-            <EmojiWrapper className="emoji-button">
-                <EmojiSelect />
-            </EmojiWrapper>
+            <EmojiButton />
         </ContainerWrapper>
     );
 };
