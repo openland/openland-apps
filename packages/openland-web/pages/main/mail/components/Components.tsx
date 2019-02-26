@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XView } from 'react-mental';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
@@ -48,7 +48,19 @@ type PageInnerProps = {
     cid: string | null | undefined;
 };
 
-const MobileConversationContainer = ({ children }: any) => <XView flexGrow={1}>{children}</XView>;
+const MobileConversationContainer = ({ children }: { children: any }) => (
+    <XView flexGrow={1}>{children}</XView>
+);
+
+const displayNoneCommonClassName = css`
+    height: 100%;
+    display: flex;
+    flex-grow: 1;
+`;
+
+const displayNoneClassName = css`
+    display: none;
+`;
 
 const DisplayNone = ({
     isActive,
@@ -59,29 +71,24 @@ const DisplayNone = ({
     Component: any;
     componentProps: any;
 }) => {
-    const commonStyle = {
-        height: '100%',
-        display: 'flex',
-        flexGrow: 1,
-    };
-
     return (
-        <div
-            style={
-                !isActive
-                    ? {
-                          ...commonStyle,
-                          display: 'none',
-                      }
-                    : commonStyle
-            }
-        >
+        <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
             <Component {...componentProps} isActive={isActive} />
         </div>
     );
 };
 
-const CacheComponent = ({ isMobile, activeChat, componentProps }: any) => {
+const CacheComponent = ({
+    Component,
+    isMobile,
+    activeChat,
+    componentProps,
+}: {
+    Component: any;
+    isMobile: boolean;
+    activeChat: string | null;
+    componentProps: any;
+}) => {
     const [cachedProps, setCachedProps] = React.useState({});
 
     React.useLayoutEffect(() => {
@@ -94,7 +101,7 @@ const CacheComponent = ({ isMobile, activeChat, componentProps }: any) => {
     }, [activeChat]);
 
     if ((window as any).safari !== undefined && !isMobile) {
-        return <>{activeChat && <MessengerFragment {...componentProps} isActive={true} />}}</>;
+        return <>{activeChat && <Component {...componentProps} isActive={true} />}}</>;
     }
 
     return (
@@ -105,7 +112,7 @@ const CacheComponent = ({ isMobile, activeChat, componentProps }: any) => {
                     <DisplayNone
                         isActive={activeChat !== null && activeChat === id}
                         key={key1}
-                        Component={MessengerFragment}
+                        Component={Component}
                         componentProps={cachedComponentProps}
                     />
                 );

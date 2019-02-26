@@ -31,7 +31,7 @@ export class MessengerEngine {
     private typingsWatcher?: TypingsWatcher;
     private onlineWatcher: OnlineWatcher;
 
-    constructor(client: OpenlandClient, user: UserShort) {
+    constructor(client: OpenlandClient, user: UserShort, platform: string) {
 
         this.client = client;
         this.user = user;
@@ -57,7 +57,7 @@ export class MessengerEngine {
         this.typingsWatcher = new TypingsWatcher(this.client, this.handleTyping, this.user.id);
 
         // Online reporter
-        this.onlineReporter = new OnlineReportEngine(this);
+        this.onlineReporter = new OnlineReportEngine(this, platform);
 
         // Starting
         this.loadingPromise = this.loadingSequence();

@@ -434,6 +434,7 @@ export interface ReportOnline {
 
 export interface ReportOnlineVariables {
   active?: boolean | null;
+  platform?: string | null;
 }
 
 /* tslint:disable */
