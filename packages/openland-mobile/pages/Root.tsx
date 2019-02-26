@@ -7,6 +7,7 @@ import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { randomKey } from 'react-native-s/utils/randomKey';
 import { AppTheme } from 'openland-mobile/themes/themes';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { SDevice } from 'react-native-s/SDevice';
 
 export interface RootProps {
     routing: SRouting;
@@ -104,6 +105,7 @@ class RootContainer extends React.PureComponent<RootProps & { theme: AppTheme },
                     routing={this.props.routing}
                     navigationBarStyle={style}
                 />
+                {Platform.OS === 'android' && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: SDevice.safeArea.bottom, backgroundColor: bgColor }} />}
             </View>
         );
     }
