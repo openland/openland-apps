@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { MutationFunc } from 'react-apollo';

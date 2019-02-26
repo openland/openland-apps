@@ -10,8 +10,6 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
 
 type useKeyHandlingT = {
     onSubmit?: () => void;
-    editorState: any;
-    setEditorState: any;
     filteredSuggestions: any;
     applyMentionById: any;
     selectedMentionEntryIndex: any;
@@ -19,50 +17,10 @@ type useKeyHandlingT = {
 
 export function useKeyHandling({
     onSubmit,
-    editorState,
-    setEditorState,
     filteredSuggestions,
     applyMentionById,
     selectedMentionEntryIndex,
 }: useKeyHandlingT) {
-    const applyMention = ({ id, name }: { name: string; id: string }) => {
-        let selection = editorState.getSelection();
-        let start = findActiveWordStart(editorState);
-        if (start < 0) {
-            return;
-        }
-        let content = editorState.getCurrentContent();
-        let text = content.getBlockForKey(selection.getStartKey()).getText();
-
-        let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
-            anchorOffset: start,
-            focusOffset: selection.getEndOffset(),
-        }) as any;
-
-        let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: id });
-
-        let replace = Modifier.replaceText(
-            entity,
-            s2,
-            `@${name}`,
-            undefined,
-            entity.getLastCreatedEntityKey(),
-        );
-
-        if (
-            selection.getEndOffset() === text.length ||
-            text.charAt(selection.getEndOffset()) !== ' '
-        ) {
-            replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
-        }
-
-        let s3 = EditorState.moveFocusToEnd(
-            EditorState.push(editorState, replace, 'insert-mention' as any),
-        );
-
-        setEditorState(s3);
-    };
-
     const onHandleKey = (command: string) => {
         if (!!filteredSuggestions.length) {
             applyMentionById(selectedMentionEntryIndex);
@@ -78,5 +36,5 @@ export function useKeyHandling({
         return 'not-handled';
     };
 
-    return { keyBinding, onHandleKey, applyMention };
+    return { keyBinding, onHandleKey };
 }

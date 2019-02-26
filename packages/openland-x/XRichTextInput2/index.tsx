@@ -37,6 +37,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             activeWord,
             setActiveWord,
             handleEditorChange,
+            applyMention,
         } = useHandleEditorChange({
             onChange,
             value,
@@ -72,10 +73,8 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         };
 
-        const { keyBinding, onHandleKey, applyMention } = useKeyHandling({
+        const { keyBinding, onHandleKey } = useKeyHandling({
             onSubmit,
-            editorState,
-            setEditorState,
             filteredSuggestions,
             applyMentionById,
             selectedMentionEntryIndex,
