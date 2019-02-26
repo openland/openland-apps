@@ -11,14 +11,14 @@ import {
     getDefaultKeyBinding,
     DraftHandleValue,
 } from 'draft-js';
-import { XShortcuts } from 'openland-x/XShortcuts';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
-import { extractFlexProps, XFlexStyles, applyFlex } from './basics/Flex';
+import { extractFlexProps, XFlexStyles, applyFlex } from '../basics/Flex';
 import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import { emoji } from 'openland-y-utils/emoji';
+import { useMentionSuggestions } from './useMentionSuggestions';
 
 function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -98,6 +98,7 @@ class ContainerWrapper extends React.PureComponent {
     }
 }
 function keyBinding(e: React.KeyboardEvent<any>): string | null {
+    console.log(e);
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
         return 'x-editor-submit';
     }
@@ -258,11 +259,6 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
 
         const [plainText, setPlainText] = React.useState('');
         const [activeWord, setActiveWord] = React.useState<string>('');
-        const [selectedMentionEntry, setSelectedMentionEntry] = React.useState(0);
-
-        const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
-            props.mentionsData || [],
-        );
 
         const [sizeOfContainer, setSizeOfContainer] = React.useState<{
             width: number;
@@ -287,6 +283,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const [editorState, setEditorState] = React.useState(getEditorStateFromText(props.value));
 
         const onHandleKey = (command: string) => {
+            console.log(command);
             if (command === 'x-editor-submit') {
                 if (props.onSubmit) {
                     props.onSubmit();
@@ -367,6 +364,16 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             setPlainText(newPlainText);
         };
 
+        const {
+            handleDown,
+            handleUp,
+            filteredSuggestions,
+            selectedMentionEntry,
+        } = useMentionSuggestions({
+            mentionsData: props.mentionsData,
+            activeWord,
+        });
+
         React.useLayoutEffect(() => {
             if (props.onChange) {
                 props.onChange(plainText);
@@ -379,10 +386,6 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                 setPlainText(props.value);
             }
         }, [props.value]);
-
-        React.useLayoutEffect(() => {
-            setSuggestions(props.mentionsData);
-        }, [props.mentionsData]);
 
         React.useLayoutEffect(() => {
             const containerEl =
@@ -406,81 +409,45 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         }, []);
 
-        const filteredSuggestions = (suggestions ? suggestions : []).filter(
-            ({ name }) =>
-                name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
-        );
-
-        const boundMentionSelection = (index: number) => {
-            return Math.min(Math.max(0, index), filteredSuggestions.length - 1);
-        };
-
-        const handleUp = (event: React.KeyboardEvent<any>) => {
-            event.stopPropagation();
-
-            setSelectedMentionEntry(boundMentionSelection(selectedMentionEntry - 1));
-        };
-
-        const handleDown = (event: React.KeyboardEvent<any>) => {
-            event.stopPropagation();
-            setSelectedMentionEntry(boundMentionSelection(selectedMentionEntry + 1));
-        };
-
         return (
-            <XShortcuts
-                handlerMap={{
-                    UP: handleUp,
-                    DOWN: handleDown,
-                }}
-                keymap={{
-                    UP: {
-                        osx: ['up'],
-                        windows: ['up'],
-                    },
-                    DOWN: {
-                        osx: ['down'],
-                        windows: ['down'],
-                    },
-                }}
-            >
-                <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-                    <div
-                        className={cx(
-                            mentionSuggestionsWrapperClassName,
-                            filteredSuggestions.length !== 0
-                                ? mentionSuggestionsWrapperShow
-                                : mentionSuggestionsWrapperHide,
-                        )}
-                        style={{
-                            width: sizeOfContainer.width,
-                            left: filteredSuggestions.length !== 0 ? 0 : sizeOfContainer.width / 2,
-                            bottom:
-                                filteredSuggestions.length !== 0 ? 50 : sizeOfContainer.height / 2,
-                        }}
-                    >
-                        {filteredSuggestions.map((mention, key) => {
-                            return (
-                                <MentionEntry
-                                    {...mention}
-                                    key={key}
-                                    isSelected={key === selectedMentionEntry}
-                                />
-                            );
-                        })}
-                    </div>
+            <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
+                <div
+                    className={cx(
+                        mentionSuggestionsWrapperClassName,
+                        filteredSuggestions.length !== 0
+                            ? mentionSuggestionsWrapperShow
+                            : mentionSuggestionsWrapperHide,
+                    )}
+                    style={{
+                        width: sizeOfContainer.width,
+                        left: filteredSuggestions.length !== 0 ? 0 : sizeOfContainer.width / 2,
+                        bottom: filteredSuggestions.length !== 0 ? 50 : sizeOfContainer.height / 2,
+                    }}
+                >
+                    {filteredSuggestions.map((mention, key) => {
+                        return (
+                            <MentionEntry
+                                {...mention}
+                                key={key}
+                                isSelected={key === selectedMentionEntry}
+                            />
+                        );
+                    })}
+                </div>
 
-                    <Editor
-                        ref={editorRef}
-                        placeholder={props.placeholder}
-                        keyBindingFn={keyBinding}
-                        handleKeyCommand={onHandleKey}
-                        handlePastedFiles={onPasteFiles}
-                        stripPastedStyles={true}
-                        editorState={editorState}
-                        onChange={handleEditorChange}
-                    />
-                </ContainerWrapper>
-            </XShortcuts>
+                <Editor
+                    ref={editorRef}
+                    placeholder={props.placeholder}
+                    keyBindingFn={keyBinding}
+                    handleKeyCommand={onHandleKey}
+                    handlePastedFiles={onPasteFiles}
+                    onDownArrow={handleDown}
+                    onUpArrow={handleUp}
+                    stripPastedStyles={true}
+                    editorState={editorState}
+                    onChange={handleEditorChange}
+                />
+            </ContainerWrapper>
         );
     },
 );

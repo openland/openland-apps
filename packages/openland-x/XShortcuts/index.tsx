@@ -71,6 +71,7 @@ export class XShortcuts extends React.Component<{
         );
         updateKeymap();
     }
+
     handleActions = (action: any, event: any) => {
         const filteredIdKeymapsPairs = listOfIdKeymaps.filter(
             ({ keymap }: any) => Object.keys(keymap).indexOf(action) !== -1,
@@ -81,10 +82,10 @@ export class XShortcuts extends React.Component<{
             filteredIdKeymapsPairs.length &&
             filteredIdKeymapsPairs[filteredIdKeymapsPairs.length - 1].id === this.componentId
         ) {
-            console.log(this.props.handlerMap);
             this.props.handlerMap[action](event);
         }
     };
+
     render() {
         return (
             <Shortcuts name="App" handler={this.handleActions} isolate alwaysFireHandler>
