@@ -449,6 +449,24 @@ export const DesktopScaffold = ({
     content: any;
     topItems: any;
 }) => {
+    const [banner, bannerHandler] = React.useState(true);
+    const handleHideBanner = () => {
+        bannerHandler(false);
+        localStorage.setItem('promo-banner-be-show', 'hidden');
+    };
+
+    let bannerComponent: any = <PromoBanner onClise={handleHideBanner} />;
+
+    if (!canUseDOM) {
+        bannerComponent = null;
+    }
+    if (localStorage.getItem('promo-banner-be-show')) {
+        bannerComponent = null;
+    }
+    if (!banner) {
+        bannerComponent = null;
+    }
+
     let contentView = (
         <XView
             flexDirection="column"
@@ -463,7 +481,12 @@ export const DesktopScaffold = ({
         </XView>
     );
     let menuView = (
-        <XView flexDirection="row" height="100%" position="fixed" backgroundColor="#ffffff">
+        <XView
+            flexDirection="row"
+            height={bannerComponent ? 'calc(100% - 50px)' : '100%'}
+            position="fixed"
+            backgroundColor="#ffffff"
+        >
             <NavigationScroller>
                 <DesktopNavigationContainer>
                     <Logo />
@@ -532,7 +555,7 @@ export const DesktopScaffold = ({
             width="100%"
             height="100%"
         >
-            <PromoBanner />
+            {bannerComponent}
             <XView flexDirection="row" flexGrow={1} flexBasis={0} flexShrink={0}>
                 {contentView}
                 {menuView}
