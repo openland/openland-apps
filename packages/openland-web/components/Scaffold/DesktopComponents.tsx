@@ -28,6 +28,7 @@ import {
 } from '../../pages/main/settings/components/invites';
 import { CreateOrganization, CreateRoom } from './Modals';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { PromoBanner } from './PromoBanner';
 
 interface NavigatorItemProps {
     path?: string;
@@ -523,12 +524,22 @@ export const DesktopScaffold = ({
     );
 
     return (
-        <XView flexDirection="row" flexGrow={1} flexBasis={0} height="100%">
-            {contentView}
-            {menuView}
+        <XView
+            flexDirection="column"
+            flexGrow={1}
+            flexBasis={0}
+            flexShrink={0}
+            width="100%"
+            height="100%"
+        >
+            <PromoBanner />
+            <XView flexDirection="row" flexGrow={1} flexBasis={0} flexShrink={0}>
+                {contentView}
+                {menuView}
 
-            <CreateOrganization />
-            <CreateRoom />
+                <CreateOrganization />
+                <CreateRoom />
+            </XView>
         </XView>
     );
 };
