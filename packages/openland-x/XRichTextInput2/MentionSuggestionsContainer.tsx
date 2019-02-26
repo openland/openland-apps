@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Picker } from 'emoji-mart';
 import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
+import useOnClickOutside from 'use-onclickoutside';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../basics/Flex';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 
@@ -31,17 +33,50 @@ const emojiWrapperClassName = css`
     }
 `;
 
-const EmojiButton = () => (
-    <div
-        className={emojiWrapperClassName}
-        onClick={() => {
-            console.log('open emoji picker');
-        }}
-    >
-        <EmojiIcon />
-    </div>
-);
+const pickerClassName = css`
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    margin-top: 10px;
+    padding: 0 0.3em;
+    z-index: 1000;
+    box-sizing: content-box;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 30px 0 gainsboro;
+`;
 
+const EmojiButton = () => {
+    const [showPicker, setShowPicker] = React.useState(false);
+    const ref = React.useRef(null);
+    useOnClickOutside(ref, () => {
+        setShowPicker(false);
+    });
+
+    return (
+        <div>
+            {showPicker && (
+                <div className={pickerClassName} ref={ref}>
+                    <Picker
+                        color="#1790ff"
+                        set="emojione"
+                        onSelect={(...args) => {
+                            console.log(...args);
+                        }}
+                    />
+                </div>
+            )}
+            <div
+                className={emojiWrapperClassName}
+                onClick={() => {
+                    setShowPicker(true);
+                }}
+            >
+                <EmojiIcon />
+            </div>
+        </div>
+    );
+};
 class ContainerWrapper extends React.PureComponent {
     render() {
         return <Container {...this.props} />;
