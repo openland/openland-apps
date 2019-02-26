@@ -32,12 +32,14 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             return null;
         }
 
+        const { onSubmit, onChange, value, mentionsData, placeholder } = props;
+
         const editorRef = React.useRef<Editor>(null);
 
         const onHandleKey = (command: string) => {
             if (command === 'x-editor-submit') {
-                if (props.onSubmit) {
-                    props.onSubmit();
+                if (onSubmit) {
+                    onSubmit();
                     return 'handled';
                 }
             }
@@ -50,8 +52,8 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             activeWord,
             handleEditorChange,
         } = useHandleEditorChange({
-            onChange: props.onChange,
-            value: props.value,
+            onChange,
+            value,
         });
 
         const { resetAndFocus } = useInputMethods({
@@ -81,7 +83,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             filteredSuggestions,
             selectedMentionEntry,
         } = useMentionSuggestions({
-            mentionsData: props.mentionsData,
+            mentionsData,
             activeWord,
         });
 
@@ -101,7 +103,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             >
                 <Editor
                     ref={editorRef}
-                    placeholder={props.placeholder}
+                    placeholder={placeholder}
                     keyBindingFn={keyBinding}
                     handleKeyCommand={onHandleKey}
                     handlePastedFiles={onPasteFiles}

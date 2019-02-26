@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { EditorState, ContentState } from 'draft-js';
 
 export type XRichTextInput2RefMethods = {
@@ -8,17 +7,14 @@ export type XRichTextInput2RefMethods = {
     getHasFocus: () => boolean;
 };
 
-export function useInputMethods({
-    ref,
-    editorRef,
-    setEditorState,
-    editorState,
-}: {
+type useInputMethodsT = {
     ref: any;
     editorRef?: any;
     setEditorState: any;
     editorState: any;
-}) {
+};
+
+export function useInputMethods({ ref, editorRef, setEditorState, editorState }: useInputMethodsT) {
     const focus = () => {
         window.requestAnimationFrame(() => {
             if (editorRef && editorRef.current) {

@@ -43,7 +43,9 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
     }, callback);
 }
 
-export function useHandleEditorChange({ onChange, value }: { onChange: any; value: any }) {
+type useHandleEditorChangeT = { onChange?: (value: string) => void; value: string };
+
+export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
 
