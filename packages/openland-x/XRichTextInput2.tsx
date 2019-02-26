@@ -104,8 +104,19 @@ function keyBinding(e: React.KeyboardEvent<any>): string | null {
     return getDefaultKeyBinding(e);
 }
 
-export const MentionEntry = ({ avatar, name, id, online, title }: MentionDataT) => {
+export const MentionEntry = ({
+    avatar,
+    name,
+    id,
+    online,
+    title,
+    isSelected,
+}: MentionDataT & { isSelected: boolean }) => {
     const [isFocused, setIsFocused] = React.useState(false);
+
+    React.useEffect(() => {
+        setIsFocused(isSelected);
+    }, [isSelected]);
 
     const onMouseLeave = () => setIsFocused(false);
     const onMouseEnter = () => setIsFocused(true);
@@ -247,6 +258,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
 
         const [plainText, setPlainText] = React.useState('');
         const [activeWord, setActiveWord] = React.useState<string>('');
+        const [selectedMentionEntry, setSelectedMentionEntry] = React.useState(0);
 
         const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
             props.mentionsData || [],
@@ -394,22 +406,25 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             }
         }, []);
 
-        const handleUp = (event: React.KeyboardEvent<any>) => {
-            event.stopPropagation();
-            console.log(event);
-            console.log('handleUp');
-        };
-
-        const handleDown = (event: React.KeyboardEvent<any>) => {
-            event.stopPropagation();
-            console.log(event);
-            console.log('handleDown');
-        };
-
         const filteredSuggestions = (suggestions ? suggestions : []).filter(
             ({ name }) =>
                 name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
         );
+
+        const boundMentionSelection = (index: number) => {
+            return Math.min(Math.max(0, index), filteredSuggestions.length - 1);
+        };
+
+        const handleUp = (event: React.KeyboardEvent<any>) => {
+            event.stopPropagation();
+
+            setSelectedMentionEntry(boundMentionSelection(selectedMentionEntry - 1));
+        };
+
+        const handleDown = (event: React.KeyboardEvent<any>) => {
+            event.stopPropagation();
+            setSelectedMentionEntry(boundMentionSelection(selectedMentionEntry + 1));
+        };
 
         return (
             <XShortcuts
@@ -444,7 +459,13 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                         }}
                     >
                         {filteredSuggestions.map((mention, key) => {
-                            return <MentionEntry {...mention} key={key} />;
+                            return (
+                                <MentionEntry
+                                    {...mention}
+                                    key={key}
+                                    isSelected={key === selectedMentionEntry}
+                                />
+                            );
                         })}
                     </div>
 
