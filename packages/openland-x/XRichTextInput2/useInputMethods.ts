@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2';
+
 import { EditorState, ContentState } from 'draft-js';
+
+export type XRichTextInput2RefMethods = {
+    focus: () => void;
+    resetAndFocus: () => void;
+    getHasFocus: () => boolean;
+};
 
 export function useInputMethods({
     ref,
