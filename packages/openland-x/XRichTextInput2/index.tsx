@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Editor, getDefaultKeyBinding, DraftHandleValue } from 'draft-js';
+import { Editor } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { MentionSuggestionsContainer } from './MentionSuggestionsContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
+import { useKeyHandling } from './useKeyHandling';
+import { usePasteFiles } from './usePasteFiles';
 import { MentionEntry, MentionDataT } from './MentionEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
@@ -19,13 +21,6 @@ export interface XRichTextInput2Props extends XFlexStyles {
     onCurrentWordChanged?: (word: string | undefined) => void;
 }
 
-function keyBinding(e: React.KeyboardEvent<any>): string | null {
-    if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
-        return 'x-editor-submit';
-    }
-    return getDefaultKeyBinding(e);
-}
-
 export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRichTextInput2Props>(
     (props: XRichTextInput2Props, ref) => {
         if (!canUseDOM) {
@@ -35,16 +30,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const { onSubmit, onChange, value, mentionsData, placeholder } = props;
 
         const editorRef = React.useRef<Editor>(null);
-
-        const onHandleKey = (command: string) => {
-            if (command === 'x-editor-submit') {
-                if (onSubmit) {
-                    onSubmit();
-                    return 'handled';
-                }
-            }
-            return 'not-handled';
-        };
+        const { keyBinding, onHandleKey } = useKeyHandling({ onSubmit });
 
         const {
             editorState,
@@ -63,19 +49,10 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             setEditorState,
         });
 
-        const onPasteFiles = (files: Blob[]): DraftHandleValue => {
-            let file = files[0];
-            if (!file) {
-                return 'handled';
-            }
-
-            if (props.onPasteFile) {
-                props.onPasteFile(file);
-            }
-
-            resetAndFocus();
-            return 'handled';
-        };
+        const { onPasteFiles } = usePasteFiles({
+            onPasteFile: props.onPasteFile,
+            resetAndFocus,
+        });
 
         const {
             handleDown,
