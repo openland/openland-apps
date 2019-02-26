@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { EditorState, ContentState, CompositeDecorator, ContentBlock } from 'draft-js';
+import Glamorous from 'glamorous';
+import { MessageFull_mentions } from 'openland-api/Types';
 
-function findActiveWordStart(state: EditorState): number {
+export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
     let selection = state.getSelection();
     if (selection.getStartKey() !== selection.getEndKey()) {
@@ -45,6 +47,33 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
 
 type useHandleEditorChangeT = { onChange?: (value: string) => void; value: string };
 
+import { emoji } from 'openland-y-utils/emoji';
+import { css } from 'linaria';
+
+const mentionComponentInnerTextClassName = css`
+    color: #1790ff;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 5px;
+`;
+
+export const MentionComponentInnerText = ({ children }: { children: any }) => {
+    // hack to get text
+    const text = children[0].props.text;
+    console.log(children[0].props.text);
+    return (
+        <span className={mentionComponentInnerTextClassName}>
+            {emoji({
+                src: text,
+                size: 16,
+                cache: false,
+            })}
+        </span>
+    );
+};
+
 export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
@@ -56,9 +85,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
                 new CompositeDecorator([
                     {
                         strategy: findLinkMention,
-                        component: (p: any) => (
-                            <span style={{ backgroundColor: '#f00' }}>{p.children}</span>
-                        ),
+                        component: MentionComponentInnerText,
                     },
                 ]),
             ),

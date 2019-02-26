@@ -17,6 +17,10 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
             name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
     );
 
+    const getSelectedMentionEntry = () => {
+        return filteredSuggestions.length ? filteredSuggestions[selectedMentionEntry] : null;
+    };
+
     const boundMentionSelection = (index: number) => {
         return Math.min(Math.max(0, index), filteredSuggestions.length - 1);
     };
@@ -48,5 +52,11 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
         setSuggestions(mentionsData);
     }, [mentionsData]);
 
-    return { handleUp, handleDown, filteredSuggestions, selectedMentionEntry };
+    return {
+        handleUp,
+        handleDown,
+        filteredSuggestions,
+        selectedMentionEntry,
+        getSelectedMentionEntry,
+    };
 }

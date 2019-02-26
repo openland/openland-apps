@@ -1,4 +1,5 @@
-import { getDefaultKeyBinding } from 'draft-js';
+import { findActiveWordStart } from './useHandleEditorChange';
+import { EditorState, Modifier, SelectionState, getDefaultKeyBinding } from 'draft-js';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
@@ -7,8 +8,66 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     return getDefaultKeyBinding(e);
 };
 
-export function useKeyHandling({ onSubmit }: { onSubmit?: () => void }) {
+export function useKeyHandling({
+    onSubmit,
+    editorState,
+    setEditorState,
+    filteredSuggestions,
+    getSelectedMentionEntry,
+}: {
+    onSubmit?: () => void;
+    editorState: any;
+    setEditorState: any;
+    filteredSuggestions: any;
+    getSelectedMentionEntry: any;
+}) {
+    const applyMention = (src: { name: string; id: string }) => {
+        let selection = editorState.getSelection();
+        let start = findActiveWordStart(editorState);
+        if (start < 0) {
+            return;
+        }
+        let content = editorState.getCurrentContent();
+        let text = content.getBlockForKey(selection.getStartKey()).getText();
+
+        let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
+            anchorOffset: start,
+            focusOffset: selection.getEndOffset(),
+        }) as any;
+
+        let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: src.id });
+
+        let replace = Modifier.replaceText(
+            entity,
+            s2,
+            src.name,
+            undefined,
+            entity.getLastCreatedEntityKey(),
+        );
+
+        // let stext = src.name;
+        if (
+            selection.getEndOffset() === text.length ||
+            text.charAt(selection.getEndOffset()) !== ' '
+        ) {
+            // stext = src.name + ' ';
+            replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
+        }
+
+        let s3 = EditorState.moveFocusToEnd(
+            EditorState.push(editorState, replace, 'insert-mention' as any),
+        );
+
+        setEditorState(s3);
+    };
+
+    // applyMention
     const onHandleKey = (command: string) => {
+        if (!!filteredSuggestions.length) {
+            applyMention(getSelectedMentionEntry());
+
+            return 'handled';
+        }
         if (command === 'x-editor-submit') {
             if (onSubmit) {
                 onSubmit();
