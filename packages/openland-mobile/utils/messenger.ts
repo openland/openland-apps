@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 let cachedMessenger: MobileMessenger | null = null;
 
 export function buildMessenger(client: OpenlandClient, user: UserShort) {
-    let platform = Platform.OS + ' ' + __DEV__ ? 'Debug' : 'Release';
+    let platform = Platform.OS + ' ' + (__DEV__ ? 'debug' : 'release');
 
     return new MessengerEngine(client, user, platform);
 }

@@ -37,6 +37,7 @@ import { GroupList } from './pages/main/GroupList';
 import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
 import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
+import { HomeDialogs } from './pages/main/HomeDialogs';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -83,5 +84,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('DevBenchmarksAsync', BenchmarkAsync)
   .addRoute('DevBenchmarksAsyncDirect', BenchmarkAsyncDirect)
   .addRoute('DevLoader', Loader)
+
+  .addRoute('HomeDialogs', HomeDialogs)
 
   .build();

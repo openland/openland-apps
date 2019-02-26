@@ -10,6 +10,7 @@ import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngin
 import { UserAvatar } from './UserAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { DataSourceItem } from 'openland-y-utils/DataSource';
 
 function ASCounter(props: { value: number | string, muted?: boolean }) {
     return (
@@ -21,7 +22,7 @@ function ASCounter(props: { value: number | string, muted?: boolean }) {
     );
 }
 
-export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string) => void }>((props) => {
+export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, compact?: boolean, onPress: (id: string, item: DataSourceItem) => void }>((props) => {
     let item = props.item;
     let isUser = item.kind === 'PRIVATE';
     let isGroup = item.kind === 'GROUP';
@@ -34,7 +35,7 @@ export const DialogItemViewAsync = React.memo<{ item: DialogDataSourceItem, comp
             flexDirection="row"
             highlightColor={theme.selectorColor}
             onPress={() => {
-                props.onPress(props.item.key);
+                props.onPress(props.item.key, item);
             }}
             alignItems={props.compact ? 'center' : undefined}
         >

@@ -5,6 +5,7 @@ declare module 'rn-fetch-blob' {
         config: (args: any) => any;
         fetch: (method: string, url: string, options: any, args: any[]) => any
         wrap: (src: any) => any
+        fs: any
     };
     export default instance;
 }

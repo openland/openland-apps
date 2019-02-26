@@ -60,6 +60,11 @@
         "src": "ic-end.svg",
         "sizes": [36]
     }, {
+        "name": "ic-call-end",
+        "suffix": "android",
+        "src": "ic-end-android.svg",
+        "sizes": [36]
+    }, {
         "name": "ic-help",
         "src": "ic-notifications-copy.svg",
         "sizes": [24]
@@ -108,12 +113,27 @@
         "src": "ic-speaker.svg",
         "sizes": [30]
     }, {
+        "name": "ic-speaker",
+        "suffix": "android",
+        "src": "ic-speaker-android.svg",
+        "sizes": [30]
+    }, {
         "name": "ic-mic-on",
         "src": "ic-micro-on.svg",
         "sizes": [30]
     }, {
+        "name": "ic-mic-on",
+        "suffix": "android",
+        "src": "ic-micro-on-android.svg",
+        "sizes": [30]
+    }, {
         "name": "ic-mic-off",
         "src": "ic-micro-off.svg",
+        "sizes": [30]
+    }, {
+        "name": "ic-mic-off",
+        "suffix": "android",
+        "src": "ic-micro-off-android.svg",
         "sizes": [30]
     }, {
         "name": "ic-add",

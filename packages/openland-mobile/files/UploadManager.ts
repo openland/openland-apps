@@ -2,8 +2,7 @@ import { Watcher } from 'openland-y-utils/Watcher';
 import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus, FileMetadata } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
-import UUID from 'uuid/v4';
-import { resolve } from 'dns';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export interface UploadState {
     status: UploadStatus;
@@ -27,12 +26,20 @@ export class UploadManager {
         return this.getWatcher(conversationId).watch(handler);
     }
 
-    registerUpload = (conversationId: string, name: string, uri: string, fileSize: number) => {
+    registerUpload = (conversationId: string, name: string, uri: string, fileSize?: number) => {
 
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
         let messageId = getMessenger().engine.getConversation(conversationId).sendFile({
-            fetchInfo: () => new Promise((resolver) => resolver({ name, uri, fileSize })),
+            fetchInfo: () => new Promise((resolver) => {
+                if (fileSize === undefined) {
+                    RNFetchBlob.fs.stat(uri.replace('file://', ''))
+                        .then((s: any) => resolver({ name, uri, fileSize: s.size }))
+                        .catch((e: any) => console.warn('boom', e.message));
+                } else {
+                    resolver({ name, uri, fileSize })
+                }
+            }),
             watch: (handler) => w.watch(handler)
         });
         this._watchers.set(messageId, w);
@@ -54,7 +61,7 @@ export class UploadManager {
             } else if (s.status === UploadStatus.FAILED) {
                 // TODO: Handle
             } else if (s.status === UploadStatus.COMPLETED) {
-                this._queue.splice(0);
+                this._queue.splice(0, 1);
                 this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
 
                 (async () => {
