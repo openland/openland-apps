@@ -1,4 +1,4 @@
-const emojione = require('emojione');
+const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
 
 const newEmojiListWithOutPriorityList = (myPriorityList: any) => {
     const list = {};
@@ -14,7 +14,7 @@ const newEmojiListWithOutPriorityList = (myPriorityList: any) => {
     return { ...myPriorityList, ...list };
 };
 
-const emojiList: any = {};
+export const emojiList: any = {};
 
 emojiList.setPriorityList = (newPriorityList: any) => {
     // re-generate emojiList when set PriorityList
@@ -34,5 +34,3 @@ const priorityList = {
     ':100:': ['1f4af'],
 };
 emojiList.setPriorityList(priorityList);
-
-export default emojiList;

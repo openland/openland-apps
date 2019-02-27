@@ -1,4 +1,4 @@
-const getWordAt = (maybeString: any, position: any) => {
+export const getWordAt = (maybeString: any, position: any) => {
     // Perform type conversions.
     const str = String(maybeString);
     // eslint-disable-next-line no-bitwise
@@ -24,5 +24,3 @@ const getWordAt = (maybeString: any, position: any) => {
         end: right + pos,
     };
 };
-
-export default getWordAt;

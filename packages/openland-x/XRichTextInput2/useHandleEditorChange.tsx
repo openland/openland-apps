@@ -12,6 +12,7 @@ import { EmojiData } from 'emoji-mart';
 import emojiStrategy from './utils/emojiStrategy';
 import { MentionComponentInnerText } from './components/MentionComponentInnerText';
 import { Emoji } from './components/Emoji';
+import { addEmoji } from './modifiers/addEmoji';
 
 export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -67,16 +68,16 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
                 ContentState.createFromText(text),
                 new CompositeDecorator([
                     {
-                        strategy: emojiStrategy,
-                        component: decorateComponentWithProps(Emoji, {
-                            imagePath: '//cdn.jsdelivr.net/emojione/assets/svg/',
-                            imageType: 'svg',
-                            cacheBustParam: '?v=2.2.7',
-                        }),
-                    },
-                    {
                         strategy: findLinkMention,
                         component: MentionComponentInnerText,
+                    },
+                    {
+                        strategy: emojiStrategy,
+                        component: decorateComponentWithProps(Emoji, {
+                            imagePath: 'https://cdn.openland.com/shared/web/emoji/4.0/png/64/',
+                            imageType: 'png',
+                            cacheBustParam: '',
+                        }),
                     },
                 ]),
             ),
@@ -139,36 +140,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
     };
 
     const onEmojiPicked = (emojiPicked: EmojiData) => {
-        // let content = editorState.getCurrentContent();
-        // let selection = editorState.getSelection();
-        // let entity = content.createEntity('EMOJI', 'IMMUTABLE', { id: emojiPicked.id });
-        // let start = findActiveWordStart(editorState);
-        // if (start < 0) {
-        //     return;
-        // }
-        // let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
-        //     anchorOffset: start,
-        //     focusOffset: selection.getEndOffset(),
-        // }) as any;
-        // if (emojiPicked.colons) {
-        //     console.log(
-        //         emoji({
-        //             src: emojiPicked.colons,
-        //             size: 14,
-        //         }),
-        //     );
-        // }
-        // let replace = Modifier.replaceText(
-        //     entity,
-        //     s2,
-        //     `${emojiPicked.colons}`,
-        //     undefined,
-        //     entity.getLastCreatedEntityKey(),
-        // );
-        // let s3 = EditorState.moveFocusToEnd(
-        //     EditorState.push(editorState, replace, 'insert-emoji' as any),
-        // );
-        // setEditorState(s3);
+        setEditorState(addEmoji(editorState, emojiPicked.colons));
     };
 
     React.useLayoutEffect(() => {

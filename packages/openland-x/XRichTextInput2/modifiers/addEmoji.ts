@@ -1,18 +1,23 @@
 import { Modifier, EditorState } from 'draft-js';
-import getSearchText from '../utils/getSearchText';
-import emojiList from '../utils/emojiList';
+import { getSearchText } from '../utils/getSearchText';
+import { emojiList } from '../utils/emojiList';
 import { convertShortNameToUnicode } from '../utils/convertShortNameToUnicode';
 
 // This modifier can inserted emoji to current cursor position (with replace selected fragment),
 // or replaced emoji shortname like ":thumbsup:". Behavior determined by `Mode` parameter.
-const Mode = {
+export const Mode = {
     INSERT: 'INSERT', // insert emoji to current cursor position
     REPLACE: 'REPLACE', // replace emoji shortname
 };
 
-const addEmoji = (editorState: any, emojiShortName: any, mode = Mode.INSERT) => {
-    const unicode = emojiList.list[emojiShortName][0];
-    const emoji = convertShortNameToUnicode(unicode);
+export const addEmoji = (editorState: any, emojiShortName: any, mode = Mode.INSERT) => {
+    let emoji;
+    if (emojiList.list[emojiShortName]) {
+        const unicode = emojiList.list[emojiShortName][0];
+        emoji = convertShortNameToUnicode(unicode);
+    } else {
+        emoji = '📷';
+    }
 
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity('emoji', 'IMMUTABLE', {
@@ -93,6 +98,3 @@ const addEmoji = (editorState: any, emojiShortName: any, mode = Mode.INSERT) => 
     const newEditorState = EditorState.push(editorState, emojiAddedContent, 'insert-emoji' as any);
     return EditorState.forceSelection(newEditorState, emojiAddedContent.getSelectionAfter());
 };
-
-export default addEmoji;
-export { Mode };

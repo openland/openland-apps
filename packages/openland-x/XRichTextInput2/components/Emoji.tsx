@@ -1,6 +1,5 @@
 import React from 'react';
-import { css } from 'linaria';
-const unionClassNames = require('union-class-names').default;
+import { css, cx } from 'linaria';
 const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
 
 const emojiClassName = css`
@@ -38,9 +37,8 @@ export const Emoji = ({
 }) => {
     const shortName = emojione.toShort(decoratedText);
 
-    let emojiDisplay = null;
     if (useNativeArt === true) {
-        emojiDisplay = <span title={emojione.toShort(decoratedText)}>{props.children}</span>;
+        return <span title={shortName}>{props.children}</span>;
     } else {
         // short name to image url code steal from emojione source code
         const shortNameForImage =
@@ -48,19 +46,16 @@ export const Emoji = ({
                 emojione.emojioneList[shortName].unicode.length - 1
             ];
 
-        const backgroundImage = `url(${imagePath}${shortNameForImage}.${imageType}${cacheBustParam})`;
-        const combinedClassName = unionClassNames(className, emojiClassName);
-
-        emojiDisplay = (
+        return (
             <span
-                className={combinedClassName}
-                title={emojione.toShort(decoratedText)}
-                style={{ backgroundImage }}
+                className={cx(className, emojiClassName)}
+                title={shortName}
+                style={{
+                    backgroundImage: `url(${imagePath}${shortNameForImage}.${imageType}${cacheBustParam})`,
+                }}
             >
                 {props.children}
             </span>
         );
     }
-
-    return emojiDisplay;
 };
