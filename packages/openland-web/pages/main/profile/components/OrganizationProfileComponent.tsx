@@ -442,7 +442,7 @@ export const PermissionsModal = withOrganizationMemberChangeRole(
     orgName: string;
     members: any[];
     orgId: string;
-    refetchVars: { orgId: string };
+    refetchVars: { orgId: string; organizationId: string };
 }>;
 
 export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
@@ -761,7 +761,10 @@ const Members = ({ organization, router }: MembersProps) => {
                     members={organization.members}
                     orgName={organization.name}
                     orgId={organization.id}
-                    refetchVars={{ orgId: organization.id }}
+                    refetchVars={{
+                        orgId: organization.id,
+                        organizationId: organization.id,
+                    }}
                 />
                 <UpdateUserProfileModal members={organization.members} />
             </Section>
