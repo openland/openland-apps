@@ -62,6 +62,7 @@ export const TextProfiles = {
 
         members: {
             removeFromOrganization: 'Remove from organization',
+            leaveFromOrganization: 'Leave organization',
             revokeAdminStatus: 'Revoke admin status',
             makeAdmin: 'Make admin',
             edit: 'Edit',
