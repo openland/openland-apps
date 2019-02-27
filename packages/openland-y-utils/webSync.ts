@@ -10,7 +10,7 @@ function set(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
-const randomKey = () => Math.floor(Math.random() * Math.pow(2, 55)).toString(16);
+const randomKey = () => (Math.random() * Math.pow(2, 55)).toString(16);
 
 interface LockValue {
     expires: number;
