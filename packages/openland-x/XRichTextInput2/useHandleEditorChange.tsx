@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { emoji } from 'openland-y-utils/emoji';
 const decorateComponentWithProps = require('decorate-component-with-props').default;
-import { css } from 'linaria';
 import {
     EditorState,
     SelectionState,
@@ -12,6 +10,7 @@ import {
 } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import emojiStrategy from './utils/emojiStrategy';
+import { MentionComponentInnerText } from './components/MentionComponentInnerText';
 import { Emoji } from './components/Emoji';
 
 export function findActiveWordStart(state: EditorState): number {
@@ -57,31 +56,6 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
 }
 
 type useHandleEditorChangeT = { onChange?: (value: string) => void; value: string };
-
-const mentionComponentInnerTextClassName = css`
-    background: #e6f3ff;
-    color: #1790ff;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 4px;
-    padding-right: 4px;
-    border-radius: 5px;
-`;
-
-export const MentionComponentInnerText = ({ children }: { children: any }) => {
-    // hack to get text
-    const text = children[0].props.text;
-    console.log(children[0].props.text);
-    return (
-        <span className={mentionComponentInnerTextClassName}>
-            {emoji({
-                src: text,
-                size: 16,
-                cache: false,
-            })}
-        </span>
-    );
-};
 
 export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
