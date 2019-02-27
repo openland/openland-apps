@@ -14,6 +14,10 @@ type SizeT = 10 | 12 | 13 | 14 | 15 | 16 | 18 | 20 | 25 | 38;
 
 const cacheMap = {};
 
+// get native from short
+// if paste depends on native, how it can work on other platforms? (BAD)
+// better to make it depend on shortname
+
 export function emoji({
     src,
     size,
@@ -114,6 +118,7 @@ export function emoji({
                                     }}
                                 >
                                     <img
+                                        className="emojione"
                                         style={{
                                             position: 'absolute',
                                             left: 0,
@@ -134,6 +139,7 @@ export function emoji({
                         }
                         return (
                             <img
+                                className="emojione"
                                 style={{
                                     alignSelf: 'center',
                                     verticalAlign: 'middle',

@@ -9,6 +9,7 @@ import {
     ContentBlock,
     Modifier,
 } from 'draft-js';
+import { EmojiData } from 'emoji-mart';
 
 export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -152,8 +153,37 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         setPlainText(newPlainText);
     };
 
-    const onEmojiPicked = (emojiPicked: any) => {
-        console.log(emojiPicked);
+    const onEmojiPicked = (emojiPicked: EmojiData) => {
+        // let content = editorState.getCurrentContent();
+        // let selection = editorState.getSelection();
+        // let entity = content.createEntity('EMOJI', 'IMMUTABLE', { id: emojiPicked.id });
+        // let start = findActiveWordStart(editorState);
+        // if (start < 0) {
+        //     return;
+        // }
+        // let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
+        //     anchorOffset: start,
+        //     focusOffset: selection.getEndOffset(),
+        // }) as any;
+        // if (emojiPicked.colons) {
+        //     console.log(
+        //         emoji({
+        //             src: emojiPicked.colons,
+        //             size: 14,
+        //         }),
+        //     );
+        // }
+        // let replace = Modifier.replaceText(
+        //     entity,
+        //     s2,
+        //     `${emojiPicked.colons}`,
+        //     undefined,
+        //     entity.getLastCreatedEntityKey(),
+        // );
+        // let s3 = EditorState.moveFocusToEnd(
+        //     EditorState.push(editorState, replace, 'insert-emoji' as any),
+        // );
+        // setEditorState(s3);
     };
 
     React.useLayoutEffect(() => {

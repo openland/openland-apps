@@ -8,6 +8,7 @@ import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
 import { useKeyHandling } from './useKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
+import { useHandlePastedText } from './useHandlePastedText';
 import { MentionEntry, MentionDataT } from './MentionEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
@@ -43,6 +44,8 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             onChange,
             value,
         });
+
+        const { handlePastedText } = useHandlePastedText();
 
         const { resetAndFocus } = useInputMethods({
             ref,
@@ -105,6 +108,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                     keyBindingFn={keyBinding}
                     handleKeyCommand={onHandleKey}
                     handlePastedFiles={onPasteFiles}
+                    handlePastedText={handlePastedText as any}
                     onDownArrow={handleDown}
                     onUpArrow={handleUp}
                     stripPastedStyles={true}
