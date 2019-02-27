@@ -22,6 +22,7 @@
 		7A78E95582A54B76A967E43B /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AE573BB4274A4A7687D530D8 /* libRNDeviceInfo-tvOS.a */; };
 		A0153A96222426F400C026A4 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0153A95222426F400C026A4 /* ShareViewController.swift */; };
 		A0153A99222426F400C026A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0153A97222426F400C026A4 /* MainInterface.storyboard */; };
+		A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A0153A93222426F400C026A4 /* openland-share-ex.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AA26084B22008C8300A69D84 /* index.thread.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AA260848220074F100A69D84 /* index.thread.jsbundle */; };
 		AA2FBA2922247CA4000915F7 /* RNSDevice-Bridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2822247CA4000915F7 /* RNSDevice-Bridge.m */; };
 		AA2FBA2B22247D0E000915F7 /* RNSDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2FBA2A22247D0E000915F7 /* RNSDevice.swift */; };
@@ -101,6 +102,13 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "openland-tvOS";
 		};
+		A0DDD9B72226BE8B00AA3061 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0153A92222426F400C026A4;
+			remoteInfo = "openland-share-ex";
+		};
 		AAE56DD2212A0CAC003706B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AAE56DC6212A0CAC003706B3 /* Nuke.xcodeproj */;
@@ -174,6 +182,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A0DDD9B92226BE8B00AA3061 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A0DDD9B62226BE8B00AA3061 /* openland-share-ex.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AA904695210F2C2900F989BC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -704,11 +723,13 @@
 				AA904695210F2C2900F989BC /* Embed Frameworks */,
 				BF41E56CD0EBA26F6D97F99D /* [CP] Embed Pods Frameworks */,
 				AAB23F0E22107B1700BFD222 /* Extract Required Archs */,
+				A0DDD9B92226BE8B00AA3061 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */,
+				A0DDD9B82226BE8B00AA3061 /* PBXTargetDependency */,
 			);
 			name = openland;
 			productName = "Hello World";
@@ -787,7 +808,7 @@
 						LastSwiftMigration = 940;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1219,6 +1240,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* openland-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		A0DDD9B82226BE8B00AA3061 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0153A92222426F400C026A4 /* openland-share-ex */;
+			targetProxy = A0DDD9B72226BE8B00AA3061 /* PBXContainerItemProxy */;
 		};
 		AAE56DE7212A0CDC003706B3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
