@@ -1,5 +1,4 @@
-import { findActiveWordStart } from './useHandleEditorChange';
-import { EditorState, Modifier, SelectionState, getDefaultKeyBinding } from 'draft-js';
+import { getDefaultKeyBinding } from 'draft-js';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {

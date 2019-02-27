@@ -1,5 +1,5 @@
 const findWithRegex = require('find-with-regex').default;
-const emojione = require('emojione');
+const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
 
 const unicodeRegex = new RegExp(emojione.unicodeRegexp, 'g');
 

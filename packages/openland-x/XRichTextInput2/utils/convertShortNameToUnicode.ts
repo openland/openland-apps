@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 // Original can be found here: https://github.com/Ranks/emojione
-const convertShortNameToUnicode = function(unicode: string) {
+export const convertShortNameToUnicode = function(unicode: string) {
     if (unicode.indexOf('-') > -1) {
         let parts = [];
         let s = unicode.split('-');
@@ -31,5 +31,3 @@ const convertShortNameToUnicode = function(unicode: string) {
         }
     }
 };
-
-export default convertShortNameToUnicode;

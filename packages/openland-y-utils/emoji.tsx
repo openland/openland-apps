@@ -130,7 +130,7 @@ export function emoji({
                                         width={height}
                                         height={height}
                                         key={'e-' + i}
-                                        alt={v}
+                                        alt={emojione.shortnameToUnicode(v)}
                                         src={url}
                                         srcSet={retinaUrl + ' 2x'}
                                     />
@@ -148,7 +148,7 @@ export function emoji({
                                 width={height}
                                 height={height}
                                 key={'e-' + i}
-                                alt={v}
+                                alt={emojione.shortnameToUnicode(v)}
                                 src={url}
                                 srcSet={retinaUrl + ' 2x'}
                             />

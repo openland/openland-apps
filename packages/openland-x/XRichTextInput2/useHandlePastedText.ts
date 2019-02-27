@@ -14,8 +14,6 @@ export function useHandlePastedText({ setEditorState }: { setEditorState: Functi
             return 'not-handled';
         }
         if ((html = convertEmojioneImageToUnicode(html, { selector, getUnicode }))) {
-            console.log('!!!');
-            html = '<meta charset="utf-8">🦄';
             // eslint-disable-line no-cond-assign
             // refer to original
             // @see https://github.com/facebook/draft-js/blob/0a1f981a42ba665471bf35e3955560988de24c78/src/component/handlers/edit/editOnPaste.js#L153-L168

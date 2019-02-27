@@ -68,7 +68,11 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
                 new CompositeDecorator([
                     {
                         strategy: emojiStrategy,
-                        component: decorateComponentWithProps(Emoji, {}),
+                        component: decorateComponentWithProps(Emoji, {
+                            imagePath: '//cdn.jsdelivr.net/emojione/assets/svg/',
+                            imageType: 'svg',
+                            cacheBustParam: '?v=2.2.7',
+                        }),
                     },
                     {
                         strategy: findLinkMention,

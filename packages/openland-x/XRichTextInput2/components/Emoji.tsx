@@ -1,6 +1,21 @@
 import React from 'react';
-const unionClassNames = require('union-class-names');
-const emojione = require('emojione');
+import { css } from 'linaria';
+const unionClassNames = require('union-class-names').default;
+const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
+
+const emojiClassName = css`
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 1.95ch;
+    max-height: 1em;
+    line-height: inherit;
+    margin: -0.2ex 0 0.2ex;
+    color: transparent;
+`;
 
 export const Emoji = ({
     theme = {},
@@ -34,7 +49,7 @@ export const Emoji = ({
             ];
 
         const backgroundImage = `url(${imagePath}${shortNameForImage}.${imageType}${cacheBustParam})`;
-        const combinedClassName = unionClassNames(className);
+        const combinedClassName = unionClassNames(className, emojiClassName);
 
         emojiDisplay = (
             <span
