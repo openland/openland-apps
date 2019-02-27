@@ -82,13 +82,13 @@ const RoomsList = () => {
                             key: v.id,
                             title: v.title,
                         }}
-                        title={v.organization!.name}
+                        title={v.organization ? v.organization!.name : undefined}
                         description={v.membersCount + ' members'}
                         path="Conversation"
                         pathParams={{ flexibleId: v.id }}
                     />
                 ))}
-                 {(existingRoomsLimited.length < existingRooms.length) && (
+                {(existingRoomsLimited.length < existingRooms.length) && (
                     <ZListItem
                         leftIcon={require('assets/ic-more-24.png')}
                         text="All groups"

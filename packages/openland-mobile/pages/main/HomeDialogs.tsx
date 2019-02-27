@@ -15,12 +15,12 @@ import { ThemeProvider } from '../../themes/ThemeContext';
 import { DialogItemViewAsync } from 'openland-mobile/messenger/components/DialogItemViewAsync';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-import { DataSourceDateItem } from 'openland-engines/messenger/ConversationEngine';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 
 const DialogsComponent = XMemo<PageProps>((props) => {
     let handleShareDialogClick = React.useCallback((id: string, dialog: DialogDataSourceItem) => {
-        Alert.builder().title('Openland').message('Share with ' + dialog.title + '?').button('Cancel', 'cancel').button('Ok', 'default', () => {
+        Alert.builder().title('Openland').message('Share with ' + dialog.title + '?').button('Cancel', 'cancel').button('Ok', 'default', async () => {
+
             if (props.router.params.share.files) {
                 for (let attach of props.router.params.share.files) {
                     let path = attach.split('/');
@@ -52,7 +52,10 @@ const DialogsComponent = XMemo<PageProps>((props) => {
                 <SHeader title={props.router.params.share ? 'Share with' : 'Messages'} />
             )}
             {Platform.OS === 'android' && (
-                <CenteredHeader title="Messages" padding={98} />
+                <>
+                    {props.router.params.share && <SHeader title="Share with" />}
+                    {!props.router.params.share && < CenteredHeader title="Messages" padding={98} />}
+                </>
             )}
             {!props.router.params.share && <SHeaderButton
                 title="New"

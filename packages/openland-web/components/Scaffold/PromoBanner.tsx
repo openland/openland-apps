@@ -2,7 +2,6 @@ import * as React from 'react';
 import Glamorous from 'glamorous';
 import { XButton } from 'openland-x/XButton';
 import { XView } from 'react-mental';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import IosIcon from 'openland-icons/ic-ios-white.svg';
 import AndroidIcon from 'openland-icons/ic-android-white.svg';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
@@ -11,21 +10,7 @@ const ActiveButton = Glamorous(XButton)({
     backgroundColor: '#1585ed',
 });
 
-export const PromoBanner = () => {
-    const [banner, bannerHandler] = React.useState(true);
-    if (!canUseDOM) {
-        return null;
-    }
-    if (localStorage.getItem('promo-banner-be-show')) {
-        return null;
-    }
-    const handleHide = () => {
-        bannerHandler(false);
-        localStorage.setItem('promo-banner-be-show', 'hidden');
-    };
-    if (!banner) {
-        return null;
-    }
+export const PromoBanner = (props: { onClise: () => void }) => {
     return (
         <XView
             height={50}
@@ -69,7 +54,7 @@ export const PromoBanner = () => {
                 position="absolute"
                 top={9}
                 right={9}
-                onClick={handleHide}
+                onClick={props.onClise}
             >
                 <CloseIcon />
             </XView>

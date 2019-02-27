@@ -3,6 +3,8 @@ import { UploadCareDirectUploading } from '../utils/UploadCareDirectUploading';
 import { UploadStatus, FileMetadata } from 'openland-engines/messenger/types';
 import { getMessenger } from '../utils/messenger';
 import RNFetchBlob from 'rn-fetch-blob';
+import { Platform, PermissionsAndroid } from 'react-native';
+import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
 
 export interface UploadState {
     status: UploadStatus;
@@ -26,7 +28,28 @@ export class UploadManager {
         return this.getWatcher(conversationId).watch(handler);
     }
 
-    registerUpload = (conversationId: string, name: string, uri: string, fileSize?: number) => {
+    registerUpload = async (conversationId: string, name: string, uri: string, fileSize?: number) => {
+
+        let hasPermissions = false;
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    hasPermissions = true;
+                } else {
+                    handlePermissionDismiss('android-storage');
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        } else {
+            hasPermissions = true;
+        }
+
+        if (!hasPermissions) {
+            return;
+        }
 
         const w = new Watcher<UploadState>();
         w.setState({ progress: 0, status: UploadStatus.UPLOADING });
