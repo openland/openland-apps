@@ -606,7 +606,10 @@ const Header = (props: { organization: Organization_organization }) => {
                                     </XMenuItem>
                                 </XWithRole>
                                 {leaveOrganizationButton}
-                                <XWithRole role="admin" orgPermission={organization.id}>
+                                <XWithRole
+                                    role={organization.isOwner ? 'admin' : 'owner'}
+                                    orgPermission={organization.id}
+                                >
                                     {deleteOrganizationButton}
                                 </XWithRole>
                             </>
