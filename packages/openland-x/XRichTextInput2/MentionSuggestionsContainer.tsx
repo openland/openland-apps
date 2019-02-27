@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Picker } from 'emoji-mart';
+import { Picker, EmojiData } from 'emoji-mart';
 import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import useOnClickOutside from 'use-onclickoutside';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../basics/Flex';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
+import { XRichTextInput2Props } from './';
 
 const Container = Glamorous.div<XFlexStyles>([
     {
@@ -46,7 +47,7 @@ const pickerClassName = css`
     box-shadow: 0 4px 30px 0 gainsboro;
 `;
 
-const EmojiButton = () => {
+const EmojiButton = ({ onEmojiPicked }: { onEmojiPicked: (emoji: EmojiData) => void }) => {
     const [showPicker, setShowPicker] = React.useState(false);
     const ref = React.useRef(null);
     useOnClickOutside(ref, () => {
@@ -57,13 +58,7 @@ const EmojiButton = () => {
         <div>
             {showPicker && (
                 <div className={pickerClassName} ref={ref}>
-                    <Picker
-                        color="#1790ff"
-                        set="emojione"
-                        onSelect={(...args) => {
-                            console.log(...args);
-                        }}
-                    />
+                    <Picker color="#1790ff" set="emojione" onSelect={onEmojiPicked} />
                 </div>
             )}
             <div
@@ -112,7 +107,14 @@ const mentionSuggestionsWrapperClassName = css`
     box-sizing: border-box;
 `;
 
-export const MentionSuggestionsContainer = (props: any) => {
+export const MentionSuggestionsContainer = (
+    props: XRichTextInput2Props & {
+        onEmojiPicked: (emoji: EmojiData) => void;
+        children: any;
+        suggestions: any;
+        showSuggestions: boolean;
+    },
+) => {
     const containerRef = React.useRef<ContainerWrapper>(null);
 
     const [sizeOfContainer, setSizeOfContainer] = React.useState<{
@@ -140,7 +142,7 @@ export const MentionSuggestionsContainer = (props: any) => {
         }
     }, []);
 
-    const { children, suggestions, showSuggestions } = props;
+    const { children, suggestions, showSuggestions, onEmojiPicked } = props;
 
     return (
         <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
@@ -158,7 +160,7 @@ export const MentionSuggestionsContainer = (props: any) => {
                 {suggestions}
             </div>
             {children}
-            <EmojiButton />
+            <EmojiButton onEmojiPicked={onEmojiPicked} />
         </ContainerWrapper>
     );
 };

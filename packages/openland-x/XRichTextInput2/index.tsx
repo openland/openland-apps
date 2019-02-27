@@ -38,6 +38,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             setActiveWord,
             handleEditorChange,
             applyMention,
+            onEmojiPicked,
         } = useHandleEditorChange({
             onChange,
             value,
@@ -83,6 +84,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         return (
             <MentionSuggestionsContainer
                 {...props}
+                onEmojiPicked={onEmojiPicked}
                 showSuggestions={filteredSuggestions.length !== 0}
                 suggestions={filteredSuggestions.map((mention, key) => {
                     return (

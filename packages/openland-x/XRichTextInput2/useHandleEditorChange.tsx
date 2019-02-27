@@ -152,6 +152,10 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         setPlainText(newPlainText);
     };
 
+    const onEmojiPicked = (emojiPicked: any) => {
+        console.log(emojiPicked);
+    };
+
     React.useLayoutEffect(() => {
         if (onChange) {
             onChange(plainText);
@@ -172,5 +176,6 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         handleEditorChange,
         editorState,
         setEditorState,
+        onEmojiPicked,
     };
 }
