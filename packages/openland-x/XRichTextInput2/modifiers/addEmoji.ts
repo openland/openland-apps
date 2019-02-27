@@ -10,8 +10,18 @@ export const Mode = {
     REPLACE: 'REPLACE', // replace emoji shortname
 };
 
-export const addEmoji = (editorState: any, emojiShortName: any, mode = Mode.INSERT) => {
+export const addEmoji = ({
+    editorState,
+    emojiShortName,
+    mode = Mode.INSERT,
+}: {
+    editorState: any;
+    emojiShortName: any;
+    mode?: any;
+}) => {
     let emoji;
+
+    // :male_sign: fails now
     if (emojiList.list[emojiShortName]) {
         const unicode = emojiList.list[emojiShortName][0];
         emoji = convertShortNameToUnicode(unicode);

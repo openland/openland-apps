@@ -38,7 +38,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             activeWord,
             setActiveWord,
             handleEditorChange,
-            applyMention,
+            addMention,
             onEmojiPicked,
         } = useHandleEditorChange({
             onChange,
@@ -72,7 +72,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const applyMentionById = (id: number) => {
             const mentionEntry = filteredSuggestions[id];
             if (mentionEntry) {
-                applyMention(mentionEntry);
+                addMention(mentionEntry);
                 setActiveWord('');
             }
         };
