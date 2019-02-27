@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { emoji } from 'openland-y-utils/emoji';
+const decorateComponentWithProps = require('decorate-component-with-props').default;
 import { css } from 'linaria';
 import {
     EditorState,
@@ -10,6 +11,8 @@ import {
     Modifier,
 } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
+import emojiStrategy from './utils/emojiStrategy';
+import { Emoji } from './components/Emoji';
 
 export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -89,6 +92,10 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
             EditorState.createWithContent(
                 ContentState.createFromText(text),
                 new CompositeDecorator([
+                    {
+                        strategy: emojiStrategy,
+                        component: decorateComponentWithProps(Emoji, {}),
+                    },
                     {
                         strategy: findLinkMention,
                         component: MentionComponentInnerText,

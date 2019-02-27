@@ -4,9 +4,9 @@ import { Picker, EmojiData } from 'emoji-mart';
 import { css, cx } from 'linaria';
 import Glamorous from 'glamorous';
 import useOnClickOutside from 'use-onclickoutside';
-import { extractFlexProps, XFlexStyles, applyFlex } from '../basics/Flex';
+import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
-import { XRichTextInput2Props } from './';
+import { XRichTextInput2Props } from '..';
 
 const Container = Glamorous.div<XFlexStyles>([
     {

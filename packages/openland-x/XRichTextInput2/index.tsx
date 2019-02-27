@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Editor } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
-import { MentionSuggestionsContainer } from './MentionSuggestionsContainer';
+import { MentionSuggestionsContainer } from './components/MentionSuggestionsContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
 import { useKeyHandling } from './useKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
 import { useHandlePastedText } from './useHandlePastedText';
-import { MentionEntry, MentionDataT } from './MentionEntry';
+import { MentionEntry, MentionDataT } from './components/MentionEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (value: string) => void;
@@ -45,7 +45,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             value,
         });
 
-        const { handlePastedText } = useHandlePastedText();
+        const { handlePastedText } = useHandlePastedText({ setEditorState });
 
         const { resetAndFocus } = useInputMethods({
             ref,
