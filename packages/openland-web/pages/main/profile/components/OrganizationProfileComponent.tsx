@@ -248,7 +248,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
         />
     );
 
-    if (role === 'OWNER' || !isMeAdmin) {
+    if (role === 'OWNER' || (role === 'ADMIN' && !isMeOwner) || !isMeAdmin) {
         customMenu = null;
     }
 
@@ -442,7 +442,7 @@ export const PermissionsModal = withOrganizationMemberChangeRole(
     orgName: string;
     members: any[];
     orgId: string;
-    refetchVars: { orgId: string };
+    refetchVars: { orgId: string; organizationId: string };
 }>;
 
 export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
@@ -606,7 +606,10 @@ const Header = (props: { organization: Organization_organization }) => {
                                     </XMenuItem>
                                 </XWithRole>
                                 {leaveOrganizationButton}
-                                <XWithRole role="admin" orgPermission={organization.id}>
+                                <XWithRole
+                                    role={organization.isOwner ? 'admin' : 'owner'}
+                                    orgPermission={organization.id}
+                                >
                                     {deleteOrganizationButton}
                                 </XWithRole>
                             </>
@@ -761,7 +764,10 @@ const Members = ({ organization, router }: MembersProps) => {
                     members={organization.members}
                     orgName={organization.name}
                     orgId={organization.id}
-                    refetchVars={{ orgId: organization.id }}
+                    refetchVars={{
+                        orgId: organization.id,
+                        organizationId: organization.id,
+                    }}
                 />
                 <UpdateUserProfileModal members={organization.members} />
             </Section>
