@@ -248,7 +248,7 @@ const MemberJoinedCard = (props: MemberJoinedProps) => {
         />
     );
 
-    if (role === 'OWNER' || role === 'ADMIN' || !isMeAdmin) {
+    if (role === 'OWNER' || (role === 'ADMIN' && !isMeOwner) || !isMeAdmin) {
         customMenu = null;
     }
 
