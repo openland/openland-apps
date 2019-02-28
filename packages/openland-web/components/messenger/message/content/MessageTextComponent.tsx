@@ -83,7 +83,7 @@ const styleRotating = css`
     }
 `;
 
-function emojiCkecker(arr: Array<string>) {
+function emojiChecker(arr: Array<string>) {
     for (let i = 0; i < arr.length; i++) {
         if (arr[i] === ' ' || arr[i] === '') {
             continue;
@@ -101,7 +101,7 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     let messageText = props.message;
 
     const messageArray = Array.from(messageText);
-    let isOnlyEmoji = emojiCkecker(messageArray);
+    let isOnlyEmoji = emojiChecker(messageArray);
     const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
