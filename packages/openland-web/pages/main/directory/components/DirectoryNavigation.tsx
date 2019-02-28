@@ -197,9 +197,9 @@ export const DirectoryNavigation = XMemo(
                     </>
                 }
                 secondFragment={
-                    <XView flexGrow={1} height="100%" position="relative">
-                        <XScrollView2 height="100%">
-                            <XView flexGrow={1} marginBottom={isMobile ? 56 : undefined}>
+                    <XView flexGrow={1} height={isMobile ? undefined : '100%'} position="relative">
+                        <XScrollView2 height="100%" flexGrow={1}>
+                            <XView flexGrow={1}>
                                 {children ? (
                                     children
                                 ) : (

@@ -216,7 +216,7 @@ export const MobileScaffold = ({
     topItems: any;
 }) => {
     return (
-        <XView flexDirection="row" flexGrow={1} flexBasis={0} height="100%">
+        <XView flexDirection="row" flexGrow={1} flexBasis={0}>
             <XView
                 flexDirection="column"
                 backgroundColor={XThemeDefault.backgroundColor}

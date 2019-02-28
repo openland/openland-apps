@@ -107,16 +107,9 @@ export function useHandleSend({
         let msg = inputValue.trim();
         if (msg.length > 0) {
             if (onSend && !hasQuoteInState()) {
-                if (supportMentions()) {
-                    onSend(
-                        msg,
-                        // TODO simplify here
-                        mentionsState!!.getMentions!!(
-                            msg,
-                            mentionsState!!.listOfMembersNames!!,
-                            members,
-                        ),
-                    );
+                if (supportMentions() && mentionsState) {
+                    onSend(msg, mentionsState.getMentions() as any);
+                    mentionsState.setCurrentMentions([]);
                 } else {
                     onSend(msg, null);
                 }

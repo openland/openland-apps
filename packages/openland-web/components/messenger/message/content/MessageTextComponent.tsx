@@ -74,32 +74,49 @@ const styleRotating = css`
     display: inline-block;
 
     @keyframes rotate {
-        from { 
+        from {
             transform: rotate(0deg);
         }
-        to { 
+        to {
             transform: rotate(360deg);
         }
     }
 `;
 
+function emojiChecker(arr: Array<string>) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === ' ' || arr[i] === '') {
+            continue;
+        }
+        if (!isEmoji(arr[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     // Preprocessing
 
-    var messageText = props.message;
+    let messageText = props.message;
+
+    const messageArray = Array.from(messageText);
+    let isOnlyEmoji = emojiChecker(messageArray);
     const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
-    const isSingleEmoji = React.useMemo(() => isEmoji(messageText), [props.message]);
     const isBig =
-        isSingleEmoji ||
+        isOnlyEmoji ||
         isInsane ||
         isRotating ||
         isMouthpiece ||
         (messageText.length <= 302 && messageText.startsWith(':') && messageText.endsWith(':'));
-    const isTextSticker = !isSingleEmoji && isBig;
+    const isTextSticker = !isOnlyEmoji && isBig;
     if (isInsane || isMouthpiece || isRotating) {
-        messageText = messageText.replace(/🌈/g, '').replace(/📣/g, '').replace(/🔄/g, '');
+        messageText = messageText
+            .replace(/🌈/g, '')
+            .replace(/📣/g, '')
+            .replace(/🔄/g, '');
     } else if (isTextSticker) {
         messageText = messageText.slice(1, messageText.length - 1);
     }
@@ -151,7 +168,9 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
                 if (m.type === 'text') {
                     res.push(
                         <span
-                            className={isRotating ? styleRotating : isInsane ? styleInsane : undefined}
+                            className={
+                                isRotating ? styleRotating : isInsane ? styleInsane : undefined
+                            }
                             key={'text-' + i + '-' + i2}
                         >
                             {emoji({

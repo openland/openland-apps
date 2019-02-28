@@ -95,7 +95,7 @@ class ShareViewController: UIViewController {
               "strings" : strings.count > 0 ? strings : nil,
               ],
             options: JSONSerialization.WritingOptions.init(rawValue: 0))
-          let jsonString = (NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+          let jsonString = (NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String).addingPercentEncoding(withAllowedCharacters: CharacterSet())
           let result = self.openURL(URL(string: "openland://deep/share?data=\(jsonString!)")!)
         } catch {
           alertView.message = "Error: \(error.localizedDescription)"

@@ -96,7 +96,8 @@ const showMobileClassName = css`
         display: none;
     }
     @media (max-width: 750px) {
-        display: block;
+        display: flex;
+        flex-direction: column;
     }
 `;
 const showDesktopClassName = css`

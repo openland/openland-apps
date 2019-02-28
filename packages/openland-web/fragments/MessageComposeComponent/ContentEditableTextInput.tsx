@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
+import { MentionDataT } from './useMentions';
 
 const TextArea = css`
     border-radius: 10px;
@@ -53,7 +54,7 @@ export const ContentEditableTextInput = React.forwardRef(
             placeholder: string;
             onPasteFile?: Function;
             onSubmit?: Function;
-            onChange: (value: string) => void;
+            onChange: (a: { text: string; mentions: MentionDataT[] }) => void;
         },
         ref: any,
     ) => {
@@ -64,7 +65,7 @@ export const ContentEditableTextInput = React.forwardRef(
 
             const msg = ref.current.innerText;
 
-            onChange(msg);
+            onChange({ text: msg, mentions: [] });
         };
 
         const onPaste = (e: any) => {

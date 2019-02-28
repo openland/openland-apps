@@ -10,9 +10,13 @@ export class EmojiFlags {
     static ignoreEmojione = canUseDOM && localStorage.getItem('meke_web_great_again') === 'true';
 }
 
-type SizeT = 10 | 12 | 13 | 14 | 16 | 18 | 20 | 25 | 38;
+type SizeT = 10 | 12 | 13 | 14 | 15 | 16 | 18 | 20 | 25 | 38;
 
 const cacheMap = {};
+
+// get native from short
+// if paste depends on native, how it can work on other platforms? (BAD)
+// better to make it depend on shortname
 
 export function emoji({
     src,
@@ -59,6 +63,11 @@ export function emoji({
     }
 
     let style: any = null;
+    if (size === 15) {
+        style = {
+            marginTop: -4,
+        };
+    }
     if (size === 14) {
         style = {
             marginTop: -1,
@@ -109,6 +118,7 @@ export function emoji({
                                     }}
                                 >
                                     <img
+                                        className="emojione"
                                         style={{
                                             position: 'absolute',
                                             left: 0,
@@ -120,7 +130,7 @@ export function emoji({
                                         width={height}
                                         height={height}
                                         key={'e-' + i}
-                                        alt={v}
+                                        alt={emojione.shortnameToUnicode(v)}
                                         src={url}
                                         srcSet={retinaUrl + ' 2x'}
                                     />
@@ -129,6 +139,7 @@ export function emoji({
                         }
                         return (
                             <img
+                                className="emojione"
                                 style={{
                                     alignSelf: 'center',
                                     verticalAlign: 'middle',
@@ -137,7 +148,7 @@ export function emoji({
                                 width={height}
                                 height={height}
                                 key={'e-' + i}
-                                alt={v}
+                                alt={emojione.shortnameToUnicode(v)}
                                 src={url}
                                 srcSet={retinaUrl + ' 2x'}
                             />

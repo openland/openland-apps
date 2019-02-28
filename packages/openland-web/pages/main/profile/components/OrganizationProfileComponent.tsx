@@ -159,78 +159,106 @@ interface MemberJoinedProps {
 
 const MemberJoinedCard = (props: MemberJoinedProps) => {
     const { user, role } = props.member;
-    const { isMine, isAdmin, isOwner } = props.organization;
+    const { isYou } = user;
+    const isMeAdmin = props.organization.isAdmin;
+    const isMeOwner = props.organization.isOwner;
 
-    let owner = false;
-    let admin = false;
+    let customMenu: any = (
+        <XOverflow
+            placement="bottom-end"
+            flat={true}
+            content={
+                <>
+                    {isMeOwner &&
+                        !isYou &&
+                        role === 'ADMIN' && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'changeRole',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.revokeAdminStatus}
+                            </XMenuItem>
+                        )}
+                    {isMeOwner &&
+                        !isYou &&
+                        role !== 'ADMIN' && (
+                            <XMenuItem
+                                query={{
+                                    field: 'changeRole',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.makeAdmin}
+                            </XMenuItem>
+                        )}
+                    {isMeAdmin &&
+                        !isYou &&
+                        role !== 'OWNER' && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'remove',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.removeFromOrganization}
+                            </XMenuItem>
+                        )}
+                    {role !== 'ADMIN' &&
+                        role !== 'OWNER' &&
+                        isYou && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'remove',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.leaveFromOrganization}
+                            </XMenuItem>
+                        )}
+                    {isMeAdmin &&
+                        role !== 'OWNER' &&
+                        isYou && (
+                            <XMenuItem
+                                style="danger"
+                                query={{
+                                    field: 'remove',
+                                    value: user.id,
+                                }}
+                            >
+                                {TextProfiles.Organization.members.leaveFromOrganization}
+                            </XMenuItem>
+                        )}
+                    <XWithRole role={['super-admin']}>
+                        <XMenuItem
+                            query={{
+                                field: 'editUser',
+                                value: user.id,
+                            }}
+                        >
+                            {TextProfiles.Organization.members.edit}
+                        </XMenuItem>
+                    </XWithRole>
+                </>
+            }
+        />
+    );
 
-    if (isMine) {
-        owner = role === 'OWNER';
-        admin = role === 'ADMIN';
+    if (role === 'OWNER' || (role === 'ADMIN' && !isMeOwner) || !isMeAdmin) {
+        customMenu = null;
     }
 
     return (
         <XUserCard
             user={user}
             hideOrganization={true}
-            isAdmin={admin}
-            isOwner={owner}
-            customMenu={
-                <>
-                    <XOverflow
-                        placement="bottom-end"
-                        flat={true}
-                        content={
-                            <>
-                                {(admin || owner) &&
-                                    (isAdmin || isOwner) && (
-                                        <XMenuItem
-                                            style="danger"
-                                            query={{
-                                                field: 'changeRole',
-                                                value: user.id,
-                                            }}
-                                        >
-                                            {TextProfiles.Organization.members.revokeAdminStatus}
-                                        </XMenuItem>
-                                    )}
-                                {!(admin || owner) &&
-                                    (isAdmin || isOwner) && (
-                                        <XMenuItem
-                                            query={{
-                                                field: 'changeRole',
-                                                value: user.id,
-                                            }}
-                                        >
-                                            {TextProfiles.Organization.members.makeAdmin}
-                                        </XMenuItem>
-                                    )}
-                                {(isAdmin || isOwner) && (
-                                    <XMenuItem
-                                        style="danger"
-                                        query={{
-                                            field: 'remove',
-                                            value: user.id,
-                                        }}
-                                    >
-                                        {TextProfiles.Organization.members.removeFromOrganization}
-                                    </XMenuItem>
-                                )}
-                                <XWithRole role={['super-admin']}>
-                                    <XMenuItem
-                                        query={{
-                                            field: 'editUser',
-                                            value: user.id,
-                                        }}
-                                    >
-                                        {TextProfiles.Organization.members.edit}
-                                    </XMenuItem>
-                                </XWithRole>
-                            </>
-                        }
-                    />
-                </>
-            }
+            isAdmin={role === 'ADMIN'}
+            isOwner={role === 'OWNER'}
+            customMenu={customMenu}
         />
     );
 };
@@ -414,7 +442,7 @@ export const PermissionsModal = withOrganizationMemberChangeRole(
     orgName: string;
     members: any[];
     orgId: string;
-    refetchVars: { orgId: string };
+    refetchVars: { orgId: string; organizationId: string };
 }>;
 
 export const RemoveJoinedModal = withOrganizationRemoveMember(props => {
@@ -578,7 +606,10 @@ const Header = (props: { organization: Organization_organization }) => {
                                     </XMenuItem>
                                 </XWithRole>
                                 {leaveOrganizationButton}
-                                <XWithRole role="admin" orgPermission={organization.id}>
+                                <XWithRole
+                                    role={organization.isOwner ? 'admin' : 'owner'}
+                                    orgPermission={organization.id}
+                                >
                                     {deleteOrganizationButton}
                                 </XWithRole>
                             </>
@@ -733,7 +764,10 @@ const Members = ({ organization, router }: MembersProps) => {
                     members={organization.members}
                     orgName={organization.name}
                     orgId={organization.id}
-                    refetchVars={{ orgId: organization.id }}
+                    refetchVars={{
+                        orgId: organization.id,
+                        organizationId: organization.id,
+                    }}
                 />
                 <UpdateUserProfileModal members={organization.members} />
             </Section>

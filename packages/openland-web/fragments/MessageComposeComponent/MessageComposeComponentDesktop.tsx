@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UploadCare from 'uploadcare-widget';
-import { XRichTextInput2 } from 'openland-x/XRichTextInput2';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { XWithRouter } from 'openland-x-routing/withRouter';
 import { MutationFunc } from 'react-apollo';
@@ -31,7 +31,7 @@ import { useDraft } from './useDraft';
 import { useHandleSend } from './useHandleSend';
 import { useInputMethods } from './useInputMethods';
 import { useQuote } from './useQuote';
-import { useGeneralCompose } from './useGeneralCompose';
+import { useHandleChange } from './useHandleChange';
 import { useMentions } from './useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
@@ -62,7 +62,7 @@ export type MessageComposeComponentInnerProps = {
     MessageComposeComponentT;
 
 const MessageComposeComponentInner = (messageComposeProps: MessageComposeComponentInnerProps) => {
-    const inputRef = React.useRef<XRichTextInput2>(null);
+    const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
 
@@ -75,7 +75,9 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         conversationId: messageComposeProps.conversationId,
     });
 
-    const mentionsState = useMentions({ members: messageComposeProps.members });
+    const mentionsState = useMentions({
+        members: messageComposeProps.members,
+    });
 
     const { handleSend, closeEditor } = useHandleSend({
         replyMessage: messageComposeProps.replyMessage,
@@ -100,11 +102,10 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         inputMethodsState,
     });
 
-    const { handleChange } = useGeneralCompose({
+    const { handleChange } = useHandleChange({
+        mentionsState,
         onChange: messageComposeProps.onChange,
-        onSendFile: messageComposeProps.onSendFile,
         setInputValue,
-        quoteState,
         draftState,
     });
 
