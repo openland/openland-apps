@@ -32,13 +32,18 @@ const CloseBannerIconClassName = css`
 
 export const MobileCustomPromo = () => {
     const [hidden, bannerHandler] = React.useState(true);
+    const [beHide, beHideHandler] = React.useState(false);
     const handleHideBanner = () => {
         bannerHandler(true);
+        beHideHandler(true);
     };
     let iosChrome = false;
     let iosMozila = false;
     let androidMozila = false;
     React.useEffect(() => {
+        if (beHide) {
+            return;
+        }
         const userAgent = window.navigator.userAgent;
         if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/CriOS/i)) {
             iosChrome = true;
