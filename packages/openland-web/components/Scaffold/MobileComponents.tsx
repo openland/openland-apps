@@ -81,7 +81,7 @@ const MobileCustomPromoBanner = () => {
                             Openland
                         </XView>
                         <XView fontSize={14} opacity={0.7} color="#000">
-                            {androidMozila ? 'Use Android app' : 'Use iPhone app'}
+                            {androidMozila ? 'Use Android app' : 'Use iOS app'}
                         </XView>
                     </XView>
                 </XView>
