@@ -94,16 +94,6 @@ export const addEmoji = ({
             throw new Error('Unidentified value of "mode"');
     }
 
-    // If the emoji is inserted at the end, a space is appended right after for
-    // a smooth writing experience.
-    if (emojiEndPos === blockSize) {
-        emojiAddedContent = Modifier.insertText(
-            emojiAddedContent,
-            emojiAddedContent.getSelectionAfter(),
-            ' ',
-        );
-    }
-
     const newEditorState = EditorState.push(editorState, emojiAddedContent, 'insert-emoji' as any);
     return EditorState.forceSelection(newEditorState, emojiAddedContent.getSelectionAfter());
 };
