@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { TextInput, Text, View, TextInputProps } from 'react-native';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZTextInputBasicProps extends TextInputProps {
     invalid?: boolean;
     enabled?: boolean;
 
     title?: string;
-    hideBorder?: boolean;
+    border?: boolean | 'force-full';
     prefix?: string;
-    fullWidthBorder?: boolean;
 
     onChangeText?: (src: string) => void;
 }
 
 export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
-    let { title, prefix, hideBorder, invalid, enabled, fullWidthBorder, ...others } = props;
+    let { title, prefix, border, invalid, enabled, ...others } = props;
+    let theme = React.useContext(ThemeContext);
+
     return (
         <View paddingLeft={16} flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View flexDirection="row" alignItems="stretch" flexGrow={1}>
@@ -47,8 +49,9 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                     {...others}
                     placeholderTextColor="#a0a0a0"
                     style={{
+                        color: theme.textColor,
                         flex: 1,
-                        minHeight: hideBorder ? 44 : 43,
+                        minHeight: border ? 43 : 44,
                         fontSize: 16,
                         padding: 0,
                         margin: 0,
@@ -58,12 +61,12 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 />
             </View>
     
-            {!hideBorder && (
+            {border && (
                 <View
                     style={{
                         height: 1,
-                        marginLeft: fullWidthBorder ? 0 : title ? 111 : 0,
-                        backgroundColor: (invalid || !enabled) ? '#f6564e' : '#eff0f2'
+                        marginLeft: (border === 'force-full') ? 0 : title ? 111 : 0,
+                        backgroundColor: (invalid || !enabled) ? '#f6564e' : theme.separatorColor
                     }}
                 />
             )}

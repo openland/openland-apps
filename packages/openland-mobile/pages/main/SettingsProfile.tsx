@@ -128,10 +128,12 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     <ZTextInput2
                         placeholder="First name"
                         field="input.firstName"
+                        border={true}
                     />
                     <ZTextInput2
                         placeholder="Last name"
                         field="input.lastName"
+                        border={true}
                     />
                 </AvatarPickerInputGroup>
                 <View height={20} />
@@ -140,6 +142,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         field="input.about"
                         placeholder="Add your bio"
                         multiline={true}
+                        border={true}
                     />
                 </View>
                 <View height={30} />
@@ -153,26 +156,31 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         title="Phone"
                         field="input.phone"
                         placeholder="Add your phone"
+                        border={true}
                     />
                     <ZTextInput2
                         title="Email"
                         field="input.email"
                         placeholder="Add your email"
+                        border={true}
                     />
                     <ZTextInput2
                         title="Location"
                         field="input.location"
                         placeholder="Add your location"
+                        border={true}
                     />
                     <ZTextInput2
                         title="Website"
                         field="input.website"
                         placeholder="Add your website"
+                        border={true}
                     />
                     <ZTextInput2
                         title="LinkedIn"
                         field="input.alphaLinkedin"
                         placeholder="Add your LinkedIn account"
+                        border={true}
                     />
                 </View>
             </ZForm>

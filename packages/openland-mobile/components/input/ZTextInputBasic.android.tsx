@@ -1,22 +1,26 @@
 import * as React from 'react';
 import { TextInput, Text, View, TextInputProps } from 'react-native';
+import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 
 export interface ZTextInputBasicProps extends TextInputProps {
     invalid?: boolean;
     enabled?: boolean;
 
     title?: string;
-    hideBorder?: boolean;
+    border?: boolean | 'force-full';
     prefix?: string;
 
     onChangeText?: (src: string) => void;
 }
 
 export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
+    let { title, prefix, border, invalid, enabled, placeholder, ...others } = props;
+    let theme = React.useContext(ThemeContext);
+
     return (
         <View paddingLeft={16} paddingRight={16} flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View flexDirection="row" alignItems="stretch" flexGrow={1}>
-                {props.prefix && (
+                {prefix && (
                     <Text
                         style={{
                             color: '#000000',
@@ -25,19 +29,17 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                             alignSelf: 'center',
                         }}
                     >
-                        {props.prefix}
+                        {prefix}
                     </Text>
                 )}
                 <TextInput
-                    placeholder={props.title || props.placeholder}
-                    autoFocus={props.autoFocus}
-                    multiline={props.multiline}
-                    value={props.value}
-                    onChangeText={props.onChangeText}
+                    {...others}
+                    placeholder={title || placeholder}
                     placeholderTextColor="#a0a0a0"
                     style={{
+                        color: theme.textColor,
                         flex: 1,
-                        minHeight: props.hideBorder ? 50 : 49,
+                        minHeight: props.border ? 49 : 50,
                         fontSize: 16,
                         padding: 0,
                         margin: 0,
@@ -47,12 +49,12 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 />
             </View>
 
-            {!props.hideBorder && (
+            {border && (
                 <View
                     style={{
                         height: 1,
                         marginLeft: 0,
-                        backgroundColor: (props.invalid || !props.enabled) ? '#f6564e' : '#eff0f2'
+                        backgroundColor: (invalid || !enabled) ? '#f6564e' : theme.separatorColor
                     }}
                 />
             )}
