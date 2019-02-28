@@ -11,9 +11,10 @@ import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
 import { DropZone } from './FileUploading/DropZone';
 import { UploadContext } from './FileUploading/UploadContext';
+import { MentionDataT } from './useMentions';
 
 export type TextInputComponentT = {
-    handleChange: (value: string) => void;
+    handleChange: (a: { text: string; mentions: MentionDataT[] }) => void;
     handleSend: () => any;
     inputValue: string;
     handleDrop?: ((file: any) => void) | undefined;
@@ -52,15 +53,13 @@ export const DumpSendMessage = ({
             <DropZone height="calc(100% - 115px)" onFileDrop={handleDrop} />
             <SendMessageContent separator={4} alignItems="center">
                 <XVertical separator={6} flexGrow={1} maxWidth="100%">
-                    {closeEditor &&
-                        quoteState &&
-                        quoteState.quoteMessageReply && (
-                            <EditView
-                                message={quoteState.quoteMessageReply}
-                                title={quoteState.quoteMessageSender || 'Edit message'}
-                                onCancel={closeEditor}
-                            />
-                        )}
+                    {closeEditor && quoteState && quoteState.quoteMessageReply && (
+                        <EditView
+                            message={quoteState.quoteMessageReply}
+                            title={quoteState.quoteMessageSender || 'Edit message'}
+                            onCancel={closeEditor}
+                        />
+                    )}
                     <FileUploader />
                     <TextInputComponent
                         placeholder="Write a message..."
@@ -72,10 +71,7 @@ export const DumpSendMessage = ({
                         handleDrop={handleDrop}
                     />
                     <XHorizontal alignItems="center" justifyContent="space-between" flexGrow={1}>
-                        <AttachmentButtons
-                            enabled={enabled}
-                            handleHideChat={handleHideChat}
-                        />
+                        <AttachmentButtons enabled={enabled} handleHideChat={handleHideChat} />
 
                         <XButton
                             text="Send"

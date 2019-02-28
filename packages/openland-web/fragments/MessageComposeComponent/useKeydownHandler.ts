@@ -32,7 +32,7 @@ export function useKeydownHandler({
         if (
             inputValue.length === 0 &&
             conversation &&
-            ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.hasFocus()) ||
+            ((e.code === 'ArrowUp' && !e.altKey && inputMethodsState.getHasFocus()) ||
                 (e.code === 'KeyE' && e.ctrlKey)) &&
             !quoteState.quoteMessagesId.length
         ) {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { UploadContext } from './FileUploading/UploadContext';
 import { MessageComposeComponentDraftProps } from './MessageComposeComponentDesktop';
 import { useHandleSend } from './useHandleSend';
-import { useGeneralCompose } from './useGeneralCompose';
+import { useHandleChange } from './useHandleChange';
 import { DumpSendMessage } from './DumpSendMessage';
 import { MobileSendMessage } from './SendMessage/MobileSendMessage';
 
@@ -11,7 +11,7 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
     const { handleDrop } = React.useContext(UploadContext);
     const inputRef = React.useRef<HTMLDivElement>(null);
 
-    const { handleChange } = useGeneralCompose({
+    const { handleChange } = useHandleChange({
         setInputValue,
         onChange: messageComposeProps.onChange,
     });
@@ -21,7 +21,7 @@ export const MobileMessageCompose = (messageComposeProps: MessageComposeComponen
         onSend: messageComposeProps.onSend,
         inputValue,
         setInputValue,
-        inputRef
+        inputRef,
     });
 
     // TODO maybe some other pattern here

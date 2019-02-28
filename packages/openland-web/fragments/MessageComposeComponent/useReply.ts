@@ -46,11 +46,7 @@ export function useReply({
             let mentions = null;
             // TODO simplify here
             if (supportMentions() && mentionsState!!.getMentions) {
-                mentions = mentionsState!!.getMentions(
-                    inputValue,
-                    mentionsState!!.listOfMembersNames!!,
-                    members,
-                );
+                mentions = mentionsState!!.getMentions();
             }
 
             const currentMessages = getMessages ? getMessages() : [];
