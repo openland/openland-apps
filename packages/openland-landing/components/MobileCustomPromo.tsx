@@ -48,7 +48,7 @@ export const MobileCustomPromo = () => {
         if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/CriOS/i)) {
             iosChrome = true;
         }
-        if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/Firefox/i)) {
+        if (userAgent.match(/iPhone|iPad|iPod/i) && userAgent.match(/FxiOS/i)) {
             iosMozila = true;
         }
         if (userAgent.match(/Android/i) && userAgent.match(/Firefox/i)) {
