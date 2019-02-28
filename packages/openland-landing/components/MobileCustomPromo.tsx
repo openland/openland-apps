@@ -3,7 +3,6 @@ import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { XView, XImage } from 'react-mental';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 const PromoWrapper = Glamorous.div<{ hidden: boolean }>(props => ({
     height: 60,
@@ -32,9 +31,6 @@ const CloseBannerIconClassName = css`
 `;
 
 export const MobileCustomPromo = () => {
-    if (!canUseDOM) {
-        return null;
-    }
     const [hidden, bannerHandler] = React.useState(true);
     const handleHideBanner = () => {
         bannerHandler(true);
@@ -54,7 +50,7 @@ export const MobileCustomPromo = () => {
             androidMozila = true;
         }
         if (iosChrome || iosMozila || androidMozila) {
-            bannerHandler(true);
+            bannerHandler(false);
         }
     });
     return (
