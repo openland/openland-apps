@@ -107,7 +107,7 @@ export const extractDialog = (
         fileMeta: betaTopMessage ? betaTopMessage.fileMetadata || undefined : undefined,
         isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
         sender: sender,
-        messageId: topMessage ? topMessage.id : undefined,
+        messageId: betaTopMessage ? betaTopMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
         messageEmojified: msg ? emojifyMessage(msg) : undefined,
         isService: isService,
