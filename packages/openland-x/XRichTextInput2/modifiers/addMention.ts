@@ -71,7 +71,6 @@ export const addMention = ({
     mentionTrigger?: any;
     entityMutability?: any;
 }) => {
-    console.log(mention);
     const contentStateWithEntity = editorState
         .getCurrentContent()
         .createEntity('MENTION', entityMutability, mention);

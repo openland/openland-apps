@@ -1,6 +1,12 @@
 import * as React from 'react';
 const decorateComponentWithProps = require('decorate-component-with-props').default;
-import { EditorState, ContentState, CompositeDecorator, ContentBlock } from 'draft-js';
+import {
+    EditorState,
+    ContentState,
+    CompositeDecorator,
+    ContentBlock,
+    convertToRaw,
+} from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import emojiStrategy from './utils/emojiStrategy';
 import { MentionComponentInnerText } from './components/MentionComponentInnerText';
@@ -16,7 +22,10 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
     }, callback);
 }
 
-type useHandleEditorChangeT = { onChange?: (value: string) => void; value: string };
+type useHandleEditorChangeT = {
+    onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
+    value: string;
+};
 
 const decorator = new CompositeDecorator([
     {
@@ -83,10 +92,23 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         }
     };
 
+    const getMentions = () => {
+        const entityMap = convertToRaw(editorState.getCurrentContent()).entityMap;
+        const result = Object.keys(entityMap)
+            .map(key => entityMap[key])
+            .filter(({ type }) => type === 'MENTION')
+            .map(({ data }) => data);
+
+        return (result as any) as MentionDataT[];
+    };
+
     React.useLayoutEffect(() => {
         if (value !== plainText) {
             if (onChange) {
-                onChange(plainText);
+                onChange({
+                    text: plainText,
+                    mentions: getMentions(),
+                });
             }
         }
     }, [plainText]);
@@ -99,5 +121,6 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         editorState,
         setEditorState,
         onEmojiPicked,
+        getMentions,
     };
 }

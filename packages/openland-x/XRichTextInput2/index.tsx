@@ -12,7 +12,7 @@ import { useHandlePastedText } from './useHandlePastedText';
 import { MentionEntry, MentionDataT } from './components/MentionEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
-    onChange?: (value: string) => void;
+    onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
     value: string;
     onSubmit?: () => void;
     placeholder?: string;
@@ -40,6 +40,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             handleEditorChange,
             addMention,
             onEmojiPicked,
+            getMentions,
         } = useHandleEditorChange({
             onChange,
             value,
@@ -52,6 +53,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             editorRef,
             editorState,
             setEditorState,
+            getMentions,
         });
 
         const { onPasteFiles } = usePasteFiles({

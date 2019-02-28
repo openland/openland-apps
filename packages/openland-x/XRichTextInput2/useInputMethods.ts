@@ -5,6 +5,7 @@ export type XRichTextInput2RefMethods = {
     focus: () => void;
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
+    getMentions: any;
 };
 
 type useInputMethodsT = {
@@ -12,9 +13,16 @@ type useInputMethodsT = {
     editorRef?: any;
     setEditorState: any;
     editorState: any;
+    getMentions: any;
 };
 
-export function useInputMethods({ ref, editorRef, setEditorState, editorState }: useInputMethodsT) {
+export function useInputMethods({
+    ref,
+    editorRef,
+    setEditorState,
+    editorState,
+    getMentions,
+}: useInputMethodsT) {
     const focus = () => {
         window.requestAnimationFrame(() => {
             if (editorRef && editorRef.current) {
@@ -38,6 +46,7 @@ export function useInputMethods({ ref, editorRef, setEditorState, editorState }:
         .useImperativeHandle as typeof React.useImperativeMethods;
 
     useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
+        getMentions,
         focus,
         resetAndFocus: () => {
             window.requestAnimationFrame(() => {

@@ -1,15 +1,7 @@
 import * as React from 'react';
+import { XRichTextInput2RefMethods } from 'openland-x/XRichTextInput2/useInputMethods';
 
-export type XRichTextInput2RefMethods = {
-    focus: () => void;
-    resetAndFocus: () => void;
-    getHasFocus: () => boolean;
-};
-
-export type InputMethodsStateT = {
-    focus: Function;
-    resetAndFocus: Function;
-    hasFocus: Function;
+export type InputMethodsStateT = XRichTextInput2RefMethods & {
     focusIfNeeded: Function;
 };
 
@@ -38,14 +30,21 @@ export function useInputMethods({
         }
     };
 
-    const hasFocus = () => {
+    const getMentions = () => {
+        if (inputRef.current) {
+            return inputRef.current.getMentions();
+        }
+    };
+
+    const getHasFocus = () => {
         return !!(inputRef && inputRef.current && inputRef.current.getHasFocus());
     };
 
     return {
         focus,
         resetAndFocus,
-        hasFocus,
+        getHasFocus,
         focusIfNeeded,
+        getMentions,
     };
 }

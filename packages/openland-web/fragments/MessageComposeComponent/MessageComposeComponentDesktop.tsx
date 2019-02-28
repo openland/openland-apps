@@ -75,7 +75,11 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         conversationId: messageComposeProps.conversationId,
     });
 
-    const mentionsState = useMentions({ members: messageComposeProps.members });
+    const mentionsState = useMentions({
+        members: messageComposeProps.members,
+        inputMethodsState,
+        inputValue,
+    });
 
     const { handleSend, closeEditor } = useHandleSend({
         replyMessage: messageComposeProps.replyMessage,
@@ -102,9 +106,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 
     const { handleChange } = useGeneralCompose({
         onChange: messageComposeProps.onChange,
-        onSendFile: messageComposeProps.onSendFile,
         setInputValue,
-        quoteState,
         draftState,
     });
 

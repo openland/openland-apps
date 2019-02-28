@@ -43,7 +43,7 @@ const OldDesktopSendMessage = ({
                 flexGrow={1}
                 mentionsData={mentionsState!!.mentionsData}
                 placeholder="Write a message..."
-                onChange={handleChange}
+                onChange={text => handleChange({ text, mentions: [] })}
                 onSubmit={handleSend}
                 ref={inputRef}
                 value={inputValue}

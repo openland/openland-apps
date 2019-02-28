@@ -1,32 +1,20 @@
 import * as React from 'react';
 import { RoomMembers_members } from 'openland-api/Types';
+import { InputMethodsStateT } from './useInputMethods';
 
-const getMentions = (
-    str: string,
-    listOfMembersNames: string[],
-    members?: RoomMembers_members[],
-) => {
-    if (!members) {
-        return null;
-    }
-
-    const mentionsNames = listOfMembersNames.filter((name: string) => str.includes(name));
-    return members
-        .filter(({ user: { name } }) => mentionsNames.indexOf(`@${name}`) !== -1)
-        .map(({ user }) => user);
+export type MentionDataT = {
+    id: string;
+    name: string;
+    avatar: string;
+    title: string;
+    online: boolean;
+    isYou: boolean;
 };
 
 export type MentionsStateT = {
-    mentionsData: {
-        id: string;
-        name: string;
-        avatar: string;
-        title: string;
-        online: boolean;
-        isYou: boolean;
-    }[];
+    mentionsData: MentionDataT[];
     listOfMembersNames: string[];
-    getMentions: Function;
+    getMentions: () => MentionDataT[];
 };
 
 const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
@@ -52,14 +40,26 @@ const getMembers = (members?: RoomMembers_members[]) => {
         : [];
 };
 
-export function useMentions({ members }: { members?: RoomMembers_members[] }) {
+type useMentionsT = {
+    members?: RoomMembers_members[];
+    inputMethodsState: InputMethodsStateT;
+    inputValue: string;
+};
+
+export function useMentions({ members, inputMethodsState, inputValue }: useMentionsT) {
     const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
+    const [currentMentions, setCurrentMentions] = React.useState([]);
 
     React.useEffect(() => {
         setListOfMembersNames(getMembers(members));
-    }, [members]);
+        setCurrentMentions(inputMethodsState.getMentions());
+    }, [members, inputValue]);
 
     const mentionsData = convertChannelMembersDataToMentionsData(members);
+
+    const getMentions = () => {
+        return currentMentions;
+    };
 
     return { mentionsData, listOfMembersNames, getMentions };
 }
