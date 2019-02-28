@@ -233,13 +233,16 @@ export class DialogListEngine {
     handleMessageUpdated = async (event: any) => {
         const conversationId = event.cid as string;
         let existing = this.dataSource.getItem(conversationId);
+
         if (existing) {
             if (existing.messageId === event.message.id) {
-                this.dataSource.updateItem({
+                const message = formatMessage(event.message);
+                const newItem = {
                     ...existing,
-                    message: formatMessage(event.message),
+                    message,
+                    messageEmojified: message ? emojifyMessage(message) : undefined,
                     fileMeta: event.message.fileMetadata,
-                });
+                };
             }
         }
     };
