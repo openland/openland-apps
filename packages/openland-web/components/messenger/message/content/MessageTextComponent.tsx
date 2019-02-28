@@ -90,11 +90,11 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
 
     const messageArray = Array.from(messageText.split(' '));
     let isOnlyEmoji = true;
-    messageArray.map(i => {
-        if (!isOnlyEmoji) {
+    messageArray.forEach(i => {
+        if (!isEmoji(i)) {
+            isOnlyEmoji = false;
             return;
         }
-        isOnlyEmoji = isEmoji(i);
     });
 
     const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
