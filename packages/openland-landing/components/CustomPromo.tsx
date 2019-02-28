@@ -1,24 +1,29 @@
 import * as React from 'react';
+import Glamorous from 'glamorous';
 import { css } from 'linaria';
 import { XView, XImage } from 'react-mental';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
-const CustomPromoWrapperClassName = css`
-    &.promo-banner {
-        height: 60px;
-        width: 100%;
-        flex-shrink: 0;
-        background-color: #f7f7f7;
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-between;
-        padding-left: 16px;
-        padding-right: 16px;
-        display: flex;
-        position: relative;
-    }
-`;
+const Wrapper = Glamorous.div({
+    height: 60,
+    width: '100%',
+    flexShrink: 0,
+    backgroundColor: '#f7f7f7',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 16,
+    paddingRight: 16,
+    borderBottom: '1px solid #ececec',
+});
+
+const Content = Glamorous.div({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+});
 
 const CloseBannerIconClassName = css`
     & > g > path:last-child {
@@ -52,8 +57,8 @@ export const MobileCustomPromoBanner = () => {
     }
     if (iosChrome || iosMozila || androidMozila) {
         return (
-            <div className={`${CustomPromoWrapperClassName} promo-banner`}>
-                <XView flexDirection="row" alignItems="center">
+            <Wrapper>
+                <Content>
                     <XView
                         cursor="pointer"
                         alignItems="center"
@@ -80,7 +85,7 @@ export const MobileCustomPromoBanner = () => {
                             {androidMozila ? 'Use Android app' : 'Use iOS app'}
                         </XView>
                     </XView>
-                </XView>
+                </Content>
                 <XView
                     as="a"
                     cursor="pointer"
@@ -111,7 +116,7 @@ export const MobileCustomPromoBanner = () => {
                     width="100%"
                     backgroundColor="#ececec"
                 />
-            </div>
+            </Wrapper>
         );
     }
     return null;
