@@ -12,11 +12,17 @@ const mentionComponentInnerTextClassName = css`
     border-radius: 5px;
 `;
 
-export const MentionComponentInnerText = (props: any) => {
+export const MentionComponentInnerText = ({
+    offsetKey,
+    decoratedText,
+}: {
+    offsetKey: string;
+    decoratedText: string;
+}) => {
     return (
-        <span className={mentionComponentInnerTextClassName} data-offset-key={props.offsetKey}>
+        <span className={mentionComponentInnerTextClassName} data-offset-key={offsetKey}>
             {emoji({
-                src: props.decoratedText,
+                src: decoratedText,
                 size: 16,
             })}
         </span>

@@ -49,7 +49,7 @@ const getSearchTextAt = (blockText: string, position: number, trigger: string) =
     };
 };
 
-const getSearchText = (editorState: any, selection: any, trigger: any) => {
+const getSearchText = (editorState: EditorState, selection: any, trigger: any) => {
     const anchorKey = selection.getAnchorKey();
     const anchorOffset = selection.getAnchorOffset();
     const currentContent = editorState.getCurrentContent();
@@ -65,7 +65,7 @@ export const addMention = ({
     mentionTrigger = '@',
     entityMutability = 'IMMUTABLE',
 }: {
-    editorState: any;
+    editorState: EditorState;
     mention: MentionDataT;
     mentionPrefix?: any;
     mentionTrigger?: any;
@@ -83,11 +83,11 @@ export const addMention = ({
     const mentionTextSelection = currentSelectionState.merge({
         anchorOffset: begin,
         focusOffset: end,
-    });
+    }) as any;
 
     let mentionReplacedContent = Modifier.replaceText(
         editorState.getCurrentContent(),
-        mentionTextSelection,
+        mentionTextSelection as any,
         `${mentionPrefix}${mention.name}`,
         null as any, // no inline style needed
         entityKey,

@@ -1,4 +1,4 @@
-import { Modifier, EditorState } from 'draft-js';
+import { EditorState, Modifier } from 'draft-js';
 import { getSearchText } from '../utils/getSearchText';
 import { emojiList } from '../utils/emojiList';
 import { convertShortNameToUnicode } from '../utils/convertShortNameToUnicode';
@@ -15,18 +15,17 @@ export const addEmoji = ({
     emojiShortName,
     mode = Mode.INSERT,
 }: {
-    editorState: any;
-    emojiShortName: any;
-    mode?: any;
+    editorState: EditorState;
+    emojiShortName?: string;
+    mode?: string;
 }) => {
     let emoji;
-
     // :male_sign: fails now
-    if (emojiList.list[emojiShortName]) {
+    if (!emojiShortName || !emojiList.list[emojiShortName]) {
+        emoji = '📷';
+    } else {
         const unicode = emojiList.list[emojiShortName][0];
         emoji = convertShortNameToUnicode(unicode);
-    } else {
-        emoji = '📷';
     }
 
     const contentState = editorState.getCurrentContent();
@@ -74,7 +73,7 @@ export const addEmoji = ({
             const emojiTextSelection = currentSelectionState.merge({
                 anchorOffset: begin,
                 focusOffset: end,
-            });
+            }) as any;
 
             emojiAddedContent = Modifier.replaceText(
                 contentState,

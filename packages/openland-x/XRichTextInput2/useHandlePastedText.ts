@@ -1,13 +1,13 @@
-import { BlockMapBuilder, DefaultDraftBlockRenderMap } from 'draft-js';
+import { EditorState, BlockMapBuilder, DefaultDraftBlockRenderMap } from 'draft-js';
 const DraftPasteProcessor = require('draft-js/lib/DraftPasteProcessor');
 import convertEmojioneImageToUnicode from './utils/convertEmojioneImageToUnicode';
-import insertFragment from './utils/insertFragment';
-import getUnicode from './utils/defaultGetUnicode';
+import { insertFragment } from './utils/insertFragment';
+import { getUnicode } from './utils/defaultGetUnicode';
 
 export function useHandlePastedText({ setEditorState }: { setEditorState: Function }) {
     const selector = 'img.emojione';
 
-    const handlePastedText = (text: string, html: string | boolean, editorState: any) => {
+    const handlePastedText = (text: string, html: string | boolean, editorState: EditorState) => {
         if (!html) {
             return 'not-handled';
         }

@@ -11,8 +11,8 @@ export type XRichTextInput2RefMethods = {
 type useInputMethodsT = {
     ref: any;
     editorRef?: any;
-    setEditorState: any;
-    editorState: any;
+    setEditorState: (a: EditorState) => void;
+    editorState: EditorState;
     getMentions: any;
 };
 

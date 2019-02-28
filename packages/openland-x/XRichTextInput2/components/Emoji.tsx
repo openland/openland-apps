@@ -17,28 +17,26 @@ const emojiClassName = css`
 `;
 
 export const Emoji = ({
-    theme = {},
     cacheBustParam,
     imagePath,
     imageType,
     className,
     decoratedText,
     useNativeArt,
-    ...props
+    children,
 }: {
-    theme: any;
-    cacheBustParam: any;
-    imagePath: any;
-    imageType: any;
-    className: any;
-    decoratedText: any;
-    useNativeArt: any;
+    cacheBustParam: string;
+    imagePath: string;
+    imageType: string;
+    className?: string;
+    decoratedText: string;
+    useNativeArt?: boolean;
     children: any;
 }) => {
     const shortName = emojione.toShort(decoratedText);
 
     if (useNativeArt === true) {
-        return <span title={shortName}>{props.children}</span>;
+        return <span title={shortName}>{children}</span>;
     } else {
         // short name to image url code steal from emojione source code
         const shortNameForImage =
@@ -54,7 +52,7 @@ export const Emoji = ({
                     backgroundImage: `url(${imagePath}${shortNameForImage}.${imageType}${cacheBustParam})`,
                 }}
             >
-                {props.children}
+                {children}
             </span>
         );
     }
