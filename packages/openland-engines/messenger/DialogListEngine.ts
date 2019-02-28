@@ -4,10 +4,11 @@ import {
     Dialogs_dialogs_items_topMessage,
     Room_room_SharedRoom,
     Room_room_PrivateRoom,
+    RoomMessageShort,
     RoomFull,
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
-import { DialogsQuery, RoomQuery } from 'openland-api';
+import { DialogsQuery, RoomQuery, RoomHistoryQuery } from 'openland-api';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { emoji } from 'openland-y-utils/emoji';
 
@@ -78,7 +79,6 @@ export const extractDialog = (
         title,
         photo,
         unreadCount,
-        topMessage,
         betaTopMessage,
         isMuted,
         haveMention,
@@ -86,11 +86,11 @@ export const extractDialog = (
     uid: string,
 ): DialogDataSourceItem => {
     let msg = formatMessage(betaTopMessage);
-    let isOut = topMessage ? topMessage!!.sender.id === uid : undefined;
-    let sender = topMessage
-        ? topMessage!!.sender.id === uid
+    let isOut = betaTopMessage ? betaTopMessage!!.sender.id === uid : undefined;
+    let sender = betaTopMessage
+        ? betaTopMessage!!.sender.id === uid
             ? 'You'
-            : topMessage!!.sender.firstName
+            : betaTopMessage!!.sender.firstName
         : undefined;
     let isService = (betaTopMessage && betaTopMessage.isService) || undefined;
     return {
@@ -105,10 +105,10 @@ export const extractDialog = (
         unread: unreadCount,
         message: msg,
         fileMeta: betaTopMessage ? betaTopMessage.fileMetadata || undefined : undefined,
-        isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
+        isOut: betaTopMessage ? betaTopMessage!!.sender.id === uid : undefined,
         sender: sender,
         messageId: betaTopMessage ? betaTopMessage.id : undefined,
-        date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
+        date: betaTopMessage ? parseInt(betaTopMessage!!.date, 10) : undefined,
         messageEmojified: msg ? emojifyMessage(msg) : undefined,
         isService: isService,
         showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
@@ -248,14 +248,18 @@ export class DialogListEngine {
         }
     };
 
-    handleMessageDeleted = (cid: string, mid: string) => {
+    handleMessageDeleted = async (cid: string, mid: string, prevMessage: RoomMessageShort) => {
         let existing = this.dataSource.getItem(cid);
+
         if (existing && existing.messageId === mid) {
+            const message = prevMessage && prevMessage.message ? prevMessage.message : undefined;
             this.dataSource.updateItem({
                 ...existing,
-                message: undefined,
-                fileMeta: undefined,
-                date: undefined,
+                message,
+                messageEmojified: message ? emojifyMessage(message) : undefined,
+                fileMeta: prevMessage && prevMessage.fileMetadata ? { isImage: prevMessage.fileMetadata ? prevMessage.fileMetadata.isImage : undefined } : undefined,
+                date: prevMessage ? prevMessage.date : undefined,
+                ...(prevMessage && prevMessage.id ? {messageId: prevMessage.id } : {})
             });
         }
     };

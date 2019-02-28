@@ -1721,6 +1721,7 @@ export interface RoomHistory {
 export interface RoomHistoryVariables {
   roomId: string;
   before?: string | null;
+  first?: number | null;
 }
 
 /* tslint:disable */

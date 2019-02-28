@@ -139,8 +139,8 @@ export const GlobalCounterQuery = gql`
 `;
 
 export const RoomHistoryQuery = gql`
-    query RoomHistory($roomId: ID!, $before: ID) {
-        messages: roomMessages(roomId: $roomId, first: 15, before: $before) {
+    query RoomHistory($roomId: ID!, $before: ID, $first: Int = 15) {
+        messages: roomMessages(roomId: $roomId, first: $first, before: $before) {
             ...RoomMessageFull
         }
         state: conversationState(id: $roomId) {
