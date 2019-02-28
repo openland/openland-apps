@@ -18,33 +18,39 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
 
 type useHandleEditorChangeT = { onChange?: (value: string) => void; value: string };
 
+const decorator = new CompositeDecorator([
+    {
+        strategy: findLinkMention,
+        component: MentionComponentInnerText,
+    },
+    {
+        strategy: emojiStrategy,
+        component: decorateComponentWithProps(Emoji, {
+            imagePath: 'https://cdn.openland.com/shared/web/emoji/4.0/png/64/',
+            imageType: 'png',
+            cacheBustParam: '',
+        }),
+    },
+]);
+
 export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
 
     const getEditorStateFromText = (text: string) => {
         return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(
-                ContentState.createFromText(text),
-                new CompositeDecorator([
-                    {
-                        strategy: findLinkMention,
-                        component: MentionComponentInnerText,
-                    },
-                    {
-                        strategy: emojiStrategy,
-                        component: decorateComponentWithProps(Emoji, {
-                            imagePath: 'https://cdn.openland.com/shared/web/emoji/4.0/png/64/',
-                            imageType: 'png',
-                            cacheBustParam: '',
-                        }),
-                    },
-                ]),
-            ),
+            EditorState.createWithContent(ContentState.createFromText(text), decorator),
         );
     };
 
     const [editorState, setEditorState] = React.useState(getEditorStateFromText(value));
+
+    const updateEditorState = (newEditorState: EditorState) => {
+        const newPlainText = newEditorState.getCurrentContent().getPlainText();
+
+        setEditorState(newEditorState);
+        setPlainText(newPlainText);
+    };
 
     const handleEditorChange = (newEditorState: EditorState) => {
         if (newEditorState.getSelection().getHasFocus()) {
@@ -55,14 +61,11 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
             }
         }
 
-        const newPlainText = editorState.getCurrentContent().getPlainText();
-
-        setEditorState(newEditorState);
-        setPlainText(newPlainText);
+        updateEditorState(newEditorState);
     };
 
     const onEmojiPicked = (emojiPicked: EmojiData) => {
-        setEditorState(
+        updateEditorState(
             addEmoji({
                 editorState,
                 emojiShortName: emojiPicked.colons,
@@ -76,22 +79,17 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
             mention,
         });
         if (newEditorState) {
-            setEditorState(newEditorState);
+            updateEditorState(newEditorState);
         }
     };
 
     React.useLayoutEffect(() => {
-        if (onChange) {
-            onChange(plainText);
+        if (value !== plainText) {
+            if (onChange) {
+                onChange(plainText);
+            }
         }
     }, [plainText]);
-
-    React.useLayoutEffect(() => {
-        if (value !== plainText) {
-            setEditorState(getEditorStateFromText(value));
-            setPlainText(value);
-        }
-    }, [value]);
 
     return {
         activeWord,

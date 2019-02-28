@@ -7,9 +7,7 @@ import getUnicode from './utils/defaultGetUnicode';
 export function useHandlePastedText({ setEditorState }: { setEditorState: Function }) {
     const selector = 'img.emojione';
 
-    const handlePastedText = (...args: any) => {
-        let [text, html, editorState]: [string, string | boolean, any, any] = args;
-
+    const handlePastedText = (text: string, html: string | boolean, editorState: any) => {
         if (!html) {
             return 'not-handled';
         }

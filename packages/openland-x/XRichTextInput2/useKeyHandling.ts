@@ -21,12 +21,12 @@ export function useKeyHandling({
     selectedMentionEntryIndex,
 }: useKeyHandlingT) {
     const onHandleKey = (command: string) => {
-        if (!!filteredSuggestions.length) {
-            applyMentionById(selectedMentionEntryIndex);
-
-            return 'handled';
-        }
         if (command === 'x-editor-submit') {
+            if (!!filteredSuggestions.length) {
+                applyMentionById(selectedMentionEntryIndex);
+
+                return 'handled';
+            }
             if (onSubmit) {
                 onSubmit();
                 return 'handled';

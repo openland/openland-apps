@@ -1,4 +1,4 @@
-import { EditorState, SelectionState, Modifier } from 'draft-js';
+import { EditorState, Modifier } from 'draft-js';
 import { MentionDataT } from '../components/MentionEntry';
 
 export function findActiveWordStart(state: EditorState): number {
@@ -36,43 +36,83 @@ export function findActiveWord(state: EditorState): string | undefined {
     }
 }
 
+const getSearchTextAt = (blockText: string, position: number, trigger: string) => {
+    const str = blockText.substr(0, position);
+    const begin = trigger.length === 0 ? 0 : str.lastIndexOf(trigger);
+    const matchingString = trigger.length === 0 ? str : str.slice(begin + trigger.length);
+    const end = str.length;
+
+    return {
+        begin,
+        end,
+        matchingString,
+    };
+};
+
+const getSearchText = (editorState: any, selection: any, trigger: any) => {
+    const anchorKey = selection.getAnchorKey();
+    const anchorOffset = selection.getAnchorOffset();
+    const currentContent = editorState.getCurrentContent();
+    const currentBlock = currentContent.getBlockForKey(anchorKey);
+    const blockText = currentBlock.getText();
+    return getSearchTextAt(blockText, anchorOffset, trigger);
+};
+
 export const addMention = ({
     editorState,
-    mention: { id, name },
+    mention,
+    mentionPrefix = '@',
+    mentionTrigger = '@',
+    entityMutability = 'IMMUTABLE',
 }: {
     editorState: any;
     mention: MentionDataT;
+    mentionPrefix?: any;
+    mentionTrigger?: any;
+    entityMutability?: any;
 }) => {
-    let selection = editorState.getSelection();
-    let start = findActiveWordStart(editorState);
-    if (start < 0) {
-        return;
-    }
-    let content = editorState.getCurrentContent();
-    let text = content.getBlockForKey(selection.getStartKey()).getText();
+    console.log(mention);
+    const contentStateWithEntity = editorState
+        .getCurrentContent()
+        .createEntity('MENTION', entityMutability, mention);
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
-    let s2 = SelectionState.createEmpty(selection.getStartKey()).merge({
-        anchorOffset: start,
-        focusOffset: selection.getEndOffset(),
-    }) as any;
+    const currentSelectionState = editorState.getSelection();
+    const { begin, end } = getSearchText(editorState, currentSelectionState, mentionTrigger);
 
-    let entity = content.createEntity('MENTION', 'IMMUTABLE', { uid: id });
+    // get selection of the @mention search text
+    const mentionTextSelection = currentSelectionState.merge({
+        anchorOffset: begin,
+        focusOffset: end,
+    });
 
-    let replace = Modifier.replaceText(
-        entity,
-        s2,
-        `@${name}`,
-        undefined,
-        entity.getLastCreatedEntityKey(),
+    let mentionReplacedContent = Modifier.replaceText(
+        editorState.getCurrentContent(),
+        mentionTextSelection,
+        `${mentionPrefix}${mention.name}`,
+        null as any, // no inline style needed
+        entityKey,
     );
 
-    if (selection.getEndOffset() === text.length || text.charAt(selection.getEndOffset()) !== ' ') {
-        replace = Modifier.insertText(replace, replace.getSelectionAfter(), ' ');
+    // If the mention is inserted at the end, a space is appended right after for
+    // a smooth writing experience.
+    const blockKey = mentionTextSelection.getAnchorKey();
+    const blockSize = editorState
+        .getCurrentContent()
+        .getBlockForKey(blockKey)
+        .getLength();
+    if (blockSize === end) {
+        mentionReplacedContent = Modifier.insertText(
+            mentionReplacedContent,
+            mentionReplacedContent.getSelectionAfter(),
+            ' ',
+        );
     }
 
-    let s3 = EditorState.moveFocusToEnd(
-        EditorState.push(editorState, replace, 'insert-mention' as any),
+    const newEditorState = EditorState.push(
+        editorState,
+        mentionReplacedContent,
+        'insert-mention' as any,
     );
-
-    return s3;
+    return EditorState.forceSelection(newEditorState, mentionReplacedContent.getSelectionAfter());
 };

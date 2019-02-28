@@ -12,16 +12,12 @@ const mentionComponentInnerTextClassName = css`
     border-radius: 5px;
 `;
 
-export const MentionComponentInnerText = ({ children }: { children: any }) => {
-    // hack to get text
-    const text = children[0].props.text;
-    console.log(children[0].props.text);
+export const MentionComponentInnerText = (props: any) => {
     return (
-        <span className={mentionComponentInnerTextClassName}>
+        <span className={mentionComponentInnerTextClassName} data-offset-key={props.offsetKey}>
             {emoji({
-                src: text,
+                src: props.decoratedText,
                 size: 16,
-                cache: false,
             })}
         </span>
     );
