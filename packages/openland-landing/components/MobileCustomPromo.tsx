@@ -5,7 +5,7 @@ import { XView, XImage } from 'react-mental';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
-const Wrapper = Glamorous.div({
+const PromoWrapper = Glamorous.div({
     height: 60,
     width: '100%',
     flexShrink: 0,
@@ -19,7 +19,7 @@ const Wrapper = Glamorous.div({
     borderBottom: '1px solid #ececec',
 });
 
-const Content = Glamorous.div({
+const PromoContent = Glamorous.div({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -31,7 +31,7 @@ const CloseBannerIconClassName = css`
     }
 `;
 
-export const MobileCustomPromoBanner = () => {
+export const MobileCustomPromo = () => {
     if (!canUseDOM) {
         return null;
     }
@@ -57,8 +57,8 @@ export const MobileCustomPromoBanner = () => {
     }
     if (iosChrome || iosMozila || androidMozila) {
         return (
-            <Wrapper>
-                <Content>
+            <PromoWrapper>
+                <PromoContent>
                     <XView
                         cursor="pointer"
                         alignItems="center"
@@ -85,7 +85,7 @@ export const MobileCustomPromoBanner = () => {
                             {androidMozila ? 'Use Android app' : 'Use iOS app'}
                         </XView>
                     </XView>
-                </Content>
+                </PromoContent>
                 <XView
                     as="a"
                     cursor="pointer"
@@ -108,15 +108,7 @@ export const MobileCustomPromoBanner = () => {
                 >
                     USE APP
                 </XView>
-                <XView
-                    height={1}
-                    position="absolute"
-                    left={0}
-                    bottom={0}
-                    width="100%"
-                    backgroundColor="#ececec"
-                />
-            </Wrapper>
+            </PromoWrapper>
         );
     }
     return null;
