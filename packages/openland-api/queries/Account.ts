@@ -153,8 +153,8 @@ export const CreateUserProfileAndOrganizationMutation = gql`
 `;
 
 export const ReportOnlineMutation = gql`
-    mutation ReportOnline($active: Boolean) {
-        presenceReportOnline(timeout: 5000, active: $active)
+    mutation ReportOnline($active: Boolean, $platform: String) {
+        presenceReportOnline(timeout: 5000, active: $active, platform: $platform)
     }
 `;
 

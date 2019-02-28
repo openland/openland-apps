@@ -142,9 +142,11 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
     updateConversation = ({
         conversationId,
         messenger,
+        isActive,
     }: {
         conversationId: string;
         messenger: any;
+        isActive: boolean;
     }) => {
         if (this.unmounter) {
             this.unmounter();
@@ -152,21 +154,22 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
         if (this.unmounter2) {
             this.unmounter2();
         }
+        if (isActive) {
+            this.conversation = messenger.getConversation(conversationId);
+            if (!this.conversation) {
+                throw Error('conversation should be defined here');
+            }
 
-        this.conversation = messenger.getConversation(conversationId);
-        if (!this.conversation) {
-            throw Error('conversation should be defined here');
+            this.unmounter = this.conversation.engine.mountConversation(conversationId);
+            this.unmounter2 = this.conversation.subscribe(this);
+
+            let convState = this.conversation.getState();
+
+            this.setState({
+                messages: convState.messages,
+                loading: convState.loading,
+            });
         }
-
-        this.unmounter = this.conversation.engine.mountConversation(conversationId);
-        this.unmounter2 = this.conversation.subscribe(this);
-
-        let convState = this.conversation.getState();
-
-        this.setState({
-            messages: convState.messages,
-            loading: convState.loading,
-        });
     };
 
     componentWillUnmount() {
@@ -205,6 +208,7 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                     this.updateConversation({
                         conversationId: id.id,
                         messenger: this.props.messenger,
+                        isActive: true,
                     });
                 });
             })();

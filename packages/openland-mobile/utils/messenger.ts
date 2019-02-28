@@ -2,11 +2,14 @@ import { MessengerEngine } from 'openland-engines/MessengerEngine';
 import { UserShort } from 'openland-api/Types';
 import { MobileMessenger } from '../messenger/MobileMessenger';
 import { OpenlandClient } from 'openland-api/OpenlandClient';
+import { Platform } from 'react-native';
 
 let cachedMessenger: MobileMessenger | null = null;
 
 export function buildMessenger(client: OpenlandClient, user: UserShort) {
-    return new MessengerEngine(client, user);
+    let platform = Platform.OS + ' ' + (__DEV__ ? 'debug' : 'release');
+
+    return new MessengerEngine(client, user, platform);
 }
 
 export function setMessenger(messenger: MobileMessenger) {

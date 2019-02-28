@@ -46,9 +46,11 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
         return (
             <ZKeyboardAwareBar>
                 {this.props.topContent && (
-                    <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
-                        {this.props.topContent}
-                    </View>
+                    <React.Suspense fallback={null}>
+                        <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: SDevice.safeArea.bottom }}>
+                            {this.props.topContent}
+                        </View>
+                    </React.Suspense>
                 )}
 
                 <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>

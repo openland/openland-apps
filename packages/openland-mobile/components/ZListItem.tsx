@@ -91,6 +91,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
 
         let enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
 
+        let linkify = (this.props.linkify === true || (this.props.linkify === undefined && !this.props.onPress && !this.props.path));
         return (
             <ZListItemBase
                 onPress={this.handleOnPress}
@@ -110,7 +111,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                     {this.props.title && Platform.OS !== 'android' && <Text style={{ color: this.props.theme.textLabelColor, fontSize: 14, height: 22, marginBottom: -5, marginTop: 5 }}>{this.props.title.toLocaleLowerCase()}</Text>}
                     <View flexDirection="row" alignItems="center" justifyContent="center">
                         <ZText
-                            linkify={this.props.linkify === true || !this.props.onPress}
+                            linkify={linkify}
                             style={{
                                 fontSize: Platform.OS === 'android' ? 18 : 17,
                                 fontWeight: Platform.OS === 'android' ? '400' : '500',
@@ -127,7 +128,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             text={this.props.text}
                         />
                         {this.props.description && (
-                            <ZText linkify={this.props.linkify === true || !this.props.onPress} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: Platform.OS === 'android' ? '#9B9B9B' : 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
+                            <ZText linkify={linkify} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: Platform.OS === 'android' ? '#9B9B9B' : 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined) || (this.props.toggleField)) && (
                             <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor={Platform.OS === 'android' ? '#80C0FE' : '#0084fe'} tintColor="#ddd" thumbTintColor={Platform.OS === 'android' ? '#0084fe' : undefined} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />

@@ -1,12 +1,15 @@
 import { startLoader, stopLoader } from '../components/ZGlobalLoader';
 import { getMessenger } from './messenger';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
-
-export let resolveInternalLink = (link: string, fallback?: () => void) => {
+import { randomEmptyPlaceholderEmoji } from './tolerance';
+// import * as UrlParse from 'url-parse'
+let urlParse = require('url-parse');
+export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
+    let link = srcLink.toLowerCase();
     // 
     // JOIN ROOMS
     //
-    if (link.includes('openland.com/joinChannel/') || link.includes('openland://deep/joinroom/')) {
+    if (link.includes('openland.com/joinchannel/') || link.includes('openland://deep/joinroom/')) {
         return async () => {
             startLoader();
             try {
@@ -100,6 +103,28 @@ export let resolveInternalLink = (link: string, fallback?: () => void) => {
                 stopLoader();
             };
         }
+    }
+
+    //
+    // Sharing
+    //
+    if (link.includes('openland://deep/share')) {
+        try {
+            let url = urlParse(srcLink, true);
+            let dataStr = url.query.data;
+            if (dataStr) {
+                let data = JSON.parse(dataStr);
+
+                getMessenger().history.navigationManager.pushAndReset('HomeDialogs', { share: data });
+            } else {
+                Alert.alert('Nothing to share ' + randomEmptyPlaceholderEmoji());
+            }
+
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+        // getMessenger().history.navigationManager.push('HomeDialogs', data);
+
     }
 
     return fallback;

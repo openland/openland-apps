@@ -110,7 +110,6 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
                                 onChange={this.handleChange}
                                 onRemoved={this.handleRemoveUser}
                                 title="Members:"
-                                autoFocus={true}
                             />
                             <View style={{ height: 1, backgroundColor: AppStyles.separatorColor }} />
                         </ZBlurredView>

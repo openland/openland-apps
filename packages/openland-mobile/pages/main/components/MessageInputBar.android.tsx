@@ -66,12 +66,12 @@ export class MessageInputBar extends React.PureComponent<MessageInputBarProps> {
                     )}
 
                     {this.props.topContent && (
-                        <>
+                        <React.Suspense fallback={null}>
                             <View position="absolute" left={0} top={0} bottom={0} right={0} backgroundColor="#fff" />
                             <View style={{ backgroundColor: '#ffffff', position: 'absolute', bottom: '100%', left: 0, right: 0, marginBottom: -7 }}>
                                 {this.props.topContent}
                             </View>
-                        </>
+                        </React.Suspense>
                     )}
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>

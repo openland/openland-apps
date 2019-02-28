@@ -104,7 +104,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         if (res && res.me) {
                             await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                             this.setState({ state: 'app' });
-                            // this.tryResolveLink();
+                            this.tryResolveLink();
                         } else {
                             this.setState({ state: 'signup' });
                         }

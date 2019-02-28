@@ -14,11 +14,10 @@ interface RenderMentionsProps {
 }
 
 export const MentionsRender = (props: RenderMentionsProps) => {
-    let membersQuery = getClient().useWithoutLoaderRoomMembers({ roomId: props.groupId });
+    let members = getClient().useRoomMembers({ roomId: props.groupId }).members;
     let mentionsWrapper = null;
 
-    if (membersQuery) {
-        let members = membersQuery.members;
+    if (members.length > 0) {
         let nameToSearch = props.activeWord.replace('@', '').toLowerCase();
 
         let mentionedUsers = members.filter(member => member.user.name.toLowerCase().startsWith(nameToSearch));
