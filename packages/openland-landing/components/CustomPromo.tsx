@@ -33,7 +33,6 @@ export const MobileCustomPromoBanner = () => {
     const [banner, bannerHandler] = React.useState(true);
     const handleHideBanner = () => {
         bannerHandler(false);
-        localStorage.setItem('mobile-promo-banner-be-show', 'hidden');
     };
     const userAgent = window.navigator.userAgent;
     let iosChrome = false;
@@ -47,9 +46,6 @@ export const MobileCustomPromoBanner = () => {
     }
     if (userAgent.match(/Android/i) && userAgent.match(/Firefox/i)) {
         androidMozila = true;
-    }
-    if (localStorage.getItem('mobile-promo-banner-be-show')) {
-        return null;
     }
     if (!banner) {
         return null;
