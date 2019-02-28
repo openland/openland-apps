@@ -83,20 +83,25 @@ const styleRotating = css`
     }
 `;
 
+function emojiCkecker(arr: Array<string>) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === ' ' || arr[i] === '') {
+            continue;
+        }
+        if (!isEmoji(arr[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     // Preprocessing
 
     let messageText = props.message;
 
-    const messageArray = Array.from(messageText.split(' '));
-    let isOnlyEmoji = true;
-    messageArray.forEach(i => {
-        if (!isEmoji(i)) {
-            isOnlyEmoji = false;
-            return;
-        }
-    });
-
+    const messageArray = Array.from(messageText);
+    let isOnlyEmoji = emojiCkecker(messageArray);
     const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
