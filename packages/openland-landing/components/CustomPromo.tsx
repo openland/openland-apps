@@ -4,6 +4,22 @@ import { XView, XImage } from 'react-mental';
 import CloseIcon from 'openland-icons/ic-close-banner.svg';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
+const CustomPromoWrapperClassName = css`
+    &.promo-banner {
+        height: 60px;
+        width: 100%;
+        flex-shrink: 0;
+        background-color: #f7f7f7;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 16px;
+        padding-right: 16px;
+        display: flex;
+        position: relative;
+    }
+`;
+
 const CloseBannerIconClassName = css`
     & > g > path:last-child {
         fill: #787878;
@@ -40,16 +56,7 @@ export const MobileCustomPromoBanner = () => {
     }
     if (iosChrome || iosMozila || androidMozila) {
         return (
-            <XView
-                height={60}
-                width="100%"
-                flexShrink={0}
-                backgroundColor="#f7f7f7"
-                alignItems="center"
-                flexDirection="row"
-                justifyContent="space-between"
-                paddingHorizontal={16}
-            >
+            <div className={`${CustomPromoWrapperClassName} promo-banner`}>
                 <XView flexDirection="row" alignItems="center">
                     <XView
                         cursor="pointer"
@@ -108,7 +115,7 @@ export const MobileCustomPromoBanner = () => {
                     width="100%"
                     backgroundColor="#ececec"
                 />
-            </XView>
+            </div>
         );
     }
     return null;
