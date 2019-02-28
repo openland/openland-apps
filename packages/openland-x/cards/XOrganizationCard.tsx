@@ -11,29 +11,32 @@ import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { TextDirectory } from 'openland-text/TextDirectory';
 import { TextProfiles } from 'openland-text/TextProfiles';
+import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
 
-const OrganizationCardWrapper = makeNavigable(Glamorous.div<NavigableChildProps>((props) => ({
-    cursor: 'pointer',
-    backgroundColor: '#fff',
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 15,
-    paddingRight: 11,
-    marginLeft: -16,
-    marginRight: -16,
-    borderRadius: 8,
-    '&:hover': {
-        backgroundColor: '#F9F9F9'
-    }
-})));
+const OrganizationCardWrapper = makeNavigable(
+    Glamorous.div<NavigableChildProps>(props => ({
+        cursor: 'pointer',
+        backgroundColor: '#fff',
+        paddingTop: 16,
+        paddingBottom: 16,
+        paddingLeft: 15,
+        paddingRight: 11,
+        marginLeft: -16,
+        marginRight: -16,
+        borderRadius: 8,
+        '&:hover': {
+            backgroundColor: '#F9F9F9',
+        },
+    })),
+);
 
 const OrganizationContent = Glamorous(XHorizontal)({
     flexGrow: 1,
-    marginLeft: 12
+    marginLeft: 12,
 });
 
 const OrganizationInfo = Glamorous.div({
-    flexGrow: 1
+    flexGrow: 1,
 });
 
 const OrganizationAvatar = Glamorous(XAvatar)({
@@ -42,11 +45,11 @@ const OrganizationAvatar = Glamorous(XAvatar)({
     cursor: 'pointer',
     '& img': {
         width: '74px!important',
-        height: '74px!important'
+        height: '74px!important',
     },
     '& *': {
-        cursor: 'pointer!important'
-    }
+        cursor: 'pointer!important',
+    },
 });
 
 const OrganizationTitle = Glamorous(XLink)({
@@ -61,8 +64,8 @@ const OrganizationTitle = Glamorous(XLink)({
         overflow: 'hidden',
         display: '-webkit-box',
         WebkitLineClamp: 1,
-        WebkitBoxOrient: 'vertical'
-    }
+        WebkitBoxOrient: 'vertical',
+    },
 });
 
 const OrganizationAbout = Glamorous.div({
@@ -78,8 +81,8 @@ const OrganizationAbout = Glamorous.div({
         overflow: 'hidden',
         display: '-webkit-box',
         WebkitLineClamp: 1,
-        WebkitBoxOrient: 'vertical'
-    }
+        WebkitBoxOrient: 'vertical',
+    },
 });
 
 const OrganizationMembers = makeNavigable(Glamorous.div({
@@ -89,7 +92,7 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
     marginLeft: -2,
     cursor: 'pointer',
     '& *': {
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     '& span': {
         marginTop: 1,
@@ -99,43 +102,49 @@ const OrganizationMembers = makeNavigable(Glamorous.div({
         letterSpacing: 0,
         color: 'rgba(0, 0, 0, 0.4)',
         fontWeight: 600,
-        lineHeight: '18px'
+        lineHeight: '18px',
     },
     '&:hover': {
         '& span': {
-            color: '#1790ff'
-        }
-    }
+            color: '#1790ff',
+        },
+    },
 }) as any);
 
-export const AlterOrgPublishedButton = withOrganizationPublishedAlter((props) => (
+export const AlterOrgPublishedButton = withOrganizationPublishedAlter(props => (
     <XButton
-        text={(props as any).published ? TextProfiles.Organization.hideFromSearch : TextProfiles.Organization.publish}
+        text={
+            (props as any).published
+                ? TextProfiles.Organization.hideFromSearch
+                : TextProfiles.Organization.publish
+        }
         style="flat"
-        action={async () => props.alterPublished({
-            variables: {
-                organizationId: (props as any).orgId,
-                published: !(props as any).published
-            }
-        })}
+        action={async () =>
+            props.alterPublished({
+                variables: {
+                    organizationId: (props as any).orgId,
+                    published: !(props as any).published,
+                },
+            })
+        }
     />
-)) as React.ComponentType<{ orgId: string, published: boolean }>;
+)) as React.ComponentType<{ orgId: string; published: boolean }>;
 
 interface XOrganizationCardProps {
     organization: {
-        id: string,
-        superAccountId: string,
-        name: string,
-        photo: string | null,
-        about: string | null,
-        isMine: boolean,
+        id: string;
+        superAccountId: string;
+        name: string;
+        photo: string | null;
+        about: string | null;
+        isMine: boolean;
         members: {
             user: {
-                id: string,
-                name: string,
-                picture: string | null,
-            }
-        }[]
+                id: string;
+                name: string;
+                picture: string | null;
+            };
+        }[];
     };
     path?: string;
     customButton?: any;
@@ -143,21 +152,15 @@ interface XOrganizationCardProps {
     extraMenu?: any;
 }
 
-interface XOrganizationCardState {
-    isHovered: boolean;
-}
+export const XOrganizationCard = (props: XOrganizationCardProps) => {
+    const [isHovered, setIsHovered] = React.useState(false);
+    const { isMobile } = React.useContext(MobileSidebarContext);
+    let { organization, path, customButton, customMenu, extraMenu } = props;
 
-export class XOrganizationCard extends React.Component<XOrganizationCardProps, XOrganizationCardState> {
-    state = {
-        isHovered: false,
-    };
+    let firstMember = organization.members[0];
 
-    render() {
-        let { organization, path, customButton, customMenu, extraMenu } = this.props;
-
-        let firstMember = organization.members[0];
-
-        let button = (typeof customButton === 'undefined') ? (
+    let button =
+        typeof customButton === 'undefined' ? (
             <>
                 {organization.isMine && (
                     <XButton
@@ -174,29 +177,40 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                     />
                 )}
             </>
-        ) : customButton;
+        ) : (
+            customButton
+        );
 
-        let menu = (typeof customMenu === 'undefined') ? (
+    let menu =
+        typeof customMenu === 'undefined' ? (
             <XOverflow
                 placement="bottom-end"
                 flat={true}
-                content={(
+                content={
                     <>
                         {extraMenu}
 
-                        <XMenuItem href={'/directory/o/' + organization.id}>{TextDirectory.buttonViewProfile}</XMenuItem>
+                        <XMenuItem href={'/directory/o/' + organization.id}>
+                            {TextDirectory.buttonViewProfile}
+                        </XMenuItem>
 
                         {organization.isMine && (
-                            <XMenuItem query={{ field: 'createRoom', value: organization.id }}>{TextDirectory.buttonCreateRoom}</XMenuItem>
+                            <XMenuItem query={{ field: 'createRoom', value: organization.id }}>
+                                {TextDirectory.buttonCreateRoom}
+                            </XMenuItem>
                         )}
 
                         <XWithRole role="admin" orgPermission={organization.id}>
-                            <XMenuItem href={'/settings/organization/' + organization.id} >{TextDirectory.buttonEdit}</XMenuItem>
+                            <XMenuItem href={'/settings/organization/' + organization.id}>
+                                {TextDirectory.buttonEdit}
+                            </XMenuItem>
                         </XWithRole>
 
                         {!organization.isMine && (
                             <XWithRole role={['super-admin', 'editor']}>
-                                <XMenuItem href={'/settings/organization/' + organization.id}>{TextDirectory.buttonEdit}</XMenuItem>
+                                <XMenuItem href={'/settings/organization/' + organization.id}>
+                                    {TextDirectory.buttonEdit}
+                                </XMenuItem>
                             </XWithRole>
                         )}
 
@@ -205,48 +219,57 @@ export class XOrganizationCard extends React.Component<XOrganizationCardProps, X
                             <XMenuItem href={'/super/orgs/' + organization.superAccountId}>{TextDirectory.buttonSuperEdit}</XMenuItem>
                         </XWithRole> */}
                     </>
-                )}
+                }
             />
-        ) : customMenu;
-
-        return (
-            <OrganizationCardWrapper
-                path={path || '/directory/o/' + organization.id}
-                onMouseEnter={() => this.setState({ isHovered: true })}
-                onMouseLeave={() => this.setState({ isHovered: false })}
-            >
-                <XHorizontal justifyContent="space-between" separator={10}>
-                    <OrganizationAvatar
-                        cloudImageUuid={organization.photo!!}
-                        size="x-medium"
-                        style="organization"
-                        objectName={organization.name}
-                        objectId={organization.id}
-                    />
-                    <OrganizationContent>
-                        <OrganizationInfo>
-                            <OrganizationTitle>{organization.name}</OrganizationTitle>
-                            {organization.about && <OrganizationAbout>{organization.about}</OrganizationAbout>}
-                            {firstMember && (
-                                <OrganizationMembers path={'/directory/u/' + firstMember.user.id}>
-                                    <XAvatar
-                                        objectName={firstMember.user.name}
-                                        objectId={firstMember.user.id}
-                                        size="l-small"
-                                        style="colorus"
-                                        cloudImageUuid={firstMember.user.picture || undefined}
-                                    />
-                                    <span>{firstMember.user.name + TextProfiles.Organization.membersMore(organization.members.length)}</span>
-                                </OrganizationMembers>
-                            )}
-                        </OrganizationInfo>
-                        <XHorizontal separator={5}>
-                            {this.state.isHovered && button}
-                            {menu}
-                        </XHorizontal>
-                    </OrganizationContent>
-                </XHorizontal>
-            </OrganizationCardWrapper>
+        ) : (
+            customMenu
         );
-    }
-}
+
+    return (
+        <OrganizationCardWrapper
+            path={path || '/directory/o/' + organization.id}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <XHorizontal justifyContent="space-between" separator={10}>
+                <OrganizationAvatar
+                    cloudImageUuid={organization.photo!!}
+                    size="x-medium"
+                    style="organization"
+                    objectName={organization.name}
+                    objectId={organization.id}
+                />
+                <OrganizationContent>
+                    <OrganizationInfo>
+                        <OrganizationTitle>{organization.name}</OrganizationTitle>
+                        {organization.about && (
+                            <OrganizationAbout>{organization.about}</OrganizationAbout>
+                        )}
+                        {firstMember && (
+                            <OrganizationMembers path={'/directory/u/' + firstMember.user.id}>
+                                <XAvatar
+                                    objectName={firstMember.user.name}
+                                    objectId={firstMember.user.id}
+                                    size="l-small"
+                                    style="colorus"
+                                    cloudImageUuid={firstMember.user.picture || undefined}
+                                />
+                                <span>
+                                    {firstMember.user.name +
+                                        TextProfiles.Organization.membersMore(
+                                            organization.members.length,
+                                        )}
+                                </span>
+                            </OrganizationMembers>
+                        )}
+                    </OrganizationInfo>
+                    <XHorizontal separator={5} flexShrink={0}>
+                        {isHovered && !isMobile && button}
+                        {isMobile && button}
+                        {menu}
+                    </XHorizontal>
+                </OrganizationContent>
+            </XHorizontal>
+        </OrganizationCardWrapper>
+    );
+};
