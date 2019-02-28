@@ -31,7 +31,7 @@ import { useDraft } from './useDraft';
 import { useHandleSend } from './useHandleSend';
 import { useInputMethods } from './useInputMethods';
 import { useQuote } from './useQuote';
-import { useGeneralCompose } from './useGeneralCompose';
+import { useHandleChange } from './useHandleChange';
 import { useMentions } from './useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
@@ -77,8 +77,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
 
     const mentionsState = useMentions({
         members: messageComposeProps.members,
-        inputMethodsState,
-        inputValue,
     });
 
     const { handleSend, closeEditor } = useHandleSend({
@@ -104,7 +102,8 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         inputMethodsState,
     });
 
-    const { handleChange } = useGeneralCompose({
+    const { handleChange } = useHandleChange({
+        mentionsState,
         onChange: messageComposeProps.onChange,
         setInputValue,
         draftState,

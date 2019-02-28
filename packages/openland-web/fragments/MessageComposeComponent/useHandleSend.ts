@@ -109,6 +109,7 @@ export function useHandleSend({
             if (onSend && !hasQuoteInState()) {
                 if (supportMentions() && mentionsState) {
                     onSend(msg, mentionsState.getMentions() as any);
+                    mentionsState.setCurrentMentions([]);
                 } else {
                     onSend(msg, null);
                 }

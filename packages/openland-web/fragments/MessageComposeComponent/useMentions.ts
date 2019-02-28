@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { RoomMembers_members } from 'openland-api/Types';
-import { InputMethodsStateT } from './useInputMethods';
 
 export type MentionDataT = {
     id: string;
@@ -15,6 +14,7 @@ export type MentionsStateT = {
     mentionsData: MentionDataT[];
     listOfMembersNames: string[];
     getMentions: () => MentionDataT[];
+    setCurrentMentions: (a: MentionDataT[]) => void;
 };
 
 const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
@@ -42,18 +42,15 @@ const getMembers = (members?: RoomMembers_members[]) => {
 
 type useMentionsT = {
     members?: RoomMembers_members[];
-    inputMethodsState: InputMethodsStateT;
-    inputValue: string;
 };
 
-export function useMentions({ members, inputMethodsState, inputValue }: useMentionsT) {
+export function useMentions({ members }: useMentionsT) {
     const [listOfMembersNames, setListOfMembersNames] = React.useState(getMembers(members));
-    const [currentMentions, setCurrentMentions] = React.useState([]);
+    const [currentMentions, setCurrentMentions] = React.useState<MentionDataT[]>([]);
 
     React.useEffect(() => {
         setListOfMembersNames(getMembers(members));
-        setCurrentMentions(inputMethodsState.getMentions());
-    }, [members, inputValue]);
+    }, [members]);
 
     const mentionsData = convertChannelMembersDataToMentionsData(members);
 
@@ -61,5 +58,5 @@ export function useMentions({ members, inputMethodsState, inputValue }: useMenti
         return currentMentions;
     };
 
-    return { mentionsData, listOfMembersNames, getMentions };
+    return { mentionsData, listOfMembersNames, getMentions, setCurrentMentions };
 }
