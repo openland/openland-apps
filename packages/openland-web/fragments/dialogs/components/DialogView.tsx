@@ -69,7 +69,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
     let message: any = undefined;
     let theme = React.useContext(ThemeContext);
     if (dialog.typing) {
-        message = dialog.typing;
+        message = <>{emojifyMessage(dialog.typing)}</>;
     } else {
         if (dialog.fileMeta) {
             if (dialog.fileMeta.isImage) {
