@@ -237,12 +237,13 @@ export class DialogListEngine {
         if (existing) {
             if (existing.messageId === event.message.id) {
                 const message = formatMessage(event.message);
-                const newItem = {
+
+                this.dataSource.updateItem({
                     ...existing,
                     message,
                     messageEmojified: message ? emojifyMessage(message) : undefined,
                     fileMeta: event.message.fileMetadata,
-                };
+                });
             }
         }
     };
