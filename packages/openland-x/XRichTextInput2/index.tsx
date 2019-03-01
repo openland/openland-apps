@@ -89,6 +89,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         return (
             <MentionSuggestionsContainer
                 {...props}
+                activeWord={activeWord}
                 onEmojiPicked={onEmojiPicked}
                 showSuggestions={filteredSuggestions.length !== 0}
                 suggestions={filteredSuggestions.map((mention, key) => {
