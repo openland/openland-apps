@@ -25,17 +25,19 @@ const emojiSuggestionsClassName = css`
 `;
 
 type EmojiSuggestionsT = {
-    cacheBustParam: any;
-    imagePath: any;
-    imageType: any;
-    ariaProps: any;
-    callbacks: any;
-    onClose: any;
-    onOpen: any;
+    cacheBustParam: string;
+    imagePath: string;
+    imageType: string;
+    ariaProps?: any;
+    onClose: Function;
+    onOpen: Function;
     onSearchChange: any;
     positionSuggestions: any;
     shortNames: any;
-    store: any;
+    getEditorState: any;
+    setEditorState: any;
+    getPortalClientRect: any;
+    escapeSearch: any;
 };
 
 export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
@@ -44,7 +46,7 @@ export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
         focusedOptionIndex: 0,
     };
     lastSelectionIsInsideWord: any;
-    closeDropdown: any;
+
     activeOffsetKey: any;
     lastSearchValue: any;
     key: any;
@@ -56,6 +58,8 @@ export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
     }
 
     componentDidUpdate = (prevProps: any, prevState: any) => {
+        const { getPortalClientRect, positionSuggestions } = this.props;
+
         if (this.popover) {
             // In case the list shrinks there should be still an option focused.
             // Note: this might run multiple times and deduct 1 until the condition is
@@ -67,12 +71,8 @@ export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
                 });
             }
 
-            if (size <= 0) {
-                this.closeDropdown();
-            }
-
-            const decoratorRect = this.props.store.getPortalClientRect(this.activeOffsetKey);
-            const newStyles = this.props.positionSuggestions({
+            const decoratorRect = getPortalClientRect(this.activeOffsetKey);
+            const newStyles = positionSuggestions({
                 decoratorRect,
                 prevProps,
                 prevState,
@@ -88,19 +88,13 @@ export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
         }
     };
 
-    componentWillUnmount = () => {
-        this.props.callbacks.onChange = undefined;
-    };
-
     onSearchChange = (editorState: any, selection: any) => {
+        const { onSearchChange } = this.props;
         const { word } = getSearchText(editorState, selection);
         const searchValue = word.substring(1, word.length);
-        if (
-            this.lastSearchValue !== searchValue &&
-            typeof this.props.onSearchChange === 'function'
-        ) {
+        if (this.lastSearchValue !== searchValue && typeof onSearchChange === 'function') {
             this.lastSearchValue = searchValue;
-            this.props.onSearchChange({ value: searchValue });
+            onSearchChange({ value: searchValue });
         }
     };
 
@@ -118,52 +112,57 @@ export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
     onUpArrow = (keyboardEvent: any) => {
         keyboardEvent.preventDefault();
         if (this.filteredEmojis.size > 0) {
-            const newIndex = this.state.focusedOptionIndex - 1;
-            this.onEmojiFocus(Math.max(newIndex, 0));
+            this.onEmojiFocus(Math.max(this.state.focusedOptionIndex - 1, 0));
         }
     };
 
     onEscape = (keyboardEvent: any) => {
+        const { setEditorState, getEditorState, escapeSearch } = this.props;
+
         keyboardEvent.preventDefault();
 
-        const activeOffsetKey = this.lastSelectionIsInsideWord
-            .filter((value: any) => value === true)
-            .keySeq()
-            .first();
-        this.props.store.escapeSearch(activeOffsetKey);
-        this.closeDropdown();
+        escapeSearch(
+            this.lastSelectionIsInsideWord
+                .filter((value: any) => value === true)
+                .keySeq()
+                .first(),
+        );
 
         // to force a re-render of the outer component to change the aria props
-        this.props.store.setEditorState(this.props.store.getEditorState());
+        setEditorState(getEditorState());
     };
 
     onEmojiSelect = (emoji: string) => {
-        this.closeDropdown();
-        const newEditorState = addEmoji({
-            editorState: this.props.store.getEditorState(),
-            emojiShortName: emoji,
-            mode: AddEmojiMode.REPLACE,
-        });
-        this.props.store.setEditorState(newEditorState);
+        const { getEditorState, setEditorState } = this.props;
+
+        setEditorState(
+            addEmoji({
+                editorState: getEditorState(),
+                emojiShortName: emoji,
+                mode: AddEmojiMode.REPLACE,
+            }),
+        );
     };
 
     onEmojiFocus = (index: number) => {
+        const { setEditorState, getEditorState } = this.props;
         this.setState({ focusedOptionIndex: index });
 
         // to force a re-render of the outer component to change the aria props
-        this.props.store.setEditorState(this.props.store.getEditorState());
+        setEditorState(getEditorState());
     };
 
     // Get the first 6 emojis that match
     getEmojisForFilter = () => {
-        const selection = this.props.store.getEditorState().getSelection();
-        const { word } = getSearchText(this.props.store.getEditorState(), selection);
+        const { getEditorState, shortNames } = this.props;
+        const selection = getEditorState().getSelection();
+        const { word } = getSearchText(getEditorState(), selection);
         const emojiValue = word.substring(1, word.length).toLowerCase();
-        const filteredValues = this.props.shortNames.filter(
+        const filteredValues = shortNames.filter(
             (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
         );
-        const size = filteredValues.size < 9 ? filteredValues.size : 9;
-        return filteredValues.setSize(size);
+
+        return filteredValues.setSize(filteredValues.size < 9 ? filteredValues.size : 9);
     };
 
     commitSelection = () => {
@@ -182,13 +181,11 @@ export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
             imagePath,
             imageType,
             ariaProps,
-            callbacks,
             onClose,
             onOpen,
             onSearchChange,
             positionSuggestions,
             shortNames,
-            store,
             ...restProps
         } = this.props;
         return (
