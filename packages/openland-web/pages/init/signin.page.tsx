@@ -250,6 +250,7 @@ class SignInComponent extends React.Component<
             this.setState({
                 codeError: InitTexts.auth.wrongCodeLength,
             });
+            return;
         } else {
             this.setState({ codeSending: true });
             createAuth0Client().passwordlessVerify(
