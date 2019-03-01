@@ -71,8 +71,8 @@ type EmojiSuggestionsState = {
 export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
     const [key] = React.useState(genKey());
     const [isActive] = React.useState(false);
-    const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
     const popoverRef = React.useRef(null);
+    const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
 
     const {
         cacheBustParam,
@@ -105,8 +105,6 @@ export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
     };
 
     const filteredEmojis = getEmojisForFilter();
-
-    console.log(filteredEmojis);
 
     const onEmojiSelect = (emoji: string) => {
         setEditorState(

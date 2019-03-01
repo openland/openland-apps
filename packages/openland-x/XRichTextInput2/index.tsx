@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Editor } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
-import { MentionSuggestionsContainer } from './components/MentionSuggestionsContainer';
+import { EditorContainer } from './components/EditorContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
 import { useKeyHandling } from './useKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
 import { useHandlePastedText } from './useHandlePastedText';
-import { MentionEntry, MentionDataT } from './components/MentionEntry';
+import { MentionEntry, MentionDataT } from './components/MentionSuggestionsEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
@@ -87,12 +87,14 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         });
 
         return (
-            <MentionSuggestionsContainer
+            <EditorContainer
                 {...props}
+                editorState={editorState}
+                setEditorState={setEditorState}
                 activeWord={activeWord}
                 onEmojiPicked={onEmojiPicked}
-                showSuggestions={filteredSuggestions.length !== 0}
-                suggestions={filteredSuggestions.map((mention, key) => {
+                showMentionSuggestions={filteredSuggestions.length !== 0}
+                mentionSuggestions={filteredSuggestions.map((mention, key) => {
                     return (
                         <MentionEntry
                             {...mention}
@@ -118,7 +120,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                     editorState={editorState}
                     onChange={handleEditorChange}
                 />
-            </MentionSuggestionsContainer>
+            </EditorContainer>
         );
     },
 );

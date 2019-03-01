@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MentionDataT } from './components/MentionEntry';
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 export type useMentionSuggestionsT = {
     activeWord: string;

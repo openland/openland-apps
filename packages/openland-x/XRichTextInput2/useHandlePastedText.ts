@@ -1,6 +1,6 @@
 import { EditorState, BlockMapBuilder, DefaultDraftBlockRenderMap } from 'draft-js';
 const DraftPasteProcessor = require('draft-js/lib/DraftPasteProcessor');
-import convertEmojioneImageToUnicode from './utils/convertEmojioneImageToUnicode';
+import { convertEmojioneImageToUnicode } from './utils/convertEmojioneImageToUnicode';
 import { insertFragment } from './utils/insertFragment';
 import { getUnicode } from './utils/defaultGetUnicode';
 

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 const emojione = require('emojione');
 import { css, cx } from 'linaria';
 
@@ -38,76 +38,67 @@ type EmojiSuggestionsEntryT = {
     cacheBustParam: string;
     isFocused: boolean;
     id: string;
-    onEmojiSelect: Function;
     emoji: string;
-    onEmojiFocus: Function;
     index: number;
+    onEmojiSelect: Function;
+    onEmojiFocus: Function;
 };
 
-export class EmojiSuggestionsEntry extends PureComponent<EmojiSuggestionsEntryT> {
-    mouseDown: boolean;
-    constructor(props: any) {
-        super(props);
-        this.mouseDown = false;
-    }
-
-    componentDidUpdate() {
-        this.mouseDown = false;
-    }
-
-    onMouseUp = () => {
-        if (this.mouseDown) {
-            this.mouseDown = false;
-            this.props.onEmojiSelect(this.props.emoji);
+export const EmojiSuggestionsEntry = ({
+    imagePath,
+    imageType,
+    cacheBustParam,
+    isFocused,
+    id,
+    emoji,
+    index,
+    onEmojiFocus,
+    onEmojiSelect,
+}: EmojiSuggestionsEntryT) => {
+    const [mouseDown, setMouseDown] = React.useState(false);
+    const onMouseUp = () => {
+        if (mouseDown) {
+            setMouseDown(false);
+            onEmojiSelect(emoji);
         }
     };
 
-    onMouseDown = (event: any) => {
+    const onMouseDown = (event: any) => {
         // Note: important to avoid a content edit change
         event.preventDefault();
 
-        this.mouseDown = true;
+        setMouseDown(true);
     };
 
-    onMouseEnter = () => {
-        this.props.onEmojiFocus(this.props.index);
+    const onMouseEnter = () => {
+        onEmojiFocus(index);
     };
 
-    render() {
-        const { imagePath, imageType, cacheBustParam, isFocused, id, emoji } = this.props;
+    // short name to image url code steal from emojione source code
+    const shortNameForImage =
+        emojione.emojioneList[emoji].unicode[emojione.emojioneList[emoji].unicode.length - 1];
 
-        let emojiDisplay = null;
+    const fullImagePath = `${imagePath}${shortNameForImage}.${imageType}${cacheBustParam}`;
 
-        // short name to image url code steal from emojione source code
-        const shortNameForImage =
-            emojione.emojioneList[emoji].unicode[emojione.emojioneList[emoji].unicode.length - 1];
-
-        const fullImagePath = `${imagePath}${shortNameForImage}.${imageType}${cacheBustParam}`;
-
-        emojiDisplay = (
+    return (
+        <div
+            className={cx(
+                emojiSuggestionsEntryClassName,
+                isFocused && emojiSuggestionsEntryFocusedClassName,
+            )}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+            onMouseEnter={onMouseEnter}
+            role="option"
+            id={id}
+            aria-selected={isFocused ? 'true' : 'false'}
+        >
             <img
                 src={fullImagePath}
                 className={emojiSuggestionsEntryIconClassName}
                 role="presentation"
             />
-        );
-
-        return (
-            <div
-                className={cx(
-                    emojiSuggestionsEntryClassName,
-                    isFocused && emojiSuggestionsEntryFocusedClassName,
-                )}
-                onMouseDown={this.onMouseDown}
-                onMouseUp={this.onMouseUp}
-                onMouseEnter={this.onMouseEnter}
-                role="option"
-                id={id}
-                aria-selected={isFocused ? 'true' : 'false'}
-            >
-                {emojiDisplay}
-                <span className={emojiSuggestionsEntryTextClassName}>{emoji}</span>
-            </div>
-        );
-    }
-}
+            <span className={emojiSuggestionsEntryTextClassName}>{emoji}</span>
+        </div>
+    );
+};

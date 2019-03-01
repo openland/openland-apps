@@ -1,47 +1,15 @@
 import * as React from 'react';
-const decorateComponentWithProps = require('decorate-component-with-props').default;
-import {
-    EditorState,
-    ContentState,
-    CompositeDecorator,
-    ContentBlock,
-    convertToRaw,
-} from 'draft-js';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
-import emojiStrategy from './utils/emojiStrategy';
-import { MentionComponentInnerText } from './components/MentionComponentInnerText';
-import { Emoji } from './components/Emoji';
 import { addEmoji } from './modifiers/addEmoji';
 import { addMention, findActiveWord } from './modifiers/addMention';
-import { MentionDataT } from './components/MentionEntry';
-import * as constants from './constants';
-
-function findLinkMention(contentBlock: ContentBlock, callback: any, contentState: ContentState) {
-    contentBlock.findEntityRanges(character => {
-        const entityKey = character.getEntity();
-        return entityKey !== null && contentState.getEntity(entityKey).getType() === 'MENTION';
-    }, callback);
-}
+import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { decorator } from './decorator';
 
 type useHandleEditorChangeT = {
     onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
     value: string;
 };
-
-const decorator = new CompositeDecorator([
-    {
-        strategy: findLinkMention,
-        component: MentionComponentInnerText,
-    },
-    {
-        strategy: emojiStrategy,
-        component: decorateComponentWithProps(Emoji, {
-            imagePath: constants.imagePath,
-            imageType: constants.imageType,
-            cacheBustParam: constants.cacheBustParam,
-        }),
-    },
-]);
 
 export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');

@@ -10,15 +10,13 @@ export const Mode = {
     REPLACE: 'REPLACE', // replace emoji shortname
 };
 
-export const addEmoji = ({
-    editorState,
-    emojiShortName,
-    mode = Mode.INSERT,
-}: {
+type addEmojiT = {
     editorState: EditorState;
     emojiShortName?: string;
     mode?: string;
-}) => {
+};
+
+export const addEmoji = ({ editorState, emojiShortName, mode = Mode.INSERT }: addEmojiT) => {
     let emoji;
     // :male_sign: fails now
     if (!emojiShortName || !emojiList.list[emojiShortName]) {
@@ -36,8 +34,6 @@ export const addEmoji = ({
     const currentSelectionState = editorState.getSelection();
 
     let emojiAddedContent;
-    let emojiEndPos = 0;
-    let blockSize = 0;
 
     switch (mode) {
         case Mode.INSERT: {
@@ -59,10 +55,6 @@ export const addEmoji = ({
                 entityKey,
             );
 
-            emojiEndPos = targetSelection.getAnchorOffset();
-            const blockKey = targetSelection.getAnchorKey();
-            blockSize = contentState.getBlockForKey(blockKey).getLength();
-
             break;
         }
 
@@ -82,10 +74,6 @@ export const addEmoji = ({
                 null as any,
                 entityKey,
             );
-
-            emojiEndPos = end;
-            const blockKey = emojiTextSelection.getAnchorKey();
-            blockSize = contentState.getBlockForKey(blockKey).getLength();
 
             break;
         }

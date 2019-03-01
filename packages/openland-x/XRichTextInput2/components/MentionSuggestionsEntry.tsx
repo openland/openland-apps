@@ -12,6 +12,11 @@ export type MentionDataT = {
     online?: boolean;
 };
 
+type MentionEntryT = MentionDataT & {
+    isSelected: boolean;
+    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+};
+
 export const MentionEntry = ({
     avatar,
     name,
@@ -20,10 +25,7 @@ export const MentionEntry = ({
     title,
     isSelected,
     onClick,
-}: MentionDataT & {
-    isSelected: boolean;
-    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-}) => {
+}: MentionEntryT) => {
     const [isFocused, setIsFocused] = React.useState(false);
 
     React.useEffect(() => {

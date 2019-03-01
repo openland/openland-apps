@@ -1,6 +1,6 @@
 import { EditorState, Modifier, SelectionState } from 'draft-js';
 const emojione = require('emojione');
-const findWithRegex = require('find-with-regex').default;
+import findWithRegex from 'find-with-regex';
 
 const unicodeRegex = new RegExp(emojione.unicodeRegexp, 'g');
 
