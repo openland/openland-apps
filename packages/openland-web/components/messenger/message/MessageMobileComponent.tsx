@@ -123,28 +123,26 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
         if (message.reply && message.reply!.length > 0) {
             content.push(
                 <ReplyMessageWrapper key={'reply_message' + message.id}>
-                    {message
-                        .reply!.sort((a, b) => a.date - b.date)
-                        .map((item, index, array) => {
-                            let isCompact =
-                                index > 0 ? array[index - 1].sender.id === item.sender.id : false;
+                    {message.reply!.sort((a, b) => a.date - b.date).map((item, index, array) => {
+                        let isCompact =
+                            index > 0 ? array[index - 1].sender.id === item.sender.id : false;
 
-                            return (
-                                <MessageReplyComponent
-                                    mentions={message.mentions || []}
-                                    sender={item.sender}
-                                    date={item.date}
-                                    message={item.message}
-                                    id={item.id}
-                                    key={'reply_message' + item.id + index}
-                                    edited={item.edited}
-                                    file={item.file}
-                                    fileMetadata={item.fileMetadata}
-                                    startSelected={hideMenu}
-                                    compact={isCompact || undefined}
-                                />
-                            );
-                        })}
+                        return (
+                            <MessageReplyComponent
+                                mentions={message.mentions || []}
+                                sender={item.sender}
+                                date={item.date}
+                                message={item.message}
+                                id={item.id}
+                                key={'reply_message' + item.id + index}
+                                edited={item.edited}
+                                file={item.file}
+                                fileMetadata={item.fileMetadata}
+                                startSelected={hideMenu}
+                                compact={isCompact || undefined}
+                            />
+                        );
+                    })}
                 </ReplyMessageWrapper>,
             );
         }
@@ -214,7 +212,7 @@ export const MobileMessageComponentInner = React.memo((props: MessageComponentPr
                 );
             }
         }
-        if (message.urlAugmentation && !isPost) {
+        if (message.urlAugmentation && !isPost && !message.isService) {
             if (
                 (message.urlAugmentation.url.startsWith('https://app.openland.com/o') ||
                     message.urlAugmentation.url.startsWith('https://openland.com/o')) &&

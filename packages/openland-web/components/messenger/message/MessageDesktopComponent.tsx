@@ -473,7 +473,7 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         );
                     }
                 }
-                if (message.urlAugmentation && !isPost) {
+                if (message.urlAugmentation && !isPost && !message.isService) {
                     if (
                         message.urlAugmentation.url.startsWith('https://app.openland.com/o') &&
                         message.urlAugmentation.url.includes('listings#')

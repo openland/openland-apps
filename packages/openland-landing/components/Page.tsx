@@ -3,6 +3,7 @@ import { XView } from 'react-mental';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { css } from 'linaria';
+import { MobileCustomPromo } from './MobileCustomPromo';
 
 let pageBorderClass = css`
     background-color: rgba(237, 239, 243, 0.6);
@@ -27,6 +28,7 @@ export const Page = (props: PageProps) => (
         backgroundColor="#ffffff"
         color="#1f3449"
     >
+        <MobileCustomPromo />
         <Header />
         {props.withBorder && <div className={pageBorderClass} />}
         <XView flexGrow={1}>{props.children}</XView>

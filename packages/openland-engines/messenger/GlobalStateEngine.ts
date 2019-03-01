@@ -52,6 +52,23 @@ let GLOBAL_SUBSCRIPTION = gql`
             message {
                 ...MessageShort
             }
+            prevMessage {
+                ... on RoomMessage {
+                    id
+                    date
+                    message
+                    file
+                    isService
+                    fileMetadata {
+                        name
+                        mimeType
+                        isImage
+                    }
+                    sender {
+                        ...UserTiny
+                    }
+                }
+            }
             unread
             globalUnread
         }
@@ -241,7 +258,7 @@ export class GlobalStateEngine {
             // Notifications
             this.engine.notifications.handleGlobalCounterChanged(event.globalUnread);
 
-            this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id);
+            this.engine.dialogList.handleMessageDeleted(event.cid, event.message.id, event.prevMessage);
         } else if (event.__typename === 'DialogTitleUpdated') {
             console.warn('new title ', event);
             this.engine.dialogList.handleTitleUpdated(event.cid, event.title);

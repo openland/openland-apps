@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "ATWUYU6747.com.openland.app",
+                "paths": [ "/joinRoom/*",  "/joinChannel/*", "/join/*", "/invite/*", "/directory/o/*", "/directory/u/*", "/*"]
+            }
+        ]
+    }
+}
