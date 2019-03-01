@@ -21,13 +21,7 @@ import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XAvatar } from 'openland-x/XAvatar';
 import { XText } from 'openland-x/XText';
-import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { useIsMobile } from 'openland-web/hooks';
-
-function validateEmail(email: string) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
 
 export const SubTitle = Glamorous.div({
     textAlign: 'center',
@@ -202,61 +196,32 @@ const RootContainer = Glamorous.div({
     width: '100%',
 });
 
-const RootContainerContentStyles = Glamorous.div<{ mainPage?: boolean; iosChrome: boolean }>([
-    {
-        backgroundColor: '#fff',
-        boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
-        height: '100%',
+const RootContainerContentStyles = Glamorous.div({
+    backgroundColor: '#fff',
+    boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.08)',
+    height: '100%',
+    flexBasis: '100%',
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingTop: 19,
+    paddingBottom: 22,
+    display: 'flex',
+    flexDirection: 'column',
+    zIndex: 1,
+    '@media(max-width: 950px)': {
         flexBasis: '100%',
-        paddingLeft: 32,
-        paddingRight: 32,
-        paddingTop: 19,
-        paddingBottom: 22,
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        '@media(max-width: 950px)': {
-            flexBasis: '100%',
-        },
-        '@media(max-width: 700px)': {
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 15,
-            paddingBottom: 15,
-        },
     },
-    props =>
-        props.mainPage || props.iosChrome !== true
-            ? {}
-            : {
-                  '@media(max-width: 700px)': {
-                      '&:focus-within': {
-                          '& .header, & .title, & .subtitle': {
-                              display: 'none',
-                          },
-                          '& .content': {
-                              justifyContent: 'start',
-                          },
-                      },
-                  },
-              },
-]);
+    '@media(max-width: 700px)': {
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
+    },
+});
 
-const RootContainerContent = (props: { children: any; mainPage?: boolean }) => {
-    let IosChromeChecker = false;
-
-    if (canUseDOM) {
-        if (navigator.userAgent.match('CriOS') && navigator.userAgent.match('iPhone')) {
-            IosChromeChecker = true;
-        }
-    }
-
-    return (
-        <RootContainerContentStyles mainPage={props.mainPage} iosChrome={IosChromeChecker}>
-            {props.children}
-        </RootContainerContentStyles>
-    );
-};
+const RootContainerContent = (props: { children: any }) => (
+    <RootContainerContentStyles>{props.children}</RootContainerContentStyles>
+);
 
 const Footer = Glamorous.div({
     marginTop: 'auto',
@@ -376,7 +341,6 @@ interface SignContainerProps extends HeaderProps {
     showTerms?: boolean;
     signin?: boolean;
     children?: any;
-    mainPage?: boolean;
 }
 
 const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
@@ -404,7 +368,7 @@ const MainContent = Glamorous.div<{ pageMode: PageModeT }>(({ pageMode }) => {
 
 export const WebSignUpContainer = (props: SignContainerProps) => (
     <RootContainer>
-        <RootContainerContent mainPage={props.mainPage}>
+        <RootContainerContent>
             <Header
                 text={props.text}
                 path={props.path}
@@ -936,16 +900,6 @@ export const WebSignUpActivationCode = ({
                     code: codeValue,
                 },
             }}
-            validate={{
-                input: {
-                    code: [
-                        {
-                            rule: (value: string) => value !== '',
-                            errorMessage: InitTexts.auth.codeInvalid,
-                        },
-                    ],
-                },
-            }}
             defaultAction={({ input: { code } }) => {
                 codeChanged(code, () => {
                     loginCodeStart();
@@ -979,20 +933,7 @@ export const WebSignUpActivationCode = ({
                                 flexShrink={0}
                                 onChange={value => codeChanged(value, () => null)}
                             />
-                            {showError &&
-                                codeValue === '' && <ErrorText>{InitTexts.auth.noCode}</ErrorText>}
-                            {!showError && (
-                                <>
-                                    {codeError &&
-                                        codeValue.length === 6 && (
-                                            <ErrorText>{codeError}</ErrorText>
-                                        )}
-                                    {codeValue &&
-                                        codeValue.length !== 6 && (
-                                            <ErrorText>{InitTexts.auth.wrongCodeLength}</ErrorText>
-                                        )}
-                                </>
-                            )}
+                            {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
                 </XFormField2>
@@ -1055,7 +996,6 @@ export const RoomActivationCode = ({
     codeChanged,
     codeValue,
 }: ActivationCodeProps) => {
-    const [isMobile] = useIsMobile();
     return (
         <XForm
             defaultData={{
@@ -1100,20 +1040,7 @@ export const RoomActivationCode = ({
                                 placeholder={InitTexts.auth.codePlaceholder}
                                 onChange={value => codeChanged(value, () => null)}
                             />
-                            {showError &&
-                                codeValue === '' && <ErrorText>{InitTexts.auth.noCode}</ErrorText>}
-                            {!showError && (
-                                <>
-                                    {codeError &&
-                                        codeValue.length === 6 && (
-                                            <ErrorText>{codeError}</ErrorText>
-                                        )}
-                                    {codeValue &&
-                                        codeValue.length !== 6 && (
-                                            <ErrorText>{InitTexts.auth.wrongCodeLength}</ErrorText>
-                                        )}
-                                </>
-                            )}
+                            {codeError && <ErrorText>{codeError}</ErrorText>}
                         </>
                     )}
                 </XFormField2>
@@ -1193,18 +1120,6 @@ export const RoomCreateWithEmail = ({
                     email: emailValue,
                 },
             }}
-            validate={{
-                input: {
-                    email: [
-                        {
-                            rule: (value: string) => value !== '' && validateEmail(value),
-                            errorMessage: emailValue
-                                ? InitTexts.auth.emailInvalid
-                                : InitTexts.auth.noEmail,
-                        },
-                    ],
-                },
-            }}
             defaultAction={({ input: { email } }) => {
                 emailChanged(email, () => {
                     loginEmailStart();
@@ -1223,9 +1138,9 @@ export const RoomCreateWithEmail = ({
                     {({ showError }: { showError: boolean }) => (
                         <>
                             <XInput
-                                width={isMobile ? undefined : 300}
                                 autofocus
-                                invalid={showError}
+                                width={isMobile ? undefined : 300}
+                                invalid={emailError !== ''}
                                 dataTestId="email"
                                 field="input.email"
                                 type="email"
@@ -1233,7 +1148,6 @@ export const RoomCreateWithEmail = ({
                                 placeholder={InitTexts.auth.emailPlaceholder}
                                 onChange={value => emailChanged(value, () => null)}
                             />
-                            {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}
@@ -1271,18 +1185,6 @@ export const WebSignUpCreateWithEmail = ({
                     email: emailValue,
                 },
             }}
-            validate={{
-                input: {
-                    email: [
-                        {
-                            rule: (value: string) => value !== '' && validateEmail(value),
-                            errorMessage: emailValue
-                                ? InitTexts.auth.emailInvalid
-                                : InitTexts.auth.noEmail,
-                        },
-                    ],
-                },
-            }}
             defaultAction={({ input: { email } }) => {
                 emailChanged(email, () => {
                     loginEmailStart();
@@ -1300,9 +1202,9 @@ export const WebSignUpCreateWithEmail = ({
                     {({ showError }: { showError: boolean }) => (
                         <>
                             <XInput
-                                width={isMobile ? undefined : 300}
                                 autofocus
-                                invalid={showError}
+                                width={isMobile ? undefined : 300}
+                                invalid={emailError !== ''}
                                 dataTestId="email"
                                 field="input.email"
                                 type="email"
@@ -1310,7 +1212,6 @@ export const WebSignUpCreateWithEmail = ({
                                 placeholder={InitTexts.auth.emailPlaceholder}
                                 onChange={value => emailChanged(value, () => null)}
                             />
-                            {showError && <XFormError field="input.email" />}
                             {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                     )}

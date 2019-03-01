@@ -25,6 +25,11 @@ import { withAppInviteInfo } from '../../api/withAppInvite';
 import { XView } from 'react-mental';
 import { useIsMobile } from 'openland-web/hooks';
 
+function validateEmail(email: string) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 const InviteInfo = withAppInviteInfo((props: any) => {
     let signPath = '/signup?redirect=' + encodeURIComponent((props as any).redirect);
     let inviter =
@@ -63,22 +68,28 @@ const checkIfIsSignIn = (router: any) => {
     return router.path.endsWith('signin');
 };
 
+interface SignInComponentProps extends XWithRouter {
+    redirect?: string | null;
+}
+
+interface SignInComponentState {
+    googleStarting: boolean;
+    emailWasResend: boolean;
+    email: boolean;
+    emailValue: string;
+    emailSending: boolean;
+    emailError: string;
+    emailSent: boolean;
+    fromOutside: boolean;
+    codeValue: string;
+    codeSending: boolean;
+    codeError: string;
+    signInInvite: boolean;
+}
+
 class SignInComponent extends React.Component<
-    { redirect?: string | null; roomView?: boolean } & XWithRouter,
-    {
-        googleStarting: boolean;
-        emailWasResend: boolean;
-        email: boolean;
-        emailValue: string;
-        emailSending: boolean;
-        emailError: string;
-        emailSent: boolean;
-        fromOutside: boolean;
-        codeValue: string;
-        codeSending: boolean;
-        codeError: string;
-        signInInvite: boolean;
-    }
+    SignInComponentProps & { roomView?: boolean },
+    SignInComponentState
 > {
     fireGoogle = async () => {
         Cookie.set('auth-type', 'google', { path: '/' });
@@ -113,7 +124,7 @@ class SignInComponent extends React.Component<
         );
     };
 
-    constructor(props: { redirect?: string | null } & XWithRouter) {
+    constructor(props: SignInComponentProps) {
         super(props);
         let state = {
             googleStarting: false,
@@ -184,60 +195,83 @@ class SignInComponent extends React.Component<
         });
     };
 
-    loginReset = () => {
-        this.setState({
-            email: false,
-            emailValue: '',
-            emailSending: false,
-            emailError: '',
-            emailSent: false,
-            codeValue: '',
-            codeSending: false,
-            codeError: '',
-            fromOutside: false,
-            signInInvite: false,
-        });
+    // loginReset = () => {
+    //     this.setState({
+    //         email: false,
+    //         emailValue: '',
+    //         emailSending: false,
+    //         emailError: '',
+    //         emailSent: false,
+    //         codeValue: '',
+    //         codeSending: false,
+    //         codeError: '',
+    //         fromOutside: false,
+    //         signInInvite: false,
+    //     });
+    // };
+
+    emailValueChanged = (val: string, cb: () => void) => {
+        this.setState({ emailValue: val, emailError: '' }, cb);
     };
 
-    emailChanged = (val: string, cb: () => void) => {
-        this.setState({ emailValue: val }, cb);
-    };
-
-    codeChanged = (val: string, cb: () => void) => {
-        this.setState({ codeValue: val }, cb);
+    codeValueChanged = (val: string, cb: () => void) => {
+        this.setState({ codeValue: val, codeError: '' }, cb);
     };
 
     loginEmailStart = () => {
-        this.setState({
-            emailSending: true,
-            emailError: '',
-            emailSent: false,
-            signInInvite: false,
-        });
-        this.fireEmail();
+        if (this.state.emailValue === '') {
+            this.setState({
+                emailError: InitTexts.auth.noEmail,
+            });
+            return;
+        } else if (!validateEmail(this.state.emailValue)) {
+            this.setState({
+                emailError: InitTexts.auth.emailInvalid,
+            });
+            return;
+        } else {
+            this.setState({
+                emailSending: true,
+                emailError: '',
+                emailSent: false,
+                signInInvite: false,
+            });
+            this.fireEmail();
+        }
     };
 
     loginCodeStart = async () => {
-        this.setState({ codeSending: true });
-        createAuth0Client().passwordlessVerify(
-            {
-                connection: 'email',
-                email: this.state.emailValue,
-                verificationCode: this.state.codeValue,
-            },
-            (error: any, v) => {
-                console.warn(error);
-                if (error) {
-                    this.setState({
-                        signInInvite: false,
-                        codeSending: false,
-                        codeError: error.description,
-                    });
-                } else {
-                    // Ignore. Should be redirect to completion page.
-                }
-            },
-        );
+        if (this.state.codeValue === '') {
+            this.setState({
+                codeError: InitTexts.auth.noCode,
+            });
+            return;
+        } else if (this.state.codeValue.length !== 6) {
+            this.setState({
+                codeError: InitTexts.auth.wrongCodeLength,
+            });
+        } else {
+            this.setState({ codeSending: true });
+            createAuth0Client().passwordlessVerify(
+                {
+                    connection: 'email',
+                    email: this.state.emailValue,
+                    verificationCode: this.state.codeValue,
+                },
+                (error: any, v) => {
+                    console.warn(error);
+                    if (error) {
+                        this.setState({
+                            signInInvite: false,
+                            codeSending: false,
+                            codeError: error.description,
+                        });
+                    } else {
+                        // Ignore. Should be redirect to completion page.
+                    }
+                },
+            );
+        }
     };
 
     render() {
@@ -293,7 +327,6 @@ class SignInComponent extends React.Component<
                 path={(signin ? '/signup' : '/signin') + redirect}
                 linkText={linkText}
                 headerStyle={signin ? 'signin' : 'signup'}
-                mainPage={pageMode === 'AuthMechanism'}
             >
                 {pageMode === 'SignInInvite' && (
                     <InviteInfo
@@ -319,7 +352,7 @@ class SignInComponent extends React.Component<
                     <MyCreateWithEmail
                         signin={signin}
                         emailError={this.state.emailError}
-                        emailChanged={this.emailChanged}
+                        emailChanged={this.emailValueChanged}
                         emailValue={this.state.emailValue}
                         loginEmailStart={this.loginEmailStart}
                         emailSending={this.state.emailSending}
@@ -351,7 +384,7 @@ class SignInComponent extends React.Component<
                             );
                         }}
                         codeError={this.state.codeError}
-                        codeChanged={this.codeChanged}
+                        codeChanged={this.codeValueChanged}
                         codeSending={this.state.codeSending}
                         emailSending={this.state.emailSending}
                         codeValue={this.state.codeValue}
@@ -409,7 +442,7 @@ export const SignInPage = (props: any) => {
                     <SignInComponent
                         redirect={redirect}
                         router={props.router}
-                        roomView={fromRoom ? true : false}
+                        roomView={!!fromRoom}
                     />
                 )}
             </XTrack>

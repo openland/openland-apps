@@ -101,7 +101,7 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     let messageText = props.message;
 
     const messageArray = Array.from(messageText);
-    let isOnlyEmoji = emojiChecker(messageArray);
+    const isOnlyEmoji = emojiChecker(messageArray);
     const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
