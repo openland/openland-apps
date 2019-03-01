@@ -115,16 +115,6 @@ export const extractDialog = (
     };
 };
 
-export const extractDialogFRomRoom = (c: RoomFull, uid: string) =>
-    ({
-        key: c.id,
-        flexibleId: c.id,
-        kind: c.__typename === 'SharedRoom' ? c.kind : 'PRIVATE',
-        title: c.__typename === 'SharedRoom' ? c.title : c.user.name,
-        photo: c.__typename === 'SharedRoom' ? c.photo : c.user.photo,
-        unread: 0,
-    } as DialogDataSourceItem);
-
 export class DialogListEngine {
     readonly engine: MessengerEngine;
     private dialogs: Dialogs_dialogs_items[] = [];
@@ -259,7 +249,7 @@ export class DialogListEngine {
                 messageEmojified: message ? emojifyMessage(message) : undefined,
                 fileMeta: prevMessage && prevMessage.fileMetadata ? { isImage: prevMessage.fileMetadata ? prevMessage.fileMetadata.isImage : undefined } : undefined,
                 date: prevMessage ? prevMessage.date : undefined,
-                ...(prevMessage && prevMessage.id ? {messageId: prevMessage.id } : {})
+                ...(prevMessage && prevMessage.id ? { messageId: prevMessage.id } : {})
             });
         }
     };
@@ -358,15 +348,15 @@ export class DialogListEngine {
                     isService: event.message.isService,
                     isMuted: !!room.settings.mute,
                     haveMention: event.message.haveMention,
-                    flexibleId: room.id,
+                    flexibleId: privateRoom ? privateRoom.user.id : room.id,
                     kind: sharedRoom ? sharedRoom.kind : 'PRIVATE',
                     title: sharedRoom ? sharedRoom.title : privateRoom ? privateRoom.user.name : '',
                     photo:
                         (sharedRoom
                             ? sharedRoom.photo
                             : privateRoom
-                            ? privateRoom.user.photo
-                            : undefined) || undefined,
+                                ? privateRoom.user.photo
+                                : undefined) || undefined,
                     unread: unreadCount,
                     isOut: isOut,
                     sender: sender,
