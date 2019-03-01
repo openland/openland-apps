@@ -14,7 +14,7 @@ import { Root } from './Root';
 import { PageProps } from '../components/PageProps';
 import { SessionStateFull } from 'openland-api/Types';
 import { resolveNextPage, resolveNextPageCompleteAction } from './auth/signup';
-import { resolveInternalLink } from '../utils/internalLnksResolver';
+import { resolveInternalLink, saveLinkIfInvite, joinInviteIfHave } from '../utils/internalLnksResolver';
 import { ZModalProvider } from 'openland-mobile/components/ZModal';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 import { SDevice } from 'react-native-s/SDevice';
@@ -39,14 +39,42 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
 
     handleOpenURL = async (event: { url: string }) => {
         this.pendingDeepLink = event.url;
-        await this.tryResolveLink();
+        await this.tryResolveLink(this.state.state);
     }
 
-    tryResolveLink = async () => {
-        if (this.pendingDeepLink && this.state.state === 'app') {
-            await (await resolveInternalLink(this.pendingDeepLink, () => false))!();
-            this.pendingDeepLink = undefined;
+    resolving = false;
+    tryResolveLink = async (state: string) => {
+        if (this.resolving) {
+            return;
         }
+        this.resolving = true;
+        if (this.pendingDeepLink) {
+            let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
+            let acc = userToken && await backoff(async () => await getClient().queryAccount());
+            if (!acc || !acc.me || !acc.sessionState.isAccountExists) {
+                // unauthorized
+                await saveLinkIfInvite(this.pendingDeepLink);
+                this.pendingDeepLink = undefined;
+            } else if (acc.me) {
+                if (!acc.sessionState.isAccountActivated) {
+                    // waitlist
+                    await saveLinkIfInvite(this.pendingDeepLink);
+                    await joinInviteIfHave();
+                } else {
+                    // app
+                    await (await resolveInternalLink(this.pendingDeepLink!, () => false))!();
+                }
+                this.pendingDeepLink = undefined;
+            }
+
+        }
+        this.resolving = false;
+    }
+
+    componentDidUpdate() {
+        (async () => {
+            await this.tryResolveLink(this.state.state);
+        })()
     }
     componentDidMount() {
         Linking.addEventListener('url', this.handleOpenURL);
@@ -60,7 +88,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                     if (res && res.me) {
                         await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                         this.setState({ state: 'app' });
-                        this.tryResolveLink();
                     } else {
                         this.setState({ state: 'signup' });
                     }
@@ -80,7 +107,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                             backoff(async () => await getClient().queryAccount())
                         }
 
-                        let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState, 'SignupUser') : undefined;
+                        let defaultPage = !res.sessionState.isCompleted ? resolveNextPage(res.sessionState) : undefined;
                         this.history = SRouting.create(Routes, defaultPage, { action: resolveNextPageCompleteAction(defaultPage) });
                         if (res.me) {
                             let messenger = buildMessenger(getClient(), res.me);
@@ -104,7 +131,6 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
                         if (res && res.me) {
                             await AsyncStorage.setItem('openland-account-3', JSON.stringify(res));
                             this.setState({ state: 'app' });
-                            this.tryResolveLink();
                         } else {
                             this.setState({ state: 'signup' });
                         }
