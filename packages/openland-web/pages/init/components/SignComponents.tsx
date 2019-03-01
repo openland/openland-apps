@@ -1003,16 +1003,6 @@ export const RoomActivationCode = ({
                     code: codeValue,
                 },
             }}
-            validate={{
-                input: {
-                    code: [
-                        {
-                            rule: (value: string) => value !== '',
-                            errorMessage: InitTexts.auth.codeInvalid,
-                        },
-                    ],
-                },
-            }}
             defaultAction={({ input: { code } }) => {
                 codeChanged(code, () => {
                     loginCodeStart();
