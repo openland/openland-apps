@@ -29,7 +29,7 @@
 				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
 				<integer>100</integer>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<string>100</string>
+				<integer>100</integer>
 				<key>NSExtensionActivationSupportsText</key>
 				<true/>
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
