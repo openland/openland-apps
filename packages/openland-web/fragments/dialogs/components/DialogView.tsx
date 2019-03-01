@@ -200,7 +200,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                             marginLeft={5}
                             fontSize={12}
                             fontWeight="600"
-                            lineHeight="18px"
+                            lineHeight="19px"
                             whiteSpace="nowrap"
                         >
                             <XDate value={dialog.date.toString()} format="datetime_short" />
