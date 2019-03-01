@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { genKey } from 'draft-js';
+import React from 'react';
+import { genKey, EditorState } from 'draft-js';
 import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
 import { addEmoji, Mode as AddEmojiMode } from '../modifiers/addEmoji';
 import { getSearchText } from '../utils/getSearchText';
@@ -24,197 +24,129 @@ const emojiSuggestionsClassName = css`
     transform: scale(0);
 `;
 
-type EmojiSuggestionsT = {
+type EmojiSuggestionsProps = {
     cacheBustParam: string;
     imagePath: string;
     imageType: string;
-    ariaProps?: any;
-    onClose: Function;
-    onOpen: Function;
-    onSearchChange: any;
-    positionSuggestions: any;
-    shortNames: any;
-    getEditorState: any;
-    setEditorState: any;
-    getPortalClientRect: any;
-    escapeSearch: any;
+    // positionSuggestions: any;
+    // shortNames?: any;
+    editorState: EditorState;
+    setEditorState: (a: EditorState) => void;
+    // getPortalClientRect: any;
 };
 
-export class EmojiSuggestions extends Component<EmojiSuggestionsT> {
-    state = {
-        isActive: false,
-        focusedOptionIndex: 0,
-    };
-    lastSelectionIsInsideWord: any;
+type EmojiSuggestionsState = {
+    isActive: boolean;
+    focusedOptionIndex: number;
+};
 
-    activeOffsetKey: any;
-    lastSearchValue: any;
-    key: any;
-    popover: any;
-    filteredEmojis: any;
+// React.useEffect(() => {
+//     if (popoverRef) {
+//         // In case the list shrinks there should be still an option focused.
+//         // Note: this might run multiple times and deduct 1 until the condition is
+//         // not fullfilled anymore.
+//         const size = filteredEmojis.size;
+//         if (size > 0 && focusedOptionIndex >= size) {
+//             setFocusedOptionIndex(size - 1);
+//         }
 
-    componentWillMount() {
-        this.key = genKey();
+//         const decoratorRect = getPortalClientRect(this.activeOffsetKey);
+// const newStyles = positionSuggestions({
+//             decoratorRect,
+//             prevProps,
+//             prevState,
+//             props: this.props,
+//             state: this.state,
+//             filteredEmojis: this.filteredEmojis,
+//             popover: popoverRef,
+//         });
+//         Object.keys(newStyles).forEach((key: any) => {
+//             if (popoverRef && popoverRef.current !== null) {
+//                 popoverRef.current.style[key] = newStyles[key];
+//             }
+//         });
+//     }
+// });
+
+export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
+    const [key] = React.useState(genKey());
+    const [isActive] = React.useState(false);
+    const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
+    const popoverRef = React.useRef(null);
+
+    const {
+        cacheBustParam,
+        imagePath,
+        imageType,
+        // ariaProps,
+        // onSearchChange,
+        // positionSuggestions,
+        // shortNames,
+        ...restProps
+    } = props;
+
+    const { setEditorState, editorState } = props;
+
+    if (!isActive) {
+        return null;
     }
 
-    componentDidUpdate = (prevProps: any, prevState: any) => {
-        const { getPortalClientRect, positionSuggestions } = this.props;
+    const shortNames: any[] = [':+1:'];
 
-        if (this.popover) {
-            // In case the list shrinks there should be still an option focused.
-            // Note: this might run multiple times and deduct 1 until the condition is
-            // not fullfilled anymore.
-            const size = this.filteredEmojis.size;
-            if (size > 0 && this.state.focusedOptionIndex >= size) {
-                this.setState({
-                    focusedOptionIndex: size - 1,
-                });
-            }
-
-            const decoratorRect = getPortalClientRect(this.activeOffsetKey);
-            const newStyles = positionSuggestions({
-                decoratorRect,
-                prevProps,
-                prevState,
-                props: this.props,
-                state: this.state,
-                filteredEmojis: this.filteredEmojis,
-                popover: this.popover,
-            });
-
-            Object.keys(newStyles).forEach(key => {
-                this.popover.style[key] = newStyles[key];
-            });
-        }
-    };
-
-    onSearchChange = (editorState: any, selection: any) => {
-        const { onSearchChange } = this.props;
+    const getEmojisForFilter = () => {
+        const selection = editorState.getSelection();
         const { word } = getSearchText(editorState, selection);
-        const searchValue = word.substring(1, word.length);
-        if (this.lastSearchValue !== searchValue && typeof onSearchChange === 'function') {
-            this.lastSearchValue = searchValue;
-            onSearchChange({ value: searchValue });
-        }
-    };
-
-    onDownArrow = (keyboardEvent: any) => {
-        keyboardEvent.preventDefault();
-        const newIndex = this.state.focusedOptionIndex + 1;
-        this.onEmojiFocus(newIndex >= this.filteredEmojis.size ? 0 : newIndex);
-    };
-
-    onTab = (keyboardEvent: any) => {
-        keyboardEvent.preventDefault();
-        this.commitSelection();
-    };
-
-    onUpArrow = (keyboardEvent: any) => {
-        keyboardEvent.preventDefault();
-        if (this.filteredEmojis.size > 0) {
-            this.onEmojiFocus(Math.max(this.state.focusedOptionIndex - 1, 0));
-        }
-    };
-
-    onEscape = (keyboardEvent: any) => {
-        const { setEditorState, getEditorState, escapeSearch } = this.props;
-
-        keyboardEvent.preventDefault();
-
-        escapeSearch(
-            this.lastSelectionIsInsideWord
-                .filter((value: any) => value === true)
-                .keySeq()
-                .first(),
+        const emojiValue = word.substring(1, word.length).toLowerCase();
+        const filteredValues = shortNames.filter(
+            (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
         );
 
-        // to force a re-render of the outer component to change the aria props
-        setEditorState(getEditorState());
+        return filteredValues.slice(0, 9);
     };
 
-    onEmojiSelect = (emoji: string) => {
-        const { getEditorState, setEditorState } = this.props;
+    const filteredEmojis = getEmojisForFilter();
 
+    console.log(filteredEmojis);
+
+    const onEmojiSelect = (emoji: string) => {
         setEditorState(
             addEmoji({
-                editorState: getEditorState(),
+                editorState: editorState,
                 emojiShortName: emoji,
                 mode: AddEmojiMode.REPLACE,
             }),
         );
     };
 
-    onEmojiFocus = (index: number) => {
-        const { setEditorState, getEditorState } = this.props;
-        this.setState({ focusedOptionIndex: index });
+    const onEmojiFocus = (index: number) => {
+        setFocusedOptionIndex(index);
 
         // to force a re-render of the outer component to change the aria props
-        setEditorState(getEditorState());
+        setEditorState(editorState);
     };
 
-    // Get the first 6 emojis that match
-    getEmojisForFilter = () => {
-        const { getEditorState, shortNames } = this.props;
-        const selection = getEditorState().getSelection();
-        const { word } = getSearchText(getEditorState(), selection);
-        const emojiValue = word.substring(1, word.length).toLowerCase();
-        const filteredValues = shortNames.filter(
-            (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
-        );
-
-        return filteredValues.setSize(filteredValues.size < 9 ? filteredValues.size : 9);
-    };
-
-    commitSelection = () => {
-        this.onEmojiSelect(this.filteredEmojis.get(this.state.focusedOptionIndex));
-        return 'handled';
-    };
-
-    render() {
-        if (!this.state.isActive) {
-            return null;
-        }
-
-        this.filteredEmojis = this.getEmojisForFilter();
-        const {
-            cacheBustParam,
-            imagePath,
-            imageType,
-            ariaProps,
-            onClose,
-            onOpen,
-            onSearchChange,
-            positionSuggestions,
-            shortNames,
-            ...restProps
-        } = this.props;
-        return (
-            <div
-                {...restProps}
-                className={emojiSuggestionsClassName}
-                role="listbox"
-                id={`emojis-list-${this.key}`}
-                ref={element => {
-                    this.popover = element;
-                }}
-            >
-                {this.filteredEmojis
-                    .map((emoji: string, index: number) => (
-                        <EmojiSuggestionsEntry
-                            key={emoji}
-                            onEmojiSelect={this.onEmojiSelect}
-                            onEmojiFocus={this.onEmojiFocus}
-                            isFocused={this.state.focusedOptionIndex === index}
-                            emoji={emoji}
-                            index={index}
-                            id={`emoji-option-${this.key}-${index}`}
-                            imagePath={imagePath}
-                            imageType={imageType}
-                            cacheBustParam={cacheBustParam}
-                        />
-                    ))
-                    .toJS()}
-            </div>
-        );
-    }
-}
+    return (
+        <div
+            {...restProps}
+            className={emojiSuggestionsClassName}
+            role="listbox"
+            id={`emojis-list-${key}`}
+            ref={popoverRef}
+        >
+            {filteredEmojis.map((emoji: string, index: number) => (
+                <EmojiSuggestionsEntry
+                    key={emoji}
+                    onEmojiSelect={onEmojiSelect}
+                    onEmojiFocus={onEmojiFocus}
+                    isFocused={focusedOptionIndex === index}
+                    emoji={emoji}
+                    index={index}
+                    id={`emoji-option-${key}-${index}`}
+                    imagePath={imagePath}
+                    imageType={imageType}
+                    cacheBustParam={cacheBustParam}
+                />
+            ))}
+        </div>
+    );
+};

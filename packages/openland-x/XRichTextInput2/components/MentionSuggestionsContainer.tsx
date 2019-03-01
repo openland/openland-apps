@@ -6,7 +6,10 @@ import Glamorous from 'glamorous';
 import useOnClickOutside from 'use-onclickoutside';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
+import { EditorState } from 'draft-js';
+import { NewEmojiSuggestions } from './EmojiSuggestions';
 import { XRichTextInput2Props } from '..';
+import * as constants from '../constants';
 
 const Container = Glamorous.div<XFlexStyles>([
     {
@@ -109,6 +112,9 @@ const mentionSuggestionsWrapperClassName = css`
 
 export const MentionSuggestionsContainer = (
     props: XRichTextInput2Props & {
+        editorState: EditorState;
+        setEditorState: (a: EditorState) => void;
+        activeWord: string;
         onEmojiPicked: (emoji: EmojiData) => void;
         children: any;
         suggestions: any;
@@ -142,7 +148,15 @@ export const MentionSuggestionsContainer = (
         }
     }, []);
 
-    const { children, suggestions, showSuggestions, onEmojiPicked } = props;
+    const {
+        children,
+        suggestions,
+        showSuggestions,
+        onEmojiPicked,
+        activeWord,
+        editorState,
+        setEditorState,
+    } = props;
 
     return (
         <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
@@ -160,6 +174,15 @@ export const MentionSuggestionsContainer = (
                 {suggestions}
             </div>
             {children}
+            {activeWord === ':' && (
+                <NewEmojiSuggestions
+                    cacheBustParam={constants.cacheBustParam}
+                    imagePath={constants.imagePath}
+                    imageType={constants.imageType}
+                    editorState={editorState}
+                    setEditorState={setEditorState}
+                />
+            )}
             <EmojiButton onEmojiPicked={onEmojiPicked} />
         </ContainerWrapper>
     );

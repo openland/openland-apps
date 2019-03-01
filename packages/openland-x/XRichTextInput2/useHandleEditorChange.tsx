@@ -14,6 +14,7 @@ import { Emoji } from './components/Emoji';
 import { addEmoji } from './modifiers/addEmoji';
 import { addMention, findActiveWord } from './modifiers/addMention';
 import { MentionDataT } from './components/MentionEntry';
+import * as constants from './constants';
 
 function findLinkMention(contentBlock: ContentBlock, callback: any, contentState: ContentState) {
     contentBlock.findEntityRanges(character => {
@@ -35,9 +36,9 @@ const decorator = new CompositeDecorator([
     {
         strategy: emojiStrategy,
         component: decorateComponentWithProps(Emoji, {
-            imagePath: 'https://cdn.openland.com/shared/web/emoji/4.0/png/64/',
-            imageType: 'png',
-            cacheBustParam: '',
+            imagePath: constants.imagePath,
+            imageType: constants.imageType,
+            cacheBustParam: constants.cacheBustParam,
         }),
     },
 ]);
