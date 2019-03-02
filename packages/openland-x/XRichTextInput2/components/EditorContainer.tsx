@@ -4,7 +4,7 @@ import { EmojiData } from 'emoji-mart';
 import { EditorState } from 'draft-js';
 import Glamorous from 'glamorous';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
-import { NewEmojiSuggestions } from './EmojiSuggestions';
+import { EmojiSuggestions } from './EmojiSuggestions';
 import { MentionSuggestions, SizeT } from './MentionSuggestions';
 import { EmojiButton } from './EmojiButton';
 import { XRichTextInput2Props } from '..';
@@ -78,8 +78,9 @@ export const EditorContainer = (props: EditorContainerContainer) => {
                 items={mentionSuggestions}
                 sizeOfContainer={sizeOfContainer}
             />
-            {activeWord === ':' && (
-                <NewEmojiSuggestions
+            {activeWord.startsWith(':') && (
+                <EmojiSuggestions
+                    activeWord={activeWord}
                     cacheBustParam={constants.cacheBustParam}
                     imagePath={constants.imagePath}
                     imageType={constants.imageType}

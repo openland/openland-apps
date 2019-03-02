@@ -2,8 +2,8 @@ import React from 'react';
 import { genKey, EditorState } from 'draft-js';
 import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
 import { addEmoji, Mode as AddEmojiMode } from '../modifiers/addEmoji';
-import { getSearchText } from '../utils/getSearchText';
 import { css } from 'linaria';
+import { emojiList } from '../utils/emojiList';
 
 const emojiSuggestionsClassName = css`
     border: 1px solid #eee;
@@ -26,91 +26,33 @@ const emojiSuggestionsClassName = css`
 `;
 
 type EmojiSuggestionsProps = {
+    activeWord: string;
     cacheBustParam: string;
     imagePath: string;
     imageType: string;
-    // positionSuggestions: any;
-    // shortNames?: any;
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
-    // getPortalClientRect: any;
 };
 
-type EmojiSuggestionsState = {
-    focusedOptionIndex: number;
-};
+const shortNames: any[] = Object.keys(emojiList.list);
 
-// React.useEffect(() => {
-//     if (popoverRef) {
-//         // In case the list shrinks there should be still an option focused.
-//         // Note: this might run multiple times and deduct 1 until the condition is
-//         // not fullfilled anymore.
-//         const size = filteredEmojis.size;
-//         if (size > 0 && focusedOptionIndex >= size) {
-//             setFocusedOptionIndex(size - 1);
-//         }
-
-//         const decoratorRect = getPortalClientRect(this.activeOffsetKey);
-// const newStyles = positionSuggestions({
-//             decoratorRect,
-//             prevProps,
-//             prevState,
-//             props: this.props,
-//             state: this.state,
-//             filteredEmojis: this.filteredEmojis,
-//             popover: popoverRef,
-//         });
-//         Object.keys(newStyles).forEach((key: any) => {
-//             if (popoverRef && popoverRef.current !== null) {
-//                 popoverRef.current.style[key] = newStyles[key];
-//             }
-//         });
-//     }
-// });
-
-export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
+export const EmojiSuggestions = (props: EmojiSuggestionsProps) => {
     const [key] = React.useState(genKey());
 
     const popoverRef = React.useRef(null);
     const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
 
-    const {
-        cacheBustParam,
-        imagePath,
-        imageType,
-        // ariaProps,
-        // onSearchChange,
-        // positionSuggestions,
-        // shortNames,
-        // ...restProps
-    } = props;
+    const { cacheBustParam, imagePath, imageType, activeWord } = props;
 
     const { setEditorState, editorState } = props;
 
-    const shortNames: any[] = [
-        ':thumbsup:',
-        ':smile:',
-        ':heart:',
-        ':ok_hand:',
-        ':joy:',
-        ':tada:',
-        ':see_no_evil:',
-        ':raised_hands:',
-        ':100:',
-    ];
+    const emojiValue = activeWord.substring(1, activeWord.length).toLowerCase();
 
-    const getEmojisForFilter = () => {
-        const selection = editorState.getSelection();
-        const { word } = getSearchText(editorState, selection);
-        const emojiValue = word.substring(1, word.length).toLowerCase();
-        const filteredValues = shortNames.filter(
-            (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
-        );
+    const filteredValues = shortNames.filter(
+        (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
+    );
 
-        return filteredValues.slice(0, 9);
-    };
-
-    const filteredEmojis = getEmojisForFilter();
+    const filteredEmojis = filteredValues.slice(0, 9);
 
     const onEmojiSelect = (emoji: string) => {
         setEditorState(
