@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { useKeyupDown } from './useKeyupDown';
 
 export type useMentionSuggestionsT = {
     activeWord: string;
@@ -16,36 +17,14 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
         ({ name }: { name: string }) =>
             name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
     );
+    const { handleUp, handleDown } = useKeyupDown({
+        suggestionsList: filteredSuggestions,
+        selectedEntryIndex: selectedMentionEntryIndex,
+        setSelectedEntryIndex: setSelectedMentionEntryIndex,
+    });
 
     const getSelectedMentionId = (id: number) => {
         return filteredSuggestions[id];
-    };
-
-    const boundMentionSelection = (index: number) => {
-        return Math.min(Math.max(0, index), filteredSuggestions.length - 1);
-    };
-
-    const shouldShowSuggestions = () => {
-        return !!filteredSuggestions.length;
-    };
-
-    const handleUp = (event: React.KeyboardEvent<any>) => {
-        if (!shouldShowSuggestions()) {
-            return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-
-        setSelectedMentionEntryIndex(boundMentionSelection(selectedMentionEntryIndex - 1));
-    };
-
-    const handleDown = (event: React.KeyboardEvent<any>) => {
-        if (!shouldShowSuggestions()) {
-            return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        setSelectedMentionEntryIndex(boundMentionSelection(selectedMentionEntryIndex + 1));
     };
 
     React.useLayoutEffect(() => {
