@@ -1,10 +1,11 @@
 import React from 'react';
-const emojione = require('emojione');
+const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
 import { css, cx } from 'linaria';
 
 const emojiSuggestionsEntryFocusedClassName = css`
     background-color: #e6f3ff;
 `;
+
 const emojiSuggestionsEntryClassName = css`
     padding: 5px 10px 1px 10px;
     transition: background-color 0.4s cubic-bezier(0.27, 1.27, 0.48, 0.56);

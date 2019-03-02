@@ -10,6 +10,7 @@ const emojiSuggestionsClassName = css`
     margin-top: 1.75em;
     position: absolute;
     min-width: 220px;
+    bottom: 50px;
     max-width: 440px;
     background: #fff;
     border-radius: 2px;
@@ -21,7 +22,7 @@ const emojiSuggestionsClassName = css`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    transform: scale(0);
+    // transform: scale(0);
 `;
 
 type EmojiSuggestionsProps = {
@@ -36,7 +37,6 @@ type EmojiSuggestionsProps = {
 };
 
 type EmojiSuggestionsState = {
-    isActive: boolean;
     focusedOptionIndex: number;
 };
 
@@ -70,7 +70,7 @@ type EmojiSuggestionsState = {
 
 export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
     const [key] = React.useState(genKey());
-    const [isActive] = React.useState(false);
+
     const popoverRef = React.useRef(null);
     const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
 
@@ -82,16 +82,22 @@ export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
         // onSearchChange,
         // positionSuggestions,
         // shortNames,
-        ...restProps
+        // ...restProps
     } = props;
 
     const { setEditorState, editorState } = props;
 
-    if (!isActive) {
-        return null;
-    }
-
-    const shortNames: any[] = [':+1:'];
+    const shortNames: any[] = [
+        ':thumbsup:',
+        ':smile:',
+        ':heart:',
+        ':ok_hand:',
+        ':joy:',
+        ':tada:',
+        ':see_no_evil:',
+        ':raised_hands:',
+        ':100:',
+    ];
 
     const getEmojisForFilter = () => {
         const selection = editorState.getSelection();
@@ -123,9 +129,12 @@ export const NewEmojiSuggestions = (props: EmojiSuggestionsProps) => {
         setEditorState(editorState);
     };
 
+    if (!filteredEmojis.length) {
+        return null;
+    }
+
     return (
         <div
-            {...restProps}
             className={emojiSuggestionsClassName}
             role="listbox"
             id={`emojis-list-${key}`}
