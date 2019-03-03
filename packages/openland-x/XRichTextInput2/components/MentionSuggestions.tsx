@@ -11,10 +11,11 @@ const mentionSuggestionsHide = css`
 `;
 
 const mentionSuggestionsClassName = css`
-    left: 0px;
-    bottom: 0px;
     transform-origin: 1em 0%;
     transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
+
+    left: 0px;
+    bottom: 0px;
     position: absolute;
     border: 1px solid #eee;
     border-radius: 10px;

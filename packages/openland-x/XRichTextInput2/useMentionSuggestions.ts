@@ -13,12 +13,14 @@ export type MentionSuggestionsStateT = {
     suggestions: MentionDataT[];
     setSelectedEntryIndex: (a: number) => void;
     selectedEntryIndex: number;
+    isSelecting: boolean;
 };
 
 export const useMentionSuggestions = ({
     mentionsData,
     activeWord,
 }: useMentionSuggestionsT): MentionSuggestionsStateT => {
+    const [isSelecting, setIsSelecting] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<MentionDataT[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
@@ -34,10 +36,12 @@ export const useMentionSuggestions = ({
                 name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
         );
 
+        setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
         setSuggestions(filteredSuggestions);
     }, [mentionsData]);
 
     return {
+        isSelecting,
         handleUp,
         handleDown,
         suggestions,

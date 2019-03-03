@@ -90,9 +90,9 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
 
         const { keyBinding, onHandleKey } = useDraftKeyHandling({
             onSubmit,
-            mentionSuggestions: mentionState.suggestions,
+            mentionState,
+            emojiState,
             applyCurrentSuggestedMention: applyCurrentSuggestedMention,
-            emojiSuggestions: emojiState.suggestions,
             applyCurrentSuggestedEmoji,
         });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { genKey, EditorState } from 'draft-js';
+import { genKey } from 'draft-js';
 import { css, cx } from 'linaria';
 
 const emojiSuggestionsShow = css`
@@ -11,6 +11,9 @@ const emojiSuggestionsHide = css`
 `;
 
 const emojiSuggestionsClassName = css`
+    // transform-origin: 1em 0%;
+    // transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
+
     border: 1px solid #eee;
     margin-top: 1.75em;
     position: absolute;
@@ -32,8 +35,6 @@ const emojiSuggestionsClassName = css`
 type EmojiSuggestionsProps = {
     items: any;
     show: boolean;
-    editorState: EditorState;
-    setEditorState: (a: EditorState) => void;
 };
 
 export const EmojiSuggestions = ({ items, show }: EmojiSuggestionsProps) => {

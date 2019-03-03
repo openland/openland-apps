@@ -73,8 +73,6 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         onEmojiPicked,
         onMentionPicked,
         activeWord,
-        editorState,
-        setEditorState,
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions.map((mention: any, key: number) => {
@@ -116,19 +114,15 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
     return (
         <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
+            {activeWord}
             <MentionSuggestions
-                show={!!mentionState.suggestions.length}
+                show={mentionState.isSelecting}
                 items={mentionSuggestionsItems}
                 sizeOfContainer={sizeOfContainer}
             />
-            {activeWord.startsWith(':') && (
-                <EmojiSuggestions
-                    show={!!emojiState.suggestions.length}
-                    items={emojiSuggestionsItems}
-                    editorState={editorState}
-                    setEditorState={setEditorState}
-                />
-            )}
+
+            <EmojiSuggestions show={emojiState.isSelecting} items={emojiSuggestionsItems} />
+
             {children}
             <EmojiButton onEmojiPicked={onEmojiPicked} />
         </ContainerWrapper>

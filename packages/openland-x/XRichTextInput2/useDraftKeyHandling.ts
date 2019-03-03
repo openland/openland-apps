@@ -1,5 +1,6 @@
 import { getDefaultKeyBinding } from 'draft-js';
-import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { EmojiSuggestionsStateT } from './useEmojiSuggestions';
+import { MentionSuggestionsStateT } from './useMentionSuggestions';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
@@ -10,29 +11,26 @@ const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
 
 type useKeyHandlingT = {
     onSubmit?: () => void;
-    mentionSuggestions: MentionDataT[];
+    mentionState: MentionSuggestionsStateT;
+    emojiState: EmojiSuggestionsStateT;
     applyCurrentSuggestedMention: Function;
-    emojiSuggestions: string[];
     applyCurrentSuggestedEmoji: Function;
 };
 
 export function useDraftKeyHandling({
     onSubmit,
-    mentionSuggestions,
+    mentionState,
     applyCurrentSuggestedMention,
-    emojiSuggestions,
+    emojiState,
     applyCurrentSuggestedEmoji,
 }: useKeyHandlingT) {
     const onHandleKey = (command: string) => {
         if (command === 'x-editor-submit') {
-            if (!!emojiSuggestions.length) {
+            if (emojiState.isSelecting) {
                 applyCurrentSuggestedEmoji();
-
                 return 'handled';
-            }
-            if (!!mentionSuggestions.length) {
+            } else if (mentionState.isSelecting) {
                 applyCurrentSuggestedMention();
-
                 return 'handled';
             }
 
