@@ -84,12 +84,23 @@ const ServiceMessageComponentByTypes = ({
             />
         );
     } else if (typesObject.type === 'PHOTO_CHANGE') {
-        return <ServiceMessagePhotoChanged />;
+        return (
+            <ServiceMessagePhotoChanged
+                sender={otherParams.senderUser}
+                myUserId={otherParams.myUserId}
+            />
+        );
     } else if (typesObject.type === 'TITLE_CHANGE') {
-        return <ServiceMessageTitleChanged newRoomName={otherParams.serviceMetadata.title} />;
+        return (
+            <ServiceMessageTitleChanged
+                newRoomName={otherParams.serviceMetadata.title}
+                sender={otherParams.senderUser}
+                myUserId={otherParams.myUserId}
+            />
+        );
     }
 
-    return <ServiceMessageDefault message={otherParams.message} />;
+    return <ServiceMessageDefault message={otherParams.message} otherParams={otherParams} />;
 };
 
 const resolveServiceMessageType = ({ serviceMetadata }: { serviceMetadata: any }) => {
@@ -135,9 +146,8 @@ export const ServiceMessageComponent = React.memo(
         }) as any;
 
         if (typesObject === null) {
-            return <ServiceMessageDefault message={params.message} />;
+            return <ServiceMessageDefault message={params.message} otherParams={params} />;
         }
-
         return <ServiceMessageComponentByTypes typesObject={typesObject} otherParams={params} />;
     },
 );
