@@ -7,7 +7,18 @@ export type useMentionSuggestionsT = {
     mentionsData?: MentionDataT[];
 };
 
-export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSuggestionsT) {
+export type MentionSuggestionsStateT = {
+    handleUp: Function;
+    handleDown: Function;
+    suggestions: MentionDataT[];
+    setSelectedEntryIndex: (a: number) => void;
+    selectedEntryIndex: number;
+};
+
+export const useMentionSuggestions = ({
+    mentionsData,
+    activeWord,
+}: useMentionSuggestionsT): MentionSuggestionsStateT => {
     const [suggestions, setSuggestions] = React.useState<MentionDataT[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
@@ -33,4 +44,4 @@ export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSu
         setSelectedEntryIndex,
         selectedEntryIndex,
     };
-}
+};

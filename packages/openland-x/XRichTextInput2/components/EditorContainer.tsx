@@ -6,7 +6,11 @@ import Glamorous from 'glamorous';
 import { extractFlexProps, XFlexStyles, applyFlex } from '../../basics/Flex';
 import { EmojiSuggestions } from './EmojiSuggestions';
 import { MentionSuggestions, SizeT } from './MentionSuggestions';
+import { MentionEntry, MentionDataT } from './MentionSuggestionsEntry';
+import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
 import { EmojiButton } from './EmojiButton';
+import { EmojiSuggestionsStateT } from '../useEmojiSuggestions';
+import { MentionSuggestionsStateT } from '../useMentionSuggestions';
 import { XRichTextInput2Props } from '..';
 import * as constants from '../constants';
 
@@ -30,10 +34,11 @@ type EditorContainerContainer = XRichTextInput2Props & {
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
     activeWord: string;
+    mentionState: MentionSuggestionsStateT;
+    onMentionPicked: (mention: MentionDataT) => void;
+    emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
     children: any;
-    mentionSuggestions: any;
-    showMentionSuggestions: boolean;
 };
 
 export const EditorContainer = (props: EditorContainerContainer) => {
@@ -63,27 +68,63 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
     const {
         children,
-        mentionSuggestions,
-        showMentionSuggestions,
+        mentionState,
+        emojiState,
         onEmojiPicked,
+        onMentionPicked,
         activeWord,
         editorState,
         setEditorState,
     } = props;
 
+    const mentionSuggestionsItems = mentionState.suggestions.map((mention: any, key: number) => {
+        return (
+            <MentionEntry
+                {...mention}
+                key={key}
+                isSelected={key === mentionState.selectedEntryIndex}
+                onClick={() => {
+                    onMentionPicked(mentionState.suggestions[key]);
+                }}
+            />
+        );
+    });
+
+    // const onEmojiSelect = (emoji: string) => {
+    //     setEditorState(
+    //         addEmoji({
+    //             editorState: editorState,
+    //             emojiShortName: emoji,
+    //             mode: AddEmojiMode.REPLACE,
+    //         }),
+    //     );
+    // };
+
+    const emojiSuggestionsItems = emojiState.suggestions.map((emoji: any, key: number) => {
+        return (
+            <EmojiSuggestionsEntry
+                isSelected={key === emojiState.selectedEntryIndex}
+                key={emoji}
+                emoji={emoji}
+                id={`emoji-option-${key}`}
+                cacheBustParam={constants.cacheBustParam}
+                imagePath={constants.imagePath}
+                imageType={constants.imageType}
+            />
+        );
+    });
+
     return (
         <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
             <MentionSuggestions
-                show={showMentionSuggestions}
-                items={mentionSuggestions}
+                show={!!mentionState.suggestions.length}
+                items={mentionSuggestionsItems}
                 sizeOfContainer={sizeOfContainer}
             />
             {activeWord.startsWith(':') && (
                 <EmojiSuggestions
-                    activeWord={activeWord}
-                    cacheBustParam={constants.cacheBustParam}
-                    imagePath={constants.imagePath}
-                    imageType={constants.imageType}
+                    show={!!emojiState.suggestions.length}
+                    items={emojiSuggestionsItems}
                     editorState={editorState}
                     setEditorState={setEditorState}
                 />

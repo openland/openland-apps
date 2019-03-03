@@ -10,7 +10,7 @@ import { useHandleEditorChange } from './useHandleEditorChange';
 import { useDraftKeyHandling } from './useDraftKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
 import { useHandlePastedText } from './useHandlePastedText';
-import { MentionEntry, MentionDataT } from './components/MentionSuggestionsEntry';
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
@@ -72,16 +72,13 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             activeWord,
         });
 
-        const applyMentionByIndex = (index: number) => {
-            const mentionEntry = mentionState.suggestions[index];
+        const applyCurrentSuggestedMention = () => {
+            const mentionEntry = mentionState.suggestions[mentionState.selectedEntryIndex];
             if (mentionEntry) {
                 addMention(mentionEntry);
                 setActiveWord('');
             }
         };
-
-        const applyCurrentSuggestedMention = () =>
-            applyMentionByIndex(mentionState.selectedEntryIndex);
 
         const applyCurrentSuggestedEmoji = () => {
             const emojiShortName = emojiState.suggestions[emojiState.selectedEntryIndex];
@@ -105,20 +102,15 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                 editorState={editorState}
                 setEditorState={setEditorState}
                 activeWord={activeWord}
+                emojiState={emojiState}
                 onEmojiPicked={onEmojiPicked}
-                showMentionSuggestions={mentionState.suggestions.length !== 0}
-                mentionSuggestions={mentionState.suggestions.map((mention, key) => {
-                    return (
-                        <MentionEntry
-                            {...mention}
-                            key={key}
-                            isSelected={key === mentionState.selectedEntryIndex}
-                            onClick={() => {
-                                applyMentionByIndex(key);
-                            }}
-                        />
-                    );
-                })}
+                mentionState={mentionState}
+                onMentionPicked={(mentionEntry: MentionDataT) => {
+                    if (mentionEntry) {
+                        addMention(mentionEntry);
+                        setActiveWord('');
+                    }
+                }}
             >
                 <Editor
                     ref={editorRef}
@@ -132,8 +124,8 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                         emojiState.handleDown(event);
                     }}
                     onUpArrow={(event: any) => {
-                        mentionState.handleDown(event);
-                        emojiState.handleDown(event);
+                        mentionState.handleUp(event);
+                        emojiState.handleUp(event);
                     }}
                     stripPastedStyles={true}
                     editorState={editorState}

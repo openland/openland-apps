@@ -8,7 +8,17 @@ export type useEmojiSuggestionsT = {
 
 const shortNames: any[] = Object.keys(emojiList.list);
 
-export function useEmojiSuggestions({ activeWord }: useEmojiSuggestionsT) {
+export type EmojiSuggestionsStateT = {
+    handleUp: Function;
+    handleDown: Function;
+    suggestions: string[];
+    setSelectedEntryIndex: (a: number) => void;
+    selectedEntryIndex: number;
+};
+
+export const useEmojiSuggestions = ({
+    activeWord,
+}: useEmojiSuggestionsT): EmojiSuggestionsStateT => {
     const [suggestions, setSuggestions] = React.useState<string[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
@@ -33,4 +43,4 @@ export function useEmojiSuggestions({ activeWord }: useEmojiSuggestionsT) {
         setSelectedEntryIndex,
         selectedEntryIndex,
     };
-}
+};

@@ -37,43 +37,28 @@ type EmojiSuggestionsEntryT = {
     imagePath: string;
     imageType: string;
     cacheBustParam: string;
-    isFocused: boolean;
     id: string;
     emoji: string;
-    index: number;
-    onEmojiSelect: Function;
-    onEmojiFocus: Function;
+    isSelected: boolean;
+    onEmojiFocus?: Function;
 };
 
 export const EmojiSuggestionsEntry = ({
     imagePath,
     imageType,
     cacheBustParam,
-    isFocused,
     id,
     emoji,
-    index,
-    onEmojiFocus,
-    onEmojiSelect,
+    isSelected,
 }: EmojiSuggestionsEntryT) => {
-    const [mouseDown, setMouseDown] = React.useState(false);
-    const onMouseUp = () => {
-        if (mouseDown) {
-            setMouseDown(false);
-            onEmojiSelect(emoji);
-        }
-    };
+    const [isFocused, setIsFocused] = React.useState(false);
 
-    const onMouseDown = (event: any) => {
-        // Note: important to avoid a content edit change
-        event.preventDefault();
+    React.useEffect(() => {
+        setIsFocused(isSelected);
+    }, [isSelected]);
 
-        setMouseDown(true);
-    };
-
-    const onMouseEnter = () => {
-        onEmojiFocus(index);
-    };
+    const onMouseLeave = () => setIsFocused(false);
+    const onMouseEnter = () => setIsFocused(true);
 
     // short name to image url code steal from emojione source code
     const shortNameForImage =
@@ -87,8 +72,7 @@ export const EmojiSuggestionsEntry = ({
                 emojiSuggestionsEntryClassName,
                 isFocused && emojiSuggestionsEntryFocusedClassName,
             )}
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseLeave}
             onMouseEnter={onMouseEnter}
             role="option"
             id={id}

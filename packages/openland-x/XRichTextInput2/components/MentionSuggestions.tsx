@@ -43,8 +43,8 @@ export const MentionSuggestions = ({
     return (
         <div
             className={cx(
-                mentionSuggestionsShow,
-                show ? mentionSuggestionsClassName : mentionSuggestionsHide,
+                mentionSuggestionsClassName,
+                show ? mentionSuggestionsShow : mentionSuggestionsHide,
             )}
             style={{
                 width: sizeOfContainer.width,

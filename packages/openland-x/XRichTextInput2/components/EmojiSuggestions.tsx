@@ -1,9 +1,14 @@
 import React from 'react';
 import { genKey, EditorState } from 'draft-js';
-import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
-import { addEmoji, Mode as AddEmojiMode } from '../modifiers/addEmoji';
-import { css } from 'linaria';
-import { emojiList } from '../utils/emojiList';
+import { css, cx } from 'linaria';
+
+const emojiSuggestionsShow = css`
+    transform: scale(1);
+`;
+
+const emojiSuggestionsHide = css`
+    transform: scale(0);
+`;
 
 const emojiSuggestionsClassName = css`
     border: 1px solid #eee;
@@ -22,83 +27,28 @@ const emojiSuggestionsClassName = css`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    // transform: scale(0);
 `;
 
 type EmojiSuggestionsProps = {
-    activeWord: string;
-    cacheBustParam: string;
-    imagePath: string;
-    imageType: string;
+    items: any;
+    show: boolean;
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
 };
 
-const shortNames: any[] = Object.keys(emojiList.list);
-
-export const EmojiSuggestions = ({
-    cacheBustParam,
-    imagePath,
-    imageType,
-    activeWord,
-    setEditorState,
-    editorState,
-}: EmojiSuggestionsProps) => {
+export const EmojiSuggestions = ({ items, show }: EmojiSuggestionsProps) => {
     const [key] = React.useState(genKey());
-
-    const popoverRef = React.useRef(null);
-    const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
-
-    const emojiValue = activeWord.substring(1, activeWord.length).toLowerCase();
-
-    const filteredValues = shortNames.filter(
-        (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
-    );
-
-    const filteredEmojis = filteredValues.slice(0, 9);
-
-    const onEmojiFocus = (index: number) => {
-        setFocusedOptionIndex(index);
-
-        // to force a re-render of the outer component to change the aria props
-        setEditorState(editorState);
-    };
-
-    const onEmojiSelect = (emoji: string) => {
-        setEditorState(
-            addEmoji({
-                editorState: editorState,
-                emojiShortName: emoji,
-                mode: AddEmojiMode.REPLACE,
-            }),
-        );
-    };
-
-    if (!filteredEmojis.length) {
-        return null;
-    }
 
     return (
         <div
-            className={emojiSuggestionsClassName}
+            className={cx(
+                emojiSuggestionsClassName,
+                show ? emojiSuggestionsShow : emojiSuggestionsHide,
+            )}
             role="listbox"
             id={`emojis-list-${key}`}
-            ref={popoverRef}
         >
-            {filteredEmojis.map((emoji: string, index: number) => (
-                <EmojiSuggestionsEntry
-                    key={emoji}
-                    onEmojiSelect={onEmojiSelect}
-                    onEmojiFocus={onEmojiFocus}
-                    isFocused={focusedOptionIndex === index}
-                    emoji={emoji}
-                    index={index}
-                    id={`emoji-option-${key}-${index}`}
-                    imagePath={imagePath}
-                    imageType={imageType}
-                    cacheBustParam={cacheBustParam}
-                />
-            ))}
+            {items}
         </div>
     );
 };

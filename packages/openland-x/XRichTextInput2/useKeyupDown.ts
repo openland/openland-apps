@@ -8,7 +8,13 @@ export const useKeyupDown = ({
     setSelectedEntryIndex: Function;
 }) => {
     const boundSelection = (index: number) => {
-        return Math.min(Math.max(0, index), suggestionsList.length - 1);
+        if (index > suggestionsList.length - 1) {
+            return 0;
+        }
+        if (index < 0) {
+            return suggestionsList.length - 1;
+        }
+        return index;
     };
 
     const handleUp = (event: React.KeyboardEvent<any>) => {
