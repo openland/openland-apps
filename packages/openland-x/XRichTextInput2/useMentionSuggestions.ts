@@ -8,35 +8,29 @@ export type useMentionSuggestionsT = {
 };
 
 export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSuggestionsT) {
-    const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
-        mentionsData || [],
-    );
-    const [selectedMentionEntryIndex, setSelectedMentionEntryIndex] = React.useState(0);
+    const [suggestions, setSuggestions] = React.useState<MentionDataT[]>([]);
+    const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
-    const filteredSuggestions = (suggestions ? suggestions : []).filter(
-        ({ name }: { name: string }) =>
-            name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
-    );
     const { handleUp, handleDown } = useKeyupDown({
-        suggestionsList: filteredSuggestions,
-        selectedEntryIndex: selectedMentionEntryIndex,
-        setSelectedEntryIndex: setSelectedMentionEntryIndex,
+        suggestionsList: suggestions,
+        selectedEntryIndex,
+        setSelectedEntryIndex,
     });
 
-    const getSelectedMentionId = (id: number) => {
-        return filteredSuggestions[id];
-    };
-
     React.useLayoutEffect(() => {
-        setSuggestions(mentionsData);
+        const filteredSuggestions = (mentionsData ? mentionsData : []).filter(
+            ({ name }: { name: string }) =>
+                name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
+        );
+
+        setSuggestions(filteredSuggestions);
     }, [mentionsData]);
 
     return {
         handleUp,
         handleDown,
-        filteredSuggestions,
-        setSelectedMentionEntryIndex,
-        selectedMentionEntryIndex,
-        getSelectedMentionId,
+        suggestions,
+        setSelectedEntryIndex,
+        selectedEntryIndex,
     };
 }

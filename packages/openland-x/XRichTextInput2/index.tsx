@@ -4,9 +4,10 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { EditorContainer } from './components/EditorContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
+import { useEmojiSuggestions } from './useEmojiSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
-import { useKeyHandling } from './useKeyHandling';
+import { useDraftKeyHandling } from './useDraftKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
 import { useHandlePastedText } from './useHandlePastedText';
 import { MentionEntry, MentionDataT } from './components/MentionSuggestionsEntry';
@@ -39,6 +40,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             setActiveWord,
             handleEditorChange,
             addMention,
+            addEmoji,
             onEmojiPicked,
             getMentions,
         } = useHandleEditorChange({
@@ -61,29 +63,40 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             resetAndFocus,
         });
 
-        const {
-            handleDown,
-            handleUp,
-            filteredSuggestions,
-            selectedMentionEntryIndex,
-        } = useMentionSuggestions({
+        const emojiState = useEmojiSuggestions({
+            activeWord,
+        });
+
+        const mentionState = useMentionSuggestions({
             mentionsData,
             activeWord,
         });
 
-        const applyMentionById = (id: number) => {
-            const mentionEntry = filteredSuggestions[id];
+        const applyMentionByIndex = (index: number) => {
+            const mentionEntry = mentionState.suggestions[index];
             if (mentionEntry) {
                 addMention(mentionEntry);
                 setActiveWord('');
             }
         };
 
-        const { keyBinding, onHandleKey } = useKeyHandling({
+        const applyCurrentSuggestedMention = () =>
+            applyMentionByIndex(mentionState.selectedEntryIndex);
+
+        const applyCurrentSuggestedEmoji = () => {
+            const emojiShortName = emojiState.suggestions[emojiState.selectedEntryIndex];
+            if (emojiShortName) {
+                addEmoji(emojiShortName);
+                setActiveWord('');
+            }
+        };
+
+        const { keyBinding, onHandleKey } = useDraftKeyHandling({
             onSubmit,
-            filteredSuggestions,
-            applyMentionById,
-            selectedMentionEntryIndex,
+            mentionSuggestions: mentionState.suggestions,
+            applyCurrentSuggestedMention: applyCurrentSuggestedMention,
+            emojiSuggestions: emojiState.suggestions,
+            applyCurrentSuggestedEmoji,
         });
 
         return (
@@ -93,15 +106,15 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                 setEditorState={setEditorState}
                 activeWord={activeWord}
                 onEmojiPicked={onEmojiPicked}
-                showMentionSuggestions={filteredSuggestions.length !== 0}
-                mentionSuggestions={filteredSuggestions.map((mention, key) => {
+                showMentionSuggestions={mentionState.suggestions.length !== 0}
+                mentionSuggestions={mentionState.suggestions.map((mention, key) => {
                     return (
                         <MentionEntry
                             {...mention}
                             key={key}
-                            isSelected={key === selectedMentionEntryIndex}
+                            isSelected={key === mentionState.selectedEntryIndex}
                             onClick={() => {
-                                applyMentionById(key);
+                                applyMentionByIndex(key);
                             }}
                         />
                     );
@@ -114,8 +127,14 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                     handleKeyCommand={onHandleKey}
                     handlePastedFiles={onPasteFiles}
                     handlePastedText={handlePastedText as any}
-                    onDownArrow={handleDown}
-                    onUpArrow={handleUp}
+                    onDownArrow={(event: any) => {
+                        mentionState.handleDown(event);
+                        emojiState.handleDown(event);
+                    }}
+                    onUpArrow={(event: any) => {
+                        mentionState.handleDown(event);
+                        emojiState.handleDown(event);
+                    }}
                     stripPastedStyles={true}
                     editorState={editorState}
                     onChange={handleEditorChange}

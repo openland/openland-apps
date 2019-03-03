@@ -61,6 +61,16 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         }
     };
 
+    const finalAddEmoji = (emojiShortName: string) => {
+        const newEditorState = addEmoji({
+            editorState,
+            emojiShortName,
+        });
+        if (newEditorState) {
+            updateEditorState(newEditorState);
+        }
+    };
+
     const getMentions = () => {
         const entityMap = convertToRaw(editorState.getCurrentContent()).entityMap;
         const result = Object.keys(entityMap)
@@ -86,6 +96,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         activeWord,
         setActiveWord,
         addMention: finalAddMention,
+        addEmoji: finalAddEmoji,
         handleEditorChange,
         editorState,
         setEditorState,

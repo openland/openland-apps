@@ -36,15 +36,18 @@ type EmojiSuggestionsProps = {
 
 const shortNames: any[] = Object.keys(emojiList.list);
 
-export const EmojiSuggestions = (props: EmojiSuggestionsProps) => {
+export const EmojiSuggestions = ({
+    cacheBustParam,
+    imagePath,
+    imageType,
+    activeWord,
+    setEditorState,
+    editorState,
+}: EmojiSuggestionsProps) => {
     const [key] = React.useState(genKey());
 
     const popoverRef = React.useRef(null);
     const [focusedOptionIndex, setFocusedOptionIndex] = React.useState(0);
-
-    const { cacheBustParam, imagePath, imageType, activeWord } = props;
-
-    const { setEditorState, editorState } = props;
 
     const emojiValue = activeWord.substring(1, activeWord.length).toLowerCase();
 
@@ -54,6 +57,13 @@ export const EmojiSuggestions = (props: EmojiSuggestionsProps) => {
 
     const filteredEmojis = filteredValues.slice(0, 9);
 
+    const onEmojiFocus = (index: number) => {
+        setFocusedOptionIndex(index);
+
+        // to force a re-render of the outer component to change the aria props
+        setEditorState(editorState);
+    };
+
     const onEmojiSelect = (emoji: string) => {
         setEditorState(
             addEmoji({
@@ -62,13 +72,6 @@ export const EmojiSuggestions = (props: EmojiSuggestionsProps) => {
                 mode: AddEmojiMode.REPLACE,
             }),
         );
-    };
-
-    const onEmojiFocus = (index: number) => {
-        setFocusedOptionIndex(index);
-
-        // to force a re-render of the outer component to change the aria props
-        setEditorState(editorState);
     };
 
     if (!filteredEmojis.length) {
