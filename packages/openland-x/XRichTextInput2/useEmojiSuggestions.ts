@@ -25,7 +25,13 @@ export const useEmojiSuggestions = ({
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
     React.useEffect(() => {
-        const emojiValue = activeWord.substring(1, activeWord.length).toLowerCase();
+        if (!activeWord.includes(':')) {
+            setIsSelecting(false);
+            setSuggestions([]);
+        }
+        const finalActiveWord = activeWord.slice(activeWord.lastIndexOf(':'));
+
+        const emojiValue = finalActiveWord.substring(1, finalActiveWord.length).toLowerCase();
         const filteredValues = shortNames.filter(
             (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
         );
@@ -35,7 +41,7 @@ export const useEmojiSuggestions = ({
             setSelectedEntryIndex(nextSelectedEntryIndex);
         }
 
-        setIsSelecting(activeWord.startsWith(':') && !!filteredValues.length);
+        setIsSelecting(finalActiveWord.startsWith(':') && !!filteredValues.length);
         setSuggestions(filteredValues.slice(0, 9));
     }, [activeWord]);
 

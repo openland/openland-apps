@@ -1,5 +1,4 @@
 import { EditorState, Modifier } from 'draft-js';
-import { getSearchText } from '../utils/getSearchText';
 import { emojiList } from '../utils/emojiList';
 import { convertShortNameToUnicode } from '../utils/convertShortNameToUnicode';
 
@@ -13,10 +12,18 @@ export const Mode = {
 type addEmojiT = {
     editorState: EditorState;
     emojiShortName?: string;
-    mode?: string;
+    mode?:
+        | {
+              type: 'INSERT';
+          }
+        | {
+              type: 'REPLACE';
+              begin: number;
+              end: number;
+          };
 };
 
-export const addEmoji = ({ editorState, emojiShortName, mode = Mode.INSERT }: addEmojiT) => {
+export const addEmoji = ({ editorState, emojiShortName, mode = { type: 'INSERT' } }: addEmojiT) => {
     let emoji;
     // :male_sign: fails now
     if (!emojiShortName || !emojiList.list[emojiShortName]) {
@@ -35,8 +42,8 @@ export const addEmoji = ({ editorState, emojiShortName, mode = Mode.INSERT }: ad
 
     let emojiAddedContent;
 
-    switch (mode) {
-        case Mode.INSERT: {
+    switch (mode.type) {
+        case 'INSERT': {
             // in case text is selected it is removed and then the emoji is added
             const afterRemovalContentState = Modifier.removeRange(
                 contentState,
@@ -58,8 +65,8 @@ export const addEmoji = ({ editorState, emojiShortName, mode = Mode.INSERT }: ad
             break;
         }
 
-        case Mode.REPLACE: {
-            const { begin, end } = getSearchText(editorState, currentSelectionState);
+        case 'REPLACE': {
+            const { begin, end } = mode;
 
             // Get the selection of the :emoji: search text
             const emojiTextSelection = currentSelectionState.merge({

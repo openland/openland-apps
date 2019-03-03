@@ -2,6 +2,7 @@ import * as React from 'react';
 import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
+import { getSearchText } from './utils/getSearchText';
 import { addMention, findActiveWord } from './modifiers/addMention';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
 import { decorator } from './decorator';
@@ -62,9 +63,16 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
     };
 
     const finalAddEmoji = (emojiShortName: string) => {
+        const { begin, end, word } = getSearchText(editorState, editorState.getSelection());
+
         const newEditorState = addEmoji({
             editorState,
             emojiShortName,
+            mode: {
+                type: 'REPLACE',
+                begin: begin + word.indexOf(':'),
+                end,
+            },
         });
         if (newEditorState) {
             updateEditorState(newEditorState);
