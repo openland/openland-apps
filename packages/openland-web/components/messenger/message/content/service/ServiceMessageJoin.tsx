@@ -125,9 +125,12 @@ const JoinOneServiceMessage = React.memo(
         firstUser: UserShort;
         myUserId: string;
     }) => {
-        const randomEmoji = React.useMemo(() => {
-            return GetRandomJoinEmoji();
-        }, [myUserId]);
+        const randomEmoji = React.useMemo(
+            () => {
+                return GetRandomJoinEmoji();
+            },
+            [myUserId],
+        );
 
         let [handEmoji] = React.useState(randomEmoji);
         return (
@@ -152,23 +155,29 @@ const JoinOneServiceMessage = React.memo(
 
 const JoinTwoServiceMessage = React.memo(
     ({
+        joinedByUser,
         firstUser,
         secondUser,
         myUserId,
     }: {
+        joinedByUser: UserShort;
         firstUser: UserShort;
         secondUser: UserShort;
         myUserId: string;
     }) => {
-        const randomEmoji = React.useMemo(() => {
-            return GetRandomJoinEmoji();
-        }, [myUserId]);
+        const randomEmoji = React.useMemo(
+            () => {
+                return GetRandomJoinEmoji();
+            },
+            [myUserId],
+        );
 
         let [handEmoji] = React.useState(randomEmoji);
         return (
             <Container>
-                {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-                joined the group along with{' '}
+                {handEmoji}{' '}
+                <MentionedUser user={joinedByUser} isYou={myUserId === joinedByUser.id} /> invited{' '}
+                <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> and{' '}
                 <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
             </Container>
         );
@@ -177,23 +186,29 @@ const JoinTwoServiceMessage = React.memo(
 
 const JoinManyServiceMessage = React.memo(
     ({
+        joinedByUser,
         firstUser,
         otherUsers,
         myUserId,
     }: {
+        joinedByUser: UserShort;
         firstUser: UserShort;
         otherUsers: UserShort[];
         myUserId: string;
     }) => {
-        const randomEmoji = React.useMemo(() => {
-            return GetRandomJoinEmoji();
-        }, [myUserId]);
+        const randomEmoji = React.useMemo(
+            () => {
+                return GetRandomJoinEmoji();
+            },
+            [myUserId],
+        );
 
         let [handEmoji] = React.useState(randomEmoji);
         return (
             <Container>
-                {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-                joined the group along with{' '}
+                {handEmoji}{' '}
+                <MentionedUser user={joinedByUser} isYou={myUserId === joinedByUser.id} /> invited{' '}
+                <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> along with{' '}
                 <span>
                     <OthersPopper
                         show={true}
@@ -234,6 +249,7 @@ export const ServiceMessageJoin = XMemo<{
                 myUserId={myUserId}
                 firstUser={joinUsers[0]}
                 secondUser={joinUsers[1]}
+                joinedByUser={joinedByUser}
             />
         );
     } else {
@@ -242,6 +258,7 @@ export const ServiceMessageJoin = XMemo<{
                 myUserId={myUserId}
                 firstUser={joinUsers[0]}
                 otherUsers={joinUsers.slice(1)}
+                joinedByUser={joinedByUser}
             />
         );
     }
