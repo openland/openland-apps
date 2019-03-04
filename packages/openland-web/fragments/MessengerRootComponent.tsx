@@ -170,25 +170,31 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         this.setState({ loading: state.loading, messages: state.messages });
     };
 
-    updateConversation = (props: MessagesComponentProps) => {
+    unsubscribe = () => {
         if (this.unmounter) {
             this.unmounter();
+            this.unmounter = null;
         }
         if (this.unmounter2) {
             this.unmounter2();
+            this.unmounter2 = null;
         }
+    };
+
+    updateConversation = (props: MessagesComponentProps) => {
+        this.unsubscribe();
 
         if (props.isActive) {
             this.conversation = props.messenger.getConversation(props.conversationId);
             this.unmounter = this.conversation.engine.mountConversation(props.conversationId);
-    
+
             this.unmounter2 = this.conversation.subscribe(this);
-    
+
             if (!this.conversation) {
                 throw Error('conversation should be defined here');
             }
             let convState = this.conversation.getState();
-    
+
             this.setState({
                 messages: convState.messages,
                 loading: convState.loading,
@@ -197,12 +203,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     };
 
     componentWillUnmount() {
-        if (this.unmounter) {
-            this.unmounter();
-        }
-        if (this.unmounter2) {
-            this.unmounter2();
-        }
+        this.unsubscribe();
     }
 
     componentWillMount() {
@@ -283,7 +284,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
 
     render() {
         if (!this.conversation) {
-            throw Error('conversation should be defined here');
+            return null;
         }
 
         return (
