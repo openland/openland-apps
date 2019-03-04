@@ -1,6 +1,6 @@
 import { getDummyElement } from './getDummyElement';
 
-const convertEmojioneImageToUnicode = (
+export const convertEmojioneImageToUnicode = (
     html: any,
     { selector, getUnicode }: { selector: any; getUnicode: any },
 ) => {
@@ -19,5 +19,3 @@ const convertEmojioneImageToUnicode = (
     });
     return el.innerHTML;
 };
-
-export default convertEmojioneImageToUnicode;

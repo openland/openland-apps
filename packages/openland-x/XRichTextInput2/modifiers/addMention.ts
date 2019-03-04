@@ -1,5 +1,5 @@
 import { EditorState, Modifier } from 'draft-js';
-import { MentionDataT } from '../components/MentionEntry';
+import { MentionDataT } from '../components/MentionSuggestionsEntry';
 
 export function findActiveWordStart(state: EditorState): number {
     let content = state.getCurrentContent();
@@ -17,6 +17,7 @@ export function findActiveWordStart(state: EditorState): number {
             break;
         }
     }
+
     return startIndex + 1;
 }
 
@@ -58,19 +59,21 @@ const getSearchText = (editorState: EditorState, selection: any, trigger: any) =
     return getSearchTextAt(blockText, anchorOffset, trigger);
 };
 
+type addMentionT = {
+    editorState: EditorState;
+    mention: MentionDataT;
+    mentionPrefix?: any;
+    mentionTrigger?: any;
+    entityMutability?: any;
+};
+
 export const addMention = ({
     editorState,
     mention,
     mentionPrefix = '@',
     mentionTrigger = '@',
     entityMutability = 'IMMUTABLE',
-}: {
-    editorState: EditorState;
-    mention: MentionDataT;
-    mentionPrefix?: any;
-    mentionTrigger?: any;
-    entityMutability?: any;
-}) => {
+}: addMentionT) => {
     const contentStateWithEntity = editorState
         .getCurrentContent()
         .createEntity('MENTION', entityMutability, mention);

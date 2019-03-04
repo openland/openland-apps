@@ -2,14 +2,15 @@ import * as React from 'react';
 import { Editor } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
-import { MentionSuggestionsContainer } from './components/MentionSuggestionsContainer';
+import { EditorContainer } from './components/EditorContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
+import { useEmojiSuggestions } from './useEmojiSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
-import { useKeyHandling } from './useKeyHandling';
+import { useDraftKeyHandling } from './useDraftKeyHandling';
 import { usePasteFiles } from './usePasteFiles';
 import { useHandlePastedText } from './useHandlePastedText';
-import { MentionEntry, MentionDataT } from './components/MentionEntry';
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
     onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
@@ -35,10 +36,12 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const {
             editorState,
             setEditorState,
+            updateEditorStateFromText,
             activeWord,
             setActiveWord,
             handleEditorChange,
             addMention,
+            addEmoji,
             onEmojiPicked,
             getMentions,
         } = useHandleEditorChange({
@@ -61,48 +64,55 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
             resetAndFocus,
         });
 
-        const {
-            handleDown,
-            handleUp,
-            filteredSuggestions,
-            selectedMentionEntryIndex,
-        } = useMentionSuggestions({
+        const emojiState = useEmojiSuggestions({
+            activeWord,
+        });
+
+        const mentionState = useMentionSuggestions({
             mentionsData,
             activeWord,
         });
 
-        const applyMentionById = (id: number) => {
-            const mentionEntry = filteredSuggestions[id];
+        const applyCurrentSuggestedMention = () => {
+            const mentionEntry = mentionState.suggestions[mentionState.selectedEntryIndex];
             if (mentionEntry) {
                 addMention(mentionEntry);
                 setActiveWord('');
             }
         };
 
-        const { keyBinding, onHandleKey } = useKeyHandling({
+        const applyCurrentSuggestedEmoji = () => {
+            const emojiData = emojiState.suggestions[emojiState.selectedEntryIndex];
+            if (emojiData) {
+                addEmoji(emojiData);
+                setActiveWord('');
+            }
+        };
+
+        const { keyBinding, onHandleKey } = useDraftKeyHandling({
+            updateEditorStateFromText,
             onSubmit,
-            filteredSuggestions,
-            applyMentionById,
-            selectedMentionEntryIndex,
+            mentionState,
+            emojiState,
+            applyCurrentSuggestedMention: applyCurrentSuggestedMention,
+            applyCurrentSuggestedEmoji,
         });
 
         return (
-            <MentionSuggestionsContainer
+            <EditorContainer
                 {...props}
+                editorState={editorState}
+                setEditorState={setEditorState}
+                activeWord={activeWord}
+                emojiState={emojiState}
                 onEmojiPicked={onEmojiPicked}
-                showSuggestions={filteredSuggestions.length !== 0}
-                suggestions={filteredSuggestions.map((mention, key) => {
-                    return (
-                        <MentionEntry
-                            {...mention}
-                            key={key}
-                            isSelected={key === selectedMentionEntryIndex}
-                            onClick={() => {
-                                applyMentionById(key);
-                            }}
-                        />
-                    );
-                })}
+                mentionState={mentionState}
+                onMentionPicked={(mentionEntry: MentionDataT) => {
+                    if (mentionEntry) {
+                        addMention(mentionEntry);
+                        setActiveWord('');
+                    }
+                }}
             >
                 <Editor
                     ref={editorRef}
@@ -111,13 +121,19 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
                     handleKeyCommand={onHandleKey}
                     handlePastedFiles={onPasteFiles}
                     handlePastedText={handlePastedText as any}
-                    onDownArrow={handleDown}
-                    onUpArrow={handleUp}
+                    onDownArrow={(event: any) => {
+                        mentionState.handleDown(event);
+                        emojiState.handleDown(event);
+                    }}
+                    onUpArrow={(event: any) => {
+                        mentionState.handleUp(event);
+                        emojiState.handleUp(event);
+                    }}
                     stripPastedStyles={true}
                     editorState={editorState}
                     onChange={handleEditorChange}
                 />
-            </MentionSuggestionsContainer>
+            </EditorContainer>
         );
     },
 );

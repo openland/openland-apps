@@ -196,6 +196,9 @@ export class NavigationContainer extends React.PureComponent<NavigationContainer
                     this.mounted = this.mounted.filter((v) => v !== underlay && !removedPages.find((v2) => v2.key === v));
                     this.routes = this.routes.filter((v) => !removedPages.find((v2) => v2.key === v.key));
                     this.setState({ mounted: this.mounted, routes: this.routes, navigateTo: undefined, navigateFrom: undefined });
+                    if (underlayHolder.config && underlayHolder.config.searchClosed) {
+                        underlayHolder.config.searchClosed();
+                    }
                 });
             }
         );

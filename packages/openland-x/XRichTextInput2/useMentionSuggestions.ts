@@ -1,63 +1,51 @@
 import * as React from 'react';
-import { MentionDataT } from './components/MentionEntry';
+import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { useKeyupDown } from './useKeyupDown';
 
 export type useMentionSuggestionsT = {
     activeWord: string;
     mentionsData?: MentionDataT[];
 };
 
-export function useMentionSuggestions({ mentionsData, activeWord }: useMentionSuggestionsT) {
-    const [suggestions, setSuggestions] = React.useState<MentionDataT[] | undefined>(
-        mentionsData || [],
-    );
-    const [selectedMentionEntryIndex, setSelectedMentionEntryIndex] = React.useState(0);
+export type MentionSuggestionsStateT = {
+    handleUp: Function;
+    handleDown: Function;
+    suggestions: MentionDataT[];
+    setSelectedEntryIndex: (a: number) => void;
+    selectedEntryIndex: number;
+    isSelecting: boolean;
+};
 
-    const filteredSuggestions = (suggestions ? suggestions : []).filter(
-        ({ name }: { name: string }) =>
-            name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
-    );
+export const useMentionSuggestions = ({
+    mentionsData,
+    activeWord,
+}: useMentionSuggestionsT): MentionSuggestionsStateT => {
+    const [isSelecting, setIsSelecting] = React.useState(false);
+    const [suggestions, setSuggestions] = React.useState<MentionDataT[]>([]);
+    const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
-    const getSelectedMentionId = (id: number) => {
-        return filteredSuggestions[id];
-    };
-
-    const boundMentionSelection = (index: number) => {
-        return Math.min(Math.max(0, index), filteredSuggestions.length - 1);
-    };
-
-    const shouldShowSuggestions = () => {
-        return !!filteredSuggestions.length;
-    };
-
-    const handleUp = (event: React.KeyboardEvent<any>) => {
-        if (!shouldShowSuggestions()) {
-            return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-
-        setSelectedMentionEntryIndex(boundMentionSelection(selectedMentionEntryIndex - 1));
-    };
-
-    const handleDown = (event: React.KeyboardEvent<any>) => {
-        if (!shouldShowSuggestions()) {
-            return;
-        }
-        event.preventDefault();
-        event.stopPropagation();
-        setSelectedMentionEntryIndex(boundMentionSelection(selectedMentionEntryIndex + 1));
-    };
+    const { handleUp, handleDown } = useKeyupDown({
+        suggestionsList: suggestions,
+        selectedEntryIndex,
+        setSelectedEntryIndex,
+    });
 
     React.useLayoutEffect(() => {
-        setSuggestions(mentionsData);
+        const filteredSuggestions = (mentionsData ? mentionsData : []).filter(
+            ({ name }: { name: string }) =>
+                name.includes(activeWord.slice(1)) && activeWord !== '' && activeWord[0] === '@',
+        );
+
+        setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
+        setSuggestions(filteredSuggestions);
     }, [mentionsData]);
 
     return {
+        isSelecting,
         handleUp,
         handleDown,
-        filteredSuggestions,
-        setSelectedMentionEntryIndex,
-        selectedMentionEntryIndex,
-        getSelectedMentionId,
+        suggestions,
+        setSelectedEntryIndex,
+        selectedEntryIndex,
     };
-}
+};

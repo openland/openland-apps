@@ -103,7 +103,7 @@ async function start() {
     //
     server.get('/favicon.ico', (req, res) => res.sendFile(__dirname + '/static/favicon.ico'));
     server.get('/worker.js', (req, res) => res.sendFile(__dirname + '/worker.js'));
-    server.get('/apple-app-site-association', (req, res) => res.sendFile(__dirname + '/static/apple-app-site-association'));
+    server.get('/apple-app-site-association', (req, res) => res.sendFile(__dirname + '/static/apple-app-site-association', { headers: { 'content-type': 'application/json' } }));
     server.get('/browserconfig.xml', (req, res) =>
         res.sendFile(__dirname + '/static/browserconfig.xml'),
     );

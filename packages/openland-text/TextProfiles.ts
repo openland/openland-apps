@@ -43,7 +43,7 @@ export const TextProfiles = {
 
         addSocialLinks: 'Add social links',
         addAbout: 'Add a short description',
-        addMembers: 'Invite people',
+        addMembers: 'Add members',
 
         edit: 'Edit',
         superEdit: 'Super edit',

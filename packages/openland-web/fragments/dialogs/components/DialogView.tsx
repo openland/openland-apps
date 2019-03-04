@@ -12,7 +12,6 @@ import { XAvatar2 } from 'openland-x/XAvatar2';
 import { emoji } from 'openland-y-utils/emoji';
 import { ThemeContext } from 'openland-web/modules/theme/ThemeContext';
 import { XMemo } from 'openland-y-utils/XMemo';
-import GroupIcon from 'openland-icons/ic-group.svg';
 
 export let iconClass = css`
     display: inline-block;
@@ -32,11 +31,6 @@ export let iconActiveClass = css`
     path {
         fill: rgba(255, 255, 255, 0.9);
     }
-`;
-
-const GroupIconClass = css`
-    width: 15px;
-    height: 19px;
 `;
 
 export let documentIcon = css`
@@ -174,17 +168,12 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         fontSize={14}
                         fontWeight="600"
                         lineHeight="18px"
-                        color={dialog.kind === 'GROUP' ? '#6cb83d' : theme.dialogTitleTextColor}
+                        color={theme.dialogTitleTextColor}
                         selectedColor={theme.dialogTitleTextColorSelected}
                         overflow="hidden"
                         whiteSpace="nowrap"
                         textOverflow="ellipsis"
                     >
-                        {dialog.kind === 'GROUP' && (
-                            <XView>
-                                <GroupIcon className={GroupIconClass} />
-                            </XView>
-                        )}
                         <span>
                             {emoji({
                                 src: dialog.title,

@@ -351,7 +351,7 @@ const MembersProvider = ({
                                 }
                             />
                             <XCreateCard
-                                text="Invite people"
+                                text="Add members"
                                 query={{ field: 'inviteMembers', value: 'true' }}
                             />
                             <InviteMembersModal roomId={chatId} />

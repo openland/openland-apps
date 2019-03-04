@@ -1,7 +1,6 @@
 import { EditorState, Modifier } from 'draft-js';
-import { getSearchText } from '../utils/getSearchText';
-import { emojiList } from '../utils/emojiList';
 import { convertShortNameToUnicode } from '../utils/convertShortNameToUnicode';
+import { getShortNameForImage } from '../utils/getShortNameForImage';
 
 // This modifier can inserted emoji to current cursor position (with replace selected fragment),
 // or replaced emoji shortname like ":thumbsup:". Behavior determined by `Mode` parameter.
@@ -10,37 +9,50 @@ export const Mode = {
     REPLACE: 'REPLACE', // replace emoji shortname
 };
 
-export const addEmoji = ({
-    editorState,
-    emojiShortName,
-    mode = Mode.INSERT,
-}: {
+type addEmojiT = {
     editorState: EditorState;
     emojiShortName?: string;
-    mode?: string;
-}) => {
+    unified?: string;
+    mode?:
+        | {
+              type: 'INSERT';
+          }
+        | {
+              type: 'REPLACE';
+              begin: number;
+              end: number;
+          };
+};
+
+export const addEmoji = ({
+    editorState,
+    unified,
+    emojiShortName,
+    mode = { type: 'INSERT' },
+}: addEmojiT) => {
     let emoji;
-    // :male_sign: fails now
-    if (!emojiShortName || !emojiList.list[emojiShortName]) {
-        emoji = '📷';
+    if (unified) {
+        emoji = convertShortNameToUnicode(unified);
     } else {
-        const unicode = emojiList.list[emojiShortName][0];
-        emoji = convertShortNameToUnicode(unicode);
+        if (!emojiShortName || !getShortNameForImage(emojiShortName)) {
+            emoji = '📷';
+        } else {
+            emoji = convertShortNameToUnicode(getShortNameForImage(emojiShortName));
+        }
     }
 
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity('emoji', 'IMMUTABLE', {
         emojiUnicode: emoji,
+        unified: unified ? unified.replace(/-200d/g, '').replace(/-fe0f/g, '') : undefined,
     });
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const currentSelectionState = editorState.getSelection();
 
     let emojiAddedContent;
-    let emojiEndPos = 0;
-    let blockSize = 0;
 
-    switch (mode) {
-        case Mode.INSERT: {
+    switch (mode.type) {
+        case 'INSERT': {
             // in case text is selected it is removed and then the emoji is added
             const afterRemovalContentState = Modifier.removeRange(
                 contentState,
@@ -59,15 +71,11 @@ export const addEmoji = ({
                 entityKey,
             );
 
-            emojiEndPos = targetSelection.getAnchorOffset();
-            const blockKey = targetSelection.getAnchorKey();
-            blockSize = contentState.getBlockForKey(blockKey).getLength();
-
             break;
         }
 
-        case Mode.REPLACE: {
-            const { begin, end } = getSearchText(editorState, currentSelectionState);
+        case 'REPLACE': {
+            const { begin, end } = mode;
 
             // Get the selection of the :emoji: search text
             const emojiTextSelection = currentSelectionState.merge({
@@ -82,10 +90,6 @@ export const addEmoji = ({
                 null as any,
                 entityKey,
             );
-
-            emojiEndPos = end;
-            const blockKey = emojiTextSelection.getAnchorKey();
-            blockSize = contentState.getBlockForKey(blockKey).getLength();
 
             break;
         }
