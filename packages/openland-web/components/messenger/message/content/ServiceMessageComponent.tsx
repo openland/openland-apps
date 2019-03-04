@@ -104,7 +104,12 @@ const ServiceMessageComponentByTypes = React.memo(
             );
         }
 
-        return <ServiceMessageDefault message={otherParams.message} otherParams={otherParams} />;
+        return (
+            <ServiceMessageDefault
+                message={otherParams.message}
+                alphaMentions={otherParams.alphaMentions}
+            />
+        );
     },
 );
 
@@ -151,7 +156,12 @@ export const ServiceMessageComponent = React.memo(
         }) as any;
 
         if (typesObject === null) {
-            return <ServiceMessageDefault message={params.message} otherParams={params} />;
+            return (
+                <ServiceMessageDefault
+                    message={params.message}
+                    alphaMentions={params.alphaMentions}
+                />
+            );
         }
         return <ServiceMessageComponentByTypes typesObject={typesObject} otherParams={params} />;
     },
