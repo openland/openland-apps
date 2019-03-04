@@ -1,6 +1,7 @@
 import React from 'react';
 import { css, cx } from 'linaria';
-const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
+import { getShortNameForImage } from '../utils/getShortNameForImage';
+const emojione = require('emojione');
 
 const emojiClassName = css`
     background-position: 50%;
@@ -33,13 +34,13 @@ export const EmojiEntry = ({
     decoratedText,
     children,
 }: EmojiEntry) => {
-    const shortName = emojione.toShort(decoratedText);
+    const shortName = React.useMemo(() => {
+        return emojione.toShort(decoratedText);
+    }, [decoratedText]);
 
-    // short name to image url code steal from emojione source code
-    const shortNameForImage =
-        emojione.emojioneList[shortName].unicode[
-            emojione.emojioneList[shortName].unicode.length - 1
-        ];
+    const shortNameForImage = React.useMemo(() => {
+        return getShortNameForImage(shortName);
+    }, [shortName]);
 
     return (
         <span

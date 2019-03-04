@@ -17,7 +17,7 @@ export function findActiveWordStart(state: EditorState): number {
             break;
         }
     }
-    console.log(startIndex + 1);
+
     return startIndex + 1;
 }
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Picker, EmojiData } from 'emoji-mart';
+import { NimblePicker, EmojiData } from 'emoji-mart';
+import data from 'emoji-mart/data/emojione.json';
 import { css } from 'linaria';
 import useOnClickOutside from 'use-onclickoutside';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
@@ -46,7 +47,12 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
         <div>
             {showPicker && (
                 <div className={pickerClassName} ref={ref}>
-                    <Picker color="#1790ff" set="emojione" onSelect={onEmojiPicked} />
+                    <NimblePicker
+                        data={data}
+                        color="#1790ff"
+                        set="emojione"
+                        onSelect={onEmojiPicked}
+                    />
                 </div>
             )}
             <div

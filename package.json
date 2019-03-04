@@ -72,7 +72,7 @@
         "draft-js-emoji-plugin": "^2.1.1",
         "draft-js-mention-plugin": "^3.1.3",
         "draft-js-plugins-editor": "^2.1.1",
-        "emoji-mart": "^2.8.1",
+        "emoji-mart": "^2.9.2",
         "emojione": "^4.5.0",
         "express-http-to-https": "^1.1.3",
         "favico.js": "^0.3.10",

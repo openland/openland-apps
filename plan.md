@@ -1,3 +1,9 @@
+Current:
+
+-- fix emoji versions mismatch
+
+-   check api difference, maybe find typings for emojione
+
 1. fix emoji versions mismatch
 2. editing/draft mentions
 3. frequently used in emoji suggestions

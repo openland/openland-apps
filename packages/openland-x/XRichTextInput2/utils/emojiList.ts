@@ -1,4 +1,4 @@
-const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
+const emojione = require('emojione');
 
 const newEmojiListWithOutPriorityList = (myPriorityList: any) => {
     const list = {};

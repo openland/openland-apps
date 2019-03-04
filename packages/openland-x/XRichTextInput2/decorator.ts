@@ -2,11 +2,11 @@ import * as constants from './constants';
 import { ContentState, CompositeDecorator, ContentBlock } from 'draft-js';
 import findWithRegex from 'find-with-regex';
 import decorateComponentWithProps from 'decorate-component-with-props';
-const emojione = require('draft-js-emoji-plugin/node_modules/emojione');
+const emojione = require('emojione');
 import { MentionComponentInnerText } from './components/MentionComponentInnerText';
 import { EmojiEntry } from './components/EmojiEntry';
 
-const unicodeRegex = new RegExp(emojione.unicodeRegexp, 'g');
+const unicodeRegex = new RegExp(emojione.regUnicode, 'g');
 
 const emojiStrategy = (contentBlock: Object, callback: Function) => {
     findWithRegex(unicodeRegex, contentBlock, callback);
