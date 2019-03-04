@@ -6,13 +6,18 @@ export type useEmojiSuggestionsT = {
     activeWord: string;
 };
 
-const shortNames: any[] = Object.keys(emojiList.list);
+const myEmojiList: any[] = emojiList.list;
+
+export type EmojiDataT = {
+    shortName: string;
+    unified: string;
+};
 
 export type EmojiSuggestionsStateT = {
     isSelecting: boolean;
     handleUp: Function;
     handleDown: Function;
-    suggestions: string[];
+    suggestions: EmojiDataT[];
     setSelectedEntryIndex: (a: number) => void;
     selectedEntryIndex: number;
 };
@@ -21,7 +26,7 @@ export const useEmojiSuggestions = ({
     activeWord,
 }: useEmojiSuggestionsT): EmojiSuggestionsStateT => {
     const [isSelecting, setIsSelecting] = React.useState(false);
-    const [suggestions, setSuggestions] = React.useState<string[]>([]);
+    const [suggestions, setSuggestions] = React.useState<EmojiDataT[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
 
     React.useEffect(() => {
@@ -32,9 +37,16 @@ export const useEmojiSuggestions = ({
         const finalActiveWord = activeWord.slice(activeWord.lastIndexOf(':'));
 
         const emojiValue = finalActiveWord.substring(1, finalActiveWord.length).toLowerCase();
-        const filteredValues = shortNames.filter(
-            (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
-        );
+        const filteredValues = Object.keys(myEmojiList)
+            .filter(
+                (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
+            )
+            .map(shortName => {
+                return {
+                    shortName,
+                    unified: myEmojiList[shortName],
+                };
+            });
 
         const nextSelectedEntryIndex = Math.min(selectedEntryIndex, filteredValues.length - 1);
         if (nextSelectedEntryIndex !== selectedEntryIndex) {

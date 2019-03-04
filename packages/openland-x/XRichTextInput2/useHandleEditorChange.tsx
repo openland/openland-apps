@@ -4,6 +4,7 @@ import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
 import { addMention, findActiveWord } from './modifiers/addMention';
+import { attachImmutableEntitiesToEmojis } from './modifiers/attachImmutableEntitiesToEmojis';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
 import { decorator } from './decorator';
 
@@ -47,7 +48,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         updateEditorState(
             addEmoji({
                 editorState,
-                emojiShortName: emojiPicked.colons,
+                unified: (emojiPicked as any).unified,
             }),
         );
     };
@@ -62,12 +63,13 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         }
     };
 
-    const finalAddEmoji = (emojiShortName: string) => {
+    const finalAddEmoji = ({ shortName, unified }: { shortName: string; unified: string }) => {
         const { begin, end, word } = getSearchText(editorState, editorState.getSelection());
 
         const newEditorState = addEmoji({
             editorState,
-            emojiShortName,
+            emojiShortName: shortName,
+            unified,
             mode: {
                 type: 'REPLACE',
                 begin: begin + word.indexOf(':'),

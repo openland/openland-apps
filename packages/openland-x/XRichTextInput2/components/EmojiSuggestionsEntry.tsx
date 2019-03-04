@@ -1,6 +1,7 @@
 import React from 'react';
 import { getShortNameForImage } from '../utils/getShortNameForImage';
 import { css, cx } from 'linaria';
+import { EmojiDataT } from '../useEmojiSuggestions';
 
 const emojiSuggestionsEntryFocusedClassName = css`
     background-color: #e6f3ff;
@@ -38,7 +39,7 @@ type EmojiSuggestionsEntryT = {
     imageType: string;
     cacheBustParam: string;
     id: string;
-    emoji: string;
+    emoji: EmojiDataT;
     isSelected: boolean;
     onEmojiFocus?: Function;
 };
@@ -55,7 +56,7 @@ export const EmojiSuggestionsEntry = React.memo(
         const onMouseEnter = () => setIsFocused(true);
 
         const shortNameForImage = React.useMemo(() => {
-            return getShortNameForImage(emoji);
+            return getShortNameForImage(emoji.shortName);
         }, [emoji]);
 
         const fullImagePath = `${imagePath}${shortNameForImage}.${imageType}${cacheBustParam}`;
@@ -77,7 +78,7 @@ export const EmojiSuggestionsEntry = React.memo(
                     className={emojiSuggestionsEntryIconClassName}
                     role="presentation"
                 />
-                <span className={emojiSuggestionsEntryTextClassName}>{emoji}</span>
+                <span className={emojiSuggestionsEntryTextClassName}>{emoji.shortName}</span>
             </div>
         );
     },

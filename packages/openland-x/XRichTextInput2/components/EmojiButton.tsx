@@ -48,6 +48,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
             {showPicker && (
                 <div className={pickerClassName} ref={ref}>
                     <NimblePicker
+                        emojiTooltip
                         data={data}
                         color="#1790ff"
                         set="emojione"

@@ -1,6 +1,7 @@
 import React from 'react';
 import { css, cx } from 'linaria';
 import { getShortNameForImage } from '../utils/getShortNameForImage';
+import { ContentState } from 'draft-js';
 const emojione = require('emojione');
 
 const emojiClassName = css`
@@ -23,31 +24,44 @@ type EmojiEntry = {
     imageType: string;
     className?: string;
     decoratedText: string;
+    entityKey: string;
+    contentState: ContentState;
     children: any;
 };
 
-export const EmojiEntry = ({
-    cacheBustParam,
-    imagePath,
-    imageType,
-    className,
-    decoratedText,
-    children,
-}: EmojiEntry) => {
+export const EmojiEntry = (props: any) => {
+    const {
+        cacheBustParam,
+        imagePath,
+        entityKey,
+        contentState,
+        imageType,
+        className,
+        decoratedText,
+        children,
+    }: EmojiEntry = props;
+
+    const entity = contentState.getEntity(entityKey);
+
     const shortName = React.useMemo(() => {
         return emojione.toShort(decoratedText);
-    }, [decoratedText]);
+    }, [decoratedText, entity.getData().unified]);
 
     const shortNameForImage = React.useMemo(() => {
+        if (entity.getData().unified) {
+            return entity.getData().unified;
+        }
         return getShortNameForImage(shortName);
-    }, [shortName]);
+    }, [shortName, entity.getData().unified]);
+
+    const finalUrl = `${imagePath}${shortNameForImage}.${imageType}${cacheBustParam}`;
 
     return (
         <span
             className={cx(className, emojiClassName)}
             title={shortName}
             style={{
-                backgroundImage: `url(${imagePath}${shortNameForImage}.${imageType}${cacheBustParam})`,
+                backgroundImage: `url(${finalUrl})`,
             }}
         >
             {children}

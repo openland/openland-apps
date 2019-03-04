@@ -1,5 +1,4 @@
 import { EditorState, Modifier } from 'draft-js';
-import { emojiList } from '../utils/emojiList';
 import { convertShortNameToUnicode } from '../utils/convertShortNameToUnicode';
 import { getShortNameForImage } from '../utils/getShortNameForImage';
 
@@ -13,6 +12,7 @@ export const Mode = {
 type addEmojiT = {
     editorState: EditorState;
     emojiShortName?: string;
+    unified?: string;
     mode?:
         | {
               type: 'INSERT';
@@ -24,18 +24,27 @@ type addEmojiT = {
           };
 };
 
-export const addEmoji = ({ editorState, emojiShortName, mode = { type: 'INSERT' } }: addEmojiT) => {
+export const addEmoji = ({
+    editorState,
+    unified,
+    emojiShortName,
+    mode = { type: 'INSERT' },
+}: addEmojiT) => {
     let emoji;
-    // :male_sign: fails now
-    if (!emojiShortName || !getShortNameForImage(emojiShortName)) {
-        emoji = '📷';
+    if (unified) {
+        emoji = convertShortNameToUnicode(unified);
     } else {
-        emoji = convertShortNameToUnicode(getShortNameForImage(emojiShortName));
+        if (!emojiShortName || !getShortNameForImage(emojiShortName)) {
+            emoji = '📷';
+        } else {
+            emoji = convertShortNameToUnicode(getShortNameForImage(emojiShortName));
+        }
     }
 
     const contentState = editorState.getCurrentContent();
     const contentStateWithEntity = contentState.createEntity('emoji', 'IMMUTABLE', {
         emojiUnicode: emoji,
+        unified: unified ? unified.replace(/-200d/g, '').replace(/-fe0f/g, '') : undefined,
     });
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const currentSelectionState = editorState.getSelection();

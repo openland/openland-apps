@@ -81,9 +81,9 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         };
 
         const applyCurrentSuggestedEmoji = () => {
-            const emojiShortName = emojiState.suggestions[emojiState.selectedEntryIndex];
-            if (emojiShortName) {
-                addEmoji(emojiShortName);
+            const emojiData = emojiState.suggestions[emojiState.selectedEntryIndex];
+            if (emojiData) {
+                addEmoji(emojiData);
                 setActiveWord('');
             }
         };

@@ -9,7 +9,7 @@ import { MentionSuggestions, SizeT } from './MentionSuggestions';
 import { MentionEntry, MentionDataT } from './MentionSuggestionsEntry';
 import { EmojiSuggestionsEntry } from './EmojiSuggestionsEntry';
 import { EmojiButton } from './EmojiButton';
-import { EmojiSuggestionsStateT } from '../useEmojiSuggestions';
+import { EmojiSuggestionsStateT, EmojiDataT } from '../useEmojiSuggestions';
 import { MentionSuggestionsStateT } from '../useMentionSuggestions';
 import { XRichTextInput2Props } from '..';
 import * as constants from '../constants';
@@ -75,18 +75,20 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         activeWord,
     } = props;
 
-    const mentionSuggestionsItems = mentionState.suggestions.map((mention: any, key: number) => {
-        return (
-            <MentionEntry
-                {...mention}
-                key={key}
-                isSelected={key === mentionState.selectedEntryIndex}
-                onClick={() => {
-                    onMentionPicked(mentionState.suggestions[key]);
-                }}
-            />
-        );
-    });
+    const mentionSuggestionsItems = mentionState.suggestions.map(
+        (mention: MentionDataT, key: number) => {
+            return (
+                <MentionEntry
+                    {...mention}
+                    key={key}
+                    isSelected={key === mentionState.selectedEntryIndex}
+                    onClick={() => {
+                        onMentionPicked(mentionState.suggestions[key]);
+                    }}
+                />
+            );
+        },
+    );
 
     // const onEmojiSelect = (emoji: string) => {
     //     setEditorState(
@@ -98,11 +100,11 @@ export const EditorContainer = (props: EditorContainerContainer) => {
     //     );
     // };
 
-    const emojiSuggestionsItems = emojiState.suggestions.map((emoji: any, key: number) => {
+    const emojiSuggestionsItems = emojiState.suggestions.map((emoji: EmojiDataT, key: number) => {
         return (
             <EmojiSuggestionsEntry
                 isSelected={key === emojiState.selectedEntryIndex}
-                key={emoji}
+                key={emoji.shortName}
                 emoji={emoji}
                 id={`emoji-option-${key}`}
                 cacheBustParam={constants.cacheBustParam}
@@ -114,7 +116,6 @@ export const EditorContainer = (props: EditorContainerContainer) => {
 
     return (
         <ContainerWrapper {...extractFlexProps(props)} ref={containerRef}>
-            {activeWord}
             <MentionSuggestions
                 show={mentionState.isSelecting}
                 items={mentionSuggestionsItems}
