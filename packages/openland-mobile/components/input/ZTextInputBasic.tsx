@@ -18,14 +18,14 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
     let theme = React.useContext(ThemeContext);
 
     return (
-        <View paddingLeft={16} flexDirection="column" alignItems="stretch" flexGrow={1}>
+        <View paddingLeft={16} flexDirection="column">
             <View flexDirection="row" alignItems="stretch" flexGrow={1}>
                 {title && (
                     <Text
                         style={{
                             width: 111,
                             color: '#a0a0a0',
-                            fontSize: 16,
+                            fontSize: 17,
                             lineHeight: 22,
                             alignSelf: 'center',
                         }}
@@ -37,7 +37,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                     <Text
                         style={{
                             color: props.value ? '#000000' : '#a0a0a0',
-                            fontSize: 16,
+                            fontSize: 17,
                             lineHeight: 22,
                             alignSelf: 'center',
                         }}
@@ -52,7 +52,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                         color: theme.textColor,
                         flex: 1,
                         minHeight: border ? 43 : 44,
-                        fontSize: 16,
+                        fontSize: 17,
                         padding: 0,
                         margin: 0,
                         borderWidth: 0,

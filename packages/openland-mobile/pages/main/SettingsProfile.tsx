@@ -64,9 +64,9 @@ const AvatarPickerInputGroup = (props: { avatarField: string; children?: any }) 
                     <ZAvatarPicker field={props.avatarField} size={86} />
                 </View>
                 <View
+                    flex={1}
                     flexDirection="column"
-                    flexGrow={1}
-                    flexBasis={0}
+                    justifyContent="center"
                 >
                     {props.children}
                 </View>
@@ -75,12 +75,12 @@ const AvatarPickerInputGroup = (props: { avatarField: string; children?: any }) 
     }
 
     return (
-        <View style={{ paddingLeft: 16, height: 88, marginTop: 15, flexDirection: 'row' }}>
+        <View style={{ paddingLeft: 16, marginTop: 15, flexDirection: 'row' }}>
             <ZAvatarPicker field={props.avatarField} />
             <View
+                flex={1}
                 flexDirection="column"
-                flexGrow={1}
-                flexBasis={0}
+                justifyContent="center"
             >
                 {props.children}
             </View>

@@ -18,7 +18,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
     let theme = React.useContext(ThemeContext);
 
     return (
-        <View paddingLeft={16} paddingRight={16} flexDirection="column" alignItems="stretch" flexGrow={1}>
+        <View paddingLeft={16} paddingRight={16} flexDirection="column">
             <View flexDirection="row" alignItems="stretch" flexGrow={1}>
                 {prefix && (
                     <Text
