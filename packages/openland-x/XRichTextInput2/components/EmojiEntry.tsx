@@ -16,6 +16,7 @@ const emojiClassName = css`
     line-height: inherit;
     margin: -0.2ex 0 0.2ex;
     color: transparent;
+    width: 19px;
 `;
 
 type EmojiEntry = {
