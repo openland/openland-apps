@@ -4,7 +4,6 @@ import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
 import { addMention, findActiveWord } from './modifiers/addMention';
-import { attachImmutableEntitiesToEmojis } from './modifiers/attachImmutableEntitiesToEmojis';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
 import { decorator } from './decorator';
 
