@@ -83,12 +83,14 @@ const styleRotating = css`
     }
 `;
 
-function emojiChecker(arr: Array<string>) {
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i] === ' ' || arr[i] === '') {
-            continue;
-        }
-        if (!isEmoji(arr[i])) {
+function emojiChecker(messageText: string) {
+    if (isEmoji(messageText)) {
+        return true;
+    }
+    const messageArray = Array.from(messageText);
+    const pattern = /^([a-zа-яё\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]+|\d+)$/i;
+    for (let i = 0; i < messageArray.length; i++) {
+        if (messageArray[i].match(pattern)) {
             return false;
         }
     }
@@ -99,9 +101,7 @@ export const MessageTextComponent = XMemo<MessageTextComponentProps>(props => {
     // Preprocessing
 
     let messageText = props.message;
-
-    const messageArray = Array.from(messageText);
-    const isOnlyEmoji = emojiChecker(messageArray);
+    const isOnlyEmoji = emojiChecker(messageText);
     const isRotating = messageText.startsWith('🔄') && messageText.endsWith('🔄');
     const isInsane = messageText.startsWith('🌈') && messageText.endsWith('🌈');
     const isMouthpiece = messageText.startsWith('📣') && messageText.endsWith('📣');
