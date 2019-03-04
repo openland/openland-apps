@@ -49,9 +49,7 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
     }, []);
     const renderDialog = React.useMemo(
         () => {
-            return (item: DialogDataSourceItem) => (
-                <DialogView item={item} />
-            );
+            return (item: DialogDataSourceItem) => <DialogView item={item} />;
         },
         [props.onDialogClick],
     );
@@ -120,7 +118,12 @@ export const DialogListView = XMemo<DialogListViewProps>(props => {
                 <DialogSearchInput value={query} onChange={setQuery} ref={ref} />
                 <XView flexGrow={1} flexBasis={0} minHeight={0}>
                     <div className={dialogSearchWrapperClassName}>
-                        {isSearching && <DialogSearchResults variables={{ query: query }} onClick={() => setQuery('')} />}
+                        {isSearching && (
+                            <DialogSearchResults
+                                variables={{ query: query }}
+                                onClick={() => setQuery('')}
+                            />
+                        )}
                     </div>
                     {canUseDOM &&
                         !isSearching && (
