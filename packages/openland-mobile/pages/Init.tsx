@@ -171,7 +171,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return (
                 <ThemeProvider>
                     <View style={{ width: '100%', height: '100%' }}>
-                        <Root routing={SRouting.create(Routes, 'Waitlist')} padLayout={false} />
+                        <Root routing={SRouting.create(Routes, 'Login')} padLayout={false} />
                         <ZModalProvider />
                     </View>
                 </ThemeProvider>
