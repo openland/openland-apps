@@ -4,13 +4,11 @@ import { MentionedUser } from './views/MentionedUser';
 import { OthersPopper } from './views/OthersPopper';
 import { UserShort } from 'openland-api/Types';
 import { emoji } from 'openland-y-utils/emoji';
-import { XHorizontal } from 'openland-x-layout/XHorizontal';
-import { XView } from 'react-mental';
 import { XMemo } from 'openland-y-utils/XMemo';
-const joinEmojiList = ['👋', '🖖', '👏', '✋', '🖐️'];
+const joinEmojiList = ['🖖', '🖐️', '✋', '🙌', '👏', '👋'];
 
 const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
-    if (src === '👋') {
+    if (src === '🖖') {
         return emoji({
             src,
             size,
@@ -25,7 +23,7 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
                 },
             },
         });
-    } else if (src === '🖖') {
+    } else if (src === '🖐️') {
         return emoji({
             src,
             size,
@@ -40,7 +38,7 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
                 },
             },
         });
-    } else if (src === '👏') {
+    } else if (src === '✋') {
         return emoji({
             src,
             size,
@@ -52,7 +50,7 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
                 imgStyle: {},
             },
         });
-    } else if (src === '✋') {
+    } else if (src === '🙌') {
         return emoji({
             src,
             size,
@@ -67,7 +65,22 @@ const emojifyJoinEmojies = ({ src, size }: { src: string; size: 18 }) => {
                 },
             },
         });
-    } else if (src === '🖐️') {
+    } else if (src === '👏') {
+        return emoji({
+            src,
+            size,
+            crop: {
+                figureStyle: {
+                    width: 16,
+                    marginBottom: -2,
+                    marginRight: 2,
+                },
+                imgStyle: {
+                    marginLeft: -1,
+                },
+            },
+        });
+    } else if (src === '👋') {
         return emoji({
             src,
             size,
@@ -114,40 +127,16 @@ const JoinOneServiceMessage = ({
     let [handEmoji] = React.useState(GetRandomJoinEmoji());
     return (
         <Container>
-            {/* <XView backgroundColor="grey">
-                <XHorizontal separator={1}>
-                    {emojifyJoinEmojies({
-                        src: '👋',
-                        size: 18,
-                    })}
-                    {emojifyJoinEmojies({
-                        src: '🖖',
-                        size: 18,
-                    })}
-                    {emojifyJoinEmojies({
-                        src: '👏',
-                        size: 18,
-                    })}
-                    {emojifyJoinEmojies({
-                        src: '✋',
-                        size: 18,
-                    })}
-                    {emojifyJoinEmojies({
-                        src: '🖐️',
-                        size: 18,
-                    })}
-                </XHorizontal>
-            </XView> */}
             {joinedByUser.id === firstUser.id ? (
                 <>
                     {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-                    joined the room
+                    joined the group
                 </>
             ) : (
                 <>
-                    {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-                    was invited by{' '}
-                    <MentionedUser user={joinedByUser} isYou={myUserId === firstUser.id} />
+                    {handEmoji}{' '}
+                    <MentionedUser user={joinedByUser} isYou={myUserId === joinedByUser.id} />{' '}
+                    invited <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />
                 </>
             )}
         </Container>
@@ -167,7 +156,7 @@ const JoinTwoServiceMessage = ({
     return (
         <Container>
             {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
-            the room along with{' '}
+            the group along with{' '}
             <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
         </Container>
     );
@@ -186,7 +175,7 @@ const JoinManyServiceMessage = ({
     return (
         <Container>
             {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
-            the room along with{' '}
+            the group along with{' '}
             <span>
                 <OthersPopper
                     show={true}

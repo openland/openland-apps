@@ -6,6 +6,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { AsyncStorage, View, Image, Dimensions, Text } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
+import { joinInviteIfHave } from 'openland-mobile/utils/internalLnksResolver';
 
 export class WaitlistComponent extends React.PureComponent<PageProps> {
 
@@ -14,6 +15,10 @@ export class WaitlistComponent extends React.PureComponent<PageProps> {
             AsyncStorage.clear();
             RNRestart.Restart();
         })();
+    }
+
+    componentDidMount() {
+        (async () => { await joinInviteIfHave(); })()
     }
 
     render() {

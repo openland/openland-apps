@@ -17,7 +17,7 @@ export const ServiceMessageLeft = (props: ServiceMessageLeftProps) => {
                         user={props.kickedUser}
                         isYou={props.myUserId === props.kickedUser.id}
                     />{' '}
-                    has left the room
+                    left the group
                 </>
             ) : (
                 <>
