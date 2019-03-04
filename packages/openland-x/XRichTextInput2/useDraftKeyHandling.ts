@@ -15,6 +15,7 @@ type useKeyHandlingT = {
     emojiState: EmojiSuggestionsStateT;
     applyCurrentSuggestedMention: Function;
     applyCurrentSuggestedEmoji: Function;
+    updateEditorStateFromText: (a: string) => void;
 };
 
 export function useDraftKeyHandling({
@@ -23,6 +24,7 @@ export function useDraftKeyHandling({
     applyCurrentSuggestedMention,
     emojiState,
     applyCurrentSuggestedEmoji,
+    updateEditorStateFromText,
 }: useKeyHandlingT) {
     const onHandleKey = (command: string) => {
         if (command === 'x-editor-submit') {
@@ -36,6 +38,8 @@ export function useDraftKeyHandling({
 
             if (onSubmit) {
                 onSubmit();
+                updateEditorStateFromText('');
+
                 return 'handled';
             }
         }

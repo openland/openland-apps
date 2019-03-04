@@ -36,6 +36,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         const {
             editorState,
             setEditorState,
+            updateEditorStateFromText,
             activeWord,
             setActiveWord,
             handleEditorChange,
@@ -89,6 +90,7 @@ export const XRichTextInput2 = React.forwardRef<XRichTextInput2RefMethods, XRich
         };
 
         const { keyBinding, onHandleKey } = useDraftKeyHandling({
+            updateEditorStateFromText,
             onSubmit,
             mentionState,
             emojiState,

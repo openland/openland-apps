@@ -32,6 +32,10 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         setPlainText(newPlainText);
     };
 
+    const updateEditorStateFromText = (text: string) => {
+        updateEditorState(getEditorStateFromText(text));
+    };
+
     const handleEditorChange = (newEditorState: EditorState) => {
         if (newEditorState.getSelection().getHasFocus()) {
             const newActiveWord = findActiveWord(newEditorState);
@@ -108,6 +112,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         addMention: finalAddMention,
         addEmoji: finalAddEmoji,
         handleEditorChange,
+        updateEditorStateFromText,
         editorState,
         setEditorState,
         onEmojiPicked,
