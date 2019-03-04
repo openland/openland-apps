@@ -115,83 +115,102 @@ const getJoinUsers = ({ serviceMetadata, alphaMentions }: any) => {
         : alphaMentions.map(({ user }: { user: UserShort[] }) => user)) as any[];
 };
 
-const JoinOneServiceMessage = ({
-    joinedByUser,
-    firstUser,
-    myUserId,
-}: {
-    joinedByUser: UserShort;
-    firstUser: UserShort;
-    myUserId: string;
-}) => {
-    let [handEmoji] = React.useState(GetRandomJoinEmoji());
-    return (
-        <Container>
-            {joinedByUser.id === firstUser.id ? (
-                <>
-                    {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
-                    joined the group
-                </>
-            ) : (
-                <>
-                    {handEmoji}{' '}
-                    <MentionedUser user={joinedByUser} isYou={myUserId === joinedByUser.id} />{' '}
-                    invited <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />
-                </>
-            )}
-        </Container>
-    );
-};
+const JoinOneServiceMessage = React.memo(
+    ({
+        joinedByUser,
+        firstUser,
+        myUserId,
+    }: {
+        joinedByUser: UserShort;
+        firstUser: UserShort;
+        myUserId: string;
+    }) => {
+        const randomEmoji = React.useMemo(() => {
+            return GetRandomJoinEmoji();
+        }, [myUserId]);
 
-const JoinTwoServiceMessage = ({
-    firstUser,
-    secondUser,
-    myUserId,
-}: {
-    firstUser: UserShort;
-    secondUser: UserShort;
-    myUserId: string;
-}) => {
-    let [handEmoji] = React.useState(GetRandomJoinEmoji());
-    return (
-        <Container>
-            {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
-            the group along with{' '}
-            <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
-        </Container>
-    );
-};
+        let [handEmoji] = React.useState(randomEmoji);
+        return (
+            <Container>
+                {joinedByUser.id === firstUser.id ? (
+                    <>
+                        {handEmoji}{' '}
+                        <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
+                        the group
+                    </>
+                ) : (
+                    <>
+                        {handEmoji}{' '}
+                        <MentionedUser user={joinedByUser} isYou={myUserId === joinedByUser.id} />{' '}
+                        invited <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />
+                    </>
+                )}
+            </Container>
+        );
+    },
+);
 
-const JoinManyServiceMessage = ({
-    firstUser,
-    otherUsers,
-    myUserId,
-}: {
-    firstUser: UserShort;
-    otherUsers: UserShort[];
-    myUserId: string;
-}) => {
-    let [handEmoji] = React.useState(GetRandomJoinEmoji());
-    return (
-        <Container>
-            {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
-            the group along with{' '}
-            <span>
-                <OthersPopper
-                    show={true}
-                    items={otherUsers.map(({ id, name, photo, primaryOrganization }: any) => ({
-                        title: name,
-                        subtitle: primaryOrganization ? primaryOrganization.name : '',
-                        photo,
-                        id,
-                    }))}
-                >
-                    {otherUsers.length} others
-                </OthersPopper>
-            </span>
-        </Container>
-    );
-};
+const JoinTwoServiceMessage = React.memo(
+    ({
+        firstUser,
+        secondUser,
+        myUserId,
+    }: {
+        firstUser: UserShort;
+        secondUser: UserShort;
+        myUserId: string;
+    }) => {
+        const randomEmoji = React.useMemo(() => {
+            return GetRandomJoinEmoji();
+        }, [myUserId]);
+
+        let [handEmoji] = React.useState(randomEmoji);
+        return (
+            <Container>
+                {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
+                joined the group along with{' '}
+                <MentionedUser user={secondUser} isYou={myUserId === secondUser.id} />
+            </Container>
+        );
+    },
+);
+
+const JoinManyServiceMessage = React.memo(
+    ({
+        firstUser,
+        otherUsers,
+        myUserId,
+    }: {
+        firstUser: UserShort;
+        otherUsers: UserShort[];
+        myUserId: string;
+    }) => {
+        const randomEmoji = React.useMemo(() => {
+            return GetRandomJoinEmoji();
+        }, [myUserId]);
+
+        let [handEmoji] = React.useState(randomEmoji);
+        return (
+            <Container>
+                {handEmoji} <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} />{' '}
+                joined the group along with{' '}
+                <span>
+                    <OthersPopper
+                        show={true}
+                        items={otherUsers.map(({ id, name, photo, primaryOrganization }: any) => ({
+                            title: name,
+                            subtitle: primaryOrganization ? primaryOrganization.name : '',
+                            photo,
+                            id,
+                        }))}
+                    >
+                        {otherUsers.length} others
+                    </OthersPopper>
+                </span>
+            </Container>
+        );
+    },
+);
 
 export const ServiceMessageJoin = XMemo<{
     joinedByUser: UserShort;
