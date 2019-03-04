@@ -22,6 +22,21 @@ let linkifyInstance = linkify()
                 match.text = match.url.replace('tel:', '')
             }) as any
         })
+    .add('mailto:',
+        {
+            validate: (text, pos, self) => {
+                let tail = text.slice(pos);
+                let split = tail.split(' ');
+                if (split.length > 1) {
+                    return split[0].length
+                }
+                console.warn('boom', tail);
+                return tail.length;
+            },
+            normalize: ((match: any) => {
+                match.text = match.url.replace('mailto:', '')
+            }) as any
+        })
     .tlds(tlds)
     .tlds('onion', true);
 
@@ -33,7 +48,7 @@ function preprocessSpaces(text: string): string {
     return res;
 }
 
-export function useNonBreakingSpaces (text?: string): string | undefined {
+export function useNonBreakingSpaces(text?: string): string | undefined {
     if (typeof text === 'string') {
         return text.replace(/ /g, "\u00a0");
     }
