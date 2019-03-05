@@ -15,6 +15,8 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
     let group = getClient().useRoom({ id: props.router.params.id }).room;
 
     if (group && group.__typename === 'SharedRoom') {
+        let currentPhoto = group.photo.startsWith('ph://') ? undefined : group.photo;
+
         return (
             <>
                 <SHeader title="Edit group info" />
@@ -23,6 +25,10 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                     ref={ref}
                     action={async src => {
                         let client = getClient();
+
+                        if (src.input.photoRef && src.input.photoRef.uuid === currentPhoto) {
+                            src.input.photoRef = undefined;
+                        }
 
                         await client.mutateRoomUpdate(src);
 
