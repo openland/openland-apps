@@ -1,9 +1,25 @@
 import * as React from 'react';
 import { View, Text, Platform, TouchableOpacity } from 'react-native';
-import { AppStyles } from '../styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { ZText } from './ZText';
 
-export const ZListItemGroup = React.memo<{ header?: string | null, counter?: number | null, footer?: string | null, divider?: boolean, actionRight?: { title: string, onPress: () => void }, children?: any }>((props) => {
+interface ZListItemGroupProps {
+    header?: string | null;
+    counter?: number | null;
+    footer?: {
+        text: string;
+        onPress: (link: string) => void;
+        onLongPress?: (link: string) => void;
+    } | string | null;
+    divider?: boolean;
+    actionRight?: {
+        title: string,
+        onPress: () => void
+    };
+    children?: any;
+}
+
+export const ZListItemGroup = React.memo<ZListItemGroupProps>((props) => {
     let theme = React.useContext(ThemeContext);
 
     let components: any[] = [];
@@ -105,7 +121,21 @@ export const ZListItemGroup = React.memo<{ header?: string | null, counter?: num
             </View>
             {/* {this.props.divider !== false && <View backgroundColor={AppStyles.separatorColor} marginLeft={15} height={1} width="100%" />} */}
             {props.footer !== null && props.footer !== undefined && (
-                <Text style={{ color: Platform.OS === 'android' ? '#939393' : '#8e8e93', fontSize: 13, lineHeight: 17, paddingLeft: 16, paddingRight: 16, paddingBottom: 16, paddingTop: 6 }} >{props.footer}</Text>
+                <ZText
+                    linkify={true}
+                    text={typeof props.footer === 'string' ? props.footer : props.footer.text}
+                    onPress={typeof props.footer === 'string' ? undefined : props.footer.onPress}
+                    onLongPress={typeof props.footer === 'string' ? undefined : props.footer.onLongPress}
+                    style={{
+                        color: Platform.OS === 'android' ? '#939393' : '#8e8e93',
+                        fontSize: 13,
+                        lineHeight: 17,
+                        paddingLeft: 16,
+                        paddingRight: 16,
+                        paddingBottom: 16,
+                        paddingTop: 6
+                    }}
+                />
             )}
         </View>
     );
