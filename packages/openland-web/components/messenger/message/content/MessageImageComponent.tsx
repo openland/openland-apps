@@ -54,7 +54,7 @@ interface MessageImageComponentProps {
     startSelected: boolean;
 }
 
-export const MessageImageComponent = () => {
+export const MessageImageComponent = (props: any) => {
     return null;
 };
 

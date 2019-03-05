@@ -8,5 +8,5 @@ export const MessageComponent = (props: MessageComponentProps) => {
     // const messagesContextProps = React.useContext(MessagesStateContext);
     // const { isMobile } = React.useContext(MobileSidebarContext);
 
-    return <DesktopMessageComponentInner {...props} messagesContext={{}} />;
+    return <DesktopMessageComponentInner {...props} messagesContext={{} as any} />;
 };
