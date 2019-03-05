@@ -216,6 +216,12 @@ const About = (props: { user: User_user }) => {
                     <SectionContent>{user.email}</SectionContent>
                 </Section>
             )}
+            {user.location && (
+                <Section separator={0}>
+                    <XSubHeader title={TextProfiles.User.locationTitle} paddingBottom={0} />
+                    <SectionContent>{user.location}</SectionContent>
+                </Section>
+            )}
             {user.about && (
                 <Section separator={0}>
                     <XSubHeader title={TextProfiles.User.aboutTitle} paddingBottom={0} />
@@ -250,16 +256,17 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
 };
 
 const UserProvider = withUser(
-    withRouter(props =>
-        props.data.user ? (
-            <UserProfileInner
-                user={props.data.user}
-                router={props.router}
-                onDirectory={(props as any).onDirectory}
-            />
-        ) : (
-            <XLoader loading={true} />
-        ),
+    withRouter(
+        props =>
+            props.data.user ? (
+                <UserProfileInner
+                    user={props.data.user}
+                    router={props.router}
+                    onDirectory={(props as any).onDirectory}
+                />
+            ) : (
+                <XLoader loading={true} />
+            ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };

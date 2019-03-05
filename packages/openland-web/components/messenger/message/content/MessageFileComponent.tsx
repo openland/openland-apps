@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
 import IcClose from 'openland-icons/ic-close.svg';
-import IcFile from 'openland-icons/ic-file.svg';
+import IcFile from 'openland-icons/ic-file-blue.svg';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -44,36 +44,33 @@ export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
             as="a"
             alignSelf="flex-start"
             flexDirection="row"
+            alignItems="center"
             marginTop={marginTop}
             paddingTop={8}
             paddingBottom={8}
-            paddingLeft={12}
-            paddingRight={12}
+            paddingLeft={16}
+            paddingRight={16}
             cursor="pointer"
-            borderRadius={5}
-            borderWidth={1}
-            borderColor="rgba(220, 222, 228, 0.45)"
-            color="#334562"
-            backgroundColor="#fff"
-            minWidth={250}
+            borderRadius={10}
+            color="rgba(0, 0, 0, 0.8)"
+            backgroundColor="#f4f4f4"
+            minWidth={200}
             maxWidth={550}
             position="relative"
             hoverColor="#1790ff"
             hoverTextDecoration="none"
         >
             <XView
-                width={40}
-                height={40}
+                width={23}
+                height={28}
                 flexShrink={0}
                 marginRight={12}
-                backgroundColor="#f3f3f5"
-                borderRadius={50}
                 alignItems="center"
                 justifyContent="center"
             >
                 <IcFile />
             </XView>
-            <XView flexDirection="column" flexGrow={1} width="100%">
+            <XView flexDirection="column" flexGrow={1}>
                 <XView
                     width="100%"
                     whiteSpace="nowrap"
@@ -81,10 +78,11 @@ export const MessageFileComponent = XMemo<MessageFileComponentProps>(props => {
                     textOverflow="ellipsis"
                     fontSize={14}
                     fontWeight="600"
+                    marginBottom={-1}
                 >
                     {props.fileName ? props.fileName!! : 'file'}
                 </XView>
-                <XView opacity={0.5} fontSize={14} color="#334562 !important">
+                <XView opacity={0.4} fontSize={13} color="#000 !important" marginTop={-1}>
                     {niceBytes(props.fileSize)}
                 </XView>
             </XView>

@@ -8,6 +8,8 @@ export const MyOrganizationsQuery = gql`
     query MyOrganizations {
         myOrganizations {
             ...OrganizationShort
+
+            isPrimary: betaIsPrimary
         }
     }
     ${OrganizationShort}

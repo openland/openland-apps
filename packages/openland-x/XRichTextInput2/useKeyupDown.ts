@@ -21,9 +21,6 @@ export const useKeyupDown = ({
         if (!suggestionsList.length) {
             return;
         }
-        event.preventDefault();
-        event.stopPropagation();
-
         setSelectedEntryIndex(boundSelection(selectedEntryIndex - 1));
     };
 
@@ -31,8 +28,6 @@ export const useKeyupDown = ({
         if (!suggestionsList.length) {
             return;
         }
-        event.preventDefault();
-        event.stopPropagation();
         setSelectedEntryIndex(boundSelection(selectedEntryIndex + 1));
     };
 

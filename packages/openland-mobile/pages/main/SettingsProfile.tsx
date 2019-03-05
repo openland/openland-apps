@@ -1,62 +1,21 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text } from 'react-native';
-import { ZListItemGroup } from '../../components/ZListItemGroup';
+import { View } from 'react-native';
 import { ZForm } from '../../components/ZForm';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZListItemBase } from '../../components/ZListItemBase';
-import { ZTextInput } from '../../components/ZTextInput';
-import { AppStyles } from '../../styles/AppStyles';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-
-export class ListItemEdit extends React.PureComponent<{
-    autoFocus?: boolean;
-    title: string;
-    value?: string;
-    valueStoreKey?: string;
-    field?: string;
-    onChange?: (val: string) => void;
-    placehodler?: string;
-}> {
-    render() {
-        return (
-            <ZListItemBase separator={false}>
-                <View flexDirection="row" alignItems="stretch" flexGrow={1}>
-                    <Text
-                        style={{
-                            width: 104,
-                            color: '#8a8a8f',
-                            fontSize: 13,
-                            lineHeight: 22,
-                            marginLeft: 16,
-                            alignSelf: 'center',
-                        }}
-                    >
-                        {this.props.title}
-                    </Text>
-                    <ZTextInput
-                        placeholder={this.props.placehodler}
-                        flexGrow={1}
-                        value={this.props.value}
-                        onChangeText={this.props.onChange}
-                        style={{ paddingRight: 15 }}
-                        field={this.props.field}
-                        valueStoreKey={this.props.valueStoreKey}
-                        autoFocus={this.props.autoFocus}
-                    />
-                </View>
-            </ZListItemBase>
-        );
-    }
-}
+import { ZTextInput2 } from 'openland-mobile/components/ZTextInput2';
+import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
     let profile = getClient().useProfile().profile;
+    let me = getClient().useAccount().me;
     let ref = React.useRef<ZForm | null>(null);
     let handleSave = React.useCallback(() => {
         if (ref.current) {
@@ -64,15 +23,12 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
         }
     }, []);
 
-    console.log(profile);
-
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <ZForm
                 action={async args => {
-                    let res = await getClient().mutateProfileUpdate(args);
-                    console.log(res);
+                    await getClient().mutateProfileUpdate(args);
                     await getClient().refetchAccount();
                 }}
                 onSuccess={() => props.router.back()}
@@ -84,70 +40,72 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         photoRef: sanitizeImageRef(
                             profile!.photoRef,
                         ),
+                        about: profile!.about,
                         phone: profile!.phone,
                         email: profile!.email,
+                        location: profile!.location,
                         website: profile!.website,
                         alphaLinkedin: profile!.linkedin,
                     },
                 }}
             >
-                <ZListItemBase height={96} separator={false}>
-                    <View paddingHorizontal={16} marginTop={15}>
-                        <ZAvatarPicker field="input.photoRef" />
-                    </View>
-                    <View
-                        flexDirection="column"
-                        flexGrow={1}
-                        flexBasis={0}
-                        marginTop={15}
-                    >
-                        <ZTextInput
-                            placeholder="First name"
-                            field="input.firstName"
-                            height={44}
-                            style={{ fontSize: 16 }}
-                        />
-                        <View
-                            height={1}
-                            alignSelf="stretch"
-                            backgroundColor={AppStyles.separatorColor}
-                        />
-                        <ZTextInput
-                            placeholder="Last name"
-                            field="input.lastName"
-                            height={44}
-                            style={{ fontSize: 16 }}
-                        />
-                        <View
-                            height={1}
-                            alignSelf="stretch"
-                            backgroundColor={AppStyles.separatorColor}
-                        />
-                    </View>
-                </ZListItemBase>
-                <View marginTop={31} />
+                <ZAvatarPickerInputsGroup avatarField="input.photoRef">
+                    <ZTextInput2
+                        placeholder="First name"
+                        field="input.firstName"
+                        border={true}
+                    />
+                    <ZTextInput2
+                        placeholder="Last name"
+                        field="input.lastName"
+                        border={true}
+                    />
+                </ZAvatarPickerInputsGroup>
+                <View height={20} />
+                <ZTextInput2
+                    field="input.about"
+                    placeholder="Add your bio"
+                    multiline={true}
+                    border={true}
+                />
+                <View height={30} />
                 <ZListItemGroup>
-                    <ListItemEdit
+                    <ZListItem text="Username" description={me!.shortname ? '@' + me!.shortname : 'Create'} path="SetUserShortname" />
+                    <ZListItem text="Primary organization" description={me!.primaryOrganization!.name} path="SelectPrimaryOrganization" />
+                </ZListItemGroup>
+                <View height={30} />
+                <View>
+                    <ZTextInput2
                         title="Phone"
                         field="input.phone"
-                        placehodler="123-456-7890"
+                        placeholder="Add your phone"
+                        border={true}
                     />
-                    <ListItemEdit
+                    <ZTextInput2
                         title="Email"
                         field="input.email"
-                        placehodler="your@email.com"
+                        placeholder="Add your email"
+                        border={true}
                     />
-                    <ListItemEdit
+                    <ZTextInput2
+                        title="Location"
+                        field="input.location"
+                        placeholder="Add your location"
+                        border={true}
+                    />
+                    <ZTextInput2
                         title="Website"
                         field="input.website"
-                        placehodler="yoursite.com"
+                        placeholder="Add your website"
+                        border={true}
                     />
-                    <ListItemEdit
-                        title="Linkedin"
+                    <ZTextInput2
+                        title="LinkedIn"
                         field="input.alphaLinkedin"
-                        placehodler="linkedin.com/in/you"
+                        placeholder="Add your LinkedIn account"
+                        border={true}
                     />
-                </ZListItemGroup>
+                </View>
             </ZForm>
         </>
     )
@@ -164,4 +122,4 @@ class SettingsProfileComponent extends React.Component<PageProps> {
     }
 }
 
-export const SettingsProfile = withApp(SettingsProfileComponent);
+export const SettingsProfile = withApp(SettingsProfileComponent, { navigationAppearance: 'small' });

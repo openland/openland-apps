@@ -4,10 +4,18 @@ import { Text, Linking, StyleProp, TextStyle, Clipboard } from 'react-native';
 import { resolveInternalLink } from '../utils/internalLnksResolver';
 import { ActionSheet } from './ActionSheet';
 
-export class ZText extends React.PureComponent<{ text?: string | null | undefined, numberOfLines?: number, style?: StyleProp<TextStyle>, linkify?: boolean }> {
+interface ZTextProps {
+    text?: string | null;
+    numberOfLines?: number;
+    style?: StyleProp<TextStyle>;
+    linkify?: boolean;
+    onPress?: (link: string) => void;
+    onLongPress?: (link: string) => void;
+}
+
+export class ZText extends React.PureComponent<ZTextProps> {
     linkifyPressFallback = (link: string) => {
         return (async () => {
-            console.warn('boom', link, await Linking.canOpenURL(link));
             if (await Linking.canOpenURL(link)) {
                 await Linking.openURL(link)
             } else {
@@ -19,6 +27,7 @@ export class ZText extends React.PureComponent<{ text?: string | null | undefine
     openContextMenu = async (link: string) => {
         ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();
     }
+
     render() {
         if (this.props.text) {
             let preprocessed = preprocessText(this.props.text);
@@ -26,7 +35,16 @@ export class ZText extends React.PureComponent<{ text?: string | null | undefine
                 if (v.type === 'new_line') {
                     return <Text key={'br-' + i} style={this.props.style} >{'\n'}</Text>;
                 } else if (v.type === 'link') {
-                    return <Text key={'link-' + i} style={[this.props.style, this.props.linkify && { color: '#0084fe' }]} onLongPress={() => this.openContextMenu(v.link!)} onPress={this.props.linkify !== false ? resolveInternalLink(v.link!, this.linkifyPressFallback(v.link!)) : undefined}>{v.text}</Text>;
+                    return (
+                        <Text
+                            key={'link-' + i}
+                            style={[this.props.style, this.props.linkify && { color: '#0084fe' }]}
+                            onLongPress={() => this.props.onLongPress ? this.props.onLongPress(v.link!) : this.openContextMenu(v.link!)}
+                            onPress={this.props.onPress ? () => { this.props.onPress!(v.link!) } : this.props.linkify !== false ? resolveInternalLink(v.link!, this.linkifyPressFallback(v.link!)) : undefined}
+                        >
+                            {v.text}
+                        </Text>
+                    );
                 } else {
                     return <Text key={'text-' + i} style={this.props.style}>{v.text}</Text>;
                 }

@@ -31,10 +31,19 @@ const ImageWrapper = css`
     height: 100%;
     display: flex;
     align-items: center;
+    overflow: hidden;
+    border-radius: 6px;
     & img {
         max-width: 100%;
         object-fit: contain;
     }
+`;
+
+const ImageClassName = css`
+    display: block;
+    border-radius: 6px;
+    margin-left: -3px;
+    height: auto !important;
 `;
 
 interface MessageImageComponentProps {
@@ -130,6 +139,7 @@ export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => 
                         resize={'fill'}
                         width={dimensions.width}
                         height={dimensions.height}
+                        className={ImageClassName}
                     />
                 </div>
             </XView>

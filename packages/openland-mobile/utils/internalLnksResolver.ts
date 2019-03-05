@@ -100,6 +100,8 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                         } else if (info.item.__typename === 'Organization') {
                             getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
                         }
+                    } else {
+                        Alert.alert('No such user or organization')
                     }
                 } catch (e) {
                     Alert.alert(e.message);

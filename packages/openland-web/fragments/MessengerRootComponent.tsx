@@ -61,6 +61,7 @@ interface MessagesComponentState {
     hideChat: boolean;
     postType: PostMessageType | null;
     postEditData: EditPostProps | null;
+    messageListScrollPosition: number;
 }
 
 const DeleteMessageComponent = withDeleteMessage(props => {
@@ -153,6 +154,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
             hideChat: false,
             postType: null,
             postEditData: null,
+            messageListScrollPosition: 0,
         };
     }
 
@@ -160,6 +162,12 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
         if (this.messagesList.current) {
             this.messagesList.current.scrollToBottom();
         }
+    };
+
+    onMessageListScroll = (scrollPosition: number) => {
+        this.setState({
+            messageListScrollPosition: scrollPosition,
+        });
     };
 
     //
@@ -221,6 +229,11 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     }
 
     handleChange = async (text: string) => {
+        if (this.state.messageListScrollPosition < 40) {
+            if (this.messagesList.current) {
+                this.messagesList.current.scrollToBottom();
+            }
+        }
         let prevLength = this.messageText.length;
         let curLength = text.length;
 
@@ -314,6 +327,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
                             conversationType={this.props.conversationType}
                             inputShower={this.handleShowIput}
                             editPostHandler={this.editPostHandler}
+                            scrollPosition={this.onMessageListScroll}
                         />
 
                         {!this.state.hideInput && (

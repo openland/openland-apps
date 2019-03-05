@@ -63,6 +63,7 @@ interface MessageListProps {
     me?: UserShort | null;
     conversationId: string;
     editPostHandler?: (data: EditPostProps) => void;
+    scrollPosition?: (data: number) => void;
 }
 
 const getScrollElement = (src: any) => {
@@ -199,22 +200,23 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     dataSourceWrapper = (props: any) => {
         return (
             <>
-                {this.isEmpty() && (
-                    <XScrollViewReversed ref={this.scroller} flexGrow={1}>
+                <XScrollViewReversed
+                    ref={this.scroller}
+                    flexGrow={1}
+                    getScrollElement={getScrollElement}
+                    scrollPosition={this.props.scrollPosition}
+                >
+                    {this.isEmpty() && (
                         <MessagesWrapperEmpty>
                             <EmptyBlock
                                 conversationType={this.props.conversationType}
                                 onClick={this.props.inputShower}
                             />
                         </MessagesWrapperEmpty>
-                    </XScrollViewReversed>
-                )}
+                    )}
 
-                {!this.isEmpty() && (
-                    <XScrollViewReversed ref={this.scroller} getScrollElement={getScrollElement}>
-                        <MessagesWrapper>{props.children}</MessagesWrapper>
-                    </XScrollViewReversed>
-                )}
+                    {!this.isEmpty() && <MessagesWrapper>{props.children}</MessagesWrapper>}
+                </XScrollViewReversed>
             </>
         );
     };

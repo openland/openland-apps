@@ -10,6 +10,7 @@ interface Dimensions {
 
 interface XScrollViewReversedProps extends XFlexStyles {
     getScrollElement?: Function;
+    scrollPosition?: (data: number) => void;
 }
 
 export class XScrollViewReversed extends React.PureComponent<
@@ -85,6 +86,11 @@ export class XScrollViewReversed extends React.PureComponent<
 
     updateDimensions = () => {
         let dimensions = this.getDimensions();
+        if (this.props.scrollPosition) {
+            this.props.scrollPosition(
+                dimensions.scrollHeight - (dimensions.scrollTop + dimensions.offsetHeight),
+            );
+        }
         if (dimensions.scrollHeight === dimensions.scrollTop + dimensions.offsetHeight) {
             // Lock scroll to bottom
             this.lastDimensions = null;

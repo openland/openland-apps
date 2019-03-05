@@ -11,12 +11,29 @@ export interface ServiceMessageDefaultProps {
 }
 
 const EmojifiedText = React.memo(({ text }: { text: string }) => {
+    let refactorText = text;
+    let createGroupText = text.match('created the group');
+    if (createGroupText) {
+        refactorText = text.split('reated the group')[1];
+    }
     return (
         <span>
-            {emoji({
-                src: text,
-                size: 16,
-            })}
+            {createGroupText && <> created the group</>}
+            {refactorText ? (
+                <strong>
+                    {emoji({
+                        src: refactorText,
+                        size: 16,
+                    })}
+                </strong>
+            ) : (
+                <>
+                    {emoji({
+                        src: refactorText,
+                        size: 16,
+                    })}
+                </>
+            )}
         </span>
     );
 });

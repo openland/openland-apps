@@ -23,6 +23,7 @@ export const TextProfiles = {
         edit: 'Edit profile',
 
         aboutTitle: 'About',
+        locationTitle: 'Location',
 
         usernameTitle: 'Username',
         emailTitle: 'Email',

@@ -335,8 +335,8 @@ class UserPopper extends React.Component<UserPopperProps, { show: boolean }> {
                                 id={this.props.id}
                                 src={this.props.picture}
                                 title={this.props.name}
-                                subtitle={TextGlobal.editProfile}
-                                path="/settings/profile"
+                                subtitle={TextGlobal.viewProfile}
+                                path={`/mail/u/${this.props.id}`}
                             />
                             <XMenuItem path="/settings/profile">{TextGlobal.settings}</XMenuItem>
                             <XMenuItem

@@ -1103,6 +1103,7 @@ export const RoomCreateWithEmail = ({
     emailSending,
 }: CreateWithEmailProps) => {
     const [isMobile] = useIsMobile();
+    const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     return (
         <XForm
             defaultData={{
@@ -1122,7 +1123,7 @@ export const RoomCreateWithEmail = ({
                     ? InitTexts.auth.signinRoomSignUpEmail
                     : InitTexts.auth.signupRoomSignUpEmail}
             </Title>
-            <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
+            <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={280}>
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (
@@ -1168,6 +1169,7 @@ export const WebSignUpCreateWithEmail = ({
     emailSending,
 }: CreateWithEmailProps) => {
     const [isMobile] = useIsMobile();
+    const subTitle = signin ? InitTexts.auth.signinSubtitle : InitTexts.auth.creatingAnAccountFree;
     return (
         <XForm
             defaultData={{
@@ -1186,7 +1188,7 @@ export const WebSignUpCreateWithEmail = ({
             <Title roomView={false}>
                 {signin ? InitTexts.auth.signinEmail : InitTexts.auth.signupEmail}
             </Title>
-            <SubTitle>{InitTexts.auth.creatingAnAccountFree}</SubTitle>
+            <SubTitle>{subTitle}</SubTitle>
             <ButtonsWrapper marginTop={40} width={330}>
                 <XFormField2 field="input.email">
                     {({ showError }: { showError: boolean }) => (

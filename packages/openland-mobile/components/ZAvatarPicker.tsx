@@ -139,12 +139,16 @@ class ZAvatarPickerComponent extends React.PureComponent<ZAvatarPickerProps & { 
         }
         let valueUrl = undefined;
 
-        valueUrl = this.props.initialUrl
+        valueUrl = this.props.initialUrl;
 
         if (value) {
-            valueUrl = 'https://ucarecdn.com/' + value.uuid + '/';
-            if (value.crop) {
-                valueUrl += `-/crop/${value.crop.w}x${value.crop.h}/${value.crop.x},${value.crop.y}/`;
+            if (value.uuid.startsWith('https://ucarecdn.com/')) {
+                valueUrl = value.uuid;
+            } else {
+                valueUrl = 'https://ucarecdn.com/' + value.uuid + '/';
+                if (value.crop) {
+                    valueUrl += `-/crop/${value.crop.w}x${value.crop.h}/${value.crop.x},${value.crop.y}/`;
+                }
             }
         }
 
