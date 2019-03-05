@@ -196,13 +196,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         );
     };
 
-    dataSourceWrapper = (props: any) => (
-        <XScrollViewReversed ref={this.scroller} getScrollElement={getScrollElement}>
-            <MessagesWrapper>{props.children}</MessagesWrapper>
-        </XScrollViewReversed>
-    );
-
-    render() {
+    dataSourceWrapper = (props: any) => {
         return (
             <>
                 {this.isEmpty() && (
@@ -215,16 +209,25 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         </MessagesWrapperEmpty>
                     </XScrollViewReversed>
                 )}
+
                 {!this.isEmpty() && (
-                    <DataSourceRender
-                        dataSource={this.props.conversation.dataSource}
-                        reverce={true}
-                        wrapWith={this.dataSourceWrapper}
-                        renderItem={this.renderMessage}
-                        renderLoading={this.renderLoading}
-                    />
+                    <XScrollViewReversed ref={this.scroller} getScrollElement={getScrollElement}>
+                        <MessagesWrapper>{props.children}</MessagesWrapper>
+                    </XScrollViewReversed>
                 )}
             </>
+        );
+    };
+
+    render() {
+        return (
+            <DataSourceRender
+                dataSource={this.props.conversation.dataSource}
+                reverce={true}
+                wrapWith={this.dataSourceWrapper}
+                renderItem={this.renderMessage}
+                renderLoading={this.renderLoading}
+            />
         );
     }
 }
