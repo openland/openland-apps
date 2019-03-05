@@ -29,12 +29,16 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
 
                     await getClient().mutateSetOrgShortname(args);
 
-                    await getClient().refetchAccount();
+                    await getClient().refetchOrganization({ organizationId: organization.id });
+                    await getClient().refetchOrganizationProfile({ organizationId: organization.id });
                 }}
                 onSuccess={() => props.router.back()}
                 ref={ref}
                 defaultData={{
                     shortname: organization.shortname
+                }}
+                staticData={{
+                    organizationId: organization.id
                 }}
             >
                 <View marginTop={Platform.OS === 'ios' ? 15 : undefined} />
