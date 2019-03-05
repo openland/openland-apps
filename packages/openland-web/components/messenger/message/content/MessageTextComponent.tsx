@@ -90,7 +90,7 @@ function emojiChecker(messageText: string) {
     const messageArray = Array.from(messageText);
     const pattern = /^([a-zа-яё\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]+|\d+)$/i;
     for (let i = 0; i < messageArray.length; i++) {
-        if (messageArray[i].match(pattern)) {
+        if (messageArray[i].match(pattern) && messageArray[i] !== '‍' && messageArray[i] !== '️') {
             return false;
         }
     }
