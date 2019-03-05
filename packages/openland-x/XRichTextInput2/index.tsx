@@ -13,7 +13,7 @@ import { useHandlePastedText } from './useHandlePastedText';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 export interface XRichTextInput2Props extends XFlexStyles {
-    onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
+    onChange?: (a: { text: string; mentions?: MentionDataT[] }) => void;
     value: string;
     onSubmit?: () => void;
     placeholder?: string;

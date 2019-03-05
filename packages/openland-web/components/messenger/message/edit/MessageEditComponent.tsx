@@ -3,7 +3,7 @@ import Glamorous from 'glamorous';
 import { withEditMessage } from '../../../../api/withMessageState';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XStoreState } from 'openland-y-store/XStoreState';
-import { XRichTextInput, XRichTextInputProps } from 'openland-x/XRichTextInput';
+import { XRichTextInput2, XRichTextInput2Props } from 'openland-x/XRichTextInput2';
 import { XForm } from 'openland-x-forms/XForm2';
 import { XShortcuts } from 'openland-x/XShortcuts';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
@@ -43,15 +43,10 @@ export type XTextInputProps =
       }
     | {
           kind: 'controlled';
-      } & XRichTextInputProps;
+      } & XRichTextInput2Props;
 
 class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store: XStoreState }> {
     onChangeHandler = (value: string) => {
-        if (this.props.kind === 'controlled') {
-            if (this.props.onChange) {
-                this.props.onChange(value);
-            }
-        }
         if (this.props.kind === 'from_store') {
             this.props.store.writeValue(this.props.valueStoreKey, value);
         }
@@ -73,9 +68,9 @@ class XRichTextInputStored extends React.PureComponent<XTextInputProps & { store
         }
 
         return (
-            <XRichTextInput
+            <XRichTextInput2
                 autofocus={true}
-                onChange={this.onChangeHandler}
+                onChange={data => this.onChangeHandler(data.text)}
                 value={value}
                 {...other}
             />
@@ -104,8 +99,6 @@ class XTextInput extends React.PureComponent<XTextInputProps> {
                     }}
                 </XStoreContext.Consumer>
             );
-        } else if (this.props.kind === 'controlled') {
-            return <XRichTextInput {...this.props} />;
         }
         throw Error('kind for XTextInput is not set');
     }
