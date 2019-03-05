@@ -139,7 +139,7 @@ const JoinOneServiceMessage = React.memo(
                     <>
                         {handEmoji}{' '}
                         <MentionedUser user={firstUser} isYou={myUserId === firstUser.id} /> joined
-                        the group
+                        the group via invite link
                     </>
                 ) : (
                     <>
