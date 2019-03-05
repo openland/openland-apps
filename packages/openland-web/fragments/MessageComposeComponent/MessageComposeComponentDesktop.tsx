@@ -123,17 +123,14 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
-    React.useEffect(
-        () => {
-            if (messageComposeProps.isActive) {
-                messagesContext.changeForwardConverstion();
-                setInputValue(hasReply() ? draftState.getNextDraft() : '');
-                draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [messageComposeProps.isActive],
-    );
+    React.useEffect(() => {
+        if (messageComposeProps.isActive) {
+            messagesContext.changeForwardConverstion();
+            setInputValue(hasReply() ? draftState.getNextDraft() : '');
+            draftState.setBeDrafted(hasReply());
+            inputMethodsState.focusIfNeeded();
+        }
+    }, [messageComposeProps.isActive]);
 
     return (
         <>
@@ -154,10 +151,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
                     mentionsState={mentionsState}
                 />
             )}
-            <PostIntroModal
-                targetQuery="addItro"
-                conversationId={messageComposeProps.conversationId || ''}
-            />
         </>
     );
 };

@@ -225,7 +225,7 @@ const InternalUrlCardInner = React.memo(
                             </XView>
                         )}
                     </XView>
-                    {isMe && (
+                    {/* {isMe && (
                         <DeleteButton
                             query={{
                                 field: 'deleteUrlAugmentation',
@@ -235,7 +235,7 @@ const InternalUrlCardInner = React.memo(
                         >
                             <DeleteIcon />
                         </DeleteButton>
-                    )}
+                    )} */}
                 </XView>
             </InternalUrlCardContainer>
         );
@@ -346,7 +346,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                 path={path}
                 onClick={(e: any) => e.stopPropagation()}
             >
-                <ContentWrapper>
+                {/* <ContentWrapper>
                     {hostname && (
                         <Hostname>
                             {iconRef && (
@@ -366,7 +366,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                     )}
                     {parts && <Description>{parts}</Description>}
                     {organization && <Description>{organization}</Description>}
-                </ContentWrapper>
+                </ContentWrapper> */}
                 {photo && dimensions && (
                     <ImageWrapper>
                         <XCloudImage
@@ -377,7 +377,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                         />
                     </ImageWrapper>
                 )}
-                {isMe && (
+                {/* {isMe && (
                     <DeleteButton
                         query={{
                             field: 'deleteUrlAugmentation',
@@ -387,7 +387,7 @@ const MessageUrlAugmentationComponentInner = React.memo(
                     >
                         <DeleteIcon />
                     </DeleteButton>
-                )}
+                )} */}
             </Container>
         );
     },
@@ -395,10 +395,11 @@ const MessageUrlAugmentationComponentInner = React.memo(
 
 export const MessageUrlAugmentationComponent = React.memo(
     (props: MessageUrlAugmentationComponentProps) => {
-        const sidebarContext = React.useContext(MobileSidebarContext);
+        // const sidebarContext = React.useContext(MobileSidebarContext);
 
-        const { isMobile } = sidebarContext;
+        // const { isMobile } = sidebarContext;
 
-        return <MessageUrlAugmentationComponentInner {...props} isMobile={isMobile} />;
+        return null;
+        return <MessageUrlAugmentationComponentInner {...props} isMobile={false} />;
     },
 );

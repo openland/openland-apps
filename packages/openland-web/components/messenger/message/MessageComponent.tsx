@@ -5,12 +5,8 @@ import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
 
 export const MessageComponent = (props: MessageComponentProps) => {
-    const messagesContextProps = React.useContext(MessagesStateContext);
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    // const messagesContextProps = React.useContext(MessagesStateContext);
+    // const { isMobile } = React.useContext(MobileSidebarContext);
 
-    return isMobile ? (
-        <MobileMessageComponentInner {...props} />
-    ) : (
-        <DesktopMessageComponentInner {...props} messagesContext={messagesContextProps} />
-    );
+    return <DesktopMessageComponentInner {...props} messagesContext={{}} />;
 };

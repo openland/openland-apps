@@ -99,7 +99,7 @@ const emojifyReactions = ({ src, size }: { src: string; size: 25 | 18 }) => {
         size,
     });
 };
-class ReactionPicker extends React.Component<{ onRef: any; setReaction: any }> {
+class ReactionPicker extends React.PureComponent<{ onRef: any; setReaction: any }> {
     defaultReactions = ['❤️', '👍', '😂', '😱', '😢', '🤬'];
     state = {
         show: false,
@@ -267,6 +267,7 @@ type SingleReactionSetT = {
 
 const SingleReactionSet = withSetReaction(props => {
     const typedProps = props as typeof props & SingleReactionSetT;
+    return null;
     return (
         <SingleReaction
             mutation={props.setReaction}
@@ -453,6 +454,7 @@ const ReactionsInner = React.memo(({ reactions, meId, messageId }: ReactionsInne
 export class Reactions extends React.PureComponent<ReactionsInnerProps> {
     render() {
         const { reactions, meId, messageId } = this.props;
+        return null;
         return (
             <>
                 {reactions && reactions.length > 0 ? (

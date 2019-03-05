@@ -192,12 +192,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
     renderLoading = () => {
         return (
             <LoadingWrapper>
-                <XButton alignSelf="center" style="flat" loading={true} />
+                ...
+                {/* <XButton alignSelf="center" style="flat" loading={true} /> */}
             </LoadingWrapper>
         );
     };
 
-    dataSourceWrapper = (props: any) => {
+    dataSourceWrapper = React.memo((props: any) => {
         return (
             <>
                 <XScrollViewReversed
@@ -219,7 +220,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                 </XScrollViewReversed>
             </>
         );
-    };
+    });
 
     render() {
         return (

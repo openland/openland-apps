@@ -54,95 +54,99 @@ interface MessageImageComponentProps {
     startSelected: boolean;
 }
 
-export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
-    let [isOpen, handleOpen] = React.useState(false);
-    const { isMobile } = React.useContext(MobileSidebarContext);
-    const openView = (e: any) => {
-        if (props.startSelected) {
-            return;
-        }
-        e.stopPropagation();
-        handleOpen(true);
-    };
+export const MessageImageComponent = () => {
+    return null;
+};
 
-    const closeView = () => {
-        handleOpen(false);
-    };
+// export const MessageImageComponent = XMemo<MessageImageComponentProps>(props => {
+//     let [isOpen, handleOpen] = React.useState(false);
+//     const { isMobile } = React.useContext(MobileSidebarContext);
+//     const openView = (e: any) => {
+//         if (props.startSelected) {
+//             return;
+//         }
+//         e.stopPropagation();
+//         handleOpen(true);
+//     };
 
-    const modalBody = (width: number, height: number) => (
-        <div className={ModalBody}>
-            <XView
-                onClick={closeView}
-                cursor="pointer"
-                position="fixed"
-                right={20}
-                top={20}
-                width={36}
-                height={36}
-                borderRadius={5}
-                backgroundColor="transparent"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <ModalCloseIcon />
-            </XView>
-            <XView flexDirection="row" alignItems="center" justifyContent="center">
-                <XView backgroundColor="#000" borderRadius={8}>
-                    <XCloudImage
-                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                        resize={'fill'}
-                        width={width}
-                        height={height}
-                        className={ModalImage}
-                    />
-                    <XView
-                        as="a"
-                        justifyContent="center"
-                        alignItems="center"
-                        width={36}
-                        height={36}
-                        borderRadius={5}
-                        backgroundColor="rgba(0, 0, 0, 0.6)"
-                        opacity={0}
-                        position="absolute"
-                        top={20}
-                        right={20}
-                        href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
-                        hoverTextDecoration="none"
-                    >
-                        <DownloadButtonIcon />
-                    </XView>
-                </XView>
-            </XView>
-        </div>
-    );
+//     const closeView = () => {
+//         handleOpen(false);
+//     };
 
-    let dimensions = layoutMedia(props.width, props.height);
-    let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
-    return (
-        <>
-            {!isMobile && (
-                <XModal
-                    useTopCloser={true}
-                    width={dimensions2.width}
-                    heading={null}
-                    transparent={true}
-                    isOpen={isOpen}
-                    onClosed={closeView}
-                    body={modalBody(dimensions2.width, dimensions2.height)}
-                />
-            )}
-            <XView onClick={openView} cursor="pointer" paddingBottom={5}>
-                <div className={ImageWrapper}>
-                    <XCloudImage
-                        srcCloud={'https://ucarecdn.com/' + props.file + '/'}
-                        resize={'fill'}
-                        width={dimensions.width}
-                        height={dimensions.height}
-                        className={ImageClassName}
-                    />
-                </div>
-            </XView>
-        </>
-    );
-});
+//     const modalBody = (width: number, height: number) => (
+//         <div className={ModalBody}>
+//             <XView
+//                 onClick={closeView}
+//                 cursor="pointer"
+//                 position="fixed"
+//                 right={20}
+//                 top={20}
+//                 width={36}
+//                 height={36}
+//                 borderRadius={5}
+//                 backgroundColor="transparent"
+//                 justifyContent="center"
+//                 alignItems="center"
+//             >
+//                 <ModalCloseIcon />
+//             </XView>
+//             <XView flexDirection="row" alignItems="center" justifyContent="center">
+//                 <XView backgroundColor="#000" borderRadius={8}>
+//                     <XCloudImage
+//                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+//                         resize={'fill'}
+//                         width={width}
+//                         height={height}
+//                         className={ModalImage}
+//                     />
+//                     <XView
+//                         as="a"
+//                         justifyContent="center"
+//                         alignItems="center"
+//                         width={36}
+//                         height={36}
+//                         borderRadius={5}
+//                         backgroundColor="rgba(0, 0, 0, 0.6)"
+//                         opacity={0}
+//                         position="absolute"
+//                         top={20}
+//                         right={20}
+//                         href={'https://ucarecdn.com/' + props.file + '/-/preview/-/inline/no/'}
+//                         hoverTextDecoration="none"
+//                     >
+//                         <DownloadButtonIcon />
+//                     </XView>
+//                 </XView>
+//             </XView>
+//         </div>
+//     );
+
+//     let dimensions = layoutMedia(props.width, props.height);
+//     let dimensions2 = layoutMedia(props.width, props.height, 1000, 1000);
+//     return (
+//         <>
+//             {!isMobile && (
+//                 <XModal
+//                     useTopCloser={true}
+//                     width={dimensions2.width}
+//                     heading={null}
+//                     transparent={true}
+//                     isOpen={isOpen}
+//                     onClosed={closeView}
+//                     body={modalBody(dimensions2.width, dimensions2.height)}
+//                 />
+//             )}
+//             <XView onClick={openView} cursor="pointer" paddingBottom={5}>
+//                 <div className={ImageWrapper}>
+//                     <XCloudImage
+//                         srcCloud={'https://ucarecdn.com/' + props.file + '/'}
+//                         resize={'fill'}
+//                         width={dimensions.width}
+//                         height={dimensions.height}
+//                         className={ImageClassName}
+//                     />
+//                 </div>
+//             </XView>
+//         </>
+//     );
+// });
