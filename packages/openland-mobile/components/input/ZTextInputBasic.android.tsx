@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, Text, View, TextInputProps } from 'react-native';
+import {  View, TextInputProps } from 'react-native';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { TextField } from 'react-native-material-textfield';
 
@@ -31,13 +31,14 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 placeholder={title ? undefined : placeholder}
                 labelFontSize={14}
                 tintColor="#0084fe"
-                baseColor={theme.separatorColor}
+                baseColor="rgba(0, 0, 0, 0.5)"
                 textColor={theme.textColor}
                 fontSize={16}
                 animationDuration={150}
                 labelPadding={0}
                 labelHeight={18}
                 lineWidth={1}
+                {...{ lineDefaultColor: theme.separatorColor }}
             />
         </View>
     );
