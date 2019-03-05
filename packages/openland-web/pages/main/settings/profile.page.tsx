@@ -277,7 +277,7 @@ export default withApp(
                                                     email: props.data.profile!!.email,
                                                     website: props.data.profile!!.website,
                                                     linkedin: props.data.profile!!.linkedin,
-                                                    // locations: props.data.profile!!.locations
+                                                    location: props.data.profile!!.location,
                                                 },
                                             }}
                                             defaultAction={async data => {
@@ -288,7 +288,7 @@ export default withApp(
                                                             email: data.input.email,
                                                             website: data.input.website,
                                                             alphaLinkedin: data.input.linkedin,
-                                                            // alphaLocations: data.input.locations
+                                                            location: data.input.location,
                                                         },
                                                     },
                                                 });
@@ -320,6 +320,11 @@ export default withApp(
                                                                 field="input.linkedin"
                                                                 size="large"
                                                                 title="LinkedIn"
+                                                            />
+                                                            <XInput
+                                                                field="input.location"
+                                                                size="large"
+                                                                title="Location"
                                                             />
                                                         </XVertical>
                                                     </XFormLoadingContent>
