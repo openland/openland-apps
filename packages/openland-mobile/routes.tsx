@@ -34,8 +34,12 @@ import { Benchmark } from './pages/dev/Benchmark';
 import { BenchmarkAsync } from './pages/dev/BenchmarkAsync';
 import { BenchmarkAsyncDirect } from './pages/dev/BenchmarkAsyncDirect';
 import { GroupList } from './pages/main/GroupList';
+import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganization';
+import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
 import { HomeDialogs } from './pages/main/HomeDialogs';
+import { SetOrgShortname } from './pages/main/SetOrgShortname';
+import { EditGroup } from './pages/main/EditGroup';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -43,6 +47,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileUser', ProfileUser)
   .addRoute('ProfileOrganization', ProfileOrganization)
   .addRoute('ProfileGroup', ProfileGroup)
+  .addRoute('EditGroup', EditGroup)
   .addRoute('SettingsProfile', SettingsProfile)
   .addRoute('SettingsNotifications', SettingsNotifications)
   .addRoute('SettingsOrganizations', SettingsOrganizations)
@@ -61,6 +66,10 @@ export const Routes = new SRoutesBuilder()
   .addRoute('ProfileOrganizationGroups', ProfileOrganizationGroups)
   .addRoute('ExploreOrganizations', ExploreOrganizations)
   .addRoute('GroupList', GroupList)
+
+  .addRoute('SetUserShortname', SetUserShortname)
+  .addRoute('SetOrgShortname', SetOrgShortname)
+  .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)
   .addRoute('SignupOrg', SignupOrg)

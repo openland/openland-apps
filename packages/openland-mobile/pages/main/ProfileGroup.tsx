@@ -73,75 +73,6 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
         });
     }, []);
 
-    const handleEdit = React.useCallback(() => {
-        ActionSheet.builder()
-            .action(room.photo ? 'Change photo' : 'Set photo', () => {
-                new ActionSheetBuilder()
-                    .action('Take Photo', async () => {
-                        let res: PickerImage | null = null;
-                        let r = await ImagePicker.openCamera({
-                            width: 1024,
-                            height: 1024,
-                            cropping: true
-                        });
-
-                        if (!Array.isArray(r)) {
-                            res = r;
-                        } else {
-                            res = r[0];
-                        }
-
-                        if (res) {
-                            handlePhotoSet(res);
-                        }
-                    })
-                    .action('Pick from Library', async () => {
-                        let res: PickerImage | null = null;
-                        let r = await ImagePicker.openPicker({
-                            width: 1024,
-                            height: 1024,
-                            cropping: true
-                        });
-
-                        if (!Array.isArray(r)) {
-                            res = r;
-                        } else {
-                            res = r[0];
-                        }
-
-                        if (res) {
-                            handlePhotoSet(res);
-                        }
-                    })
-                    .show();
-            })
-            .action('Change name', () => {
-                Prompt.builder()
-                    .title(room.kind === 'GROUP' ? 'Group name' : 'Room name')
-                    .value(room.title)
-                    .callback(async (src) => {
-                        await client.mutateRoomUpdate({
-                            input: { title: src },
-                            roomId: room.id
-                        });
-                    })
-                    .show();
-            })
-            .action('Change about', () => {
-                new PromptBuilder()
-                    .title(room.kind === 'GROUP' ? 'Group about' : 'Room about')
-                    .value(room.description || '')
-                    .callback(async (src) => {
-                        await client.mutateRoomUpdate({
-                            input: { description: src },
-                            roomId: room.id
-                        });
-                    })
-                    .show();
-            })
-            .show();
-    }, [room.id, room.title, room.photo, room.description]);
-
     const handleLeave = React.useCallback(() => {
         Alert.builder().title(`Are you sure you want to leave ${room.kind === 'GROUP' ? 'and delete' : ''} ${room.title}?`)
             .button('Cancel', 'cancel')
@@ -216,7 +147,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             {(room.role === 'ADMIN' || room.role === 'OWNER' || (room.role === 'MEMBER' && room.kind === 'GROUP')) && (
                 <SHeaderButton
                     title="Edit"
-                    onPress={handleEdit}
+                    onPress={() => props.router.push('EditGroup', { id: props.router.params.id })}
                 />
             )}
             <ZListItemHeader
