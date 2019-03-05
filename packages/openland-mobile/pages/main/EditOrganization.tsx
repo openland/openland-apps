@@ -58,14 +58,12 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     />
                 </ZAvatarPickerInputsGroup>
                 <View height={20} />
-                <View>
-                    <ZTextInput2
-                        field="input.about"
-                        placeholder="Add a short description"
-                        multiline={true}
-                        border={true}
-                    />
-                </View>
+                <ZTextInput2
+                    field="input.about"
+                    placeholder="Add a short description"
+                    multiline={true}
+                    border={true}
+                />
                 <View height={30} />
                 <ZListItemGroup>
                     <ZListItem text="Shortname" description={organization.shortname ? '@' + organization.shortname : 'Create'} path="SetOrgShortname" pathParams={{ id: organization.id }} />

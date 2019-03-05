@@ -62,14 +62,12 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     />
                 </ZAvatarPickerInputsGroup>
                 <View height={20} />
-                <View>
-                    <ZTextInput2
-                        field="input.about"
-                        placeholder="Add your bio"
-                        multiline={true}
-                        border={true}
-                    />
-                </View>
+                <ZTextInput2
+                    field="input.about"
+                    placeholder="Add your bio"
+                    multiline={true}
+                    border={true}
+                />
                 <View height={30} />
                 <ZListItemGroup>
                     <ZListItem text="Username" description={me!.shortname ? '@' + me!.shortname : 'Create'} path="SetUserShortname" />
