@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { withApp } from '../../components/withApp';
-import { View, Text, Platform } from 'react-native';
+import { View } from 'react-native';
 import { ZForm } from '../../components/ZForm';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZListItemBase } from '../../components/ZListItemBase';
-import { ZTextInput } from '../../components/ZTextInput';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { PageProps } from '../../components/PageProps';
 import { SHeader } from 'react-native-s/SHeader';
@@ -14,79 +11,7 @@ import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput2 } from 'openland-mobile/components/ZTextInput2';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
-
-export class ListItemEdit extends React.PureComponent<{
-    autoFocus?: boolean;
-    title: string;
-    value?: string;
-    valueStoreKey?: string;
-    field?: string;
-    onChange?: (val: string) => void;
-    placeholder?: string;
-}> {
-    render() {
-        return (
-            <ZListItemBase separator={false}>
-                <View flexDirection="row" alignItems="stretch" flexGrow={1}>
-                    <Text
-                        style={{
-                            width: 104,
-                            color: '#8a8a8f',
-                            fontSize: 13,
-                            lineHeight: 22,
-                            marginLeft: 16,
-                            alignSelf: 'center',
-                        }}
-                    >
-                        {this.props.title}
-                    </Text>
-                    <ZTextInput
-                        placeholder={this.props.placeholder}
-                        flexGrow={1}
-                        value={this.props.value}
-                        onChangeText={this.props.onChange}
-                        style={{ paddingRight: 15 }}
-                        field={this.props.field}
-                        valueStoreKey={this.props.valueStoreKey}
-                        autoFocus={this.props.autoFocus}
-                    />
-                </View>
-            </ZListItemBase>
-        );
-    }
-}
-
-const AvatarPickerInputGroup = (props: { avatarField: string; children?: any }) => {
-    if (Platform.OS === 'android') {
-        return (
-            <View style={{ marginTop: -2, paddingLeft: 16, height: 100, flexDirection: 'row' }}>
-                <View style={{ marginTop: 14 }}>
-                    <ZAvatarPicker field={props.avatarField} size={86} />
-                </View>
-                <View
-                    flex={1}
-                    flexDirection="column"
-                    justifyContent="center"
-                >
-                    {props.children}
-                </View>
-            </View>
-        );
-    }
-
-    return (
-        <View style={{ paddingLeft: 16, marginTop: 15, flexDirection: 'row' }}>
-            <ZAvatarPicker field={props.avatarField} />
-            <View
-                flex={1}
-                flexDirection="column"
-                justifyContent="center"
-            >
-                {props.children}
-            </View>
-        </View>
-    );
-}
+import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 
 const SettingsProfileContent = XMemo<PageProps>((props) => {
     let profile = getClient().useProfile().profile;
@@ -124,7 +49,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                     },
                 }}
             >
-                <AvatarPickerInputGroup avatarField="input.photoRef">
+                <ZAvatarPickerInputsGroup avatarField="input.photoRef">
                     <ZTextInput2
                         placeholder="First name"
                         field="input.firstName"
@@ -135,7 +60,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                         field="input.lastName"
                         border={true}
                     />
-                </AvatarPickerInputGroup>
+                </ZAvatarPickerInputsGroup>
                 <View height={20} />
                 <View>
                     <ZTextInput2
@@ -147,7 +72,7 @@ const SettingsProfileContent = XMemo<PageProps>((props) => {
                 </View>
                 <View height={30} />
                 <ZListItemGroup>
-                    <ZListItem text="Username" description={'@' + me!.shortname} path="SetUserShortname" />
+                    <ZListItem text="Username" description={me!.shortname ? '@' + me!.shortname : 'Create'} path="SetUserShortname" />
                     <ZListItem text="Primary organization" description={me!.primaryOrganization!.name} path="SelectPrimaryOrganization" />
                 </ZListItemGroup>
                 <View height={30} />

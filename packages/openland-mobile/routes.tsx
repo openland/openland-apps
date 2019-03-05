@@ -38,6 +38,7 @@ import { SelectPrimaryOrganization } from './pages/main/SelectPrimaryOrganizatio
 import { SetUserShortname } from './pages/main/SetUserShortname';
 import { SettingsAppearance } from './pages/main/SettingsAppearance';
 import { HomeDialogs } from './pages/main/HomeDialogs';
+import { SetOrgShortname } from './pages/main/SetOrgShortname';
 
 export const Routes = new SRoutesBuilder()
   .addRoute('Home', Home as any)
@@ -65,6 +66,7 @@ export const Routes = new SRoutesBuilder()
   .addRoute('GroupList', GroupList)
 
   .addRoute('SetUserShortname', SetUserShortname)
+  .addRoute('SetOrgShortname', SetOrgShortname)
   .addRoute('SelectPrimaryOrganization', SelectPrimaryOrganization)
 
   .addRoute('SignupUser', SignupUser)

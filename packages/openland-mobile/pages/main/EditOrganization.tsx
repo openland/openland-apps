@@ -5,18 +5,19 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ZForm } from '../../components/ZForm';
 import { ZListItemGroup } from '../../components/ZListItemGroup';
 import { View } from 'react-native';
-import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZTextInput } from '../../components/ZTextInput';
-import { AppStyles } from '../../styles/AppStyles';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
-import { ListItemEdit } from './SettingsProfile';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
+import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
+import { ZTextInput2 } from 'openland-mobile/components/ZTextInput2';
+import { ZListItem } from 'openland-mobile/components/ZListItem';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 const EditOrganizationComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
-    let org = getClient().useOrganizationProfile({ organizationId: props.router.params.id });
+    let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
+    let profile = getClient().useOrganizationProfile({ organizationId: props.router.params.id }).organizationProfile;
     return (
         <>
             <SHeader title="Edit organization" />
@@ -31,15 +32,15 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 }}
                 defaultData={{
                     input: {
-                        name: org.organizationProfile.name,
+                        name: profile.name,
                         photoRef: sanitizeImageRef(
-                            org.organizationProfile.photoRef,
+                            profile.photoRef,
                         ),
-                        about: org.organizationProfile.about,
-                        website: org.organizationProfile.website,
-                        twitter: org.organizationProfile.twitter,
-                        facebook: org.organizationProfile.facebook,
-                        linkedin: org.organizationProfile.linkedin,
+                        about: profile.about,
+                        website: profile.website,
+                        twitter: profile.twitter,
+                        facebook: profile.facebook,
+                        linkedin: profile.linkedin,
                     },
                 }}
                 staticData={{
@@ -49,54 +50,56 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                     props.router.back();
                 }}
             >
-                <View>
-                    <View
-                        alignSelf="center"
-                        marginTop={30}
-                        marginBottom={10}
-                    >
-                        <ZAvatarPicker field="input.photoRef" />
-                    </View>
-                    <ZTextInput
-                        marginLeft={16}
-                        marginTop={21}
+                <ZAvatarPickerInputsGroup avatarField="input.photoRef">
+                    <ZTextInput2
                         placeholder="Organization name"
                         field="input.name"
-                        height={44}
-                        style={{ fontSize: 16 }}
+                        border={true}
                     />
-                    <View
-                        marginLeft={16}
-                        height={1}
-                        alignSelf="stretch"
-                        backgroundColor={AppStyles.separatorColor}
+                </ZAvatarPickerInputsGroup>
+                <View height={20} />
+                <View>
+                    <ZTextInput2
+                        field="input.about"
+                        placeholder="Add a short description"
+                        multiline={true}
+                        border={true}
                     />
-                    <ZListItemGroup>
-                        <ListItemEdit
-                            title="About"
-                            field="input.about"
-                        />
-                        <ListItemEdit
-                            title="Link"
-                            field="input.website"
-                        />
-                        <ListItemEdit
-                            title="Twitter"
-                            field="input.twitter"
-                        />
-                        <ListItemEdit
-                            title="Facebook"
-                            field="input.facebook"
-                        />
-                        <ListItemEdit
-                            title="Linkedin"
-                            field="input.linkedin"
-                        />
-                    </ZListItemGroup>
+                </View>
+                <View height={30} />
+                <ZListItemGroup>
+                    <ZListItem text="Shortname" description={organization.shortname ? '@' + organization.shortname : 'Create'} path="SetOrgShortname" pathParams={{ id: organization.id }} />
+                </ZListItemGroup>
+                <View height={30} />
+                <View>
+                    <ZTextInput2
+                        title="Website"
+                        field="input.website"
+                        placeholder="Add a link"
+                        border={true}
+                    />
+                    <ZTextInput2
+                        title="Twitter"
+                        field="input.twitter"
+                        placeholder="Add Twitter handle"
+                        border={true}
+                    />
+                    <ZTextInput2
+                        title="Facebook"
+                        field="input.facebook"
+                        placeholder="Add Facebook account"
+                        border={true}
+                    />
+                    <ZTextInput2
+                        title="Linkedin"
+                        field="input.linkedin"
+                        placeholder="Add Linkedin account"
+                        border={true}
+                    />
                 </View>
             </ZForm>
         </>
     )
 });
 
-export const EditOrganization = withApp(EditOrganizationComponent);
+export const EditOrganization = withApp(EditOrganizationComponent, { navigationAppearance: 'small' });
