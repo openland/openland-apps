@@ -27,9 +27,5 @@ export function isEmoji(src: string) {
     if (isTextEmoji(src)) {
         return true;
     }
-
-    if (isUnicodeEmoji(src)) {
-        return true;
-    }
-    return false;
+    return !!isUnicodeEmoji(src);
 }

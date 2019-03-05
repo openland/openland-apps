@@ -8,7 +8,7 @@ export interface ServiceMessageLeftProps {
     myUserId: string;
 }
 
-export const ServiceMessageLeft = (props: ServiceMessageLeftProps) => {
+export const ServiceMessageLeft = React.memo((props: ServiceMessageLeftProps) => {
     return (
         <Container>
             {props.kickedByUser.id === props.kickedUser.id ? (
@@ -34,4 +34,4 @@ export const ServiceMessageLeft = (props: ServiceMessageLeftProps) => {
             )}
         </Container>
     );
-};
+});

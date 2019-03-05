@@ -32,8 +32,8 @@ const CardsWrapper = XMemo<{ children: any }>(props => {
     return isMobile ? (
         <XVertical separator={8}>{props.children}</XVertical>
     ) : (
-            <XHorizontal separator={8}>{props.children}</XHorizontal>
-        );
+        <XHorizontal separator={8}>{props.children}</XHorizontal>
+    );
 });
 
 const CardText = (props: { children?: any }) => (
@@ -77,18 +77,48 @@ const TextAreaTitle = (props: { children?: any }) => (
 class MakeWebFastCheckbox extends React.PureComponent<{}, { fast: boolean }> {
     constructor(props: any) {
         super(props);
-        this.state = { fast: canUseDOM && localStorage.getItem('meke_web_great_again') === 'true' }
+        this.state = { fast: canUseDOM && localStorage.getItem('meke_web_great_again') === 'true' };
     }
 
-    onChange = (checked: { label: string, checked: boolean }) => {
+    onChange = (checked: { label: string; checked: boolean }) => {
         localStorage.setItem('meke_web_great_again', checked.checked ? 'true' : 'false');
         this.setState({ fast: checked.checked });
         EmojiFlags.ignoreEmojione = checked.checked;
-    }
+    };
 
     render() {
-        return <XCheckbox label="Make web great again" checked={this.state.fast} onChange={this.onChange} />
+        return (
+            <XCheckbox
+                label="Make web great again"
+                checked={this.state.fast}
+                onChange={this.onChange}
+            />
+        );
+    }
+}
 
+class HighlightSecretChat extends React.PureComponent<{}, { highlight: boolean }> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            highlight: canUseDOM && localStorage.getItem('highlight_secret_chat') === 'true',
+        };
+    }
+
+    onChange = (checked: { label: string; checked: boolean }) => {
+        localStorage.setItem('highlight_secret_chat', checked.checked ? 'true' : 'false');
+        this.setState({ highlight: checked.checked });
+        EmojiFlags.ignoreEmojione = checked.checked;
+    };
+
+    render() {
+        return (
+            <XCheckbox
+                label="Highlight secret chat"
+                checked={this.state.highlight}
+                onChange={this.onChange}
+            />
+        );
     }
 }
 
@@ -343,7 +373,10 @@ export default withApp(
                                                     </XView>
                                                 </CardText>
                                             )}
-                                        <MakeWebFastCheckbox />
+                                        <XVertical separator={2}>
+                                            <MakeWebFastCheckbox />
+                                            <HighlightSecretChat />
+                                        </XVertical>
                                     </CardsWrapper>
                                 </XWithRole>
                             </XVertical>

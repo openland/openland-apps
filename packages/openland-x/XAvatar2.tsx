@@ -34,7 +34,7 @@ const PlaceholderFontSize = {
     24: 12,
 };
 
-const AvatarPlaceholder = (props: XAvatar2Props) => {
+const AvatarPlaceholder = React.memo((props: XAvatar2Props) => {
     let ph = extractPlaceholder(props.title);
     let phIndex = Math.abs(doSimpleHash(props.id)) % PlaceholderColor.length;
 
@@ -58,7 +58,7 @@ const AvatarPlaceholder = (props: XAvatar2Props) => {
             })}
         </XView>
     );
-};
+});
 
 const AvatarImage = (props: XAvatar2Props) => {
     let baseUrl = props.src;

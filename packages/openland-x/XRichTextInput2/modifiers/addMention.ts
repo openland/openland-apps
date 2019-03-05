@@ -27,7 +27,10 @@ export function findActiveWord(state: EditorState): string | undefined {
     if (!selection.getHasFocus()) {
         return undefined;
     }
-    let text = content.getBlockForKey(selection.getStartKey()).getText();
+    let text = content
+        .getBlockForKey(selection.getStartKey())
+        .getText()
+        .toLowerCase();
     let startIndex = findActiveWordStart(state);
     let res = text.substring(startIndex, selection.getEndOffset());
     if (res.length === 0) {

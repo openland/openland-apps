@@ -35,6 +35,7 @@ import { useHandleChange } from './useHandleChange';
 import { useMentions } from './useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
+import { UploadContext } from './FileUploading/UploadContext';
 
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
@@ -65,6 +66,11 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const inputRef = React.useRef<XRichTextInput2RefMethods>(null);
     const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
+    const { file } = React.useContext(UploadContext);
+
+    if (file) {
+        inputMethodsState.focusIfNeeded();
+    }
 
     const draftState = useDraft(messageComposeProps);
 
@@ -117,14 +123,17 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
-    React.useEffect(() => {
-        if (messageComposeProps.isActive) {
-            messagesContext.changeForwardConverstion();
-            setInputValue(hasReply() ? draftState.getNextDraft() : '');
-            draftState.setBeDrafted(hasReply());
-            inputMethodsState.focusIfNeeded();
-        }
-    }, [messageComposeProps.isActive]);
+    React.useEffect(
+        () => {
+            if (messageComposeProps.isActive) {
+                messagesContext.changeForwardConverstion();
+                setInputValue(hasReply() ? draftState.getNextDraft() : '');
+                draftState.setBeDrafted(hasReply());
+                inputMethodsState.focusIfNeeded();
+            }
+        },
+        [messageComposeProps.isActive],
+    );
 
     return (
         <>

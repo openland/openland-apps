@@ -33,7 +33,7 @@ function preprocessSpaces(text: string): string {
     return res;
 }
 
-export function useNonBreakingSpaces (text?: string): string | undefined {
+export function useNonBreakingSpaces(text?: string): string | undefined {
     if (typeof text === 'string') {
         return text.replace(/ /g, "\u00a0");
     }
