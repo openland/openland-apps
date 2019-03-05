@@ -48,7 +48,7 @@ export class Init extends React.Component<PageProps, { state: 'start' | 'loading
             return;
         }
         this.resolving = true;
-        if (this.pendingDeepLink) {
+        if (this.pendingDeepLink && state !== 'loading' && state !== 'start') {
             let userToken: string | undefined = await AsyncStorage.getItem('openland-token');
             let acc = userToken && await backoff(async () => await getClient().queryAccount());
             if (!acc || !acc.me || !acc.sessionState.isAccountExists) {

@@ -5,43 +5,59 @@ import { randomEmptyPlaceholderEmoji } from './tolerance';
 import { AsyncStorage } from 'react-native';
 import { formatError } from 'openland-y-forms/errorHandling';
 import { next } from 'openland-mobile/pages/auth/signup';
+import UrlPattern from 'url-pattern';
+import UrlParse from 'url-parse';
 
-// import * as UrlParse from 'url-parse'
-let urlParse = require('url-parse');
 export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
-    let link = srcLink.toLowerCase();
-    // 
-    // JOIN ROOMS
-    //
-    if (link.includes('openland.com/joinchannel/') || link.includes('openland://deep/joinroom/')) {
-        return async () => {
-            startLoader();
-            try {
-                let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
-                let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: uuid });
-                if (info && info.invite) {
-                    let roomId = info.invite.room.id;
-                    getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: uuid });
-                } else {
-                    Alert.alert('Invite not found');
-                }
-            } catch (e) {
-                Alert.alert(e.message);
-            }
-            stopLoader();
-        };
-    }
+    return async () => {
+        let resolved = false;
+        let link = srcLink.toLowerCase();
+        if (link.includes('?')) {
+            link = link.split('?')[0]
+        }
+        let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
+        let patternBaseDeep = 'openland\\://deep/';
 
-    //
-    // JOIN ORGANIZATION
-    //
-    // waiting fot web implement org invite page
-    if (link.includes('openland.com/join/') || link.includes('openland://deep/joinorg/')) {
-        return async () => {
+        // 
+        // JOIN ROOMS
+        //
+        try {
+            let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
+            let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
+            let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
+
+            if (match && match.invite) {
+                resolved = true;
+                startLoader();
+                try {
+                    let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
+                    if (info && info.invite) {
+                        let roomId = info.invite.room.id;
+                        getMessenger().history.navigationManager.pushAndReset('Conversation', { flexibleId: roomId, invite: match.invite });
+                    } else {
+                        Alert.alert('Invite not found');
+                    }
+                } catch (e) {
+                    Alert.alert(e.message);
+                }
+                stopLoader();
+            }
+        } catch (e) {
+            Alert.alert(e.message);
+        }
+
+        //
+        // JOIN ORGANIZATION
+        //
+        let orgInvitePattern = new UrlPattern(patternBase + 'join/:invite');
+        let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinorg/:invite');
+        let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
+
+        if (matchOrg && matchOrg.invite) {
+            resolved = true;
             startLoader();
             try {
-                let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
-                let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: uuid });
+                let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
                 if (info && info.invite) {
                     let orgId = info.invite.orgId;
                     stopLoader();
@@ -50,7 +66,7 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                         .message((info.invite.creator ? info.invite.creator.name : 'someone') + ' invites you to join ' + info.invite.title)
                         .button('Cancel', 'cancel')
                         .action('Accept invitation', 'default', async () => {
-                            await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: uuid });
+                            await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: matchOrg.invite });
                         })
                         .show();
                 } else {
@@ -60,80 +76,81 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
                 Alert.alert(e.message);
             }
             stopLoader();
-        };
-    }
+        }
 
-    //
-    // PROFILE ORGANIZATION
-    //
-    if (link.includes('openland.com/directory/o') || link.includes('openland.com/mail/o')) {
-        return async () => {
-            let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
-            getMessenger().history.navigationManager.push('ProfileOrganization', { id: uuid });
-        };
-    }
+        //
+        // PROFILE ORGANIZATION
+        //
+        let profileOrgPattern = new UrlPattern(patternBase + '(mail)(directory)/o/:id');
+        let matchOrgProfile = profileOrgPattern.match(link);
+        if (matchOrgProfile && matchOrgProfile.id) {
+            resolved = true;
+            getMessenger().history.navigationManager.push('ProfileOrganization', { id: matchOrgProfile.id });
+        }
 
-    //
-    // PROFILE USER
-    //
-    if (link.includes('openland.com/directory/u') || link.includes('openland.com/mail/u')) {
-        return async () => {
-            let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
-            getMessenger().history.navigationManager.push('ProfileUser', { id: uuid });
-        };
-    }
+        //
+        // PROFILE USER
+        //
+        let profileUserPattern = new UrlPattern(patternBase + '(mail)(directory)/u/:id');
+        let matchUserProfile = profileUserPattern.match(link);
+        if (matchUserProfile && matchUserProfile.id) {
+            resolved = true;
+            getMessenger().history.navigationManager.push('ProfileUser', { id: matchUserProfile.id });
+        }
 
-    //
-    // SHORT_NAME
-    //
-    if (link.includes('openland.com/')) {
-        let split = srcLink.split('openland.com/');
-        let shortName = split[split.length - 1];
-        if (!shortName.includes('/')) {
-            return async () => {
-                startLoader();
-                try {
-                    let info = await getMessenger().engine.client.queryResolveShortName({ shortname: shortName });
-                    if (info && info.item) {
-                        if (info.item.__typename === 'User') {
-                            getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.item.id });
-                        } else if (info.item.__typename === 'Organization') {
-                            getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
-                        }
+        //
+        // SHORT_NAME
+        //
+        let shortNamePattern = new UrlPattern(patternBase + ':shortname');
+        let matchShortName = shortNamePattern.match(link);
+        if (matchShortName && matchShortName.shortname) {
+            resolved = true;
+            startLoader();
+            try {
+                let info = await getMessenger().engine.client.queryResolveShortName({ shortname: matchShortName.shortname });
+                if (info && info.item) {
+                    if (info.item.__typename === 'User') {
+                        getMessenger().history.navigationManager.pushAndReset('ProfileUser', { id: info.item.id });
+                    } else if (info.item.__typename === 'Organization') {
+                        getMessenger().history.navigationManager.pushAndReset('ProfileOrganization', { id: info.item.id });
                     } else {
                         Alert.alert('No such user or organization')
                     }
-                } catch (e) {
-                    Alert.alert(e.message);
                 }
-                stopLoader();
-            };
+            } catch (e) {
+                Alert.alert(e.message);
+            }
+            stopLoader();
         }
-    }
 
-    //
-    // Sharing
-    //
-    if (link.includes('openland://deep/share')) {
-        try {
-            let url = urlParse(srcLink, true);
-            let dataStr = url.query.data;
-            if (dataStr) {
-                let data = JSON.parse(dataStr);
+        //
+        // Sharing
+        //
+        let sharePattern = new UrlPattern(patternBaseDeep + 'share');
+        let matchShare = sharePattern.match(link);
+        if (matchShare) {
+            resolved = true;
+            try {
+                let url = new UrlParse(srcLink, true);
+                let dataStr = url.query.data;
+                if (dataStr) {
+                    let data = JSON.parse(dataStr);
 
-                getMessenger().history.navigationManager.pushAndReset('HomeDialogs', { share: data });
-            } else {
-                Alert.alert('Nothing to share ' + randomEmptyPlaceholderEmoji());
+                    getMessenger().history.navigationManager.pushAndReset('HomeDialogs', { share: data });
+                } else {
+                    Alert.alert('Nothing to share ' + randomEmptyPlaceholderEmoji());
+                }
+
+            } catch (e) {
+                Alert.alert(e.message);
             }
 
-        } catch (e) {
-            Alert.alert(e.message);
         }
-        // getMessenger().history.navigationManager.push('HomeDialogs', data);
 
+        if (!resolved && fallback) {
+            await fallback();
+        }
     }
-
-    return fallback;
 };
 
 export let saveLinkIfInvite = async (srcLink: string) => {
@@ -151,14 +168,21 @@ export let saveLinkIfInvite = async (srcLink: string) => {
 export const joinInviteIfHave = async () => {
     let srcLink = await AsyncStorage.getItem('initial_invite_link');
     let link = srcLink.toLowerCase();
+    if (link.includes('?')) {
+        link = link.split('?')[0]
+    }
+    let patternBase = '(http(s)\\://)(:subdomain.)openland.com/';
+    let patternBaseDeep = 'openland\\://deep/';
     // 
     // JOIN ROOMS
     //
-    if (link.includes('openland.com/joinchannel/') || link.includes('openland://deep/joinroom/')) {
+    let roomInvitePattern = new UrlPattern(patternBase + 'joinChannel/:invite');
+    let roomInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinroom/:invite');
+    let match = roomInvitePattern.match(link) || roomInvitePatternDeep.match(srcLink);
+    if (match && match.invite) {
         try {
-            let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
             startLoader();
-            let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: uuid });
+            let info = await getMessenger().engine.client.queryRoomInviteInfo({ invite: match.invite });
             stopLoader();
             if (info && info.invite) {
                 Alert.builder()
@@ -166,7 +190,7 @@ export const joinInviteIfHave = async () => {
                     .message(info.invite.invitedByUser.name + ' invites you to join ' + info.invite.room.title)
                     .button('Cancel', 'cancel')
                     .action('Accept invitation', 'default', async () => {
-                        await getMessenger().engine.client.mutateRoomJoinInviteLink({ invite: uuid });
+                        await getMessenger().engine.client.mutateRoomJoinInviteLink({ invite: match.invite });
                         await next(getMessenger().history.navigationManager);
                     })
                     .show();
@@ -182,11 +206,13 @@ export const joinInviteIfHave = async () => {
     //
     // JOIN ORGANIZATION
     //
-    if (link.includes('openland.com/join/') || link.includes('openland://deep/joinorg/')) {
+    let orgInvitePattern = new UrlPattern(patternBase + 'join/:invite');
+    let orgInvitePatternDeep = new UrlPattern(patternBaseDeep + 'joinorg/:invite');
+    let matchOrg = orgInvitePattern.match(link) || orgInvitePatternDeep.match(srcLink);
+    if (matchOrg && matchOrg.invite) {
         try {
-            let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
             stopLoader();
-            let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: uuid });
+            let info = await getMessenger().engine.client.queryAccountInviteInfo({ inviteKey: matchOrg.invite });
             stopLoader();
             if (info && info.invite) {
                 let orgId = info.invite.orgId;
@@ -195,7 +221,7 @@ export const joinInviteIfHave = async () => {
                     .message((info.invite.creator ? info.invite.creator.name : 'someone') + ' invites you to join ' + info.invite.title)
                     .button('Cancel', 'cancel')
                     .action('Accept invitation', 'default', async () => {
-                        await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: uuid });
+                        await getMessenger().engine.client.mutateAccountInviteJoin({ inviteKey: matchOrg.invite });
                         await next(getMessenger().history.navigationManager);
                     })
                     .show();
@@ -211,11 +237,12 @@ export const joinInviteIfHave = async () => {
     //
     // JOIN GLOBAL INVITE
     //
-    if (link.includes('openland.com/invite')) {
+    let globalInvitePattern = new UrlPattern(patternBase + 'invite/:invite');
+    let matchGlobal = globalInvitePattern.match(link);
+    if (matchGlobal && matchGlobal.invite) {
         try {
-            let uuid = srcLink.split('/')[srcLink.split('/').length - 1];
             startLoader();
-            await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: uuid });
+            await getMessenger().engine.client.mutateOrganizationActivateByInvite({ inviteKey: matchGlobal.invite });
             await next(getMessenger().history.navigationManager);
             stopLoader();
         } catch (e) {
