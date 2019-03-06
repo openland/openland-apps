@@ -67,11 +67,18 @@ export class ZForm extends React.PureComponent<ZFormProps> {
                 onSuccess={this.props.onSuccess}
                 onError={this.props.onError}
             >
-                <SScrollView>
-                    <KeyboardAvoidingView behavior="position">
+                {Platform.OS === 'android' &&
+                    <SScrollView safeAreaViaMargin={true}>
                         {this.props.children}
-                    </KeyboardAvoidingView>
-                </SScrollView>
+                    </SScrollView>
+                }
+
+                {Platform.OS === 'ios' && <KeyboardAvoidingView flexGrow={1} behavior={'padding'} >
+                    <SScrollView>
+                        {this.props.children}
+                    </SScrollView>
+                </KeyboardAvoidingView>}
+
             </YForm >
         );
     }
