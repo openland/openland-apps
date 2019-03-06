@@ -14,7 +14,7 @@ import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 export const GreenErrorText = (props: { text: string }) => (
     <Text
         style={{
-            color: '#6cb83d',
+            color: '#1daf30',
             fontSize: 13,
             lineHeight: 17,
             paddingHorizontal: 16,
