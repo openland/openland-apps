@@ -8,7 +8,18 @@ import { makeNavigable, NavigableParentProps } from './Navigable';
 import { makeActionable, ActionableParentProps } from './Actionable';
 
 export type XButtonSize = 'large' | 'default' | 'small' | 'tiny';
-export type XButtonStyle = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'ghost' | 'electric' | 'flat' | 'light' | 'link' | 'link-danger';
+export type XButtonStyle =
+    | 'default'
+    | 'primary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'ghost'
+    | 'electric'
+    | 'flat'
+    | 'light'
+    | 'link'
+    | 'link-danger';
 export type XButtonTooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface XButtonStyleProps extends XFlexStyles {
@@ -27,75 +38,79 @@ export interface XButtonStyleProps extends XFlexStyles {
     insaneMode?: boolean;
 }
 
-export type XButtonProps = ActionableParentProps<NavigableParentProps<XButtonStyleProps & { pressed?: boolean; dataTestId?: string }>>;
+export type XButtonProps = ActionableParentProps<
+    NavigableParentProps<XButtonStyleProps & { pressed?: boolean; dataTestId?: string }>
+>;
 
 let iconsIndentation = styleResolver({
-    'large': {
+    large: {
         marginLeft: -4,
-        marginRight: 4
+        marginRight: 4,
     },
-    'default': {
+    default: {
         marginLeft: -2,
-        marginRight: 4
+        marginRight: 4,
     },
-    'small': {
+    small: {
         marginLeft: -2,
-        marginRight: 4
+        marginRight: 4,
     },
-    'tiny': {
+    tiny: {
         marginLeft: -2,
-        marginRight: 4
-    }
+        marginRight: 4,
+    },
 });
 
 let iconsIndentationRight = styleResolver({
-    'large': {
+    large: {
         marginRight: -4,
-        marginLeft: 8
+        marginLeft: 8,
     },
-    'default': {
+    default: {
         marginRight: -2,
-        marginLeft: 8
+        marginLeft: 8,
     },
-    'small': {
+    small: {
         marginRight: -2,
-        marginLeft: 8
+        marginLeft: 8,
     },
-    'tiny': {
+    tiny: {
         marginRight: -2,
-        marginLeft: 8
-    }
+        marginLeft: 8,
+    },
 });
 
-let borderRadiusStyles = styleResolverWithProps((props: { attach?: 'left' | 'right' | 'both' }) => ({
-    'large': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
-    },
-    'default': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
-    },
-    'small': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 14,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 14,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 14,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 14,
-    },
-    'tiny': {
-        borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
-        borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
-        borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
-        borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
-    }
-}));
+let borderRadiusStyles = styleResolverWithProps(
+    (props: { attach?: 'left' | 'right' | 'both' }) => ({
+        large: {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 20,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 20,
+        },
+        default: {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 16,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 16,
+        },
+        small: {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 14,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 14,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 14,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 14,
+        },
+        tiny: {
+            borderTopLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
+            borderBottomLeftRadius: props.attach === 'both' || props.attach === 'left' ? 0 : 9,
+            borderTopRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
+            borderBottomRightRadius: props.attach === 'both' || props.attach === 'right' ? 0 : 9,
+        },
+    }),
+);
 
 let sizeStyles = styleResolver({
-    'large': {
+    large: {
         height: 40,
         lineHeight: '38px',
         fontSize: 15,
@@ -103,20 +118,20 @@ let sizeStyles = styleResolver({
         fontWeight: 600,
         '& .button-content': {
             paddingLeft: 20,
-            paddingRight: 20
+            paddingRight: 20,
         },
         '& .icon.material': {
-            fontSize: 24
+            fontSize: 24,
         },
         '& .loading-icon': {
             width: 40,
             height: 40,
             lineHeight: 'normal',
             top: 'calc(50% - 20px)',
-            left: 'calc(50% - 20px)'
-        }
+            left: 'calc(50% - 20px)',
+        },
     },
-    'default': {
+    default: {
         height: 32,
         lineHeight: '30px',
         fontSize: 13,
@@ -124,20 +139,20 @@ let sizeStyles = styleResolver({
         fontWeight: 600,
         '& .button-content': {
             paddingLeft: 16,
-            paddingRight: 16
+            paddingRight: 16,
         },
         '& .icon.material': {
-            fontSize: 20
+            fontSize: 20,
         },
         '& .loading-icon': {
             width: 32,
             height: 32,
             lineHeight: 'normal',
             top: 'calc(50% - 16px)',
-            left: 'calc(50% - 16px)'
-        }
+            left: 'calc(50% - 16px)',
+        },
     },
-    'small': {
+    small: {
         height: 28,
         lineHeight: '26px',
         fontSize: 13,
@@ -145,20 +160,20 @@ let sizeStyles = styleResolver({
         fontWeight: 600,
         '& .button-content': {
             paddingLeft: 12,
-            paddingRight: 12
+            paddingRight: 12,
         },
         '& .icon.material': {
-            fontSize: 16
+            fontSize: 16,
         },
         '& .loading-icon': {
             width: 28,
             height: 28,
             lineHeight: 'normal',
             top: 'calc(50% - 14px)',
-            left: 'calc(50% - 14px)'
-        }
+            left: 'calc(50% - 14px)',
+        },
     },
-    'tiny': {
+    tiny: {
         height: 18,
         lineHeight: '16px',
         fontSize: 11,
@@ -166,366 +181,356 @@ let sizeStyles = styleResolver({
         fontWeight: 600,
         '& .button-content': {
             paddingLeft: 9,
-            paddingRight: 9
+            paddingRight: 9,
         },
         '& .icon.material': {
-            fontSize: 12
+            fontSize: 12,
         },
         '& .loading-icon': {
             width: 18,
             height: 18,
             lineHeight: 'normal',
             top: 'calc(50% - 9px)',
-            left: 'calc(50% - 9px)'
-        }
-    }
+            left: 'calc(50% - 9px)',
+        },
+    },
 });
 
 let colorStyles = styleResolver({
-    'default': {
+    default: {
         backgroundColor: '#f6f6f6',
         color: 'rgba(0, 0, 0, 0.7)',
         border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: '#e6e9ec',
-            color: 'rgba(0, 0, 0, 0.7)'
+            color: 'rgba(0, 0, 0, 0.7)',
         },
         '&:active': {
             backgroundColor: '#1790ff',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'primary': {
+    primary: {
         backgroundColor: '#1790ff',
         color: '#ffffff',
         border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: '#1585ed',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:active': {
             backgroundColor: '#147ee0',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'success': {
+    success: {
         backgroundColor: '#69d06d',
         color: '#ffffff',
         border: 'solid 1px transparent',
         cursor: 'default',
         '&:hover': {
             backgroundColor: '#69d06d',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:active': {
             backgroundColor: '#69d06d',
-            color: '#ffffff'
-        }
+            color: '#ffffff',
+        },
     },
-    'warning': {
+    warning: {
         backgroundColor: '#ffab00',
         color: '#ffffff',
         border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: '#e59900',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:active': {
             backgroundColor: '#cc8800',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'danger': {
+    danger: {
         backgroundColor: '#d75454',
         color: '#ffffff',
         border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: '#ec6262',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:active': {
             backgroundColor: '#c54f4f',
-            color: '#ffffff'
+            color: '#ffffff',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'ghost': {
+    ghost: {
         backgroundColor: '#ffffff',
         color: 'rgba(0, 0, 0, 0.7)',
         border: 'solid 1px rgba(0, 0, 0, 0.07)',
         '&:hover': {
             backgroundColor: 'rgba(23, 144, 255, 0.08)',
             color: 'rgba(23, 144, 255, 0.9)',
-            borderColor: 'transparent'
+            borderColor: 'transparent',
         },
         '&:active': {
             backgroundColor: '#1790ff',
             color: '#ffffff',
-            borderColor: 'transparent'
+            borderColor: 'transparent',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'electric': {
+    electric: {
         backgroundColor: '#ffffff',
         color: 'rgba(23, 144, 255, 0.9)',
         border: 'solid 1px #1790ff',
         '&:hover': {
             backgroundColor: 'rgba(23, 144, 255, 0.08)',
-            color: 'rgba(23, 144, 255, 0.9)'
+            color: 'rgba(23, 144, 255, 0.9)',
         },
         '&:active': {
             backgroundColor: '#1790ff',
             color: '#ffffff',
-            borderColor: 'transparent'
+            borderColor: 'transparent',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'flat': {
+    flat: {
         backgroundColor: 'transparent',
         color: 'rgba(0, 0, 0, 0.7)',
         border: 'solid 1px transparent',
         '&:hover': {
             color: 'rgba(0, 0, 0, 0.7)',
-            border: 'solid 1px rgba(0, 0, 0, 0.07)'
+            border: 'solid 1px rgba(0, 0, 0, 0.07)',
         },
         '&:active': {
             backgroundColor: 'rgba(23, 144, 255, 0.08)',
             color: 'rgba(23, 144, 255, 0.9)',
-            borderColor: 'transparent'
+            borderColor: 'transparent',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'light': {
+    light: {
         backgroundColor: 'rgba(23, 144, 255, 0.08)',
         color: 'rgba(23, 144, 255, 0.9)',
         border: 'solid 1px transparent',
         '&:hover': {
             backgroundColor: 'rgba(23, 144, 255, 0.12)',
-            color: 'rgba(23, 144, 255, 0.9)'
+            color: 'rgba(23, 144, 255, 0.9)',
         },
         '&:active': {
             backgroundColor: 'rgba(23, 144, 255, 0.16)',
-            color: 'rgba(23, 144, 255, 0.9)'
+            color: 'rgba(23, 144, 255, 0.9)',
         },
         '&:focus': {
-            boxShadow: '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
-        }
+            boxShadow:
+                '0 0 0 1px rgba(50,151,211,.2), 0 0 0 2px rgba(50,151,211,.25), 0 2px 5px 0 rgba(0,0,0,.1), 0 0 0 0 transparent, 0 0 0 0 transparent',
+        },
     },
-    'link': {
+    link: {
         color: 'rgba(23, 144, 255, 0.9)',
         border: 'solid 1px transparent',
         '&:hover': {
             color: 'rgba(23, 144, 255, 0.9)',
-            textDecoration: 'underline'
+            textDecoration: 'underline',
         },
         '&:active': {
             color: 'rgba(23, 144, 255, 0.9)',
-            textDecoration: 'underline'
+            textDecoration: 'underline',
         },
         '&:focus': {
             color: 'rgba(23, 144, 255, 0.9)',
-            textDecoration: 'underline'
-        }
+            textDecoration: 'underline',
+        },
     },
     'link-danger': {
         color: '#d75454',
         border: 'solid 1px transparent',
         '&:hover': {
             color: '#d75454',
-            textDecoration: 'underline'
+            textDecoration: 'underline',
         },
         '&:active': {
             color: '#d75454',
-            textDecoration: 'underline'
+            textDecoration: 'underline',
         },
         '&:focus': {
             color: '#d75454',
-            textDecoration: 'underline'
-        }
+            textDecoration: 'underline',
+        },
     },
 });
 
 let colorDisabledStyles = styleResolver({
-    'default': {
+    default: {
         backgroundColor: '#f6f6f6 !important',
         color: 'rgba(0, 0, 0, 0.4) !important',
         border: 'solid 1px transparent !important',
     },
-    'primary': {
+    primary: {
         backgroundColor: '#45a6ff !important',
         color: 'rgba(255, 255, 255, 0.5) !important',
         border: 'solid 1px transparent !important',
     },
-    'success': {
-    },
-    'warning': {
+    success: {},
+    warning: {
         opacity: 0.5,
         backgroundColor: '#ffab00 !important',
         color: '#ffffff !important',
         border: 'solid 1px transparent !important',
     },
-    'danger': {
+    danger: {
         backgroundColor: '#e28787 !important',
         color: 'rgba(255, 255, 255, 0.7) !important',
         border: 'solid 1px transparent !important',
     },
-    'ghost': {
+    ghost: {
         backgroundColor: '#ffffff !important',
         color: 'rgba(0, 0, 0, 0.4) !important',
         border: 'solid 1px rgba(0, 0, 0, 0.07) !important',
     },
-    'electric': {
+    electric: {
         backgroundColor: '#ffffff !important',
         color: 'rgba(23, 144, 255, 0.4) !important',
         border: 'solid 1px rgba(23, 144, 255, 0.5) !important',
     },
-    'flat': {
+    flat: {
         backgroundColor: '#ffffff !important',
         color: 'rgba(0, 0, 0, 0.4) !important',
         border: 'solid 1px transparent !important',
     },
-    'light': {
+    light: {
         backgroundColor: 'rgba(23, 144, 255, 0.08) !important',
         color: 'rgba(23, 144, 255, 0.4) !important',
         border: 'solid 1px transparent !important',
     },
-    'link': {
-    },
-    'link-danger': {
-    }
+    link: {},
+    'link-danger': {},
 });
 
 let colorPressedStyles = styleResolver({
-    'default': {
+    default: {
         backgroundColor: '#1790ff !important',
         border: 'solid 1px transparent !important',
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
-    'primary': {
+    primary: {
         backgroundColor: '#147ee0 !important',
         border: 'solid 1px transparent !important',
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
-    'success': {
-    },
-    'warning': {
+    success: {},
+    warning: {
         backgroundColor: '#cc8800 !important',
         border: 'solid 1px transparent !important',
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
-    'danger': {
+    danger: {
         backgroundColor: '#c54f4f !important',
         border: 'solid 1px transparent !important',
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
-    'ghost': {
+    ghost: {
         backgroundColor: '#1790ff !important',
         border: 'solid 1px transparent !important',
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
-    'electric': {
+    electric: {
         backgroundColor: '#1790ff !important',
         border: 'solid 1px transparent !important',
-        color: '#ffffff !important'
+        color: '#ffffff !important',
     },
-    'flat': {
+    flat: {
         backgroundColor: 'rgba(23, 144, 255, 0.08) !important',
         border: 'solid 1px transparent !important',
-        color: 'rgba(23, 144, 255, 0.9) !important'
+        color: 'rgba(23, 144, 255, 0.9) !important',
     },
-    'light': {
+    light: {
         backgroundColor: 'rgba(23, 144, 255, 0.16) !important',
         border: 'solid 1px transparent !important',
-        color: 'rgba(23, 144, 255, 0.9) !important'
+        color: 'rgba(23, 144, 255, 0.9) !important',
     },
-    'link': {
-    },
-    'link-danger': {
-    }
+    link: {},
+    'link-danger': {},
 });
 
 let colorResponsiveStyles = styleResolver({
-    'default': {
-    },
-    'primary': {
-    },
-    'success': {
-    },
-    'danger': {
-    },
-    'ghost': {
-    },
-    'electric': {
-    },
-    'flat': {
-    },
-    'light': {
-    },
-    'link': {
-    },
-    'link-danger': {
-    }
+    default: {},
+    primary: {},
+    success: {},
+    danger: {},
+    ghost: {},
+    electric: {},
+    flat: {},
+    light: {},
+    link: {},
+    'link-danger': {},
 });
 
 let loaderStyles = styleResolver({
-    'default': {
-        color: '#334562'
+    default: {
+        color: '#334562',
     },
-    'primary': {
-        color: '#ffffff'
+    primary: {
+        color: '#ffffff',
     },
-    'success': {
-        color: '#ffffff'
+    success: {
+        color: '#ffffff',
     },
-    'warning': {
-        color: '#ffffff'
+    warning: {
+        color: '#ffffff',
     },
-    'danger': {
-        color: '#ffffff'
+    danger: {
+        color: '#ffffff',
     },
-    'ghost': {
-        color: '#334562'
+    ghost: {
+        color: '#334562',
     },
-    'electric': {
-        color: '#1790ff'
+    electric: {
+        color: '#1790ff',
     },
-    'flat': {
-        color: '#334562'
+    flat: {
+        color: '#334562',
     },
-    'light': {
-        color: '#1790ff'
+    light: {
+        color: '#1790ff',
     },
-    'link': {
-    },
-    'link-danger': {
-    }
+    link: {},
+    'link-danger': {},
 });
 
 const StyledIcon = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
-    (props) => iconsIndentation(props.size, !!props.text),
-    (props) => ({ opacity: props.opacity || .5 }),
+    props => iconsIndentation(props.size, !!props.text),
+    props => ({ opacity: props.opacity || 0.5 }),
 ]);
 
 const StyledIconRight = Glamorous<XButtonProps & { opacity?: number }>(XIcon)([
-    (props) => iconsIndentationRight(props.size, !!props.text),
-    (props) => ({ opacity: props.opacity || .5 }),
+    props => iconsIndentationRight(props.size, !!props.text),
+    props => ({ opacity: props.opacity || 0.5 }),
 ]);
 
 const StyledButtonContentWrapper = Glamorous.div({
@@ -545,7 +550,7 @@ const StyledButtonContentWrapper = Glamorous.div({
 
 const MainContent = Glamorous.div({
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
 });
 
 const defaultResponsiveBreakpoint = 1200;
@@ -557,7 +562,7 @@ interface StyledButtonTextProps {
 }
 
 let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProps) => ({
-    'top': {
+    top: {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
             bottom: 'calc(100% + 5px)',
             left: '50%',
@@ -567,10 +572,10 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
                 bottom: -2,
                 left: '50%',
                 transform: 'translate(-50%, 0) rotate(45deg)',
-            }
-        }
+            },
+        },
     },
-    'right': {
+    right: {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
             left: 'calc(100% - 5px)',
             top: '50%',
@@ -580,10 +585,10 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
                 left: -2,
                 top: '50%',
                 transform: 'translate(0, -50%) rotate(45deg)',
-            }
-        }
+            },
+        },
     },
-    'bottom': {
+    bottom: {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
             top: 'calc(100% + 5px)',
             left: '50%',
@@ -593,10 +598,10 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
                 top: -2,
                 left: '50%',
                 transform: 'translate(-50%, 0) rotate(45deg)',
-            }
-        }
+            },
+        },
     },
-    'left': {
+    left: {
         ['@media (max-width: ' + props.breakpoint + 'px)']: {
             right: 'calc(100% - 5px)',
             top: '50%',
@@ -606,8 +611,8 @@ let tooltipPlacementStyles = styleResolverWithProps((props: StyledButtonTextProp
                 right: -2,
                 top: '50%',
                 transform: 'translate(0, -50%) rotate(45deg)',
-            }
-        }
+            },
+        },
     },
 }));
 
@@ -618,38 +623,42 @@ const ButtonText = Glamorous.span<StyledButtonTextProps>([
         textOverflow: 'ellipsis',
         overflow: 'hidden',
     },
-    (props) => (props.responsive && {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            maxWidth: 'initial',
-            position: 'absolute',
-            whiteSpace: 'nowrap',
-            textOverflow: 'initial',
-            overflow: 'initial',
-            background: '#6E7588',
-            color: '#ffffff',
-            borderRadius: 15,
-            padding: '6px 12px 8px',
-            lineHeight: '16px',
-            boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
-            fontSize: 14,
-            fontWeight: 400,
-            opacity: 0,
-            visibility: 'hidden',
-            transition: '300ms opacity ease',
-            textAlign: 'center',
-
-            '&:before': {
-                display: 'block',
+    props =>
+        (props.responsive && {
+            ['@media (max-width: ' + props.breakpoint + 'px)']: {
+                maxWidth: 'initial',
                 position: 'absolute',
-                height: 10,
-                width: 10,
+                whiteSpace: 'nowrap',
+                textOverflow: 'initial',
+                overflow: 'initial',
                 background: '#6E7588',
-                borderRadius: 2,
-                content: ' ',
-            }
-        }
-    } || {}),
-    (props) => (props.responsive && tooltipPlacementStyles(props, props.tooltipPlacement || 'bottom') || {})
+                color: '#ffffff',
+                borderRadius: 15,
+                padding: '6px 12px 8px',
+                lineHeight: '16px',
+                boxShadow: '0 2px 4px 0 rgba(0, 0, 0, .2)',
+                fontSize: 14,
+                fontWeight: 400,
+                opacity: 0,
+                visibility: 'hidden',
+                transition: '300ms opacity ease',
+                textAlign: 'center',
+
+                '&:before': {
+                    display: 'block',
+                    position: 'absolute',
+                    height: 10,
+                    width: 10,
+                    background: '#6E7588',
+                    borderRadius: 2,
+                    content: ' ',
+                },
+            },
+        }) ||
+        {},
+    props =>
+        (props.responsive && tooltipPlacementStyles(props, props.tooltipPlacement || 'bottom')) ||
+        {},
 ]);
 
 interface StyledButtonProps extends XFlexStyles {
@@ -667,110 +676,147 @@ interface StyledButtonProps extends XFlexStyles {
 
 const StyledButton = Glamorous.a<StyledButtonProps>([
     {
-        display: 'flex', boxSizing: 'border-box',
+        display: 'flex',
+        boxSizing: 'border-box',
         '& .loading-icon': {
             position: 'absolute',
         },
         '& .icon-responsive': { display: 'none' },
         '&:hover, &:hover *': {
-            textDecoration: 'none !important'
-        }
-    },
-    (props) => ({
-        pointerEvents: (props.loading || props.enabled === false) ? 'none' : 'auto',
-        cursor: (props.loading || props.enabled === false) ? 'inherit' : 'pointer',
-        transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease'
-    }),
-    (props) => (props.loading && {
-        '& .main-content': { opacity: 0 }
-    } || {}),
-    (props) => applyFlex(props),
-    (props) => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
-    (props) => colorDisabledStyles(props.buttonStyle, props.enabled === false),
-    (props) => colorPressedStyles(props.buttonStyle, !!props.pressed),
-    (props) => sizeStyles(props.buttonSize),
-    (props) => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
-    (props) => (props.responsive && {
-        ['@media (max-width: ' + props.breakpoint + 'px)']: {
-            '&': colorResponsiveStyles(props.buttonStyle),
-            '&:hover span': {
-                visibility: 'visible',
-                opacity: 1,
-            },
-            '& .icon': {
-                margin: 0,
-                display: 'none'
-            },
-            '& .icon-responsive': {
-                display: 'block',
-                opacity: 1
-            }
-        }
-    } || {}),
-    (props) => ({
-        '& i.icon-svg': {
-            display: 'flex'
+            textDecoration: 'none !important',
         },
-        '& svg': iconsIndentation(props.buttonSize)
+    },
+    props => ({
+        pointerEvents: props.loading || props.enabled === false ? 'none' : 'auto',
+        cursor: props.loading || props.enabled === false ? 'inherit' : 'pointer',
+        transition: 'box-shadow .08s ease-in,color .08s ease-in, border .0s, all .15s ease',
     }),
-    (props => ({
-        ...props.insaneMode ? {
-            background: 'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
-            backgroundPosition: '-10px -10px'
-        } : {}
-    }))
+    props =>
+        (props.loading && {
+            '& .main-content': { opacity: 0 },
+        }) ||
+        {},
+    props => applyFlex(props),
+    props => colorStyles(props.buttonStyle, props.enabled !== false && !props.pressed),
+    props => colorDisabledStyles(props.buttonStyle, props.enabled === false),
+    props => colorPressedStyles(props.buttonStyle, !!props.pressed),
+    props => sizeStyles(props.buttonSize),
+    props => borderRadiusStyles({ attach: props.attach }, props.buttonSize),
+    props =>
+        (props.responsive && {
+            ['@media (max-width: ' + props.breakpoint + 'px)']: {
+                '&': colorResponsiveStyles(props.buttonStyle),
+                '&:hover span': {
+                    visibility: 'visible',
+                    opacity: 1,
+                },
+                '& .icon': {
+                    margin: 0,
+                    display: 'none',
+                },
+                '& .icon-responsive': {
+                    display: 'block',
+                    opacity: 1,
+                },
+            },
+        }) ||
+        {},
+    props => ({
+        '& i.icon-svg': {
+            display: 'flex',
+        },
+        '& svg': iconsIndentation(props.buttonSize),
+    }),
+    props => ({
+        ...(props.insaneMode
+            ? {
+                  background:
+                      'url(https://attachments-staging.keyframes.net/media/cover/zlqfwz/b6eea0e0-a93f-434d-bfd1-3e1de3eac571.gif)',
+                  backgroundPosition: '-10px -10px',
+              }
+            : {}),
+    }),
 ]);
 
-export const XButton = makeActionable(makeNavigable<XButtonProps>((props) => {
+export const Loader = ({ style }: { style?: XButtonStyle }) => {
     return (
-        <StyledButton
-            href={props.href}
-            target={props.hrefTarget}
-            buttonSize={props.size}
-            buttonStyle={props.style}
-            loading={props.loading}
-            enabled={props.enabled}
-            pressed={props.pressed}
-            attach={props.attach}
-            flexBasis={props.flexBasis}
-            flexGrow={props.flexGrow}
-            flexShrink={props.flexShrink}
-            alignSelf={props.alignSelf}
-            onClick={props.onClick}
-            className={props.className}
-            zIndex={props.zIndex}
-            breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
-            responsive={props.iconResponsive ? true : false}
-            insaneMode={props.insaneMode}
-            data-test-id={props.dataTestId}
-        >
-            <StyledButtonContentWrapper tabIndex={-1} className="button-content">
-                <MainContent className="main-content">
-                    {props.iconResponsive && (
-                        typeof (props.iconResponsive) === 'string'
-                            ? <StyledIcon size={props.size} text={props.text} icon={props.iconResponsive} opacity={props.iconOpacity} className="icon icon-responsive material" />
-                            : <i className="icon icon-responsive">{props.iconResponsive}</i>
-                    )}
-                    {props.icon && (
-                        typeof (props.icon) === 'string'
-                            ? <StyledIcon size={props.size} text={props.text} icon={props.icon} opacity={props.iconOpacity} className="icon material" />
-                            : <i className="icon icon-svg">{props.icon}</i>
-                    )}
-                    <ButtonText
-                        responsive={props.iconResponsive ? true : false}
-                        breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
-                        tooltipPlacement={props.tooltipPlacement}
-                    >
-                        {props.text}
-                    </ButtonText>
-                    {props.iconRight && (
-                        typeof (props.iconRight) === 'string'
-                            ? <StyledIconRight size={props.size} text={props.text} icon={props.iconRight} opacity={props.iconOpacity} className="icon material" />
-                            : <i className="icon icon-svg">{props.iconRight}</i>
-                    )}
-                </MainContent>
-                {props.loading && <XLoadingCircular className="loading-icon" color={loaderStyles(props.style).color!! as string} />}
-            </StyledButtonContentWrapper>
-        </StyledButton>
+        <XLoadingCircular className="loading-icon" color={loaderStyles(style).color!! as string} />
     );
-}));
+};
+
+export const XButton = makeActionable(
+    makeNavigable<XButtonProps>(props => {
+        return (
+            <StyledButton
+                href={props.href}
+                target={props.hrefTarget}
+                buttonSize={props.size}
+                buttonStyle={props.style}
+                loading={props.loading}
+                enabled={props.enabled}
+                pressed={props.pressed}
+                attach={props.attach}
+                flexBasis={props.flexBasis}
+                flexGrow={props.flexGrow}
+                flexShrink={props.flexShrink}
+                alignSelf={props.alignSelf}
+                onClick={props.onClick}
+                className={props.className}
+                zIndex={props.zIndex}
+                breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+                responsive={props.iconResponsive ? true : false}
+                insaneMode={props.insaneMode}
+                data-test-id={props.dataTestId}
+            >
+                <StyledButtonContentWrapper tabIndex={-1} className="button-content">
+                    <MainContent className="main-content">
+                        {props.iconResponsive &&
+                            (typeof props.iconResponsive === 'string' ? (
+                                <StyledIcon
+                                    size={props.size}
+                                    text={props.text}
+                                    icon={props.iconResponsive}
+                                    opacity={props.iconOpacity}
+                                    className="icon icon-responsive material"
+                                />
+                            ) : (
+                                <i className="icon icon-responsive">{props.iconResponsive}</i>
+                            ))}
+                        {props.icon &&
+                            (typeof props.icon === 'string' ? (
+                                <StyledIcon
+                                    size={props.size}
+                                    text={props.text}
+                                    icon={props.icon}
+                                    opacity={props.iconOpacity}
+                                    className="icon material"
+                                />
+                            ) : (
+                                <i className="icon icon-svg">{props.icon}</i>
+                            ))}
+                        <ButtonText
+                            responsive={props.iconResponsive ? true : false}
+                            breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+                            tooltipPlacement={props.tooltipPlacement}
+                        >
+                            {props.text}
+                        </ButtonText>
+                        {props.iconRight &&
+                            (typeof props.iconRight === 'string' ? (
+                                <StyledIconRight
+                                    size={props.size}
+                                    text={props.text}
+                                    icon={props.iconRight}
+                                    opacity={props.iconOpacity}
+                                    className="icon material"
+                                />
+                            ) : (
+                                <i className="icon icon-svg">{props.iconRight}</i>
+                            ))}
+                    </MainContent>
+                    {props.loading && <Loader style={props.style} />}
+                </StyledButtonContentWrapper>
+            </StyledButton>
+        );
+    }),
+);

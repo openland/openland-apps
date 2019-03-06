@@ -7,7 +7,7 @@ import {
     DataSourceMessageItem,
     DataSourceDateItem,
 } from 'openland-engines/messenger/ConversationEngine';
-import { XButton } from 'openland-x/XButton';
+import { Loader } from 'openland-x/XButton';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { EmptyBlock } from '../../../fragments/ChatEmptyComponent';
 import { EditPostProps } from '../../../fragments/MessengerRootComponent';
@@ -189,14 +189,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         return <div />;
     };
 
-    renderLoading = () => {
+    renderLoading = React.memo(() => {
         return (
             <LoadingWrapper>
-                ...
-                {/* <XButton alignSelf="center" style="flat" loading={true} /> */}
+                <Loader style="flat" />
             </LoadingWrapper>
         );
-    };
+    });
 
     dataSourceWrapper = React.memo((props: any) => {
         return (
