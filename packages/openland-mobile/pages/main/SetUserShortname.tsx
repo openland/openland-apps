@@ -7,19 +7,62 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
-import { Keyboard, View, Platform, Clipboard } from 'react-native';
+import { Clipboard, Text } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 
+export const GreenErrorText = (props: { text: string }) => (
+    <Text
+        style={{
+            color: '#6cb83d',
+            fontSize: 13,
+            lineHeight: 17,
+            paddingHorizontal: 16,
+            paddingBottom: 10,
+            paddingTop: 6
+        }}
+    >
+        {props.text}
+    </Text>
+);
+
+export const validateShortname = (shortname: string | null, label: string, min: number, max: number) => {
+    if (typeof shortname === 'string') {
+        if (!shortname.match('^[a-z0-9_]+$')) {
+            return 'A ' + label.toLowerCase() + ' can only contain a-z, 0-9, and underscores.';
+        }
+
+        if (shortname.length < min) {
+            return label + ' must have at least ' + min + ' characters.';
+        }
+
+        if (shortname.length > max) {
+            return label + ' must have no more than ' + max + ' characters.';
+        }
+
+        return undefined;
+    }
+
+    return undefined;
+}
+
 const SetUserShortnameContent = XMemo<PageProps>((props) => {
-    let me = getClient().useAccount().me;
+    let account = getClient().useAccount();
+    let me = account.me;
     let ref = React.useRef<ZForm | null>(null);
     let handleSave = React.useCallback(() => {
         if (ref.current) {
             ref.current.submitForm();
         }
     }, []);
+
     const [shortname, setShortname] = React.useState(me!.shortname);
+    const isSuperAdmin = account.myPermissions.roles.indexOf('super-admin') >= 0;
+
+    const minLength = isSuperAdmin ? 3 : 5;
+    const maxLength = 16;
+
+    const greenErrorLabel = validateShortname(shortname, 'Username', minLength, maxLength);
 
     return (
         <>
@@ -36,14 +79,14 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     shortname: me!.shortname
                 }}
             >
-                <View marginTop={Platform.OS === 'ios' ? 15 : undefined} />
                 <ZListItemGroup
                     divider={false}
+                    header={null}
                     footer={{
                         text: 'You can choose a username in Openland.' + '\n' +
                               'Other people will be able to find you by this username, and mention you with this username in groups.' + '\n\n' +
                               'You can use a-z, 0-9 and underscores.' + '\n' +
-                              'Minimum length is 3 characters.' + '\n\n' +
+                              'Minimum length is ' + minLength + ' characters.' + '\n\n' +
                               'This link opens a chat with you:' + '\n' +
                               'openland.com/' + (shortname ? shortname : ' username'),
                         onPress: (link: string) => {
@@ -68,6 +111,10 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                         onChangeText={setShortname}
                         autoFocus={true}
                     />
+
+                    {typeof greenErrorLabel === 'string' && (
+                        <GreenErrorText text={greenErrorLabel} />
+                    )}
                 </ZListItemGroup>
             </ZForm>
         </>

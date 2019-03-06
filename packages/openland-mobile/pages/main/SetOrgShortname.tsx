@@ -7,11 +7,13 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
-import { Keyboard, View, Platform, Clipboard } from 'react-native';
+import { View, Platform, Clipboard } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
+import { GreenErrorText, validateShortname } from './SetUserShortname';
 
 const SetOrgShortnameContent = XMemo<PageProps>((props) => {
+    let account = getClient().useAccount();
     let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
     let ref = React.useRef<ZForm | null>(null);
     let handleSave = React.useCallback(() => {
@@ -19,7 +21,14 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
             ref.current.submitForm();
         }
     }, []);
+
     const [shortname, setShortname] = React.useState(organization.shortname);
+    const isSuperAdmin = account.myPermissions.roles.indexOf('super-admin') >= 0;
+
+    const minLength = isSuperAdmin ? 3 : 5;
+    const maxLength = 16;
+
+    const greenErrorLabel = validateShortname(shortname, 'Shortname', minLength, maxLength);
 
     return (
         <>
@@ -40,14 +49,14 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                     organizationId: organization.id
                 }}
             >
-                <View marginTop={Platform.OS === 'ios' ? 15 : undefined} />
                 <ZListItemGroup
                     divider={false}
+                    header={null}
                     footer={{
                         text: 'You can choose a shortname for ' + organization.name + ' in Openland.' + '\n' +
                               'Other people will be able to find ' + organization.name + ' by this shortname.' + '\n\n' +
                               'You can use a-z, 0-9 and underscores.' + '\n' +
-                              'Minimum length is 3 characters.' + '\n\n' +
+                              'Minimum length is ' + minLength + ' characters.' + '\n\n' +
                               'This link opens ' + organization.name + ' page:' + '\n' +
                               'openland.com/' + (shortname ? shortname : ' shortname'),
 
@@ -73,6 +82,10 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                         onChangeText={setShortname}
                         autoFocus={true}
                     />
+
+                    {typeof greenErrorLabel === 'string' && (
+                        <GreenErrorText text={greenErrorLabel} />
+                    )}
                 </ZListItemGroup>
             </ZForm>
         </>
