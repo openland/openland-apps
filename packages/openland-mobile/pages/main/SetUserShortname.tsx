@@ -48,7 +48,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                               'Minimum length is 3 characters.' + '\n\n' +
                               'This link opens a chat with you:' + '\n' +
                               'openland.com/' + (shortname ? shortname : ' username'),
-
                         onPress: (link: string) => {
                             if (me!.shortname) {
                                 ActionSheet.builder().action('Copy', () => Clipboard.setString(link)).show();

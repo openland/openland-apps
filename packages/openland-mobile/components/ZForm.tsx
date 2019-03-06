@@ -32,34 +32,41 @@ export class ZForm extends React.PureComponent<ZFormProps> {
         }
     }
 
-    handleAction = async (args: any) => {
-        try {
-            startLoader();
-            await this.props.action(args);
-            if (this.props.onSuccess) {
-                try {
-                    this.props.onSuccess();
-                } catch (e) {
-                    console.warn(e);
-                }
-            }
-        } catch (e) {
-            if (this.props.onError) {
-                this.props.onError(e);
-            } else {
-                let error = formatError(e);
-                if (error) {
-                    Alert.alert(error);
-                }
-            }
-        } finally {
-            stopLoader();
-        }
-    }
+    // handleAction = async (args: any) => {
+    //     try {
+    //         startLoader();
+    //         await this.props.action(args);
+    //         if (this.props.onSuccess) {
+    //             try {
+    //                 this.props.onSuccess();
+    //             } catch (e) {
+    //                 console.warn(e);
+    //             }
+    //         }
+    //     } catch (e) {
+    //         if (this.props.onError) {
+    //             this.props.onError(e);
+    //         } else {
+    //             let error = formatError(e);
+    //             if (error) {
+    //                 Alert.alert(error);
+    //             }
+    //         }
+    //     } finally {
+    //         stopLoader();
+    //     }
+    // }
 
     render() {
         return (
-            <YForm defaultAction={this.handleAction} defaultData={this.props.defaultData} staticData={this.props.staticData} ref={this.ref}>
+            <YForm
+                defaultAction={this.props.action}
+                defaultData={this.props.defaultData}
+                staticData={this.props.staticData}
+                ref={this.ref}
+                onSuccess={this.props.onSuccess}
+                onError={this.props.onError}
+            >
                 <SScrollView>
                     <KeyboardAvoidingView behavior="position">
                         {this.props.children}
