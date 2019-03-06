@@ -189,13 +189,13 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         return <div />;
     };
 
-    renderLoading = React.memo(() => {
+    renderLoading = () => {
         return (
             <LoadingWrapper>
                 <Loader style="flat" />
             </LoadingWrapper>
         );
-    });
+    };
 
     dataSourceWrapper = React.memo((props: any) => {
         return (
