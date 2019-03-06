@@ -38,6 +38,7 @@ export const ZTextInputBasic = (props: ZTextInputBasicProps) => {
                 labelPadding={0}
                 labelHeight={18}
                 lineWidth={1}
+                error={(invalid || !enabled) ? ' ' : undefined}
                 style={{
                     marginLeft: 0,
                     paddingLeft: 0
