@@ -10,7 +10,7 @@ import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
-import { ZTextInput2 } from 'openland-mobile/components/ZTextInput2';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { Alert } from 'openland-mobile/components/AlertBlanket';
 
@@ -51,18 +51,16 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 }}
             >
                 <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                    <ZTextInput2
+                    <ZTextInput
                         placeholder="Organization name"
                         field="input.name"
-                        border={true}
                     />
                 </ZAvatarPickerInputsGroup>
                 <View height={20} />
-                <ZTextInput2
+                <ZTextInput
                     field="input.about"
                     placeholder="Add a short description"
                     multiline={true}
-                    border={true}
                 />
                 <View height={30} />
                 <ZListItemGroup>
@@ -70,29 +68,25 @@ const EditOrganizationComponent = XMemo<PageProps>((props) => {
                 </ZListItemGroup>
                 <View height={30} />
                 <View>
-                    <ZTextInput2
+                    <ZTextInput
                         title="Website"
                         field="input.website"
                         placeholder="Add a link"
-                        border={true}
                     />
-                    <ZTextInput2
+                    <ZTextInput
                         title="Twitter"
                         field="input.twitter"
                         placeholder="Add Twitter handle"
-                        border={true}
                     />
-                    <ZTextInput2
+                    <ZTextInput
                         title="Facebook"
                         field="input.facebook"
                         placeholder="Add Facebook account"
-                        border={true}
                     />
-                    <ZTextInput2
+                    <ZTextInput
                         title="Linkedin"
                         field="input.linkedin"
                         placeholder="Add Linkedin account"
-                        border={true}
                     />
                 </View>
             </ZForm>

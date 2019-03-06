@@ -6,7 +6,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { ZTextInput2 } from 'openland-mobile/components/ZTextInput2';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { Keyboard, View, Platform, Clipboard } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
@@ -60,7 +60,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                         }
                     }}
                 >
-                    <ZTextInput2
+                    <ZTextInput
                         title="Username"
                         placeholder="username"
                         prefix="@"

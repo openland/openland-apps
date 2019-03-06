@@ -8,7 +8,7 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
-import { ZTextInput2 } from 'openland-mobile/components/ZTextInput2';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 
 const EditGroupComponent = XMemo<PageProps>((props) => {
     let ref = React.useRef<ZForm | null>(null);
@@ -51,18 +51,16 @@ const EditGroupComponent = XMemo<PageProps>((props) => {
                     }}
                 >
                     <ZAvatarPickerInputsGroup avatarField="input.photoRef">
-                        <ZTextInput2
+                        <ZTextInput
                             placeholder="Group name"
                             field="input.title"
-                            border={true}
                         />
                     </ZAvatarPickerInputsGroup>
                     <View height={20} />
-                    <ZTextInput2
+                    <ZTextInput
                         field="input.description"
                         placeholder="What is this group about?"
                         multiline={true}
-                        border={true}
                     />
                 </ZForm>
             </>

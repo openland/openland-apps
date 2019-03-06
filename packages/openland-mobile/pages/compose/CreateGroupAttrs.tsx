@@ -6,12 +6,12 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { View } from 'react-native';
 import { ZAvatarPicker } from '../../components/ZAvatarPicker';
-import { ZTextInput } from '../../components/ZTextInput';
-import { AppStyles } from '../../styles/AppStyles';
 import { UserShort, SharedRoomKind } from 'openland-api/Types';
 import { UserError } from 'openland-y-forms/errorHandling';
 import { Modals } from '../main/modals/Modals';
 import { getClient } from 'openland-mobile/utils/apolloClient';
+import { ZTextInput } from 'openland-mobile/components/ZTextInput';
+import { ZAvatarPickerInputsGroup } from 'openland-mobile/components/ZAvatarPickerInputsGroup';
 
 interface CreateGroupComponentState {
     query: string;
@@ -65,13 +65,13 @@ class CreateGroupComponent extends React.PureComponent<PageProps, CreateGroupCom
                             src.title);
                     }}
                 >
-                    <View flexDirection="row" marginLeft={16} marginVertical={16}>
-                        <ZAvatarPicker field="photoRef" size={70} />
-                        <View flexDirection="column" marginLeft={16} flexGrow={1} flexBasis={0} minWidth={0} height={70} justifyContent="center">
-                            <ZTextInput placeholder="Group name" field="title" height={44} style={{ fontSize: 16 }} placeholderTextColor="#a0a0a0" autoFocus={true} />
-                            <View height={1} alignSelf="stretch" backgroundColor={AppStyles.separatorColor} />
-                        </View>
-                    </View>
+                    <ZAvatarPickerInputsGroup avatarField="photoRef">
+                        <ZTextInput
+                            placeholder="Group name"
+                            field="title"
+                            autoFocus={true}
+                        />
+                    </ZAvatarPickerInputsGroup>
                 </ZForm>
             </>
         );
