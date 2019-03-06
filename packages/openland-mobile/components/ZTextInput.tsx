@@ -53,7 +53,7 @@ class ZTextInputComponent extends React.PureComponent<ZTextInputProps & { store?
                 invalid={invalid}
                 enabled={enabled}
                 onChangeText={this.onChangeHandler}
-            />            
+            />
         );
     }
 }

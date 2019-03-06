@@ -72,7 +72,7 @@ const RoomsList = () => {
                 )}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Your Groups" divider={false}>
+            <ZListItemGroup header="Your Groups">
                 {existingRoomsLimited.map(v => (
                     <ZListItem
                         key={v.id}
@@ -102,7 +102,7 @@ const RoomsList = () => {
                 )}
             </ZListItemGroup>
 
-            <ZListItemGroup header="Featured" divider={false}>
+            <ZListItemGroup header="Featured">
                 {featured.map(v => (
                     <ZListItem
                         key={v.id}
