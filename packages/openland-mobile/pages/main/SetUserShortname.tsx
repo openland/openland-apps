@@ -27,23 +27,23 @@ export const GreenErrorText = (props: { text: string }) => (
 );
 
 export const validateShortname = (shortname: string | null, label: string, min: number, max: number) => {
+    let validateResult = undefined;
+
     if (typeof shortname === 'string') {
         if (!shortname.match('^[a-z0-9_]+$')) {
-            return 'A ' + label.toLowerCase() + ' can only contain a-z, 0-9, and underscores.';
+            validateResult = 'A ' + label.toLowerCase() + ' can only contain a-z, 0-9, and underscores.';
         }
 
         if (shortname.length < min) {
-            return label + ' must have at least ' + min + ' characters.';
+            validateResult = label + ' must have at least ' + min + ' characters.';
         }
 
         if (shortname.length > max) {
-            return label + ' must have no more than ' + max + ' characters.';
+            validateResult = label + ' must have no more than ' + max + ' characters.';
         }
-
-        return undefined;
     }
 
-    return undefined;
+    return validateResult;
 }
 
 const SetUserShortnameContent = XMemo<PageProps>((props) => {
