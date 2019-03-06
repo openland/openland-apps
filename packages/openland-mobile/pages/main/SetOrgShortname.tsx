@@ -26,8 +26,6 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
             <SHeaderButton title="Save" onPress={handleSave} />
             <ZForm
                 action={async args => {
-                    Keyboard.dismiss();
-
                     await getClient().mutateSetOrgShortname(args);
 
                     await getClient().refetchOrganization({ organizationId: organization.id });

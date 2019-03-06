@@ -26,8 +26,6 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
             <SHeaderButton title="Save" onPress={handleSave} />
             <ZForm
                 action={async args => {
-                    Keyboard.dismiss();
-
                     await getClient().mutateSetUserShortname(args);
 
                     await getClient().refetchAccount();
