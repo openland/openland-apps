@@ -290,17 +290,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 <SDeferred>
                     <KeyboardSafeAreaView>
                         <View style={{ height: '100%', flexDirection: 'column' }}>
-                            {/* <ASView
-                                style={{ position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
-                            >
-                                <ASFlex
-                                    width={Dimensions.get('window').width}
-                                    height={Dimensions.get('window').height}
-                                    backgroundColor="green"
-                                >
-                                 
-                                </ASFlex>
-                            </ASView> */}
                             <ConversationView engine={this.engine} theme={this.state.theme} />
                             <MessageInputBar
                                 onAttachPress={this.handleAttach}

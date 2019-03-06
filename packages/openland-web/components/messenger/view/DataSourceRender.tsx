@@ -87,3 +87,5 @@ export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
         </>
     );
 });
+
+DataSourceRender.displayName = 'DataSourceRender';

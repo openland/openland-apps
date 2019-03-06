@@ -102,8 +102,8 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
     return (
         <View flexDirection="column" alignItems={'flex-start'} justifyContent="center" pointerEvents="box-none" height={isAndroid ? 56 : 44} minWidth={0} flexBasis={0} flexShrink={1} flexGrow={1}>
             <View flexDirection="row">
-                {(sharedRoom && sharedRoom.kind === 'GROUP') && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: 'green' }} /></View>)}
-                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }, sharedRoom && sharedRoom.kind === 'GROUP' && { color: 'green' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
+                {(sharedRoom && sharedRoom.kind === 'GROUP') && (<View height={isAndroid ? 26 : 18} alignItems="center" justifyContent="center" paddingBottom={1} marginRight={2}><Image source={require('assets/ic-lock-13.png')} style={{ tintColor: '#1daf30' }} /></View>)}
+                <Text style={[isAndroid ? styles.androidTitle : styles.iosTitle, { color: theme.textColor }, sharedRoom && sharedRoom.kind === 'GROUP' && { color: '#1daf30' }]} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
             </View>
             <Text style={[isAndroid ? styles.androidSubTitle : styles.iosSubTitle, accent ? { color: theme.accentColor } : { color: theme.textLabelColor }]}>{subtitle}</Text>
         </View>
