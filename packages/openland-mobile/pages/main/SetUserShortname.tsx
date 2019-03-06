@@ -19,6 +19,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
             ref.current.submitForm();
         }
     }, []);
+    const [shortname, setShortname] = React.useState(me!.shortname);
 
     return (
         <>
@@ -46,7 +47,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                               'You can use a-z, 0-9 and underscores.' + '\n' +
                               'Minimum length is 3 characters.' + '\n\n' +
                               'This link opens a chat with you:' + '\n' +
-                              'openland.com/' + (me!.shortname ? me!.shortname : ' username'),
+                              'openland.com/' + (shortname ? shortname : ' username'),
 
                         onPress: (link: string) => {
                             if (me!.shortname) {
@@ -67,6 +68,8 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                         field="shortname"
                         autoCapitalize="none"
                         border="force-full"
+                        onChangeText={setShortname}
+                        autoFocus={true}
                     />
                 </ZListItemGroup>
             </ZForm>

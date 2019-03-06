@@ -19,6 +19,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
             ref.current.submitForm();
         }
     }, []);
+    const [shortname, setShortname] = React.useState(organization.shortname);
 
     return (
         <>
@@ -50,7 +51,7 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                               'You can use a-z, 0-9 and underscores.' + '\n' +
                               'Minimum length is 3 characters.' + '\n\n' +
                               'This link opens ' + organization.name + ' page:' + '\n' +
-                              'openland.com/' + (organization.shortname ? organization.shortname : ' shortname'),
+                              'openland.com/' + (shortname ? shortname : ' shortname'),
 
                         onPress: (link: string) => {
                             if (organization.shortname) {
@@ -71,6 +72,8 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                         field="shortname"
                         autoCapitalize="none"
                         border="force-full"
+                        onChangeText={setShortname}
+                        autoFocus={true}
                     />
                 </ZListItemGroup>
             </ZForm>
