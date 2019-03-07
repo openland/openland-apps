@@ -61,6 +61,7 @@ export const useEmojiSuggestions = ({
         suggestionsList: suggestions,
         selectedEntryIndex,
         setSelectedEntryIndex,
+        isSelecting,
     });
 
     return {

@@ -28,22 +28,20 @@ export const useMentionSuggestions = ({
         suggestionsList: suggestions,
         selectedEntryIndex,
         setSelectedEntryIndex,
+        isSelecting,
     });
 
-    React.useLayoutEffect(
-        () => {
-            const filteredSuggestions = (mentionsData ? mentionsData : []).filter(
-                ({ name }: { name: string }) =>
-                    name.toLowerCase().includes(activeWord.slice(1)) &&
-                    activeWord !== '' &&
-                    activeWord[0] === '@',
-            );
+    React.useLayoutEffect(() => {
+        const filteredSuggestions = (mentionsData ? mentionsData : []).filter(
+            ({ name }: { name: string }) =>
+                name.toLowerCase().includes(activeWord.slice(1)) &&
+                activeWord !== '' &&
+                activeWord[0] === '@',
+        );
 
-            setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
-            setSuggestions(filteredSuggestions);
-        },
-        [mentionsData],
-    );
+        setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
+        setSuggestions(filteredSuggestions);
+    }, [mentionsData]);
 
     return {
         isSelecting,
