@@ -99,6 +99,8 @@ const DisplayNone = ({
     );
 };
 
+const SIZE_OF_CACHE = 20;
+
 const CacheComponent = ({
     Component,
     isMobile,
@@ -110,14 +112,27 @@ const CacheComponent = ({
     activeChat: string | null;
     componentProps: any;
 }) => {
-    const [cachedProps, setCachedProps] = React.useState({});
+    const [cachedPropsArray, setCachedProps] = React.useState<
+        {
+            chatId: string;
+            componentProps: Object;
+        }[]
+    >([]);
 
-    React.useLayoutEffect(() => {
+    if (activeChat) {
+        if (cachedPropsArray.filter(({ chatId }) => chatId === activeChat).length === 0) {
+            setCachedProps([...cachedPropsArray, { chatId: activeChat, componentProps }]);
+        }
+    }
+
+    React.useEffect(() => {
         if (activeChat) {
-            setCachedProps({
-                ...cachedProps,
-                [activeChat]: componentProps,
-            });
+            if (
+                cachedPropsArray.length > SIZE_OF_CACHE &&
+                cachedPropsArray[0].chatId !== activeChat
+            ) {
+                setCachedProps(cachedPropsArray.slice(1));
+            }
         }
     }, [activeChat]);
 
@@ -129,25 +144,27 @@ const CacheComponent = ({
         );
     }
 
-    return (
-        <>
-            {Object.keys(cachedProps).map((id, key1) => {
-                const cachedComponentProps = cachedProps[id];
-                return (
-                    <IsActiveContext.Provider
-                        key={key1}
-                        value={activeChat !== null && activeChat === id}
-                    >
-                        <DisplayNone
-                            isActive={activeChat !== null && activeChat === id}
-                            Component={Component}
-                            componentProps={cachedComponentProps}
-                        />
-                    </IsActiveContext.Provider>
-                );
-            })}
-        </>
-    );
+    const renderedElements = [];
+
+    for (let i = 0; i < cachedPropsArray.length; i++) {
+        const cached = cachedPropsArray[i];
+
+        renderedElements.push(
+            <IsActiveContext.Provider
+                key={cached.chatId}
+                value={activeChat !== null && activeChat === cached.chatId}
+            >
+                <DisplayNone
+                    id={cached.chatId}
+                    isActive={activeChat !== null && activeChat === cached.chatId}
+                    Component={Component}
+                    componentProps={cached.componentProps}
+                />
+            </IsActiveContext.Provider>,
+        );
+    }
+
+    return <>{renderedElements}</>;
 };
 
 export const ConversationContainerWrapper = ({
