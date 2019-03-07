@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
@@ -22,7 +22,31 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
 
         text = emojiString;
 
-        const rawContent = {
+        const mentionRawContent = {
+            blocks: [
+                {
+                    text: '@Sergey Lapin',
+                    type: 'unstyled',
+                    entityRanges: [{ offset: 0, length: '@Sergey Lapin'.length, key: 'first' }],
+                },
+                {
+                    text: '@dev lapin 🎉',
+                    type: 'unstyled',
+                    entityRanges: [{ offset: 0, length: '@dev lapin 🎉'.length, key: 'second' }],
+                },
+            ],
+
+            entityMap: {
+                first: {
+                    type: 'MENTION',
+                },
+                second: {
+                    type: 'MENTION',
+                },
+            },
+        };
+
+        const emojiRawContent = {
             blocks: [
                 {
                     text: '😎',
@@ -57,7 +81,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         };
 
         return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(convertFromRaw(rawContent as any), decorator),
+            EditorState.createWithContent(convertFromRaw(mentionRawContent as any), decorator),
         );
     };
 
