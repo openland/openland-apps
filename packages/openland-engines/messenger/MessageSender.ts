@@ -78,15 +78,15 @@ export class MessageSender {
             } catch (e) {
                 callback.onFailed(key);
             }
-            this.doSendMessage({
-                file: this.uploadedFiles.get(key)!!,
-                mentions: null,
-                replyMessages: null,
-                message: null,
-                conversationId,
-                key,
-                callback
-            });
+            // this.doSendMessage({
+            //     file: this.uploadedFiles.get(key)!!,
+            //     mentions: null,
+            //     replyMessages: null,
+            //     message: null,
+            //     conversationId,
+            //     key,
+            //     callback
+            // });
         })();
         return key;
     }
@@ -97,11 +97,11 @@ export class MessageSender {
         mentions,
         callback
     }: {
-            conversationId: string;
-            message: string;
-            mentions: MessageFull_mentions[] | null;
-            callback: MessageSendHandler;
-        }) {
+        conversationId: string;
+        message: string;
+        mentions: MessageFull_mentions[] | null;
+        callback: MessageSendHandler;
+    }) {
         message = message.trim();
         if (message.length === 0) {
             throw Error('Message can\'t be empty');
@@ -125,10 +125,10 @@ export class MessageSender {
         message,
         mentions
     }: {
-            conversationId: string;
-            message: string;
-            mentions: MessageFull_mentions[] | null;
-        }) {
+        conversationId: string;
+        message: string;
+        mentions: MessageFull_mentions[] | null;
+    }) {
         await new Promise<string>((resolve, reject) => {
             let handler: MessageSendHandler = {
                 onCompleted: (key: string) => {

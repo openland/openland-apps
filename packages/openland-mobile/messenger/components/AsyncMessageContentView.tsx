@@ -18,6 +18,7 @@ import { UrlAugmentationContent } from './content/UrlAugmentationContent';
 import { MediaContent, layoutImage } from './content/MediaContent';
 import { DocumentContent } from './content/DocumentContent';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export const paddedText = <ASText fontSize={16} > {' ' + '\u00A0'.repeat(Platform.select({ default: 12, ios: 10 }))}</ASText >;
 export const paddedTextOut = <ASText fontSize={16}>{' ' + '\u00A0'.repeat(Platform.select({ default: 16, ios: 14 }))}</ASText>;
@@ -47,14 +48,14 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     let hasReply = props.message.reply;
     let hasText = props.message.text;
     let hasUrlAug = props.message.urlAugmentation;
-    let hasDocument = props.message.file && !hasImage;
-
-    let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
     let layout;
     if (hasImage) {
         layout = layoutImage(props.message);
+        hasImage = false;
     }
+    let hasDocument = props.message.file && !hasImage;
+    let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);
 
     return (
         <AsyncBubbleView width={layout ? layout.width : undefined} isOut={props.message.isOut} compact={props.message.attachBottom || hasImage} appearance={imageOnly ? 'media' : 'text'} colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
@@ -66,7 +67,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
                 {hasReply && <ReplyContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
                 {hasText && <TextContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
                 {hasUrlAug && <UrlAugmentationContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
-                {hasImage && layout && <MediaContent layout={layout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />}
+                {(hasImage && layout) && <MediaContent layout={layout} message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} single={imageOnly} />}
                 {hasDocument && <DocumentContent message={props.message} onUserPress={props.onUserPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />}
 
                 <ASFlex

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { ASText } from 'react-native-async-view/ASText';
-import { Platform, Dimensions } from 'react-native';
+import { Platform, Dimensions, Image } from 'react-native';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DownloadState } from '../../../files/DownloadManagerInterface';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
@@ -10,6 +10,8 @@ import { ASFlex } from 'react-native-async-view/ASFlex';
 import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
+import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 interface MediaContentProps {
     single?: boolean;
     message: DataSourceMessageItem;
@@ -25,8 +27,10 @@ export let layoutImage = (message: DataSourceMessageItem) => {
         ios: Math.min(Dimensions.get('window').width - 120, 400),
         android: Math.min(Dimensions.get('window').width - 120, 400)
     });
-    return layoutMedia(message.file!!.imageSize!!.width, message.file!!.imageSize!!.height, maxSize, maxSize);
-
+    if (message.file && message.file.imageSize) {
+        return layoutMedia(message.file!!.imageSize!!.width, message.file!!.imageSize!!.height, maxSize, maxSize);
+    }
+    return undefined;
 }
 export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
 
@@ -45,10 +49,17 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     }
 
     componentWillMount() {
-        let optimalSize = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, 1024, 1024);
-        this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId!, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
-            this.setState({ downloadState: state });
-        });
+        if (this.props.message.file && this.props.message.file.fileId) {
+            let optimalSize = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, 1024, 1024);
+            this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId!, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
+                this.setState({ downloadState: state });
+            });
+        }
+
+        if (this.props.message.file && this.props.message.file.uri) {
+            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => this.setState({ downloadState: { progress: s.progress } }));
+        }
+
     }
 
     componentWillUnmount() {
@@ -72,7 +83,7 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
                 <ASImage
                     maxWidth={this.props.layout.width}
                     onPress={this.handlePress}
-                    source={{ uri: (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
+                    source={{ uri: (this.props.message.file && this.props.message.file.uri) ? this.props.message.file.uri : (this.state.downloadState && this.state.downloadState.path) ? ('file://' + this.state.downloadState.path) : undefined }}
                     isGif={this.props.message.file!!.isGif}
                     borderRadius={16}
                     marginLeft={2}
