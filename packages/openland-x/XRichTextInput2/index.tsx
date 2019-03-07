@@ -4,7 +4,7 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XFlexStyles } from '../basics/Flex';
 import { EditorContainer } from './components/EditorContainer';
 import { useMentionSuggestions } from './useMentionSuggestions';
-import { useEmojiSuggestions } from './useEmojiSuggestions';
+import { useEmojiSuggestions, EmojiDataT } from './useEmojiSuggestions';
 import { useInputMethods, XRichTextInput2RefMethods } from './useInputMethods';
 import { useHandleEditorChange } from './useHandleEditorChange';
 import { useDraftKeyHandling } from './useDraftKeyHandling';
@@ -83,11 +83,15 @@ export const XRichTextInput2 = React.memo(
                 }
             };
 
+            const applyEmoji = (emojiData: EmojiDataT) => {
+                addEmoji(emojiData);
+                setActiveWord('');
+            };
+
             const applyCurrentSuggestedEmoji = () => {
                 const emojiData = emojiState.suggestions[emojiState.selectedEntryIndex];
                 if (emojiData) {
-                    addEmoji(emojiData);
-                    setActiveWord('');
+                    applyEmoji(emojiData);
                 }
             };
 
@@ -108,7 +112,7 @@ export const XRichTextInput2 = React.memo(
                     activeWord={activeWord}
                     emojiState={emojiState}
                     onEmojiPicked={onEmojiPicked}
-                    finalAddEmoji={addEmoji}
+                    finalAddEmoji={applyEmoji}
                     mentionState={mentionState}
                     onMentionPicked={(mentionEntry: MentionDataT) => {
                         if (mentionEntry) {
