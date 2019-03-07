@@ -131,7 +131,15 @@ const CacheComponent = ({
                 cachedPropsArray.length > SIZE_OF_CACHE &&
                 cachedPropsArray[0].chatId !== activeChat
             ) {
-                setCachedProps(cachedPropsArray.slice(1));
+                if (
+                    cachedPropsArray.length - 1 > SIZE_OF_CACHE &&
+                    cachedPropsArray[0].chatId !== activeChat &&
+                    cachedPropsArray[1].chatId !== activeChat
+                ) {
+                    setCachedProps(cachedPropsArray.slice(2));
+                } else {
+                    setCachedProps(cachedPropsArray.slice(1));
+                }
             }
         }
     }, [activeChat]);
