@@ -15,6 +15,7 @@ const emojiClassName = css`
     line-height: inherit;
     margin: -0.2ex 0 0.2ex;
     color: transparent;
+    caret-color: black;
     width: 19px;
 `;
 
@@ -54,14 +55,12 @@ export const EmojiEntry = (props: any) => {
         return getShortNameForImage(shortName);
     }, [shortName, entity.getData().unified]);
 
-    const finalUrl = `${imagePath}${shortNameForImage}.${imageType}${cacheBustParam}`;
-
     return (
         <span
             className={cx(className, emojiClassName)}
             title={shortName}
             style={{
-                backgroundImage: `url(${finalUrl})`,
+                backgroundImage: `url(${imagePath}${shortNameForImage}.${imageType}${cacheBustParam})`,
             }}
         >
             {children}
