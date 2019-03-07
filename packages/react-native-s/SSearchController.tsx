@@ -15,6 +15,7 @@ import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 export interface SSearchControlerProps {
     backgroundColor?: string;
     searchRender: React.ComponentType<{ query: string }>;
+    children?: any;
 }
 
 class SSearchControlerComponent extends React.PureComponent<SSearchControlerProps & { theme: AppTheme }, { search: boolean, searchMounted: boolean, query: string }> {

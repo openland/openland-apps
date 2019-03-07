@@ -191,5 +191,9 @@
         "name": "ic-photo-fill",
         "src": "ic-cell-photo-ios.svg",
         "sizes": [24]
+    }, {
+        "name": "ic-clear",
+        "src": "ic-clear.svg",
+        "sizes": [16]
     }]
 }

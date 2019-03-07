@@ -68,12 +68,13 @@ const DialogsComponent = XMemo<PageProps>((props) => {
             )}
 
             {/* ugly fix - ensure list recreated for new page (reseting to root from > 1 stack)  */}
-            {!props.router.params.share && (<SSearchControler
-                key={props.router.key + new Date().getTime()}
-                searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} />)}
-            >
-                <DialogListComponent dialogs={getMessenger().dialogs} />
-            </SSearchControler>
+            {!props.router.params.share && (
+                <SSearchControler
+                    key={props.router.key + new Date().getTime()}
+                    searchRender={(p) => (<GlobalSearch query={p.query} router={props.router} />)}
+                >
+                    <DialogListComponent dialogs={getMessenger().dialogs} />
+                </SSearchControler>
             )}
         </>
     );
