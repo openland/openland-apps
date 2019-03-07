@@ -11,7 +11,6 @@ import { Clipboard, Text } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
 import { formatError } from 'openland-y-forms/errorHandling';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
 
 export const ErrorText = (props: { color: string; text: string }) => (
     <Text
@@ -97,9 +96,7 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                     await getClient().refetchAccount();
                 }}
                 onSuccess={() => props.router.back()}
-                onError={(e) => {
-                    setError(formatError(e));
-                }}
+                onError={(e) => setError(formatError(e))}
                 ref={ref}
                 defaultData={{
                     shortname: me!.shortname
