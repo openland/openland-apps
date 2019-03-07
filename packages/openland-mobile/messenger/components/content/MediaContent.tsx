@@ -42,10 +42,10 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
     private downloadManagerWatch?: WatchSubscription;
     private handlePress = (event: ASPressEvent) => {
         // Ignore clicks for not-downloaded files
-        if (!this.state.downloadState || !this.state.downloadState.path) {
-            return;
+        let path = (this.state.downloadState && this.state.downloadState.path) || (this.props.message.file && this.props.message.file.uri);
+        if (path) {
+            this.props.onMediaPress(this.props.message, { path, ...event });
         }
-        this.props.onMediaPress(this.props.message, { path: this.state.downloadState.path, ...event });
     }
 
     componentWillMount() {

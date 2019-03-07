@@ -5,6 +5,7 @@ import { getMessenger } from '../utils/messenger';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Platform, PermissionsAndroid, Image } from 'react-native';
 import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
+import { DownloadManagerInstance } from './DownloadManager';
 
 export interface UploadState {
     status: UploadStatus;
@@ -61,7 +62,6 @@ export class UploadManager {
                     imageSize = await new Promise<{ width: number, height: number }>((res) => {
                         Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
                     });
-                    console.warn('boom', imageSize);
                 }
                 if (fileSize === undefined) {
                     RNFetchBlob.fs.stat(uri.replace('file://', ''))
@@ -93,6 +93,7 @@ export class UploadManager {
                 // TODO: Handle
             } else if (s.status === UploadStatus.COMPLETED) {
                 this._queue.splice(0, 1);
+                RNFetchBlob.fs.cp(q.uri.replace('file://', ''), DownloadManagerInstance.resolvePath(s.uuid!, null, true));
                 this.getWatcher(q.messageId).setState({ progress: 1, status: s.status, uuid: s.uuid });
 
                 (async () => {

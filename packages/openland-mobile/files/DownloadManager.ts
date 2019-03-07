@@ -16,10 +16,13 @@ export class DownloadManager implements DownloadManagerInterface {
         }
     })();
 
-    resolvePath(uuid: string, resize: { width: number, height: number } | null) {
+    resolvePath(uuid: string, resize: { width: number, height: number } | null, local?: boolean) {
         let suffix = '';
         if (resize) {
             suffix = '_' + resize.width + 'x' + resize.height;
+        }
+        if (local) {
+            suffix = '_local';
         }
         let path = this.rootDir + '/' + uuid + suffix;
         return path;
@@ -101,12 +104,16 @@ export class DownloadManager implements DownloadManagerInterface {
                     suffix = '_' + resize.width + 'x' + resize.height;
                 }
                 let path = this.rootDir + '/' + uuid + suffix;
+                let pathLocal = this.rootDir + '/' + uuid + '_local';
 
                 // Check if exists
                 let exists = false;
                 try {
                     if (await (RNFetchBlob as any).fs.exists(path)) {
                         exists = true;
+                    } else if (await (RNFetchBlob as any).fs.exists(pathLocal)) {
+                        exists = true;
+                        path = pathLocal;
                     }
                 } catch (e) {
                     // How to handle?
@@ -158,7 +165,7 @@ export class DownloadManager implements DownloadManagerInterface {
             if (await (RNFetchBlob as any).fs.exists(fileByName)) {
                 await (RNFetchBlob as any).fs.unlink(fileByName);
             }
-    
+
             await (RNFetchBlob as any).fs.cp(fileById, fileByName);
 
             return fileByName;

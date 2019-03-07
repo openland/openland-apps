@@ -544,6 +544,7 @@ export class ConversationEngine implements MessageSendHandler {
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
+                        file: msgs[existing].file,
                         date: msgs[existing].date
                     };
                     this.messages = msgs;
