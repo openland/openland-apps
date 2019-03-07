@@ -108,6 +108,7 @@ export const XRichTextInput2 = React.memo(
                     activeWord={activeWord}
                     emojiState={emojiState}
                     onEmojiPicked={onEmojiPicked}
+                    finalAddEmoji={addEmoji}
                     mentionState={mentionState}
                     onMentionPicked={(mentionEntry: MentionDataT) => {
                         if (mentionEntry) {

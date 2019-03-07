@@ -94,16 +94,19 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         return (result as any) as MentionDataT[];
     };
 
-    React.useLayoutEffect(() => {
-        if (value !== plainText) {
-            if (onChange) {
-                onChange({
-                    text: plainText,
-                    mentions: getMentions(),
-                });
+    React.useLayoutEffect(
+        () => {
+            if (value !== plainText) {
+                if (onChange) {
+                    onChange({
+                        text: plainText,
+                        mentions: getMentions(),
+                    });
+                }
             }
-        }
-    }, [plainText]);
+        },
+        [plainText],
+    );
 
     return {
         activeWord,

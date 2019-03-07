@@ -38,6 +38,7 @@ type EditorContainerContainer = XRichTextInput2Props & {
     onMentionPicked: (mention: MentionDataT) => void;
     emojiState: EmojiSuggestionsStateT;
     onEmojiPicked: (emoji: EmojiData) => void;
+    finalAddEmoji: (emoji: { shortName: string; unified: string }) => void;
     children: any;
 };
 
@@ -71,6 +72,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         mentionState,
         emojiState,
         onEmojiPicked,
+        finalAddEmoji,
         onMentionPicked,
         activeWord,
     } = props;
@@ -110,6 +112,7 @@ export const EditorContainer = (props: EditorContainerContainer) => {
                 cacheBustParam={constants.cacheBustParam}
                 imagePath={constants.imagePath}
                 imageType={constants.imageType}
+                onClick={() => finalAddEmoji(emoji)}
             />
         );
     });
