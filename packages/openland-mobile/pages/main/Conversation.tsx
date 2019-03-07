@@ -32,6 +32,7 @@ import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { showCallModal } from './Call';
+import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
@@ -153,6 +154,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         let builder = new ActionSheetBuilder();
         builder.action(Platform.OS === 'android' ? 'Take Photo' : 'Camera', () => {
             Picker.launchCamera({ title: 'Camera', mediaType: 'mixed' }, (response) => {
+                if (response.error) {
+                    handlePermissionDismiss('camera');
+                    return;
+                }
+
                 if (response.didCancel) {
                     return;
                 }
@@ -167,6 +173,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 Picker.launchCamera({
                     mediaType: 'video',
                 }, (response) => {
+                    if (response.error) {
+                        handlePermissionDismiss('camera');
+                        return;
+                    }
+
                     if (response.didCancel) {
                         return;
                     }
@@ -184,6 +195,12 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                     mediaType: Platform.select({ ios: 'mixed', android: 'photo', default: 'photo' }) as 'photo' | 'mixed'
                 },
                 (response) => {
+                    if (response.error) {
+                        Alert.alert(response.error);
+                        handlePermissionDismiss('gallery');
+                        return;
+                    }
+
                     if (response.didCancel) {
                         return;
                     }
@@ -199,6 +216,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 Picker.launchImageLibrary({
                     mediaType: 'video',
                 }, (response) => {
+                    if (response.error) {
+                        handlePermissionDismiss('gallery');
+                        return;
+                    }
+
                     if (response.didCancel) {
                         return;
                     }
