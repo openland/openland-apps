@@ -123,21 +123,29 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         );
     };
 
-    React.useEffect(
-        () => {
-            if (messageComposeProps.isActive) {
-                messagesContext.changeForwardConverstion();
-                setInputValue(hasReply() ? draftState.getNextDraft() : '');
-                draftState.setBeDrafted(hasReply());
-                inputMethodsState.focusIfNeeded();
-            }
-        },
-        [messageComposeProps.isActive],
+    const [currentConversation, setCurrentConversation] = React.useState<string | undefined>(
+        undefined,
     );
+
+    React.useEffect(() => {
+        if (
+            messageComposeProps.conversationId &&
+            currentConversation !== messageComposeProps.conversationId
+        ) {
+            setCurrentConversation(messageComposeProps.conversationId);
+        }
+    });
+
+    React.useEffect(() => {
+        messagesContext.changeForwardConverstion();
+        setInputValue(hasReply() ? draftState.getNextDraft() : '');
+        draftState.setBeDrafted(hasReply());
+        inputMethodsState.focusIfNeeded();
+    }, [currentConversation]);
+
 
     return (
         <>
-            {/* TODO maybe some other pattern here */}
             {messageComposeProps.isActive && (
                 <DumpSendMessage
                     TextInputComponent={
