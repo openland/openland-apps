@@ -155,7 +155,6 @@ const CacheComponent = ({
                 value={activeChat !== null && activeChat === cached.chatId}
             >
                 <DisplayNone
-                    id={cached.chatId}
                     isActive={activeChat !== null && activeChat === cached.chatId}
                     Component={Component}
                     componentProps={cached.componentProps}
