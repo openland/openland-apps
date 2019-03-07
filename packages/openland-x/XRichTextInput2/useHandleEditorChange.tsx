@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
@@ -25,14 +25,16 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         const mentionRawContent = {
             blocks: [
                 {
-                    text: '@Sergey Lapin',
+                    text: '@Sergey Lapin @dev lapin 🎉',
                     type: 'unstyled',
-                    entityRanges: [{ offset: 0, length: '@Sergey Lapin'.length, key: 'first' }],
-                },
-                {
-                    text: '@dev lapin 🎉',
-                    type: 'unstyled',
-                    entityRanges: [{ offset: 0, length: '@dev lapin 🎉'.length, key: 'second' }],
+                    entityRanges: [
+                        { offset: 0, length: '@Sergey Lapin'.length, key: 'first' },
+                        {
+                            offset: '@Sergey Lapin'.length + 1,
+                            length: '@dev lapin 🎉'.length,
+                            key: 'second',
+                        },
+                    ],
                 },
             ],
 
@@ -49,21 +51,13 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         const emojiRawContent = {
             blocks: [
                 {
-                    text: '😎',
+                    text: '😎🧚‍👩‍❤️‍💋‍👩',
                     type: 'unstyled',
-                    entityRanges: [{ offset: 0, length: 1, key: 'first' }],
-                },
-
-                {
-                    text: '🧚‍',
-                    type: 'unstyled',
-                    entityRanges: [{ offset: 0, length: 1, key: 'second' }],
-                },
-
-                {
-                    text: '👩‍❤️‍💋‍👩',
-                    type: 'unstyled',
-                    entityRanges: [{ offset: 0, length: 8, key: 'third' }],
+                    entityRanges: [
+                        { offset: 0, length: 1, key: 'first' },
+                        { offset: 1, length: 1, key: 'second' },
+                        { offset: 3, length: 8, key: 'third' },
+                    ],
                 },
             ],
 
@@ -81,7 +75,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         };
 
         return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(convertFromRaw(mentionRawContent as any), decorator),
+            EditorState.createWithContent(convertFromRaw(emojiRawContent as any), decorator),
         );
     };
 
