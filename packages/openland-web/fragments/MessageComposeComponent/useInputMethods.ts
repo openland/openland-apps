@@ -36,6 +36,12 @@ export function useInputMethods({
         }
     };
 
+    const setInputValue = (text: string) => {
+        if (inputRef.current) {
+            return inputRef.current.setInputValue(text);
+        }
+    };
+
     const getHasFocus = () => {
         return !!(inputRef && inputRef.current && inputRef.current.getHasFocus());
     };
@@ -46,5 +52,6 @@ export function useInputMethods({
         getHasFocus,
         focusIfNeeded,
         getMentions,
+        setInputValue,
     };
 }

@@ -96,12 +96,6 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
 
     React.useLayoutEffect(() => {
         if (value !== plainText) {
-            updateEditorStateFromText(value);
-        }
-    }, [value]);
-
-    React.useLayoutEffect(() => {
-        if (value !== plainText) {
             if (onChange) {
                 onChange({
                     text: plainText,

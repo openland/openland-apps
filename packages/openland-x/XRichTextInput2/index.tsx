@@ -53,6 +53,7 @@ export const XRichTextInput2 = React.memo(
             const { handlePastedText } = useHandlePastedText({ setEditorState });
 
             const { resetAndFocus } = useInputMethods({
+                updateEditorStateFromText,
                 ref,
                 editorRef,
                 editorState,

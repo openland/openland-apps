@@ -137,12 +137,13 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     });
 
     React.useEffect(() => {
+        const newInputValue = hasReply() ? draftState.getNextDraft() : '';
         messagesContext.changeForwardConverstion();
-        setInputValue(hasReply() ? draftState.getNextDraft() : '');
+        setInputValue(newInputValue);
         draftState.setBeDrafted(hasReply());
+        inputMethodsState.setInputValue(newInputValue);
         inputMethodsState.focusIfNeeded();
     }, [currentConversation]);
-
 
     return (
         <>

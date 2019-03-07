@@ -6,6 +6,7 @@ export type XRichTextInput2RefMethods = {
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
     getMentions: any;
+    setInputValue: Function;
 };
 
 type useInputMethodsT = {
@@ -14,6 +15,7 @@ type useInputMethodsT = {
     setEditorState: (a: EditorState) => void;
     editorState: EditorState;
     getMentions: any;
+    updateEditorStateFromText: (text: string) => void;
 };
 
 export function useInputMethods({
@@ -22,6 +24,7 @@ export function useInputMethods({
     setEditorState,
     editorState,
     getMentions,
+    updateEditorStateFromText,
 }: useInputMethodsT) {
     const focus = () => {
         window.requestAnimationFrame(() => {
@@ -48,6 +51,7 @@ export function useInputMethods({
     useImperativeHandle<XRichTextInput2RefMethods, any>(ref, () => ({
         getMentions,
         focus,
+        setInputValue: updateEditorStateFromText,
         resetAndFocus: () => {
             window.requestAnimationFrame(() => {
                 setEditorState(
