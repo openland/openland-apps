@@ -15,7 +15,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 export const ErrorText = (props: { color: string; text: string }) => (
     <Text
         style={{
-            color: props.color === 'green' ? '#1daf30' : '#f6564e',
+            color: props.color === 'green' ? '#6cb83d' : '#f6564e',
             fontSize: 13,
             lineHeight: 17,
             paddingHorizontal: 16,
