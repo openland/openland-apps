@@ -25,57 +25,40 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         const rawContent = {
             blocks: [
                 {
-                    text:
-                        'This is an "immutable" entity: Superman. Deleting any ' +
-                        'characters will delete the entire entity. Adding characters ' +
-                        'will remove the entity from the range.',
+                    text: '😎',
                     type: 'unstyled',
-                    entityRanges: [{ offset: 31, length: 8, key: 'first' }],
+                    entityRanges: [{ offset: 0, length: 1, key: 'first' }],
                 },
+
                 {
-                    text: '',
+                    text: '🧚‍',
                     type: 'unstyled',
+                    entityRanges: [{ offset: 0, length: 1, key: 'second' }],
                 },
+
                 {
-                    text:
-                        'This is a "mutable" entity: Batman. Characters may be added ' +
-                        'and removed.',
+                    text: '👩‍❤️‍💋‍👩',
                     type: 'unstyled',
-                    entityRanges: [{ offset: 28, length: 6, key: 'second' }],
-                },
-                {
-                    text: '',
-                    type: 'unstyled',
-                },
-                {
-                    text:
-                        'This is a "segmented" entity: Green Lantern. Deleting any ' +
-                        'characters will delete the current "segment" from the range. ' +
-                        'Adding characters will remove the entire entity from the range.',
-                    type: 'unstyled',
-                    entityRanges: [{ offset: 30, length: 13, key: 'third' }],
+                    entityRanges: [{ offset: 0, length: 8, key: 'third' }],
                 },
             ],
 
             entityMap: {
                 first: {
-                    type: 'TOKEN',
-                    mutability: 'IMMUTABLE',
+                    type: 'emoji',
                 },
                 second: {
-                    type: 'TOKEN',
-                    mutability: 'MUTABLE',
+                    type: 'emoji',
                 },
                 third: {
-                    type: 'TOKEN',
-                    mutability: 'SEGMENTED',
+                    type: 'emoji',
                 },
             },
         };
 
-        // const state = ContentState.createFromBlockArray(['😎🧚‍♀️👩‍❤️‍💋‍👩'], {});
-
-        return EditorState.moveFocusToEnd(EditorState.createWithContent(rawContent, decorator));
+        return EditorState.moveFocusToEnd(
+            EditorState.createWithContent(convertFromRaw(rawContent as any), decorator),
+        );
     };
 
     const [editorState, setEditorState] = React.useState(getEditorStateFromText(value));
