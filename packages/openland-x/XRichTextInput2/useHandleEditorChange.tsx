@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EditorState, ContentState, convertToRaw, convertFromRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
@@ -17,65 +17,8 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
     const [activeWord, setActiveWord] = React.useState<string>('');
 
     const getEditorStateFromText = (text: string) => {
-        const mentionString = '@Sergey Lapin @dev lapin 🎉';
-        const emojiString = '😎🧚‍♀️👩‍❤️‍💋‍👩';
-
-        text = emojiString;
-
-        const mentionRawContent = {
-            blocks: [
-                {
-                    text: '@Sergey Lapin @dev lapin 🎉',
-                    type: 'unstyled',
-                    entityRanges: [
-                        { offset: 0, length: '@Sergey Lapin'.length, key: 'first' },
-                        {
-                            offset: '@Sergey Lapin'.length + 1,
-                            length: '@dev lapin 🎉'.length,
-                            key: 'second',
-                        },
-                    ],
-                },
-            ],
-
-            entityMap: {
-                first: {
-                    type: 'MENTION',
-                },
-                second: {
-                    type: 'MENTION',
-                },
-            },
-        };
-
-        const emojiRawContent = {
-            blocks: [
-                {
-                    text: '😎🧚‍👩‍❤️‍💋‍👩',
-                    type: 'unstyled',
-                    entityRanges: [
-                        { offset: 0, length: 1, key: 'first' },
-                        { offset: 1, length: 1, key: 'second' },
-                        { offset: 3, length: 8, key: 'third' },
-                    ],
-                },
-            ],
-
-            entityMap: {
-                first: {
-                    type: 'emoji',
-                },
-                second: {
-                    type: 'emoji',
-                },
-                third: {
-                    type: 'emoji',
-                },
-            },
-        };
-
         return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(convertFromRaw(emojiRawContent as any), decorator),
+            EditorState.createWithContent(ContentState.createFromText(text as any), decorator),
         );
     };
 
@@ -153,6 +96,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
 
     React.useLayoutEffect(() => {
         if (value !== plainText) {
+            console.log(convertToRaw(editorState.getCurrentContent()));
             if (onChange) {
                 onChange({
                     text: plainText,

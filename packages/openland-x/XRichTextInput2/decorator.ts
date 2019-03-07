@@ -18,18 +18,6 @@ function findLinkMention(contentBlock: ContentBlock, callback: any, contentState
     }, callback);
 }
 
-function getEntityStrategy(mutability: any) {
-    return function(contentBlock: any, callback: any, contentState: any) {
-        contentBlock.findEntityRanges((character: any) => {
-            const entityKey = character.getEntity();
-            if (entityKey === null) {
-                return false;
-            }
-            return contentState.getEntity(entityKey).getMutability() === mutability;
-        }, callback);
-    };
-}
-
 export const decorator = new CompositeDecorator([
     {
         strategy: findLinkMention,
