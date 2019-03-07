@@ -10,11 +10,13 @@ import { ZTextInput } from 'openland-mobile/components/ZTextInput';
 import { Clipboard, Text } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
+import { formatError } from 'openland-y-forms/errorHandling';
+import { Alert } from 'openland-mobile/components/AlertBlanket';
 
-export const GreenErrorText = (props: { text: string }) => (
+export const ErrorText = (props: { color: string; text: string }) => (
     <Text
         style={{
-            color: '#1daf30',
+            color: props.color === 'green' ? '#1daf30' : 'red',
             fontSize: 13,
             lineHeight: 17,
             paddingHorizontal: 16,
@@ -26,7 +28,7 @@ export const GreenErrorText = (props: { text: string }) => (
     </Text>
 );
 
-export const validateShortname = (shortname: string | null, label: string, min: number, max: number) => {
+export const getErrorByShortname = (shortname: string | null, label: 'Shortname' | 'Username', min: number, max: number) => {
     let validateResult = undefined;
 
     if (typeof shortname === 'string') {
@@ -46,34 +48,58 @@ export const validateShortname = (shortname: string | null, label: string, min: 
     return validateResult;
 }
 
+export const validateShortname = (shortname: string | null, min: number, max: number) => {
+    let validateResult = false;
+
+    if (typeof shortname === 'string') {
+        if ((!shortname.match('^[a-z0-9_]+$')) || (shortname.length < min) || (shortname.length > max)) {
+            validateResult = false;
+        } else {
+            validateResult = true;
+        }
+    }
+
+    return validateResult;
+}
+
 const SetUserShortnameContent = XMemo<PageProps>((props) => {
     let account = getClient().useAccount();
     let me = account.me;
-    let ref = React.useRef<ZForm | null>(null);
-    let handleSave = React.useCallback(() => {
-        if (ref.current) {
-            ref.current.submitForm();
-        }
-    }, []);
 
     const [shortname, setShortname] = React.useState(me!.shortname);
+    const [error, setError] = React.useState<string | undefined>(undefined);
+
     const isSuperAdmin = account.myPermissions.roles.indexOf('super-admin') >= 0;
 
     const minLength = isSuperAdmin ? 3 : 5;
     const maxLength = 16;
 
-    const greenErrorLabel = validateShortname(shortname, 'Username', minLength, maxLength);
+    let ref = React.useRef<ZForm | null>(null);
+    let handleSave = React.useCallback(() => {
+        if (ref.current) {
+            if (validateShortname(shortname, minLength, maxLength)) {
+                ref.current.submitForm();
+            }
+        }
+    }, [shortname, minLength, maxLength]);
+
+    const greenErrorLabel = getErrorByShortname(shortname, 'Username', minLength, maxLength);
 
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <ZForm
                 action={async args => {
+                    setError(undefined);
+
                     await getClient().mutateSetUserShortname(args);
 
                     await getClient().refetchAccount();
                 }}
                 onSuccess={() => props.router.back()}
+                onError={(e) => {
+                    setError(formatError(e));
+                }}
                 ref={ref}
                 defaultData={{
                     shortname: me!.shortname
@@ -108,13 +134,15 @@ const SetUserShortnameContent = XMemo<PageProps>((props) => {
                         field="shortname"
                         autoCapitalize="none"
                         border="force-full"
-                        onChangeText={setShortname}
+                        onChangeText={(src: string) => {
+                            setShortname(src);
+                            setError(undefined);
+                        }}
                         autoFocus={true}
                     />
 
-                    {typeof greenErrorLabel === 'string' && (
-                        <GreenErrorText text={greenErrorLabel} />
-                    )}
+                    {error && <ErrorText color="red" text={error} />}
+                    {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
                 </ZListItemGroup>
             </ZForm>
         </>
