@@ -16,6 +16,7 @@ import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
 import glamorous from 'glamorous';
 import { getMessagesWrapperClassName } from './MessagesContainer';
+import { MessagesStateContextProps } from '../MessagesStateContext';
 
 let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -139,7 +140,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
         }
     };
 
-    renderMessage = (i: DataSourceMessageItem | DataSourceDateItem) => {
+    renderMessage = React.memo((i: DataSourceMessageItem | DataSourceDateItem) => {
         if (i.type === 'message') {
             return (
                 <MessageComponent
@@ -187,15 +188,15 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
             );
         }
         return <div />;
-    };
+    });
 
-    renderLoading = () => {
+    renderLoading = React.memo(() => {
         return (
             <LoadingWrapper>
                 <Loader style="flat" />
             </LoadingWrapper>
         );
-    };
+    });
 
     dataSourceWrapper = React.memo((props: any) => {
         return (

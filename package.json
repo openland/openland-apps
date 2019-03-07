@@ -44,6 +44,7 @@
         "@types/recharts": "^1.0.28",
         "@types/uuid": "^3.4.4",
         "@types/webpack": "^4.4.20",
+        "@welldone-software/why-did-you-render": "^2.5.2",
         "@zeit/next-typescript": "^1.1.1",
         "add": "^2.0.6",
         "apollo-cache-hermes": "^0.8.8",

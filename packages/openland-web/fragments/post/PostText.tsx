@@ -3,11 +3,11 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import Editor from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
-import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
+import { ContentState, EditorState } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { desktopInvalidClassName, emojiWrapperClassName } from './PostTitle';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XTextArea } from 'openland-x/XTextArea';
 import { XMemo } from 'openland-y-utils/XMemo';
 
@@ -133,7 +133,7 @@ const MobilePostText = (props: TextInputProps) => (
 );
 
 export const EmojiSelectButton = XMemo(() => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     if (!isMobile) {
         return (
             <XView flexDirection="row" alignItems="center" marginRight={10}>
@@ -147,6 +147,6 @@ export const EmojiSelectButton = XMemo(() => {
 });
 
 export const PostText = XMemo<TextInputProps>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     return isMobile ? <MobilePostText {...props} /> : <DesktopPostText {...props} />;
 });

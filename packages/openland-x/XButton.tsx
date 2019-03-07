@@ -745,78 +745,80 @@ export const Loader = ({ style }: { style?: XButtonStyle }) => {
 };
 
 export const XButton = makeActionable(
-    makeNavigable<XButtonProps>(props => {
-        return (
-            <StyledButton
-                href={props.href}
-                target={props.hrefTarget}
-                buttonSize={props.size}
-                buttonStyle={props.style}
-                loading={props.loading}
-                enabled={props.enabled}
-                pressed={props.pressed}
-                attach={props.attach}
-                flexBasis={props.flexBasis}
-                flexGrow={props.flexGrow}
-                flexShrink={props.flexShrink}
-                alignSelf={props.alignSelf}
-                onClick={props.onClick}
-                className={props.className}
-                zIndex={props.zIndex}
-                breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
-                responsive={props.iconResponsive ? true : false}
-                insaneMode={props.insaneMode}
-                data-test-id={props.dataTestId}
-            >
-                <StyledButtonContentWrapper tabIndex={-1} className="button-content">
-                    <MainContent className="main-content">
-                        {props.iconResponsive &&
-                            (typeof props.iconResponsive === 'string' ? (
-                                <StyledIcon
-                                    size={props.size}
-                                    text={props.text}
-                                    icon={props.iconResponsive}
-                                    opacity={props.iconOpacity}
-                                    className="icon icon-responsive material"
-                                />
-                            ) : (
-                                <i className="icon icon-responsive">{props.iconResponsive}</i>
-                            ))}
-                        {props.icon &&
-                            (typeof props.icon === 'string' ? (
-                                <StyledIcon
-                                    size={props.size}
-                                    text={props.text}
-                                    icon={props.icon}
-                                    opacity={props.iconOpacity}
-                                    className="icon material"
-                                />
-                            ) : (
-                                <i className="icon icon-svg">{props.icon}</i>
-                            ))}
-                        <ButtonText
-                            responsive={props.iconResponsive ? true : false}
-                            breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
-                            tooltipPlacement={props.tooltipPlacement}
-                        >
-                            {props.text}
-                        </ButtonText>
-                        {props.iconRight &&
-                            (typeof props.iconRight === 'string' ? (
-                                <StyledIconRight
-                                    size={props.size}
-                                    text={props.text}
-                                    icon={props.iconRight}
-                                    opacity={props.iconOpacity}
-                                    className="icon material"
-                                />
-                            ) : (
-                                <i className="icon icon-svg">{props.iconRight}</i>
-                            ))}
-                    </MainContent>
-                    {props.loading && <Loader style={props.style} />}
-                </StyledButtonContentWrapper>
-            </StyledButton>
-        );
-    }),
+    makeNavigable<XButtonProps>(
+        React.memo(props => {
+            return (
+                <StyledButton
+                    href={props.href}
+                    target={props.hrefTarget}
+                    buttonSize={props.size}
+                    buttonStyle={props.style}
+                    loading={props.loading}
+                    enabled={props.enabled}
+                    pressed={props.pressed}
+                    attach={props.attach}
+                    flexBasis={props.flexBasis}
+                    flexGrow={props.flexGrow}
+                    flexShrink={props.flexShrink}
+                    alignSelf={props.alignSelf}
+                    onClick={props.onClick}
+                    className={props.className}
+                    zIndex={props.zIndex}
+                    breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+                    responsive={props.iconResponsive ? true : false}
+                    insaneMode={props.insaneMode}
+                    data-test-id={props.dataTestId}
+                >
+                    <StyledButtonContentWrapper tabIndex={-1} className="button-content">
+                        <MainContent className="main-content">
+                            {props.iconResponsive &&
+                                (typeof props.iconResponsive === 'string' ? (
+                                    <StyledIcon
+                                        size={props.size}
+                                        text={props.text}
+                                        icon={props.iconResponsive}
+                                        opacity={props.iconOpacity}
+                                        className="icon icon-responsive material"
+                                    />
+                                ) : (
+                                    <i className="icon icon-responsive">{props.iconResponsive}</i>
+                                ))}
+                            {props.icon &&
+                                (typeof props.icon === 'string' ? (
+                                    <StyledIcon
+                                        size={props.size}
+                                        text={props.text}
+                                        icon={props.icon}
+                                        opacity={props.iconOpacity}
+                                        className="icon material"
+                                    />
+                                ) : (
+                                    <i className="icon icon-svg">{props.icon}</i>
+                                ))}
+                            <ButtonText
+                                responsive={props.iconResponsive ? true : false}
+                                breakpoint={props.breakpoint || defaultResponsiveBreakpoint}
+                                tooltipPlacement={props.tooltipPlacement}
+                            >
+                                {props.text}
+                            </ButtonText>
+                            {props.iconRight &&
+                                (typeof props.iconRight === 'string' ? (
+                                    <StyledIconRight
+                                        size={props.size}
+                                        text={props.text}
+                                        icon={props.iconRight}
+                                        opacity={props.iconOpacity}
+                                        className="icon material"
+                                    />
+                                ) : (
+                                    <i className="icon icon-svg">{props.iconRight}</i>
+                                ))}
+                        </MainContent>
+                        {props.loading && <Loader style={props.style} />}
+                    </StyledButtonContentWrapper>
+                </StyledButton>
+            );
+        }),
+    ),
 );

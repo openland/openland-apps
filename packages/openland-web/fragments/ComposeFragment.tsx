@@ -373,7 +373,6 @@ class ComposeComponentRender extends React.Component<ComposeComponentProps, Comp
                         )}
 
                         <MessageComposeComponent
-                            isActive={this.props.isActive}
                             onSend={this.handleSend}
                             enabled={this.state.values.length > 0}
                         />

@@ -21,7 +21,7 @@ import { withRoom } from 'openland-web/api/withRoom';
 import { withUserInfo } from 'openland-web/components/UserInfo';
 import { MessagesStateContextProps } from 'openland-web/components/messenger/MessagesStateContext';
 import { XLoader } from 'openland-x/XLoader';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
@@ -135,7 +135,7 @@ const RowWithSeparators = ({
 };
 
 export const ChatHeaderView = XMemo<ChatHeaderViewProps>(({ room, me }) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     const state = React.useContext(MessagesStateContext);
 
     if (state.useForwardHeader) {

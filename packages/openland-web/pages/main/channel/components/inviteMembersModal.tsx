@@ -457,7 +457,7 @@ class InviteMembersModalRaw extends React.Component<
     }
 }
 
-export const InviteMembersModal = withChanneSendlnviteLink(props => (
+export const InviteMembersModal = React.memo(withChanneSendlnviteLink(props => (
     <InviteMembersModalRaw
         channelTitle={(props as any).channelTitle}
         roomId={(props as any).roomId}
@@ -466,4 +466,4 @@ export const InviteMembersModal = withChanneSendlnviteLink(props => (
 )) as React.ComponentType<{
     channelTitle?: string;
     roomId: string;
-}>;
+}>);

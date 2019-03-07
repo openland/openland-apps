@@ -5,7 +5,7 @@ import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XInput } from 'openland-x/XInput';
 import { XButton } from 'openland-x/XButton';
 import SearchIcon from 'openland-icons/ic-search-small.svg';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const SearchWrapper = Glamorous.div({
@@ -52,7 +52,7 @@ interface SearchBoxProps {
 }
 
 export const SearchBox = XMemo<SearchBoxProps>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     const onChange = (value: string) => {
         props.onChange(value);
     };

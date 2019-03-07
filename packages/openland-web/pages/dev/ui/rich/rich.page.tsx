@@ -62,7 +62,6 @@ export default withApp('UI Framework - Rich Input', 'viewer', () => {
                         Old
                     </XView>
                     <MessageComposeComponentDraft
-                        isActive={true}
                         TextInputComponent={OldDesktopSendMessage}
                         variables={{
                             conversationId: 'k4awPklKWOSaM0ExJb15CnjEdQ',
@@ -75,7 +74,6 @@ export default withApp('UI Framework - Rich Input', 'viewer', () => {
                         New
                     </XView>
                     <MessageComposeComponentDraft
-                        isActive={true}
                         TextInputComponent={DesktopSendMessage}
                         variables={{
                             conversationId: 'k4awPklKWOSaM0ExJb15CnjEdQ',
@@ -87,7 +85,6 @@ export default withApp('UI Framework - Rich Input', 'viewer', () => {
                         Content Editable
                     </XView>
                     <MessageComposeComponentDraft
-                        isActive={true}
                         TextInputComponent={MobileSendMessage}
                         variables={{
                             conversationId: 'k4awPklKWOSaM0ExJb15CnjEdQ',

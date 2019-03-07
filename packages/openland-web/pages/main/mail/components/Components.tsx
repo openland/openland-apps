@@ -5,7 +5,7 @@ import { css, cx } from 'linaria';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { Scaffold } from 'openland-web/components/Scaffold';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MessengerFragment } from 'openland-web/fragments/MessengerFragment';
 import { DialogListFragment } from 'openland-web/fragments/dialogs/DialogListFragment';
 import { ComposeFragment } from 'openland-web/fragments/ComposeFragment';
@@ -62,6 +62,23 @@ const displayNoneClassName = css`
     display: none;
 `;
 
+type ShouldUpdateComponentT = {
+    Component: any;
+    componentProps: any;
+    isActive: boolean;
+};
+
+export const IsActiveContext = React.createContext<boolean | null>(null);
+
+class ShouldUpdateComponent extends React.Component<ShouldUpdateComponentT> {
+    shouldComponentUpdate(props: any) {
+        return this.props.isActive && props.isActive;
+    }
+    render() {
+        return <this.props.Component {...this.props.componentProps} isActive={true} />;
+    }
+}
+
 const DisplayNone = ({
     isActive,
     Component,
@@ -73,7 +90,11 @@ const DisplayNone = ({
 }) => {
     return (
         <div className={cx(displayNoneCommonClassName, !isActive && displayNoneClassName)}>
-            <Component {...componentProps} isActive={isActive} />
+            <ShouldUpdateComponent
+                Component={Component}
+                componentProps={componentProps}
+                isActive={isActive}
+            />
         </div>
     );
 };
@@ -109,12 +130,16 @@ const CacheComponent = ({
             {Object.keys(cachedProps).map((id, key1) => {
                 const cachedComponentProps = cachedProps[id];
                 return (
-                    <DisplayNone
-                        isActive={activeChat !== null && activeChat === id}
+                    <IsActiveContext.Provider
                         key={key1}
-                        Component={Component}
-                        componentProps={cachedComponentProps}
-                    />
+                        value={activeChat !== null && activeChat === id}
+                    >
+                        <DisplayNone
+                            isActive={activeChat !== null && activeChat === id}
+                            Component={Component}
+                            componentProps={cachedComponentProps}
+                        />
+                    </IsActiveContext.Provider>
                 );
             })}
         </>
@@ -139,7 +164,7 @@ export const ConversationContainerWrapper = ({
         );
     }
 
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     const ConversationContainerInner = isMobile
         ? MobileConversationContainer

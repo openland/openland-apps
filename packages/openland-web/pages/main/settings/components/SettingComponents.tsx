@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { XView } from 'react-mental';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 export const Content = XMemo<{ children: any }>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     return (
         <XView paddingVertical={20} paddingHorizontal={isMobile ? 20 : 30} flexGrow={1}>

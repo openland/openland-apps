@@ -3,11 +3,11 @@ import { XView } from 'react-mental';
 import { css, cx } from 'linaria';
 import Editor from 'draft-js-plugins-editor';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
-import { ContentState, DraftHandleValue, EditorState } from 'draft-js';
+import { ContentState, EditorState } from 'draft-js';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import EmojiIcon from 'openland-icons/ic-emoji.svg';
 import { XInput } from 'openland-x/XInput';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XMemo } from 'openland-y-utils/XMemo';
 
 const desktopWrapperClassName = css`
@@ -153,7 +153,9 @@ class DesktopPostTitle extends React.PureComponent<TextInputProps, TextInputStat
                         ref={this.editorRef}
                         plugins={[emojiPlugin]}
                     />
-                    <div className={`${emojiWrapperClassName} ${emojiPositionClassName} emoji-wrapper`}>
+                    <div
+                        className={`${emojiWrapperClassName} ${emojiPositionClassName} emoji-wrapper`}
+                    >
                         <EmojiSelect />
                     </div>
                 </div>
@@ -180,6 +182,6 @@ const MobilePostTitle = (props: TextInputProps) => (
 );
 
 export const PostTitle = XMemo<TextInputProps>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     return isMobile ? <MobilePostTitle {...props} /> : <DesktopPostTitle {...props} />;
 });

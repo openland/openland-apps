@@ -9,7 +9,7 @@ import { EditPostProps } from '../../fragments/MessengerRootComponent';
 import { TypingsView } from './typings/TypingsView';
 import { XView } from 'react-mental';
 
-const TypingComponent = (props: { chatId: string }) => (
+const TypingComponent = React.memo((props: { chatId: string }) => (
     <XView
         alignItems="center"
         width={'100%'}
@@ -30,7 +30,7 @@ const TypingComponent = (props: { chatId: string }) => (
             <TypingsView conversationId={props.chatId} />
         </XView>
     </XView>
-);
+));
 
 interface ConversationMessagesComponentProps {
     isActive: boolean;

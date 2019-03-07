@@ -8,7 +8,7 @@ import ShortcutsIcon from 'openland-icons/ic-attach-shortcuts-3.svg';
 import { XLink } from 'openland-x/XLink';
 import PostIcon from 'openland-icons/ic-add-post.svg';
 import { ShortcutsModal } from 'openland-web/components/messenger/view/ShortcutsModal';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { PostMessageType } from 'openland-api/Types';
 import { XPopper } from 'openland-x/XPopper';
 import { XMenuVertical, XMenuItemSeparator } from 'openland-x/XMenuItem';
@@ -93,8 +93,8 @@ export class PostButton extends React.PureComponent<PostButtonProps> {
             props.enabled === false
                 ? undefined
                 : props.handleHideChat
-                    ? props.handleHideChat
-                    : undefined;
+                ? props.handleHideChat
+                : undefined;
 
         let enableProps = {
             enabled: props.enabled === false,
@@ -188,7 +188,7 @@ export const AttachmentButtons = ({
         }
     };
 
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     return (
         <XHorizontal separator="none">

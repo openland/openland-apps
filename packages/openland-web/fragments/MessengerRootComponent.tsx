@@ -7,7 +7,7 @@ import {
 } from 'openland-engines/messenger/ConversationEngine';
 import { ModelMessage } from 'openland-engines/messenger/types';
 import { ConversationState } from 'openland-engines/messenger/ConversationState';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import {
     MessageComposeComponentDraft,
     MessageComposeComponentProps,
@@ -128,7 +128,7 @@ interface ComposeHandlerProps extends MessageComposeComponentProps {
 }
 
 const MessageComposeHandler = XMemo<ComposeHandlerProps>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     if (isMobile) {
         return <MobileMessageCompose {...props} />;
     }
@@ -296,6 +296,7 @@ class MessagesComponent extends React.Component<MessagesComponentProps, Messages
     //
 
     render() {
+        // console.log('render MessagesComponent');
         if (!this.conversation) {
             return null;
         }
@@ -373,6 +374,7 @@ interface MessengerRootComponentProps {
 
 export const MessengerRootComponent = (props: MessengerRootComponentProps) => {
     let messenger = React.useContext(MessengerContext);
+    // console.log('MessengerRootComponent', props.isActive);
     return (
         <MessagesComponent
             isActive={props.isActive}

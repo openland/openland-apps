@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessagesStateContext, MessagesStateContextProps } from '../MessagesStateContext';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { MobileMessageComponentInner } from './MessageMobileComponent';
 import { DesktopMessageComponentInner, MessageComponentProps } from './MessageDesktopComponent';
 
@@ -21,7 +21,7 @@ const MessageComponentInner = React.memo(
 
 export const MessageComponent = (props: MessageComponentProps) => {
     const messagesContextProps = React.useContext(MessagesStateContext);
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     return (
         <MessageComponentInner

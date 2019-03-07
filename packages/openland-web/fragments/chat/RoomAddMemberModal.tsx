@@ -19,7 +19,8 @@ import { XScrollView2 } from 'openland-x/XScrollView2';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import LinkIcon from 'openland-icons/ic-link.svg';
 import { XCreateCard } from 'openland-x/cards/XCreateCard';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 interface SearchBoxProps {
     value: { label: string; value: string }[] | null;
@@ -120,7 +121,7 @@ interface InviteModalState {
     selectedUsers: Map<string, string> | null;
 }
 
-class RoomAddMemberModalInner extends React.Component<
+class RoomAddMemberModalInner extends React.PureComponent<
     InviteModalProps & { isMobile: boolean },
     InviteModalState
 > {
@@ -157,6 +158,12 @@ class RoomAddMemberModalInner extends React.Component<
             selectedUsers: selected,
         });
     };
+
+    private onClosed = () =>
+        this.setState({
+            selectedUsers: null,
+            searchQuery: '',
+        });
 
     render() {
         const { props } = this;
@@ -196,12 +203,7 @@ class RoomAddMemberModalInner extends React.Component<
                         selectedUsers: null,
                     });
                 }}
-                onClosed={() =>
-                    this.setState({
-                        selectedUsers: null,
-                        searchQuery: '',
-                    })
-                }
+                onClosed={this.onClosed}
             >
                 <XView
                     height="60vh"
@@ -232,10 +234,18 @@ class RoomAddMemberModalInner extends React.Component<
     }
 }
 
-const RoomAddMemberModalRoot = (props: InviteModalProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
-    return <RoomAddMemberModalInner {...props} isMobile={isMobile} />;
-};
+const RoomAddMemberModalRoot = React.memo((props: InviteModalProps) => {
+    const isMobile = React.useContext(IsMobileContext);
+    return (
+        <RoomAddMemberModalInner
+            roomId={props.roomId}
+            addMembers={props.addMembers}
+            members={props.members}
+            linkInvitePath={props.linkInvitePath}
+            isMobile={isMobile}
+        />
+    );
+});
 
 type RoomAddMemberModalUsersT = {
     variables: { roomId: string };
@@ -244,18 +254,17 @@ type RoomAddMemberModalUsersT = {
     linkInvitePath?: string;
 };
 
-const RoomAddMemberModalUsers = withRoomMembersId(props => {
+const RoomAddMemberModalUsers = React.memo(withRoomMembersId(props => {
     const typedProps = props as typeof props & RoomAddMemberModalUsersT;
     return (
         <RoomAddMemberModalRoot
-            {...typedProps}
             addMembers={typedProps.addMembers}
             roomId={typedProps.roomId}
             members={typedProps.data.members}
             linkInvitePath={typedProps.linkInvitePath}
         />
     );
-}) as React.ComponentType<RoomAddMemberModalUsersT & XModalProps>;
+}) as React.ComponentType<RoomAddMemberModalUsersT & XModalProps>);
 
 type RoomAddMemberModalT = {
     roomId: string;
@@ -263,15 +272,14 @@ type RoomAddMemberModalT = {
     linkInvitePath?: string;
 };
 
-export const RoomAddMemberModal = withRoomAddMembers(props => {
+export const RoomAddMemberModal = React.memo(withRoomAddMembers(props => {
     const typedProps = props as typeof props & RoomAddMemberModalT;
     return (
         <RoomAddMemberModalUsers
-            {...typedProps}
             roomId={typedProps.roomId}
             addMembers={typedProps.addMembers}
             variables={{ roomId: typedProps.roomId }}
             linkInvitePath={typedProps.linkInvitePath}
         />
     );
-}) as React.ComponentType<RoomAddMemberModalT & XModalProps>;
+}) as React.ComponentType<RoomAddMemberModalT & XModalProps>);

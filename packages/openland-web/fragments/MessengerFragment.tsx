@@ -31,8 +31,10 @@ interface MessengerComponentLoaderProps {
 }
 
 class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoaderProps> {
+    // static whyDidYouRender = true;
     render() {
         const { state, data, loading, isActive } = this.props;
+        // console.log(this.props);
         if (!data || !data.room || loading) {
             if (loading) {
                 return <XLoader loading={true} />;
@@ -96,16 +98,33 @@ class MessagengerFragmentInner extends React.PureComponent<MessengerComponentLoa
     }
 }
 
-const MessengerComponentLoader = withRoom(withQueryLoader(
-    withUserInfo(MessagengerFragmentInner as any),
+const MessengerComponentLoader = React.memo(withRoom(withQueryLoader(
+    withUserInfo(
+        React.memo((props: any) => {
+            // console.log('render MessagengerFragmentInner', props);
+            return (
+                <MessagengerFragmentInner
+                    isActive={props.isActive}
+                    variables={props.variables}
+                    state={props.state}
+                    user={props.user}
+                    loading={props.loading}
+                    data={props.data}
+                />
+            );
+        }),
+    ),
 ) as any) as React.ComponentType<{
     isActive: boolean;
     variables: { id: string };
     state: MessagesStateContextProps;
-}>;
+}>);
 
-export const MessengerFragment = ({ id, isActive }: MessengerComponentProps) => {
+// MessengerComponentLoader.whyDidYouRender = true;
+
+export const MessengerFragment = React.memo(({ id, isActive }: MessengerComponentProps) => {
     const state: MessagesStateContextProps = React.useContext(MessagesStateContext);
-
     return <MessengerComponentLoader variables={{ id }} state={state} isActive={isActive} />;
-};
+});
+
+// MessengerFragment.whyDidYouRender = true;

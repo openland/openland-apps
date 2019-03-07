@@ -54,36 +54,67 @@ function useDataSource<T extends DataSourceItem>(dataSource: DataSource<T>): [T[
 
 export interface XListViewProps<T extends DataSourceItem> {
     dataSource: DataSource<T>;
-    renderItem: (item: T) => React.ReactElement<any>;
-    renderLoading: () => React.ReactElement<any>;
+    renderItem: React.ComponentClass<T> | React.StatelessComponent<T>;
+    renderLoading: React.ComponentClass<any> | React.StatelessComponent<any>;
     reverce?: boolean;
     wrapWith?: any;
 }
+
+const WrapWith = ({
+    WrapWithComponent,
+    reverce,
+    completed,
+    LoadingComponent,
+    children,
+}: {
+    WrapWithComponent: any;
+    reverce?: boolean;
+    completed: boolean;
+    LoadingComponent: any;
+    children: any;
+}) => {
+    if (!WrapWithComponent) {
+        return (
+            <>
+                {!completed && reverce && <LoadingComponent />}
+                {children}
+                {!completed && !reverce && <LoadingComponent />}
+            </>
+        );
+    }
+    return (
+        <WrapWithComponent>
+            {!completed && reverce && <LoadingComponent />}
+            {children}
+            {!completed && !reverce && <LoadingComponent />}
+        </WrapWithComponent>
+    );
+};
+
+// WrapWith.whyDidYouRender = true;
 
 export const DataSourceRender = React.memo(function<T extends DataSourceItem>(
     props: XListViewProps<T>,
 ) {
     let [items, completed] = useDataSource(props.dataSource);
+
+    let renderedItems: any = [];
     if (props.reverce) {
-        items = [...items];
-        items.reverse();
+        for (let i = items.length - 1; i >= 0; i--) {
+            renderedItems.push(<props.renderItem {...items[i]} key={i} />);
+        }
+    } else {
+        renderedItems = items.map((i, key) => <props.renderItem {...i} key={key} />);
     }
+
     return (
-        <>
-            {items && props.wrapWith && (
-                <props.wrapWith>
-                    {!completed && props.reverce && props.renderLoading()}
-                    {items.map(i => props.renderItem(i))}
-                    {!completed && !props.reverce && props.renderLoading()}
-                </props.wrapWith>
-            )}
-            {items && !props.wrapWith && (
-                <>
-                    {!completed && props.reverce && props.renderLoading()}
-                    {items.map(i => props.renderItem(i))}
-                    {!completed && !props.reverce && props.renderLoading()}
-                </>
-            )}
-        </>
+        <WrapWith
+            LoadingComponent={props.renderLoading}
+            reverce={props.reverce}
+            WrapWithComponent={props.wrapWith}
+            completed={completed}
+        >
+            {renderedItems}
+        </WrapWith>
     );
 });

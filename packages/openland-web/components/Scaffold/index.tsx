@@ -16,6 +16,7 @@ import { withNotificationCounter } from '../../api/withNotificationCounter';
 import { DesktopScaffold, DesktopScafoldMenuItem } from './DesktopComponents';
 import { MobileScaffold, MobileScafoldMenuItem } from './MobileComponents';
 import { MobileSidebarContext } from './MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const CounterWrapper = (props: { count: number }) => (
     <div className="unread-messages-counter">
@@ -106,10 +107,9 @@ class ScaffoldContent extends React.Component<{
 
 const NotificationCounter = withNotificationCounter(props => (
     <>
-        {props.data.counter &&
-            props.data.counter.unreadCount > 0 && (
-                <CounterWrapper count={props.data.counter.unreadCount} />
-            )}
+        {props.data.counter && props.data.counter.unreadCount > 0 && (
+            <CounterWrapper count={props.data.counter.unreadCount} />
+        )}
     </>
 ));
 
@@ -175,38 +175,40 @@ const ScaffoldInner = ({ menu, content }: { menu: any; content: any }) => {
                 isMobile: !!isMobile,
             }}
         >
-            <UniversalScaffold
-                topItems={
-                    <>
-                        <XWithRole role="feature-non-production">
+            <IsMobileContext.Provider value={!!isMobile}>
+                <UniversalScaffold
+                    topItems={
+                        <>
+                            <XWithRole role="feature-non-production">
+                                <UniversalScafoldMenuItem
+                                    name={TextAppBar.items.feed}
+                                    path="/feed"
+                                    icon={<RoomIcon />}
+                                />
+                            </XWithRole>
+
                             <UniversalScafoldMenuItem
-                                name={TextAppBar.items.feed}
-                                path="/feed"
-                                icon={<RoomIcon />}
+                                name={'Messages'}
+                                path="/mail"
+                                icon={
+                                    <>
+                                        <MobileChatIcon />
+                                        <NotificationCounter />
+                                    </>
+                                }
                             />
-                        </XWithRole>
 
-                        <UniversalScafoldMenuItem
-                            name={'Messages'}
-                            path="/mail"
-                            icon={
-                                <>
-                                    <MobileChatIcon />
-                                    <NotificationCounter />
-                                </>
-                            }
-                        />
-
-                        <UniversalScafoldMenuItem
-                            name={TextAppBar.items.directory}
-                            path="/directory"
-                            icon={<DirectoryIcon />}
-                        />
-                    </>
-                }
-                menu={menu}
-                content={content}
-            />
+                            <UniversalScafoldMenuItem
+                                name={TextAppBar.items.directory}
+                                path="/directory"
+                                icon={<DirectoryIcon />}
+                            />
+                        </>
+                    }
+                    menu={menu}
+                    content={content}
+                />
+            </IsMobileContext.Provider>
         </MobileSidebarContext.Provider>
     );
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { XView } from 'react-mental';
 import { css } from 'linaria';
 import { XMemo } from 'openland-y-utils/XMemo';
@@ -20,7 +20,7 @@ export interface TypingsViewProps {
 }
 
 export const TypingsView = XMemo<TypingsViewProps>(props => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     let messeger = React.useContext(MessengerContext);
     let [typing, setTyping] = React.useState<string | null>(null);
 

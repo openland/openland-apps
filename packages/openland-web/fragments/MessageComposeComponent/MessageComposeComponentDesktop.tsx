@@ -25,7 +25,7 @@ import {
     PostMessageType,
 } from 'openland-api/Types';
 import { ModelMessage } from 'openland-engines/messenger/types';
-import { PostIntroModal } from '../../components/messenger/message/content/attachments/introMessage/PostIntroModal';
+// import { PostIntroModal } from '../../components/messenger/message/content/attachments/introMessage/PostIntroModal';
 import { useKeydownHandler } from './useKeydownHandler';
 import { useDraft } from './useDraft';
 import { useHandleSend } from './useHandleSend';
@@ -36,10 +36,10 @@ import { useMentions } from './useMentions';
 import { DumpSendMessage } from './DumpSendMessage';
 import { DesktopSendMessage } from './SendMessage/DesktopSendMessage';
 import { UploadContext } from './FileUploading/UploadContext';
+import { IsActiveContext } from '../../pages/main/mail/components/Components';
 
 export interface MessageComposeComponentProps {
     conversationType?: SharedRoomKind | 'PRIVATE';
-    isActive: boolean;
     conversationId?: string;
     conversation?: ConversationEngine;
     enabled?: boolean;
@@ -67,6 +67,7 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     const inputMethodsState = useInputMethods({ inputRef, enabled: messageComposeProps.enabled });
     const messagesContext: MessagesStateContextProps = React.useContext(MessagesStateContext);
     const { file } = React.useContext(UploadContext);
+    const isActive = React.useContext(IsActiveContext);
 
     if (file) {
         inputMethodsState.focusIfNeeded();
@@ -124,18 +125,18 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
     };
 
     React.useEffect(() => {
-        if (messageComposeProps.isActive) {
+        if (isActive) {
             messagesContext.changeForwardConverstion();
             setInputValue(hasReply() ? draftState.getNextDraft() : '');
             draftState.setBeDrafted(hasReply());
             inputMethodsState.focusIfNeeded();
         }
-    }, [messageComposeProps.isActive]);
+    }, [isActive]);
 
     return (
         <>
             {/* TODO maybe some other pattern here */}
-            {messageComposeProps.isActive && (
+            {isActive && (
                 <DumpSendMessage
                     TextInputComponent={
                         messageComposeProps.TextInputComponent || DesktopSendMessage

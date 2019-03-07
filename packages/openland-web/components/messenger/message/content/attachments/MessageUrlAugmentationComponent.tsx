@@ -11,7 +11,7 @@ import DeleteIcon from 'openland-icons/ic-close.svg';
 import { makeNavigable, NavigableChildProps } from 'openland-x/Navigable';
 import { isInternalLink } from 'openland-web/utils/isInternalLink';
 import { makeInternalLinkRelative } from 'openland-web/utils/makeInternalLinkRelative';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 import { emoji } from 'openland-y-utils/emoji';
 import { XView } from 'react-mental';
 import { XAvatar } from 'openland-x/XAvatar';
@@ -243,7 +243,7 @@ const InternalUrlCardInner = React.memo(
 );
 
 const InternalUrlCard = (props: InternalUrlCardInnerProps) => {
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
     return <InternalUrlCardInner {...props} isMobile={isMobile} />;
 };
 

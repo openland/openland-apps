@@ -21,10 +21,9 @@ import { TextInvites } from 'openland-text/TextInvites';
 import { XFormSubmit } from 'openland-x-forms/XFormSubmit';
 import PlusIcon from 'openland-icons/ic-add-small.svg';
 import LinkIcon from 'openland-icons/ic-link.svg';
-import EmailIcon from 'openland-icons/ic-email.svg';
 import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { withAppInvite } from '../../../../api/withAppInvite';
-import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSidebarContext';
+import { IsMobileContext } from 'openland-web/components/Scaffold/IsMobileContext';
 
 const AddButtonStyled = Glamorous(XLink)({
     fontSize: 14,
@@ -533,7 +532,7 @@ export const InvitesToOrganizationModal = withOrganizationInviteMembers(props =>
             routeQuery: { organizationId },
         },
     } = props as typeof props & InvitesToOrganizationModalProps;
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     return (
         <InvitesModalRaw
@@ -557,7 +556,7 @@ type InvitesGlobalModalProps = {
 
 export const InvitesGlobalModal = (props: InvitesGlobalModalProps) => {
     const { targetQuery, target } = props as typeof props & InvitesGlobalModalProps;
-    const { isMobile } = React.useContext(MobileSidebarContext);
+    const isMobile = React.useContext(IsMobileContext);
 
     return (
         <InvitesModalRaw
