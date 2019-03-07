@@ -31,6 +31,7 @@ import { XDate } from 'openland-x/XDate';
 import { XDocumentHead } from 'openland-x-routing/XDocumentHead';
 import { XView } from 'react-mental';
 import { XAvatar2 } from 'openland-x/XAvatar2';
+import { emoji } from 'openland-y-utils/emoji';
 
 const ModalCloser = Glamorous(XLink)({
     position: 'fixed',
@@ -141,7 +142,7 @@ const Header = (props: { user: User_user }) => {
                 <XView paddingTop={1} justifyContent="center" flexGrow={1}>
                     <XHorizontal separator={4}>
                         <XView fontSize={18} fontWeight="600" lineHeight="20px" color="#000000">
-                            {user.name}
+                            {emoji({ src: user.name, size: 20 })}
                         </XView>
                         {user.primaryOrganization && (
                             <XView
@@ -256,17 +257,16 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
 };
 
 const UserProvider = withUser(
-    withRouter(
-        props =>
-            props.data.user ? (
-                <UserProfileInner
-                    user={props.data.user}
-                    router={props.router}
-                    onDirectory={(props as any).onDirectory}
-                />
-            ) : (
-                <XLoader loading={true} />
-            ),
+    withRouter(props =>
+        props.data.user ? (
+            <UserProfileInner
+                user={props.data.user}
+                router={props.router}
+                onDirectory={(props as any).onDirectory}
+            />
+        ) : (
+            <XLoader loading={true} />
+        ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };
