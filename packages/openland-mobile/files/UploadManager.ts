@@ -57,11 +57,12 @@ export class UploadManager {
             fetchInfo: () => new Promise(async (resolver, onError) => {
                 let isImage = uri.endsWith('.png') || uri.endsWith('.jpg') || uri.endsWith('.jpeg');
                 let imageSize: { width: number, height: number } | undefined = undefined;
-                // if (isImage) {
-                //     imageSize = await new Promise<{ width: number, height: number }>((res) => {
-                //         Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
-                //     });
-                // }
+                if (isImage) {
+                    imageSize = await new Promise<{ width: number, height: number }>((res) => {
+                        Image.getSize(uri, (width, height) => res({ width, height }), e => onError(e));
+                    });
+                    console.warn('boom', imageSize);
+                }
                 if (fileSize === undefined) {
                     RNFetchBlob.fs.stat(uri.replace('file://', ''))
                         .then((s: any) => resolver({ name, uri, fileSize: s.size, isImage, imageSize }))

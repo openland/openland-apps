@@ -356,7 +356,7 @@ export class ConversationEngine implements MessageSendHandler {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
-            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false, isImage: info.isImage } as PendingMessage;
+            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false, isImage: info.isImage, imageSize: info.imageSize } as PendingMessage;
             this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
