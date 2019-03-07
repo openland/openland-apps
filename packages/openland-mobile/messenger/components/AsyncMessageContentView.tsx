@@ -52,7 +52,7 @@ export const AsyncMessageContentView = React.memo<AsyncMessageTextViewProps>((pr
     let layout;
     if (hasImage) {
         layout = layoutImage(props.message);
-        hasImage = false;
+        hasImage = hasImage && !!layout;
     }
     let hasDocument = props.message.file && !hasImage;
     let imageOnly = hasImage && !(hasReply || hasText || hasUrlAug);

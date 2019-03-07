@@ -78,15 +78,15 @@ export class MessageSender {
             } catch (e) {
                 callback.onFailed(key);
             }
-            // this.doSendMessage({
-            //     file: this.uploadedFiles.get(key)!!,
-            //     mentions: null,
-            //     replyMessages: null,
-            //     message: null,
-            //     conversationId,
-            //     key,
-            //     callback
-            // });
+            this.doSendMessage({
+                file: this.uploadedFiles.get(key)!!,
+                mentions: null,
+                replyMessages: null,
+                message: null,
+                conversationId,
+                key,
+                callback
+            });
         })();
         return key;
     }
