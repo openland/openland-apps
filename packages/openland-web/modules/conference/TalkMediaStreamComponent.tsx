@@ -34,6 +34,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
 
     componentDidMount() {
         console.log('Connection mounted: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log('WEBRTC: ICE Servers: ', this.props.conference.iceServers);
         this.started = true;
         this.peerConnection = new RTCPeerConnection({
             iceServers: this.props.conference.iceServers.map(v => ({
@@ -41,7 +42,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 credential: v.credential ? v.credential : undefined,
                 username: v.username ? v.username : undefined,
             })),
-            // iceTransportPolicy: 'relay',
+            iceTransportPolicy: 'relay',
         });
         this.peerConnection.onicecandidate = ev => {
             backoff(async () => {

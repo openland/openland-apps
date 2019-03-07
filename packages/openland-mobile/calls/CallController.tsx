@@ -26,6 +26,7 @@ class CallMediaStreamComponent extends React.PureComponent<CallMediaStreamProps>
 
     componentWillMount() {
         console.log('WEBRTC: Connection added: ' + this.props.id);
+        console.log('WEBRTC: ICE Servers: ', this.props.conference.iceServers);
         this.started = true;
         this.peerConnection = new RTCPeerConnection({
             iceServers: this.props.conference.iceServers.map(v => ({
@@ -33,7 +34,7 @@ class CallMediaStreamComponent extends React.PureComponent<CallMediaStreamProps>
                 credential: v.credential ? v.credential : undefined,
                 username: v.username ? v.username : undefined,
             })),
-            // iceTransportPolicy: 'relay',
+            iceTransportPolicy: 'relay',
         });
 
         this.peerConnection.onicecandidate = (ev: any) => {
