@@ -10,7 +10,6 @@ const emojiClassName = css`
     background-size: contain;
     vertical-align: middle;
     display: inline-block;
-    overflow: hidden;
     max-width: 1.95ch;
     max-height: 1em;
     line-height: inherit;
