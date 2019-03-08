@@ -80,6 +80,9 @@ const StatusWrapperOnline = css`
 `;
 
 const UserStatus = withOnline(props => {
+    if ((props as any).isBot) {
+        return <div className={StatusWrapperOnline}>bot</div>;
+    }
     if (
         props.data.user &&
         (props.data.user.lastSeen &&
@@ -101,7 +104,7 @@ const UserStatus = withOnline(props => {
     } else {
         return null;
     }
-}) as React.ComponentType<{ variables: { userId: string } }>;
+}) as React.ComponentType<{ variables: { userId: string }; isBot: boolean }>;
 
 const AvatarModal = (props: { photo?: string; userName: string; userId: string }) => {
     return (
@@ -160,7 +163,7 @@ const Header = (props: { user: User_user }) => {
                             </XView>
                         )}
                     </XHorizontal>
-                    <UserStatus variables={{ userId: user.id }} />
+                    <UserStatus variables={{ userId: user.id }} isBot={user.isBot} />
                 </XView>
                 <XView paddingTop={13}>
                     <XHorizontal separator={8} alignItems="center">
@@ -257,16 +260,17 @@ export const UserProfileInner = (props: UserProfileInnerProps) => {
 };
 
 const UserProvider = withUser(
-    withRouter(props =>
-        props.data.user ? (
-            <UserProfileInner
-                user={props.data.user}
-                router={props.router}
-                onDirectory={(props as any).onDirectory}
-            />
-        ) : (
-            <XLoader loading={true} />
-        ),
+    withRouter(
+        props =>
+            props.data.user ? (
+                <UserProfileInner
+                    user={props.data.user}
+                    router={props.router}
+                    onDirectory={(props as any).onDirectory}
+                />
+            ) : (
+                <XLoader loading={true} />
+            ),
     ),
 ) as React.ComponentType<{
     variables: { userId: string };
