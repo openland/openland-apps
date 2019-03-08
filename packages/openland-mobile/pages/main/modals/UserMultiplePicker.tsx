@@ -29,7 +29,7 @@ class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
                 <View flexGrow={1}>
                     {this.props.children}
                 </View>
-                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={this.props.checked ? '#4747ec' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#4747ec' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
+                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={this.props.checked ? '#0084fe' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#0084fe' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
                     {this.props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} />}
                 </View>
             </View>
@@ -46,7 +46,7 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text="Invite with a link"
-                        onPress={() => {
+                        onPress={props.router.params.inviteLinkButton.onPress ? props.router.params.inviteLinkButton.onPress : () => {
                             props.router.pushAndRemove(props.router.params.inviteLinkButton.path, props.router.params.inviteLinkButton.pathParams);
                         }}
                     />
@@ -54,7 +54,13 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
             }
             {users.items.edges.map((v) => (
                 <CheckListBoxWraper checked={!!props.users.find((u: any) => u.id === v.node.id)}>
-                    <UserView key={v.node.id} user={v.node} enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)} onPress={() => props.onAdd(v.node)} />
+                    <UserView
+                        key={v.node.id}
+                        user={v.node}
+                        enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)}
+                        onPress={() => props.onAdd(v.node)}
+                        paddingRight={56}
+                    />
                 </CheckListBoxWraper>
             ))}
         </SScrollView >
@@ -88,12 +94,16 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
     }
 
     render() {
+        let paramsAction = this.props.router.params.action;
+        let isEmpty = paramsAction.titleEmpty && (this.state.users.length <= 0);
+        let buttonTitle = isEmpty ? paramsAction.titleEmpty : paramsAction.title + ' (' + this.state.users.length + ')';
         return (
             <>
                 <SHeader title={this.props.router.params.title || 'Pick members'} />
                 <SHeaderButton
-                    title={this.props.router.params.action.title}
-                    onPress={async () => {
+                    key={'bk-' + this.state.users.length}
+                    title={buttonTitle}
+                    onPress={isEmpty ? () => this.props.router.params.action.actionEmpty() : async () => {
                         await this.props.router.params.action.action(this.state.users);
                     }}
                 />

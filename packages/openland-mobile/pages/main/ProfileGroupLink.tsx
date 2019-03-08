@@ -53,8 +53,8 @@ class ProfileGroupLinkComponent extends React.PureComponent<PageProps> {
     render() {
         return (
             <>
-                <SHeader title="Room invite link" />
-                <SHeaderButton title="Done" onPress={() => this.props.router.dismiss()} />
+                <SHeader title="Invitation link" />
+                {/* <SHeaderButton title="Done" onPress={() => this.props.router.dismiss()} /> */}
                 <SScrollView>
                     <ProfileGroupLinkContent {...this.props} />
                 </SScrollView>

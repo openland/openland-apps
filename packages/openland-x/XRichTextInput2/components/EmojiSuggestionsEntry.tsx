@@ -10,6 +10,8 @@ const emojiSuggestionsEntryFocusedClassName = css`
 const emojiSuggestionsEntryClassName = css`
     padding: 5px 10px 1px 10px;
     transition: background-color 0.4s cubic-bezier(0.27, 1.27, 0.48, 0.56);
+    display: flex;
+    align-items: center;
 
     &:active {
         background-color: #cce7ff;
@@ -42,22 +44,37 @@ type EmojiSuggestionsEntryT = {
     emoji: EmojiDataT;
     isSelected: boolean;
     onEmojiFocus?: Function;
+    onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 
 export const EmojiSuggestionsEntry = React.memo(
-    ({ imagePath, imageType, cacheBustParam, id, emoji, isSelected }: EmojiSuggestionsEntryT) => {
+    ({
+        imagePath,
+        imageType,
+        cacheBustParam,
+        id,
+        emoji,
+        isSelected,
+        onClick,
+    }: EmojiSuggestionsEntryT) => {
         const [isFocused, setIsFocused] = React.useState(false);
 
-        React.useEffect(() => {
-            setIsFocused(isSelected);
-        }, [isSelected]);
+        React.useEffect(
+            () => {
+                setIsFocused(isSelected);
+            },
+            [isSelected],
+        );
 
         const onMouseLeave = () => setIsFocused(false);
         const onMouseEnter = () => setIsFocused(true);
 
-        const shortNameForImage = React.useMemo(() => {
-            return getShortNameForImage(emoji.shortName);
-        }, [emoji]);
+        const shortNameForImage = React.useMemo(
+            () => {
+                return getShortNameForImage(emoji.shortName);
+            },
+            [emoji],
+        );
 
         const fullImagePath = `${imagePath}${shortNameForImage}.${imageType}${cacheBustParam}`;
 
@@ -72,6 +89,7 @@ export const EmojiSuggestionsEntry = React.memo(
                 role="option"
                 id={id}
                 aria-selected={isFocused ? 'true' : 'false'}
+                onClick={onClick}
             >
                 <img
                     src={fullImagePath}

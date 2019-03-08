@@ -7,36 +7,38 @@ import {
     ConferenceOfferMutation,
     ConferenceAnswerMutation,
 } from 'openland-api';
+import { AppPeerConnectionFactory } from 'openland-y-runtime/AppPeerConnection';
+import { AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export interface TalkMediaStreamComponentProps {
     apollo: OpenApolloClient;
-    id: string;
     ownPeerId: string;
     peerId: string;
-    stream: MediaStream;
+    stream: AppMediaStream;
     connection: Conference_conference_peers_connection;
     conference: Conference_conference;
-    onStreamCreated: (peerId: string, stream: MediaStream) => void;
-    onStreamClosed: (peerId: string) => void;
+    // onStreamCreated: (peerId: string, stream: MediaStream) => void;
+    // onStreamClosed: (peerId: string) => void;
 }
 
-export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamComponentProps> {
+export class ConferenceMediaActor extends React.Component<TalkMediaStreamComponentProps> {
     container = React.createRef<HTMLDivElement>();
     started = false;
     answerHandled = false;
     offerHandled = false;
     readyHandled = false;
-    peerConnection!: RTCPeerConnection;
-    localDescription?: RTCSessionDescriptionInit;
-    remoteDescription?: RTCSessionDescriptionInit;
+    peerConnection!: AppPeerConnection;
+    localDescription?: string;
+    remoteDescription?: string;
     appliedCandidates = new Set<string>();
     audio: HTMLAudioElement[] = [];
 
     componentDidMount() {
-        console.log('Connection mounted: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log('Connection mounted: ' + this.props.conference.id + ': ' + this.props.connection.state);
         console.log('WEBRTC: ICE Servers: ', this.props.conference.iceServers);
         this.started = true;
-        this.peerConnection = new RTCPeerConnection({
+        this.peerConnection = AppPeerConnectionFactory.createConnection({
             iceServers: this.props.conference.iceServers.map(v => ({
                 urls: v.urls,
                 credential: v.credential ? v.credential : undefined,
@@ -51,42 +53,28 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 }
 
                 if (ev.candidate) {
-                    console.log('ICE:' + JSON.stringify(ev.candidate));
+                    console.log('ICE:' + ev.candidate);
                     await this.props.apollo.mutate(ConferenceCandidateMutation, {
-                        id: this.props.id,
+                        id: this.props.conference.id,
                         peerId: this.props.peerId,
                         ownPeerId: this.props.ownPeerId,
-                        candidate: JSON.stringify(ev.candidate),
+                        candidate: ev.candidate,
                     });
                 }
             });
         };
-        (this.peerConnection as any).ontrack = (ev: any) => {
-            if (!this.started) {
-                return;
-            }
-            let audio = new Audio();
-            audio.autoplay = true;
-            audio.setAttribute('playsinline', 'true');
-            audio.controls = false;
-            audio.srcObject = ev.streams[0];
-            this.container.current!.appendChild(audio);
-            this.props.onStreamCreated(this.props.peerId, ev.streams[0]);
-        };
-        for (let t of this.props.stream.getTracks()) {
-            (this.peerConnection as any).addTrack(t, this.props.stream);
-        }
+        this.peerConnection.addStream(this.props.stream);
         this.handleState();
     }
     componentDidUpdate() {
-        console.log('Connection updated: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log('Connection updated: ' + this.props.conference.id + ': ' + this.props.connection.state);
         this.handleState();
     }
     componentWillUnmount() {
         this.started = false;
         this.peerConnection.close();
-        this.props.onStreamClosed(this.props.peerId);
-        console.log('Connection removed: ' + this.props.id);
+        // this.props.onStreamClosed(this.props.peerId);
+        console.log('Connection removed: ' + this.props.conference.id);
     }
 
     handleState() {
@@ -107,10 +95,10 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 }
 
                 await this.props.apollo.mutate(ConferenceOfferMutation, {
-                    id: this.props.id,
+                    id: this.props.conference.id,
                     peerId: this.props.peerId,
                     ownPeerId: this.props.ownPeerId,
-                    offer: JSON.stringify(this.localDescription),
+                    offer: this.localDescription,
                 });
             });
         } else if (this.props.connection.state === 'NEED_ANSWER') {
@@ -125,7 +113,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 }
 
                 if (!this.remoteDescription) {
-                    let offer = JSON.parse(this.props.connection.sdp!);
+                    let offer = this.props.connection.sdp!;
                     await this.peerConnection.setRemoteDescription(offer);
                     this.remoteDescription = offer;
                 }
@@ -139,10 +127,10 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 this.handleState();
 
                 await this.props.apollo.mutate(ConferenceAnswerMutation, {
-                    id: this.props.id,
+                    id: this.props.conference.id,
                     peerId: this.props.peerId,
                     ownPeerId: this.props.ownPeerId,
-                    answer: JSON.stringify(this.localDescription),
+                    answer: this.localDescription,
                 });
             });
         } else if (this.props.connection.state === 'READY') {
@@ -155,7 +143,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                     }
 
                     if (!this.remoteDescription) {
-                        let offer = JSON.parse(this.props.connection.sdp!);
+                        let offer = this.props.connection.sdp!;
                         await this.peerConnection.setRemoteDescription(offer);
                         this.remoteDescription = offer;
                     }
@@ -174,7 +162,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                                 return;
                             }
                             console.log('INCOMING ICE:' + ice);
-                            await this.peerConnection.addIceCandidate(JSON.parse(ice));
+                            await this.peerConnection.addIceCandidate(ice);
                         });
                     }
                 }
@@ -183,6 +171,6 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
     }
 
     render() {
-        return <div ref={this.container} />;
+        return null;
     }
 }

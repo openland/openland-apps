@@ -3,6 +3,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
 import { Platform, PermissionsAndroid } from 'react-native';
 import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
+import UUID from 'uuid/v4';
 
 export class DownloadManager implements DownloadManagerInterface {
 
@@ -16,10 +17,13 @@ export class DownloadManager implements DownloadManagerInterface {
         }
     })();
 
-    resolvePath(uuid: string, resize: { width: number, height: number } | null) {
+    resolvePath(uuid: string, resize: { width: number, height: number } | null, local?: boolean) {
         let suffix = '';
         if (resize) {
             suffix = '_' + resize.width + 'x' + resize.height;
+        }
+        if (local) {
+            suffix = '_local';
         }
         let path = this.rootDir + '/' + uuid + suffix;
         return path;
@@ -101,12 +105,16 @@ export class DownloadManager implements DownloadManagerInterface {
                     suffix = '_' + resize.width + 'x' + resize.height;
                 }
                 let path = this.rootDir + '/' + uuid + suffix;
+                let pathLocal = this.rootDir + '/' + uuid + '_local';
 
                 // Check if exists
                 let exists = false;
                 try {
                     if (await (RNFetchBlob as any).fs.exists(path)) {
                         exists = true;
+                    } else if (await (RNFetchBlob as any).fs.exists(pathLocal)) {
+                        exists = true;
+                        path = pathLocal;
                     }
                 } catch (e) {
                     // How to handle?
@@ -124,18 +132,7 @@ export class DownloadManager implements DownloadManagerInterface {
         return this._watchers.get(this.resolvePath(uuid, resize))!;
     }
 
-    getFilePathWithRealName = async (uuid: string, resize: { width: number, height: number } | null, fileName: string) => {
-        // Init
-        let suffix = '';
-        if (resize) {
-            suffix = '_' + resize.width + 'x' + resize.height;
-        }
-
-        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
-
-        let fileById = this.rootDir + '/' + uuid + suffix;
-        let fileByName = targetPath + '/' + fileName;
-
+    checkStoragePermissions = async () => {
         let hasPermissions = false;
 
         if (Platform.OS === 'android') {
@@ -154,14 +151,45 @@ export class DownloadManager implements DownloadManagerInterface {
             hasPermissions = true;
         }
 
-        if (hasPermissions) {
+        return hasPermissions;
+    }
+
+    getFilePathWithRealName = async (uuid: string, resize: { width: number, height: number } | null, fileName: string) => {
+        let suffix = '';
+        if (resize) {
+            suffix = '_' + resize.width + 'x' + resize.height;
+        }
+
+        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+
+        let fileById = this.rootDir + '/' + uuid + suffix;
+        let fileByName = targetPath + '/' + fileName;
+
+        if (await this.checkStoragePermissions()) {
             if (await (RNFetchBlob as any).fs.exists(fileByName)) {
                 await (RNFetchBlob as any).fs.unlink(fileByName);
             }
-    
+
             await (RNFetchBlob as any).fs.cp(fileById, fileByName);
 
             return fileByName;
+        } else {
+            return undefined;
+        }
+    }
+
+    copyFileWithNewName = async (file: string, newName: string) => {
+        let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
+        let fileWithExt = targetPath + '/' + newName;
+
+        if (await this.checkStoragePermissions()) {
+            if (await (RNFetchBlob as any).fs.exists(fileWithExt)) {
+                await (RNFetchBlob as any).fs.unlink(fileWithExt);
+            }
+
+            await (RNFetchBlob as any).fs.cp(file, fileWithExt);
+
+            return fileWithExt;
         } else {
             return undefined;
         }

@@ -699,7 +699,7 @@ export const InviteInfoInner = ({
                         objectId={inviter.id}
                     />
                     <XText fontSize={16} color="#000000">
-                        {inviter.name + ' invites you to join group'}
+                        {inviter.name + ' invites you to join'}
                     </XText>
                 </XHorizontal>
             </XVertical>

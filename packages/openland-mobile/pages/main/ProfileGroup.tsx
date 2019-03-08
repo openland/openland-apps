@@ -152,7 +152,7 @@ function ProfileGroupComponent(props: PageProps & { id: string }) {
             )}
             <ZListItemHeader
                 titleIcon={room.kind === 'GROUP' ? require('assets/ic-lock-18.png') : undefined}
-                titleColor={room.kind === 'GROUP' ? '#1daf30' : undefined}
+                titleColor={room.kind === 'GROUP' ? '#129f25' : undefined}
                 title={room.title}
                 subtitle={subtitle}
                 photo={room.photo}

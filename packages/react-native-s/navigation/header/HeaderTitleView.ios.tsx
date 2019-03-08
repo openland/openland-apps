@@ -154,7 +154,7 @@ export class HeaderTitleView extends React.PureComponent<HeaderTitleViewProps, {
                                             {this.state.searchText.length > 0 && (
                                                 <TouchableOpacity onPress={() => this.handleTextChange('')}>
                                                     <View style={{ height: 36, width: 22, justifyContent: 'center', alignItems: 'center' }}>
-                                                        <Image source={require('assets/ic-cancel.png')} style={{ tintColor: 'rgba(138, 138, 143, 0.7)', width: 10, height: 10 }} />
+                                                        <Image source={require('assets/ic-clear-16.png')} style={{ tintColor: 'rgba(138, 138, 143, 0.7)', width: 16, height: 16 }} />
                                                     </View>
                                                 </TouchableOpacity>
                                             )}

@@ -356,8 +356,8 @@ export class ConversationEngine implements MessageSendHandler {
             let info = await file.fetchInfo();
             let name = info.name || 'image.jpg';
             let date = (new Date().getTime()).toString();
-            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false } as PendingMessage;
-            this.messages = [...this.messages, { date, key, file: name, progress: 0, message: null, failed: false } as PendingMessage];
+            let pmsg = { date, key, file: name, uri: info.uri, fileSize: info.fileSize, progress: 0, message: null, failed: false, isImage: info.isImage, imageSize: info.imageSize } as PendingMessage;
+            this.messages = [...this.messages, { ...pmsg } as PendingMessage];
             this.state = new ConversationState(false, this.messages, this.groupMessages(this.messages), this.state.typing, this.state.loadingHistory, this.state.historyFullyLoaded);
             this.onMessagesUpdated();
 
@@ -544,6 +544,7 @@ export class ConversationEngine implements MessageSendHandler {
                     let msgs = [...this.messages];
                     msgs[existing] = {
                         ...event.message,
+                        file: msgs[existing].file,
                         date: msgs[existing].date
                     };
                     this.messages = msgs;
@@ -632,7 +633,8 @@ export class ConversationEngine implements MessageSendHandler {
                     uri: p.uri,
                     fileName: p.file || 'image.png',
                     fileSize: p.fileSize,
-                    isImage: false,
+                    isImage: !!p.isImage,
+                    imageSize: p.imageSize,
                     isGif: false
                 } : undefined,
                 attachTop: prev && prev.type === 'message' ? prev.senderId === this.engine.user.id && !prev.serviceMetaData : false

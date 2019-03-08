@@ -100,7 +100,6 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
 
     React.useLayoutEffect(() => {
         if (value !== plainText) {
-            console.log(convertToRaw(editorState.getCurrentContent()));
             if (onChange) {
                 onChange({
                     text: plainText,

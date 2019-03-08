@@ -7,40 +7,49 @@ import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { ZTextInput } from 'openland-mobile/components/ZTextInput';
-import { View, Platform, Clipboard } from 'react-native';
+import { Clipboard } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
 import { ActionSheet } from 'openland-mobile/components/ActionSheet';
-import { GreenErrorText, validateShortname } from './SetUserShortname';
+import { ErrorText, validateShortname, getErrorByShortname } from './SetUserShortname';
+import { formatError } from 'openland-y-forms/errorHandling';
 
 const SetOrgShortnameContent = XMemo<PageProps>((props) => {
     let account = getClient().useAccount();
     let organization = getClient().useOrganization({ organizationId: props.router.params.id }).organization;
-    let ref = React.useRef<ZForm | null>(null);
-    let handleSave = React.useCallback(() => {
-        if (ref.current) {
-            ref.current.submitForm();
-        }
-    }, []);
 
     const [shortname, setShortname] = React.useState(organization.shortname);
+    const [error, setError] = React.useState<string | undefined>(undefined);
+
     const isSuperAdmin = account.myPermissions.roles.indexOf('super-admin') >= 0;
 
     const minLength = isSuperAdmin ? 3 : 5;
     const maxLength = 16;
 
-    const greenErrorLabel = validateShortname(shortname, 'Shortname', minLength, maxLength);
+    let ref = React.useRef<ZForm | null>(null);
+    let handleSave = React.useCallback(() => {
+        if (ref.current) {
+            if (validateShortname(shortname, minLength, maxLength)) {
+                ref.current.submitForm();
+            }
+        }
+    }, [shortname, minLength, maxLength]);
+
+    const greenErrorLabel = getErrorByShortname(shortname, 'Shortname', minLength, maxLength);
 
     return (
         <>
             <SHeaderButton title="Save" onPress={handleSave} />
             <ZForm
                 action={async args => {
+                    setError(undefined);
+
                     await getClient().mutateSetOrgShortname(args);
 
                     await getClient().refetchOrganization({ organizationId: organization.id });
                     await getClient().refetchOrganizationProfile({ organizationId: organization.id });
                 }}
                 onSuccess={() => props.router.back()}
+                onError={(e) => setError(formatError(e))}
                 ref={ref}
                 defaultData={{
                     shortname: organization.shortname
@@ -79,13 +88,15 @@ const SetOrgShortnameContent = XMemo<PageProps>((props) => {
                         field="shortname"
                         autoCapitalize="none"
                         border="force-full"
-                        onChangeText={setShortname}
+                        onChangeText={(src: string) => {
+                            setShortname(src);
+                            setError(undefined);
+                        }}
                         autoFocus={true}
                     />
 
-                    {typeof greenErrorLabel === 'string' && (
-                        <GreenErrorText text={greenErrorLabel} />
-                    )}
+                    {error && <ErrorText color="red" text={error} />}
+                    {!error && greenErrorLabel && <ErrorText color="green" text={greenErrorLabel} />}
                 </ZListItemGroup>
             </ZForm>
         </>

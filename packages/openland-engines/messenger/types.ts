@@ -10,6 +10,8 @@ export interface PendingMessage {
     file: string | null;
     uri?: string;
     fileSize?: number;
+    isImage?: boolean;
+    imageSize?: { width: number, height: number };
     failed?: boolean;
 }
 
@@ -31,6 +33,8 @@ export interface FileMetadata {
     name?: string;
     uri?: string;
     fileSize?: number;
+    isImage?: boolean;
+    imageSize?: { width: number, height: number }
 }
 
 export enum UploadStatus {

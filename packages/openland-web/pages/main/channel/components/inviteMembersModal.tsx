@@ -59,7 +59,7 @@ class OwnerLinkComponent extends React.Component<{ invite: string } & XWithRoute
     };
 
     copy = (e: any) => {
-        if (this.input && this.input.inputRef && this.input.inputRef) {
+        if (this.input && this.input.inputRef) {
             this.input.inputRef.inputRef.select();
         }
         document.execCommand('copy');

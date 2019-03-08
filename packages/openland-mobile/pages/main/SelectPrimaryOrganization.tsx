@@ -6,18 +6,8 @@ import { getClient } from 'openland-mobile/utils/apolloClient';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { startLoader, stopLoader } from 'openland-mobile/components/ZGlobalLoader';
-import { Text, Platform, View, StyleSheet } from 'react-native';
+import { Platform, View } from 'react-native';
 import { ZListItemGroup } from 'openland-mobile/components/ZListItemGroup';
-
-const styles = StyleSheet.create({
-    text: {
-        fontSize: 13,
-        opacity: Platform.OS === 'android' ? 0.5 : 0.4,
-        paddingVertical: Platform.OS === 'android' ? 12 : 10,
-        paddingHorizontal: 16,
-        color: '#a0a0a0'
-    }
-})
 
 const SelectPrimaryOrganizationComponent = (props: PageProps) => {
     let organizations = getClient().useMyOrganizations().myOrganizations;
