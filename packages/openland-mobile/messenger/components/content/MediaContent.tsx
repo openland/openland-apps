@@ -11,7 +11,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+
 interface MediaContentProps {
     single?: boolean;
     message: DataSourceMessageItem;
@@ -33,7 +33,8 @@ export let layoutImage = (message: DataSourceMessageItem) => {
     return undefined;
 }
 export class MediaContent extends React.PureComponent<MediaContentProps, { downloadState?: DownloadState }> {
-
+    mounted = false;
+    serverDownloadManager = false;
     constructor(props: MediaContentProps) {
         super(props);
         this.state = {};
@@ -48,24 +49,47 @@ export class MediaContent extends React.PureComponent<MediaContentProps, { downl
         }
     }
 
-    componentWillMount() {
+    bindDownloadManager = () => {
         if (this.props.message.file && this.props.message.file.fileId) {
+            this.serverDownloadManager = true;
             let optimalSize = layoutMedia(this.props.message.file!!.imageSize!!.width, this.props.message.file!!.imageSize!!.height, 1024, 1024);
             this.downloadManagerWatch = DownloadManagerInstance.watch(this.props.message.file!!.fileId!, !this.props.message.file!!.isGif ? optimalSize : null, (state) => {
-                this.setState({ downloadState: state });
+                if (this.mounted) {
+                    this.setState({ downloadState: state });
+                }
             });
         }
 
         if (this.props.message.file && this.props.message.file.uri) {
-            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => this.setState({ downloadState: { progress: s.progress } }));
+            this.downloadManagerWatch = UploadManagerInstance.watch(this.props.message.key, s => {
+                if (this.mounted) {
+                    this.setState({ downloadState: { progress: s.progress } })
+                }
+            });
         }
-
     }
 
-    componentWillUnmount() {
+    unbindDownloadManager = () => {
         if (this.downloadManagerWatch) {
             this.downloadManagerWatch();
         }
+    }
+
+    componentDidMount() {
+        this.mounted = true;
+        this.bindDownloadManager();
+    }
+
+    componentDidUpdate() {
+        if (this.props.message.file && this.props.message.file.fileId && !this.serverDownloadManager) {
+            this.unbindDownloadManager();
+            this.bindDownloadManager();
+        }
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+        this.unbindDownloadManager();
     }
 
     render() {

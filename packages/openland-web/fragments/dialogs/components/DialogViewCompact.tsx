@@ -3,12 +3,11 @@ import { XLink2 } from 'openland-x/XLink2';
 import { DialogViewProps } from './DialogView';
 import { XView } from 'react-mental';
 import { XDate } from 'openland-x/XDate';
-import { XAvatar2 } from 'openland-x/XAvatar2';
+import { XAvatar } from 'openland-x/XAvatar';
 import { emoji } from 'openland-y-utils/emoji';
 
 export const DialogViewCompact = (props: DialogViewProps) => {
     let dialog = props.item;
-
     return (
         <XLink2
             ref={props.handleRef}
@@ -30,12 +29,12 @@ export const DialogViewCompact = (props: DialogViewProps) => {
                 }
             }}
         >
-            <XAvatar2
-                title={dialog.title}
-                id={dialog.flexibleId}
-                online={dialog.online}
-                src={dialog.photo}
-                size={28}
+            <XAvatar
+                objectName={dialog.title}
+                objectId={dialog.flexibleId}
+                src={dialog.photo && dialog.photo.startsWith('ph://') ? undefined : dialog.photo}
+                style="user"
+                size="m-small"
             />
             <XView
                 flexDirection="column"
