@@ -137,8 +137,8 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
                 url: 'file://' + file
             }));
 
-            builder.action('Save to Camera Roll', async () => {
-                await CameraRoll.saveToCameraRoll(file!);
+            builder.action(Platform.select({ ios: 'Save to Camera Roll', android: 'Save to Gallery' }), async () => {
+                await CameraRoll.saveToCameraRoll('file://' + file!);
             });
 
             builder.show();
