@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Animated, Dimensions, Platform, CameraRoll, Alert, BackHandler } from 'react-native';
+import { View, Animated, Dimensions, Platform, CameraRoll, BackHandler } from 'react-native';
 import { ZPictureTransitionConfig } from './ZPictureTransitionConfig';
 import { SDevice } from 'react-native-s/SDevice';
 import { SCloseButton } from 'react-native-s/SCloseButton';
@@ -7,11 +7,10 @@ import { FastImageViewer } from 'react-native-s/FastImageViewer';
 import { SShareButton } from 'react-native-s/SShareButton';
 import { ActionSheetBuilder } from '../ActionSheet';
 import Share from 'react-native-share';
-import UUID from 'uuid/v4';
-import RNFetchBlob from 'rn-fetch-blob';
 import { layoutMedia } from '../../../openland-web/utils/MediaLayout';
 import { ZImage } from '../ZImage';
 import { SStatusBar } from 'react-native-s/SStatusBar';
+import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 
 export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTransitionConfig, onClose: () => void }, { closing: boolean }> {
 
@@ -129,25 +128,21 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     handleShareClick = async () => {
-        if (Platform.OS === 'ios') {
+        let file = await DownloadManagerInstance.addExtensionToFile(this.props.config.url, 'png');
+
+        if (file) {
             let builder = new ActionSheetBuilder();
-            builder.action('Share', () => Share.open({ url: this.props.config.url } as any));
-            let from = this.props.config.url;
 
-            let dir = (RNFetchBlob as any).fs.dirs.CacheDir as string + '/share/';
-            let to = dir + UUID() + '.png';
+            builder.action('Share', () => Share.open({
+                url: 'file://' + file
+            }));
+
             builder.action('Save to Camera Roll', async () => {
-                let dirExists = await (RNFetchBlob as any).fs.exists(dir);
-                if (!dirExists) {
-                    await (RNFetchBlob as any).fs.mkdir(dir);
-                }
-                await (RNFetchBlob as any).fs.cp(from, to);
-                await CameraRoll.saveToCameraRoll(to);
-
+                await CameraRoll.saveToCameraRoll(file!);
             });
+
             builder.show();
         }
-
     }
 
     // componentWillMount() {
