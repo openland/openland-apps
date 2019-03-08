@@ -42,18 +42,18 @@ export function useDraft({
     };
 
     const getNextDraft = () => {
-        let result = '';
+        let text = '';
         const storedDraft = DraftStore.getDraftMessage(conversationId);
 
-        if (storedDraft === null) {
+        if (storedDraft.text === null) {
             if (draft !== null && draft !== undefined) {
-                result = draft;
+                text = draft;
             }
         } else {
-            result = storedDraft;
+            text = storedDraft.text;
         }
 
-        return result;
+        return text;
     };
 
     const getDefaultValue = () => {
