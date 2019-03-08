@@ -33,7 +33,6 @@ class ContainerWrapper extends React.PureComponent {
 type EditorContainerContainer = XRichTextInput2Props & {
     editorState: EditorState;
     setEditorState: (a: EditorState) => void;
-    activeWord: string;
     mentionState: MentionSuggestionsStateT;
     onMentionPicked: (mention: MentionDataT) => void;
     emojiState: EmojiSuggestionsStateT;
@@ -74,7 +73,6 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         onEmojiPicked,
         finalAddEmoji,
         onMentionPicked,
-        activeWord,
     } = props;
 
     const mentionSuggestionsItems = mentionState.suggestions

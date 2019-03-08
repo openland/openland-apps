@@ -109,7 +109,6 @@ export const XRichTextInput2 = React.memo(
                     {...props}
                     editorState={editorState}
                     setEditorState={setEditorState}
-                    activeWord={activeWord}
                     emojiState={emojiState}
                     onEmojiPicked={onEmojiPicked}
                     finalAddEmoji={applyEmoji}
