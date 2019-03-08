@@ -203,5 +203,9 @@
         "name": "ic-room",
         "src": "ic-room.svg",
         "sizes": [24]
+    }, {
+        "name": "ic-secret",
+        "src": "ic-secret.svg",
+        "sizes": [14, 24]
     }]
 }

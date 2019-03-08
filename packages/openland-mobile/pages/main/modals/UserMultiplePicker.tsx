@@ -46,7 +46,7 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
                     <ZListItem
                         leftIcon={Platform.OS === 'android' ? require('assets/ic-link-24.png') : require('assets/ic-link-fill-24.png')}
                         text="Invite with a link"
-                        onPress={() => {
+                        onPress={props.router.params.inviteLinkButton.onPress ? props.router.params.inviteLinkButton.onPress : () => {
                             props.router.pushAndRemove(props.router.params.inviteLinkButton.path, props.router.params.inviteLinkButton.pathParams);
                         }}
                     />
@@ -94,12 +94,16 @@ class UserMultiplePickerComponent extends React.PureComponent<PageProps, UserMul
     }
 
     render() {
+        let paramsAction = this.props.router.params.action;
+        let isEmpty = paramsAction.titleEmpty && (this.state.users.length <= 0);
+        let buttonTitle = isEmpty ? paramsAction.titleEmpty : paramsAction.title + ' (' + this.state.users.length + ')';
         return (
             <>
                 <SHeader title={this.props.router.params.title || 'Pick members'} />
                 <SHeaderButton
-                    title={this.props.router.params.action.title}
-                    onPress={async () => {
+                    key={'bk-' + this.state.users.length}
+                    title={buttonTitle}
+                    onPress={isEmpty ? () => this.props.router.params.action.actionEmpty() : async () => {
                         await this.props.router.params.action.action(this.state.users);
                     }}
                 />

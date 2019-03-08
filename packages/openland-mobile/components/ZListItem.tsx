@@ -19,6 +19,8 @@ export interface ZListItemProps {
     title?: string | null;
     text?: string | null;
     description?: string;
+    descriptionColor?: string;
+    descriptionIcon?: any;
     toggle?: boolean | null;
     toggleField?: { key: string };
     toggleDisabled?: boolean | null;
@@ -92,6 +94,7 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
         let enabled = !!this.props.copy || !!this.props.onPress || !!this.props.onLongPress || !!this.props.path || ((!!this.props.checkmarkField) && !checkmarkEnabled) || !!this.props.toggleField;
 
         let linkify = (this.props.linkify === true || (this.props.linkify === undefined && !this.props.onPress && !this.props.path));
+        let descriptionColor = this.props.descriptionColor ? this.props.descriptionColor : (Platform.OS === 'android' ? '#9B9B9B' : 'rgba(138, 138, 143, 0.7)');
         return (
             <ZListItemBase
                 onPress={this.handleOnPress}
@@ -127,14 +130,45 @@ class ZListItemComponent extends React.PureComponent<ZListItemProps & { store?: 
                             numberOfLines={this.props.multiline ? undefined : 1}
                             text={this.props.text}
                         />
+                        {this.props.descriptionIcon && (
+                            <Image
+                                source={this.props.descriptionIcon}
+                                style={{
+                                    tintColor: descriptionColor,
+                                    marginLeft: 15
+                                }}
+                            />
+                        )}
                         {this.props.description && (
-                            <ZText linkify={linkify} style={{ lineHeight: 22, marginLeft: 15, fontSize: 17, textAlignVertical: 'center', color: Platform.OS === 'android' ? '#9B9B9B' : 'rgba(138, 138, 143, 0.7)' }} text={this.props.description} />
+                            <ZText
+                                linkify={linkify}
+                                style={{
+                                    lineHeight: 22,
+                                    marginLeft: this.props.descriptionIcon ? 7 : 15,
+                                    fontSize: 17,
+                                    textAlignVertical: 'center',
+                                    color: descriptionColor
+                                }}
+                                text={this.props.description}
+                            />
                         )}
                         {((this.props.onToggle !== undefined) || (this.props.toggle !== undefined) || (this.props.toggleDisabled !== undefined) || (this.props.toggleField)) && (
                             <Switch style={{ marginLeft: 15 }} value={toggleValue} onTintColor={Platform.OS === 'android' ? '#80C0FE' : '#0084fe'} tintColor="#ddd" thumbTintColor={Platform.OS === 'android' ? '#0084fe' : undefined} onValueChange={this.props.toggleField ? this.handleOnPress : this.props.onToggle} disabled={this.props.toggleDisabled !== null ? this.props.toggleDisabled : undefined} />
                         )}
                         {showCheckmark && (
-                            <Image source={require('assets/ic-checkmark-cell.png')} style={{ tintColor: '#0084fe', opacity: checkmarkEnabled ? 1 : 0 }} />
+                            <View
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    borderRadius: 12,
+                                    backgroundColor: '#0084fe',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    opacity: checkmarkEnabled ? 1 : 0
+                                }}
+                            >
+                                <Image source={require('assets/ic-checkmark-cell.png')} style={{ tintColor: '#ffffff' }} />
+                            </View>
                         )}
                     </View>
                     {this.props.title && Platform.OS === 'android' && <Text style={{ color: this.props.theme.textLabelColor, opacity: 0.4, fontSize: 14, height: 22 }}>{this.props.title}</Text>}
