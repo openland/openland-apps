@@ -26,10 +26,10 @@ class CheckListBoxWraper extends React.PureComponent<{ checked?: boolean }> {
     render() {
         return (
             <View flexDirection="row">
-                <View flexGrow={1} paddingRight={56}>
+                <View flexGrow={1}>
                     {this.props.children}
                 </View>
-                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={this.props.checked ? '#4747ec' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#4747ec' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
+                <View position="absolute" pointerEvents="none" alignSelf="center" right={16} backgroundColor={this.props.checked ? '#0084fe' : '#fff'} opacity={this.props.checked ? 1 : 0.8} borderColor={this.props.checked ? '#0084fe' : 'rgba(185,193,205,0.8)'} borderWidth={2} borderRadius={12} width={24} height={24} >
                     {this.props.checked && <Image marginLeft={3} marginTop={3} source={require('assets/ic-checkmark.png')} />}
                 </View>
             </View>
@@ -54,7 +54,13 @@ const UsersList = XMemo<PageProps & { searchHeight: number, query: string, users
             }
             {users.items.edges.map((v) => (
                 <CheckListBoxWraper checked={!!props.users.find((u: any) => u.id === v.node.id)}>
-                    <UserView key={v.node.id} user={v.node} enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)} onPress={() => props.onAdd(v.node)} />
+                    <UserView
+                        key={v.node.id}
+                        user={v.node}
+                        enabled={!((props.router.params.disableUsers || []).indexOf(v.node.id) > -1)}
+                        onPress={() => props.onAdd(v.node)}
+                        paddingRight={56}
+                    />
                 </CheckListBoxWraper>
             ))}
         </SScrollView >
