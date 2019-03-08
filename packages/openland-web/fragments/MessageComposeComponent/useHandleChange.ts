@@ -1,5 +1,5 @@
 import { DraftStateT } from './useDraft';
-import { MentionDataT } from './useMentions';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 import { MentionsStateT } from './useMentions';
 
 export type GeneralComposeStateT = {

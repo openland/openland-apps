@@ -1,4 +1,4 @@
-type MentionsT = any;
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 const getDraftKey = (conversationId?: string): string => {
     if (!conversationId) {
@@ -9,14 +9,16 @@ const getDraftKey = (conversationId?: string): string => {
 
 export const getDraftMessage = (
     conversationId?: string,
-): { text: string | null; mentions?: MentionsT } => {
+): { text: string | null; mentions?: MentionDataT[] } => {
     let text, mentions;
     if (!conversationId) {
         text = null;
     }
 
     text = window.localStorage.getItem(`${getDraftKey(conversationId)}_text`) || '';
-    mentions = window.localStorage.getItem(`${getDraftKey(conversationId)}_mentions`) || [];
+    mentions = JSON.parse(
+        window.localStorage.getItem(`${getDraftKey(conversationId)}_mentions`) || '[]',
+    );
 
     let draftKey = getDraftKey(conversationId);
 
@@ -30,7 +32,7 @@ export const getDraftMessage = (
 export const setDraftMessage = (
     conversationId?: string,
     src?: string,
-    mentions?: MentionsT,
+    mentions?: MentionDataT[],
 ): void => {
     if (!conversationId) {
         return;

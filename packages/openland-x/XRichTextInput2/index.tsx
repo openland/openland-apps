@@ -37,7 +37,7 @@ export const XRichTextInput2 = React.memo(
             const {
                 editorState,
                 setEditorState,
-                updateEditorStateFromText,
+                updateEditorStateFromTextAndMentions,
                 activeWord,
                 setActiveWord,
                 handleEditorChange,
@@ -53,7 +53,7 @@ export const XRichTextInput2 = React.memo(
             const { handlePastedText } = useHandlePastedText({ setEditorState });
 
             const { resetAndFocus } = useInputMethods({
-                updateEditorStateFromText,
+                updateEditorStateFromTextAndMentions,
                 ref,
                 editorRef,
                 editorState,
@@ -96,7 +96,7 @@ export const XRichTextInput2 = React.memo(
             };
 
             const { keyBinding, onHandleKey } = useDraftKeyHandling({
-                updateEditorStateFromText,
+                updateEditorStateFromTextAndMentions,
                 onSubmit,
                 mentionState,
                 emojiState,

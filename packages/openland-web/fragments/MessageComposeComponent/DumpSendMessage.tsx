@@ -11,7 +11,7 @@ import { MentionsStateT } from './useMentions';
 import { QuoteStateT } from './useQuote';
 import { DropZone } from './FileUploading/DropZone';
 import { UploadContext } from './FileUploading/UploadContext';
-import { MentionDataT } from './useMentions';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 export type TextInputComponentT = {
     handleChange: (a: { text: string; mentions: MentionDataT[] }) => void;

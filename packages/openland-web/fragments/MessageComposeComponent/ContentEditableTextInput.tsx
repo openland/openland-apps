@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { css } from 'linaria';
-import { MentionDataT } from './useMentions';
+import { MentionDataT } from 'openland-x/XRichTextInput2/components/MentionSuggestionsEntry';
 
 const TextArea = css`
     border-radius: 10px;

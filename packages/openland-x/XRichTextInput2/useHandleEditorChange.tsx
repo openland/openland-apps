@@ -35,7 +35,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         setPlainText(newPlainText);
     };
 
-    const updateEditorStateFromText = (text: string) => {
+    const updateEditorStateFromTextAndMentions = (text: string) => {
         updateEditorState(getEditorStateFromText(text));
     };
 
@@ -115,7 +115,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         addMention: finalAddMention,
         addEmoji: finalAddEmoji,
         handleEditorChange,
-        updateEditorStateFromText,
+        updateEditorStateFromTextAndMentions,
         editorState,
         setEditorState,
         onEmojiPicked,
