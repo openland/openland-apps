@@ -6,107 +6,35 @@ const {
 // /components/messenger/message/content/utils/preprocessMentions
 const emojione = require('emojione');
 
+let emojiList = emojione.emojioneList;
 const shortnamesRegexp = new RegExp('(:[+-\\d\\w]+:)', 'g');
 
+const getEmojiUnicodeLengthFromShortName = (shortName: string) => {
+    const unicode = emojione.shortnameToUnicode(shortName);
+    return [...unicode].length;
+};
+
+const getSplittedEmoji = (emoji: string) => {
+    return emojione
+        .toShort(emoji)
+        .split(shortnamesRegexp)
+        .filter(Boolean);
+};
+
 const emojifiedLength = (str: string) => {
-    const maybeEmojiSplitted = emojione.toShort(str);
-    let emojiList = emojione.emojioneList;
-    const splited = maybeEmojiSplitted.split(shortnamesRegexp).filter(Boolean);
+    const splited = getSplittedEmoji(str);
 
     let offset = 0;
 
-    for (let j = 0; j < splited.length; j++) {
-        const emojiToken = splited[j];
+    splited.forEach((emojiToken: string) => {
         if (emojiList[emojiToken]) {
-            const unicode = emojione.shortnameToUnicode(emojiToken);
-            const length = [...unicode].length;
-            offset += length;
+            offset += getEmojiUnicodeLengthFromShortName(emojiToken);
         } else {
             offset += emojiToken.length;
         }
-    }
+    });
 
     return offset;
-};
-
-const getEmojiBlocksAndEntityMap = (emojiString: string, genKeyFunc: Function = genKey) => {
-    const someEmojiShortedString = emojione.toShort(emojiString);
-
-    let emojiList = emojione.emojioneList;
-
-    const entityMap = {};
-    const entityRanges = [];
-
-    const splited = someEmojiShortedString.split(shortnamesRegexp).filter(Boolean);
-    let offset = 0;
-    for (let i = 0; i < splited.length; i++) {
-        const token = splited[i];
-        if (emojiList[token]) {
-            const key = genKeyFunc();
-            const unicode = emojione.shortnameToUnicode(token);
-
-            const length = [...unicode].length;
-
-            entityRanges.push({ key, offset, length: length });
-            entityMap[key] = {
-                type: 'emoji',
-            };
-            offset += length;
-        } else {
-            offset += token.length;
-        }
-    }
-    return {
-        entityMap,
-        blocks: [
-            {
-                text: emojiString,
-                type: 'unstyled',
-                entityRanges,
-            },
-        ],
-    };
-};
-
-const getMentionBlocksAndEntityMap = (
-    text: string,
-    mentions: any,
-    genKeyFunc: Function = genKey,
-) => {
-    let parsedMentions = preprocessMentions(text, mentions, undefined);
-
-    let entityMap = {};
-    const entityRanges = [];
-
-    let offset = 0;
-    for (let i = 0; i < parsedMentions.length; i++) {
-        const token = parsedMentions[i];
-        if (token.type === 'user') {
-            const key = genKeyFunc();
-
-            const length = emojifiedLength(token.text) + '@'.length;
-
-            entityRanges.push({ key, offset, length });
-            entityMap[key] = {
-                type: 'MENTION',
-                mutability: 'IMMUTABLE',
-            };
-            offset += length;
-        } else {
-            offset += token.text.length;
-        }
-    }
-
-    return {
-        entityMap,
-        blocks: [
-            {
-                text: text,
-                type: 'unstyled',
-                entityRanges,
-            },
-        ],
-    };
 };
 
 const getEmojiAndMentionBlocksAndEntityMap = (
@@ -118,48 +46,53 @@ const getEmojiAndMentionBlocksAndEntityMap = (
 
     let entityMap = {};
     const entityRanges = [];
-
     let offset = 0;
-    for (let i = 0; i < parsedMentions.length; i++) {
-        const token = parsedMentions[i];
+
+    const addEntity = ({
+        key,
+        offset: entityOffset,
+        length,
+        type,
+    }: {
+        key: string;
+        offset: number;
+        length: number;
+        type: Object;
+    }) => {
+        entityRanges.push({ key, offset: entityOffset, length });
+        entityMap[key] = type;
+        offset += length;
+    };
+
+    parsedMentions.forEach(token => {
         if (token.type === 'user') {
-            const key = genKeyFunc();
-
-            const length = token.text.length + '@'.length;
-
-            entityRanges.push({ key, offset, length });
-            entityMap[key] = {
-                type: 'MENTION',
-                mutability: 'IMMUTABLE',
-            };
-            offset += length;
+            addEntity({
+                offset,
+                length: emojifiedLength(token.text) + '@'.length,
+                key: genKeyFunc(),
+                type: {
+                    type: 'MENTION',
+                    mutability: 'IMMUTABLE',
+                },
+            });
         } else {
-            const maybeEmoji = token.text;
-
-            const maybeEmojiSplitted = emojione.toShort(maybeEmoji);
-            let emojiList = emojione.emojioneList;
-            const splited = maybeEmojiSplitted.split(shortnamesRegexp).filter(Boolean);
-
-            for (let j = 0; j < splited.length; j++) {
-                const emojiToken = splited[j];
+            getSplittedEmoji(token.text).forEach((emojiToken: string) => {
                 if (emojiList[emojiToken]) {
-                    const key = genKeyFunc();
-                    const unicode = emojione.shortnameToUnicode(emojiToken);
-
-                    const length = [...unicode].length;
-
-                    entityRanges.push({ key, offset, length });
-                    entityMap[key] = {
-                        type: 'emoji',
-                        mutability: 'IMMUTABLE',
-                    };
-                    offset += length;
+                    addEntity({
+                        offset,
+                        length: getEmojiUnicodeLengthFromShortName(emojiToken),
+                        key: genKeyFunc(),
+                        type: {
+                            type: 'emoji',
+                            mutability: 'IMMUTABLE',
+                        },
+                    });
                 } else {
                     offset += emojiToken.length;
                 }
-            }
+            });
         }
-    }
+    });
 
     return {
         entityMap,
@@ -181,7 +114,11 @@ const makeIncrementFunc = () => {
 describe('Draft data conversion', () => {
     it('should convert emoji string to draft format', () => {
         const text = '😎🧚👩‍❤️‍💋‍👩';
-        const { blocks, entityMap } = getEmojiBlocksAndEntityMap(text, makeIncrementFunc());
+        const { blocks, entityMap } = getEmojiAndMentionBlocksAndEntityMap(
+            text,
+            [],
+            makeIncrementFunc(),
+        );
         expect({
             blocks,
             entityMap,
@@ -201,12 +138,15 @@ describe('Draft data conversion', () => {
             entityMap: {
                 0: {
                     type: 'emoji',
+                    mutability: 'IMMUTABLE',
                 },
                 1: {
                     type: 'emoji',
+                    mutability: 'IMMUTABLE',
                 },
                 2: {
                     type: 'emoji',
+                    mutability: 'IMMUTABLE',
                 },
             },
         });
@@ -214,7 +154,11 @@ describe('Draft data conversion', () => {
 
     it('should convert emoji string to draft format - with text inside', () => {
         const text = '😎🧚some text inside👩‍❤️‍💋‍👩';
-        const { blocks, entityMap } = getEmojiBlocksAndEntityMap(text, makeIncrementFunc());
+        const { blocks, entityMap } = getEmojiAndMentionBlocksAndEntityMap(
+            text,
+            [],
+            makeIncrementFunc(),
+        );
         expect({
             blocks,
             entityMap,
@@ -234,12 +178,15 @@ describe('Draft data conversion', () => {
             entityMap: {
                 0: {
                     type: 'emoji',
+                    mutability: 'IMMUTABLE',
                 },
                 1: {
                     type: 'emoji',
+                    mutability: 'IMMUTABLE',
                 },
                 2: {
                     type: 'emoji',
+                    mutability: 'IMMUTABLE',
                 },
             },
         });
@@ -250,7 +197,11 @@ describe('Draft data conversion', () => {
         const text = '@Sergey Lapin @dev lapin 🎉 ';
 
         const genKeyFunction = makeIncrementFunc();
-        const { blocks, entityMap } = getMentionBlocksAndEntityMap(text, mentions, genKeyFunction);
+        const { blocks, entityMap } = getEmojiAndMentionBlocksAndEntityMap(
+            text,
+            mentions,
+            genKeyFunction,
+        );
 
         let parsedMentions = preprocessMentions(text, mentions, undefined);
 
@@ -327,7 +278,7 @@ describe('Draft data conversion', () => {
                         { key: 1, length: 1, offset: 14 },
                         { key: 2, length: 1, offset: 15 },
                         { key: 3, length: 8, offset: 16 },
-                        { key: 4, length: 13, offset: 25 },
+                        { key: 4, length: 12, offset: 25 },
                     ],
                     text: '@Sergey Lapin 😎🧚👩‍❤️‍💋‍👩 @dev lapin 🎉',
                     type: 'unstyled',
