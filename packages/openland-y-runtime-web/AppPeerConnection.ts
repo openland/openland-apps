@@ -44,7 +44,7 @@ class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     createOffer = async () => {
-        return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: false }));
+        return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: false } as any /* WTF with typings? */));
     }
 
     setLocalDescription = async (sdp: string) => {
@@ -56,7 +56,7 @@ class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     createAnswer = async () => {
-        return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: false }));
+        return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: false } as any /* WTF with typings? */));
     }
 
     addStream = (stream: AppMediaStream) => {
