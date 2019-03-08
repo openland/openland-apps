@@ -3,6 +3,8 @@ import { YQuery } from 'openland-y-graphql/YQuery';
 import { ConferenceQuery } from 'openland-api';
 import { TalkMediaStreamComponent } from './TalkMediaStreamComponent';
 import { YApolloContext } from 'openland-y-graphql/YApolloProvider';
+import { AppUserMedia } from 'openland-y-runtime/AppUserMedia';
+import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export interface TalkMediaComponentProps {
     id: string;
@@ -13,60 +15,29 @@ export interface TalkMediaComponentProps {
 }
 
 export interface TalkMediaComponentState {
-    mediaStream?: MediaStream;
+    mediaStream?: AppMediaStream;
 }
 
 export class TalkMediaComponent extends React.Component<
     TalkMediaComponentProps,
     TalkMediaComponentState
-> {
+    > {
     private _mounted = true;
-    private streams: { [key: string]: MediaStream } = {};
 
     constructor(props: TalkMediaComponentProps) {
         super(props);
         this.state = {};
     }
 
-    onStreamCreated = (peerId: string, stream: MediaStream) => {
-        this.streams = { ...this.streams };
-        this.streams[peerId] = stream;
-
-        this.props.onStreamsUpdated(this.props.peerId, this.streams);
-    };
-
-    onStreamClosed = (peerId: string) => {
-        this.streams = { ...this.streams };
-        delete this.streams[peerId];
-
-        this.props.onStreamsUpdated(this.props.peerId, this.streams);
-    };
-
     componentDidMount() {
-        navigator.mediaDevices
-            .getUserMedia({
-                audio: {
-                    noiseSuppression: true,
-                    autoGainControl: false,
-                } as any,
-            })
+        AppUserMedia.getUserAudio()
             .then(stream => {
                 setTimeout(() => {
                     if (this._mounted) {
-                        if (this.props.muted) {
-                            for (let t of stream.getAudioTracks()) {
-                                t.enabled = false;
-                            }
-                        } else {
-                            for (let t of stream.getAudioTracks()) {
-                                t.enabled = true;
-                            }
-                        }
+                        stream.muted = this.props.muted;
                         this.setState({ mediaStream: stream });
                     } else {
-                        for (let t of stream.getTracks()) {
-                            t.stop();
-                        }
+                        stream.close();
                     }
                 }, 10);
             });
@@ -75,24 +46,14 @@ export class TalkMediaComponent extends React.Component<
     componentWillReceiveProps(nextProps: TalkMediaComponentProps) {
         if (nextProps.muted !== this.props.muted && this.state.mediaStream) {
             let stream = this.state.mediaStream!;
-            if (nextProps.muted) {
-                for (let t of stream.getAudioTracks()) {
-                    t.enabled = false;
-                }
-            } else {
-                for (let t of stream.getAudioTracks()) {
-                    t.enabled = true;
-                }
-            }
+            stream.muted = nextProps.muted;
         }
     }
 
     componentWillUnmount() {
         this._mounted = false;
         if (this.state.mediaStream) {
-            for (let t of this.state.mediaStream.getTracks()) {
-                t.stop();
-            }
+            this.state.mediaStream.close();
         }
     }
 
@@ -118,8 +79,8 @@ export class TalkMediaComponent extends React.Component<
                                             stream={this.state.mediaStream!}
                                             ownPeerId={this.props.peerId}
                                             connection={v.connection!}
-                                            onStreamCreated={this.onStreamCreated}
-                                            onStreamClosed={this.onStreamClosed}
+                                        // onStreamCreated={this.onStreamCreated}
+                                        // onStreamClosed={this.onStreamClosed}
                                         />
                                     ))}
                                 </>
