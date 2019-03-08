@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { EmojiData } from 'emoji-mart';
 import { addEmoji } from './modifiers/addEmoji';
 import { getSearchText } from './utils/getSearchText';
 import { addMention, findActiveWord } from './modifiers/addMention';
 import { MentionDataT } from './components/MentionSuggestionsEntry';
+import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 import { decorator } from './decorator';
 
 type useHandleEditorChangeT = {
@@ -18,7 +19,10 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
 
     const getEditorStateFromText = (text: string) => {
         return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(ContentState.createFromText(text as any), decorator),
+            EditorState.createWithContent(
+                convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, []) as any),
+                decorator,
+            ),
         );
     };
 
