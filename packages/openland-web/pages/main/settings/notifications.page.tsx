@@ -26,43 +26,14 @@ import LockIcon from 'openland-icons/ic-lock-settings.svg';
 import NotificationsIcon from 'openland-icons/ic-notifications.svg';
 import NotificationsFirefoxIcon from 'openland-icons/ic-notifications-firefox-2.svg';
 import { SettingsNavigation } from './components/SettingsNavigation';
-import { Content } from './components/SettingComponents';
-
-const Header = (props: { children?: any }) => (
-    <XView fontSize={22} lineHeight="24px" opacity={0.9} marginBottom={25}>
-        {props.children}
-    </XView>
-);
-
-const Group = (props: { children?: any }) => <XView maxWidth={570}>{props.children}</XView>;
-
-const GroupText = css`
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: -3px;
-    margin-bottom: 16px;
-    opacity: 0.9;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-
-    & > strong {
-        font-weight: 600;
-    }
-`;
-
-const GroupTitle = (props: { children?: any }) => (
-    <XView fontSize={16} lineHeight="20px" fontWeight={'600'} marginBottom={12}>
-        {props.children}
-    </XView>
-);
-
-const GroupSubTitle = (props: { children?: any }) => (
-    <XView fontSize={14} lineHeight="16px" paddingTop={4} marginBottom={12}>
-        {props.children}
-    </XView>
-);
+import {
+    Content,
+    Header,
+    Group,
+    GroupSubTitle,
+    GroupTitle,
+    GroupText,
+} from './components/SettingComponents';
 
 const Instruction = (props: { children?: any }) => (
     <XView paddingTop={4} paddingBottom={40}>

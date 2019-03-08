@@ -97,31 +97,6 @@ class MakeWebFastCheckbox extends React.PureComponent<{}, { fast: boolean }> {
     }
 }
 
-class HighlightSecretChat extends React.PureComponent<{}, { highlight: boolean }> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            highlight: canUseDOM && localStorage.getItem('highlight_secret_chat') === 'true',
-        };
-    }
-
-    onChange = (checked: { label: string; checked: boolean }) => {
-        localStorage.setItem('highlight_secret_chat', checked.checked ? 'true' : 'false');
-        this.setState({ highlight: checked.checked });
-        EmojiFlags.ignoreEmojione = checked.checked;
-    };
-
-    render() {
-        return (
-            <XCheckbox
-                label="Highlight secret chat"
-                checked={this.state.highlight}
-                onChange={this.onChange}
-            />
-        );
-    }
-}
-
 export default withApp(
     'Profile',
     'viewer',
@@ -380,7 +355,6 @@ export default withApp(
                                             )}
                                         <XVertical separator={2}>
                                             <MakeWebFastCheckbox />
-                                            <HighlightSecretChat />
                                         </XVertical>
                                     </CardsWrapper>
                                 </XWithRole>
