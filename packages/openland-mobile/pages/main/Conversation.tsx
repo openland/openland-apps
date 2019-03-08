@@ -165,7 +165,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
 
                 let isPhoto = checkFileIsPhoto(response.uri);
 
-                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.uri, response.fileSize);
+                UploadManagerInstance.registerUpload(this.props.chat.id, isPhoto ? 'image.jpg' : 'video.mp4', response.path ? 'file://' + response.path : response.uri, response.fileSize);
             });
         }, false, Platform.OS === 'android' ? require('assets/ic-camera-24.png') : undefined);
         if (Platform.OS === 'android') {

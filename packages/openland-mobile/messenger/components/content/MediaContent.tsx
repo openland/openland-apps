@@ -11,7 +11,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { DownloadManagerInstance } from '../../../files/DownloadManager';
 import { contentInsetsHorizontal, contentInsetsBottom, contentInsetsTop } from '../AsyncBubbleView';
 import { UploadManagerInstance } from 'openland-mobile/files/UploadManager';
-import { Alert } from 'openland-mobile/components/AlertBlanket';
+
 interface MediaContentProps {
     single?: boolean;
     message: DataSourceMessageItem;
