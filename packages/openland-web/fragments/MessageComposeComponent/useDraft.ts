@@ -64,7 +64,7 @@ export function useDraft({
     };
 
     const cleanDraft = () => {
-        changeDraft('');
+        changeDraft('', []);
         DraftStore.cleanDraftMessage(conversationId);
     };
 
