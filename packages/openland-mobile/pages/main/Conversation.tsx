@@ -196,7 +196,6 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                 },
                 (response) => {
                     if (response.error) {
-                        Alert.alert(response.error);
                         handlePermissionDismiss('gallery');
                         return;
                     }
