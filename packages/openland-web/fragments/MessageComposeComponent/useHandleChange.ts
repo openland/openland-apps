@@ -34,7 +34,7 @@ export function useHandleChange({
 
         if (supportDraft()) {
             if (draftState!!.changeDraft && draftState!!.beDrafted!!) {
-                draftState!!.changeDraft(text);
+                draftState!!.changeDraft(text, mentions);
             }
         }
     };

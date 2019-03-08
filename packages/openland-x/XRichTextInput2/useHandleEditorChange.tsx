@@ -17,16 +17,24 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
 
-    const getEditorStateFromText = (text: string) => {
+    const getEditorStateFromText = ({
+        text,
+        mentions,
+    }: {
+        text: string;
+        mentions: MentionDataT[];
+    }) => {
         return EditorState.moveFocusToEnd(
             EditorState.createWithContent(
-                convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, []) as any),
+                convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, mentions) as any),
                 decorator,
             ),
         );
     };
 
-    const [editorState, setEditorState] = React.useState(getEditorStateFromText(value));
+    const [editorState, setEditorState] = React.useState(
+        getEditorStateFromText({ text: value, mentions: [] }),
+    );
 
     const updateEditorState = (newEditorState: EditorState) => {
         const newPlainText = newEditorState.getCurrentContent().getPlainText();
@@ -35,8 +43,19 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
         setPlainText(newPlainText);
     };
 
-    const updateEditorStateFromTextAndMentions = (text: string) => {
-        updateEditorState(getEditorStateFromText(text));
+    const updateEditorStateFromTextAndMentions = ({
+        text,
+        mentions,
+    }: {
+        text: string;
+        mentions: MentionDataT[];
+    }) => {
+        updateEditorState(
+            getEditorStateFromText({
+                text,
+                mentions,
+            }),
+        );
     };
 
     const handleEditorChange = (newEditorState: EditorState) => {

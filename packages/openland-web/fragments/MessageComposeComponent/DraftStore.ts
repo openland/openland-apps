@@ -9,15 +9,18 @@ const getDraftKey = (conversationId?: string): string => {
 
 export const getDraftMessage = (
     conversationId?: string,
-): { text: string | null; mentions?: MentionDataT[] } => {
+): { text: string | null; mentions: MentionDataT[] } => {
     let text, mentions;
     if (!conversationId) {
         text = null;
     }
 
     text = window.localStorage.getItem(`${getDraftKey(conversationId)}_text`) || '';
+
+    const mentionsString =
+        window.localStorage.getItem(`${getDraftKey(conversationId)}_mentions`) || '[]';
     mentions = JSON.parse(
-        window.localStorage.getItem(`${getDraftKey(conversationId)}_mentions`) || '[]',
+        !mentionsString || mentionsString === 'undefined' ? '[]' : mentionsString,
     );
 
     let draftKey = getDraftKey(conversationId);
@@ -44,7 +47,7 @@ export const setDraftMessage = (
     window.localStorage.setItem(`${getDraftKey(conversationId)}_text`, src);
     window.localStorage.setItem(
         `${getDraftKey(conversationId)}_mentions`,
-        JSON.stringify(mentions),
+        JSON.stringify(mentions || []),
     );
 };
 

@@ -1,6 +1,7 @@
 import { getDefaultKeyBinding } from 'draft-js';
 import { EmojiSuggestionsStateT } from './useEmojiSuggestions';
 import { MentionSuggestionsStateT } from './useMentionSuggestions';
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 const keyBinding = (e: React.KeyboardEvent<any>): string | null => {
     if (e.keyCode === 13 /* `Enter` key */ && !e.shiftKey) {
@@ -15,7 +16,7 @@ type useKeyHandlingT = {
     emojiState: EmojiSuggestionsStateT;
     applyCurrentSuggestedMention: Function;
     applyCurrentSuggestedEmoji: Function;
-    updateEditorStateFromTextAndMentions: (a: string) => void;
+    updateEditorStateFromTextAndMentions: (a: { text: string; mentions: MentionDataT[] }) => void;
 };
 
 export function useDraftKeyHandling({
@@ -38,7 +39,7 @@ export function useDraftKeyHandling({
 
             if (onSubmit) {
                 onSubmit();
-                updateEditorStateFromTextAndMentions('');
+                updateEditorStateFromTextAndMentions({ text: '', mentions: [] });
 
                 return 'handled';
             }

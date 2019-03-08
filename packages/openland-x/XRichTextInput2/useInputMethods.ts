@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { EditorState, ContentState } from 'draft-js';
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 export type XRichTextInput2RefMethods = {
     focus: () => void;
     resetAndFocus: () => void;
     getHasFocus: () => boolean;
-    getMentions: any;
-    setInputValue: Function;
+    setInputValue: (a: { text: string; mentions: MentionDataT[] }) => void;
+    getMentions: () => MentionDataT[];
 };
 
 type useInputMethodsT = {
@@ -14,14 +15,8 @@ type useInputMethodsT = {
     editorRef?: any;
     setEditorState: (a: EditorState) => void;
     editorState: EditorState;
-    getMentions: any;
-    updateEditorStateFromTextAndMentions: ({
-        text,
-        mentions,
-    }: {
-        text: string;
-        mentions: any;
-    }) => void;
+    getMentions: () => MentionDataT[];
+    updateEditorStateFromTextAndMentions: (a: { text: string; mentions: MentionDataT[] }) => void;
 };
 
 export function useInputMethods({
