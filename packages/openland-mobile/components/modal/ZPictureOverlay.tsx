@@ -128,7 +128,7 @@ export class ZPictureOverlay extends React.PureComponent<{ config: ZPictureTrans
     }
 
     handleShareClick = async () => {
-        let file = await DownloadManagerInstance.addExtensionToFile(this.props.config.url, 'png');
+        let file = await DownloadManagerInstance.copyFileWithNewName(this.props.config.url, 'image.png');
 
         if (file) {
             let builder = new ActionSheetBuilder();

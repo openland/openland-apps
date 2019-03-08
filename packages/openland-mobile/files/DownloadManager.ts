@@ -178,9 +178,9 @@ export class DownloadManager implements DownloadManagerInterface {
         }
     }
 
-    addExtensionToFile = async (file: string, extension: string) => {
+    copyFileWithNewName = async (file: string, newName: string) => {
         let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
-        let fileWithExt = targetPath + '/' + UUID() + '.' + extension;
+        let fileWithExt = targetPath + '/' + newName;
 
         if (await this.checkStoragePermissions()) {
             if (await (RNFetchBlob as any).fs.exists(fileWithExt)) {
