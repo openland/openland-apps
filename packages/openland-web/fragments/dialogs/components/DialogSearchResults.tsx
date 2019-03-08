@@ -65,7 +65,7 @@ export const DialogSearchResults = withChatSearchText(props => {
                         kind: i.kind,
                         title: i.title,
                         photo: i.photo || i.photos[0],
-                        unread: 0,
+                        unread: 0
                     }}
                 />
             ))}
