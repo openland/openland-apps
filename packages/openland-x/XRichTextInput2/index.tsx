@@ -48,6 +48,7 @@ export const XRichTextInput2 = React.memo(
             } = useHandleEditorChange({
                 onChange,
                 value,
+                mentionsData,
             });
 
             const { handlePastedText } = useHandlePastedText({ setEditorState });

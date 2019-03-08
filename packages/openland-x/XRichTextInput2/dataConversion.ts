@@ -2,6 +2,7 @@ import { genKey } from 'draft-js';
 const {
     preprocessMentions,
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 // /components/messenger/message/content/utils/preprocessMentions
 const emojione = require('emojione');
@@ -39,7 +40,7 @@ const emojifiedLength = (str: string) => {
 
 export const getEmojiAndMentionBlocksAndEntityMap = (
     text: string,
-    mentions: any,
+    mentions: MentionDataT[],
     genKeyFunc: Function = genKey,
 ) => {
     let parsedMentions = preprocessMentions(text, mentions, undefined);
@@ -73,6 +74,7 @@ export const getEmojiAndMentionBlocksAndEntityMap = (
                 type: {
                     type: 'MENTION',
                     mutability: 'IMMUTABLE',
+                    data: token.user,
                 },
             });
         } else {

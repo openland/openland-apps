@@ -2,6 +2,7 @@ import { getEmojiAndMentionBlocksAndEntityMap } from './dataConversion';
 const {
     preprocessMentions,
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
+import { MentionDataT } from './components/MentionSuggestionsEntry';
 
 const makeIncrementFunc = () => {
     let i = 0;
@@ -90,7 +91,7 @@ describe('Draft data conversion', () => {
     });
 
     it('should convert mentions string to draft format', () => {
-        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }];
+        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }] as MentionDataT[];
         const text = '@Sergey Lapin @dev lapin 🎉 ';
 
         const genKeyFunction = makeIncrementFunc();
@@ -134,17 +135,19 @@ describe('Draft data conversion', () => {
                 0: {
                     type: 'MENTION',
                     mutability: 'IMMUTABLE',
+                    data: { name: 'Sergey Lapin' },
                 },
                 1: {
                     type: 'MENTION',
                     mutability: 'IMMUTABLE',
+                    data: { name: 'dev lapin 🎉' },
                 },
             },
         });
     });
 
     it('should convert mixed mentions and emojies string to draft format', () => {
-        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }];
+        const mentions = [{ name: 'Sergey Lapin' }, { name: 'dev lapin 🎉' }] as MentionDataT[];
         const text = '@Sergey Lapin 😎🧚👩‍❤️‍💋‍👩 @dev lapin 🎉';
 
         let parsedMentions = preprocessMentions(text, mentions, undefined);
@@ -182,11 +185,11 @@ describe('Draft data conversion', () => {
                 },
             ],
             entityMap: {
-                '0': { type: 'MENTION', mutability: 'IMMUTABLE' },
+                '0': { type: 'MENTION', mutability: 'IMMUTABLE', data: { name: 'Sergey Lapin' } },
                 '1': { type: 'emoji', mutability: 'IMMUTABLE' },
                 '2': { type: 'emoji', mutability: 'IMMUTABLE' },
                 '3': { type: 'emoji', mutability: 'IMMUTABLE' },
-                '4': { type: 'MENTION', mutability: 'IMMUTABLE' },
+                '4': { type: 'MENTION', mutability: 'IMMUTABLE', data: { name: 'dev lapin 🎉' } },
             },
         });
     });

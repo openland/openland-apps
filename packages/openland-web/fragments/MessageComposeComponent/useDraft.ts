@@ -13,7 +13,6 @@ export type DraftStateT = {
     cleanDraft: Function;
 };
 
-// TODO decalare state object
 export function useDraft({
     conversationId,
     saveDraft,

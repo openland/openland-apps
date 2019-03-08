@@ -11,9 +11,10 @@ import { decorator } from './decorator';
 type useHandleEditorChangeT = {
     onChange?: (a: { text: string; mentions: MentionDataT[] }) => void;
     value: string;
+    mentionsData?: MentionDataT[];
 };
 
-export function useHandleEditorChange({ onChange, value }: useHandleEditorChangeT) {
+export function useHandleEditorChange({ onChange, value, mentionsData }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
 
@@ -33,7 +34,7 @@ export function useHandleEditorChange({ onChange, value }: useHandleEditorChange
     };
 
     const [editorState, setEditorState] = React.useState(
-        getEditorStateFromText({ text: value, mentions: [] }),
+        getEditorStateFromText({ text: value, mentions: mentionsData || [] }),
     );
 
     const updateEditorState = (newEditorState: EditorState) => {
