@@ -67,6 +67,7 @@ export const TalkBarComponent = (props: { conversationId: string }) => {
                                                 size="m-small"
                                                 style="user"
                                                 objectId={v.user.id}
+                                                objectName={v.user.name}
                                                 online={false}
                                                 cloudImageUuid={v.user.photo || undefined}
                                             />
