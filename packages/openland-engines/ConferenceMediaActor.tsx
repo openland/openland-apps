@@ -13,7 +13,6 @@ import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 
 export interface TalkMediaStreamComponentProps {
     apollo: OpenApolloClient;
-    id: string;
     ownPeerId: string;
     peerId: string;
     stream: AppMediaStream;
@@ -23,7 +22,7 @@ export interface TalkMediaStreamComponentProps {
     // onStreamClosed: (peerId: string) => void;
 }
 
-export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamComponentProps> {
+export class ConferenceMediaActor extends React.Component<TalkMediaStreamComponentProps> {
     container = React.createRef<HTMLDivElement>();
     started = false;
     answerHandled = false;
@@ -36,7 +35,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
     audio: HTMLAudioElement[] = [];
 
     componentDidMount() {
-        console.log('Connection mounted: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log('Connection mounted: ' + this.props.conference.id + ': ' + this.props.connection.state);
         console.log('WEBRTC: ICE Servers: ', this.props.conference.iceServers);
         this.started = true;
         this.peerConnection = AppPeerConnectionFactory.createConnection({
@@ -56,7 +55,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 if (ev.candidate) {
                     console.log('ICE:' + ev.candidate);
                     await this.props.apollo.mutate(ConferenceCandidateMutation, {
-                        id: this.props.id,
+                        id: this.props.conference.id,
                         peerId: this.props.peerId,
                         ownPeerId: this.props.ownPeerId,
                         candidate: ev.candidate,
@@ -68,14 +67,14 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
         this.handleState();
     }
     componentDidUpdate() {
-        console.log('Connection updated: ' + this.props.id + ': ' + this.props.connection.state);
+        console.log('Connection updated: ' + this.props.conference.id + ': ' + this.props.connection.state);
         this.handleState();
     }
     componentWillUnmount() {
         this.started = false;
         this.peerConnection.close();
         // this.props.onStreamClosed(this.props.peerId);
-        console.log('Connection removed: ' + this.props.id);
+        console.log('Connection removed: ' + this.props.conference.id);
     }
 
     handleState() {
@@ -96,7 +95,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 }
 
                 await this.props.apollo.mutate(ConferenceOfferMutation, {
-                    id: this.props.id,
+                    id: this.props.conference.id,
                     peerId: this.props.peerId,
                     ownPeerId: this.props.ownPeerId,
                     offer: this.localDescription,
@@ -128,7 +127,7 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
                 this.handleState();
 
                 await this.props.apollo.mutate(ConferenceAnswerMutation, {
-                    id: this.props.id,
+                    id: this.props.conference.id,
                     peerId: this.props.peerId,
                     ownPeerId: this.props.ownPeerId,
                     answer: this.localDescription,
@@ -172,6 +171,6 @@ export class TalkMediaStreamComponent extends React.Component<TalkMediaStreamCom
     }
 
     render() {
-        return <div ref={this.container} />;
+        return null;
     }
 }
