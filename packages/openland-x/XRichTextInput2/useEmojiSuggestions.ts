@@ -21,6 +21,25 @@ export type EmojiSuggestionsStateT = {
     suggestions: EmojiDataT[];
     setSelectedEntryIndex: (a: number) => void;
     selectedEntryIndex: number;
+    cursorXPosition: number;
+};
+
+const getCursorXPosition = () => {
+    const X_OFFSET = 15;
+    try {
+        const s = window.getSelection();
+        const oRange = s.getRangeAt(0);
+
+        const parentNode = oRange.commonAncestorContainer!!.parentNode!!.parentNode!!.parentNode;
+
+        return (
+            (oRange.getBoundingClientRect() as any)!!.x -
+            (parentNode!! as any).getBoundingClientRect().x +
+            X_OFFSET
+        );
+    } catch (err) {
+        return 0;
+    }
 };
 
 export const useEmojiSuggestions = ({
@@ -29,6 +48,9 @@ export const useEmojiSuggestions = ({
     const [isSelecting, setIsSelecting] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<EmojiDataT[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
+    const [cursorXPosition, setCursorXPosition] = React.useState(() => {
+        return getCursorXPosition();
+    });
 
     React.useEffect(() => {
         if (!activeWord.includes(':')) {
@@ -69,6 +91,7 @@ export const useEmojiSuggestions = ({
             setSelectedEntryIndex(nextSelectedEntryIndex);
         }
 
+        setCursorXPosition(getCursorXPosition());
         setIsSelecting(finalActiveWord.startsWith(':') && !!filteredValues.length);
         setSuggestions(filteredValues.slice(0, 9));
     }, [activeWord]);
@@ -81,6 +104,7 @@ export const useEmojiSuggestions = ({
     });
 
     return {
+        cursorXPosition,
         isSelecting,
         handleUp,
         handleDown,

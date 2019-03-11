@@ -123,7 +123,11 @@ export const EditorContainer = (props: EditorContainerContainer) => {
                 sizeOfContainer={sizeOfContainer}
             />
 
-            <EmojiSuggestions show={emojiState.isSelecting} items={emojiSuggestionsItems} />
+            <EmojiSuggestions
+                cursorXPosition={emojiState.cursorXPosition}
+                show={emojiState.isSelecting}
+                items={emojiSuggestionsItems}
+            />
 
             {children}
             <EmojiButton onEmojiPicked={onEmojiPicked} />
