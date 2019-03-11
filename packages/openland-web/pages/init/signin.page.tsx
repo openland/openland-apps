@@ -265,7 +265,7 @@ class SignInComponent extends React.Component<
                         this.setState({
                             signInInvite: false,
                             codeSending: false,
-                            codeError: error.description,
+                            codeError: InitTexts.auth.wrongCodeLength,
                         });
                     } else {
                         // Ignore. Should be redirect to completion page.
