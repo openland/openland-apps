@@ -398,6 +398,13 @@ export class DialogListEngine {
 
             this.next = res.dialogs.cursor;
             this.dialogs = [...this.dialogs, ...res.dialogs.items];
+
+            res.dialogs.items.map(c => {
+                if (c.kind === 'PRIVATE' && c.fid) {
+                    this.userConversationMap.set(c.fid, c.cid);
+                }
+            });
+
             this.dialogListCallback(this.dialogs.map(i => i.cid));
 
             // Write to datasource
