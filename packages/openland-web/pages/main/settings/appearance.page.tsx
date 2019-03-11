@@ -81,7 +81,7 @@ class HighlightSecretGroups extends React.PureComponent<
                 </XVertical>
                 {beChange && (
                     <XButton
-                        text={confirm ? 'Changes saved!' : 'Save changes'}
+                        text={confirm ? 'Saved!' : 'Save changes'}
                         style={confirm ? 'success' : 'primary'}
                         alignSelf="flex-start"
                         onClick={this.onSave}
