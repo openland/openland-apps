@@ -448,7 +448,7 @@ export const DesktopScaffold = ({
     topItems: any;
 }) => {
     const [banner, bannerHandler] = React.useState(() => {
-        return typeof require !== 'undefined';
+        return typeof require === 'undefined';
     });
     const handleHideBanner = () => {
         bannerHandler(false);
