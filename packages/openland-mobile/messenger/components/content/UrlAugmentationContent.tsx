@@ -14,6 +14,7 @@ import { WatchSubscription } from 'openland-y-utils/Watcher';
 import { bubbleMaxWidth } from '../AsyncBubbleView';
 import { layoutMedia } from '../../../../openland-web/utils/MediaLayout';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
+import { resolveInternalLink } from 'openland-mobile/utils/internalLnksResolver';
 
 interface UrlAugmentationContentProps {
     message: DataSourceMessageItem;
@@ -71,10 +72,13 @@ export class UrlAugmentationContent extends React.PureComponent<UrlAugmentationC
             lineBAckgroundPatch = Image.resolveAssetSource(image);
         }
         let capInsets = { left: 3, right: 0, top: 1, bottom: 1 };
+
+        let link = this.props.message.urlAugmentation!.url;
+
         return (
             <>
                 {this.props.message.urlAugmentation && (
-                    <ASFlex onPress={() => Linking.openURL(this.props.message.urlAugmentation!.url)} flexDirection="column" marginTop={12} marginBottom={5} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? 'rgba(255,255,255, 0.5)' : DefaultConversationTheme.linkColorIn}>
+                    <ASFlex onPress={resolveInternalLink(link, async () => await Linking.openURL(link))} flexDirection="column" marginTop={12} marginBottom={5} backgroundPatch={{ source: lineBAckgroundPatch.uri, scale: lineBAckgroundPatch.scale, ...capInsets }} backgroundPatchTintColor={this.props.message.isOut ? 'rgba(255,255,255, 0.5)' : DefaultConversationTheme.linkColorIn}>
                         {this.props.message.urlAugmentation.imageURL && this.augLayout && (
                             <ASFlex marginBottom={8}>
                                 <ASImage
