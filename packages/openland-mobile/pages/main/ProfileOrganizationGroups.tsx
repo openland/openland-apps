@@ -8,7 +8,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { SScrollView } from 'react-native-s/SScrollView';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { XMemo } from 'openland-y-utils/XMemo';
-import { GroupView } from './components/GoupView';
+import { GroupView } from './components/GroupView';
 
 class GroupsList extends React.PureComponent<{ groups: (Organization_organization_rooms | null)[], router: SRouter }> {
     render() {

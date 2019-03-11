@@ -17,7 +17,7 @@ import { View } from 'react-native';
 import { SHeaderButton } from 'react-native-s/SHeaderButton';
 import { getClient } from 'openland-mobile/utils/apolloClient';
 import { Organization_organization_members } from 'openland-api/Types';
-import { GroupView } from './components/GoupView';
+import { GroupView } from './components/GroupView';
 
 let isMember = (a: Organization_organization_members) => {
     return a.role === 'MEMBER';
