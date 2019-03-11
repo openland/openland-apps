@@ -12,6 +12,7 @@ import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ASText } from 'react-native-async-view/ASText';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { Platform } from 'react-native';
+import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -41,7 +42,7 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     if (res.length === 0) {
         res.push(
-            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} colorIn={theme.backgroundColor} backgroundColor={theme.backgroundColor}>
+            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} appearance="text" colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
                     <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                 </ASFlex>
