@@ -134,6 +134,7 @@ export function useHandleEditorChange({ onChange, value, mentionsData }: useHand
         addMention: finalAddMention,
         addEmoji: finalAddEmoji,
         handleEditorChange,
+        updateEditorState,
         updateEditorStateFromTextAndMentions,
         editorState,
         setEditorState,
