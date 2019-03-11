@@ -31,17 +31,27 @@ export const useMentionSuggestions = ({
         isSelecting,
     });
 
-    React.useLayoutEffect(() => {
-        const filteredSuggestions = (mentionsData ? mentionsData : []).filter(
-            ({ name }: { name: string }) =>
-                name.toLowerCase().includes(activeWord.slice(1)) &&
-                activeWord !== '' &&
-                activeWord[0] === '@',
-        );
+    React.useLayoutEffect(
+        () => {
+            const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
+            const searchText = activeWord.slice(1).toLowerCase();
+            let filteredSuggestions = (mentionsData ? mentionsData : []).filter(
+                ({ name }: { name: string }) =>
+                    name.toLowerCase().startsWith(searchText) &&
+                    activeWord !== '' &&
+                    activeWord[0] === '@',
+            );
+            if (alphabetSort) {
+                filteredSuggestions = (mentionsData ? mentionsData : []).sort((a, b) =>
+                    a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+                );
+            }
 
-        setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
-        setSuggestions(filteredSuggestions);
-    }, [mentionsData, activeWord]);
+            setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
+            setSuggestions(filteredSuggestions);
+        },
+        [mentionsData, activeWord],
+    );
 
     return {
         isSelecting,

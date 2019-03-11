@@ -75,9 +75,8 @@ export const EditorContainer = (props: EditorContainerContainer) => {
         onMentionPicked,
     } = props;
 
-    const mentionSuggestionsItems = mentionState.suggestions
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((mention: MentionDataT, key: number) => {
+    const mentionSuggestionsItems = mentionState.suggestions.map(
+        (mention: MentionDataT, key: number) => {
             return (
                 <MentionEntry
                     {...mention}
@@ -88,7 +87,8 @@ export const EditorContainer = (props: EditorContainerContainer) => {
                     }}
                 />
             );
-        });
+        },
+    );
 
     // const onEmojiSelect = (emoji: string) => {
     //     setEditorState(
