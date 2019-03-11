@@ -51,7 +51,7 @@ export const XRichTextInput2 = React.memo(
                 mentionsData,
             });
 
-            const { handlePastedText } = useHandlePastedText({ setEditorState });
+            const { handlePastedText } = useHandlePastedText({ editorState, setEditorState });
 
             const { resetAndFocus } = useInputMethods({
                 updateEditorStateFromTextAndMentions,

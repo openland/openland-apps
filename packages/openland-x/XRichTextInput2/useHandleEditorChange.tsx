@@ -14,7 +14,13 @@ type useHandleEditorChangeT = {
     mentionsData?: MentionDataT[];
 };
 
-const getEditorStateFromText = ({ text, mentions }: { text: string; mentions: MentionDataT[] }) => {
+export const getEditorStateFromText = ({
+    text,
+    mentions,
+}: {
+    text: string;
+    mentions: MentionDataT[];
+}) => {
     return EditorState.moveFocusToEnd(
         EditorState.createWithContent(
             convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, mentions) as any),
