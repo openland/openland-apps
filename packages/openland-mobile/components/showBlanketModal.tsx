@@ -6,7 +6,7 @@ import { randomKey } from 'react-native-s/utils/randomKey';
 import { SAnimatedShadowView } from 'react-native-s/SAnimatedShadowView';
 import { ASSafeAreaContext, ASSafeArea } from 'react-native-async-view/ASSafeAreaContext';
 
-class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, cancalable?: boolean }> implements ZModalController {
+class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalController, safe: ASSafeArea, cancelable?: boolean }> implements ZModalController {
 
     key = randomKey();
     contents: any;
@@ -27,7 +27,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
     }
 
     handleBackPress = () => {
-        if (this.ended || this.props.cancalable === false) {
+        if (this.ended || this.props.cancelable === false) {
             return false;
         }
         this.hide();
@@ -113,7 +113,7 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
         return (
             <View width="100%" height="100%" flexDirection="column" alignItems="stretch">
 
-                <TouchableWithoutFeedback onPress={this.props.cancalable !== false ? this.hide : undefined}>
+                <TouchableWithoutFeedback onPress={this.props.cancelable !== false ? this.hide : undefined}>
                     <View
                         style={{
                             position: 'absolute',
@@ -164,11 +164,11 @@ class BlanketModal extends React.PureComponent<{ modal: ZModal, ctx: ZModalContr
     }
 }
 
-export function showBlanketModal(render: (ctx: ZModalController) => React.ReactElement<{}>, cancalable?: boolean) {
+export function showBlanketModal(render: (ctx: ZModalController) => React.ReactElement<{}>, cancelable?: boolean) {
     showModal((modal) => {
         return (
             <ASSafeAreaContext.Consumer>
-                {safe => (<BlanketModal ctx={modal} modal={render} safe={safe} cancalable={cancalable} />)}
+                {safe => (<BlanketModal ctx={modal} modal={render} safe={safe} cancelable={cancelable} />)}
             </ASSafeAreaContext.Consumer>
         )
     });
