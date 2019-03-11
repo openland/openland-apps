@@ -4,7 +4,6 @@ const {
 } = require('openland-web/components/messenger/message/content/utils/preprocessMentions');
 import { MentionDataT } from './components/MentionSuggestionsEntry';
 
-// /components/messenger/message/content/utils/preprocessMentions
 const emojione = require('emojione');
 
 let emojiList = emojione.emojioneList;
@@ -15,7 +14,16 @@ const getEmojiUnicodeLengthFromShortName = (shortName: string) => {
     return [...unicode].length;
 };
 
-const getSplittedEmoji = (emoji: string) => {
+export const isShortNameEmoji = (shortname: string) => {
+    const result = shortname.match(shortnamesRegexp);
+    return result ? !!result.length : false;
+};
+
+export const isEmoji = (emoji: string) => {
+    return isShortNameEmoji(emojione.toShort(emoji));
+};
+
+export const getSplittedEmoji = (emoji: string) => {
     return emojione
         .toShort(emoji)
         .split(shortnamesRegexp)

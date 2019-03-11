@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useKeyupDown } from './useKeyupDown';
 import { emojiList } from './utils/emojiList';
+import { getSplittedEmoji, isShortNameEmoji } from './dataConversion';
 
 export type useEmojiSuggestionsT = {
     activeWord: string;
@@ -33,10 +34,25 @@ export const useEmojiSuggestions = ({
         if (!activeWord.includes(':')) {
             setIsSelecting(false);
             setSuggestions([]);
+            return;
         }
-        const finalActiveWord = activeWord.slice(activeWord.lastIndexOf(':'));
 
-        const emojiValue = finalActiveWord.substring(1, finalActiveWord.length).toLowerCase();
+        let finalActiveWord = activeWord;
+
+        // this is to make consequence emoji selection work
+        if (activeWord.length > 1) {
+            const splitted = getSplittedEmoji(activeWord.slice(0, -1));
+
+            if (
+                activeWord[activeWord.length - 1] === ':' &&
+                isShortNameEmoji(splitted[splitted.length - 1])
+            ) {
+                finalActiveWord = activeWord.slice(activeWord.length - 1);
+            }
+        }
+
+        const emojiValue = finalActiveWord.toLowerCase();
+
         const filteredValues = Object.keys(myEmojiList)
             .filter(
                 (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
