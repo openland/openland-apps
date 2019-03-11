@@ -3430,6 +3430,9 @@ export interface RoomEditMessage {
 export interface RoomEditMessageVariables {
   messageId: string;
   message?: string | null;
+  file?: string | null;
+  replyMessages?: string[] | null;
+  mentions?: string[] | null;
 }
 
 /* tslint:disable */
@@ -9536,6 +9539,9 @@ export enum ChannelMembershipStatus {
   requested = "requested",
 }
 
+/**
+ * Deprecated
+ */
 export enum ConferencePeerConnectionState {
   NEED_ANSWER = "NEED_ANSWER",
   NEED_OFFER = "NEED_OFFER",

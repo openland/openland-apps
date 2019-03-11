@@ -26,6 +26,7 @@ import EditIcon from 'openland-icons/ic-edit.svg';
 import { DesktopMessageContainer } from './MessageContainer';
 import { MessagePostComponent } from './content/attachments/postMessage/MessagePostComponent';
 import { ServiceMessageComponent } from './content/ServiceMessageComponent';
+import { Conversation } from 'openland-mobile/pages/main/Conversation';
 
 const Check = Glamorous.div<{ select: boolean }>(props => ({
     flexShrink: 0,
@@ -291,14 +292,13 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                                 <ReplyIcon />
                             </IconButton>
                         )}
-                        {out &&
-                            message.text && (
-                                <IconButton
-                                    onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            )}
+                        {out && message.text && (
+                            <IconButton
+                                onClick={isPost ? this.setEditPostMessage : this.setEditMessage}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        )}
                     </XHorizontal>
                 </XHorizontal>
             );
@@ -374,6 +374,9 @@ export class DesktopMessageComponentInner extends React.PureComponent<
                         message={message}
                         key={'editForm'}
                         onClose={this.hideEditView}
+                        variables={{
+                            roomId: this.props.conversation.conversationId,
+                        }}
                     />,
                 );
             } else {

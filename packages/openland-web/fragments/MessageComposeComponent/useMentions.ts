@@ -9,7 +9,7 @@ export type MentionsStateT = {
     setCurrentMentions: (a: MentionDataT[]) => void;
 };
 
-const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
+export const convertChannelMembersDataToMentionsData = (data?: RoomMembers_members[]) => {
     if (!data) {
         return [];
     }

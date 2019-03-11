@@ -41,7 +41,7 @@ export const useMentionSuggestions = ({
 
         setIsSelecting(activeWord.startsWith('@') && !!filteredSuggestions.length);
         setSuggestions(filteredSuggestions);
-    }, [mentionsData]);
+    }, [mentionsData, activeWord]);
 
     return {
         isSelecting,
