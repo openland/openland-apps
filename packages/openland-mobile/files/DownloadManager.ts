@@ -1,9 +1,8 @@
 import { Watcher } from 'openland-y-utils/Watcher';
 import RNFetchBlob from 'rn-fetch-blob';
 import { DownloadState, DownloadManagerInterface } from './DownloadManagerInterface';
-import { Platform, PermissionsAndroid } from 'react-native';
-import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
-import UUID from 'uuid/v4';
+import { Platform } from 'react-native';
+import { checkPermissions } from 'openland-mobile/utils/permissions/checkPermissions';
 
 export class DownloadManager implements DownloadManagerInterface {
 
@@ -132,28 +131,6 @@ export class DownloadManager implements DownloadManagerInterface {
         return this._watchers.get(this.resolvePath(uuid, resize))!;
     }
 
-    checkStoragePermissions = async () => {
-        let hasPermissions = false;
-
-        if (Platform.OS === 'android') {
-            try {
-                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-
-                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                    hasPermissions = true;
-                } else {
-                    handlePermissionDismiss('android-storage');
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            hasPermissions = true;
-        }
-
-        return hasPermissions;
-    }
-
     getFilePathWithRealName = async (uuid: string, resize: { width: number, height: number } | null, fileName: string) => {
         let suffix = '';
         if (resize) {
@@ -165,7 +142,7 @@ export class DownloadManager implements DownloadManagerInterface {
         let fileById = this.rootDir + '/' + uuid + suffix;
         let fileByName = targetPath + '/' + fileName;
 
-        if (await this.checkStoragePermissions()) {
+        if (await checkPermissions('android-storage')) {
             if (await (RNFetchBlob as any).fs.exists(fileByName)) {
                 await (RNFetchBlob as any).fs.unlink(fileByName);
             }
@@ -182,7 +159,7 @@ export class DownloadManager implements DownloadManagerInterface {
         let targetPath = Platform.OS === 'android' ? (RNFetchBlob as any).fs.dirs.DownloadDir : (RNFetchBlob as any).fs.dirs.CacheDir;
         let fileWithExt = targetPath + '/' + newName;
 
-        if (await this.checkStoragePermissions()) {
+        if (await checkPermissions('android-storage')) {
             if (await (RNFetchBlob as any).fs.exists(fileWithExt)) {
                 await (RNFetchBlob as any).fs.unlink(fileWithExt);
             }

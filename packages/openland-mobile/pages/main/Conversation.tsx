@@ -32,7 +32,7 @@ import { MentionsRender } from './components/MentionsRender';
 import { findActiveWord } from 'openland-y-utils/findActiveWord';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { showCallModal } from './Call';
-import { handlePermissionDismiss } from 'openland-y-utils/PermissionManager/handlePermissionDismiss';
+import { handlePermissionDismiss } from 'openland-mobile/utils/permissions/handlePermissionDismiss';
 
 interface ConversationRootProps extends PageProps {
     engine: MessengerEngine;
