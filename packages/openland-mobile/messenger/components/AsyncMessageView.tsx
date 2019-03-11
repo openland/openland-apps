@@ -4,7 +4,6 @@ import { AsyncAvatar } from './AsyncAvatar';
 import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageContentView } from './AsyncMessageContentView';
-import { AsyncMessageIntroView } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { AsyncBubbleView } from './AsyncBubbleView';
@@ -22,20 +21,6 @@ export interface AsyncMessageViewProps {
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     navigationManager: NavigationManager;
 }
-
-let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: NavigationManager, onDocumentPress: (document: DataSourceMessageItem) => void) => {
-    let type: string | undefined | null;
-    let urlAugmnentation = message.urlAugmentation;
-    type = urlAugmnentation ? urlAugmnentation.type : undefined;
-
-    if (type === 'intro') {
-        return (
-            <AsyncMessageIntroView message={message} navigationManager={navigationManager} onDocumentPress={onDocumentPress} />
-        );
-    }
-
-    return null;
-};
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
