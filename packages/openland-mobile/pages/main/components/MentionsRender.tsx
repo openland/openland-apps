@@ -6,6 +6,7 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, AppStyles } from 'openland-mobile/styles/AppStyles';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ScrollView } from 'react-native-gesture-handler';
+import { isAndroid } from 'openland-mobile/utils/isAndroid';
 
 interface RenderMentionsProps {
     activeWord: string;
@@ -25,8 +26,9 @@ export const MentionsRender = (props: RenderMentionsProps) => {
         if (mentionedUsers.length > 0) {
             mentionsWrapper = (
                 <>
-                    <View height={0.5} backgroundColor={AppStyles.separatorColor} />
-                    <ScrollView keyboardShouldPersistTaps={true} maxHeight={160}>
+                    {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
+                    <ScrollView keyboardShouldPersistTaps={true} maxHeight={186}>
+                        <View height={6} />
                         {mentionedUsers.map((member, index) => {
                             let user = member.user;
         
@@ -39,20 +41,34 @@ export const MentionsRender = (props: RenderMentionsProps) => {
                                     underlayColor="rgba(0, 0, 0, 0.03)"
                                 >
                                     <View style={{ flexGrow: 1, flexDirection: 'row' }} alignItems="center">
-                                        <View style={{ width: 48, height: 40 }} alignItems="center" justifyContent="center">
+                                        <View paddingLeft={16} paddingRight={12} height={40} alignItems="center" justifyContent="center">
                                             <ZAvatar
                                                 userId={user.id}
                                                 src={user.photo}
-                                                size={26}
+                                                size={28}
                                                 placeholderKey={user.id}
                                                 placeholderTitle={user.name}
                                             />
                                         </View>
                                         <View flexGrow={1}>
-                                            <Text style={{ width: Dimensions.get('window').width - 55, fontWeight: TextStyles.weight.medium, color: Platform.OS === 'android' ? '#000' : '#181818' } as TextStyle} numberOfLines={1} ellipsizeMode="tail">
-                                                {user.name}{' '}
+                                            <Text
+                                                style={{
+                                                    fontSize: 14,
+                                                    width: Dimensions.get('window').width - 63,
+                                                    fontWeight: TextStyles.weight.medium,
+                                                    color: '#000000'
+                                                } as TextStyle}
+                                                numberOfLines={1}
+                                                ellipsizeMode="tail"
+                                            >
+                                                {user.name}{'   '}
                                                 {user.primaryOrganization && (
-                                                    <Text style={{ color: 'rgba(0, 0, 0, 0.6)', fontWeight: TextStyles.weight.regular } as TextStyle}>
+                                                    <Text
+                                                        style={{
+                                                            color: '#99a2b0',
+                                                            fontWeight: TextStyles.weight.regular
+                                                        } as TextStyle}
+                                                    >
                                                         {user.primaryOrganization.name}
                                                     </Text>
                                                 )}
@@ -62,8 +78,9 @@ export const MentionsRender = (props: RenderMentionsProps) => {
                                 </ZListItemBase>
                             )
                         })}
+                        <View height={6} />
                     </ScrollView>
-                    <View height={0.5} backgroundColor={AppStyles.separatorColor} />
+                    {isAndroid && <View height={0.5} backgroundColor={AppStyles.separatorColor} />}
                 </>
             );
         }
