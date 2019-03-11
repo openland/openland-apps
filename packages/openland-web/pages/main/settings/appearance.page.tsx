@@ -11,6 +11,7 @@ class HighlightSecretGroups extends React.PureComponent<
     {},
     { highlight: boolean; confirm: boolean; beChange: boolean }
 > {
+    timer: any;
     constructor(props: any) {
         super(props);
         this.state = {
@@ -21,6 +22,7 @@ class HighlightSecretGroups extends React.PureComponent<
     }
 
     handleOn = () => {
+        clearInterval(this.timer);
         this.setState({
             highlight: true,
             confirm: false,
@@ -29,6 +31,7 @@ class HighlightSecretGroups extends React.PureComponent<
     };
 
     handleOff = () => {
+        clearInterval(this.timer);
         this.setState({
             highlight: false,
             confirm: false,
@@ -41,13 +44,23 @@ class HighlightSecretGroups extends React.PureComponent<
             confirm: true,
         });
         localStorage.setItem('highlight_secret_chat', this.state.highlight ? 'true' : 'false');
+        this.timer = setTimeout(() => {
+            this.setState({
+                beChange: false,
+            });
+        }, 1000);
     };
 
     resetButtonStyle = () => {
+        clearInterval(this.timer);
         this.setState({
             confirm: false,
         });
     };
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
 
     render() {
         const { highlight, confirm, beChange } = this.state;
