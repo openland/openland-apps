@@ -71,6 +71,7 @@ class AsyncTextSpec: AsyncViewSpec {
   var lineHeight: Float?
   var letterSpacing: Float?
   var fontWeight: UIFontWeight? = nil
+  var fontStyle: String?
   var color: UIColor? = nil
   var numberOfLines: Int?
   var textDecorationLine: AsyncTextDecorationLine? = nil
@@ -271,6 +272,9 @@ func resolveSpec(_ src: JSON) -> AsyncViewSpec {
     res.key = src["key"].stringValue
     if let v = src["props"]["fontSize"].float {
       res.fontSize = v
+    }
+    if let v = src["props"]["fontStyle"].string {
+      res.fontStyle = v
     }
     if let v = src["props"]["fontWeight"].string {
       res.fontWeight = {

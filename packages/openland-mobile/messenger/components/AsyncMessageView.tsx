@@ -11,6 +11,7 @@ import { TextContent } from './content/TextContent';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ASText } from 'react-native-async-view/ASText';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { Platform } from 'react-native';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -42,15 +43,22 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
         res.push(
             <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} colorIn={theme.backgroundColor} backgroundColor={theme.backgroundColor}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
-                    <ASText marginLeft={20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
+                    <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                 </ASFlex>
-                <ASFlex flexDirection="column" marginLeft={40}>
-                    <TextContent padded={false} message={{ ...props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }} onUserPress={props.onAvatarPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />
+                <ASFlex flexDirection="column" marginLeft={Platform.OS === 'android' ? 50 : 40}>
+                    <TextContent
+                        padded={false}
+                        fontStyle="italic"
+                        message={{ ...props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
+                        onUserPress={props.onAvatarPress}
+                        onDocumentPress={props.onDocumentPress}
+                        onMediaPress={props.onMediaPress}
+                    />
                 </ASFlex>
             </AsyncBubbleView >
         );
-
     }
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
 
