@@ -14,26 +14,19 @@ type useHandleEditorChangeT = {
     mentionsData?: MentionDataT[];
 };
 
+const getEditorStateFromText = ({ text, mentions }: { text: string; mentions: MentionDataT[] }) => {
+    return EditorState.moveFocusToEnd(
+        EditorState.createWithContent(
+            convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, mentions) as any),
+            decorator,
+        ),
+    );
+};
+
 export function useHandleEditorChange({ onChange, value, mentionsData }: useHandleEditorChangeT) {
     const [plainText, setPlainText] = React.useState('');
     const [activeWord, setActiveWord] = React.useState<string>('');
-
-    const getEditorStateFromText = ({
-        text,
-        mentions,
-    }: {
-        text: string;
-        mentions: MentionDataT[];
-    }) => {
-        return EditorState.moveFocusToEnd(
-            EditorState.createWithContent(
-                convertFromRaw(getEmojiAndMentionBlocksAndEntityMap(text, mentions) as any),
-                decorator,
-            ),
-        );
-    };
-
-    const [editorState, setEditorState] = React.useState(
+    const [editorState, setEditorState] = React.useState(() =>
         getEditorStateFromText({ text: value, mentions: mentionsData || [] }),
     );
 
