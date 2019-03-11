@@ -9,13 +9,14 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 class HighlightSecretGroups extends React.PureComponent<
     {},
-    { highlight: boolean; confirm: boolean }
+    { highlight: boolean; confirm: boolean; beChange: boolean }
 > {
     constructor(props: any) {
         super(props);
         this.state = {
             highlight: canUseDOM && localStorage.getItem('highlight_secret_chat') === 'true',
             confirm: false,
+            beChange: false,
         };
     }
 
@@ -23,6 +24,7 @@ class HighlightSecretGroups extends React.PureComponent<
         this.setState({
             highlight: true,
             confirm: false,
+            beChange: true,
         });
     };
 
@@ -30,6 +32,7 @@ class HighlightSecretGroups extends React.PureComponent<
         this.setState({
             highlight: false,
             confirm: false,
+            beChange: true,
         });
     };
 
@@ -47,7 +50,7 @@ class HighlightSecretGroups extends React.PureComponent<
     };
 
     render() {
-        const { highlight, confirm } = this.state;
+        const { highlight, confirm, beChange } = this.state;
         return (
             <XVertical separator={12}>
                 <XVertical separator={9}>
@@ -63,13 +66,15 @@ class HighlightSecretGroups extends React.PureComponent<
                         onChange={this.handleOn}
                     />
                 </XVertical>
-                <XButton
-                    text={confirm ? 'Changes saved!' : 'Save changes'}
-                    style={confirm ? 'success' : 'primary'}
-                    alignSelf="flex-start"
-                    onClick={this.onSave}
-                    onSuccess={this.resetButtonStyle}
-                />
+                {beChange && (
+                    <XButton
+                        text={confirm ? 'Changes saved!' : 'Save changes'}
+                        style={confirm ? 'success' : 'primary'}
+                        alignSelf="flex-start"
+                        onClick={this.onSave}
+                        onSuccess={this.resetButtonStyle}
+                    />
+                )}
             </XVertical>
         );
     }
