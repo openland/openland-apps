@@ -22,6 +22,7 @@ const ConferenceMediaWatchSubscription = gql`
 export class MediaSessionManager {
     readonly conversationId: string;
     private readonly client: OpenlandClient;
+    private readonly onReady: () => void;
     private mediaStream!: AppMediaStream;
     private streamConfigs!: any[];
     private iceServers!: any[];
@@ -29,11 +30,21 @@ export class MediaSessionManager {
     private peerId!: string;
     private destroyed = false;
     private streams = new Map<string, MediaStreamManager>();
+    private mute: boolean;
 
-    constructor(client: OpenlandClient, conversationId: string) {
+    constructor(client: OpenlandClient, conversationId: string, mute: boolean, onReady: () => void) {
         this.client = client;
         this.conversationId = conversationId;
+        this.mute = mute;
+        this.onReady = onReady;
         this.doInit();
+    }
+
+    setMute = (mute: boolean) => {
+        this.mute = mute;
+        if (this.mediaStream) {
+            this.mediaStream.muted = mute;
+        }
     }
 
     destroy = () => {
@@ -106,6 +117,7 @@ export class MediaSessionManager {
             this.iceServers = joinConference.conference.iceServers;
             this.conferenceId = conferenceId;
             this.peerId = joinConference.peerId;
+            this.onReady();
             this.doStart();
             return;
         })();
@@ -123,6 +135,7 @@ export class MediaSessionManager {
                     str.close();
                 } else {
                     this.mediaStream = str;
+                    this.mediaStream.muted = this.mute;
                     this.handleState();
                 }
             })

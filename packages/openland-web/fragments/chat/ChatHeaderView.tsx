@@ -8,7 +8,6 @@ import { MessagesStateContext } from 'openland-web/components/messenger/Messages
 import { RoomEditModal } from './RoomEditModal';
 import { RoomAddMemberModal } from './RoomAddMemberModal';
 import { ChatForwardHeaderView } from './ChatForwardHeaderView';
-import { TalkContext } from 'openland-web/modules/conference/TalkProviderComponent';
 import { HeaderTitle } from './components/HeaderTitle';
 import { HeaderSubtitle } from './components/HeaderSubtitle';
 import { HeaderMuteButton } from './components/HeaderMuteButton';
@@ -25,6 +24,7 @@ import { MobileSidebarContext } from 'openland-web/components/Scaffold/MobileSid
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { InviteMembersModal } from 'openland-web/pages/main/channel/components/inviteMembersModal';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
 
 const inviteButtonClass = css`
     & svg > g > path {
@@ -105,10 +105,12 @@ const ChatHeaderViewAbstract = XMemo(
 );
 
 const CallButton = ({ room }: { room: Room_room_SharedRoom | Room_room_PrivateRoom }) => {
-    const ctx = React.useContext(TalkContext);
+    let calls = React.useContext(MessengerContext).calls;
+    let callsState =  calls.useState();
+    // const ctx = React.useContext(TalkContext);
 
-    return ctx.cid !== room.id ? (
-        <XButton text="Call" size="small" onClick={() => ctx.joinCall(room.id)} />
+    return callsState.conversationId !== room.id ? (
+        <XButton text="Call" size="small" onClick={() => calls.joinCall(room.id)} />
     ) : null;
 };
 
