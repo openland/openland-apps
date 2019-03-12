@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
-import { TalkSession } from './engine/TalkSession';
+// import { OpenApolloClient } from 'openland-y-graphql/apolloClient';
+// import { TalkSession } from './engine/TalkSession';
 import { ConferenceActor } from 'openland-engines/ConferenceActor';
+import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
+import { OpenlandClient } from 'openland-api/OpenlandClient';
 
 export const TalkContext = React.createContext<{
     cid?: string;
@@ -15,7 +17,7 @@ export const TalkContext = React.createContext<{
 }>(undefined as any);
 
 export interface TalkProviderComponentProps {
-    client: OpenApolloClient;
+    client: OpenlandClient;
 }
 
 export class TalkProviderComponent extends React.Component<
@@ -27,7 +29,8 @@ export class TalkProviderComponent extends React.Component<
         muted: boolean;
     }
     > {
-    private session?: TalkSession;
+    // private session?: TalkSession;
+    private mediaSession?: MediaSessionManager;
 
     constructor(props: TalkProviderComponentProps) {
         super(props);
@@ -35,22 +38,26 @@ export class TalkProviderComponent extends React.Component<
     }
 
     joinCall = async (cid: string) => {
-        if (this.session) {
-            this.session.close();
+        // if (this.session) {
+        //     this.session.close();
+        // }
+        if (this.mediaSession) {
+            this.mediaSession.destroy();
         }
-        this.session = new TalkSession(cid, this.props.client, this.handleStateChange);
-        this.setState({ cid });
+        this.mediaSession = new MediaSessionManager(this.props.client, cid);
+        // this.session = new TalkSession(cid, this.props.client.client, this.handleStateChange);
+        // this.setState({ cid });
     };
 
-    private handleStateChange = (peerId: string, convId: string) => {
-        this.setState({ peerId, convId });
-    };
+    // private handleStateChange = (peerId: string, convId: string) => {
+    //     this.setState({ peerId, convId });
+    // };
 
     leaveCall = () => {
-        if (this.session) {
-            this.session.close();
+        if (this.mediaSession) {
+            this.mediaSession.destroy();
         }
-        this.setState({ cid: undefined, peerId: undefined, convId: undefined });
+        // this.setState({ cid: undefined, peerId: undefined, convId: undefined });
     };
 
     toggleMute = () => {
@@ -75,8 +82,7 @@ export class TalkProviderComponent extends React.Component<
                 }}
             >
                 {this.state.cid &&
-                    this.state.peerId &&
-                    this.state.convId && (
+                    this.state.peerId && (
                         <ConferenceActor
                             id={this.state.cid}
                             peerId={this.state.peerId}

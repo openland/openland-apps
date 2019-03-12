@@ -3518,6 +3518,44 @@ export interface ConferenceVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: ConferenceMedia
+// ====================================================
+
+export interface ConferenceMedia_conferenceMedia_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface ConferenceMedia_conferenceMedia_iceServers {
+  __typename: "ICEServer";
+  urls: string[];
+  username: string | null;
+  credential: string | null;
+}
+
+export interface ConferenceMedia_conferenceMedia {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: ConferenceMedia_conferenceMedia_streams[];
+  iceServers: ConferenceMedia_conferenceMedia_iceServers[];
+}
+
+export interface ConferenceMedia {
+  conferenceMedia: ConferenceMedia_conferenceMedia;
+}
+
+export interface ConferenceMediaVariables {
+  id: string;
+  peerId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: ConferenceJoin
 // ====================================================
 
@@ -3929,6 +3967,99 @@ export interface ConferenceCandidate {
 export interface ConferenceCandidateVariables {
   id: string;
   ownPeerId: string;
+  peerId: string;
+  candidate: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MediaOffer
+// ====================================================
+
+export interface MediaOffer_mediaStreamOffer_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaOffer_mediaStreamOffer {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaOffer_mediaStreamOffer_streams[];
+}
+
+export interface MediaOffer {
+  mediaStreamOffer: MediaOffer_mediaStreamOffer;
+}
+
+export interface MediaOfferVariables {
+  id: string;
+  peerId: string;
+  offer: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MediaAnswer
+// ====================================================
+
+export interface MediaAnswer_mediaStreamAnswer_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaAnswer_mediaStreamAnswer {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaAnswer_mediaStreamAnswer_streams[];
+}
+
+export interface MediaAnswer {
+  mediaStreamAnswer: MediaAnswer_mediaStreamAnswer;
+}
+
+export interface MediaAnswerVariables {
+  id: string;
+  peerId: string;
+  answer: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: MediaCandidate
+// ====================================================
+
+export interface MediaCandidate_mediaStreamCandidate_streams {
+  __typename: "MediaStream";
+  id: string;
+  state: MediaStreamState;
+  sdp: string | null;
+  ice: string[];
+}
+
+export interface MediaCandidate_mediaStreamCandidate {
+  __typename: "ConferenceMedia";
+  id: string;
+  streams: MediaCandidate_mediaStreamCandidate_streams[];
+}
+
+export interface MediaCandidate {
+  mediaStreamCandidate: MediaCandidate_mediaStreamCandidate;
+}
+
+export interface MediaCandidateVariables {
+  id: string;
   peerId: string;
   candidate: string;
 }
@@ -9536,6 +9667,9 @@ export enum ChannelMembershipStatus {
   requested = "requested",
 }
 
+/**
+ * Deprecated
+ */
 export enum ConferencePeerConnectionState {
   NEED_ANSWER = "NEED_ANSWER",
   NEED_OFFER = "NEED_OFFER",
@@ -9574,6 +9708,14 @@ export enum EmailFrequency {
   MIN_15 = "MIN_15",
   NEVER = "NEVER",
   WEEK_1 = "WEEK_1",
+}
+
+export enum MediaStreamState {
+  NEED_ANSWER = "NEED_ANSWER",
+  NEED_OFFER = "NEED_OFFER",
+  READY = "READY",
+  WAIT_ANSWER = "WAIT_ANSWER",
+  WAIT_OFFER = "WAIT_OFFER",
 }
 
 export enum MessageButtonStyle {

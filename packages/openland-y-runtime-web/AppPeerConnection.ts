@@ -1,8 +1,10 @@
 import { AppPeerConnectionApi, AppPeerConnectionConfiguration, AppPeerConnection } from 'openland-y-runtime-api/AppPeerConnectionApi';
 import { AppMediaStream } from 'openland-y-runtime-api/AppUserMediaApi';
 import { AppUserMediaStreamWeb } from './AppUserMedia';
+import { randomKey } from 'openland-xs/utils/randomKey';
 
 class AppPeerConnectionWeb implements AppPeerConnection {
+    private id = randomKey();
     private connection: RTCPeerConnection;
     private audio?: any;
     private started = true;
@@ -44,18 +46,24 @@ class AppPeerConnectionWeb implements AppPeerConnection {
     }
 
     createOffer = async () => {
+        console.log('[PC:' + this.id + '] createOffer');
         return JSON.stringify(await this.connection.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: false } as any /* WTF with typings? */));
     }
 
     setLocalDescription = async (sdp: string) => {
+        console.log('[PC:' + this.id + '] setLocalDescription');
+        console.log('[PC:' + this.id + ']', sdp);
         await this.connection.setLocalDescription(JSON.parse(sdp));
     }
 
     setRemoteDescription = async (sdp: string) => {
+        console.log('[PC:' + this.id + '] setRemoteDescription');
+        console.log('[PC:' + this.id + ']', sdp);
         await this.connection.setRemoteDescription(JSON.parse(sdp));
     }
 
     createAnswer = async () => {
+        console.log('[PC:' + this.id + '] createAnswer');
         return JSON.stringify(await this.connection.createAnswer({ offerToReceiveAudio: true, offerToReceiveVideo: false } as any /* WTF with typings? */));
     }
 

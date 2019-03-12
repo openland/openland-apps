@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { ConferenceFull } from 'openland-api/fragments/ConferenceFull';
 import { UserShort } from 'openland-api/fragments/UserShort';
 
-const  ConferenceWatchSubscription = gql`
+const ConferenceWatchSubscription = gql`
     subscription ConferenceWatch($id: ID!) {
         alphaConferenceWatch(id: $id) {
             ...ConferenceFull

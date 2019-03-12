@@ -8,9 +8,20 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { PushEngineComponent } from 'openland-web/modules/push/PushEngineComponent';
 import { TalkProviderComponent } from 'openland-web/modules/conference/TalkProviderComponent';
 import { withAccountQuery } from 'openland-web/api/withAccountQuery';
+import { getMessenger } from 'openland-mobile/utils/messenger';
+import { MessengerContext } from 'openland-engines/MessengerEngine';
+
+const TalkProv = (props: { children?: any }) => {
+    let apollo = React.useContext(MessengerContext)!.client;
+    return (
+        <TalkProviderComponent client={apollo}>
+            {props.children}
+        </TalkProviderComponent>
+    )
+}
 
 export const AppContainer = withAccountQuery(props => {
-    let apollo = React.useContext(YApolloContext)!;
+    // let apollo = React.useContext(YApolloContext)!;
     // let account = useQuery(AccountQuery);
     if (props.loading) {
         return (
@@ -34,9 +45,9 @@ export const AppContainer = withAccountQuery(props => {
             >
                 <MessengerProvider user={hasMessenger ? props.data.me!! : undefined}>
                     {hasMessenger && (
-                        <TalkProviderComponent client={apollo}>
+                        <TalkProv>
                             {props.children}
-                        </TalkProviderComponent>
+                        </TalkProv>
                     )}
                     {!hasMessenger && props.children}
                 </MessengerProvider>

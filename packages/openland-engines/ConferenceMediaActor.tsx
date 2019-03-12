@@ -32,7 +32,6 @@ export class ConferenceMediaActor extends React.Component<TalkMediaStreamCompone
     localDescription?: string;
     remoteDescription?: string;
     appliedCandidates = new Set<string>();
-    audio: HTMLAudioElement[] = [];
 
     componentDidMount() {
         console.log('Connection mounted: ' + this.props.conference.id + ': ' + this.props.connection.state);
