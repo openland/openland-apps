@@ -35,34 +35,21 @@ export const useMentionSuggestions = ({
         () => {
             const alphabetSort = activeWord.startsWith('@') && activeWord.length === 1;
             const searchText = activeWord.slice(1).toLowerCase();
-            let filteredSuggestions = (mentionsData ? mentionsData : []).filter(
-                ({ name }: { name: string }) => {
+            let filteredSuggestions = (mentionsData ? mentionsData : [])
+                .filter(({ name }: { name: string }) => {
+                    const validator = activeWord !== '' && activeWord[0] === '@';
                     const user = name.split(' ');
-                    const firstName = user[0];
-                    const lastName = user[1];
-                    const finedFirstName = firstName.toLowerCase().startsWith(searchText);
-                    const finedLastName = lastName.toLowerCase().startsWith(searchText);
+                    const finedFirstName = user[0].toLowerCase().startsWith(searchText);
+                    const finedLastName = user[1].toLowerCase().startsWith(searchText);
                     if (finedFirstName) {
-                        return (
-                            name.toLowerCase().includes(searchText) &&
-                            activeWord !== '' &&
-                            activeWord[0] === '@'
-                        );
+                        return name.toLowerCase().includes(searchText) && validator;
                     } else if (finedLastName) {
-                        return (
-                            name.toLowerCase().includes(searchText) &&
-                            activeWord !== '' &&
-                            activeWord[0] === '@'
-                        );
+                        return name.toLowerCase().includes(searchText) && validator;
                     } else {
-                        return (
-                            name.toLowerCase().startsWith(searchText) &&
-                            activeWord !== '' &&
-                            activeWord[0] === '@'
-                        );
+                        return name.toLowerCase().startsWith(searchText) && validator;
                     }
-                },
-            );
+                })
+                .sort((a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()));
             if (alphabetSort) {
                 filteredSuggestions = (mentionsData ? mentionsData : []).sort((a, b) =>
                     a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
