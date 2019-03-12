@@ -22,6 +22,9 @@ export const TinyMessage = gql`
                     filePreview
                 }
             }
+            quotedMessages{
+                id
+            }
         }
         # spans{
         #     offset

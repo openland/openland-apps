@@ -35,6 +35,7 @@ export interface DialogDataSourceItem {
     haveMention?: boolean;
 
     date?: number;
+    forward?: boolean;
     messageId?: string;
     message?: string;
     messageEmojified?: any;
@@ -52,20 +53,28 @@ export function formatMessage(message: Dialogs_dialogs_items_topMessage | null):
     let res = message.fallback;
     if (message.message) {
         res = message.message;
-    } else if (message.__typename === "GeneralMessage" && message.attachments && message.attachments.length === 1) {
-        let attachment = message.attachments[0];
-        res = attachment.fallback;
-        if (attachment.__typename === 'MessageAttachmentFile') {
-            if (attachment.fileMetadata.isImage) {
-                if (attachment.fileMetadata.imageFormat === 'GIF') {
-                    res = 'GIF';
+    } else if (message.__typename === "GeneralMessage") {
+
+        if (message.quotedMessages.length) {
+            res = 'Forward'
+        }
+        // attchments
+        if (message.attachments && message.attachments.length === 1) {
+            let attachment = message.attachments[0];
+            res = attachment.fallback;
+            if (attachment.__typename === 'MessageAttachmentFile') {
+                if (attachment.fileMetadata.isImage) {
+                    if (attachment.fileMetadata.imageFormat === 'GIF') {
+                        res = 'GIF';
+                    } else {
+                        res = 'Photo';
+                    }
                 } else {
-                    res = 'Photo';
+                    res = 'Document';
                 }
-            } else {
-                res = 'Document';
             }
         }
+
     }
 
     return res;
@@ -110,6 +119,7 @@ export const extractDialog = (
         sender: sender,
         messageId: topMessage ? topMessage.id : undefined,
         date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
+        forward: topMessage ? topMessage.__typename === 'GeneralMessage' && !!topMessage.quotedMessages.length && !topMessage.message : false,
         messageEmojified: msg ? emojifyMessage(msg) : undefined,
         isService,
         showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
@@ -317,6 +327,7 @@ export class DialogListEngine {
                 messageEmojified: msg ? emojifyMessage(msg) : undefined,
                 date: parseInt(event.message.date, 10),
                 attachments: event.message.attachments,
+                forward: !event.message.message && event.message.quotedMessages && event.message.quotedMessages.length,
                 showSenderName:
                     !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
                     !isService,
@@ -366,6 +377,7 @@ export class DialogListEngine {
                     message: msg,
                     messageEmojified: msg ? emojifyMessage(msg) : undefined,
                     date: parseInt(event.message.date, 10),
+                    forward: !event.message.message && event.message.quotedMessages && !!event.message.quotedMessages.length,
                     attachments: event.message.attachments,
                     online: privateRoom ? privateRoom.user.online : false,
                     showSenderName:

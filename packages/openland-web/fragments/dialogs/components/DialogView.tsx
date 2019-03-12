@@ -105,14 +105,7 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                 }
             }
             message = message || attachment.fallback;
-        } else if (dialog.message) {
-            message = (
-                <span>
-                    {!isService && sender}
-                    {dialog.messageEmojified}
-                </span>
-            );
-        } else if (dialog.date) {
+        } else if (dialog.forward) {
             message = (
                 <span>
                     {sender}
@@ -126,6 +119,13 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                         )}
                     </XViewSelectedContext.Consumer>
                     Forward
+                </span>
+            );
+        } else if (dialog.message) {
+            message = (
+                <span>
+                    {!isService && sender}
+                    {dialog.messageEmojified}
                 </span>
             );
         }

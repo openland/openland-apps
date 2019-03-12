@@ -728,6 +728,14 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_Mes
 
 export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageRichAttachment | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages {
+  __typename: "ServiceMessage" | "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
 export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
   __typename: "GeneralMessage";
   /**
@@ -742,6 +750,7 @@ export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
   message: string | null;
   fallback: string;
   attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
+  quotedMessages: Dialogs_dialogs_items_topMessage_GeneralMessage_quotedMessages[];
 }
 
 export type Dialogs_dialogs_items_topMessage = Dialogs_dialogs_items_topMessage_ServiceMessage | Dialogs_dialogs_items_topMessage_GeneralMessage;
@@ -8014,6 +8023,14 @@ export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentFile {
 
 export type TinyMessage_GeneralMessage_attachments = TinyMessage_GeneralMessage_attachments_MessageRichAttachment | TinyMessage_GeneralMessage_attachments_MessageAttachmentFile;
 
+export interface TinyMessage_GeneralMessage_quotedMessages {
+  __typename: "ServiceMessage" | "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+}
+
 export interface TinyMessage_GeneralMessage {
   __typename: "GeneralMessage";
   /**
@@ -8028,6 +8045,7 @@ export interface TinyMessage_GeneralMessage {
   message: string | null;
   fallback: string;
   attachments: TinyMessage_GeneralMessage_attachments[];
+  quotedMessages: TinyMessage_GeneralMessage_quotedMessages[];
 }
 
 export type TinyMessage = TinyMessage_ServiceMessage | TinyMessage_GeneralMessage;
