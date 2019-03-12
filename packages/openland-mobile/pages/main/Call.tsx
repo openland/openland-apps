@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { getClient } from 'openland-mobile/utils/apolloClient';
-import { View, Text, TouchableOpacity, Image, BackHandler, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Image, BackHandler } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
-import { useWatchCall } from 'openland-mobile/calls/useWatchCall';
 import { CallController } from 'openland-mobile/calls/CallController';
 import { XMemo } from 'openland-y-utils/XMemo';
 import { SStatusBar } from 'react-native-s/SStatusBar';
@@ -20,10 +19,9 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     let [mute, setMute] = React.useState(false);
     let [speaker, setSpeaker] = React.useState(false);
     let room = getClient().useRoomTiny({ id: props.id }).room!!;
-    let conference = getClient().useConference({ id: props.id }).conference!!
-    useWatchCall(conference && conference.id);
 
     let title = room.__typename === 'PrivateRoom' ? room.user.name : room.title;
+    let photo = room.__typename === 'PrivateRoom' ? room.user.photo : room.photo;
     let placeholderKey = room.id
 
     React.useLayoutEffect(() => {
@@ -44,7 +42,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
     return (
         <ASSafeAreaView flexDirection="column" alignItems="stretch" flexGrow={1}>
             <View alignItems="center" justifyContent="center" paddingTop={82} paddingHorizontal={16} flexDirection="row">
-                <ZAvatar size={80} placeholderKey={placeholderKey} placeholderTitle={title} />
+                <ZAvatar size={80} placeholderKey={placeholderKey} placeholderTitle={title} src={photo} />
                 {/* <View style={{ marginLeft: 16 }}>
                     <Text style={{ fontSize: 32, height: 36, color: 'white' }} numberOfLines={1}>{title}</Text>
                 </View> */}
@@ -92,7 +90,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     style={{ width: 56, height: 56, marginLeft: 45 }}
                 >
                     <View backgroundColor={mute ? '#fff' : 'rgba(0,0,0,0.15)'} width={56} height={56} borderRadius={28} alignItems="center" justifyContent="center">
-                        <Image source={mute ? require('assets/ic-mic-on-30.png') : require('assets/ic-mic-off-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />
+                        <Image source={mute ? require('assets/ic-mic-off-30.png') : require('assets/ic-mic-on-30.png')} style={{ tintColor: mute ? 'black' : 'white' }} />
                     </View>
                 </TouchableOpacity>
             </View>
