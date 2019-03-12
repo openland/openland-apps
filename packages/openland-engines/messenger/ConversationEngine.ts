@@ -651,7 +651,7 @@ export class ConversationEngine implements MessageSendHandler {
                 }
             } else  {
                 const dateToAdd = createDateDataSourceItem(new Date(conv.date))
-                if (!this.dataSource.hasItem(dateToAdd.key)) {
+                if (!this.dataSource.hasItem(dateToAdd.key) && (!prev || prev.date && !isSameIntDate(prev.date, conv.date))) {
                     this.dataSource.addItem(dateToAdd, 0);
                     conv.attachTop = false;
                 }
