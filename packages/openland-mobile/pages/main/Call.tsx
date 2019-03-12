@@ -96,7 +96,7 @@ let Content = XMemo<{ id: string, hide: () => void }>((props) => {
                     </View>
                 </TouchableOpacity>
             </View>
-            <CallController id={conference.id} conference={conference} mute={mute} />
+            <CallController id={props.id} mute={mute} />
             {/* <View flexDirection="row" paddingHorizontal={16} paddingVertical={16}>
                 {conference.peers.map((v) => (<View><Text>{v.user.name}</Text></View>))}
             </View> */}
