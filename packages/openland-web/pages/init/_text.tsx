@@ -38,7 +38,7 @@ export const InitTexts = {
         continue: 'Continue',
         back: 'Back',
         complete: 'Continue',
-        organizationIsEmptyError: `Please enter your organization name.\nThis will be a part of your public profile.`,
+        organizationIsEmptyError: `Organization field is required. To register as an individual, simply enter your name.`,
         firstNameIsEmptyError: "What's your name?",
         lastNameIsEmptyError: "Last name can't be empty",
     },
@@ -76,7 +76,7 @@ export const InitTexts = {
     create_organization: {
         pageTitle: 'Add your organization',
         title: 'Add your organization',
-        subTitle: 'Find your organization or create a new one',
+        subTitle: 'Enter organization that people will see in your profile',
         name: 'Organization name',
         namePlaceholder: 'Acme Corporation',
         website: 'Website',
@@ -84,7 +84,6 @@ export const InitTexts = {
         photo: 'Logo',
         cancel: 'Cancel',
         skip: 'Skip for now',
-        createAndContinue: 'Create and continue',
         continue: 'Continue',
     },
 
