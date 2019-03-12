@@ -129,7 +129,6 @@ export const DialogView = XMemo<DialogViewProps>(props => {
                 </span>
             );
         }
-        message = message || message.fallback;
     }
 
     let highlightSecretChat = false;
