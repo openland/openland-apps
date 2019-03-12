@@ -40,7 +40,9 @@ export const useMentionSuggestions = ({
                     const validator = activeWord !== '' && activeWord[0] === '@';
                     const user = name.split(' ');
                     const finedFirstName = user[0].toLowerCase().startsWith(searchText);
-                    const finedLastName = user[1].toLowerCase().startsWith(searchText);
+                    const finedLastName = user[1]
+                        ? user[1].toLowerCase().startsWith(searchText)
+                        : null;
                     if (finedFirstName) {
                         return 1 && validator;
                     } else if (finedLastName) {
