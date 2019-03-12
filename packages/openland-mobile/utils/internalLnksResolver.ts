@@ -11,7 +11,7 @@ import UrlParse from 'url-parse';
 export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
     return async () => {
         let resolved = false;
-        let link = srcLink.toLowerCase();
+        let link = srcLink;
         if (link.includes('?')) {
             link = link.split('?')[0]
         }
@@ -99,10 +99,30 @@ export let resolveInternalLink = (srcLink: string, fallback?: () => void) => {
         }
 
         //
+        // PROFILE GROUP
+        //
+        let profileGroupPattern = new UrlPattern(patternBase + '(mail)(directory)/p/:id');
+        let matchGroupProfile = profileGroupPattern.match(link);
+        if (matchGroupProfile && matchGroupProfile.id) {
+            resolved = true;
+            getMessenger().history.navigationManager.push('ProfileGroup', { id: matchGroupProfile.id });
+        }
+
+        //
+        // CONVERSATION
+        //
+        let conversationPattern = new UrlPattern(patternBase + 'mail/:id');
+        let matchConversation = conversationPattern.match(link);
+        if (matchConversation && matchConversation.id) {
+            resolved = true;
+            getMessenger().history.navigationManager.push('Conversation', { id: matchConversation.id });
+        }
+
+        //
         // SHORT_NAME
         //
         let shortNamePattern = new UrlPattern(patternBase + ':shortname');
-        let matchShortName = shortNamePattern.match(link);
+        let matchShortName = shortNamePattern.match(link.toLowerCase());
         if (matchShortName && matchShortName.shortname) {
             resolved = true;
             startLoader();

@@ -32,6 +32,9 @@ const pickerClassName = css`
     background: #fff;
     border: 1px solid #e0e0e0;
     box-shadow: 0 4px 30px 0 gainsboro;
+    & .emoji-mart-search {
+        display: block;
+    }
 `;
 
 type EmojiButtonT = { onEmojiPicked: (emoji: EmojiData) => void };
@@ -48,6 +51,7 @@ export const EmojiButton = ({ onEmojiPicked }: EmojiButtonT) => {
             {showPicker && (
                 <div className={pickerClassName} ref={ref}>
                     <NimblePicker
+                        showPreview
                         emojiTooltip
                         data={data}
                         color="#1790ff"

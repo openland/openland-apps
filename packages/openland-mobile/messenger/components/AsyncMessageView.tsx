@@ -4,7 +4,6 @@ import { AsyncAvatar } from './AsyncAvatar';
 import { ConversationEngine, DataSourceMessageItem } from 'openland-engines/messenger/ConversationEngine';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { AsyncMessageContentView } from './AsyncMessageContentView';
-import { AsyncMessageIntroView } from './AsyncMessageIntroView';
 import { NavigationManager } from 'react-native-s/navigation/NavigationManager';
 import { AsyncMessageReactionsView } from './AsyncMessageReactionsView';
 import { AsyncBubbleView } from './AsyncBubbleView';
@@ -12,6 +11,8 @@ import { TextContent } from './content/TextContent';
 import { randomEmptyPlaceholderEmoji } from 'openland-mobile/utils/tolerance';
 import { ASText } from 'react-native-async-view/ASText';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
+import { Platform } from 'react-native';
+import { DefaultConversationTheme } from 'openland-mobile/pages/main/themes/ConversationThemeResolver';
 
 export interface AsyncMessageViewProps {
     message: DataSourceMessageItem;
@@ -22,20 +23,6 @@ export interface AsyncMessageViewProps {
     onMediaPress: (media: DataSourceMessageItem, event: { path: string } & ASPressEvent) => void;
     navigationManager: NavigationManager;
 }
-
-let renderSpecialMessage = (message: DataSourceMessageItem, navigationManager: NavigationManager, onDocumentPress: (document: DataSourceMessageItem) => void) => {
-    let type: string | undefined | null;
-    let urlAugmnentation = message.urlAugmentation;
-    type = urlAugmnentation ? urlAugmnentation.type : undefined;
-
-    if (type === 'intro') {
-        return (
-            <AsyncMessageIntroView message={message} navigationManager={navigationManager} onDocumentPress={onDocumentPress} />
-        );
-    }
-
-    return null;
-};
 
 export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
 
@@ -55,17 +42,24 @@ export const AsyncMessageView = React.memo<AsyncMessageViewProps>((props) => {
     }
     if (res.length === 0) {
         res.push(
-            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} colorIn={theme.backgroundColor} backgroundColor={theme.backgroundColor}>
+            <AsyncBubbleView key={'message-unsupported'} isOut={props.message.isOut} compact={props.message.attachBottom} appearance="text" colorIn={DefaultConversationTheme.bubbleColorIn} backgroundColor={theme.backgroundColor}>
                 <ASFlex overlay={true} flexGrow={1} alignItems="center">
-                    <ASText marginLeft={20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
+                    <ASText marginLeft={Platform.OS === 'android' ? undefined : 20} fontSize={30}>{randomEmptyPlaceholderEmoji()}</ASText>
                 </ASFlex>
-                <ASFlex flexDirection="column" marginLeft={40}>
-                    <TextContent padded={false} message={{ ...props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }} onUserPress={props.onAvatarPress} onDocumentPress={props.onDocumentPress} onMediaPress={props.onMediaPress} />
+                <ASFlex flexDirection="column" marginLeft={Platform.OS === 'android' ? 50 : 40}>
+                    <TextContent
+                        padded={false}
+                        fontStyle="italic"
+                        message={{ ...props.message, text: 'Message is not supported on your version of Openland.\nPlease update the app to view it.' }}
+                        onUserPress={props.onAvatarPress}
+                        onDocumentPress={props.onDocumentPress}
+                        onMediaPress={props.onMediaPress}
+                    />
                 </ASFlex>
             </AsyncBubbleView >
         );
-
     }
+
     return (
         <ASFlex flexDirection="column" alignItems="stretch" onLongPress={handleLongPress} backgroundColor={!props.message.isOut ? theme.backgroundColor : undefined}>
 

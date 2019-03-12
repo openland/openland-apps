@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { withMyApps } from 'openland-web/api/withMyApps';
 import { XView } from 'react-mental';

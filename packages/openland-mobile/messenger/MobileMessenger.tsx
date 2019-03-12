@@ -120,7 +120,7 @@ export class MobileMessenger {
                 try {
                     Alert.builder()
                         .title('Delete message')
-                        .message('Are you sure you want to delete this message?')
+                        .message('Delete this message for everyone? This cannot be undone.')
                         .button('Cancel', 'cancel')
                         .action('Delete', 'destructive', async () => {
                             await this.engine.client.mutateRoomDeleteMessage({ messageId: message.id! });

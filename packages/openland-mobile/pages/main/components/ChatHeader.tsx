@@ -59,13 +59,7 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
 
     let title = sharedRoom ? sharedRoom.title : privateRoom!.user.name;
     let subtitle = '';
-    if (privateRoom) {
-        if (privateRoom.user.primaryOrganization) {
-            subtitle = privateRoom.user.primaryOrganization.name;
-        } else {
-            subtitle = 'Person';
-        }
-    } else if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
+    if (sharedRoom && sharedRoom.kind === 'INTERNAL') {
         subtitle = 'Organization';
     } else if (sharedRoom && (sharedRoom.kind === 'GROUP' || sharedRoom.kind === 'PUBLIC')) {
         subtitle = sharedRoom.membersCount + (sharedRoom.membersCount === 1 ? ' member' : ' members');
@@ -86,6 +80,16 @@ const ChatHeaderContent = XMemo<{ conversationId: string, router: SRouter, typin
             subtitle = 'bot'
             accent = true;
         } else {
+            // use data about user online from room query
+            if (!privateRoom.user.online && privateRoom.user.lastSeen) {
+                subtitle = formatLastSeen(privateRoom.user.lastSeen);
+                accent = false;
+            } else if (privateRoom.user.online) {
+                subtitle = 'online'
+                accent = true;
+            }
+
+            // use actual data about user online
             let online = getClient().useWithoutLoaderOnline({ userId: privateRoom.user.id });
             if (online && online.user) {
                 if (!online.user.online && online.user.lastSeen) {

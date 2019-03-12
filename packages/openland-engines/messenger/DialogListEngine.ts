@@ -6,6 +6,8 @@ import {
     Room_room_PrivateRoom,
     RoomMessageShort,
     RoomFull,
+    Dialogs_dialogs_items_topMessage_GeneralMessage_attachments,
+    TinyMessage,
 } from 'openland-api/Types';
 import { backoff } from 'openland-y-utils/timer';
 import { DialogsQuery, RoomQuery, RoomHistoryQuery } from 'openland-api';
@@ -39,36 +41,34 @@ export interface DialogDataSourceItem {
     isService?: boolean;
     sender?: string;
     isOut?: boolean;
-    fileMeta?: { isImage?: boolean };
+    attachments?: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
     showSenderName?: boolean;
 }
 
-export function formatMessage(message: Dialogs_dialogs_items_topMessage | any): string {
+export function formatMessage(message: Dialogs_dialogs_items_topMessage | null): string {
     if (!message) {
         return '';
     }
-    if (message.__typename === 'Message') {
-        return message.text || '';
-    }
+    let res = message.fallback;
     if (message.message) {
-        return message.message;
-    } else if (message.file) {
-        if (message.fileMetadata) {
-            if (message.fileMetadata.isImage) {
-                if (message.fileMetadata.imageFormat === 'GIF') {
-                    return 'GIF';
+        res = message.message;
+    } else if (message.__typename === "GeneralMessage" && message.attachments && message.attachments.length === 1) {
+        let attachment = message.attachments[0];
+        res = attachment.fallback;
+        if (attachment.__typename === 'MessageAttachmentFile') {
+            if (attachment.fileMetadata.isImage) {
+                if (attachment.fileMetadata.imageFormat === 'GIF') {
+                    res = 'GIF';
                 } else {
-                    return 'Photo';
+                    res = 'Photo';
                 }
             } else {
-                return message.fileMetadata.name;
+                res = 'Document';
             }
-        } else {
-            return 'Document';
         }
-    } else {
-        return '';
     }
+
+    return res;
 }
 
 export const extractDialog = (
@@ -79,20 +79,21 @@ export const extractDialog = (
         title,
         photo,
         unreadCount,
-        betaTopMessage,
+        topMessage,
         isMuted,
         haveMention,
     }: Dialogs_dialogs_items,
     uid: string,
 ): DialogDataSourceItem => {
-    let msg = formatMessage(betaTopMessage);
-    let isOut = betaTopMessage ? betaTopMessage!!.sender.id === uid : undefined;
-    let sender = betaTopMessage
-        ? betaTopMessage!!.sender.id === uid
+    let msg = formatMessage(topMessage);
+    let isOut = topMessage ? topMessage!!.sender.id === uid : undefined;
+    let sender = topMessage
+        ? topMessage!!.sender.id === uid
             ? 'You'
-            : betaTopMessage!!.sender.firstName
+            : topMessage!!.sender.firstName
         : undefined;
-    let isService = (betaTopMessage && betaTopMessage.isService) || undefined;
+    let isService = (topMessage && topMessage.__typename === 'ServiceMessage') || undefined;
+    console.warn('boom', topMessage, isService);
     return {
         online: undefined,
         haveMention,
@@ -104,13 +105,13 @@ export const extractDialog = (
         flexibleId: fid,
         unread: unreadCount,
         message: msg,
-        fileMeta: betaTopMessage ? betaTopMessage.fileMetadata || undefined : undefined,
-        isOut: betaTopMessage ? betaTopMessage!!.sender.id === uid : undefined,
+        attachments: topMessage && topMessage.__typename === 'GeneralMessage' ? topMessage.attachments : undefined,
+        isOut: topMessage ? topMessage!!.sender.id === uid : undefined,
         sender: sender,
-        messageId: betaTopMessage ? betaTopMessage.id : undefined,
-        date: betaTopMessage ? parseInt(betaTopMessage!!.date, 10) : undefined,
+        messageId: topMessage ? topMessage.id : undefined,
+        date: topMessage ? parseInt(topMessage!!.date, 10) : undefined,
         messageEmojified: msg ? emojifyMessage(msg) : undefined,
-        isService: isService,
+        isService,
         showSenderName: !!(msg && (isOut || kind !== 'PRIVATE') && sender) && !isService,
     };
 };
@@ -232,13 +233,13 @@ export class DialogListEngine {
                     ...existing,
                     message,
                     messageEmojified: message ? emojifyMessage(message) : undefined,
-                    fileMeta: event.message.fileMetadata,
+                    attachments: event.message.attachments,
                 });
             }
         }
     };
 
-    handleMessageDeleted = async (cid: string, mid: string, prevMessage: RoomMessageShort) => {
+    handleMessageDeleted = async (cid: string, mid: string, prevMessage: TinyMessage) => {
         let existing = this.dataSource.getItem(cid);
 
         if (existing && existing.messageId === mid) {
@@ -247,7 +248,7 @@ export class DialogListEngine {
                 ...existing,
                 message,
                 messageEmojified: message ? emojifyMessage(message) : undefined,
-                fileMeta: prevMessage && prevMessage.fileMetadata ? { isImage: prevMessage.fileMetadata ? prevMessage.fileMetadata.isImage : undefined } : undefined,
+                attachments: prevMessage && prevMessage.__typename === 'GeneralMessage' ? prevMessage.attachments : undefined,
                 date: prevMessage ? prevMessage.date : undefined,
                 ...(prevMessage && prevMessage.id ? { messageId: prevMessage.id } : {})
             });
@@ -302,11 +303,12 @@ export class DialogListEngine {
         let res = this.dataSource.getItem(conversationId);
         let isOut = event.message.sender.id === this.engine.user.id;
         let sender = isOut ? 'You' : event.message.sender.firstName;
+        let isService = event.message.__typename === 'ServiceMessage';
         if (res) {
             let msg = formatMessage(event.message);
             this.dataSource.updateItem({
                 ...res,
-                isService: event.message.isService,
+                isService,
                 unread: !visible || res.unread > unreadCount ? unreadCount : res.unread,
                 isOut: isOut,
                 sender: sender,
@@ -314,10 +316,10 @@ export class DialogListEngine {
                 message: msg,
                 messageEmojified: msg ? emojifyMessage(msg) : undefined,
                 date: parseInt(event.message.date, 10),
-                fileMeta: event.message.fileMetadata,
+                attachments: event.message.attachments,
                 showSenderName:
                     !!(msg && (isOut || res.kind !== 'PRIVATE') && sender) &&
-                    !event.message.isService,
+                    !isService,
             });
             this.dataSource.moveItem(res.key, 0);
         } else {
@@ -345,7 +347,7 @@ export class DialogListEngine {
             this.dataSource.addItem(
                 {
                     key: conversationId,
-                    isService: event.message.isService,
+                    isService,
                     isMuted: !!room.settings.mute,
                     haveMention: event.message.haveMention,
                     flexibleId: privateRoom ? privateRoom.user.id : room.id,
@@ -364,14 +366,14 @@ export class DialogListEngine {
                     message: msg,
                     messageEmojified: msg ? emojifyMessage(msg) : undefined,
                     date: parseInt(event.message.date, 10),
-                    fileMeta: event.message.fileMetadata,
+                    attachments: event.message.attachments,
                     online: privateRoom ? privateRoom.user.online : false,
                     showSenderName:
                         !!(
                             msg &&
                             (isOut || (sharedRoom ? sharedRoom.kind : 'PRIVATE') !== 'PRIVATE') &&
                             sender
-                        ) && !event.message.isService,
+                        ) && !isService,
                 },
                 0,
             );
@@ -398,12 +400,21 @@ export class DialogListEngine {
 
             this.next = res.dialogs.cursor;
             this.dialogs = [...this.dialogs, ...res.dialogs.items];
+
+            res.dialogs.items.map(c => {
+                if (c.kind === 'PRIVATE' && c.fid) {
+                    this.userConversationMap.set(c.fid, c.cid);
+                }
+            });
+
             this.dialogListCallback(this.dialogs.map(i => i.cid));
 
             // Write to datasource
             let converted = res.dialogs.items.map((c: any) =>
                 extractDialog(c, this.engine.user.id),
             );
+            console.warn('boom', res.dialogs.items);
+
             this.dataSource.loadedMore(converted, !this.next);
 
             this.loading = false;

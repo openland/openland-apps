@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useKeyupDown } from './useKeyupDown';
 import { emojiList } from './utils/emojiList';
+import { getSplittedEmoji, isShortNameEmoji } from './dataConversion';
 
 export type useEmojiSuggestionsT = {
     activeWord: string;
@@ -20,6 +21,25 @@ export type EmojiSuggestionsStateT = {
     suggestions: EmojiDataT[];
     setSelectedEntryIndex: (a: number) => void;
     selectedEntryIndex: number;
+    cursorXPosition: number;
+};
+
+const getCursorXPosition = () => {
+    const X_OFFSET = 15;
+    try {
+        const s = window.getSelection();
+        const oRange = s.getRangeAt(0);
+
+        const parentNode = oRange.commonAncestorContainer!!.parentNode!!.parentNode!!.parentNode;
+
+        return (
+            (oRange.getBoundingClientRect() as any)!!.x -
+            (parentNode!! as any).getBoundingClientRect().x +
+            X_OFFSET
+        );
+    } catch (err) {
+        return 0;
+    }
 };
 
 export const useEmojiSuggestions = ({
@@ -28,15 +48,33 @@ export const useEmojiSuggestions = ({
     const [isSelecting, setIsSelecting] = React.useState(false);
     const [suggestions, setSuggestions] = React.useState<EmojiDataT[]>([]);
     const [selectedEntryIndex, setSelectedEntryIndex] = React.useState(0);
+    const [cursorXPosition, setCursorXPosition] = React.useState(() => {
+        return getCursorXPosition();
+    });
 
     React.useEffect(() => {
         if (!activeWord.includes(':')) {
             setIsSelecting(false);
             setSuggestions([]);
+            return;
         }
-        const finalActiveWord = activeWord.slice(activeWord.lastIndexOf(':'));
 
-        const emojiValue = finalActiveWord.substring(1, finalActiveWord.length).toLowerCase();
+        let finalActiveWord = activeWord;
+
+        // this is to make consequence emoji selection work
+        if (activeWord.length > 1) {
+            const splitted = getSplittedEmoji(activeWord.slice(0, -1));
+
+            if (
+                activeWord[activeWord.length - 1] === ':' &&
+                isShortNameEmoji(splitted[splitted.length - 1])
+            ) {
+                finalActiveWord = activeWord.slice(activeWord.length - 1);
+            }
+        }
+
+        const emojiValue = finalActiveWord.toLowerCase();
+
         const filteredValues = Object.keys(myEmojiList)
             .filter(
                 (emojiShortName: string) => !emojiValue || emojiShortName.indexOf(emojiValue) > -1,
@@ -53,6 +91,7 @@ export const useEmojiSuggestions = ({
             setSelectedEntryIndex(nextSelectedEntryIndex);
         }
 
+        setCursorXPosition(getCursorXPosition());
         setIsSelecting(finalActiveWord.startsWith(':') && !!filteredValues.length);
         setSuggestions(filteredValues.slice(0, 9));
     }, [activeWord]);
@@ -65,6 +104,7 @@ export const useEmojiSuggestions = ({
     });
 
     return {
+        cursorXPosition,
         isSelecting,
         handleUp,
         handleDown,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { XRadioItem } from 'openland-x/XRadio';
 import { XButton } from 'openland-x/XButton';
 import { XVertical } from 'openland-x-layout/XVertical';
@@ -9,27 +9,33 @@ import { canUseDOM } from 'openland-y-utils/canUseDOM';
 
 class HighlightSecretGroups extends React.PureComponent<
     {},
-    { highlight: boolean; confirm: boolean }
+    { highlight: boolean; confirm: boolean; beChange: boolean }
 > {
+    timer: any;
     constructor(props: any) {
         super(props);
         this.state = {
             highlight: canUseDOM && localStorage.getItem('highlight_secret_chat') === 'true',
             confirm: false,
+            beChange: false,
         };
     }
 
     handleOn = () => {
+        clearInterval(this.timer);
         this.setState({
             highlight: true,
             confirm: false,
+            beChange: true,
         });
     };
 
     handleOff = () => {
+        clearInterval(this.timer);
         this.setState({
             highlight: false,
             confirm: false,
+            beChange: true,
         });
     };
 
@@ -38,16 +44,26 @@ class HighlightSecretGroups extends React.PureComponent<
             confirm: true,
         });
         localStorage.setItem('highlight_secret_chat', this.state.highlight ? 'true' : 'false');
+        this.timer = setTimeout(() => {
+            this.setState({
+                beChange: false,
+            });
+        }, 1000);
     };
 
     resetButtonStyle = () => {
+        clearInterval(this.timer);
         this.setState({
             confirm: false,
         });
     };
 
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
     render() {
-        const { highlight, confirm } = this.state;
+        const { highlight, confirm, beChange } = this.state;
         return (
             <XVertical separator={12}>
                 <XVertical separator={9}>
@@ -63,13 +79,15 @@ class HighlightSecretGroups extends React.PureComponent<
                         onChange={this.handleOn}
                     />
                 </XVertical>
-                <XButton
-                    text={confirm ? 'Changes saved!' : 'Save changes'}
-                    style={confirm ? 'success' : 'primary'}
-                    alignSelf="flex-start"
-                    onClick={this.onSave}
-                    onSuccess={this.resetButtonStyle}
-                />
+                {beChange && (
+                    <XButton
+                        text={confirm ? 'Saved!' : 'Save changes'}
+                        style={confirm ? 'success' : 'primary'}
+                        alignSelf="flex-start"
+                        onClick={this.onSave}
+                        onSuccess={this.resetButtonStyle}
+                    />
+                )}
             </XVertical>
         );
     }

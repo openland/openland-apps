@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withRouter } from 'openland-x-routing/withRouter';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { RoomsExploreComponent } from '../../../fragments/RoomsExploreComponent';
 import { MessengerFragment } from '../../../fragments/MessengerFragment';
 import { DirectoryNavigation } from './components/DirectoryNavigation';

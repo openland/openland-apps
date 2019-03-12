@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withExploreOrganizations } from '../../../api/withExploreOrganizations';
+import { withExploreOrganizations } from 'openland-web/api/withExploreOrganizations';
 import { EmptySearchBlock } from './components/EmptySearchBlock';
 import { PagePagination } from './components/PagePagination';
 import { OrganizationProfile } from '../profile/components/OrganizationProfileComponent';

@@ -141,7 +141,6 @@ const MessageComposeComponentInner = (messageComposeProps: MessageComposeCompone
         messagesContext.changeForwardConverstion();
         setInputValue(newInputValue.text);
         draftState.setBeDrafted(hasReply());
-        console.log(newInputValue);
         inputMethodsState.setInputValue(newInputValue);
         inputMethodsState.focusIfNeeded();
     }, [currentConversation]);

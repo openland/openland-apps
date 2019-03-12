@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
-import { withQueryLoader } from '../../../components/withQueryLoader';
+import { withApp } from 'openland-web/components/withApp';
+import { withQueryLoader } from 'openland-web/components/withQueryLoader';
 import { withShortName } from 'openland-web/api/withShortName';
 import { XPageRedirect } from 'openland-x-routing/XPageRedirect';
 import { Scaffold } from 'openland-web/components/Scaffold';

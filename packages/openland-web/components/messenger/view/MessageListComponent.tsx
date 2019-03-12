@@ -179,7 +179,7 @@ export class MessageListComponent extends React.PureComponent<MessageListProps> 
                         paddingTop={2}
                         paddingBottom={2}
                     >
-                        <XView fontSize={13} color="#99A2B0">
+                        <XView fontSize={13} color="rgba(0, 0, 0, 0.4)">
                             {date}
                         </XView>
                     </XView>

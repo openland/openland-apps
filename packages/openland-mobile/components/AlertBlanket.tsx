@@ -7,7 +7,7 @@ export class AlertBlanketBuilder {
     _title?: string;
     _message?: string;
     _view?: any;
-    _cancalable?: boolean;
+    _cancelable?: boolean;
     _actions: { name: string, callback?: () => void, style?: BlanketButtonsStyle, action?: () => void, onActionSuccess?: () => void, onActionError?: (e: Error) => void }[] = [];
 
     alert(message: string) {
@@ -21,8 +21,8 @@ export class AlertBlanketBuilder {
         return this;
     }
 
-    cancalable(cancalable: boolean): AlertBlanketBuilder {
-        this._cancalable = cancalable;
+    cancelable(cancelable: boolean): AlertBlanketBuilder {
+        this._cancelable = cancelable;
         return this;
     }
 
@@ -50,9 +50,8 @@ export class AlertBlanketBuilder {
         showBlanketModal((ctx) => {
             return (
                 <AlertBlanketComponent builder={this} modalController={ctx} />
-
             )
-        }, this._cancalable);
+        }, this._cancelable);
     }
 }
 

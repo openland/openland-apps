@@ -45,13 +45,14 @@ export const XRichTextInput2 = React.memo(
                 addEmoji,
                 onEmojiPicked,
                 getMentions,
+                updateEditorState,
             } = useHandleEditorChange({
                 onChange,
                 value,
                 mentionsData,
             });
 
-            const { handlePastedText } = useHandlePastedText({ setEditorState });
+            const { handlePastedText } = useHandlePastedText({ editorState, updateEditorState });
 
             const { resetAndFocus } = useInputMethods({
                 updateEditorStateFromTextAndMentions,
