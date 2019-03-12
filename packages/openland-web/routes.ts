@@ -139,6 +139,8 @@ routes.add('/mail', '/main/mail/root');
 routes.add('/mail/', '/main/mail/root');
 routes.add('/mail/new', '/main/mail/root');
 routes.add('/mail/new/', '/main/mail/root');
+routes.add('/mail/create', '/main/mail/createGroup');
+routes.add('/mail/create/', '/main/mail/createGroup');
 routes.add('/mail/:conversationId', '/main/mail/root');
 routes.add('/mail/:conversationId/', '/main/mail/root');
 routes.add('/mail/channels', '/main/mail/root');

@@ -11,7 +11,6 @@ interface XMutationProps {
 }
 
 export class XMutation extends React.Component<XMutationProps, { loading: boolean }> {
-
     constructor(props: XMutationProps) {
         super(props);
         this.state = { loading: false };
@@ -42,7 +41,7 @@ export class XMutation extends React.Component<XMutationProps, { loading: boolea
             }
             this.setState({ loading: false });
         }
-    }
+    };
 
     render() {
         let childs = [];
@@ -55,13 +54,8 @@ export class XMutation extends React.Component<XMutationProps, { loading: boolea
                 };
             }
             childs.push(React.cloneElement(c as any, modification));
-
         }
 
-        return (
-            <div className={this.props.className} >
-                {childs}
-            </div>
-        );
+        return <div className={this.props.className}>{childs}</div>;
     }
 }
