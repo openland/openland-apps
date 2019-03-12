@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { Scaffold } from '../../../components/Scaffold';
 import { XSContainer } from 'openland-xs/XSContainer';
 import { XSDialog } from 'openland-xs/XSDialog';

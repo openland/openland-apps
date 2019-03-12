@@ -13,7 +13,7 @@ import {
     Room_room_SharedRoom_members,
 } from 'openland-api/Types';
 import { XMutation } from 'openland-x/XMutation';
-import { withConversationKick } from '../../../../api/withConversationKick';
+import { withConversationKick } from 'openland-web/api/withConversationKick';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import { EmptyComponent } from './membersEmptyComponent';
@@ -21,7 +21,7 @@ import CloseIcon from 'openland-icons/ic-close-1.svg';
 import { XUserCard } from 'openland-x/cards/XUserCard';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
 import { XText } from 'openland-x/XText';
-import { withRoomAddMember } from '../../../../api/withRoomAddMembers';
+import { withRoomAddMember } from 'openland-web/api/withRoomAddMembers';
 
 const MembersWrapper = Glamorous(XScrollView2)({
     height: '100%',

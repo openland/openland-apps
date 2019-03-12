@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
 import { css } from 'linaria';
-import { withUser } from '../../../../api/withUserSimple';
+import { withUser } from 'openland-web/api/withUserSimple';
 import { User_user } from 'openland-api/Types';
 import { XHorizontal } from 'openland-x-layout/XHorizontal';
 import { XSubHeader } from 'openland-x/XSubHeader';
@@ -22,7 +22,7 @@ import {
     extractHostname,
 } from './OrganizationProfileComponent';
 import { XContentWrapper } from 'openland-x/XContentWrapper';
-import { withOnline } from '../../../../api/withOnline';
+import { withOnline } from 'openland-web/api/withOnline';
 import { XMenuItem } from 'openland-x/XMenuItem';
 import { XOverflow } from '../../../../components/XOverflow';
 import { XSocialButton } from 'openland-x/XSocialButton';

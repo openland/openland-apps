@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withApp } from '../../../components/withApp';
+import { withApp } from 'openland-web/components/withApp';
 import { withOrganizationProfile } from '../../../api/withOrganizationProfile';
 import { withQueryLoader } from '../../../components/withQueryLoader';
 import { OrganizationSettings } from './components/organizationBase';

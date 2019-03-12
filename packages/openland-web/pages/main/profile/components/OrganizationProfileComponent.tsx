@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Glamorous from 'glamorous';
-import { withOrganization } from '../../../../api/withOrganizationSimple';
+import { withOrganization } from 'openland-web/api/withOrganizationSimple';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
 import {
     OrganizationMemberRole,
@@ -32,10 +32,10 @@ import { XOverflow } from '../../../../components/XOverflow';
 import { XAvatarUpload } from 'openland-x/XAvatarUpload';
 import { sanitizeImageRef } from 'openland-y-utils/sanitizeImageRef';
 import { XModalForm } from 'openland-x-modal/XModalForm2';
-import { withUserProfileUpdate } from '../../../../api/withUserProfileUpdate';
+import { withUserProfileUpdate } from 'openland-web/api/withUserProfileUpdate';
 import { XInput } from 'openland-x/XInput';
-import { withOrganizationRemoveMember } from '../../../../api/withOrganizationRemoveMember';
-import { withOrganizationMemberChangeRole } from '../../../../api/withOrganizationMemberChangeRole';
+import { withOrganizationRemoveMember } from 'openland-web/api/withOrganizationRemoveMember';
+import { withOrganizationMemberChangeRole } from 'openland-web/api/withOrganizationMemberChangeRole';
 import { XStoreContext } from 'openland-y-store/XStoreContext';
 import { XSelect } from 'openland-x/XSelect';
 import { XText } from 'openland-x/XText';
