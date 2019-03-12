@@ -670,7 +670,7 @@ export interface AddAppToChatVariables {
 // GraphQL query operation: Dialogs
 // ====================================================
 
-export interface Dialogs_dialogs_items_topMessage_sender {
+export interface Dialogs_dialogs_items_topMessage_ServiceMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -680,25 +680,22 @@ export interface Dialogs_dialogs_items_topMessage_sender {
   shortname: string | null;
 }
 
-export interface Dialogs_dialogs_items_topMessage {
-  __typename: "Message";
+export interface Dialogs_dialogs_items_topMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
   id: string;
   date: any;
+  sender: Dialogs_dialogs_items_topMessage_ServiceMessage_sender;
   /**
    * Content
    */
-  text: string | null;
-  sender: Dialogs_dialogs_items_topMessage_sender;
+  message: string | null;
+  fallback: string;
 }
 
-export interface Dialogs_dialogs_items_betaTopMessage_fileMetadata {
-  __typename: "FileMetadata";
-  name: string;
-  mimeType: string | null;
-  isImage: boolean;
-}
-
-export interface Dialogs_dialogs_items_betaTopMessage_sender {
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_sender {
   __typename: "User";
   id: string;
   name: string;
@@ -708,20 +705,49 @@ export interface Dialogs_dialogs_items_betaTopMessage_sender {
   shortname: string | null;
 }
 
-export interface Dialogs_dialogs_items_betaTopMessage {
-  __typename: "RoomMessage";
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment" | "MessageAttachmentPost";
+  id: string;
+  fallback: string;
+}
+
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type Dialogs_dialogs_items_topMessage_GeneralMessage_attachments = Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageRichAttachment | Dialogs_dialogs_items_topMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface Dialogs_dialogs_items_topMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
   id: string;
   date: any;
+  sender: Dialogs_dialogs_items_topMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
   message: string | null;
-  file: string | null;
-  isService: boolean;
-  fileMetadata: Dialogs_dialogs_items_betaTopMessage_fileMetadata | null;
-  sender: Dialogs_dialogs_items_betaTopMessage_sender;
+  fallback: string;
+  attachments: Dialogs_dialogs_items_topMessage_GeneralMessage_attachments[];
 }
+
+export type Dialogs_dialogs_items_topMessage = Dialogs_dialogs_items_topMessage_ServiceMessage | Dialogs_dialogs_items_topMessage_GeneralMessage;
 
 export interface Dialogs_dialogs_items {
   __typename: "Dialog";
-  id: string;
   cid: string;
   fid: string;
   kind: DialogKind;
@@ -731,7 +757,6 @@ export interface Dialogs_dialogs_items {
   isMuted: boolean;
   haveMention: boolean;
   topMessage: Dialogs_dialogs_items_topMessage | null;
-  betaTopMessage: Dialogs_dialogs_items_betaTopMessage | null;
 }
 
 export interface Dialogs_dialogs {
@@ -7792,6 +7817,89 @@ export interface ConversationShort_ChannelConversation {
 }
 
 export type ConversationShort = ConversationShort_AnonymousConversation | ConversationShort_GroupConversation | ConversationShort_ChannelConversation;
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: TinyMessage
+// ====================================================
+
+export interface TinyMessage_ServiceMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface TinyMessage_ServiceMessage {
+  __typename: "ServiceMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: TinyMessage_ServiceMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+}
+
+export interface TinyMessage_GeneralMessage_sender {
+  __typename: "User";
+  id: string;
+  name: string;
+  firstName: string;
+  lastName: string | null;
+  picture: string | null;
+  shortname: string | null;
+}
+
+export interface TinyMessage_GeneralMessage_attachments_MessageRichAttachment {
+  __typename: "MessageRichAttachment" | "MessageAttachmentPost";
+  id: string;
+  fallback: string;
+}
+
+export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata {
+  __typename: "FileMetadata";
+  isImage: boolean;
+  imageFormat: string | null;
+}
+
+export interface TinyMessage_GeneralMessage_attachments_MessageAttachmentFile {
+  __typename: "MessageAttachmentFile";
+  id: string;
+  fallback: string;
+  fileId: string;
+  fileMetadata: TinyMessage_GeneralMessage_attachments_MessageAttachmentFile_fileMetadata;
+  filePreview: string | null;
+}
+
+export type TinyMessage_GeneralMessage_attachments = TinyMessage_GeneralMessage_attachments_MessageRichAttachment | TinyMessage_GeneralMessage_attachments_MessageAttachmentFile;
+
+export interface TinyMessage_GeneralMessage {
+  __typename: "GeneralMessage";
+  /**
+   * State
+   */
+  id: string;
+  date: any;
+  sender: TinyMessage_GeneralMessage_sender;
+  /**
+   * Content
+   */
+  message: string | null;
+  fallback: string;
+  attachments: TinyMessage_GeneralMessage_attachments[];
+}
+
+export type TinyMessage = TinyMessage_ServiceMessage | TinyMessage_GeneralMessage;
 
 /* tslint:disable */
 // This file was automatically generated and should not be edited.

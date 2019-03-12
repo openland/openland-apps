@@ -10,6 +10,8 @@ import { UserTiny } from 'openland-api/fragments/UserTiny';
 import { DialogsQuery } from 'openland-api';
 import { RoomQuery } from 'openland-api';
 import { MarkSequenceReadMutation } from 'openland-api';
+import { TinyMessage } from 'openland-api/fragments/Message';
+import { RoomShort } from 'openland-api/fragments/RoomShort';
 
 let GLOBAL_SUBSCRIPTION = gql`
     subscription GlobalSubscription($state: String) {
@@ -36,38 +38,23 @@ let GLOBAL_SUBSCRIPTION = gql`
             cid
             unread
             globalUnread
-            message {
-                mentions
-                ...MessageShort
+            message:alphaMessage {
+                    ...TinyMessage
             }
         }
         ... on DialogMessageUpdated {
             cid
-            message {
-                ...MessageShort
-            }
+            message:alphaMessage {
+                    ...TinyMessage
+                }
         }
         ... on DialogMessageDeleted {
             cid
-            message {
-                ...MessageShort
+            message: alphaMessage {
+                    ...TinyMessage
             }
-            prevMessage {
-                ... on RoomMessage {
-                    id
-                    date
-                    message
-                    file
-                    isService
-                    fileMetadata {
-                        name
-                        mimeType
-                        isImage
-                    }
-                    sender {
-                        ...UserTiny
-                    }
-                }
+            prevMessage: alphaPrevMessage {
+                ...TinyMessage
             }
             unread
             globalUnread
@@ -106,6 +93,8 @@ let GLOBAL_SUBSCRIPTION = gql`
     }
     ${MessageShort}
     ${UserTiny}
+    ${TinyMessage}
+    ${RoomShort}
 `;
 
 const SUBSCRIBE_SETTINGS = gql`

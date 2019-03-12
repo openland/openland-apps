@@ -7,12 +7,12 @@ import { MessageLightShort } from '../fragments/MessageLightShort';
 import { RoomFull } from '../fragments/RoomFull';
 import { UserTiny } from '../fragments/UserTiny';
 import { RoomShort } from 'openland-api/fragments/RoomShort';
+import { TinyMessage } from 'openland-api/fragments/Message';
 
 export const DialogsQuery = gql`
     query Dialogs($after: String) {
         dialogs(first: 20, after: $after) {
             items {
-                id
                 cid
                 fid
                 kind
@@ -21,11 +21,8 @@ export const DialogsQuery = gql`
                 unreadCount
                 isMuted
                 haveMention
-                topMessage {
-                    ...MessageLightShort
-                }
-                betaTopMessage {
-                    ...RoomMessageShort
+                topMessage: alphaTopMessage {
+                    ...TinyMessage
                 }
             }
             cursor
@@ -40,6 +37,8 @@ export const DialogsQuery = gql`
     }
     ${MessageLightShort}
     ${UserTiny}
+    ${TinyMessage}
+    ${RoomShort}
     ${RoomMessageShort}
 `;
 
