@@ -150,26 +150,12 @@ export function convertMessage(src: MessageFullFragment & { local?: boolean }, e
     };
 }
 
-function isSameIntDate(a1: number, b1: number) {
-    let a2 = new Date(a1);
-    let b2 = new Date(b1);
-    return (a2.getFullYear() === b2.getFullYear() && a2.getMonth() === b2.getMonth() && a2.getDate() === b2.getDate());
-}
-
 function isSameDate(a: string, b: string) {
     let a1 = parseInt(a, 10);
     let b1 = parseInt(b, 10);
-    return isSameIntDate(a1, b1);
-}
-
-const createDateDataSourceItem = (date: Date): DataSourceDateItem => {
-    return {
-        type: 'date',
-        key: 'date-' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate(),
-        date: date.getDate(),
-        month: date.getMonth(),
-        year: date.getFullYear()
-    }
+    let a2 = new Date(a1);
+    let b2 = new Date(b1);
+    return (a2.getFullYear() === b2.getFullYear() && a2.getMonth() === b2.getMonth() && a2.getDate() === b2.getDate());
 }
 
 export class ConversationEngine implements MessageSendHandler {
@@ -234,7 +220,13 @@ export class ConversationEngine implements MessageSendHandler {
             // Append new date if needed
             if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                 let d = new Date(parseInt(prevDate, 10));
-                dsItems.push(createDateDataSourceItem(d));
+                dsItems.push({
+                    type: 'date',
+                    key: 'date-' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
+                    date: d.getDate(),
+                    month: d.getMonth(),
+                    year: d.getFullYear()
+                });
             }
 
             dsItems.push(convertMessage(sourceFragments[i], this.engine, sourceFragments[i - 1], sourceFragments[i + 1]));
@@ -243,7 +235,13 @@ export class ConversationEngine implements MessageSendHandler {
 
         if (this.historyFullyLoaded && prevDate) {
             let d = new Date(parseInt(prevDate, 10));
-            dsItems.push(createDateDataSourceItem(d));
+            dsItems.push({
+                type: 'date',
+                key: 'date-' + d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(),
+                date: d.getDate(),
+                month: d.getMonth(),
+                year: d.getFullYear()
+            });
         }
 
         this.dataSource.initialize(dsItems, this.historyFullyLoaded);
@@ -301,7 +299,13 @@ export class ConversationEngine implements MessageSendHandler {
             for (let i = 0; i < sourceFragments.length; i++) {
                 if (prevDate && !isSameDate(prevDate, sourceFragments[i].date)) {
                     let d = new Date(parseInt(prevDate, 10));
-                    dsItems.push(createDateDataSourceItem(d));
+                    dsItems.push({
+                        type: 'date',
+                        key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
+                        date: d.getDate(),
+                        month: d.getMonth(),
+                        year: d.getFullYear()
+                    });
                 }
 
                 dsItems.push(convertMessage(sourceFragments[i] as any, this.engine, sourceFragments[i - 1] as any, sourceFragments[i + 1] as any));
@@ -309,7 +313,13 @@ export class ConversationEngine implements MessageSendHandler {
             }
             if (this.historyFullyLoaded && prevDate) {
                 let d = new Date(parseInt(prevDate, 10));
-                dsItems.push(createDateDataSourceItem(d));
+                dsItems.push({
+                    type: 'date',
+                    key: 'date-' + d.getFullYear() + d.getMonth() + d.getDate(),
+                    date: d.getDate(),
+                    month: d.getMonth(),
+                    year: d.getFullYear()
+                });
             }
             this.dataSource.loadedMore(dsItems, this.historyFullyLoaded);
         }
@@ -640,21 +650,12 @@ export class ConversationEngine implements MessageSendHandler {
             this.dataSource.updateItem(converted);
         } else {
             if (prev && prev.type === 'message' && prev.senderId === conv.senderId && (!!prev.serviceMetaData === !!conv.serviceMetaData)) {
-                if (prev.date && !isSameIntDate(prev.date, conv.date)) {
-                    this.dataSource.addItem(createDateDataSourceItem(new Date(conv.date)), 0);
-                    conv.attachTop = false;
-                } else {
-                    this.dataSource.updateItem({ 
-                        ...prev!!, 
-                        attachBottom: true 
-                    });
-                }
+                this.dataSource.updateItem({ ...prev!!, attachBottom: true });
+                this.dataSource.addItem(conv, 0);
             } else {
-                this.dataSource.addItem(createDateDataSourceItem(new Date(conv.date)), 0);
-                conv.attachTop = false;
+                this.dataSource.addItem(conv, 0);
             }
-
-            this.dataSource.addItem(conv, 0);
+            // this.dataSource.addItem(conv, 0);
         }
     }
 
