@@ -42,9 +42,9 @@ export const useMentionSuggestions = ({
                     const finedFirstName = user[0].toLowerCase().startsWith(searchText);
                     const finedLastName = user[1].toLowerCase().startsWith(searchText);
                     if (finedFirstName) {
-                        return name.toLowerCase().includes(searchText) && validator;
+                        return 1 && validator;
                     } else if (finedLastName) {
-                        return name.toLowerCase().includes(searchText) && validator;
+                        return 1 && validator;
                     } else {
                         return name.toLowerCase().startsWith(searchText) && validator;
                     }
