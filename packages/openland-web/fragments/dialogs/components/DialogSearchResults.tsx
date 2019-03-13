@@ -27,13 +27,20 @@ const Image = Glamorous.div({
     backgroundPosition: 'center',
 });
 
+type DialogSearchResultsT = {
+    onClick: () => void;
+    onSelect?: () => void;
+    variables: { query: string };
+};
+
 export const DialogSearchResults = withGlobalSearch(props => {
-    if (!props.data || !props.data.items) {
+    const typeProps = props as typeof props & DialogSearchResultsT;
+    if (!typeProps.data || !typeProps.data.items) {
         return <PlaceholderLoader color="#334562" />;
     }
 
     // Why?
-    let items = props.data.items.reduce(
+    let items = typeProps.data.items.reduce(
         (p, x) => {
             if (!p.find(c => c.id === x.id)) {
                 p.push(x);
@@ -54,8 +61,9 @@ export const DialogSearchResults = withGlobalSearch(props => {
 
     return (
         <>
-            {items.map((i, j) => {
+            {items.map(i => {
                 let item;
+
                 if (i.__typename === 'SharedRoom') {
                     item = {
                         key: i.id,
@@ -65,7 +73,17 @@ export const DialogSearchResults = withGlobalSearch(props => {
                         photo: i.roomPhoto,
                         unread: 0,
                     };
-                } else {
+                } else if (i.__typename === 'Organization') {
+                    item = {
+                        key: i.id,
+                        flexibleId: i.id,
+                        kind: i.kind,
+                        title: i.name || '',
+                        photo: i.photo,
+                        unread: 0,
+                        isOrganization: true,
+                    };
+                } else if (i.__typename === 'User') {
                     item = {
                         key: i.id,
                         flexibleId: i.id,
@@ -74,17 +92,19 @@ export const DialogSearchResults = withGlobalSearch(props => {
                         photo: i.photo,
                         unread: 0,
                     };
+                } else {
+                    return null;
                 }
 
                 return (
                     <DialogViewCompact
                         key={i.id}
-                        onSelect={(props as any).onSelect}
-                        onClick={(props as any).onClick}
+                        onSelect={typeProps.onSelect}
+                        onClick={typeProps.onClick}
                         item={item}
                     />
                 );
             })}
         </>
     );
-}) as React.ComponentType<{ onClick: () => void; variables: { query: string } }>;
+}) as React.ComponentType<DialogSearchResultsT>;

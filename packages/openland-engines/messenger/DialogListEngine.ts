@@ -28,6 +28,8 @@ export interface DialogDataSourceItem {
     kind: 'PRIVATE' | 'INTERNAL' | 'PUBLIC' | 'GROUP';
     photo?: string;
 
+    isOrganization?: boolean;
+
     unread: number;
     online?: boolean;
     typing?: string;
